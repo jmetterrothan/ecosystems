@@ -21,6 +21,12 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: '/node_modules/',
+        enforce: 'pre',
+        loader: 'eslint-loader'
+      },
+      {
+        test: /\.js$/,
+        exclude: '/node_modules/',
         loader: 'babel-loader'
       },
       {
@@ -36,7 +42,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(PATHS.APP, 'index.html'),
-      filename: 'index.[contenthash:8].html',
+      filename: 'index.html',
       inject: 'body',
       hash: true
     })
