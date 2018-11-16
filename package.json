@@ -6,12 +6,23 @@
   "author": "florian <hello@florianzobele.fr>",
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "babel-loader": "^8.0.4",
+    "clean-webpack-plugin": "^1.0.0",
+    "css-loader": "^1.0.1",
+    "eslint-loader": "^2.1.1",
+    "html-webpack-plugin": "^4.0.0-beta.4",
+    "node-sass": "^4.10.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10",
     "webpack-merge": "^4.1.4"
   },
   "scripts": {
-    "dev": "",
-    "prod": ""
+    "dev": "webpack-dev-server --progress --inline config/webpack.dev.js",
+    "prod": "webpack --progress --config config/webpack.prod.js"
   }
 }

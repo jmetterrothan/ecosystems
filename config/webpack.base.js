@@ -2,21 +2,43 @@ const path = require('path');
 const PATHS = require('./paths');
 const webpack = require('webpack');
 
-module.exports = {
+//plugins
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+module.exports = {
   entry: {
     bundle: [
-      path.join(PATHS.APP, 'index.js')
+      path.join(PATHS.APP, 'index.js'),
+      path.join(PATHS.STYLES, 'styles.scss')
     ],
-    resolve: {
-
-    },
-    module: {
-
-    },
-    plugins: {
-
-    }
-  }
-
+  },
+  resolve: {
+    modules: ['node_modules', PATHS.SRC],
+    extensions: ['.js', '.json', '.scss', '.css']
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: '/node_modules/',
+        loader: 'babel-loader'
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
+      }
+    ]
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.join(PATHS.APP, 'index.html'),
+      filename: 'index.[contenthash:8].html',
+      inject: 'body',
+      hash: true
+    })
+  ]
 };
