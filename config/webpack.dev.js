@@ -10,8 +10,8 @@ module.exports = merge(baseConfig, {
   devServer: {
     port: 8080,
     historyApiFallback: true,
-    open: true,
-    watchContentBase: true
+    watchContentBase: true,
+    open: true
   },
   devtool: 'cheap-eval-source-map',
   module: {

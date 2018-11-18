@@ -1,9 +1,10 @@
 const path = require('path');
 const PATHS = require('./paths');
-const webpack = require('webpack');
+const webpackMode = require('webpack-mode');
 
 //plugins
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: {
@@ -30,11 +31,11 @@ module.exports = {
         loader: 'babel-loader'
       },
       {
-        test: /\.scss$/,
+        test: /\.(scss|sass)$/,
         use: [
-          'style-loader',
+          webpackMode.isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
-          'sass-loader'
+          'sass-loader',
         ]
       }
     ]
@@ -45,6 +46,10 @@ module.exports = {
       filename: 'index.html',
       inject: 'body',
       hash: true
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css'
     })
   ]
 };

@@ -16,16 +16,18 @@
     "eslint-loader": "^2.1.1",
     "eslint-plugin-import": "^2.14.0",
     "html-webpack-plugin": "^4.0.0-beta.4",
+    "mini-css-extract-plugin": "^0.4.4",
     "node-sass": "^4.10.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10",
-    "webpack-merge": "^4.1.4"
+    "webpack-merge": "^4.1.4",
+    "webpack-mode": "^1.0.1"
   },
   "scripts": {
-    "dev": "webpack-dev-server --progress --inline --config config/webpack.dev.js",
-    "prod": "webpack --progress --inline --config config/webpack.prod.js"
+    "dev": "webpack-dev-server --progress --inline --hot --config config/webpack.dev.js",
+    "prod": "webpack --progress --inline --mode=production --config config/webpack.prod.js"
   }
 }
