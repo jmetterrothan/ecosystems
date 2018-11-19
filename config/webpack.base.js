@@ -1,5 +1,6 @@
 const path = require('path');
 const PATHS = require('./paths');
+const alias = require('./alias');
 const webpackMode = require('webpack-mode');
 
 //plugins
@@ -15,7 +16,8 @@ module.exports = {
   },
   resolve: {
     modules: ['node_modules', PATHS.SRC],
-    extensions: ['.js', '.json', '.scss', '.css']
+    extensions: ['.js', '.json', '.scss', '.css'],
+    alias
   },
   module: {
     rules: [
@@ -33,10 +35,39 @@ module.exports = {
       {
         test: /\.(scss|sass)$/,
         use: [
-          webpackMode.isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+          webpackMode.isDevelopment
+            ? 'style-loader'
+            : MiniCssExtractPlugin.loader,
           'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [
+                require('autoprefixer')({
+                  browsers: ['>1%', 'last 4 versions', 'Firefox ESR', 'not ie < 9'],
+                  flexbox: 'no-2009'
+                })
+              ]
+            }
+          },
           'sass-loader',
         ]
+      },
+      {
+        test: /\.(png|jpg|gif|svg)/,
+        include: [PATHS.IMAGES],
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: webpackMode.isProduction
+              ? '/images/[name]_[hash:8].[ext]'
+              : '[name].[ext]'
+          }
+        }
+      },
+      {
+        test: /\.glsl$/,
+        loader: 'webpack-glsl-loader'
       }
     ]
   },

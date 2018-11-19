@@ -8,6 +8,7 @@
   "devDependencies": {
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
+    "autoprefixer": "^9.3.1",
     "babel-loader": "^8.0.4",
     "clean-webpack-plugin": "^1.0.0",
     "css-loader": "^1.0.1",
@@ -15,19 +16,23 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-loader": "^2.1.1",
     "eslint-plugin-import": "^2.14.0",
+    "file-loader": "^2.0.0",
     "html-webpack-plugin": "^4.0.0-beta.4",
     "mini-css-extract-plugin": "^0.4.4",
     "node-sass": "^4.10.0",
+    "postcss-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
+    "source-map": "^0.7.3",
     "style-loader": "^0.23.1",
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10",
+    "webpack-glsl-loader": "^1.0.1",
     "webpack-merge": "^4.1.4",
     "webpack-mode": "^1.0.1"
   },
   "scripts": {
-    "dev": "webpack-dev-server --progress --inline --hot --config config/webpack.dev.js",
+    "dev": "webpack-dev-server --progress --inline --config config/webpack.dev.js",
     "prod": "webpack --progress --inline --mode=production --config config/webpack.prod.js"
   }
 }

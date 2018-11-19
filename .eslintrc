@@ -1,6 +1,11 @@
 {
   "extends": "airbnb-base",
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "import/no-unresolved": "off",
+    "comma-dangle": [
+      "error",
+      "never"
+    ]
   }
 }
