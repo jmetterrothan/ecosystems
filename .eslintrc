@@ -1,11 +1,24 @@
 {
-  "extends": "airbnb-base",
+  "parser": "babel-eslint",
+  "plugins": [
+    "babel"
+  ],
   "rules": {
     "no-console": "off",
     "import/no-unresolved": "off",
     "comma-dangle": [
       "error",
       "never"
-    ]
+    ],
+    "arrow-parens": [
+      "error",
+      "as-needed"
+    ],
+    "babel/semi": [
+      "error",
+      "always"
+    ],
+    "class-methods-use-this": "off",
+    "no-unused-vars": "warn"
   }
 }

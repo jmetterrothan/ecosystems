@@ -1,4 +1,5 @@
-import img from '@images/img.jpg';
+// import * as THREE from 'three';
+// import 'three/examples/js/controls/OrbitControls';
 
-console.log('Hello world');
-console.log(img);
+
+

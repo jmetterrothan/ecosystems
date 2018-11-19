@@ -1,6 +1,7 @@
 const path = require('path');
 const PATHS = require('./paths');
 const alias = require('./alias');
+const webpack = require('webpack');
 const webpackMode = require('webpack-mode');
 
 //plugins
@@ -17,7 +18,11 @@ module.exports = {
   resolve: {
     modules: ['node_modules', PATHS.SRC],
     extensions: ['.js', '.json', '.scss', '.css'],
-    alias
+    alias: {
+      ...alias,
+      three$: 'three/build/three.min.js',
+      'three/.*$': 'three'
+    }
   },
   module: {
     rules: [
@@ -81,6 +86,9 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css'
+    }),
+    new webpack.ProvidePlugin({
+      THREE: 'three'
     })
   ]
 };
