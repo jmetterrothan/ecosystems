@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 
-import Terrain from './generators/Terrain.ts';
+import Terrain from './World/Terrain';
 
 const element = document.body;
 

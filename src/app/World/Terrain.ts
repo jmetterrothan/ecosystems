@@ -40,6 +40,7 @@ class Terrain
         // generate chunk if needed
         if (!this.chunks.has(id)) {
           const chunk = new Chunk(this, i, j);
+          chunk.mesh.visible = false;
           this.chunks.set(id, chunk);
 
           scene.add(chunk.mesh);
@@ -66,7 +67,7 @@ Terrain.DEFAULT_PARAMETERS = {
   high: 50
 };
 
-Terrain.MAX_RENDER_DISTANCE = 12;
+Terrain.MAX_RENDER_DISTANCE = 16;
 
 export interface TerrainParameters {
   seed: string|number;
