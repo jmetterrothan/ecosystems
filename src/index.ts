@@ -1,2 +1,4 @@
-// import * as THREE from 'three';
-// import 'three/examples/js/controls/OrbitControls';
+import Main from './app/Main';
+
+const app = new Main();
+app.bootstrap();
