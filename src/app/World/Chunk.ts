@@ -99,9 +99,13 @@ class Chunk
       // specular: 0xffffff,
       flatShading: true,
     });
+
     const geometry = this.buildGeometry();
 
-    return new THREE.Mesh(geometry, material);
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.frustumCulled = false;
+
+    return mesh;
   }
 }
 
