@@ -1,16 +1,28 @@
 import simplexNoise from 'simplex-noise';
 
 import Chunk from './Chunk';
+import ITerrainParameters from '../models/ITerrainParameters';
+
+const DEFAULT_PARAMETERS: ITerrainParameters = {
+  seed: undefined,
+  iterations: 16,
+  persistence: 0.45,
+  scale: 0.005,
+  low: -25,
+  high: 50
+};
 
 class Terrain
 {
-  parameters : TerrainParameters;
-  simplex: simplexNoise;
-  chunks: Map<string, Chunk>;
-  visibleChunks: Chunk[] = [];
+  public static readonly MAX_RENDER_DISTANCE = 16;
 
-  constructor(parameters: TerrainParameters) {
-    this.parameters = Object.assign({}, Terrain.DEFAULT_PARAMETERS, parameters);
+  public readonly parameters : ITerrainParameters;
+  public readonly simplex: simplexNoise;
+  private chunks: Map<string, Chunk>;
+  private visibleChunks: Chunk[] = [];
+
+  constructor(parameters: ITerrainParameters) {
+    this.parameters = { ...DEFAULT_PARAMETERS, ...parameters };
 
     this.simplex = new simplexNoise(this.parameters.seed);
     this.chunks = new Map<string, Chunk>();
@@ -40,7 +52,6 @@ class Terrain
         // generate chunk if needed
         if (!this.chunks.has(id)) {
           const chunk = new Chunk(this, i, j);
-          chunk.mesh.visible = false;
           this.chunks.set(id, chunk);
 
           scene.add(chunk.mesh);
@@ -56,26 +67,6 @@ class Terrain
       }
     }
   }
-}
-
-Terrain.DEFAULT_PARAMETERS = {
-  seed: undefined,
-  iterations: 16,
-  persistence: 0.45,
-  scale: 0.005,
-  low: -25,
-  high: 50
-};
-
-Terrain.MAX_RENDER_DISTANCE = 16;
-
-export interface TerrainParameters {
-  seed: string|number;
-  iterations: number;
-  persistence: number;
-  scale: number;
-  low: number;
-  high: number;
 }
 
 export default Terrain;

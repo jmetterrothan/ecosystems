@@ -5,10 +5,17 @@ import Terrain, { TerrainParameters } from './Terrain';
 
 class Chunk
 {
-  readonly terrain: Terrain;
-  readonly row: number;
-  readonly col: number;
-  mesh: THREE.Mesh;
+  public static readonly NROWS = 16;
+  public static readonly NCOLS = 16;
+  public static readonly CELL_SIZE = 10;
+  public static readonly WIDTH = (Chunk.NCOLS - Chunk.CELL_SIZE) * Chunk.CELL_SIZE;
+  public static readonly DEPTH = (Chunk.NROWS - Chunk.CELL_SIZE) * Chunk.CELL_SIZE;
+
+  public readonly terrain: Terrain;
+  public readonly row: number;
+  public readonly col: number;
+
+  public mesh: THREE.Mesh;
 
   constructor(terrain: Terrain, row: number, col: number) {
     this.terrain = terrain;
@@ -93,10 +100,11 @@ class Chunk
    * Generate terrain mesh
    */
   generate(): THREE.Mesh {
-    const material = new THREE.MeshLambertMaterial({
+    const material = new THREE.MeshPhongMaterial({
       wireframe: false,
       color: 0x757575,
-      // specular: 0xffffff,
+      specular: 0xffffff,
+      shininess: 1,
       flatShading: true,
     });
 
@@ -104,15 +112,10 @@ class Chunk
 
     const mesh = new THREE.Mesh(geometry, material);
     mesh.frustumCulled = false;
+    mesh.visible = false;
 
     return mesh;
   }
 }
-
-Chunk.NROWS = 16;
-Chunk.NCOLS = 16;
-Chunk.CELL_SIZE = 1;
-Chunk.WIDTH = (Chunk.NCOLS - Chunk.CELL_SIZE) * Chunk.CELL_SIZE;
-Chunk.DEPTH = (Chunk.NROWS - Chunk.CELL_SIZE) * Chunk.CELL_SIZE;
 
 export default Chunk;
