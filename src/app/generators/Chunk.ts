@@ -1,35 +1,41 @@
+import simplexNoise from 'simplex-noise';
 import * as THREE from 'three';
+
+import Terrain, { TerrainParameters } from './Terrain';
 
 class Chunk
 {
-  constructor(row, col, simplex, parameters) {
+  readonly terrain: Terrain;
+  readonly row: number;
+  readonly col: number;
+  mesh: THREE.Mesh;
+
+  constructor(terrain: Terrain, row: number, col: number) {
+    this.terrain = terrain;
     this.row = row;
     this.col = col;
-    this.mesh = this.generate(simplex, parameters);
+
+    this.mesh = this.generate();
   }
 
   /**
    * Compute a point of the heightmap
-   * @param {number} x
-   * @param {number} z
-   * @param {SimplexNoise} simplex
-   * @param {number} it
-   * @param {number} persistence
-   * @param {number} scale
-   * @param {number} low
-   * @param {number} high
-   * @return {number} y component
    */
-  static sumOctaves(x, z, simplex, it, persistence, scale, low, high) {
+  sumOctaves(x: number, z: number) : number {
+    const low = this.terrain.parameters.low;
+    const high = this.terrain.parameters.high;
+    const it = this.terrain.parameters.iterations;
+    const p = this.terrain.parameters.persistence;
+
     let maxAmp = 0;
     let amp = 1;
-    let freq = scale;
+    let freq = this.terrain.parameters.scale;
     let noise = 0;
 
     for (let i = 0; i < it; ++i) {
-      noise += simplex.noise2D(x * freq, z * freq) * amp;
+      noise += this.terrain.simplex.noise2D(x * freq, z * freq) * amp;
       maxAmp += amp;
-      amp *= persistence;
+      amp *= p;
       freq *= 2;
     }
 
@@ -44,7 +50,7 @@ class Chunk
   /**
    * Generate terrain geometry
    */
-  buildGeometry(simplex, parameters) {
+  buildGeometry(): THREE.Geometry {
     const geometry = new THREE.Geometry();
 
     // creates all our vertices
@@ -53,16 +59,7 @@ class Chunk
 
       for (let row = 0; row < Chunk.NROWS; row++) {
         const z = this.row * Chunk.DEPTH + row * Chunk.CELL_SIZE;
-        const y = Chunk.sumOctaves(
-          x,
-          z,
-          simplex,
-          parameters.iterations,
-          parameters.persistence,
-          parameters.scale,
-          parameters.low,
-          parameters.high
-        );
+        const y = this.sumOctaves(x, z);
 
         geometry.vertices.push(new THREE.Vector3(x, y, z));
       }
@@ -92,14 +89,17 @@ class Chunk
     return geometry;
   }
 
-  generate(simplex, parameters) {
+  /**
+   * Generate terrain mesh
+   */
+  generate(): THREE.Mesh {
     const material = new THREE.MeshLambertMaterial({
-      color: 0xbfbfbf,
       wireframe: false,
+      color: 0x757575,
+      // specular: 0xffffff,
       flatShading: true,
     });
-
-    const geometry = this.buildGeometry(simplex, parameters);
+    const geometry = this.buildGeometry();
 
     return new THREE.Mesh(geometry, material);
   }

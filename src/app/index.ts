@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 
+import Terrain from './generators/Terrain.ts';
+
 const element = document.body;
 
 const scene = new THREE.Scene();
@@ -24,7 +26,7 @@ element.appendChild(renderer.domElement);
 // movement
 const controls = new THREE.PointerLockControls(camera);
 const velocity = new THREE.Vector3();
-const speed = 200.0;
+const speed = 750.0;
 
 let moveForward = false;
 let moveBackward = false;
@@ -81,16 +83,30 @@ if (pointerLockAvailable) {
 // scene
 scene.add(controls.getObject());
 
-scene.fog = new THREE.Fog(0xffffff, 0, 750);
+scene.fog = new THREE.Fog(0xffffff, 25, 450);
 
 const light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
 light.position.set(0, 0, 0);
 scene.add(light);
 
+const sunlight = new THREE.DirectionalLight(0xffffff, 0.5);
+sunlight.position.set(0, 10, 5);
+scene.add(sunlight);
+
 const gizmo = new THREE.AxesHelper();
 gizmo.position.set(0, 0, 0);
 gizmo.scale.set(1, 1, 1);
 scene.add(gizmo);
+
+const terrain = new Terrain({
+  iterations: 12,
+  persistence: 0.4,
+  scale: 0.0035,
+  low: -50,
+  high: 100
+});
+
+const frustum = new THREE.Frustum();
 
 let prevTime = window.performance.now();
 
@@ -99,17 +115,26 @@ const run = () => {
   const time = window.performance.now();
   const delta = (time - prevTime) / 1000;
 
-  velocity.x -= velocity.x * 10.0 * delta;
-  velocity.z -= velocity.z * 10.0 * delta;
+  if (controls.enabled) {
+    velocity.x -= velocity.x * 10.0 * delta;
+    velocity.z -= velocity.z * 10.0 * delta;
 
-  if (moveForward) velocity.z -= speed * delta;
-  if (moveBackward) velocity.z += speed * delta;
-  if (moveLeft) velocity.x -= speed * delta;
-  if (moveRight) velocity.x += speed * delta;
+    if (moveForward) velocity.z -= speed * delta;
+    if (moveBackward) velocity.z += speed * delta;
+    if (moveLeft) velocity.x -= speed * delta;
+    if (moveRight) velocity.x += speed * delta;
 
-  controls.getObject().translateX(velocity.x * delta);
-  controls.getObject().translateY(velocity.y * delta);
-  controls.getObject().translateZ(velocity.z * delta);
+    controls.getObject().translateX(velocity.x * delta);
+    controls.getObject().translateY(velocity.y * delta);
+    controls.getObject().translateZ(velocity.z * delta);
+  }
+
+  frustum.setFromMatrix(new THREE.Matrix4().multiplyMatrices(
+    camera.projectionMatrix,
+    camera.matrixWorldInverse)
+  );
+
+  terrain.update(scene, frustum, controls.getObject().position);
 
   prevTime = time;
 
