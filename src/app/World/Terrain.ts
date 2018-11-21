@@ -40,6 +40,7 @@ class Terrain
         // generate chunk if needed
         if (!this.chunks.has(id)) {
           const chunk = new Chunk(this, i, j);
+          chunk.mesh.visible = false;
           this.chunks.set(id, chunk);
 
           scene.add(chunk.mesh);
