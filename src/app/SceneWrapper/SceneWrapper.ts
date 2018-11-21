@@ -3,7 +3,7 @@ import 'three/examples/js/controls/OrbitControls';
 
 class SceneWrapper {
 
-  private alreadyInitialized: boolean = false;
+  private static alreadyInitialized: boolean = false;
 
   private width: number;
   private height: number;
@@ -29,10 +29,10 @@ class SceneWrapper {
   lights: THREE.Light[] = [];
 
   constructor() {
-    if (this.alreadyInitialized) {
-      throw 'Scenen Wrapper already exists';
+    if (SceneWrapper.alreadyInitialized) {
+      throw 'Scene wrapper already exists. You can have only one scene.';
     }
-    this.alreadyInitialized = true;
+    SceneWrapper.alreadyInitialized = true;
   }
 
   init(): Promise<THREE.Scene> {

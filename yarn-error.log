@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js de
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js dev
 
 PATH: 
   D:\Programmes\cmder\bin;D:\Programmes\cmder\vendor\bin;D:\Programmes\cmder\vendor\conemu-maximus5\ConEmu\Scripts;D:\Programmes\cmder\vendor\conemu-maximus5;D:\Programmes\cmder\vendor\conemu-maximus5\ConEmu;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files\RedHat\java-1.8.0-openjdk-1.8.0.144-1\bin;C:\MinGW;D:\Documents\WAMP\bin\php\php7.1.9;C:\ProgramData\chocolatey\bin;C:\Program Files\Java\jdk1.8.0_152\bin;D:\Programmes\android-sdk\tools;D:\Programmes\android-sdk\platform-tools;C:\Program Files\nodejs;D:\Programmes\composer;D:\Programmes\Putty\;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;C:\Users\Florian\AppData\Roaming\npm;C:\Users\Florian\AppData\Roaming\npm\node_modules\@angular\cli\bin;D:\Documents\WAMP\bin\mysql\mysql5.7.19\bin;C:\Program Files\Git\cmd;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Program Files\MongoDB\Server\4.0\bin;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Users\Florian\AppData\Local\Microsoft\WindowsApps;C:\Users\Florian\AppData\Roaming\Dashlane\6.1844.0.14689\bin\Firefox_Extension\{442718d9-475e-452a-b3e1-fb1ee16b8e9f}\components;C:\Users\Florian\AppData\Roaming\Dashlane\6.1844.0.14689\ucrt;C:\Users\Florian\AppData\Roaming\Dashlane\6.1844.0.14689\bin\Qt;C:\Users\Florian\AppData\Roaming\Dashlane\6.1844.0.14689\ucrt;C:\Users\Florian\AppData\Roaming\Dashlane\6.1844.0.14689\bin\Ssl;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;D:\Programmes\cmder
@@ -51,9 +51,12 @@ npm manifest:
     },
     "scripts": {
       "dev": "webpack-dev-server --progress --inline --config config/webpack.dev.js",
-      "prod": "webpack --progress --inline --mode=production --config config/webpack.prod.js"
+      "prod": "webpack --progress --inline --mode production --config config/webpack.prod.js"
     },
     "dependencies": {
+      "@types/es6-promise": "^3.3.0",
+      "@types/node": "^10.12.10",
+      "@types/three": "^0.93.10",
       "three": "^0.98.0"
     }
   }
@@ -635,6 +638,20 @@ Lockfile:
       inversify "^5.0.0"
       reflect-metadata "^0.1.12"
       tslib "^1.8.1"
+  
+  "@types/es6-promise@^3.3.0":
+    version "3.3.0"
+    resolved "https://registry.yarnpkg.com/@types/es6-promise/-/es6-promise-3.3.0.tgz#61b55e554fd807b563f158a7986ee53d3a5a5a9d"
+    dependencies:
+      es6-promise "*"
+  
+  "@types/node@^10.12.10":
+    version "10.12.10"
+    resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.10.tgz#4fa76e6598b7de3f0cb6ec3abacc4f59e5b3a2ce"
+  
+  "@types/three@^0.93.10":
+    version "0.93.10"
+    resolved "https://registry.yarnpkg.com/@types/three/-/three-0.93.10.tgz#80b97c28530966393c90ab83a6ad11bb74d87a93"
   
   "@webassemblyjs/ast@1.7.11":
     version "1.7.11"
@@ -1922,6 +1939,10 @@ Lockfile:
       is-callable "^1.1.4"
       is-date-object "^1.0.1"
       is-symbol "^1.0.2"
+  
+  es6-promise@*:
+    version "4.2.5"
+    resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.2.5.tgz#da6d0d5692efb461e082c14817fe2427d8f5d054"
   
   escape-html@~1.0.3:
     version "1.0.3"
@@ -5403,14 +5424,17 @@ Lockfile:
       yargs-parser "^5.0.0"
 
 Trace: 
-  Error: Command "de" not found. Did you mean "dev"?
-      at new MessageError (C:\Program Files (x86)\Yarn\lib\cli.js:186:110)
-      at C:\Program Files (x86)\Yarn\lib\cli.js:87307:17
-      at Generator.next (<anonymous>)
-      at step (C:\Program Files (x86)\Yarn\lib\cli.js:98:30)
-      at C:\Program Files (x86)\Yarn\lib\cli.js:116:14
-      at new Promise (<anonymous>)
-      at new F (C:\Program Files (x86)\Yarn\lib\cli.js:23451:28)
-      at C:\Program Files (x86)\Yarn\lib\cli.js:95:12
-      at runCommand (C:\Program Files (x86)\Yarn\lib\cli.js:87312:22)
-      at Object.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:87412:14)
+  Error: Command failed.
+  Exit code: 3221225786
+  Command: C:\WINDOWS\system32\cmd.exe
+  Arguments: /d /s /c webpack-dev-server --progress --inline --config config/webpack.dev.js
+  Directory: D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\project
+  Output:
+  
+      at ProcessTermError.MessageError (C:\Program Files (x86)\Yarn\lib\cli.js:186:110)
+      at new ProcessTermError (C:\Program Files (x86)\Yarn\lib\cli.js:226:113)
+      at ChildProcess.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:30281:17)
+      at emitTwo (events.js:126:13)
+      at ChildProcess.emit (events.js:214:7)
+      at maybeClose (internal/child_process.js:925:16)
+      at Process.ChildProcess._handle.onexit (internal/child_process.js:209:5)

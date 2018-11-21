@@ -578,6 +578,10 @@
   dependencies:
     es6-promise "*"
 
+"@types/node@^10.12.10":
+  version "10.12.10"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.10.tgz#4fa76e6598b7de3f0cb6ec3abacc4f59e5b3a2ce"
+
 "@types/three@^0.93.10":
   version "0.93.10"
   resolved "https://registry.yarnpkg.com/@types/three/-/three-0.93.10.tgz#80b97c28530966393c90ab83a6ad11bb74d87a93"

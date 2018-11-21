@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import SceneWrapper from './SceneWrapper/SceneWrapper';
+import Utils from './Shared/Utils';
 
 class Main {
 
@@ -10,8 +11,8 @@ class Main {
 
   async bootstrap() {
     this.scene = await this.sceneWrapper.init();
-    console.log(this.scene);
   }
+
 }
 
 export default Main;
