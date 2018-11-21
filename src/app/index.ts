@@ -25,6 +25,7 @@ element.appendChild(renderer.domElement);
 
 // movement
 const controls = new THREE.PointerLockControls(camera);
+controls.getObject().position.set(0, 100, 0);
 const velocity = new THREE.Vector3();
 const speed = 500.0;
 
@@ -83,7 +84,7 @@ if (pointerLockAvailable) {
 // scene
 scene.add(controls.getObject());
 
-scene.fog = new THREE.Fog(0xffffff, 25, 750);
+scene.fog = new THREE.Fog(0xffffff, 25, 1250);
 
 const light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
 light.position.set(0, 0, 0);
@@ -99,11 +100,11 @@ gizmo.scale.set(1, 1, 1);
 scene.add(gizmo);
 
 const terrain = new Terrain({
-  iterations: 12,
-  persistence: 0.2,
-  scale: 0.004,
-  low: -50,
-  high: 100
+  iterations: 8,
+  persistence: 0.45,
+  scale: 0.00075,
+  low: 0,
+  high: 255
 });
 
 const frustum = new THREE.Frustum();

@@ -5,11 +5,11 @@ import ITerrainParameters from '../models/ITerrainParameters';
 
 const DEFAULT_PARAMETERS: ITerrainParameters = {
   seed: undefined,
-  iterations: 16,
+  iterations: 8,
   persistence: 0.45,
-  scale: 0.005,
-  low: -25,
-  high: 50
+  scale: 0.00075,
+  low: 0,
+  high: 255
 };
 
 class Terrain

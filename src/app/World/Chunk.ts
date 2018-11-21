@@ -7,7 +7,7 @@ class Chunk
 {
   public static readonly NROWS = 16;
   public static readonly NCOLS = 16;
-  public static readonly CELL_SIZE = 10;
+  public static readonly CELL_SIZE = 8;
   public static readonly WIDTH = (Chunk.NCOLS - Chunk.CELL_SIZE) * Chunk.CELL_SIZE;
   public static readonly DEPTH = (Chunk.NROWS - Chunk.CELL_SIZE) * Chunk.CELL_SIZE;
 
@@ -31,18 +31,19 @@ class Chunk
   sumOctaves(x: number, z: number) : number {
     const low = this.terrain.parameters.low;
     const high = this.terrain.parameters.high;
-    const it = this.terrain.parameters.iterations;
-    const p = this.terrain.parameters.persistence;
+    const octaves = this.terrain.parameters.iterations;
+    const persistence = this.terrain.parameters.persistence;
+    const scale = this.terrain.parameters.scale;
 
     let maxAmp = 0;
     let amp = 1;
-    let freq = this.terrain.parameters.scale;
+    let freq = scale;
     let noise = 0;
 
-    for (let i = 0; i < it; ++i) {
+    for (let i = 0; i < octaves; i++) {
       noise += this.terrain.simplex.noise2D(x * freq, z * freq) * amp;
       maxAmp += amp;
-      amp *= p;
+      amp *= persistence;
       freq *= 2;
     }
 
@@ -102,7 +103,7 @@ class Chunk
   generate(): THREE.Mesh {
     const material = new THREE.MeshPhongMaterial({
       wireframe: false,
-      color: 0x757575,
+      color: 0xff0000,
       specular: 0xffffff,
       shininess: 1,
       flatShading: true,
