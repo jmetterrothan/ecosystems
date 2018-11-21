@@ -67,7 +67,7 @@ Terrain.DEFAULT_PARAMETERS = {
   high: 50
 };
 
-Terrain.MAX_RENDER_DISTANCE = 12;
+Terrain.MAX_RENDER_DISTANCE = 16;
 
 export interface TerrainParameters {
   seed: string|number;
