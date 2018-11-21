@@ -11,13 +11,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   entry: {
     bundle: [
-      path.join(PATHS.APP, 'index.js'),
+      path.join(PATHS.APP, 'index.ts'),
       path.join(PATHS.STYLES, 'styles.scss')
-    ],
+    ]
   },
   resolve: {
     modules: ['node_modules', PATHS.SRC],
-    extensions: ['.js', '.json', '.scss', '.css'],
+    extensions: ['.ts', '.js', '.json', '.scss', '.css'],
     alias: {
       ...alias,
       three$: 'three/build/three.min.js',
@@ -27,15 +27,15 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: '/node_modules/',
-        enforce: 'pre',
-        loader: 'eslint-loader'
-      },
-      {
-        test: /\.js$/,
+        test: /\.ts$/,
         exclude: '/node_modules/',
         loader: 'babel-loader'
+      },
+      {
+        test: /\.ts$/,
+        enforce: 'pre',
+        exclude: '/node_modules/',
+        loader: 'tslint-loader'
       },
       {
         test: /\.(scss|sass)$/,
