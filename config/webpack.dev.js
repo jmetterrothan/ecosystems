@@ -13,14 +13,5 @@ module.exports = merge(baseConfig, {
     watchContentBase: true,
     open: true
   },
-  devtool: 'cheap-eval-source-map',
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        enforce: 'pre',
-        loader: 'eslint-loader'
-      }
-    ]
-  }
+  devtool: 'cheap-eval-source-map'
 });

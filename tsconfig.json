@@ -1,21 +1,12 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "es2015",
     "target": "es5",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "baseUrl": "./src",
-    "paths": {
-      "@images/*": [
-        "public/images/*"
-      ]
-    },
-    "lib": [
-      "dom",
-      "es7"
-    ],
+    "baseUrl": "."
   },
   "include": [
     "./src/**/*"
