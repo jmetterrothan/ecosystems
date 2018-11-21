@@ -572,6 +572,10 @@
     reflect-metadata "^0.1.12"
     tslib "^1.8.1"
 
+"@types/three@^0.93.10":
+  version "0.93.10"
+  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.93.10.tgz#80b97c28530966393c90ab83a6ad11bb74d87a93"
+
 "@webassemblyjs/ast@1.7.11":
   version "1.7.11"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.7.11.tgz#b988582cafbb2b095e8b556526f30c90d057cace"
