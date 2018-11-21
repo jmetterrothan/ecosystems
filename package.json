@@ -39,6 +39,8 @@
   },
   "dependencies": {
     "@types/three": "^0.93.10",
+    "seedrandom": "^2.4.4",
+    "simplex-noise": "^2.4.0",
     "three": "^0.98.0"
   }
 }
