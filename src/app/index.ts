@@ -27,7 +27,7 @@ element.appendChild(renderer.domElement);
 const controls = new THREE.PointerLockControls(camera);
 controls.getObject().position.set(0, 100, 0);
 const velocity = new THREE.Vector3();
-const speed = 500.0;
+const speed = 1000.0;
 
 let moveForward = false;
 let moveBackward = false;
@@ -104,7 +104,8 @@ const terrain = new Terrain({
   persistence: 0.45,
   scale: 0.00075,
   low: 0,
-  high: 255
+  high: 255,
+  lacunarity: 2.0
 });
 
 const frustum = new THREE.Frustum();

@@ -6,4 +6,5 @@ export default interface ITerrainParameters {
   scale: number;
   low: number;
   high: number;
+  lacunarity:  number;
 }

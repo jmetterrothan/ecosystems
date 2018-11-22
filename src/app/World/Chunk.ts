@@ -29,28 +29,22 @@ class Chunk
    * Compute a point of the heightmap
    */
   sumOctaves(x: number, z: number) : number {
-    const low = this.terrain.parameters.low;
-    const high = this.terrain.parameters.high;
-    const octaves = this.terrain.parameters.iterations;
-    const persistence = this.terrain.parameters.persistence;
-    const scale = this.terrain.parameters.scale;
-
     let maxAmp = 0;
     let amp = 1;
-    let freq = scale;
+    let freq = this.terrain.parameters.scale;
     let noise = 0;
 
-    for (let i = 0; i < octaves; i++) {
+    for (let i = 0; i < this.terrain.parameters.iterations; i++) {
       noise += this.terrain.simplex.noise2D(x * freq, z * freq) * amp;
       maxAmp += amp;
-      amp *= persistence;
-      freq *= 2;
+      amp *= this.terrain.parameters.persistence;
+      freq *= this.terrain.parameters.lacunarity;
     }
 
     noise /= maxAmp;
 
     // keeps the output bewteen the high and low values
-    noise *= (high - low) / 2 + (high + low) / 2;
+    noise *= (this.terrain.parameters.high - this.terrain.parameters.low) / 2 + (this.terrain.parameters.high + this.terrain.parameters.low) / 2;
 
     return noise;
   }
@@ -103,7 +97,7 @@ class Chunk
   generate(): THREE.Mesh {
     const material = new THREE.MeshPhongMaterial({
       wireframe: false,
-      color: 0xff0000,
+      color: 0xaaaaaa,
       specular: 0xffffff,
       shininess: 1,
       flatShading: true,

@@ -7,9 +7,10 @@ const DEFAULT_PARAMETERS: ITerrainParameters = {
   seed: undefined,
   iterations: 8,
   persistence: 0.45,
-  scale: 0.00075,
+  scale: 0.0008,
   low: 0,
-  high: 255
+  high: 255,
+  lacunarity: 1.8
 };
 
 class Terrain
