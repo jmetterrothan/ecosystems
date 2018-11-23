@@ -1,7 +1,7 @@
 
 export default interface ITerrainParameters {
   seed: string|number;
-  iterations: number;
+  octaves: number;
   persistence: number;
   scale: number;
   low: number;

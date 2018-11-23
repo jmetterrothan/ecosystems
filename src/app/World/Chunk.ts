@@ -2,14 +2,16 @@ import simplexNoise from 'simplex-noise';
 import * as THREE from 'three';
 
 import Terrain, { TerrainParameters } from './Terrain';
+import ITerrainParameters from '../models/ITerrainParameters';
 
 class Chunk
 {
-  public static readonly NROWS = 16;
-  public static readonly NCOLS = 16;
-  public static readonly CELL_SIZE = 8;
-  public static readonly WIDTH = (Chunk.NCOLS - Chunk.CELL_SIZE) * Chunk.CELL_SIZE;
-  public static readonly DEPTH = (Chunk.NROWS - Chunk.CELL_SIZE) * Chunk.CELL_SIZE;
+  public static readonly NROWS = 4;
+  public static readonly NCOLS = 4;
+  public static readonly CELL_SIZE = 32;
+
+  public static readonly WIDTH = Chunk.NCOLS * Chunk.CELL_SIZE;
+  public static readonly DEPTH = Chunk.NROWS * Chunk.CELL_SIZE;
 
   public readonly terrain: Terrain;
   public readonly row: number;
@@ -17,8 +19,9 @@ class Chunk
 
   public mesh: THREE.Mesh;
 
-  constructor(terrain: Terrain, row: number, col: number) {
-    this.terrain = terrain;
+  constructor(simplex: simplexNoise, parameters: ITerrainParameters, row: number, col: number) {
+    this.simplex = simplex;
+    this.parameters = parameters;
     this.row = row;
     this.col = col;
 
@@ -31,20 +34,20 @@ class Chunk
   sumOctaves(x: number, z: number) : number {
     let maxAmp = 0;
     let amp = 1;
-    let freq = this.terrain.parameters.scale;
+    let freq = this.parameters.scale;
     let noise = 0;
 
-    for (let i = 0; i < this.terrain.parameters.iterations; i++) {
-      noise += this.terrain.simplex.noise2D(x * freq, z * freq) * amp;
+    for (let i = 0; i < this.parameters.octaves; i++) {
+      noise += this.simplex.noise2D(x * freq, z * freq) * amp;
       maxAmp += amp;
-      amp *= this.terrain.parameters.persistence;
-      freq *= this.terrain.parameters.lacunarity;
+      amp *= this.parameters.persistence;
+      freq *= this.parameters.lacunarity;
     }
 
     noise /= maxAmp;
 
     // keeps the output bewteen the high and low values
-    noise *= (this.terrain.parameters.high - this.terrain.parameters.low) / 2 + (this.terrain.parameters.high + this.terrain.parameters.low) / 2;
+    noise *= (this.parameters.high - this.parameters.low) / 2 + (this.parameters.high + this.parameters.low) / 2;
 
     return noise;
   }
@@ -55,12 +58,14 @@ class Chunk
   buildGeometry(): THREE.Geometry {
     const geometry = new THREE.Geometry();
 
-    // creates all our vertices
-    for (let col = 0; col < Chunk.NCOLS; col++) {
-      const x = this.col * Chunk.WIDTH + col * Chunk.CELL_SIZE;
+    const nbVerticesX = Chunk.NCOLS + 1;
+    const nbVerticesZ = Chunk.NROWS + 1;
 
-      for (let row = 0; row < Chunk.NROWS; row++) {
-        const z = this.row * Chunk.DEPTH + row * Chunk.CELL_SIZE;
+    // creates all our vertices
+    for (let c = 0; c < nbVerticesX; c++) {
+      const x = this.col * Chunk.WIDTH + c * Chunk.CELL_SIZE;
+      for (let r = 0; r < nbVerticesZ; r++) {
+        const z = this.row * Chunk.DEPTH + r * Chunk.CELL_SIZE;
         const y = this.sumOctaves(x, z);
 
         geometry.vertices.push(new THREE.Vector3(x, y, z));

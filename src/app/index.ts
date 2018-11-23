@@ -100,12 +100,12 @@ gizmo.scale.set(1, 1, 1);
 scene.add(gizmo);
 
 const terrain = new Terrain({
-  iterations: 8,
-  persistence: 0.45,
-  scale: 0.00075,
-  low: 0,
-  high: 255,
-  lacunarity: 2.0
+  octaves: 6,
+  persistence: 0.5,
+  scale: 0.0004,
+  low: -100,
+  high: 500,
+  lacunarity: 1.87
 });
 
 const frustum = new THREE.Frustum();

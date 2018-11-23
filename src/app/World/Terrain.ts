@@ -5,17 +5,22 @@ import ITerrainParameters from '../models/ITerrainParameters';
 
 const DEFAULT_PARAMETERS: ITerrainParameters = {
   seed: undefined,
-  iterations: 8,
-  persistence: 0.45,
-  scale: 0.0008,
-  low: 0,
-  high: 255,
-  lacunarity: 1.8
+  octaves: 7,
+  persistence: 0.5,
+  scale: 0.00075,
+  low: -45,
+  high: 355,
+  lacunarity: 1.87
 };
 
 class Terrain
 {
-  public static readonly MAX_RENDER_DISTANCE = 16;
+  public static readonly VIEW_DISTANCE = 3000;
+  public static readonly CHUNK_RENDER_LIMIT = Math.ceil(Terrain.VIEW_DISTANCE / Chunk.WIDTH);
+  public static readonly MIN_X = -4;
+  public static readonly MIN_Z = -32;
+  public static readonly MAX_X = 4;
+  public static readonly MAX_Z = 32;
 
   public readonly parameters : ITerrainParameters;
   public readonly simplex: simplexNoise;
@@ -33,10 +38,25 @@ class Terrain
     const chunkX = Math.trunc(position.x / Chunk.WIDTH);
     const chunkZ = Math.trunc(position.z / Chunk.DEPTH);
 
-    const startX =  chunkX - Terrain.MAX_RENDER_DISTANCE;
-    const startZ =  chunkZ - Terrain.MAX_RENDER_DISTANCE;
-    const endX =  chunkX + Terrain.MAX_RENDER_DISTANCE;
-    const endZ =  chunkZ + Terrain.MAX_RENDER_DISTANCE;
+    const startX =  chunkX - Terrain.CHUNK_RENDER_LIMIT;
+    const startZ =  chunkZ - Terrain.CHUNK_RENDER_LIMIT;
+    const endX =  chunkX + Terrain.CHUNK_RENDER_LIMIT;
+    const endZ =  chunkZ + Terrain.CHUNK_RENDER_LIMIT;
+
+    /*
+    if (startX < Terrain.MIN_X) {
+      startX = Terrain.MIN_X;
+    }
+    if (startZ < Terrain.MIN_Z) {
+      startZ = Terrain.MIN_Z;
+    }
+    if (endX > Terrain.MAX_X) {
+      endX = Terrain.MAX_X;
+    }
+    if (endZ > Terrain.MAX_Z) {
+      endZ = Terrain.MAX_Z;
+    }
+    */
 
     // reset previously visible chunks
     for (let i = 0, n = this.visibleChunks.length; i < n; i++) {
@@ -52,7 +72,7 @@ class Terrain
 
         // generate chunk if needed
         if (!this.chunks.has(id)) {
-          const chunk = new Chunk(this, i, j);
+          const chunk = new Chunk(this.simplex, this.parameters, i, j);
           this.chunks.set(id, chunk);
 
           scene.add(chunk.mesh);
