@@ -1,7 +1,14 @@
 import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 
+import statsJs from 'stats.js';
+
 import Terrain from './World/Terrain';
+
+const stats = new statsJs();
+stats.showPanel(0);
+stats.showPanel(2);
+document.body.appendChild(stats.dom);
 
 const element = document.body;
 
@@ -114,6 +121,8 @@ let prevTime = window.performance.now();
 
 // loop
 const run = () => {
+  stats.begin();
+
   const time = window.performance.now();
   const delta = (time - prevTime) / 1000;
 
@@ -141,6 +150,8 @@ const run = () => {
   prevTime = time;
 
   renderer.render(scene, camera);
+  stats.end();
+
   window.requestAnimationFrame(run);
 };
 
