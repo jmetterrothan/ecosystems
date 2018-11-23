@@ -69,6 +69,7 @@ class Chunk
         const y = this.sumOctaves(x, z);
 
         geometry.vertices.push(new THREE.Vector3(x, y, z));
+        geometry.colors.push(this.getColor(y));
       }
     }
 
@@ -84,11 +85,19 @@ class Chunk
         const f1 = new THREE.Face3(a, b, d);
         const f2 = new THREE.Face3(d, c, a);
 
-        const y1 = (geometry.vertices[a].y + geometry.vertices[b].y + geometry.vertices[d].y) / 3;
-        const y2 = (geometry.vertices[d].y + geometry.vertices[c].y + geometry.vertices[a].y) / 3;
+        // METHOD 1 : each face gets a color based on the average height of their vertices
+        // const y1 = (geometry.vertices[a].y + geometry.vertices[b].y + geometry.vertices[d].y) / 3;
+        // const y2 = (geometry.vertices[d].y + geometry.vertices[c].y + geometry.vertices[a].y) / 3;
+        // f1.color = this.getColor(y1);
+        // f2.color = this.getColor(y2);
 
-        f1.color = this.getColor(y1);
-        f2.color = this.getColor(y2);
+        // METHOD 2 : each vertices gets a different color based on height and colors are interpolated
+        f1.vertexColors[0] = geometry.colors[a];
+        f1.vertexColors[1] = geometry.colors[b];
+        f1.vertexColors[2] = geometry.colors[d];
+        f2.vertexColors[0] = geometry.colors[d];
+        f2.vertexColors[1] = geometry.colors[c];
+        f2.vertexColors[2] = geometry.colors[a];
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);
@@ -97,6 +106,7 @@ class Chunk
 
     // need to tell the engine we updated the vertices
     // geometry.verticesNeedUpdate = true;
+    // geometry.colorsNeedUpdate = true;
 
     // need to update normals for smooth shading
     geometry.computeFaceNormals();
@@ -110,7 +120,7 @@ class Chunk
     if (y > 345) {
       return new THREE.Color(0xffffff);
     }
-    if (y > 75) {
+    if (y > 100) {
       return new THREE.Color(0x645148);
     }
     if (y > -115) {
