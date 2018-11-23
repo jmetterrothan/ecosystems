@@ -13,11 +13,12 @@ document.body.appendChild(stats.dom);
 const element = document.body;
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, Terrain.VIEW_DISTANCE);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 
 // setup
 renderer.setClearColor(0x000000);
+renderer.domElement.id = 'main';
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -95,14 +96,14 @@ if (pointerLockAvailable) {
 // scene
 scene.add(controls.getObject());
 
-scene.fog = new THREE.Fog(0xffffff, 25, 1250);
+scene.fog = new THREE.Fog(0x000000, 400, Terrain.VIEW_DISTANCE);
 
-const light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
-light.position.set(0, 0, 0);
+const light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.35);
+light.position.set(0, 1000, 0);
 scene.add(light);
 
-const sunlight = new THREE.DirectionalLight(0xffffff, 0.5);
-sunlight.position.set(0, 10, 5);
+const sunlight = new THREE.DirectionalLight(0xffffff, 0.35);
+sunlight.position.set(0, 1000, 5);
 scene.add(sunlight);
 
 const gizmo = new THREE.AxesHelper();
