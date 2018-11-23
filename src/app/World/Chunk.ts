@@ -73,20 +73,30 @@ class Chunk
     }
 
     // creates the associated faces with their indexes
-    for (let col = 0; col < Chunk.NCOLS - 1; col++) {
-      for (let row = 0; row < Chunk.NROWS - 1; row++) {
-        const a = col + Chunk.NCOLS * row;
-        const b = (col + 1) + Chunk.NCOLS * row;
-        const c = col + Chunk.NCOLS * (row + 1);
-        const d = (col + 1) + Chunk.NCOLS * (row + 1);
 
-        geometry.faces.push(new THREE.Face3(a, b, d));
-        geometry.faces.push(new THREE.Face3(d, c, a));
+    for (let col = 0; col < Chunk.NCOLS; col++) {
+      for (let row = 0; row < Chunk.NROWS; row++) {
+        const a = col + nbVerticesX * row;
+        const b = (col + 1) + nbVerticesX * row;
+        const c = col + nbVerticesX * (row + 1);
+        const d = (col + 1) + nbVerticesX * (row + 1);
+
+        const f1 = new THREE.Face3(a, b, d);
+        const f2 = new THREE.Face3(d, c, a);
+
+        const y1 = (geometry.vertices[a].y + geometry.vertices[b].y + geometry.vertices[d].y) / 3;
+        const y2 = (geometry.vertices[d].y + geometry.vertices[c].y + geometry.vertices[a].y) / 3;
+
+        f1.color = this.getColor(y1);
+        f2.color = this.getColor(y2);
+
+        geometry.faces.push(f1);
+        geometry.faces.push(f2);
       }
     }
 
     // need to tell the engine we updated the vertices
-    geometry.verticesNeedUpdate = true;
+    // geometry.verticesNeedUpdate = true;
 
     // need to update normals for smooth shading
     geometry.computeFaceNormals();
@@ -96,16 +106,32 @@ class Chunk
     return geometry;
   }
 
+  getColor(y) {
+    if (y > 345) {
+      return new THREE.Color(0xffffff);
+    }
+    if (y > 75) {
+      return new THREE.Color(0x645148);
+    }
+    if (y > -115) {
+      return new THREE.Color(0x93c54b);
+    }
+
+    return new THREE.Color(0xf0e68c);
+  }
+
   /**
    * Generate terrain mesh
    */
   generate(): THREE.Mesh {
     const material = new THREE.MeshPhongMaterial({
       wireframe: false,
-      color: 0xaaaaaa,
+      emissive: 0xffffff,
+      emissiveIntensity: 0.1,
       specular: 0xffffff,
-      shininess: 1,
+      shininess: 4,
       flatShading: true,
+      vertexColors: THREE.FaceColors
     });
 
     const geometry = this.buildGeometry();
@@ -113,6 +139,7 @@ class Chunk
     const mesh = new THREE.Mesh(geometry, material);
     mesh.frustumCulled = false;
     mesh.visible = false;
+    mesh.dynamic = true;
 
     return mesh;
   }
