@@ -117,13 +117,16 @@ class Chunk
   }
 
   getColor(y) {
-    if (y > 345) {
+    const level = y / (this.parameters.high + Math.abs(this.parameters.low));
+
+    // TODO: relative to the biome / relative to height
+    if (level > 0.9) {
       return new THREE.Color(0xffffff);
     }
-    if (y > 100) {
+    if (level > 0.5) {
       return new THREE.Color(0x645148);
     }
-    if (y > -115) {
+    if (level > 0) {
       return new THREE.Color(0x93c54b);
     }
 

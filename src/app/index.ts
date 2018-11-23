@@ -114,10 +114,10 @@ scene.add(gizmo);
 const terrain = new Terrain({
   octaves: 6,
   persistence: 0.5,
-  scale: 0.0004,
-  low: -100,
-  high: 500,
-  lacunarity: 1.87
+  scale: 0.000375,
+  low: 0,
+  high: 350,
+  lacunarity: 1.85
 });
 
 const frustum = new THREE.Frustum();
