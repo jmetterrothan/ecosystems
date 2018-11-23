@@ -32,14 +32,16 @@ element.appendChild(renderer.domElement);
 
 // movement
 const controls = new THREE.PointerLockControls(camera);
-controls.getObject().position.set(0, 100, 0);
+controls.getObject().position.set(0, 250, 0);
 const velocity = new THREE.Vector3();
-const speed = 1000.0;
+const speed = 5000.0;
 
 let moveForward = false;
 let moveBackward = false;
 let moveLeft = false;
 let moveRight = false;
+let moveUp = false;
+let moveDown = false;
 
 const pointerLockAvailable = 'pointerLockElement' in document ||
   'mozPointerLockElement' in document ||
@@ -81,6 +83,8 @@ if (pointerLockAvailable) {
       case 's': moveBackward = active && controls.enabled; break;
       case 'q': moveLeft = active && controls.enabled; break;
       case 'd': moveRight = active && controls.enabled; break;
+      case 'a': moveUp = active && controls.enabled; break;
+      case 'e': moveDown = active && controls.enabled; break;
     }
   };
 
@@ -128,10 +132,13 @@ const run = () => {
 
   if (controls.enabled) {
     velocity.x -= velocity.x * 10.0 * delta;
+    velocity.y -= velocity.y * 10.0 * delta;
     velocity.z -= velocity.z * 10.0 * delta;
 
     if (moveForward) velocity.z -= speed * delta;
     if (moveBackward) velocity.z += speed * delta;
+    if (moveUp) velocity.y -= speed * delta;
+    if (moveDown) velocity.y += speed * delta;
     if (moveLeft) velocity.x -= speed * delta;
     if (moveRight) velocity.x += speed * delta;
 
