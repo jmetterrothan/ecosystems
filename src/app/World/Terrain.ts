@@ -14,11 +14,12 @@ class Terrain
 
   public readonly simplex: simplexNoise;
   private chunks: Map<string, Chunk>;
-  private visibleChunks: Chunk[] = [];
+  private visibleChunks: Chunk[];
 
   constructor(seed: string) {
     this.simplex = new simplexNoise(seed);
     this.chunks = new Map<string, Chunk>();
+    this.visibleChunks = [];
   }
 
   update(scene: THREE.Scene, frustum: THREE.Frustum, position: THREE.Vector3) {

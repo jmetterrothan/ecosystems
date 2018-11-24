@@ -1,11 +1,8 @@
 import simplexNoise from 'simplex-noise';
 import * as THREE from 'three';
 
+import Utils from '../Shared/Utils';
 import Terrain from './Terrain';
-
-const clamp = (x: number, min: number, max: number): number => {
-  return Math.min(Math.max(x, min), max);
-};
 
 class Chunk
 {
@@ -84,7 +81,7 @@ class Chunk
       f *= 1.9;
     }
 
-    return clamp((e > 0) ? Math.pow(e, 1.05) : e / 3, Chunk.MIN_CHUNK_HEIGHT, Chunk.MAX_CHUNK_HEIGHT);
+    return Utils.clamp((e > 0) ? Math.pow(e, 1.05) : e / 3, Chunk.MIN_CHUNK_HEIGHT, Chunk.MAX_CHUNK_HEIGHT);
   }
 
   /**
