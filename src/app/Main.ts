@@ -21,7 +21,7 @@ class Main {
   private lastTime: number;
   private scheduledTime: number;
 
-  async bootstrap() {
+  constructor() {
     this.containerElement = document.body;
     this.lag = 0;
     this.ups = 0;
