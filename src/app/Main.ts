@@ -33,7 +33,12 @@ class Main {
   private initRenderer() {
     // renderer setup
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
-    this.renderer.domElement.id = 'main';
+    this.renderer.domElement.style.position = 'fixed';
+    this.renderer.domElement.style.top = '0';
+    this.renderer.domElement.style.left = '0';
+    this.renderer.domElement.style.width = '100vw';
+    this.renderer.domElement.style.height = '100vh';
+
     this.renderer.setClearColor(0xb1d8ff);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -53,11 +58,11 @@ class Main {
     // view and mouvements
     this.controls = new THREE.PointerLockControls(this.camera);
 
+    // handle pointer lock authorization
     if ('pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document) {
-      // handle pointer lock authorization
-      const element = document.body;
+
       const pointerlockchange = (e) => {
-        this.controls.enabled = document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element;
+        this.controls.enabled = document.pointerLockElement === document.body || document.mozPointerLockElement === document.body || document.webkitPointerLockElement === document.body;
       };
 
       const pointerlockerror = (e) => {};
@@ -69,9 +74,9 @@ class Main {
       document.addEventListener('mozpointerlockerror', pointerlockerror, false);
       document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
 
-      element.addEventListener('click', () => {
-        element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
-        element.requestPointerLock();
+      document.body.addEventListener('click', () => {
+        document.body.requestPointerLock = document.body.requestPointerLock || document.body.mozRequestPointerLock || document.body.webkitRequestPointerLock;
+        document.body.requestPointerLock();
       });
 
       window.addEventListener('keydown', e => this.world.handleKeyboard(e.key, true && this.controls.enabled));
