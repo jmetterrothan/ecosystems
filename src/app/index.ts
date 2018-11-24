@@ -13,11 +13,11 @@ document.body.appendChild(stats.dom);
 const element = document.body;
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, Terrain.VIEW_DISTANCE);
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, Terrain.VIEW_DISTANCE + 250);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 
 // setup
-renderer.setClearColor(0x000000);
+renderer.setClearColor(0xb1d8ff);
 renderer.domElement.id = 'main';
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -35,7 +35,7 @@ element.appendChild(renderer.domElement);
 const controls = new THREE.PointerLockControls(camera);
 controls.getObject().position.set(0, 250, 0);
 const velocity = new THREE.Vector3();
-const speed = 5000.0;
+const speed = 10000.0;
 
 let moveForward = false;
 let moveBackward = false;
@@ -96,10 +96,10 @@ if (pointerLockAvailable) {
 // scene
 scene.add(controls.getObject());
 
-scene.fog = new THREE.Fog(0x000000, 400, Terrain.VIEW_DISTANCE);
+scene.fog = new THREE.Fog(0xb1d8ff, Terrain.VIEW_DISTANCE / 2, Terrain.VIEW_DISTANCE - 250);
 
-const light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.35);
-light.position.set(0, 1000, 0);
+const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.5);
+light.position.set(0, 50, 0);
 scene.add(light);
 
 const sunlight = new THREE.DirectionalLight(0xffffff, 0.35);
@@ -111,15 +111,7 @@ gizmo.position.set(0, 0, 0);
 gizmo.scale.set(1, 1, 1);
 scene.add(gizmo);
 
-const terrain = new Terrain({
-  octaves: 6,
-  persistence: 0.5,
-  scale: 0.000375,
-  low: 0,
-  high: 350,
-  lacunarity: 1.85
-});
-
+const terrain = new Terrain('imac');
 const frustum = new THREE.Frustum();
 
 let prevTime = window.performance.now();
