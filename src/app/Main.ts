@@ -1,14 +1,16 @@
 import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 
+import statsJs from 'stats.js';
+
 import Utils from './Shared/Utils';
 import World from './World/World';
 import Terrain from './World/Terrain';
 
 class Main {
   public static readonly MS_PER_UPDATE = 1000 / 25;
-  public readonly renderer: THREE.WebGLRenderer;
-  public readonly scene: THREE.Scene;
+  private renderer: THREE.WebGLRenderer;
+  private scene: THREE.Scene;
 
   private camera: THREE.PerspectiveCamera;
   private controls: THREE.PointerLockControls;
@@ -21,12 +23,18 @@ class Main {
   private lastTime: number;
   private scheduledTime: number;
 
-  async bootstrap() {
+  private stats: statsJs;
+
+  constructor() {
     this.containerElement = document.body;
     this.lag = 0;
     this.ups = 0;
     this.scheduledTime = window.performance.now();
     this.lastTime = window.performance.now();
+
+    this.stats = new statsJs();
+    this.stats.showPanel(2);
+    document.body.appendChild(this.stats.dom);
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.01, Terrain.VIEW_DISTANCE + 500);
@@ -92,13 +100,15 @@ class Main {
   }
 
   private render() {
+    this.stats.begin();
+
     const time = window.performance.now();
     const elapsed = time - this.lastTime;
 
     if (time >= this.scheduledTime) {
       this.scheduledTime += 1000;
 
-      console.info(`UPS : ${this.ups}`);
+      // console.info(`UPS : ${this.ups}`);
       this.ups = 0;
     }
 
@@ -122,6 +132,8 @@ class Main {
     }
 
     this.renderer.render(this.scene, this.camera);
+    this.stats.end();
+
     window.requestAnimationFrame(this.render.bind(this));
   }
 

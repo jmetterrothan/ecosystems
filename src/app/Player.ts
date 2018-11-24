@@ -4,12 +4,12 @@ import 'three/examples/js/controls/PointerLockControls';
 class Player
 {
   private controls: THREE.PointerLockControls;
-  private moveForward: bool;
-  private moveBackward: bool;
-  private moveLeft: bool;
-  private moveRight: bool;
-  private moveUp: bool;
-  private moveDown: bool;
+  private moveForward: boolean;
+  private moveBackward: boolean;
+  private moveLeft: boolean;
+  private moveRight: boolean;
+  private moveUp: boolean;
+  private moveDown: boolean;
 
   private speed: THREE.Vector3;
   private velocity: THREE.Vector3;
@@ -127,7 +127,7 @@ class Player
     this.controls.getObject().translateZ(this.velocity.z * delta);
   }
 
-  public handleKeyboard(key : string, active : bool) {
+  public handleKeyboard(key : string, active : boolean) {
     switch (key) {
       case 'z': this.moveForward = active; break;
       case 's': this.moveBackward = active; break;

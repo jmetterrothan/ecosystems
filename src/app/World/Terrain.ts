@@ -7,7 +7,7 @@ class Terrain
 {
   public static readonly VIEW_DISTANCE: number = 4000;
   public static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(Terrain.VIEW_DISTANCE / Chunk.WIDTH);
-  public static readonly INFINITE_TERRAIN: number = true;
+  public static readonly INFINITE_TERRAIN: boolean = false;
   public static readonly MIN_X: number = -6;
   public static readonly MIN_Z: number = -64;
   public static readonly MAX_X: number = 6;
@@ -17,10 +17,13 @@ class Terrain
   private chunks: Map<string, Chunk>;
   private visibleChunks: Chunk[];
 
+  private time: number;
+
   constructor(seed: string) {
     this.simplex = new simplexNoise(seed);
     this.chunks = new Map<string, Chunk>();
     this.visibleChunks = [];
+    this.time = window.performance.now();
   }
 
   update(scene: THREE.Scene, frustum: THREE.Frustum, player: Player) {
@@ -55,6 +58,21 @@ class Terrain
 
     // loop through all chunks in range
     this.visibleChunks = [];
+
+    // try to clean from memory unused generated chunks
+    const now = window.performance.now();
+    if (this.time >= now) {
+      this.chunks.forEach((chunk, key) => {
+        if (chunk.col < startX || chunk.col > endX || chunk.row < startZ || chunk.row > endZ) {
+          chunk.mesh.geometry.dispose();
+          chunk.mesh.material.dispose();
+          scene.remove(chunk.mesh);
+          chunk.mesh = null;
+          this.chunks.delete(key);
+        }
+      });
+      this.time = now + 500;
+    }
 
     for (let i = startZ; i < endZ; i++) {
       for (let j = startX; j < endX; j++) {
