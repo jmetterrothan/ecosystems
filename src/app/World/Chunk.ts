@@ -1,27 +1,66 @@
 import simplexNoise from 'simplex-noise';
 import * as THREE from 'three';
 
-import Terrain, { TerrainParameters } from './Terrain';
-import ITerrainParameters from '../models/ITerrainParameters';
+import Terrain from './Terrain';
+
+const clamp = (x: number, min: number, max: number): number => {
+  return Math.min(Math.max(x, min), max);
+};
 
 class Chunk
 {
-  public static readonly NROWS = 4;
-  public static readonly NCOLS = 4;
-  public static readonly CELL_SIZE = 32;
 
-  public static readonly WIDTH = Chunk.NCOLS * Chunk.CELL_SIZE;
-  public static readonly DEPTH = Chunk.NROWS * Chunk.CELL_SIZE;
+  public static readonly MAX_CHUNK_HEIGHT: number = 1200;
+  public static readonly MIN_CHUNK_HEIGHT: number = -300;
+  public static readonly NROWS: number = 4;
+  public static readonly NCOLS: number = 4;
+  public static readonly CELL_SIZE: number = 40;
 
-  public readonly terrain: Terrain;
+  public static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE;
+  public static readonly DEPTH: number = Chunk.NROWS * Chunk.CELL_SIZE;
+
+  public static readonly DEFAULT_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
+    wireframe: false,
+    emissive: 0xffffff,
+    emissiveIntensity: 0.1,
+    specular: 0xffffff,
+    shininess: 6,
+    flatShading: true,
+    vertexColors: THREE.FaceColors
+  });
+
+  public static readonly DEFAULT_COLORS: [Object] = [
+    {
+      stop: 0,
+      color: new THREE.Color(0xfcd95f)
+    }, {
+      stop: 0.015,
+      color: new THREE.Color(0xf0e68c)
+    }, {
+      stop: .075,
+      color: new THREE.Color(0x93c54b)
+    }, {
+      stop: .125,
+      color: new THREE.Color(0x62ad3e)
+    }, {
+      stop: .195,
+      color: new THREE.Color(0x634739)
+    }, {
+      stop: 0.85,
+      color: new THREE.Color(0xbcd4d9)
+    }, {
+      stop: 0.95,
+      color: new THREE.Color(0xffffff)
+    }
+  ];
+
   public readonly row: number;
   public readonly col: number;
 
   public mesh: THREE.Mesh;
 
-  constructor(simplex: simplexNoise, parameters: ITerrainParameters, row: number, col: number) {
+  constructor(simplex: simplexNoise, row: number, col: number) {
     this.simplex = simplex;
-    this.parameters = parameters;
     this.row = row;
     this.col = col;
 
@@ -32,24 +71,20 @@ class Chunk
    * Compute a point of the heightmap
    */
   sumOctaves(x: number, z: number) : number {
-    let maxAmp = 0;
-    let amp = 1;
-    let freq = this.parameters.scale;
-    let noise = 0;
+    const nx = x / Chunk.CELL_SIZE - 0.5;
+    const nz = z / Chunk.CELL_SIZE - 0.5;
 
-    for (let i = 0; i < this.parameters.octaves; i++) {
-      noise += this.simplex.noise2D(x * freq, z * freq) * amp;
-      maxAmp += amp;
-      amp *= this.parameters.persistence;
-      freq *= this.parameters.lacunarity;
+    let e = 0;
+    let amp = 575;
+    let f = 0.0075;
+
+    for (let i = 0; i < 8; i++) {
+      e += amp * this.simplex.noise2D(f * nx, f * nz);
+      amp /= 1.9;
+      f *= 1.9;
     }
 
-    noise /= maxAmp;
-
-    // keeps the output bewteen the high and low values
-    noise *= (this.parameters.high - this.parameters.low) / 2 + (this.parameters.high + this.parameters.low) / 2;
-
-    return noise;
+    return clamp((e > 0) ? Math.pow(e, 1.05) : e / 3, Chunk.MIN_CHUNK_HEIGHT, Chunk.MAX_CHUNK_HEIGHT);
   }
 
   /**
@@ -69,7 +104,7 @@ class Chunk
         const y = this.sumOctaves(x, z);
 
         geometry.vertices.push(new THREE.Vector3(x, y, z));
-        geometry.colors.push(this.getColor(y));
+        // geometry.colors.push(this.getColor(grad, y));
       }
     }
 
@@ -86,11 +121,12 @@ class Chunk
         const f2 = new THREE.Face3(d, c, a);
 
         // METHOD 1 : each face gets a color based on the average height of their vertices
-        // const y1 = (geometry.vertices[a].y + geometry.vertices[b].y + geometry.vertices[d].y) / 3;
-        // const y2 = (geometry.vertices[d].y + geometry.vertices[c].y + geometry.vertices[a].y) / 3;
-        // f1.color = this.getColor(y1);
-        // f2.color = this.getColor(y2);
+        const y1 = (geometry.vertices[a].y + geometry.vertices[b].y + geometry.vertices[d].y) / 3;
+        const y2 = (geometry.vertices[d].y + geometry.vertices[c].y + geometry.vertices[a].y) / 3;
+        f1.color = this.getColor(Chunk.DEFAULT_COLORS, y1);
+        f2.color = this.getColor(Chunk.DEFAULT_COLORS, y2);
 
+        /*
         // METHOD 2 : each vertices gets a different color based on height and colors are interpolated
         f1.vertexColors[0] = geometry.colors[a];
         f1.vertexColors[1] = geometry.colors[b];
@@ -98,6 +134,7 @@ class Chunk
         f2.vertexColors[0] = geometry.colors[d];
         f2.vertexColors[1] = geometry.colors[c];
         f2.vertexColors[2] = geometry.colors[a];
+        */
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);
@@ -105,8 +142,8 @@ class Chunk
     }
 
     // need to tell the engine we updated the vertices
-    // geometry.verticesNeedUpdate = true;
-    // geometry.colorsNeedUpdate = true;
+    geometry.verticesNeedUpdate = true;
+    geometry.colorsNeedUpdate = true;
 
     // need to update normals for smooth shading
     geometry.computeFaceNormals();
@@ -116,43 +153,26 @@ class Chunk
     return geometry;
   }
 
-  getColor(y) {
-    const level = y / (this.parameters.high + Math.abs(this.parameters.low));
+  getColor(colors, y): THREE.Color {
+    // normalize height value
+    const level = (y - Chunk.MIN_CHUNK_HEIGHT) / (Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT);
 
-    // TODO: relative to the biome / relative to height
-    if (level > 0.9) {
-      return new THREE.Color(0xffffff);
+    for (let i = 0; i < colors.length; i++) {
+      if (!colors[i + 1] || level < colors[i + 1].stop) {
+        return colors[i].color;
+      }
     }
-    if (level > 0.5) {
-      return new THREE.Color(0x645148);
-    }
-    if (level > 0) {
-      return new THREE.Color(0x93c54b);
-    }
-
-    return new THREE.Color(0xf0e68c);
   }
 
   /**
    * Generate terrain mesh
    */
   generate(): THREE.Mesh {
-    const material = new THREE.MeshPhongMaterial({
-      wireframe: false,
-      emissive: 0xffffff,
-      emissiveIntensity: 0.1,
-      specular: 0xffffff,
-      shininess: 4,
-      flatShading: true,
-      vertexColors: THREE.FaceColors
-    });
-
     const geometry = this.buildGeometry();
+    const mesh = new THREE.Mesh(geometry, Chunk.DEFAULT_MATERIAL);
 
-    const mesh = new THREE.Mesh(geometry, material);
     mesh.frustumCulled = false;
     mesh.visible = false;
-    mesh.dynamic = true;
 
     return mesh;
   }
