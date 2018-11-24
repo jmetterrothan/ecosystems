@@ -1,10 +1,11 @@
 import simplexNoise from 'simplex-noise';
 
 import Chunk from './Chunk';
+import Player from '../Player';
 
 class Terrain
 {
-  public static readonly VIEW_DISTANCE: number = 4500;
+  public static readonly VIEW_DISTANCE: number = 4000;
   public static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(Terrain.VIEW_DISTANCE / Chunk.WIDTH);
   public static readonly INFINITE_TERRAIN: number = true;
   public static readonly MIN_X: number = -6;
@@ -22,14 +23,15 @@ class Terrain
     this.visibleChunks = [];
   }
 
-  update(scene: THREE.Scene, frustum: THREE.Frustum, position: THREE.Vector3) {
-    const chunkX = Math.trunc(position.x / Chunk.WIDTH);
-    const chunkZ = Math.trunc(position.z / Chunk.DEPTH);
+  update(scene: THREE.Scene, frustum: THREE.Frustum, player: Player) {
+    const position = player.getPosition();
+    const chunkX = Math.round(position.x / Chunk.WIDTH);
+    const chunkZ = Math.round(position.z / Chunk.DEPTH);
 
-    let startX =  chunkX - Terrain.CHUNK_RENDER_LIMIT;
-    let startZ =  chunkZ - Terrain.CHUNK_RENDER_LIMIT;
-    let endX =  chunkX + Terrain.CHUNK_RENDER_LIMIT;
-    let endZ =  chunkZ + Terrain.CHUNK_RENDER_LIMIT;
+    let startX = chunkX - Terrain.CHUNK_RENDER_LIMIT;
+    let startZ = chunkZ - Terrain.CHUNK_RENDER_LIMIT;
+    let endX = chunkX + Terrain.CHUNK_RENDER_LIMIT;
+    let endZ = chunkZ + Terrain.CHUNK_RENDER_LIMIT;
 
     if (!Terrain.INFINITE_TERRAIN) {
       if (startX < Terrain.MIN_X) {

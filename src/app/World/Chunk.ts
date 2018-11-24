@@ -6,7 +6,6 @@ import Terrain from './Terrain';
 
 class Chunk
 {
-
   public static readonly MAX_CHUNK_HEIGHT: number = 1200;
   public static readonly MIN_CHUNK_HEIGHT: number = -300;
   public static readonly NROWS: number = 4;
@@ -170,6 +169,7 @@ class Chunk
 
     mesh.frustumCulled = false;
     mesh.visible = false;
+    mesh.matrixAutoUpdate = false;
 
     return mesh;
   }

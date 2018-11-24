@@ -6,6 +6,7 @@ import World from './World/World';
 import Terrain from './World/Terrain';
 
 class Main {
+  public static readonly MS_PER_UPDATE = 1000 / 25;
   public readonly renderer: THREE.WebGLRenderer;
   public readonly scene: THREE.Scene;
 
@@ -15,10 +16,16 @@ class Main {
 
   private world: World;
 
+  private lag: number;
+  private ups: number;
   private lastTime: number;
+  private scheduledTime: number;
 
   async bootstrap() {
     this.containerElement = document.body;
+    this.lag = 0;
+    this.ups = 0;
+    this.scheduledTime = window.performance.now();
     this.lastTime = window.performance.now();
 
     this.scene = new THREE.Scene();
@@ -86,10 +93,33 @@ class Main {
 
   private render() {
     const time = window.performance.now();
-    const delta = (time - this.lastTime) / 1000;
+    const elapsed = time - this.lastTime;
+
+    if (time >= this.scheduledTime) {
+      this.scheduledTime += 1000;
+
+      console.info(`UPS : ${this.ups}`);
+      this.ups = 0;
+    }
 
     this.lastTime = time;
-    this.world.update(delta);
+    this.lag += elapsed;
+
+    // updated every time
+    this.world.updateMvts(elapsed / 1000);
+
+    // updated every 16ms
+    let nbOfSteps = 0;
+    while (this.lag >= Main.MS_PER_UPDATE) {
+      this.world.update();
+      this.ups++;
+
+      this.lag -= Main.MS_PER_UPDATE;
+
+      if (++nbOfSteps >= 240) {
+        this.lag = 0;
+      }
+    }
 
     this.renderer.render(this.scene, this.camera);
     window.requestAnimationFrame(this.render.bind(this));

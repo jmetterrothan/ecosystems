@@ -40,7 +40,7 @@ class World
     */
 
     // fog
-    this.scene.fog = new THREE.Fog(0xb1d8ff, Terrain.VIEW_DISTANCE / 2, Terrain.VIEW_DISTANCE - 250);
+    this.scene.fog = new THREE.Fog(0xb1d8ff, Terrain.VIEW_DISTANCE / 2, Terrain.VIEW_DISTANCE - 500);
 
     // lights
     const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.5);
@@ -58,15 +58,17 @@ class World
     this.scene.add(this.controls.getObject());
   }
 
-  public update(delta) {
-    this.player.update(delta);
-
+  public update() {
     this.frustum.setFromMatrix(new THREE.Matrix4().multiplyMatrices(
       this.camera.projectionMatrix,
       this.camera.matrixWorldInverse)
     );
 
-    this.terrain.update(this.scene, this.frustum, this.player.getPosition());
+    this.terrain.update(this.scene, this.frustum, this.player);
+  }
+
+  public updateMvts(delta) {
+    this.player.updateMvts(delta);
   }
 
   public handleKeyboard(key : string, active : bool) {
