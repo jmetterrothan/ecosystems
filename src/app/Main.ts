@@ -22,7 +22,7 @@ class Main {
     this.lastTime = window.performance.now();
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, Terrain.VIEW_DISTANCE + 250);
+    this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.01, Terrain.VIEW_DISTANCE + 500);
 
     this.initRenderer();
     this.initPointerLock();
