@@ -1,29 +1,52 @@
 import simplexNoise from 'simplex-noise';
 
 import Chunk from './Chunk';
+import Player from '../Player';
 
 class Terrain
 {
-  parameters : TerrainParameters;
-  simplex: simplexNoise;
-  chunks: Map<string, Chunk>;
-  visibleChunks: Chunk[] = [];
+  public static readonly VIEW_DISTANCE: number = 4000;
+  public static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(Terrain.VIEW_DISTANCE / Chunk.WIDTH);
+  public static readonly INFINITE_TERRAIN: number = true;
+  public static readonly MIN_X: number = -6;
+  public static readonly MIN_Z: number = -64;
+  public static readonly MAX_X: number = 6;
+  public static readonly MAX_Z: number = 64;
 
-  constructor(parameters: TerrainParameters) {
-    this.parameters = Object.assign({}, Terrain.DEFAULT_PARAMETERS, parameters);
+  public readonly simplex: simplexNoise;
+  private chunks: Map<string, Chunk>;
+  private visibleChunks: Chunk[];
 
-    this.simplex = new simplexNoise(this.parameters.seed);
+  constructor(seed: string) {
+    this.simplex = new simplexNoise(seed);
     this.chunks = new Map<string, Chunk>();
+    this.visibleChunks = [];
   }
 
-  update(scene: THREE.Scene, frustum: THREE.Frustum, position: THREE.Vector3) {
-    const chunkX = Math.trunc(position.x / Chunk.WIDTH);
-    const chunkZ = Math.trunc(position.z / Chunk.DEPTH);
+  update(scene: THREE.Scene, frustum: THREE.Frustum, player: Player) {
+    const position = player.getPosition();
+    const chunkX = Math.round(position.x / Chunk.WIDTH);
+    const chunkZ = Math.round(position.z / Chunk.DEPTH);
 
-    const startX =  chunkX - Terrain.MAX_RENDER_DISTANCE;
-    const startZ =  chunkZ - Terrain.MAX_RENDER_DISTANCE;
-    const endX =  chunkX + Terrain.MAX_RENDER_DISTANCE;
-    const endZ =  chunkZ + Terrain.MAX_RENDER_DISTANCE;
+    let startX = chunkX - Terrain.CHUNK_RENDER_LIMIT;
+    let startZ = chunkZ - Terrain.CHUNK_RENDER_LIMIT;
+    let endX = chunkX + Terrain.CHUNK_RENDER_LIMIT;
+    let endZ = chunkZ + Terrain.CHUNK_RENDER_LIMIT;
+
+    if (!Terrain.INFINITE_TERRAIN) {
+      if (startX < Terrain.MIN_X) {
+        startX = Terrain.MIN_X;
+      }
+      if (startZ < Terrain.MIN_Z) {
+        startZ = Terrain.MIN_Z;
+      }
+      if (endX > Terrain.MAX_X) {
+        endX = Terrain.MAX_X;
+      }
+      if (endZ > Terrain.MAX_Z) {
+        endZ = Terrain.MAX_Z;
+      }
+    }
 
     // reset previously visible chunks
     for (let i = 0, n = this.visibleChunks.length; i < n; i++) {
@@ -39,8 +62,7 @@ class Terrain
 
         // generate chunk if needed
         if (!this.chunks.has(id)) {
-          const chunk = new Chunk(this, i, j);
-          chunk.mesh.visible = false;
+          const chunk = new Chunk(this.simplex, i, j);
           this.chunks.set(id, chunk);
 
           scene.add(chunk.mesh);
@@ -56,26 +78,6 @@ class Terrain
       }
     }
   }
-}
-
-Terrain.DEFAULT_PARAMETERS = {
-  seed: undefined,
-  iterations: 16,
-  persistence: 0.45,
-  scale: 0.005,
-  low: -25,
-  high: 50
-};
-
-Terrain.MAX_RENDER_DISTANCE = 16;
-
-export interface TerrainParameters {
-  seed: string|number;
-  iterations: number;
-  persistence: number;
-  scale: number;
-  low: number;
-  high: number;
 }
 
 export default Terrain;
