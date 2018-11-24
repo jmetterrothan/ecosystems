@@ -71,7 +71,7 @@ class World
     this.player.updateMvts(delta);
   }
 
-  public handleKeyboard(key : string, active : bool) {
+  public handleKeyboard(key : string, active : boolean) {
     this.player.handleKeyboard(key, active);
   }
 }
