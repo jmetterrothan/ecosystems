@@ -1,11 +1,14 @@
-import * as t from 'three';
+import * as THREE from 'three';
 
 declare module 'THREE' {
 
   // PointerLockControls
   export class PointerLockControls {
-    constructor(camera: t.Camera);
+    isLocked: boolean;
     enabled: boolean;
+
+    constructor(camera: THREE.Camera, domElemenTHREE?: HTMLElement);
+    getObject(): THREE.Object3D
   }
 
 }

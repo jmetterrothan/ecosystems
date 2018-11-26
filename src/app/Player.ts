@@ -1,8 +1,7 @@
 import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 
-class Player
-{
+class Player {
   private controls: THREE.PointerLockControls;
   private moveForward: boolean;
   private moveBackward: boolean;
@@ -127,7 +126,7 @@ class Player
     this.controls.getObject().translateZ(this.velocity.z * delta);
   }
 
-  public handleKeyboard(key : string, active : boolean) {
+  public handleKeyboard(key: string, active: boolean) {
     switch (key) {
       case 'z': this.moveForward = active; break;
       case 's': this.moveBackward = active; break;
