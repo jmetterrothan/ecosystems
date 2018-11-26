@@ -32,92 +32,50 @@ class Player {
 
   public updateMvts(delta) {
     if (this.moveForward) {
-      this.velocity.z -= this.speed.z * delta;
-
-      if (this.velocity.z < -this.speed.z) {
-        this.velocity.z = -this.speed.z;
-      }
+      this.velocity.z = -this.speed.z;
     } else {
       if (this.velocity.z < 0) {
-        this.velocity.z += this.speed.z * delta;
-        if (this.velocity.z > 0) {
-          this.velocity.z = 0;
-        }
+        this.velocity.z = 0;
       }
     }
 
     if (this.moveBackward) {
-      this.velocity.z += this.speed.z * delta;
-
-      if (this.velocity.z > this.speed.z) {
-        this.velocity.z = this.speed.z;
-      }
+      this.velocity.z = this.speed.z;
     } else {
       if (this.velocity.z > 0) {
-        this.velocity.z -= this.speed.z * delta;
-        if (this.velocity.z < 0) {
-          this.velocity.z = 0;
-        }
+        this.velocity.z = 0;
       }
     }
 
     if (this.moveRight) {
-      this.velocity.x += this.speed.x * delta;
-
-      if (this.velocity.x > this.speed.x) {
-        this.velocity.x = this.speed.x;
-      }
+      this.velocity.x = this.speed.x;
     } else {
       if (this.velocity.x > 0) {
-        this.velocity.x -= this.speed.x * delta;
-        if (this.velocity.x < 0) {
-          this.velocity.x = 0;
-        }
+        this.velocity.x = 0;
       }
     }
 
     if (this.moveLeft) {
-      this.velocity.x -= this.speed.x * delta;
-
-      if (this.velocity.x < -this.speed.x) {
-        this.velocity.x = -this.speed.x;
-      }
+      this.velocity.x = -this.speed.x;
     } else {
       if (this.velocity.x < 0) {
-        this.velocity.x += this.speed.x * delta;
-        if (this.velocity.x > 0) {
-          this.velocity.x = 0;
-        }
+        this.velocity.x = 0;
       }
     }
 
     if (this.moveDown) {
-      this.velocity.y -= this.speed.y * delta;
-
-      if (this.velocity.y < -this.speed.y) {
-        this.velocity.y = -this.speed.y;
-      }
+      this.velocity.y = this.speed.y;
     } else {
-      if (this.velocity.y < 0) {
-        this.velocity.y += this.speed.y * delta;
-        if (this.velocity.y > 0) {
-          this.velocity.y = 0;
-        }
+      if (this.velocity.y > 0) {
+        this.velocity.y = 0;
       }
     }
 
     if (this.moveUp) {
-      this.velocity.y += this.speed.y * delta;
-
-      if (this.velocity.y > this.speed.y) {
-        this.velocity.y = this.speed.y;
-      }
+      this.velocity.y = -this.speed.y;
     } else {
-      if (this.velocity.y > 0) {
-        this.velocity.y -= this.speed.y * delta;
-        if (this.velocity.y < 0) {
-          this.velocity.y = 0;
-        }
+      if (this.velocity.y < 0) {
+        this.velocity.y = 0;
       }
     }
 
