@@ -6,8 +6,7 @@ import 'three/examples/js/controls/PointerLockControls';
 import Terrain from './Terrain';
 import Player from '../Player';
 
-class World
-{
+class World {
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
   private controls: THREE.PointerLockControls;
@@ -71,7 +70,7 @@ class World
     this.player.updateMvts(delta);
   }
 
-  public handleKeyboard(key : string, active : boolean) {
+  public handleKeyboard(key: string, active: boolean) {
     this.player.handleKeyboard(key, active);
   }
 }

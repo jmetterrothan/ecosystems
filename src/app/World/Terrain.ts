@@ -3,8 +3,7 @@ import simplexNoise from 'simplex-noise';
 import Chunk from './Chunk';
 import Player from '../Player';
 
-class Terrain
-{
+class Terrain {
   public static readonly VIEW_DISTANCE: number = 4000;
   public static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(Terrain.VIEW_DISTANCE / Chunk.WIDTH);
   public static readonly INFINITE_TERRAIN: boolean = false;

@@ -80,7 +80,7 @@ class Main {
         this.controls.enabled = document.pointerLockElement === document.body || document.mozPointerLockElement === document.body || document.webkitPointerLockElement === document.body;
       };
 
-      const pointerlockerror = (e) => {};
+      const pointerlockerror = (e) => { };
 
       document.addEventListener('pointerlockchange', pointerlockchange, false);
       document.addEventListener('mozpointerlockchange', pointerlockchange, false);
