@@ -97,7 +97,7 @@ class Terrain {
   }
 
   getHeightAt(x: number, z: number) {
-    return Chunk.sumOctaves(this.terrain.simplex, x, z);
+    return Chunk.sumOctaves(this.simplex, x, z);
   }
 }
 
