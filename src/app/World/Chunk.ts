@@ -46,7 +46,7 @@ class Chunk {
   /**
    * Compute a point of the heightmap
    */
-  sumOctaves(x: number, z: number): number {
+  static sumOctaves(simplex: simplexNoise, x: number, z: number): number {
     const nx = x / Chunk.CELL_SIZE - 0.5;
     const nz = z / Chunk.CELL_SIZE - 0.5;
 
@@ -55,7 +55,7 @@ class Chunk {
     let f = 0.0075;
 
     for (let i = 0; i < 8; i++) {
-      e += amp * this.simplex.noise2D(f * nx, f * nz);
+      e += amp * simplex.noise2D(f * nx, f * nz);
       amp /= 1.9;
       f *= 1.9;
     }
@@ -77,7 +77,7 @@ class Chunk {
       const x = this.col * Chunk.WIDTH + c * Chunk.CELL_SIZE;
       for (let r = 0; r < nbVerticesZ; r++) {
         const z = this.row * Chunk.DEPTH + r * Chunk.CELL_SIZE;
-        const y = this.sumOctaves(x, z);
+        const y = Chunk.sumOctaves(this.simplex, x, z);
 
         geometry.vertices.push(new THREE.Vector3(x, y, z));
         // geometry.colors.push(this.getColor(grad, y));

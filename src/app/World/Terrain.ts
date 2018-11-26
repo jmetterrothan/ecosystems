@@ -95,6 +95,10 @@ class Terrain {
       }
     }
   }
+
+  getHeightAt(x: number, z: number) {
+    return Chunk.sumOctaves(this.terrain.simplex, x, z);
+  }
 }
 
 export default Terrain;
