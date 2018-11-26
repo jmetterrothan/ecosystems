@@ -1,6 +1,7 @@
+import 'seedrandom';
+
 import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
-import { seedrandom } from 'seedrandom';
 
 import Terrain from './Terrain';
 import Player from '../Player';
@@ -24,7 +25,7 @@ class World {
     this.frustum = new THREE.Frustum();
 
     // rng
-    const rng = new seedrandom();
+    const rng = new Math.seedrandom();
     this.seed = rng.int32();
     console.info(`SEED : ${this.seed}`);
 

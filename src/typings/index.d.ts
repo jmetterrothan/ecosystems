@@ -11,3 +11,8 @@ interface HTMLElement {
   webkitRequestPointerLock?: any;
 
 }
+
+
+interface Math {
+  seedrandom(): void;
+}
