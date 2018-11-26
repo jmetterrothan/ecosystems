@@ -14,7 +14,7 @@ class World {
 
   private terrain: Terrain;
   private frustum: THREE.Frustum;
-  private seed: number;
+  private seed: string;
 
   constructor(scene: THREE.Scene, camera: THREE.PerspectiveCamera, controls: THREE.PointerLockControls) {
     this.scene = scene;
@@ -23,9 +23,9 @@ class World {
 
     this.frustum = new THREE.Frustum();
 
-    // rng
-    const rng = new seedrandom();
-    this.seed = rng.int32();
+    // seed
+    this.seed = Utils.randomUint32().toString();
+    Math.seedrandom(this.seed);
     console.info(`SEED : ${this.seed}`);
 
     this.initObjects();
