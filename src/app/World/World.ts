@@ -1,16 +1,16 @@
-import 'seedrandom';
-
 import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
+import { seedrandom } from 'seedrandom';
 
 import Terrain from './Terrain';
 import Player from '../Player';
 
-class World
-{
+class World {
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
   private controls: THREE.PointerLockControls;
+
+  private player: Player;
 
   private terrain: Terrain;
   private frustum: THREE.Frustum;
@@ -24,7 +24,7 @@ class World
     this.frustum = new THREE.Frustum();
 
     // rng
-    const rng = new Math.seedrandom();
+    const rng = new seedrandom();
     this.seed = rng.int32();
     console.info(`SEED : ${this.seed}`);
 
@@ -52,7 +52,7 @@ class World
     this.scene.add(sunlight);
 
     // stuff
-    this.terrain = new Terrain(this.seed);
+    this.terrain = new Terrain(this.seed.toString());
     this.player = new Player(this.controls);
 
     this.scene.add(this.controls.getObject());
@@ -71,7 +71,7 @@ class World
     this.player.updateMvts(delta);
   }
 
-  public handleKeyboard(key : string, active : boolean) {
+  public handleKeyboard(key: string, active: boolean) {
     this.player.handleKeyboard(key, active);
   }
 }

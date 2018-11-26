@@ -1,11 +1,12 @@
+import { DEFAULT_COLORS } from '@shared/constants/colors.constants';
+import { IColor } from './../Shared/models/color.model';
 import simplexNoise from 'simplex-noise';
 import * as THREE from 'three';
 
 import Utils from '../Shared/Utils';
 import Terrain from './Terrain';
 
-class Chunk
-{
+class Chunk {
   public static readonly MAX_CHUNK_HEIGHT: number = 1200;
   public static readonly MIN_CHUNK_HEIGHT: number = -300;
   public static readonly NROWS: number = 4;
@@ -25,33 +26,12 @@ class Chunk
     vertexColors: THREE.FaceColors
   });
 
-  public static readonly DEFAULT_COLORS: [Object] = [
-    {
-      stop: 0,
-      color: new THREE.Color(0xfcd95f)
-    }, {
-      stop: 0.015,
-      color: new THREE.Color(0xf0e68c)
-    }, {
-      stop: .075,
-      color: new THREE.Color(0x93c54b)
-    }, {
-      stop: .125,
-      color: new THREE.Color(0x62ad3e)
-    }, {
-      stop: .195,
-      color: new THREE.Color(0x634739)
-    }, {
-      stop: 0.85,
-      color: new THREE.Color(0xbcd4d9)
-    }, {
-      stop: 0.95,
-      color: new THREE.Color(0xffffff)
-    }
-  ];
+  public static readonly DEFAULT_COLORS: IColor[] = DEFAULT_COLORS;
 
   public readonly row: number;
   public readonly col: number;
+
+  public readonly simplex: simplexNoise;
 
   public mesh: THREE.Mesh;
 
@@ -66,7 +46,7 @@ class Chunk
   /**
    * Compute a point of the heightmap
    */
-  sumOctaves(x: number, z: number) : number {
+  sumOctaves(x: number, z: number): number {
     const nx = x / Chunk.CELL_SIZE - 0.5;
     const nz = z / Chunk.CELL_SIZE - 0.5;
 
@@ -144,7 +124,7 @@ class Chunk
     // need to update normals for smooth shading
     geometry.computeFaceNormals();
     geometry.computeVertexNormals();
-    geometry.normalsNeedUpdate	= true;
+    geometry.normalsNeedUpdate = true;
 
     return geometry;
   }
