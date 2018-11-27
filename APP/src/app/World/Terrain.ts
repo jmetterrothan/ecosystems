@@ -7,10 +7,10 @@ class Terrain {
   public static readonly VIEW_DISTANCE: number = 5000;
   public static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(Terrain.VIEW_DISTANCE / Chunk.WIDTH);
   public static readonly INFINITE_TERRAIN: boolean = true;
-  public static readonly MIN_X: number = -8;
-  public static readonly MIN_Z: number = -64;
-  public static readonly MAX_X: number = 8;
-  public static readonly MAX_Z: number = 64;
+  public static readonly MIN_X: number = -4;
+  public static readonly MIN_Z: number = -4;
+  public static readonly MAX_X: number = 4;
+  public static readonly MAX_Z: number = 4;
 
   public readonly simplex: simplexNoise;
   private chunks: Map<string, Chunk>;
@@ -81,6 +81,7 @@ class Terrain {
         if (!this.chunks.has(id)) {
           const chunk = new Chunk(this.simplex, i, j);
           this.chunks.set(id, chunk);
+          chunk.populate(scene, this);
 
           scene.add(chunk.mesh);
         }

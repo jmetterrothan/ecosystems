@@ -12,7 +12,7 @@ import Utils from '@shared/Utils';
 import { OBJECTS } from '@shared/constants/object.constants';
 
 class World {
-  private static LOADED_MODELS = new Map<string, THREE.Object3D>();
+  static LOADED_MODELS = new Map<string, THREE.Object3D>();
 
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
@@ -46,9 +46,9 @@ class World {
 
     this.scene.add(this.controls.getObject());
 
-    const object = World.LOADED_MODELS.get('spruce').clone();
-    object.position.y = this.terrain.getHeightAt(0, 0);
-    this.scene.add(object);
+    // const object = World.LOADED_MODELS.get('spruce').clone();
+    // object.position.y = this.terrain.getHeightAt(0, 0);
+    // this.scene.add(object);
   }
 
   private initSeed() {

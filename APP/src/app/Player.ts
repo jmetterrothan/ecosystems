@@ -87,7 +87,7 @@ class Player {
 
   updatePosition(terrain) {
     const position = this.controls.getObject().position;
-    const y = terrain.getHeightAt(position.x, position.z) + 50;
+    const y = terrain.getHeightAt(position.x, position.z) + 100;
 
     if (position.y < y) {
       this.controls.getObject().position.y = y;
@@ -95,6 +95,7 @@ class Player {
   }
 
   public handleKeyboard(key: string, active: boolean) {
+    console.log(key, active);
     switch (key) {
       case 'z': this.moveForward = active; break;
       case 's': this.moveBackward = active; break;
@@ -102,6 +103,12 @@ class Player {
       case 'd': this.moveRight = active; break;
       case 'a': this.moveUp = active; break;
       case 'e': this.moveDown = active; break;
+      case 'ArrowRight': this.moveRight = active; break;
+      case 'ArrowLeft': this.moveLeft = active; break;
+      case 'ArrowUp': this.moveForward = active; break;
+      case 'ArrowDown': this.moveBackward = active; break;
+      case '+': this.moveUp = active; break;
+      case '-': this.moveDown = active; break;
     }
   }
 

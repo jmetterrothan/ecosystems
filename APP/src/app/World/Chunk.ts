@@ -1,9 +1,12 @@
+import * as THREE from 'three';
 import { DEFAULT_COLORS } from '@shared/constants/colors.constants';
 import { IColor } from './../Shared/models/color.model';
 import simplexNoise from 'simplex-noise';
-import * as THREE from 'three';
+import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Utils from '@shared/Utils';
+import World from './World';
+import Terrain from './Terrain';
 
 class Chunk {
   static readonly MAX_CHUNK_HEIGHT: number = 2000;
@@ -28,6 +31,8 @@ class Chunk {
 
   static readonly DEFAULT_COLORS: IColor[] = DEFAULT_COLORS;
 
+  static offset = Math.random() * 1000;
+
   readonly row: number;
   readonly col: number;
 
@@ -47,8 +52,8 @@ class Chunk {
    * Compute a point of the heightmap
    */
   static sumOctaves(simplex: simplexNoise, x: number, z: number): number {
-    const nx = x / Chunk.CELL_SIZE - 0.5;
-    const nz = z / Chunk.CELL_SIZE - 0.5;
+    const nx = Chunk.offset + x / Chunk.CELL_SIZE - 0.5;
+    const nz = Chunk.offset + z / Chunk.CELL_SIZE - 0.5;
 
     let e = 0;
     let amp = 575;
@@ -61,6 +66,23 @@ class Chunk {
     }
 
     return Utils.clamp((e > 0) ? Math.pow(e, 1.125) : e / 3, Chunk.MIN_CHUNK_HEIGHT, Chunk.MAX_CHUNK_HEIGHT);
+  }
+
+  populate(scene: THREE.Scene, terrain: Terrain) {
+    const pds = new poissonDiskSampling([Chunk.WIDTH, Chunk.DEPTH], 300, 310, 30);
+    const points = pds.fill();
+    const limit = 10;
+
+    points.forEach((point: number[]) => {
+      const x = this.col * Chunk.WIDTH + point.shift();
+      const z = this.row * Chunk.DEPTH + point.shift();
+      const y = terrain.getHeightAt(x, z);
+      if (y < limit) {
+        const object = World.LOADED_MODELS.get('spruce').clone();
+        object.position.set(x, y, z);
+        scene.add(object);
+      }
+    });
   }
 
   /**
