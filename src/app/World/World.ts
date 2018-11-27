@@ -69,6 +69,7 @@ class World {
 
   public updateMvts(delta) {
     this.player.updateMvts(delta);
+    this.player.updatePosition(this.terrain);
   }
 
   public handleKeyboard(key: string, active: boolean) {
