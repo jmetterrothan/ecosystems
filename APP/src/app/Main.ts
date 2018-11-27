@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 
+import 'seedrandom';
+
 import statsJs from 'stats.js';
 
 import Utils from './Shared/Utils';

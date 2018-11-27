@@ -23,12 +23,12 @@ class Player {
     this.moveUp = false;
     this.moveDown = false;
 
-    this.speed = new THREE.Vector3(1000, 500, 1000);
+    this.speed = new THREE.Vector3(3000, 3000, 3000);
     this.velocity = new THREE.Vector3(0, 0, 0);
   }
 
-  init() {
-    this.controls.getObject().position.set(0, 0, -5);
+  init(x, y, z) {
+    this.controls.getObject().position.set(x, y, z);
   }
 
   public updateMvts(delta) {

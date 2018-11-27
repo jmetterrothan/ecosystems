@@ -11,5 +11,5 @@ interface HTMLElement {
 }
 
 interface Math {
-  seedrandom(seed?: string);
+  seedrandom(seed?: string): void;
 }
