@@ -37,13 +37,12 @@ class World {
     await this.initObjects();
 
     // stuff
-    this.terrain = new Terrain(this.seed);
+    this.terrain = new Terrain();
 
     // player spawn point
     const x = 0;
     const z = 0;
     const y = this.terrain.getHeightAt(x, z) + 1000;
-    console.log(x, y, z);
 
     this.player = new Player(this.controls);
     this.player.init(x, y, z);
@@ -58,7 +57,7 @@ class World {
   private initSeed() {
     // 1603676994 | 2927331962
     this.seed = Utils.randomUint32().toString();
-    Math.seedrandom(this.seed);
+    Utils.rng = new Math.seedrandom(this.seed);
     console.info(`SEED : ${this.seed}`);
   }
 

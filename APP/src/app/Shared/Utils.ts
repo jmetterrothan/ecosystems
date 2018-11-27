@@ -1,4 +1,5 @@
 class Utils {
+  static rng = new Math.seedrandom(); // current random number generator shared across the app
 
   static isDev(): boolean {
     return process.env.NODE_ENV === 'development';
@@ -17,7 +18,15 @@ class Utils {
     }
 
     console.warn('Falling back to pseudo-random client seed');
-    return Math.floor(Math.random() * Math.pow(2, 32));
+    return Math.floor(Utils.rng() * Math.pow(2, 32));
+  }
+
+  static randomInt = (min, max) => {
+    return Math.floor(Utils.rng() * (max - min + 1)) + min;
+  }
+
+  static randomFloat = (min, max) => {
+    return Utils.rng() * (max - min) + min;
   }
 }
 

@@ -31,8 +31,6 @@ class Chunk {
 
   static readonly DEFAULT_COLORS: IColor[] = DEFAULT_COLORS;
 
-  static offset = Math.random() * 1000;
-
   readonly row: number;
   readonly col: number;
 
@@ -52,8 +50,8 @@ class Chunk {
    * Compute a point of the heightmap
    */
   static sumOctaves(simplex: simplexNoise, x: number, z: number): number {
-    const nx = Chunk.offset + x / Chunk.CELL_SIZE - 0.5;
-    const nz = Chunk.offset + z / Chunk.CELL_SIZE - 0.5;
+    const nx = x / Chunk.CELL_SIZE - 0.5;
+    const nz = z / Chunk.CELL_SIZE - 0.5;
 
     let e = 0;
     let amp = 1;
@@ -70,7 +68,7 @@ class Chunk {
   }
 
   populate(scene: THREE.Scene, terrain: Terrain) {
-    const pds = new poissonDiskSampling([Chunk.WIDTH, Chunk.DEPTH], 300, 310, 30);
+    const pds = new poissonDiskSampling([Chunk.WIDTH / 16, Chunk.DEPTH / 16], 300, 600, 30, Utils.rng);
     const points = pds.fill();
     const limit = 10;
 

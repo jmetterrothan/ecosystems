@@ -2,6 +2,7 @@ import simplexNoise from 'simplex-noise';
 
 import Chunk from './Chunk';
 import Player from '../Player';
+import Utils from '@shared/Utils';
 
 class Terrain {
   static readonly VIEW_DISTANCE: number = 6000;
@@ -19,12 +20,8 @@ class Terrain {
 
   private time: number;
 
-  private seed: string;
-
-  constructor(seed: string) {
-    this.seed = seed;
-
-    this.simplex = new simplexNoise(new Math.seedrandom(seed));
+  constructor() {
+    this.simplex = new simplexNoise(Utils.rng);
     this.chunks = new Map<string, Chunk>();
     this.visibleChunks = [];
     this.time = window.performance.now();
