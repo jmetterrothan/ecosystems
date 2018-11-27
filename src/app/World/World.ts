@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
+
 import 'seedrandom';
 
 import Terrain from './Terrain';
@@ -10,17 +11,10 @@ import Chunk from './Chunk';
 
 import Utils from '../Shared/Utils';
 
-import spruceObj from '../../obj/spruce/spruce.obj';
-import spruceMtl from '../../obj/spruce/spruce.mtl';
-
-import red_mushroomObj from '../../obj/red_mushroom/red_mushroom.obj';
-import red_mushroomMtl from '../../obj/red_mushroom/red_mushroom.mtl';
-
-import brown_mushroomObj from '../../obj/brown_mushroom/brown_mushroom.obj';
-import brown_mushroomMtl from '../../obj/brown_mushroom/brown_mushroom.mtl';
+import objectConstants from '../Shared/constants/object.constants';
 
 class World {
-  // private static LOADED_MODELS = new Map();
+  private static LOADED_MODELS = new Map<THREE.Object3D>();
 
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
@@ -40,7 +34,7 @@ class World {
     this.frustum = new THREE.Frustum();
 
     // seed
-    this.seed = Utils.randomUint32().toString();
+    this.seed = '2842781435'; // Utils.randomUint32().toString();
     Math.seedrandom(this.seed);
     console.info(`SEED : ${this.seed}`);
 
@@ -60,11 +54,11 @@ class World {
 
     // lights
     const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.5);
-    light.position.set(0, 50, 0).normalize();
+    light.position.set(0, 1000, 0).normalize();
     this.scene.add(light);
 
-    const sunlight = new THREE.DirectionalLight(0xffffff, 0.375);
-    sunlight.position.set(0, 1000, 5).normalize();
+    const sunlight = new THREE.DirectionalLight(0xffffff, 0.40);
+    sunlight.position.set(0, 10000, 10).normalize();
     sunlight.castShadow = true;
     this.scene.add(sunlight);
 
@@ -74,38 +68,11 @@ class World {
 
     this.scene.add(this.controls.getObject());
 
-    // load test
-    World.loadModel('spruce', spruceObj, spruceMtl).then((object) => {
-      const x = 0;
-      const z = -700;
-      const y = this.terrain.getHeightAt(x, z);
-
-      object.position.set(x, y, z);
-      object.scale.set(150, 150, 150);
-
-      this.scene.add(object);
-    });
-
-    World.loadModel('red_mushroom', red_mushroomObj, red_mushroomMtl).then((object) => {
-      const x = 0;
-      const z = -500;
-      const y = this.terrain.getHeightAt(x, z);
-
-      object.position.set(x, y, z);
-      object.scale.set(50, 50, 50);
-
-      this.scene.add(object);
-    });
-
-    World.loadModel(brown_mushroomObj, brown_mushroomMtl).then((object) => {
-      const x = 200;
-      const z = 200;
-      const y = this.terrain.getHeightAt(x, z);
-
-      object.position.set(x, y, z);
-      object.scale.set(50, 50, 50);
-
-      this.scene.add(object);
+    // load all models
+    objectConstants.forEach((element) => {
+      World.loadObjModel(element.name, element.obj, element.mtl).then((object) => {
+        object.scale.set(100, 100, 100); // scale from maya size to a decent world size
+      });
     });
   }
 
@@ -127,7 +94,18 @@ class World {
     this.player.handleKeyboard(key, active);
   }
 
-  static loadModel(name: string, objSrc: string, mtlSrc: string) {
+  /**
+   * Load an obj file
+   * @param name Name of the object
+   * @param objSrc obj source file path
+   * @param mtlSrc mtl source file path
+   * @return THREE.Object3D
+   */
+  static loadObjModel(name: string, objSrc: string, mtlSrc: string) {
+    if (World.LOADED_MODELS.has(name)) {
+      return World.LOADED_MODELS.get(name);
+    }
+
     return new Promise<THREE.Object3D>((resolve, reject) => {
       const objLoader = new THREE.OBJLoader();
       const mtlLoader = new THREE.MTLLoader();
@@ -140,19 +118,11 @@ class World {
           object.traverse((child) => {
             if (child instanceof THREE.Mesh) {
               child.castShadow = true;
-
-              child.material = new THREE.MeshPhongMaterial({
-                wireframe: false,
-                emissive: 0xffffff,
-                emissiveIntensity: 0.05,
-                specular: 0xffffff,
-                shininess: 8,
-                flatShading: true,
-                color: child.material.color
-              });
+              child.material.flatShading = true;
             }
           });
 
+          World.LOADED_MODELS.set(name, object);
           resolve(object);
         },             null, () => reject());
       },             null, () => reject());
