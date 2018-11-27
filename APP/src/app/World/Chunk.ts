@@ -8,8 +8,8 @@ import Utils from '@shared/Utils';
 class Chunk {
   static readonly MAX_CHUNK_HEIGHT: number = 2000;
   static readonly MIN_CHUNK_HEIGHT: number = -300;
-  static readonly NROWS: number = 4;
-  static readonly NCOLS: number = 4;
+  static readonly NROWS: number = 8;
+  static readonly NCOLS: number = 8;
   static readonly CELL_SIZE: number = 48;
 
   static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE;
@@ -51,16 +51,17 @@ class Chunk {
     const nz = z / Chunk.CELL_SIZE - 0.5;
 
     let e = 0;
-    let amp = 575;
-    let f = 0.005;
+    let amp = 1;
+    let f = 0.0035;
 
     for (let i = 0; i < 8; i++) {
-      e += amp * simplex.noise2D(f * nx, f * nz);
-      amp /= 1.9;
-      f *= 1.9;
+      e += amp * simplex.noise3D(f * nx, 1, f * nz);
+      amp /= 1.85;
+      f *= 1.95;
     }
 
-    return Utils.clamp((e > 0) ? Math.pow(e, 1.125) : e / 3, Chunk.MIN_CHUNK_HEIGHT, Chunk.MAX_CHUNK_HEIGHT);
+    const noise = e * ((Chunk.MAX_CHUNK_HEIGHT + Chunk.MIN_CHUNK_HEIGHT) / 2 + (Chunk.MAX_CHUNK_HEIGHT - Chunk.MAX_CHUNK_HEIGHT) / 2);
+    return ((noise > 0) ? Math.pow(noise, 1.125) : noise / 2.75);
   }
 
   /**

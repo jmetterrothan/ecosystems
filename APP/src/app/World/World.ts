@@ -90,7 +90,7 @@ class World {
       const p = World.loadObjModel(element.name, element.obj, element.mtl);
 
       return p.then((object) => {
-        object.scale.set(100, 100, 100); // scale from maya size to a decent world size
+        object.scale.set(150, 150, 150); // scale from maya size to a decent world size
       });
     });
 
