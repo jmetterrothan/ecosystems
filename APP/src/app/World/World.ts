@@ -3,8 +3,6 @@ import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
-import 'seedrandom';
-
 import Terrain from './Terrain';
 import Player from '../Player';
 import Utils from '@shared/Utils';
@@ -41,8 +39,14 @@ class World {
     // stuff
     this.terrain = new Terrain(this.seed);
 
+    // player spawn point
+    const x = 0;
+    const z = 0;
+    const y = this.terrain.getHeightAt(x, z) + 1000;
+    console.log(x, y, z);
+
     this.player = new Player(this.controls);
-    this.player.init();
+    this.player.init(x, y, z);
 
     this.scene.add(this.controls.getObject());
 
