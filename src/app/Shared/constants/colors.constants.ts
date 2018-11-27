@@ -12,10 +12,13 @@ export const DEFAULT_COLORS: IColor[] = [
     stop: .075,
     color: new Color(0x93c54b)
   }, {
-    stop: .125,
+    stop: .11,
     color: new Color(0x62ad3e)
   }, {
-    stop: .195,
+    stop: .135,
+    color: new Color(0x4d382c)
+  }, {
+    stop: 0.235,
     color: new Color(0x634739)
   }, {
     stop: 0.85,

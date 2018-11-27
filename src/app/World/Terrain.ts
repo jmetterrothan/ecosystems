@@ -4,12 +4,12 @@ import Chunk from './Chunk';
 import Player from '../Player';
 
 class Terrain {
-  public static readonly VIEW_DISTANCE: number = 4000;
+  public static readonly VIEW_DISTANCE: number = 5000;
   public static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(Terrain.VIEW_DISTANCE / Chunk.WIDTH);
-  public static readonly INFINITE_TERRAIN: boolean = false;
-  public static readonly MIN_X: number = -6;
+  public static readonly INFINITE_TERRAIN: boolean = true;
+  public static readonly MIN_X: number = -8;
   public static readonly MIN_Z: number = -64;
-  public static readonly MAX_X: number = 6;
+  public static readonly MAX_X: number = 8;
   public static readonly MAX_Z: number = 64;
 
   public readonly simplex: simplexNoise;
@@ -70,7 +70,7 @@ class Terrain {
           this.chunks.delete(key);
         }
       });
-      this.time = now + 500;
+      this.time = now + 1000;
     }
 
     for (let i = startZ; i < endZ; i++) {

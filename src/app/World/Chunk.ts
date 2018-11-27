@@ -7,7 +7,7 @@ import Utils from '../Shared/Utils';
 import Terrain from './Terrain';
 
 class Chunk {
-  public static readonly MAX_CHUNK_HEIGHT: number = 1200;
+  public static readonly MAX_CHUNK_HEIGHT: number = 2000;
   public static readonly MIN_CHUNK_HEIGHT: number = -300;
   public static readonly NROWS: number = 4;
   public static readonly NCOLS: number = 4;
@@ -19,7 +19,7 @@ class Chunk {
   public static readonly DEFAULT_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
     wireframe: false,
     emissive: 0xffffff,
-    emissiveIntensity: 0.1,
+    emissiveIntensity: 0.05,
     specular: 0xffffff,
     shininess: 6,
     flatShading: true,
@@ -52,7 +52,7 @@ class Chunk {
 
     let e = 0;
     let amp = 575;
-    let f = 0.0075;
+    let f = 0.005;
 
     for (let i = 0; i < 8; i++) {
       e += amp * simplex.noise2D(f * nx, f * nz);
@@ -60,7 +60,7 @@ class Chunk {
       f *= 1.9;
     }
 
-    return Utils.clamp((e > 0) ? Math.pow(e, 1.05) : e / 3, Chunk.MIN_CHUNK_HEIGHT, Chunk.MAX_CHUNK_HEIGHT);
+    return Utils.clamp((e > 0) ? Math.pow(e, 1.125) : e / 3, Chunk.MIN_CHUNK_HEIGHT, Chunk.MAX_CHUNK_HEIGHT);
   }
 
   /**
