@@ -59,16 +59,17 @@ module.exports = {
         ]
       },
       {
-        test: /\.(png|jpg|gif|svg)/,
-        include: [PATHS.IMAGES],
-        use: {
-          loader: 'file-loader',
-          options: {
-            name: webpackMode.isProduction
-              ? '/images/[name]_[hash:8].[ext]'
-              : '[name].[ext]'
+        test: /\.(png|jpg|gif|svg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: webpackMode.isProduction
+                ? '/images/[name]_[hash:8].[ext]'
+                : '[name].[ext]'
+            }
           }
-        }
+        ]
       },
       {
         test: /\.glsl$/,
