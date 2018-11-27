@@ -56,6 +56,7 @@ class World {
   }
 
   private initSeed() {
+    // 1603676994 | 2927331962
     this.seed = Utils.randomUint32().toString();
     Math.seedrandom(this.seed);
     console.info(`SEED : ${this.seed}`);
@@ -69,7 +70,7 @@ class World {
   }
 
   private initFog() {
-    this.scene.fog = new THREE.Fog(0xb1d8ff, Terrain.VIEW_DISTANCE / 5, Terrain.VIEW_DISTANCE - 500);
+    this.scene.fog = new THREE.Fog(0xb1d8ff, Terrain.VIEW_DISTANCE / 2, Terrain.VIEW_DISTANCE - 500);
   }
 
   private initLights() {
