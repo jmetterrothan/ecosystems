@@ -95,20 +95,13 @@ class Player {
   }
 
   public handleKeyboard(key: string, active: boolean) {
-    console.log(key, active);
     switch (key) {
-      case 'z': this.moveForward = active; break;
-      case 's': this.moveBackward = active; break;
-      case 'q': this.moveLeft = active; break;
-      case 'd': this.moveRight = active; break;
-      case 'a': this.moveUp = active; break;
-      case 'e': this.moveDown = active; break;
-      case 'ArrowRight': this.moveRight = active; break;
-      case 'ArrowLeft': this.moveLeft = active; break;
-      case 'ArrowUp': this.moveForward = active; break;
-      case 'ArrowDown': this.moveBackward = active; break;
-      case '+': this.moveUp = active; break;
-      case '-': this.moveDown = active; break;
+      case 'ArrowUp': case 'z': this.moveForward = active; break;
+      case 'ArrowDown': case 's': this.moveBackward = active; break;
+      case 'ArrowLeft': case 'q': this.moveLeft = active; break;
+      case 'ArrowRight': case 'd': this.moveRight = active; break;
+      case '+': case 'a': this.moveUp = active; break;
+      case '-': case 'e': this.moveDown = active; break;
     }
   }
 
