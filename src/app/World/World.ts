@@ -17,6 +17,8 @@ import brown_mushroomObj from '../../obj/brown_mushroom/brown_mushroom.obj';
 import brown_mushroomMtl from '../../obj/brown_mushroom/brown_mushroom.mtl';
 
 class World {
+  // private static LOADED_MODELS = new Map();
+
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
   private controls: THREE.PointerLockControls;
@@ -46,20 +48,21 @@ class World {
     /*
     const gizmo = new THREE.AxesHelper();
     gizmo.position.set(0, 0, 0);
-    gizmo.scale.set(1, 1, 1);
+    gizmo.scale.set(100, 100, 100);
     this.scene.add(gizmo);
     */
 
     // fog
-    this.scene.fog = new THREE.Fog(0xb1d8ff, Terrain.VIEW_DISTANCE / 2, Terrain.VIEW_DISTANCE - 500);
+    this.scene.fog = new THREE.Fog(0xb1d8ff, Terrain.VIEW_DISTANCE / 5, Terrain.VIEW_DISTANCE - 500);
 
     // lights
     const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.5);
-    light.position.set(0, 50, 0);
+    light.position.set(0, 50, 0).normalize();
     this.scene.add(light);
 
-    const sunlight = new THREE.DirectionalLight(0xffffff, 0.35);
-    sunlight.position.set(0, 1000, 5);
+    const sunlight = new THREE.DirectionalLight(0xffffff, 0.375);
+    sunlight.position.set(0, 1000, 5).normalize();
+    sunlight.castShadow = true;
     this.scene.add(sunlight);
 
     // stuff
