@@ -39,7 +39,7 @@ class Main {
     document.body.appendChild(this.stats.dom);
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, Terrain.VIEW_DISTANCE + 500);
+    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, Terrain.VIEW_DISTANCE + 500);
   }
 
   async init() {
