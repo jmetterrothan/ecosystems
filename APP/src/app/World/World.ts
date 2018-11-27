@@ -9,8 +9,6 @@ import Terrain from './Terrain';
 import Player from '../Player';
 import Chunk from './Chunk';
 
-import Utils from '../Shared/Utils';
-
 import objectConstants from '../Shared/constants/object.constants';
 
 class World {
