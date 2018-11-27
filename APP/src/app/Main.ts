@@ -99,8 +99,8 @@ class Main {
         document.body.requestPointerLock();
       });
 
-      window.addEventListener('keydown', e => this.world.handleKeyboard(e.key, true && this.controls.enabled));
-      window.addEventListener('keyup', e => this.world.handleKeyboard(e.key, false));
+      document.body.addEventListener('keydown', e => this.world.handleKeyboard(e.key, true && this.controls.enabled));
+      document.body.addEventListener('keyup', e => this.world.handleKeyboard(e.key, false));
     }
   }
 
