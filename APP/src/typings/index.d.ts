@@ -5,9 +5,11 @@ interface Document {
 }
 
 interface HTMLElement {
-
   requestPointerLock?: any;
   mozRequestPointerLock?: any;
   webkitRequestPointerLock?: any;
+}
 
+interface Math {
+  seedrandom(seed?: string);
 }

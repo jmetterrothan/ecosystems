@@ -7,12 +7,12 @@ import 'seedrandom';
 
 import Terrain from './Terrain';
 import Player from '../Player';
-import Chunk from './Chunk';
+import Utils from '@shared/Utils';
 
-import objectConstants from '../Shared/constants/object.constants';
+import { OBJECTS } from '@shared/constants/object.constants';
 
 class World {
-  private static LOADED_MODELS = new Map<THREE.Object3D>();
+  private static LOADED_MODELS = new Map<string, THREE.Object3D>();
 
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
@@ -30,27 +30,45 @@ class World {
     this.controls = controls;
 
     this.frustum = new THREE.Frustum();
-
-    // seed
-    this.seed = '2842781435'; // Utils.randomUint32().toString();
-    Math.seedrandom(this.seed);
-    console.info(`SEED : ${this.seed}`);
-
-    this.initObjects();
   }
 
-  private initObjects() {
-    /*
+  async init() {
+    this.initSeed();
+    this.initFog();
+    this.initLights();
+    await this.initObjects();
+
+    // stuff
+    this.terrain = new Terrain(this.seed);
+
+    this.player = new Player(this.controls);
+    this.player.init();
+
+    this.scene.add(this.controls.getObject());
+
+    const object = World.LOADED_MODELS.get('spruce').clone();
+    object.position.y = this.terrain.getHeightAt(0, 0);
+    this.scene.add(object);
+  }
+
+  private initSeed() {
+    this.seed = Utils.randomUint32().toString();
+    Math.seedrandom(this.seed);
+    console.info(`SEED : ${this.seed}`);
+  }
+
+  private showAxesHelper() {
     const gizmo = new THREE.AxesHelper();
     gizmo.position.set(0, 0, 0);
     gizmo.scale.set(100, 100, 100);
     this.scene.add(gizmo);
-    */
+  }
 
-    // fog
+  private initFog() {
     this.scene.fog = new THREE.Fog(0xb1d8ff, Terrain.VIEW_DISTANCE / 5, Terrain.VIEW_DISTANCE - 500);
+  }
 
-    // lights
+  private initLights() {
     const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.5);
     light.position.set(0, 1000, 0).normalize();
     this.scene.add(light);
@@ -59,19 +77,20 @@ class World {
     sunlight.position.set(0, 10000, 10).normalize();
     sunlight.castShadow = true;
     this.scene.add(sunlight);
+  }
 
-    // stuff
-    this.terrain = new Terrain(this.seed);
-    this.player = new Player(this.controls);
-
-    this.scene.add(this.controls.getObject());
+  private async initObjects(): Promise<any> {
 
     // load all models
-    objectConstants.forEach((element) => {
-      World.loadObjModel(element.name, element.obj, element.mtl).then((object) => {
+    const stack = OBJECTS.map(element => {
+      const p = World.loadObjModel(element.name, element.obj, element.mtl);
+
+      return p.then((object) => {
         object.scale.set(100, 100, 100); // scale from maya size to a decent world size
       });
     });
+
+    await Promise.all(stack);
   }
 
   public update() {
@@ -99,12 +118,12 @@ class World {
    * @param mtlSrc mtl source file path
    * @return THREE.Object3D
    */
-  static loadObjModel(name: string, objSrc: string, mtlSrc: string) {
-    if (World.LOADED_MODELS.has(name)) {
-      return World.LOADED_MODELS.get(name);
-    }
-
+  static async loadObjModel(name: string, objSrc: string, mtlSrc: string): Promise<THREE.Object3D> {
     return new Promise<THREE.Object3D>((resolve, reject) => {
+      if (World.LOADED_MODELS.has(name)) {
+        resolve(World.LOADED_MODELS.get(name));
+      }
+
       const objLoader = new THREE.OBJLoader();
       const mtlLoader = new THREE.MTLLoader();
 
@@ -116,14 +135,14 @@ class World {
           object.traverse((child) => {
             if (child instanceof THREE.Mesh) {
               child.castShadow = true;
-              child.material.flatShading = true;
+              (<THREE.Material>child.material).flatShading = true;
             }
           });
 
           World.LOADED_MODELS.set(name, object);
           resolve(object);
-        },             null, () => reject());
-      },             null, () => reject());
+        }, null, () => reject());
+      }, null, () => reject());
     });
   }
 }

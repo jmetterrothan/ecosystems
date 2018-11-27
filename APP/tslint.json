@@ -4,6 +4,8 @@
     "trailing-comma": false,
     "no-boolean-literal-compare": false,
     "max-line-length": false,
-    "no-increment-decrement": false
+    "no-increment-decrement": false,
+    "align": false,
+    "ter-arrow-parens": false
   }
 }

@@ -3,20 +3,19 @@ import { IColor } from './../Shared/models/color.model';
 import simplexNoise from 'simplex-noise';
 import * as THREE from 'three';
 
-import Utils from '../Shared/Utils';
-import Terrain from './Terrain';
+import Utils from '@shared/Utils';
 
 class Chunk {
-  public static readonly MAX_CHUNK_HEIGHT: number = 2000;
-  public static readonly MIN_CHUNK_HEIGHT: number = -300;
-  public static readonly NROWS: number = 4;
-  public static readonly NCOLS: number = 4;
-  public static readonly CELL_SIZE: number = 48;
+  static readonly MAX_CHUNK_HEIGHT: number = 2000;
+  static readonly MIN_CHUNK_HEIGHT: number = -300;
+  static readonly NROWS: number = 4;
+  static readonly NCOLS: number = 4;
+  static readonly CELL_SIZE: number = 48;
 
-  public static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE;
-  public static readonly DEPTH: number = Chunk.NROWS * Chunk.CELL_SIZE;
+  static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE;
+  static readonly DEPTH: number = Chunk.NROWS * Chunk.CELL_SIZE;
 
-  public static readonly DEFAULT_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
+  static readonly DEFAULT_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
     wireframe: false,
     emissive: 0xffffff,
     emissiveIntensity: 0.075,
@@ -27,14 +26,14 @@ class Chunk {
     vertexColors: THREE.FaceColors
   });
 
-  public static readonly DEFAULT_COLORS: IColor[] = DEFAULT_COLORS;
+  static readonly DEFAULT_COLORS: IColor[] = DEFAULT_COLORS;
 
-  public readonly row: number;
-  public readonly col: number;
+  readonly row: number;
+  readonly col: number;
 
-  public readonly simplex: simplexNoise;
+  readonly simplex: simplexNoise;
 
-  public mesh: THREE.Mesh;
+  mesh: THREE.Mesh;
 
   constructor(simplex: simplexNoise, row: number, col: number) {
     this.simplex = simplex;

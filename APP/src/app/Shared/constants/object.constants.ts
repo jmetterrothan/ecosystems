@@ -6,7 +6,7 @@ import spruceMtl from '../../../public/assets/obj/spruce/spruce.mtl';
 import red_mushroomObj from '../../../public/assets/obj/red_mushroom/red_mushroom.obj';
 import red_mushroomMtl from '../../../public/assets/obj/red_mushroom/red_mushroom.mtl';
 
-const OBJECTS: IObject[] = [
+export const OBJECTS: IObject[] = [
   {
     name: 'spruce',
     obj: spruceObj,
@@ -18,5 +18,3 @@ const OBJECTS: IObject[] = [
     mtl: red_mushroomMtl
   }
 ];
-
-export default OBJECTS;

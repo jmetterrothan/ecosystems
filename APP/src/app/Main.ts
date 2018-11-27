@@ -37,12 +37,20 @@ class Main {
     document.body.appendChild(this.stats.dom);
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.01, Terrain.VIEW_DISTANCE + 500);
+    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, Terrain.VIEW_DISTANCE + 500);
+  }
 
+  async init() {
+    this.initControls();
     this.initRenderer();
     this.initPointerLock();
 
     this.world = new World(this.scene, this.camera, this.controls);
+    await this.world.init();
+  }
+
+  private initControls() {
+    this.controls = new THREE.PointerLockControls(this.camera);
   }
 
   private initRenderer() {
@@ -70,9 +78,6 @@ class Main {
   }
 
   private initPointerLock() {
-    // view and mouvements
-    this.controls = new THREE.PointerLockControls(this.camera);
-
     // handle pointer lock authorization
     if ('pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document) {
 

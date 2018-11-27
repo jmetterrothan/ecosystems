@@ -12,7 +12,6 @@ class Player {
 
   private speed: THREE.Vector3;
   private velocity: THREE.Vector3;
-  private position: THREE.Vector3;
 
   constructor(controls) {
     this.controls = controls;
@@ -26,7 +25,9 @@ class Player {
 
     this.speed = new THREE.Vector3(2000, 1000, 2000);
     this.velocity = new THREE.Vector3(0, 0, 0);
+  }
 
+  init() {
     this.controls.getObject().position.set(0, 0, -5);
   }
 
