@@ -23,7 +23,7 @@ class Chunk {
     emissive: 0xffffff,
     emissiveIntensity: 0.075,
     specular: 0x252525,
-    shininess: 6,
+    shininess: 12,
     reflectivity: 0.75,
     flatShading: true,
     vertexColors: THREE.FaceColors
@@ -55,7 +55,7 @@ class Chunk {
 
     let e = 0;
     let amp = 1;
-    let f = 0.0035;
+    let f = 0.00375;
 
     for (let i = 0; i < 8; i++) {
       e += amp * simplex.noise3D(f * nx, 1, f * nz);
@@ -64,21 +64,31 @@ class Chunk {
     }
 
     const noise = e * ((Chunk.MAX_CHUNK_HEIGHT + Chunk.MIN_CHUNK_HEIGHT) / 2 + (Chunk.MAX_CHUNK_HEIGHT - Chunk.MAX_CHUNK_HEIGHT) / 2);
-    return ((noise > 0) ? Math.pow(noise, 1.125) : noise / 2.75);
+
+    if (noise > 0) {
+      return Math.pow(noise, 1.115);
+    }
+    return noise / 2.5;
   }
 
   populate(scene: THREE.Scene, terrain: Terrain) {
     const pds = new poissonDiskSampling([Chunk.WIDTH / 16, Chunk.DEPTH / 16], 300, 600, 30, Utils.rng);
     const points = pds.fill();
-    const limit = 10;
+    const high = 5;
+    const low = -150;
 
     points.forEach((point: number[]) => {
-      const x = this.col * Chunk.WIDTH + point.shift();
-      const z = this.row * Chunk.DEPTH + point.shift();
+      const x = this.col * Chunk.WIDTH + point.shift() * 16;
+      const z = this.row * Chunk.DEPTH + point.shift() * 16;
       const y = terrain.getHeightAt(x, z);
-      if (y < limit) {
-        const object = World.LOADED_MODELS.get('spruce').clone();
+      if (y < high && y > low) {
+        const f = Utils.randomFloat(0.8, 1.2);
+        const object = Utils.rng() > 0.10 ? World.LOADED_MODELS.get('spruce').clone() : World.LOADED_MODELS.get('red_mushroom').clone();
+
+        object.rotateY(Utils.randomInt(0, 360));
+        object.scale.set(object.scale.x * f, object.scale.y * f, object.scale.z * f);
         object.position.set(x, y, z);
+
         scene.add(object);
       }
     });
