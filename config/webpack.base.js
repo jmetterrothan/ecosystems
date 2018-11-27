@@ -73,6 +73,10 @@ module.exports = {
       {
         test: /\.glsl$/,
         loader: 'webpack-glsl-loader'
+      },
+      {
+        test: /\.(obj|mtl)$/,
+        loader: 'file-loader'
       }
     ]
   },
