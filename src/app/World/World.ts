@@ -7,6 +7,9 @@ import 'seedrandom';
 import Terrain from './Terrain';
 import Player from '../Player';
 import Chunk from './Chunk';
+
+import Utils from '../Shared/Utils';
+
 import spruceObj from '../../obj/spruce/spruce.obj';
 import spruceMtl from '../../obj/spruce/spruce.mtl';
 
@@ -66,7 +69,7 @@ class World {
     this.scene.add(sunlight);
 
     // stuff
-    this.terrain = new Terrain(this.seed.toString());
+    this.terrain = new Terrain(this.seed);
     this.player = new Player(this.controls);
 
     this.scene.add(this.controls.getObject());
