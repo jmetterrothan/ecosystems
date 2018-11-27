@@ -11,9 +11,9 @@ import Terrain from './Terrain';
 class Chunk {
   static readonly MAX_CHUNK_HEIGHT: number = 2000;
   static readonly MIN_CHUNK_HEIGHT: number = -300;
-  static readonly NROWS: number = 8;
-  static readonly NCOLS: number = 8;
-  static readonly CELL_SIZE: number = 48;
+  static readonly NROWS: number = 16;
+  static readonly NCOLS: number = 16;
+  static readonly CELL_SIZE: number = 64;
 
   static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE;
   static readonly DEPTH: number = Chunk.NROWS * Chunk.CELL_SIZE;
@@ -72,18 +72,22 @@ class Chunk {
   }
 
   populate(scene: THREE.Scene, terrain: Terrain) {
-    const pds = new poissonDiskSampling([Chunk.WIDTH / 16, Chunk.DEPTH / 16], 300, 600, 30, Utils.rng);
+    const padding = 175;
+    const pds = new poissonDiskSampling([Chunk.WIDTH - padding * 2, Chunk.DEPTH - padding * 2], padding * 2, padding * 2, 30, Utils.rng);
     const points = pds.fill();
     const high = 5;
     const low = -150;
 
+    console.log(points);
+
     points.forEach((point: number[]) => {
-      const x = this.col * Chunk.WIDTH + point.shift() * 16;
-      const z = this.row * Chunk.DEPTH + point.shift() * 16;
+      const x = this.col * Chunk.WIDTH + point.shift() + padding;
+      const z = this.row * Chunk.DEPTH + point.shift() + padding;
       const y = terrain.getHeightAt(x, z);
       if (y < high && y > low) {
         const f = Utils.randomFloat(0.8, 1.2);
-        const object = Utils.rng() > 0.10 ? World.LOADED_MODELS.get('spruce').clone() : World.LOADED_MODELS.get('red_mushroom').clone();
+        // const object = Utils.rng() > 0.10 ? World.LOADED_MODELS.get('spruce').clone() : World.LOADED_MODELS.get('red_mushroom').clone();
+        const object = World.LOADED_MODELS.get('spruce').clone();
 
         object.rotateY(Utils.randomInt(0, 360));
         object.scale.set(object.scale.x * f, object.scale.y * f, object.scale.z * f);

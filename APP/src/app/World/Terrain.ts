@@ -9,10 +9,10 @@ class Terrain {
   static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(Terrain.VIEW_DISTANCE / Chunk.WIDTH);
   static readonly INFINITE_TERRAIN: boolean = true;
 
-  static readonly MIN_X: number = -8;
-  static readonly MIN_Z: number = -8;
-  static readonly MAX_X: number = 8;
-  static readonly MAX_Z: number = 8;
+  static readonly MIN_X: number = -4;
+  static readonly MIN_Z: number = -4;
+  static readonly MAX_X: number = 4;
+  static readonly MAX_Z: number = 4;
 
   readonly simplex: simplexNoise;
   private chunks: Map<string, Chunk>;

@@ -144,6 +144,11 @@ class World {
           });
 
           World.LOADED_MODELS.set(name, object);
+          const box = new THREE.Box3().setFromObject(object);
+          const size = box.getSize(new THREE.Vector3(0, 0, 0));
+
+          console.log(name, size);
+          // console.log(name, new THREE.Box3().setFromObject(object).getSize);
           resolve(object);
         }, null, () => reject());
       }, null, () => reject());
