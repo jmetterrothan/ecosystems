@@ -11,7 +11,7 @@ class Chunk {
   public static readonly MIN_CHUNK_HEIGHT: number = -300;
   public static readonly NROWS: number = 4;
   public static readonly NCOLS: number = 4;
-  public static readonly CELL_SIZE: number = 40;
+  public static readonly CELL_SIZE: number = 48;
 
   public static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE;
   public static readonly DEPTH: number = Chunk.NROWS * Chunk.CELL_SIZE;
@@ -19,9 +19,10 @@ class Chunk {
   public static readonly DEFAULT_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
     wireframe: false,
     emissive: 0xffffff,
-    emissiveIntensity: 0.05,
-    specular: 0xffffff,
+    emissiveIntensity: 0.075,
+    specular: 0x252525,
     shininess: 6,
+    reflectivity: 0.75,
     flatShading: true,
     vertexColors: THREE.FaceColors
   });
