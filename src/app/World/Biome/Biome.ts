@@ -35,18 +35,21 @@ class Biome {
   }
 
   pick(y: number): THREE.Object3D | null {
-    const rand = Utils.rng();
+    let temp = 0;
+    const rand = Utils.rng(); // random float bewteen 0 - 1 included (sum of weights must be = 1)
 
-    for (let i = 0; i < this.organisms.length; i++) {
-      // retrieve an organism based on weight
-      if (!this.organisms[i + 1] || rand < this.organisms[i + 1].weight) {
+    for (let i = 0, n = this.organisms.length; i < n; i++) {
+      temp += this.organisms[i].weight;
+
+      if (rand <= temp) {
         const organism = this.organisms[i];
-        const object = organism.object.clone();
 
         // test for scarcity and ground elevation criteria
         if ((organism.scarcity === 0 || Utils.rng() >= organism.scarcity) && y >= organism.low && y <= organism.high) {
+          const object = organism.object.clone();
+
           const f = Utils.randomFloat(organism.scale.min, organism.scale.max);
-          const r = Utils.randomInt(0, Utils.degToRad(360));
+          const r = Utils.randomFloat(0, Utils.degToRad(360));
 
           object.rotateY(r);
           object.scale.multiplyScalar(f);
