@@ -1,6 +1,9 @@
+import simplexNoise from 'simplex-noise';
+
 import { IColor } from '@shared/models/color.model';
-import World from './World';
-import Chunk from './Chunk';
+
+import World from '../World';
+import Chunk from '../Chunk';
 import Utils from '@shared/Utils';
 
 /**
@@ -22,6 +25,7 @@ interface BiomeWeightedObject {
 
 class Biome {
   static LIST = new Map<string, Biome>();
+  private simplex: simplexNoise;
 
   private name: string;
   private organisms: BiomeWeightedObject[];
@@ -38,6 +42,7 @@ class Biome {
     });
 
     this.colors = colors;
+    this.simplex = new simplexNoise(Utils.rng);
   }
 
   pick(y: number): THREE.Object3D | null {
@@ -65,7 +70,7 @@ class Biome {
     return null;
   }
 
-  getColor(y): THREE.Color {
+  getColor(y: number): THREE.Color {
     // normalize height value
     const level = (y - Chunk.MIN_CHUNK_HEIGHT) / (Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT);
 
@@ -74,6 +79,32 @@ class Biome {
         return this.colors[i].color;
       }
     }
+  }
+
+  /**
+   * Compute a point of the heightmap
+   * TODO: put generation in Biome
+   */
+  sumOctaves(x: number, z: number): number {
+    const nx = x / 64 - 0.5;
+    const nz = z / 64 - 0.5;
+
+    let e = 0;
+    let amp = 1;
+    let f = 0.00365;
+
+    for (let i = 0; i < 8; i++) {
+      e += amp * this.simplex.noise3D(f * nx, 1, f * nz);
+      amp /= 1.85;
+      f *= 1.95;
+    }
+
+    const noise = e * ((Chunk.MAX_CHUNK_HEIGHT + Chunk.MIN_CHUNK_HEIGHT) / 2 + (Chunk.MAX_CHUNK_HEIGHT - Chunk.MAX_CHUNK_HEIGHT) / 2);
+
+    if (noise > 0) {
+      return Math.pow(noise, 1.115);
+    }
+    return noise / 2;
   }
 
   static register(name: string, organisms: BiomeWeightedObject[], colors: IColor[]): Biom {

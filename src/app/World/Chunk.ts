@@ -1,18 +1,17 @@
 import * as THREE from 'three';
-import simplexNoise from 'simplex-noise';
 import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Utils from '@shared/Utils';
 import World from './World';
 import Terrain from './Terrain';
-import Biome from './Biome';
+import Biome from './Biome/Biome';
 
 class Chunk {
-  static readonly MAX_CHUNK_HEIGHT: number = 2000;
+  static readonly MAX_CHUNK_HEIGHT: number = 1800;
   static readonly MIN_CHUNK_HEIGHT: number = -300;
   static readonly NROWS: number = 16;
   static readonly NCOLS: number = 16;
-  static readonly CELL_SIZE: number = 64;
+  static readonly CELL_SIZE: number = 80;
 
   static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE;
   static readonly DEPTH: number = Chunk.NROWS * Chunk.CELL_SIZE;
@@ -28,48 +27,21 @@ class Chunk {
     vertexColors: THREE.FaceColors
   });
 
+  private high: number; // highest point of the chunk
+  private low: number; // lowest point of the chunk
   readonly row: number;
   readonly col: number;
-
-  readonly simplex: simplexNoise;
 
   readonly biome: Biome;
 
   mesh: THREE.Mesh;
 
-  constructor(simplex: simplexNoise, row: number, col: number) {
-    this.simplex = simplex;
+  constructor(biome: Biome, row: number, col: number) {
     this.row = row;
     this.col = col;
-    this.biome = Biome.LIST.get('hills'); // TODO: put biome as parameter
+    this.biome = biome; // TODO: put biome as parameter
 
     this.mesh = this.generate();
-  }
-
-  /**
-   * Compute a point of the heightmap
-   * TODO: put generation in Biome
-   */
-  static sumOctaves(simplex: simplexNoise, x: number, z: number): number {
-    const nx = x / Chunk.CELL_SIZE - 0.5;
-    const nz = z / Chunk.CELL_SIZE - 0.5;
-
-    let e = 0;
-    let amp = 1;
-    let f = 0.00375;
-
-    for (let i = 0; i < 8; i++) {
-      e += amp * simplex.noise3D(f * nx, 1, f * nz);
-      amp /= 1.85;
-      f *= 1.95;
-    }
-
-    const noise = e * ((Chunk.MAX_CHUNK_HEIGHT + Chunk.MIN_CHUNK_HEIGHT) / 2 + (Chunk.MAX_CHUNK_HEIGHT - Chunk.MAX_CHUNK_HEIGHT) / 2);
-
-    if (noise > 0) {
-      return Math.pow(noise, 1.115);
-    }
-    return noise / 2.5;
   }
 
   populate(scene: THREE.Scene, terrain: Terrain) {
@@ -82,7 +54,7 @@ class Chunk {
       const z = padding + this.row * Chunk.DEPTH + point.shift();
 
       // compute object height
-      const y = terrain.getHeightAt(x, z);
+      const y = terrain.getHeightAt(x, z, this);
 
       // select an organism based on the current biome
       const object = this.biome.pick(y);
@@ -108,7 +80,10 @@ class Chunk {
       const x = this.col * Chunk.WIDTH + c * Chunk.CELL_SIZE;
       for (let r = 0; r < nbVerticesZ; r++) {
         const z = this.row * Chunk.DEPTH + r * Chunk.CELL_SIZE;
-        const y = Chunk.sumOctaves(this.simplex, x, z);
+        const y = this.biome.sumOctaves(x, z);
+
+        if (this.low > y) this.low = y;
+        if (this.high < y) this.high = y;
 
         geometry.vertices.push(new THREE.Vector3(x, y, z));
         // geometry.colors.push(this.getColor(grad, y));
@@ -170,6 +145,7 @@ class Chunk {
     mesh.frustumCulled = false;
     mesh.visible = false;
     mesh.matrixAutoUpdate = false;
+    mesh.receiveShadow = true;
 
     return mesh;
   }

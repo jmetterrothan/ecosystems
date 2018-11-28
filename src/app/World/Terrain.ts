@@ -1,8 +1,7 @@
-import simplexNoise from 'simplex-noise';
-
 import Chunk from './Chunk';
 import Player from '../Player';
 import Utils from '@shared/Utils';
+import Biome from './Biome/Biome';
 
 class Terrain {
   static readonly VIEW_DISTANCE: number = 6000;
@@ -14,21 +13,20 @@ class Terrain {
   static readonly MAX_X: number = 4;
   static readonly MAX_Z: number = 4;
 
-  readonly simplex: simplexNoise;
   private chunks: Map<string, Chunk>;
   private visibleChunks: Chunk[];
 
   private time: number;
 
   constructor() {
-    this.simplex = new simplexNoise(Utils.rng);
     this.chunks = new Map<string, Chunk>();
     this.visibleChunks = [];
     this.time = window.performance.now();
+
+    console.log(Terrain.CHUNK_RENDER_LIMIT);
   }
 
-  update(scene: THREE.Scene, frustum: THREE.Frustum, player: Player) {
-    const position = player.getPosition();
+  update(scene: THREE.Scene, frustum: THREE.Frustum, position: THREE.Vector3) {
     const chunkX = Math.round(position.x / Chunk.WIDTH);
     const chunkZ = Math.round(position.z / Chunk.DEPTH);
 
@@ -81,7 +79,7 @@ class Terrain {
 
         // generate chunk if needed
         if (!this.chunks.has(id)) {
-          const chunk = new Chunk(this.simplex, i, j);
+          const chunk = new Chunk(Biome.LIST.get('hills'), i, j);
           this.chunks.set(id, chunk);
           chunk.populate(scene, this);
 
@@ -99,8 +97,20 @@ class Terrain {
     }
   }
 
-  getHeightAt(x: number, z: number) {
-    return Chunk.sumOctaves(this.simplex, x, z);
+  getChunkAt(x: number, z: number) {
+    const chunkX = Math.trunc(x / Chunk.WIDTH);
+    const chunkZ = Math.trunc(z / Chunk.DEPTH);
+
+    return this.chunks.get(`${chunkZ}:${chunkX}`);
+  }
+
+  getHeightAt(x: number, z: number, c?: Chunk) {
+    const chunk = (c instanceof Chunk) ? c : this.getChunkAt(x, z);
+    if (chunk) {
+      return chunk.biome.sumOctaves(x, z);
+    }
+    console.warn('d');
+    return 0;
   }
 }
 

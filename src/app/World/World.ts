@@ -4,7 +4,7 @@ import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
 import Terrain from './Terrain';
-import Biome from './Biome';
+import Biome from './Biome/Biome';
 import Player from '../Player';
 import Utils from '@shared/Utils';
 
