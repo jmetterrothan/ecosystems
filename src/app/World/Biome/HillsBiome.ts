@@ -1,8 +1,9 @@
+import * as THREE from 'three';
+
 import Biome from './Biome';
 import Chunk from '../Chunk';
 
-class HillsBiome extends Biome
-{
+class HillsBiome extends Biome {
   constructor() {
     super('hills', [
       {
@@ -25,22 +26,27 @@ class HillsBiome extends Biome
       {
         stop: 0,
         color: new THREE.Color(0xfcd95f) // underwater sand
-      }, {
+      },
+      {
         stop: 0.015,
         color: new THREE.Color(0xf0e68c) // sand
-      }, {
+      },
+      {
         stop: .04,
         color: new THREE.Color(0x93c54b) // grass
       }, {
         stop: .06,
         color: new THREE.Color(0x62ad3e) // dark grass
-      }, {
+      },
+      {
         stop: .14,
         color: new THREE.Color(0x7c6a4a) // dark rock
-      }, {
+      },
+      {
         stop: .3,
         color: new THREE.Color(0x40424a)
-      }, {
+      },
+      {
         stop: 1.25,
         color: new THREE.Color(0xffffff) // snow cap
       }

@@ -1,8 +1,9 @@
+import * as THREE from 'three';
+
 import Biome from './Biome';
 import Chunk from '../Chunk';
 
-class DesertBiome extends Biome
-{
+class DesertBiome extends Biome {
   constructor() {
     super('desert', [
       {
@@ -17,7 +18,8 @@ class DesertBiome extends Biome
       {
         stop: 0,
         color: new THREE.Color(0xf0e9ae) // dried up water puddle
-      }, {
+      },
+      {
         stop: 0.05,
         color: new THREE.Color(0xf0e68c) // sand
       }, {

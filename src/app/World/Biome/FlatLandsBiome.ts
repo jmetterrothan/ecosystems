@@ -1,8 +1,8 @@
-import Biome from './Biome';
-import Chunk from '../Chunk';
+import * as THREE from 'three';
 
-class FlatLandsBiome extends Biome
-{
+import Biome from './Biome';
+
+class FlatLandsBiome extends Biome {
   constructor() {
     super('flatlands', [
       {
@@ -25,10 +25,12 @@ class FlatLandsBiome extends Biome
       {
         stop: 0,
         color: new THREE.Color(0xf0e68c) // sand
-      }, {
+      },
+      {
         stop: 0.125,
         color: new THREE.Color(0x93c54b) // grass
-      }, {
+      },
+      {
         stop: 0.165,
         color: new THREE.Color(0x62ad3e) // grass
       }
