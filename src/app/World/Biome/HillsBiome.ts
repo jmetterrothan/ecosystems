@@ -7,19 +7,27 @@ class HillsBiome extends Biome {
   constructor() {
     super('hills', [
       {
-        weight: 0,
+        weight: 0.8,
         scarcity: 0,
         name: 'spruce',
         low: -150,
-        high: 5,
+        high: -25,
         scale: { min: 0.75, max: 1.2 }
       },
       {
-        weight: 0.5,
+        weight: 0.1,
         scarcity: 0.95,
         name: 'red_mushroom',
         low: -150,
-        high: 5,
+        high: -10,
+        scale: { min: 0.9, max: 1.5 }
+      },
+      {
+        weight: 0.1,
+        scarcity: 0.95,
+        name: 'brown_mushroom',
+        low: -150,
+        high: -10,
         scale: { min: 0.9, max: 1.5 }
       },
     ], [

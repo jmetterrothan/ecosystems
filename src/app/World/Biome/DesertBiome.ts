@@ -7,20 +7,52 @@ class DesertBiome extends Biome {
   constructor() {
     super('desert', [
       {
-        weight: 0,
+        weight: 0.3,
         scarcity: 0.985,
-        name: 'cactus',
-        low: -400,
-        high: -125,
-        scale: { min: 0.75, max: 1.6 }
+        name: 'cactus1',
+        low: -200,
+        high: -75,
+        scale: { min: 0.75, max: 2 }
       },
       {
-        weight: 0.25,
+        weight: 0.20,
         scarcity: 0.985,
         name: 'cactus2',
-        low: -400,
-        high: -125,
-        scale: { min: 0.85, max: 1.45 }
+        low: -200,
+        high: -75,
+        scale: { min: 0.85, max: 1.75 }
+      },
+      {
+        weight: 0.3,
+        scarcity: 0.985,
+        name: 'cactus3',
+        low: -200,
+        high: -75,
+        scale: { min: 0.9, max: 3 }
+      },
+      {
+        weight: 0.05,
+        scarcity: 0.985,
+        name: 'cactus4',
+        low: -200,
+        high: -75,
+        scale: { min: 1.0, max: 1.75 }
+      },
+      {
+        weight: 0.1,
+        scarcity: 0.975,
+        name: 'rock1',
+        low: -100,
+        high: 0,
+        scale: { min: 1.0, max: 4 }
+      },
+      {
+        weight: 0.15,
+        scarcity: 0.975,
+        name: 'rock1',
+        low: -100,
+        high: 0,
+        scale: { min: 0.5, max: 1.0 }
       },
     ], [
       {
