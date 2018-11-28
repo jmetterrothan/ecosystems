@@ -36,10 +36,10 @@ class HillsBiome extends Biome
         color: new THREE.Color(0x62ad3e) // dark grass
       }, {
         stop: .14,
-        color: new THREE.Color(0x4d382c) // dark rock
+        color: new THREE.Color(0x7c6a4a) // dark rock
       }, {
         stop: .3,
-        color: new THREE.Color(0x57422E) // dark grass
+        color: new THREE.Color(0x40424a)
       }, {
         stop: 1.25,
         color: new THREE.Color(0xffffff) // snow cap
@@ -66,7 +66,7 @@ class HillsBiome extends Biome
 
     const noise = e * ((Chunk.MAX_CHUNK_HEIGHT + Chunk.MIN_CHUNK_HEIGHT) / 2 + (Chunk.MAX_CHUNK_HEIGHT - Chunk.MAX_CHUNK_HEIGHT) / 2);
 
-    if (noise > 0) {
+    if (noise > 10) {
       return Math.pow(noise, 1.115);
     }
     return noise / 2;
