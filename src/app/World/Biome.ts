@@ -1,4 +1,4 @@
-import { IColor } from './../../../../src/app/Shared/models/color.model';
+import { IColor } from '@shared/models/color.model';
 import World from './World';
 import Chunk from './Chunk';
 import Utils from '@shared/Utils';
@@ -20,8 +20,7 @@ interface BiomeWeightedObject {
   object?: THREE.Object3D;
 }
 
-class Biome
-{
+class Biome {
   static LIST = new Map<string, Biome>();
 
   private name: string;

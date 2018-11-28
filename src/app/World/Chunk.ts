@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { IColor } from './../Shared/models/color.model';
 import simplexNoise from 'simplex-noise';
 import poissonDiskSampling from 'poisson-disk-sampling';
 
