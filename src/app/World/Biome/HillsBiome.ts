@@ -8,26 +8,26 @@ class HillsBiome extends Biome {
     super('hills', [
       {
         weight: 0.8,
-        scarcity: 0,
+        scarcity: 0.45,
         name: 'spruce',
-        low: -150,
-        high: -25,
-        scale: { min: 0.75, max: 1.2 }
+        low: -100,
+        high: 1500,
+        scale: { min: 0.7, max: 1.2 }
       },
       {
         weight: 0.1,
-        scarcity: 0.95,
+        scarcity: 0.975,
         name: 'red_mushroom',
         low: -150,
-        high: -10,
+        high: 1500,
         scale: { min: 0.9, max: 1.5 }
       },
       {
         weight: 0.1,
-        scarcity: 0.95,
+        scarcity: 0.975,
         name: 'brown_mushroom',
         low: -150,
-        high: -10,
+        high: 1500,
         scale: { min: 0.9, max: 1.5 }
       },
     ], [
@@ -42,22 +42,11 @@ class HillsBiome extends Biome {
       {
         stop: .04,
         color: new THREE.Color(0x93c54b) // grass
-      }, {
-        stop: .06,
-        color: new THREE.Color(0x62ad3e) // dark grass
       },
       {
-        stop: .14,
-        color: new THREE.Color(0x7c6a4a) // dark rock
+        stop: .125,
+        color: new THREE.Color(0x62ad3e) // dark rock
       },
-      {
-        stop: .3,
-        color: new THREE.Color(0x40424a)
-      },
-      {
-        stop: 1.25,
-        color: new THREE.Color(0xffffff) // snow cap
-      }
     ]);
   }
 
@@ -70,20 +59,20 @@ class HillsBiome extends Biome {
 
     let e = 0;
     let amp = 1;
-    let f = 0.00365;
+    let f = 0.005;
 
     for (let i = 0; i < 8; i++) {
       e += amp * this.simplex.noise3D(f * nx, 1, f * nz);
-      amp /= 1.85;
-      f *= 1.95;
+      amp /= 2;
+      f *= 2.0;
     }
 
     const noise = e * ((Chunk.MAX_CHUNK_HEIGHT + Chunk.MIN_CHUNK_HEIGHT) / 2 + (Chunk.MAX_CHUNK_HEIGHT - Chunk.MAX_CHUNK_HEIGHT) / 2);
 
-    if (noise > 10) {
-      return Math.pow(noise, 1.115);
+    if (noise > 0) {
+      return noise;
     }
-    return noise / 2;
+    return noise / 1.5;
   }
 }
 
