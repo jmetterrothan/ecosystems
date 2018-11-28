@@ -13,7 +13,7 @@ import Utils from '@shared/Utils';
  * - simplex noise generator
  * - noise parameters
  */
-interface BiomeWeightedObject {
+interface IBiomeWeightedObject {
   weight: number;
   name: string;
   low: number;
@@ -24,16 +24,13 @@ interface BiomeWeightedObject {
 }
 
 class Biome {
-  static LIST = new Map<string, Biome>();
   private simplex: simplexNoise;
-
   private name: string;
-  private organisms: BiomeWeightedObject[];
+  private organisms: IBiomeWeightedObject[];
   private colors: IColor[];
 
-  constructor(name: string, organisms: BiomeWeightedObject[], colors: IColor[]) {
+  constructor(name: string, organisms: IBiomeWeightedObject[], colors: IColor[]) {
     this.name = name;
-
     this.organisms = organisms.map(organism => {
       return {
         ...organism,
@@ -81,34 +78,8 @@ class Biome {
     }
   }
 
-  /**
-   * Compute a point of the heightmap
-   * TODO: put generation in Biome
-   */
   sumOctaves(x: number, z: number): number {
-    const nx = x / 64 - 0.5;
-    const nz = z / 64 - 0.5;
-
-    let e = 0;
-    let amp = 1;
-    let f = 0.00365;
-
-    for (let i = 0; i < 8; i++) {
-      e += amp * this.simplex.noise3D(f * nx, 1, f * nz);
-      amp /= 1.85;
-      f *= 1.95;
-    }
-
-    const noise = e * ((Chunk.MAX_CHUNK_HEIGHT + Chunk.MIN_CHUNK_HEIGHT) / 2 + (Chunk.MAX_CHUNK_HEIGHT - Chunk.MAX_CHUNK_HEIGHT) / 2);
-
-    if (noise > 0) {
-      return Math.pow(noise, 1.115);
-    }
-    return noise / 2;
-  }
-
-  static register(name: string, organisms: BiomeWeightedObject[], colors: IColor[]): Biom {
-    Biome.LIST.set(name, new Biome(name, organisms, colors));
+    return 0;
   }
 }
 

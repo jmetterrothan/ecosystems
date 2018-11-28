@@ -1,5 +1,6 @@
 import Chunk from './Chunk';
 import Player from '../Player';
+import World from './World';
 import Utils from '@shared/Utils';
 import Biome from './Biome/Biome';
 
@@ -77,10 +78,12 @@ class Terrain {
 
         // generate chunk if needed
         if (!this.chunks.has(id)) {
-          const chunk = new Chunk(Biome.LIST.get('hills'), i, j);
-          this.chunks.set(id, chunk);
+          const biome = World.getBiome('flatlands');
+          const chunk = new Chunk(biome, i, j);
+
           chunk.populate(scene, this);
 
+          this.chunks.set(id, chunk);
           scene.add(chunk.mesh);
         }
 

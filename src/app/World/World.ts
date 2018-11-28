@@ -5,6 +5,8 @@ import 'three/examples/js/loaders/MTLLoader';
 
 import Terrain from './Terrain';
 import Biome from './Biome/Biome';
+import HillsBiome from './Biome/HillsBiome';
+import FlatLandsBiome from './Biome/FlatLandsBiome';
 import Player from '../Player';
 import Utils from '@shared/Utils';
 
@@ -12,6 +14,7 @@ import { OBJECTS } from '@shared/constants/object.constants';
 
 class World {
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
+  static BIOME_LIST = new Map<string, Biome>();
 
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
@@ -36,7 +39,6 @@ class World {
     this.initFog();
     this.initLights();
     await this.initObjects();
-    this.initBiomes();
 
     const spawn = new THREE.Vector3(0, 0, 0);
 
@@ -106,50 +108,6 @@ class World {
     await Promise.all(stack);
   }
 
-  private initBiomes() {
-    Biome.register('hills', [
-      {
-        weight: 0,
-        scarcity: 0,
-        name: 'spruce',
-        low: -150,
-        high: 5,
-        scale: { min: 0.75, max: 1.2 }
-      },
-      {
-        weight: 0.5,
-        scarcity: 0.95,
-        name: 'red_mushroom',
-        low: -150,
-        high: 5,
-        scale: { min: 0.9, max: 1.5 }
-      },
-    ], [
-      {
-        stop: 0,
-        color: new THREE.Color(0xfcd95f) // underwater sand
-      }, {
-        stop: 0.015,
-        color: new THREE.Color(0xf0e68c) // sand
-      }, {
-        stop: .04,
-        color: new THREE.Color(0x93c54b) // grass
-      }, {
-        stop: .06,
-        color: new THREE.Color(0x62ad3e) // dark grass
-      }, {
-        stop: .14,
-        color: new THREE.Color(0x4d382c) // dark rock
-      }, {
-        stop: .3,
-        color: new THREE.Color(0x57422E) // dark grass
-      }, {
-        stop: 1.25,
-        color: new THREE.Color(0xffffff) // snow cap
-      }
-    ]);
-  }
-
   public update() {
     this.frustum.setFromMatrix(new THREE.Matrix4().multiplyMatrices(
       this.camera.projectionMatrix,
@@ -206,6 +164,29 @@ class World {
         }, null, () => reject());
       }, null, () => reject());
     });
+  }
+
+  static getBiome(name: string): Biome {
+    if (World.BIOME_LIST.has(name)) {
+      return World.BIOME_LIST.get(name);
+    }
+
+    let biome = null;
+    switch (name) {
+      case 'hills':
+        biome = new HillsBiome();
+        break;
+
+      case 'flatlands':
+        biome = new FlatLandsBiome();
+        break;
+
+      default:
+        biome = new Biome();
+    }
+
+    World.BIOME_LIST.set(name, biome);
+    return biome;
   }
 }
 
