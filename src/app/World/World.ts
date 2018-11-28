@@ -4,9 +4,12 @@ import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
 import Terrain from './Terrain';
+
 import Biome from './Biome/Biome';
 import HillsBiome from './Biome/HillsBiome';
 import FlatLandsBiome from './Biome/FlatLandsBiome';
+import DesertBiome from './Biome/DesertBiome';
+
 import Player from '../Player';
 import Utils from '@shared/Utils';
 
@@ -77,12 +80,16 @@ class World {
   }
 
   private initLights() {
-    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.5);
+    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.25);
     light.position.set(0, 10000, 0).normalize();
     this.scene.add(light);
 
-    const sunlight = new THREE.DirectionalLight(0xffffff, 0.50);
-    sunlight.position.set(0, 10000, 1000).normalize();
+    const ambient = new THREE.AmbientLight(0xffffff, 0.35);
+    ambient.position.set(0, 10000, 500).normalize();
+    this.scene.add(ambient);
+
+    const sunlight = new THREE.DirectionalLight(0xffffff, 0.5);
+    sunlight.position.set(0, 10000, 500).normalize();
     sunlight.castShadow = true;
     sunlight.target.position.set(0, 0, 0);
 
@@ -179,6 +186,10 @@ class World {
 
       case 'flatlands':
         biome = new FlatLandsBiome();
+        break;
+
+      case 'desert':
+        biome = new DesertBiome();
         break;
 
       default:

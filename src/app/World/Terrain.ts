@@ -5,7 +5,7 @@ import Utils from '@shared/Utils';
 import Biome from './Biome/Biome';
 
 class Terrain {
-  static readonly VIEW_DISTANCE: number = 6000;
+  static readonly VIEW_DISTANCE: number = 8000;
   static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(Terrain.VIEW_DISTANCE / Chunk.WIDTH);
   static readonly INFINITE_TERRAIN: boolean = true;
 
@@ -78,7 +78,7 @@ class Terrain {
 
         // generate chunk if needed
         if (!this.chunks.has(id)) {
-          const biome = World.getBiome('flatlands');
+          const biome = World.getBiome('desert');
           const chunk = new Chunk(biome, i, j);
 
           chunk.populate(scene, this);
