@@ -4,7 +4,7 @@ import World from './World';
 class Terrain {
   static readonly VIEW_DISTANCE: number = 8000;
   static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(Terrain.VIEW_DISTANCE / Chunk.WIDTH);
-  static readonly INFINITE_TERRAIN: boolean = true;
+  static readonly INFINITE_TERRAIN: boolean = false;
 
   static readonly MIN_X: number = -4;
   static readonly MIN_Z: number = -4;

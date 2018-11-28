@@ -12,7 +12,7 @@ class DesertBiome extends Biome {
         name: 'cactus',
         low: -400,
         high: -125,
-        scale: { min: 0.75, max: 1.5 }
+        scale: { min: 0.75, max: 1.6 }
       },
     ], [
       {
@@ -45,7 +45,7 @@ class DesertBiome extends Biome {
     let f = 0.0025;
 
     for (let i = 0; i < 8; i++) {
-      e += amp * this.simplex.noise3D(f * nx, 0, f * nz);
+      e += amp * this.simplex.noise3D(f * nx, 1, f * nz);
       amp /= 1.75;
       f *= 1.95;
     }
