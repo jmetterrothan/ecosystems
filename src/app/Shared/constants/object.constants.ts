@@ -6,6 +6,9 @@ import spruceMtl from '../../../public/assets/obj/spruce/spruce.mtl';
 import red_mushroomObj from '../../../public/assets/obj/red_mushroom/red_mushroom.obj';
 import red_mushroomMtl from '../../../public/assets/obj/red_mushroom/red_mushroom.mtl';
 
+import cactusObj from '../../../public/assets/obj/cactus/cactus.obj';
+import cactusMtl from '../../../public/assets/obj/cactus/cactus.mtl';
+
 export const OBJECTS: IObject[] = [
   {
     name: 'spruce',
@@ -16,5 +19,10 @@ export const OBJECTS: IObject[] = [
     name: 'red_mushroom',
     obj: red_mushroomObj,
     mtl: red_mushroomMtl
-  }
+  },
+  {
+    name: 'cactus',
+    obj: cactusObj,
+    mtl: cactusMtl
+  },
 ];
