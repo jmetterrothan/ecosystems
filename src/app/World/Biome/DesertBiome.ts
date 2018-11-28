@@ -12,7 +12,7 @@ class DesertBiome extends Biome {
         name: 'cactus',
         low: -400,
         high: -125,
-        scale: { min: 0.75, max: 1.2 }
+        scale: { min: 0.75, max: 1.5 }
       },
     ], [
       {
