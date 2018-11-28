@@ -23,7 +23,7 @@ class Player {
     this.moveUp = false;
     this.moveDown = false;
 
-    this.speed = new THREE.Vector3(3000, 3000, 3000);
+    this.speed = new THREE.Vector3(2000, 2000, 2000);
     this.velocity = new THREE.Vector3(0, 0, 0);
   }
 

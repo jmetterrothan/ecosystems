@@ -38,16 +38,16 @@ class World {
     await this.initObjects();
     this.initBiomes();
 
+    const spawn = new THREE.Vector3(0, 0, 0);
+
     // stuff
     this.terrain = new Terrain();
-
-    // player spawn point
-    const x = 0;
-    const z = 0;
-    const y = this.terrain.getHeightAt(x, z) + 1000;
+    // preload terrain
+    this.terrain.update(this.scene, this.frustum, spawn);
 
     this.player = new Player(this.controls);
-    this.player.init(x, y, z);
+    const y = this.terrain.getHeightAt(spawn.x, spawn.z) + 1000;
+    this.player.init(spawn.x, y, spawn.z);
 
     this.scene.add(this.controls.getObject());
 
@@ -76,12 +76,20 @@ class World {
 
   private initLights() {
     const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.5);
-    light.position.set(0, 1000, 0).normalize();
+    light.position.set(0, 10000, 0).normalize();
     this.scene.add(light);
 
-    const sunlight = new THREE.DirectionalLight(0xffffff, 0.40);
-    sunlight.position.set(0, 10000, 10).normalize();
+    const sunlight = new THREE.DirectionalLight(0xffffff, 0.50);
+    sunlight.position.set(0, 10000, 1000).normalize();
     sunlight.castShadow = true;
+    sunlight.target.position.set(0, 0, 0);
+
+    sunlight.shadow.camera.near = 0.5;
+    sunlight.shadow.camera.far = 5000;
+    sunlight.shadow.camera.left = -500;
+    sunlight.shadow.camera.bottom = -500;
+    sunlight.shadow.camera.right = 500;
+    sunlight.shadow.camera.top = 500;
     this.scene.add(sunlight);
   }
 
@@ -133,8 +141,8 @@ class World {
         stop: .14,
         color: new THREE.Color(0x4d382c) // dark rock
       }, {
-        stop: 0.385,
-        color: new THREE.Color(0x634739) // rock
+        stop: .3,
+        color: new THREE.Color(0x57422E) // dark grass
       }, {
         stop: 1.25,
         color: new THREE.Color(0xffffff) // snow cap
@@ -148,7 +156,7 @@ class World {
       this.camera.matrixWorldInverse)
     );
 
-    this.terrain.update(this.scene, this.frustum, this.player);
+    this.terrain.update(this.scene, this.frustum, this.player.getPosition());
   }
 
   public updateMvts(delta) {
@@ -181,9 +189,11 @@ class World {
         objLoader.setMaterials(materials);
 
         objLoader.load(objSrc, (object) => {
+          object.castShadow = true;
+          object.receiveShadow = true;
+
           object.traverse((child) => {
             if (child instanceof THREE.Mesh) {
-              child.castShadow = true;
               (<THREE.Material>child.material).flatShading = true;
             }
           });
