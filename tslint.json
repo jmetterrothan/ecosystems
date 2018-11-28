@@ -1,9 +1,0 @@
-{
-  "extends": "tslint-config-airbnb",
-  "rules": {
-    "trailing-comma": false,
-    "no-boolean-literal-compare": false,
-    "max-line-length": false,
-    "no-increment-decrement": false
-  }
-}
