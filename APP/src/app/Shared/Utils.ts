@@ -21,12 +21,20 @@ class Utils {
     return Math.floor(Utils.rng() * Math.pow(2, 32));
   }
 
-  static randomInt = (min, max) => {
+  static randomInt = (min: number, max: number): number => {
     return Math.floor(Utils.rng() * (max - min + 1)) + min;
   }
 
-  static randomFloat = (min, max) => {
+  static randomFloat = (min: number, max: number): number => {
     return Utils.rng() * (max - min) + min;
+  }
+
+  static degToRad = (deg: number): number => {
+    return (deg * Math.PI) / 180;
+  }
+
+  static radToDeg = (rad: number): number => {
+    return (180 / Math.PI) * rad;
   }
 }
 
