@@ -189,6 +189,9 @@ class World {
           });
 
           World.LOADED_MODELS.set(name, object);
+          const box = new THREE.Box3().setFromObject(object);
+          const size = box.getSize(new THREE.Vector3(0, 0, 0));
+
           resolve(object);
         }, null, () => reject());
       }, null, () => reject());

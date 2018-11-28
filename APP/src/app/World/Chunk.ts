@@ -70,12 +70,13 @@ class Chunk {
   }
 
   populate(scene: THREE.Scene, terrain: Terrain) {
-    const pds = new poissonDiskSampling([Chunk.WIDTH, Chunk.DEPTH], 300, 600, 30, Utils.rng);
+    const padding = 175;
+    const pds = new poissonDiskSampling([Chunk.WIDTH - padding * 2, Chunk.DEPTH - padding * 2], padding * 2, padding * 2, 30, Utils.rng);
     const points = pds.fill();
 
     points.forEach((point: number[]) => {
-      const x = this.col * Chunk.WIDTH + point.shift();
-      const z = this.row * Chunk.DEPTH + point.shift();
+      const x = padding + this.col * Chunk.WIDTH + point.shift();
+      const z = padding + this.row * Chunk.DEPTH + point.shift();
       const y = terrain.getHeightAt(x, z);
 
       const object = Biome.LIST.get('hills').pick(y);
