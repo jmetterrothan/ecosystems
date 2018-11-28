@@ -4,6 +4,7 @@ import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
 import Terrain from './Terrain';
+import Biome from './Biome';
 import Player from '../Player';
 import Utils from '@shared/Utils';
 
@@ -35,6 +36,7 @@ class World {
     this.initFog();
     this.initLights();
     await this.initObjects();
+    this.initBiomes();
 
     // stuff
     this.terrain = new Terrain();
@@ -84,17 +86,60 @@ class World {
   }
 
   private async initObjects(): Promise<any> {
-
     // load all models
     const stack = OBJECTS.map(element => {
       const p = World.loadObjModel(element.name, element.obj, element.mtl);
 
       return p.then((object) => {
-        object.scale.set(150, 150, 150); // scale from maya size to a decent world size
+        object.scale.set(100, 100, 100); // scale from maya size to a decent world size
       });
     });
 
     await Promise.all(stack);
+  }
+
+  private initBiomes() {
+    Biome.register('hills', [
+      {
+        weight: 0,
+        scarcity: 0,
+        name: 'spruce',
+        low: -150,
+        high: 5,
+        scale: { min: 0.75, max: 1.2 }
+      },
+      {
+        weight: 0.5,
+        scarcity: 0.95,
+        name: 'red_mushroom',
+        low: -150,
+        high: 5,
+        scale: { min: 0.9, max: 1.5 }
+      },
+    ], [
+      {
+        stop: 0,
+        color: new THREE.Color(0xfcd95f) // underwater sand
+      }, {
+        stop: 0.015,
+        color: new THREE.Color(0xf0e68c) // sand
+      }, {
+        stop: .04,
+        color: new THREE.Color(0x93c54b) // grass
+      }, {
+        stop: .06,
+        color: new THREE.Color(0x62ad3e) // dark grass
+      }, {
+        stop: .14,
+        color: new THREE.Color(0x4d382c) // dark rock
+      }, {
+        stop: 0.385,
+        color: new THREE.Color(0x634739) // rock
+      }, {
+        stop: 1.25,
+        color: new THREE.Color(0xffffff) // snow cap
+      }
+    ]);
   }
 
   public update() {

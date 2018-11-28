@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { DEFAULT_COLORS } from '@shared/constants/colors.constants';
 import { IColor } from './../Shared/models/color.model';
 import simplexNoise from 'simplex-noise';
 import poissonDiskSampling from 'poisson-disk-sampling';
@@ -7,13 +6,14 @@ import poissonDiskSampling from 'poisson-disk-sampling';
 import Utils from '@shared/Utils';
 import World from './World';
 import Terrain from './Terrain';
+import Biome from './Biome';
 
 class Chunk {
   static readonly MAX_CHUNK_HEIGHT: number = 2000;
   static readonly MIN_CHUNK_HEIGHT: number = -300;
-  static readonly NROWS: number = 8;
-  static readonly NCOLS: number = 8;
-  static readonly CELL_SIZE: number = 48;
+  static readonly NROWS: number = 16;
+  static readonly NCOLS: number = 16;
+  static readonly CELL_SIZE: number = 64;
 
   static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE;
   static readonly DEPTH: number = Chunk.NROWS * Chunk.CELL_SIZE;
@@ -28,8 +28,6 @@ class Chunk {
     flatShading: true,
     vertexColors: THREE.FaceColors
   });
-
-  static readonly DEFAULT_COLORS: IColor[] = DEFAULT_COLORS;
 
   readonly row: number;
   readonly col: number;
@@ -72,23 +70,18 @@ class Chunk {
   }
 
   populate(scene: THREE.Scene, terrain: Terrain) {
-    const pds = new poissonDiskSampling([Chunk.WIDTH / 16, Chunk.DEPTH / 16], 300, 600, 30, Utils.rng);
+    const pds = new poissonDiskSampling([Chunk.WIDTH, Chunk.DEPTH], 300, 600, 30, Utils.rng);
     const points = pds.fill();
-    const high = 5;
-    const low = -150;
 
     points.forEach((point: number[]) => {
-      const x = this.col * Chunk.WIDTH + point.shift() * 16;
-      const z = this.row * Chunk.DEPTH + point.shift() * 16;
+      const x = this.col * Chunk.WIDTH + point.shift();
+      const z = this.row * Chunk.DEPTH + point.shift();
       const y = terrain.getHeightAt(x, z);
-      if (y < high && y > low) {
-        const f = Utils.randomFloat(0.8, 1.2);
-        const object = Utils.rng() > 0.10 ? World.LOADED_MODELS.get('spruce').clone() : World.LOADED_MODELS.get('red_mushroom').clone();
 
-        object.rotateY(Utils.randomInt(0, 360));
-        object.scale.set(object.scale.x * f, object.scale.y * f, object.scale.z * f);
+      const object = Biome.LIST.get('hills').pick(y);
+
+      if (object) {
         object.position.set(x, y, z);
-
         scene.add(object);
       }
     });
@@ -130,8 +123,8 @@ class Chunk {
         // METHOD 1 : each face gets a color based on the average height of their vertices
         const y1 = (geometry.vertices[a].y + geometry.vertices[b].y + geometry.vertices[d].y) / 3;
         const y2 = (geometry.vertices[d].y + geometry.vertices[c].y + geometry.vertices[a].y) / 3;
-        f1.color = this.getColor(Chunk.DEFAULT_COLORS, y1);
-        f2.color = this.getColor(Chunk.DEFAULT_COLORS, y2);
+        f1.color = Biome.LIST.get('hills').getColor(y1);
+        f2.color = Biome.LIST.get('hills').getColor(y2);
 
         /*
         // METHOD 2 : each vertices gets a different color based on height and colors are interpolated
@@ -158,17 +151,6 @@ class Chunk {
     geometry.normalsNeedUpdate = true;
 
     return geometry;
-  }
-
-  getColor(colors, y): THREE.Color {
-    // normalize height value
-    const level = (y - Chunk.MIN_CHUNK_HEIGHT) / (Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT);
-
-    for (let i = 0; i < colors.length; i++) {
-      if (!colors[i + 1] || level < colors[i + 1].stop) {
-        return colors[i].color;
-      }
-    }
   }
 
   /**
