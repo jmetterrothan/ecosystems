@@ -9,6 +9,9 @@ import red_mushroomMtl from '../../../public/assets/obj/red_mushroom/red_mushroo
 import cactusObj from '../../../public/assets/obj/cactus/cactus.obj';
 import cactusMtl from '../../../public/assets/obj/cactus/cactus.mtl';
 
+import cactus2Obj from '../../../public/assets/obj/cactus2/cactus2.obj';
+import cactus2Mtl from '../../../public/assets/obj/cactus2/cactus2.mtl';
+
 export const OBJECTS: IObject[] = [
   {
     name: 'spruce',
@@ -24,5 +27,10 @@ export const OBJECTS: IObject[] = [
     name: 'cactus',
     obj: cactusObj,
     mtl: cactusMtl
+  },
+  {
+    name: 'cactus2',
+    obj: cactus2Obj,
+    mtl: cactus2Mtl
   },
 ];

@@ -1,3 +1,11 @@
+newmtl pasted__phong2SG1
+illum 4
+Kd 0.13 0.73 0.00
+Ka 0.39 0.39 0.39
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
 newmtl phong2SG
 illum 4
 Kd 0.13 0.73 0.00

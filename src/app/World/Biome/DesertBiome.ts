@@ -14,6 +14,14 @@ class DesertBiome extends Biome {
         high: -125,
         scale: { min: 0.75, max: 1.6 }
       },
+      {
+        weight: 0.25,
+        scarcity: 0.985,
+        name: 'cactus2',
+        low: -400,
+        high: -125,
+        scale: { min: 0.85, max: 1.45 }
+      },
     ], [
       {
         stop: 0,
