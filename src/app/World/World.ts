@@ -184,16 +184,12 @@ class World {
         biome = new HillsBiome();
         break;
 
-      case 'flatlands':
-        biome = new FlatLandsBiome();
-        break;
-
       case 'desert':
         biome = new DesertBiome();
         break;
 
       default:
-        biome = new Biome();
+        biome = new FlatLandsBiome();
     }
 
     World.BIOME_LIST.set(name, biome);
