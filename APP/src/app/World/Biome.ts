@@ -10,7 +10,6 @@ import Utils from '@shared/Utils';
  * - simplex noise generator
  * - noise parameters
  */
-
 interface BiomeWeightedObject {
   weight: number;
   name: string;
@@ -18,6 +17,7 @@ interface BiomeWeightedObject {
   high: number;
   scarcity: number;
   scale: { min: number; max: number; };
+  object?: THREE.Object3D;
 }
 
 class Biome
@@ -45,11 +45,13 @@ class Biome
     const rand = Utils.rng();
 
     for (let i = 0; i < this.organisms.length; i++) {
+      // retrieve an organism based on weight
       if (!this.organisms[i + 1] || rand < this.organisms[i + 1].weight) {
         const organism = this.organisms[i];
         const object = organism.object.clone();
 
-        if (Utils.rng() >= organism.scarcity && y >= organism.low && y <= organism.high) {
+        // test for scarcity and ground elevation criteria
+        if ((organism.scarcity === 0 || Utils.rng() >= organism.scarcity) && y >= organism.low && y <= organism.high) {
           const f = Utils.randomFloat(organism.scale.min, organism.scale.max);
           const r = Utils.randomInt(0, Utils.degToRad(360));
 

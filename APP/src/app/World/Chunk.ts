@@ -34,18 +34,22 @@ class Chunk {
 
   readonly simplex: simplexNoise;
 
+  readonly biome: Biome;
+
   mesh: THREE.Mesh;
 
   constructor(simplex: simplexNoise, row: number, col: number) {
     this.simplex = simplex;
     this.row = row;
     this.col = col;
+    this.biome = Biome.LIST.get('hills'); // TODO: put biome as parameter
 
     this.mesh = this.generate();
   }
 
   /**
    * Compute a point of the heightmap
+   * TODO: put generation in Biome
    */
   static sumOctaves(simplex: simplexNoise, x: number, z: number): number {
     const nx = x / Chunk.CELL_SIZE - 0.5;
@@ -70,16 +74,19 @@ class Chunk {
   }
 
   populate(scene: THREE.Scene, terrain: Terrain) {
-    const padding = 175;
-    const pds = new poissonDiskSampling([Chunk.WIDTH - padding * 2, Chunk.DEPTH - padding * 2], padding * 2, padding * 2, 30, Utils.rng);
+    const padding = 175; // object bounding box size / 2
+    const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding * 2, padding * 2, 30, Utils.rng);
     const points = pds.fill();
 
     points.forEach((point: number[]) => {
       const x = padding + this.col * Chunk.WIDTH + point.shift();
       const z = padding + this.row * Chunk.DEPTH + point.shift();
+
+      // compute object height
       const y = terrain.getHeightAt(x, z);
 
-      const object = Biome.LIST.get('hills').pick(y);
+      // select an organism based on the current biome
+      const object = this.biome.pick(y);
 
       if (object) {
         object.position.set(x, y, z);
@@ -124,8 +131,8 @@ class Chunk {
         // METHOD 1 : each face gets a color based on the average height of their vertices
         const y1 = (geometry.vertices[a].y + geometry.vertices[b].y + geometry.vertices[d].y) / 3;
         const y2 = (geometry.vertices[d].y + geometry.vertices[c].y + geometry.vertices[a].y) / 3;
-        f1.color = Biome.LIST.get('hills').getColor(y1);
-        f2.color = Biome.LIST.get('hills').getColor(y2);
+        f1.color = this.biome.getColor(y1);
+        f2.color = this.biome.getColor(y2);
 
         /*
         // METHOD 2 : each vertices gets a different color based on height and colors are interpolated
