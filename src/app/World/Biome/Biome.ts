@@ -1,6 +1,7 @@
 import simplexNoise from 'simplex-noise';
 
 import { IColor } from '@shared/models/color.model';
+import { IBiomeWeightedObject } from '@shared/models/biomeWeightedObject';
 
 import World from '../World';
 import Chunk from '../Chunk';
@@ -13,15 +14,6 @@ import Utils from '@shared/Utils';
  * - simplex noise generator
  * - noise parameters
  */
-interface IBiomeWeightedObject {
-  weight: number;
-  name: string;
-  low: number;
-  high: number;
-  scarcity: number;
-  scale: { min: number; max: number; };
-  object?: THREE.Object3D;
-}
 
 class Biome {
   protected simplex: simplexNoise;
