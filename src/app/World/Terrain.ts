@@ -1,8 +1,5 @@
 import Chunk from './Chunk';
-import Player from '../Player';
 import World from './World';
-import Utils from '@shared/Utils';
-import Biome from './Biome/Biome';
 
 class Terrain {
   static readonly VIEW_DISTANCE: number = 8000;

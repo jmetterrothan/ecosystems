@@ -24,10 +24,10 @@ interface IBiomeWeightedObject {
 }
 
 class Biome {
-  private simplex: simplexNoise;
-  private name: string;
-  private organisms: IBiomeWeightedObject[];
-  private colors: IColor[];
+  protected simplex: simplexNoise;
+  protected name: string;
+  protected organisms: IBiomeWeightedObject[];
+  protected colors: IColor[];
 
   constructor(name: string, organisms: IBiomeWeightedObject[], colors: IColor[]) {
     this.name = name;

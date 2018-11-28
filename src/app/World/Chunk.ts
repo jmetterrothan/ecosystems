@@ -32,7 +32,7 @@ class Chunk {
   readonly row: number;
   readonly col: number;
 
-  private biome: Biome;
+  biome: Biome;
 
   mesh: THREE.Mesh;
 
