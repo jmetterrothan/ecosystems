@@ -22,8 +22,6 @@ class Terrain {
     this.chunks = new Map<string, Chunk>();
     this.visibleChunks = [];
     this.time = window.performance.now();
-
-    console.log(Terrain.CHUNK_RENDER_LIMIT);
   }
 
   update(scene: THREE.Scene, frustum: THREE.Frustum, position: THREE.Vector3) {
@@ -109,7 +107,6 @@ class Terrain {
     if (chunk) {
       return chunk.biome.sumOctaves(x, z);
     }
-    console.warn('d');
     return 0;
   }
 }
