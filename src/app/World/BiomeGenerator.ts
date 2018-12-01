@@ -7,11 +7,6 @@ import World from './World';
 import Chunk from './Chunk';
 import Utils from '@shared/Utils';
 
-interface IBiome {
-  color: THREE.Color;
-  organisms: IBiomeWeightedObject[];
-}
-
 let BIOME_DESERT: IBiome = null;
 let BIOME_FOREST: IBiome = null;
 let BIOME_GRASSLAND: IBiome = null;
