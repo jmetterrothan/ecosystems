@@ -1,5 +1,7 @@
 import simplexNoise from 'simplex-noise';
 
+import { BIOMES } from '@shared/constants/biome.constants';
+
 import { IColor } from '@shared/models/color.model';
 import { IBiome } from '@shared/models/biome';
 import { IBiomeWeightedObject } from '@shared/models/biomeWeightedObject';
@@ -7,43 +9,6 @@ import { IBiomeWeightedObject } from '@shared/models/biomeWeightedObject';
 import World from './World';
 import Chunk from './Chunk';
 import Utils from '@shared/Utils';
-
-let BIOME_DESERT: IBiome = null;
-let BIOME_FOREST: IBiome = null;
-let BIOME_GRASSLAND: IBiome = null;
-
-const BIOME_TUNDRA: IBiome = {
-  color: new THREE.Color(0xB4C1A9),
-  organisms: []
-};
-const BIOME_TAIGA: IBiome = {
-  color: new THREE.Color(0xb4c09c),
-  organisms: []
-};
-const BIOME_MOUNTAIN: IBiome = {
-  color: new THREE.Color(0x9C9B7A),
-  organisms: []
-};
-const BIOME_RAINFOREST: IBiome = {
-  color: new THREE.Color(0x3ead52),
-  organisms: []
-};
-const BIOME_BEACH: IBiome = {
-  color: new THREE.Color(0xf0e68c),
-  organisms: []
-};
-const BIOME_OCEAN: IBiome = {
-  color: new THREE.Color(0xedc375),
-  organisms: []
-};
-const BIOME_SNOW: IBiome = {
-  color: new THREE.Color(0xfffffff),
-  organisms: []
-};
-const BIOME_TEST: IBiome = {
-  color: new THREE.Color('purple'),
-  organisms: []
-};
 
 /**
  * Biome composition :
@@ -67,79 +32,14 @@ class BiomeGenerator {
     this.simplexTerrain = new simplexNoise(Utils.rng);
     this.simplexMoisture = new simplexNoise(Utils.rng);
 
-    BIOME_FOREST = {
-      color: new THREE.Color(0x5da736),
-      organisms: [
-        {
-          weight: 0.9,
-          name: 'spruce',
-          scarcity: 0.5,
-          scale: { min: 0.75, max: 1.25 },
-          object: World.LOADED_MODELS.get('spruce'),
-        },
-        {
-          weight: 0.05,
-          name: 'red_mushroom',
-          scarcity: 0.975,
-          scale: { min: 0.75, max: 1.25 },
-          object: World.LOADED_MODELS.get('red_mushroom'),
-        },
-        {
-          weight: 0.05,
-          name: 'brown_mushroom',
-          scarcity: 0.995,
-          scale: { min: 0.75, max: 1.25 },
-          object: World.LOADED_MODELS.get('brown_mushroom'),
-        }
-      ]
-    };
+    // auto load biomes models
+    for (const b in BIOMES) {
+      for (const o in BIOMES[b].organisms) {
+        const name = BIOMES[b].organisms[o].name;
 
-    BIOME_GRASSLAND = {
-      color: new THREE.Color(0x93c54b),
-      organisms: [
-        {
-          weight: 1.0,
-          name: 'spruce',
-          scarcity: 0.995,
-          scale: { min: 0.75, max: 1.25 },
-          object: World.LOADED_MODELS.get('spruce'),
-        }
-      ]
-    };
-
-    BIOME_DESERT = {
-      color: new THREE.Color(0xf0e68c),
-      organisms: [
-        {
-          weight: 0.3,
-          name: 'cactus1',
-          scarcity: 0.985,
-          scale: { min: 1, max: 2.5 },
-          object: World.LOADED_MODELS.get('cactus1'),
-        },
-        {
-          weight: 0.2,
-          name: 'cactus2',
-          scarcity: 0.985,
-          scale: { min: 1, max: 2.5 },
-          object: World.LOADED_MODELS.get('cactus2'),
-        },
-        {
-          weight: 0.3,
-          name: 'cactus3',
-          scarcity: 0.985,
-          scale: { min: 1, max: 2.5 },
-          object: World.LOADED_MODELS.get('cactus3'),
-        },
-        {
-          weight: 0.2,
-          name: 'cactus4',
-          scarcity: 0.995,
-          scale: { min: 0.75, max: 1.2 },
-          object: World.LOADED_MODELS.get('cactus4'),
-        }
-      ]
-    };
+        BIOMES[b].organisms[o].object = World.LOADED_MODELS.get(name);
+      }
+    }
   }
 
   /**
@@ -188,40 +88,40 @@ class BiomeGenerator {
    * @return {IBiome} Biome informations
    */
   getBiome(e: number, m: number): IBiome {
-    if (e < 0.0026) { return BIOME_OCEAN; }
-    if (e < 0.0175) { return BIOME_BEACH; }
+    if (e < 0.0026) { return BIOMES.OCEAN; }
+    if (e < 0.0175) { return BIOMES.BEACH; }
 
     // level 1
     if (e < 0.05) {
-      if (m > 0.65) { return BIOME_RAINFOREST; }
-      if (m > 0.24) { return BIOME_GRASSLAND; }
+      if (m > 0.65) { return BIOMES.RAINFOREST; }
+      if (m > 0.24) { return BIOMES.GRASSLAND; }
 
-      return BIOME_DESERT;
+      return BIOMES.DESERT;
     }
     // level 2
     if (e < 0.10) {
-      if (m > 0.80) { return BIOME_RAINFOREST; }
-      if (m > 0.38) { return BIOME_FOREST; }
-      if (m > 0.24) { return BIOME_GRASSLAND; }
+      if (m > 0.80) { return BIOMES.RAINFOREST; }
+      if (m > 0.38) { return BIOMES.FOREST; }
+      if (m > 0.24) { return BIOMES.GRASSLAND; }
 
-      return BIOME_DESERT;
+      return BIOMES.DESERT;
     }
 
     // level 3
     if (e < 0.25) {
-      if (m > 0.5) { return BIOME_MOUNTAIN; }
-      if (m > 0.24) { return BIOME_TAIGA; }
-      return BIOME_DESERT;
+      if (m > 0.5) { return BIOMES.MOUNTAIN; }
+      if (m > 0.24) { return BIOMES.TAIGA; }
+      return BIOMES.DESERT;
     }
 
     // level 4
     if (e < 0.4) {
-      if (m > 0.65) { return BIOME_SNOW; }
-      if (m > 0.35) { return BIOME_TUNDRA; }
-      return BIOME_MOUNTAIN;
+      if (m > 0.65) { return BIOMES.SNOW; }
+      if (m > 0.35) { return BIOMES.TUNDRA; }
+      return BIOMES.MOUNTAIN;
     }
 
-    return BIOME_SNOW;
+    return BIOMES.SNOW;
   }
 
   /**

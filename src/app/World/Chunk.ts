@@ -67,6 +67,7 @@ class Chunk {
 
   /**
    * Generate terrain geometry
+   * @return {THREE.Geometry}
    */
   buildGeometry(): THREE.Geometry {
     const geometry = new THREE.Geometry();
@@ -146,6 +147,7 @@ class Chunk {
 
   /**
    * Generate terrain mesh
+   * @return {THREE.Mesh}
    */
   generate(): THREE.Mesh {
     const geometry = this.buildGeometry();
