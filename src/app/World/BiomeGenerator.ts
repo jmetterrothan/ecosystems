@@ -1,12 +1,11 @@
+import * as THREE from 'three';
 import simplexNoise from 'simplex-noise';
-
-import { IColor } from '@shared/models/color.model';
-import { IBiome } from '@shared/models/biome';
-import { IBiomeWeightedObject } from '@shared/models/biomeWeightedObject';
 
 import World from './World';
 import Chunk from './Chunk';
 import Utils from '@shared/Utils';
+
+import { IBiome } from '@shared/models/biome.model';
 
 let BIOME_DESERT: IBiome = null;
 let BIOME_FOREST: IBiome = null;
@@ -230,7 +229,7 @@ class BiomeGenerator {
    * @param {number} z coord component
    * @return {IBiome}
    */
-  getBiomeAt(x: number, z:  number): IBiome {
+  getBiomeAt(x: number, z: number): IBiome {
     return this.getBiome(
       this.computeElevation(x, z),
       this.computeMoisture(x, z)

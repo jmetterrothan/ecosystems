@@ -24,6 +24,8 @@ class World {
   private frustum: THREE.Frustum;
   private seed: string;
 
+  private water: THREE.Mesh;
+
   constructor(scene: THREE.Scene, camera: THREE.PerspectiveCamera, controls: THREE.PointerLockControls) {
     this.scene = scene;
     this.camera = camera;
@@ -42,7 +44,7 @@ class World {
     {
       const geometry = new THREE.PlaneGeometry(Chunk.WIDTH * 48, Chunk.DEPTH * 48, 128, 128);
       const material = new THREE.MeshPhongMaterial({
-        wireframe:false,
+        wireframe: false,
         emissive: 0x0068b3,
         emissiveIntensity: 0.25,
         specular: 0x252525,
@@ -50,7 +52,7 @@ class World {
         reflectivity: 0.75,
         flatShading: true,
         color: 0x0095ff,
-        opacity:0.5,
+        opacity: 0.5,
         transparent: true,
         side: THREE.DoubleSide
       });
