@@ -4,6 +4,7 @@ import poissonDiskSampling from 'poisson-disk-sampling';
 import Utils from '@shared/Utils';
 import World from './World';
 import Terrain from './Terrain';
+import BiomeGenerator from './BiomeGenerator';
 
 class Chunk {
   static readonly MAX_CHUNK_HEIGHT: number = 20000;
@@ -52,7 +53,7 @@ class Chunk {
     points.forEach((point: number[]) => {
       const x = padding + this.col * Chunk.WIDTH + point.shift();
       const z = padding + this.row * Chunk.DEPTH + point.shift();
-      const y = this.generator.computeElevation(x, z) * ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT);
+      const y = this.generator.computeHeight(x, z);
 
       // select an organism based on the current biome
       const object = this.generator.pick(x, z);
@@ -78,13 +79,12 @@ class Chunk {
       const x = this.col * Chunk.WIDTH + c * Chunk.CELL_SIZE;
       for (let r = 0; r < nbVerticesZ; r++) {
         const z = this.row * Chunk.DEPTH + r * Chunk.CELL_SIZE;
-        const y = this.generator.computeElevation(x, z);
+        const y = this.generator.computeHeight(x, z);
 
         if (this.low > y) this.low = y;
         if (this.high < y) this.high = y;
 
-        geometry.vertices.push(new THREE.Vector3(x, y * ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT), z));
-        // geometry.vertices.push(new THREE.Vector3(x, yNormalized, z));
+        geometry.vertices.push(new THREE.Vector3(x, y, z));
         // geometry.colors.push(this.getColor(grad, y));
       }
     }
@@ -114,8 +114,8 @@ class Chunk {
         const m1 = this.generator.computeMoisture(x1, z1);
         const m2 = this.generator.computeMoisture(x2, z2);
 
-        f1.color = this.generator.getBiome(y1 / ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT), m1).color;
-        f2.color = this.generator.getBiome(y2 / ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT), m2).color;
+        f1.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y1), m1).color;
+        f2.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y2), m2).color;
 
         /*
         // METHOD 2 : each vertices gets a different color based on height and colors are interpolated
@@ -157,10 +157,6 @@ class Chunk {
     mesh.receiveShadow = true;
 
     return mesh;
-  }
-
-  static normalizedY(y: number) {
-    return y * ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT);
   }
 }
 

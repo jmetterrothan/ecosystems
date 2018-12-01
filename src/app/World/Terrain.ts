@@ -104,7 +104,7 @@ class Terrain {
   }
 
   getHeightAt(x: number, z: number) {
-    return this.generator.computeElevation(x, z) * ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT);
+    return this.generator.computeHeight(x, z);
   }
 }
 
