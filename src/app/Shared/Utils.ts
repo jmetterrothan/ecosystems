@@ -36,6 +36,10 @@ class Utils {
   static radToDeg = (rad: number): number => {
     return (180 / Math.PI) * rad;
   }
+
+  static mapInterval = (t: number, a: number, b: number, c: number, d: number): number => {
+    return c + (d - c) / (b - a) * (t - a);
+  }
 }
 
 export default Utils;

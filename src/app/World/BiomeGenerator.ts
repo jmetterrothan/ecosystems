@@ -49,10 +49,6 @@ const BIOME_TEST: IBiome = {
   organisms: []
 };
 
-const mapInterval = (t: number, a: number, b: number, c: number, d: number): number => {
-  return c + (d - c) / (b - a) * (t - a);
-};
-
 /**
  * Biome composition :
  * - name
