@@ -8,20 +8,20 @@ import Terrain from './Terrain';
 class Chunk {
   static readonly MAX_CHUNK_HEIGHT: number = 20000;
   static readonly MIN_CHUNK_HEIGHT: number = -10000;
-  static readonly NROWS: number = 16;
-  static readonly NCOLS: number = 16;
-  static readonly CELL_SIZE: number = 80;
+  static readonly NROWS: number = 8;
+  static readonly NCOLS: number = 8;
+  static readonly CELL_SIZE: number = 160;
 
   static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE;
   static readonly DEPTH: number = Chunk.NROWS * Chunk.CELL_SIZE;
 
   static readonly DEFAULT_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
     wireframe: false,
-    emissive: 0xffffff,
-    emissiveIntensity: 0.075,
-    specular: 0x252525,
-    shininess: 12,
-    reflectivity: 0.75,
+    emissive: 0x505050,
+    emissiveIntensity: 0.01,
+    specular: 0x353535,
+    shininess: 6,
+    reflectivity: 0.1,
     flatShading: true,
     vertexColors: THREE.FaceColors
   });
@@ -45,19 +45,17 @@ class Chunk {
   }
 
   populate(scene: THREE.Scene) {
-    const padding = 175; // object bounding box size / 2
+    const padding = 300; // object bounding box size / 2
     const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding * 2, padding * 2, 30, Utils.rng);
     const points = pds.fill();
 
     points.forEach((point: number[]) => {
       const x = padding + this.col * Chunk.WIDTH + point.shift();
       const z = padding + this.row * Chunk.DEPTH + point.shift();
-
-      // compute object height
-      const y = this.generator.computeElevation(x, z);
+      const y = this.generator.computeElevation(x, z) * ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT);
 
       // select an organism based on the current biome
-      const object = this.generator.pick(y);
+      const object = this.generator.pick(x, z);
 
       if (object) {
         object.position.set(x, y, z);
@@ -85,7 +83,7 @@ class Chunk {
         if (this.low > y) this.low = y;
         if (this.high < y) this.high = y;
 
-        geometry.vertices.push(new THREE.Vector3(x, Chunk.normalizedY(y), z));
+        geometry.vertices.push(new THREE.Vector3(x, y * ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT), z));
         // geometry.vertices.push(new THREE.Vector3(x, yNormalized, z));
         // geometry.colors.push(this.getColor(grad, y));
       }
@@ -113,11 +111,11 @@ class Chunk {
         const z1 = (geometry.vertices[a].z + geometry.vertices[b].z + geometry.vertices[d].z) / 3;
         const z2 = (geometry.vertices[d].z + geometry.vertices[c].z + geometry.vertices[a].z) / 3;
 
-        const m1 = 0; // this.generator.computeMoisture(x1, z1);
-        const m2 = 0; // this.generator.computeMoisture(x2, z2);
+        const m1 = this.generator.computeMoisture(x1, z1);
+        const m2 = this.generator.computeMoisture(x2, z2);
 
-        f1.color = this.generator.paint(y1 / Chunk.MAX_HEIGHT, m1);
-        f2.color = this.generator.paint(y2 / Chunk.MAX_HEIGHT, m2);
+        f1.color = this.generator.getBiome(y1 / ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT), m1).color;
+        f2.color = this.generator.getBiome(y2 / ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT), m2).color;
 
         /*
         // METHOD 2 : each vertices gets a different color based on height and colors are interpolated

@@ -3,7 +3,7 @@ import World from './World';
 import BiomeGenerator from './BiomeGenerator';
 
 class Terrain {
-  static readonly VIEW_DISTANCE: number = 16000;
+  static readonly VIEW_DISTANCE: number = 25000;
   static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(Terrain.VIEW_DISTANCE / Chunk.WIDTH);
   static readonly INFINITE_TERRAIN: boolean = true;
 
@@ -79,7 +79,7 @@ class Terrain {
         if (!this.chunks.has(id)) {
           const chunk = new Chunk(this.generator, i, j);
 
-          // chunk.populate(scene);
+          chunk.populate(scene);
 
           this.chunks.set(id, chunk);
           scene.add(chunk.mesh);
@@ -104,7 +104,7 @@ class Terrain {
   }
 
   getHeightAt(x: number, z: number) {
-    return Chunk.normalizedY(this.generator.computeElevation(x, z));
+    return this.generator.computeElevation(x, z) * ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT);
   }
 }
 

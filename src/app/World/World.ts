@@ -13,7 +13,6 @@ import Chunk from './Chunk';
 
 class World {
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
-  static BIOME_LIST = new Map<string, Biome>();
 
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
@@ -39,31 +38,33 @@ class World {
     this.initLights();
     await this.initObjects();
 
+    // WATER START
     {
-      const geometry = new THREE.PlaneGeometry(Chunk.WIDTH * 32, Chunk.DEPTH * 32, 64, 64);
+      const geometry = new THREE.PlaneGeometry(Chunk.WIDTH * 48, Chunk.DEPTH * 48, 128, 128);
       const material = new THREE.MeshPhongMaterial({
         wireframe:false,
-        emissive: 0xffffff,
-        emissiveIntensity: 0.075,
+        emissive: 0x0068b3,
+        emissiveIntensity: 0.25,
         specular: 0x252525,
         shininess: 60,
         reflectivity: 0.75,
         flatShading: true,
-        color: 'blue',
+        color: 0x0095ff,
         opacity:0.5,
         transparent: true,
         side: THREE.DoubleSide
       });
-      const plane = new THREE.Mesh(geometry, material);
 
+      const plane = new THREE.Mesh(geometry, material);
       plane.rotateX(Utils.degToRad(90));
-      plane.position.set(-(Chunk.WIDTH * 16), 0, -(Chunk.DEPTH * 16));
+      plane.position.set(-(Chunk.WIDTH * 16), 150, -(Chunk.DEPTH * 16));
 
       this.water = plane;
       this.scene.add(plane);
     }
+    // WATER END (+ plane mvt bellow)
 
-    const spawn = new THREE.Vector3(0, 0, 0);
+    const spawn = new THREE.Vector3(0, 4000, 0);
 
     // stuff
     this.terrain = new Terrain();
@@ -71,18 +72,12 @@ class World {
     this.terrain.update(this.scene, this.frustum, spawn);
 
     this.player = new Player(this.controls);
-    const y = this.terrain.getHeightAt(spawn.x, spawn.z) + 1000;
-    this.player.init(spawn.x, y, spawn.z);
+    this.player.init(spawn.x, spawn.y, spawn.z);
 
     this.scene.add(this.controls.getObject());
-
-    // const object = World.LOADED_MODELS.get('spruce').clone();
-    // object.position.y = this.terrain.getHeightAt(0, 0);
-    // this.scene.add(object);
   }
 
   private initSeed() {
-    // 3225555514
     this.seed = Utils.randomUint32().toString();
     Utils.rng = new Math.seedrandom(this.seed);
     console.info(`SEED : ${this.seed}`);
@@ -96,30 +91,30 @@ class World {
   }
 
   private initFog() {
-    this.scene.fog = new THREE.Fog(0xb1d8ff, Terrain.VIEW_DISTANCE / 2, Terrain.VIEW_DISTANCE - 500);
+    this.scene.fog = new THREE.Fog(0xb1d8ff, Terrain.VIEW_DISTANCE - Terrain.VIEW_DISTANCE / 4, Terrain.VIEW_DISTANCE - 500);
   }
 
   private initLights() {
     const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.25);
-    light.position.set(0, 10000, 0).normalize();
+    light.position.set(0, 150, 0);
+    light.castShadow = true;
     this.scene.add(light);
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.35);
-    ambient.position.set(0, 10000, 500).normalize();
+    const ambient = new THREE.AmbientLight(0xffffff, 0.375);
+    ambient.position.set(0, 20000, 1500);
+    ambient.castShadow = true;
     this.scene.add(ambient);
 
     const sunlight = new THREE.DirectionalLight(0xffffff, 0.5);
-    sunlight.position.set(0, 10000, 500).normalize();
+    sunlight.position.set(0, 20000, 1500);
     sunlight.castShadow = true;
     sunlight.target.position.set(0, 0, 0);
-
-    sunlight.shadow.camera.near = 0.5;
-    sunlight.shadow.camera.far = 5000;
-    sunlight.shadow.camera.left = -500;
-    sunlight.shadow.camera.bottom = -500;
-    sunlight.shadow.camera.right = 500;
-    sunlight.shadow.camera.top = 500;
     this.scene.add(sunlight);
+
+    {
+      const helper = new THREE.DirectionalLightHelper(sunlight, 100);
+      this.scene.add(helper);
+    }
   }
 
   private async initObjects(): Promise<any> {
@@ -128,7 +123,7 @@ class World {
       const p = World.loadObjModel(element.name, element.obj, element.mtl);
 
       return p.then((object) => {
-        object.scale.set(75, 75, 75); // scale from maya size to a decent world size
+        object.scale.set(200, 200, 200); // scale from maya size to a decent world size
       });
     });
 
@@ -193,29 +188,6 @@ class World {
         }, null, () => reject());
       }, null, () => reject());
     });
-  }
-
-  static getBiome(name: string): Biome {
-    if (World.BIOME_LIST.has(name)) {
-      return World.BIOME_LIST.get(name);
-    }
-
-    let biome = null;
-    switch (name) {
-      case 'hills':
-        biome = new HillsBiome();
-        break;
-
-      case 'desert':
-        biome = new DesertBiome();
-        break;
-
-      default:
-        biome = new FlatLandsBiome();
-    }
-
-    World.BIOME_LIST.set(name, biome);
-    return biome;
   }
 }
 

@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 
+import Chunk from './World/Chunk';
+
 class Player {
   private controls: THREE.PointerLockControls;
   private moveForward: boolean;
@@ -23,8 +25,10 @@ class Player {
     this.moveUp = false;
     this.moveDown = false;
 
-    this.speed = new THREE.Vector3(4000, 4000, 4000);
+    this.speed = new THREE.Vector3(6000, 6000, 6000);
     this.velocity = new THREE.Vector3(0, 0, 0);
+
+    window.player = this.controls.getObject();
   }
 
   init(x, y, z) {
@@ -92,8 +96,6 @@ class Player {
     if (position.y < y) {
       this.controls.getObject().position.y = y;
     }
-
-    console.log(position.y, position.y / 20000);
   }
 
   public handleKeyboard(key: string, active: boolean) {
