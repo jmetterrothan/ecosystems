@@ -1,8 +1,9 @@
 import Chunk from './Chunk';
 import World from './World';
+import BiomeGenerator from './BiomeGenerator';
 
 class Terrain {
-  static readonly VIEW_DISTANCE: number = 8000;
+  static readonly VIEW_DISTANCE: number = 16000;
   static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(Terrain.VIEW_DISTANCE / Chunk.WIDTH);
   static readonly INFINITE_TERRAIN: boolean = true;
 
@@ -17,6 +18,7 @@ class Terrain {
   private time: number;
 
   constructor() {
+    this.generator = new BiomeGenerator();
     this.chunks = new Map<string, Chunk>();
     this.visibleChunks = [];
     this.time = window.performance.now();
@@ -75,10 +77,9 @@ class Terrain {
 
         // generate chunk if needed
         if (!this.chunks.has(id)) {
-          const biome = World.getBiome('desert');
-          const chunk = new Chunk(biome, i, j);
+          const chunk = new Chunk(this.generator, i, j);
 
-          chunk.populate(scene, this);
+          // chunk.populate(scene);
 
           this.chunks.set(id, chunk);
           scene.add(chunk.mesh);
@@ -102,12 +103,8 @@ class Terrain {
     return this.chunks.get(`${chunkZ}:${chunkX}`);
   }
 
-  getHeightAt(x: number, z: number, c?: Chunk) {
-    const chunk = (c instanceof Chunk) ? c : this.getChunkAt(x, z);
-    if (chunk) {
-      return chunk.biome.sumOctaves(x, z);
-    }
-    return 0;
+  getHeightAt(x: number, z: number) {
+    return Chunk.normalizedY(this.generator.computeElevation(x, z));
   }
 }
 

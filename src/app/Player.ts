@@ -23,7 +23,7 @@ class Player {
     this.moveUp = false;
     this.moveDown = false;
 
-    this.speed = new THREE.Vector3(2000, 2000, 2000);
+    this.speed = new THREE.Vector3(4000, 4000, 4000);
     this.velocity = new THREE.Vector3(0, 0, 0);
   }
 
@@ -92,6 +92,8 @@ class Player {
     if (position.y < y) {
       this.controls.getObject().position.y = y;
     }
+
+    console.log(position.y, position.y / 20000);
   }
 
   public handleKeyboard(key: string, active: boolean) {

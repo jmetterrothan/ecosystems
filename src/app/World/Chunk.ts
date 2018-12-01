@@ -4,11 +4,10 @@ import poissonDiskSampling from 'poisson-disk-sampling';
 import Utils from '@shared/Utils';
 import World from './World';
 import Terrain from './Terrain';
-import Biome from './Biome/Biome';
 
 class Chunk {
-  static readonly MAX_CHUNK_HEIGHT: number = 1800;
-  static readonly MIN_CHUNK_HEIGHT: number = -300;
+  static readonly MAX_CHUNK_HEIGHT: number = 20000;
+  static readonly MIN_CHUNK_HEIGHT: number = -10000;
   static readonly NROWS: number = 16;
   static readonly NCOLS: number = 16;
   static readonly CELL_SIZE: number = 80;
@@ -32,19 +31,20 @@ class Chunk {
   readonly row: number;
   readonly col: number;
 
-  biome: Biome;
-
   mesh: THREE.Mesh;
+  generator: BiomeGenerator;
 
-  constructor(biome: Biome, row: number, col: number) {
+  constructor(generator: BiomeGenerator, row: number, col: number) {
+    this.generator = generator;
     this.row = row;
     this.col = col;
-    this.biome = biome; // TODO: put biome as parameter
+    this.low = 0;
+    this.high = 0;
 
     this.mesh = this.generate();
   }
 
-  populate(scene: THREE.Scene, terrain: Terrain) {
+  populate(scene: THREE.Scene) {
     const padding = 175; // object bounding box size / 2
     const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding * 2, padding * 2, 30, Utils.rng);
     const points = pds.fill();
@@ -54,10 +54,10 @@ class Chunk {
       const z = padding + this.row * Chunk.DEPTH + point.shift();
 
       // compute object height
-      const y = terrain.getHeightAt(x, z, this);
+      const y = this.generator.computeElevation(x, z);
 
       // select an organism based on the current biome
-      const object = this.biome.pick(y);
+      const object = this.generator.pick(y);
 
       if (object) {
         object.position.set(x, y, z);
@@ -80,12 +80,13 @@ class Chunk {
       const x = this.col * Chunk.WIDTH + c * Chunk.CELL_SIZE;
       for (let r = 0; r < nbVerticesZ; r++) {
         const z = this.row * Chunk.DEPTH + r * Chunk.CELL_SIZE;
-        const y = this.biome.sumOctaves(x, z);
+        const y = this.generator.computeElevation(x, z);
 
         if (this.low > y) this.low = y;
         if (this.high < y) this.high = y;
 
-        geometry.vertices.push(new THREE.Vector3(x, y, z));
+        geometry.vertices.push(new THREE.Vector3(x, Chunk.normalizedY(y), z));
+        // geometry.vertices.push(new THREE.Vector3(x, yNormalized, z));
         // geometry.colors.push(this.getColor(grad, y));
       }
     }
@@ -103,10 +104,20 @@ class Chunk {
         const f2 = new THREE.Face3(d, c, a);
 
         // METHOD 1 : each face gets a color based on the average height of their vertices
+        const x1 = (geometry.vertices[a].x + geometry.vertices[b].x + geometry.vertices[d].x) / 3;
+        const x2 = (geometry.vertices[d].x + geometry.vertices[c].x + geometry.vertices[a].x) / 3;
+
         const y1 = (geometry.vertices[a].y + geometry.vertices[b].y + geometry.vertices[d].y) / 3;
         const y2 = (geometry.vertices[d].y + geometry.vertices[c].y + geometry.vertices[a].y) / 3;
-        f1.color = this.biome.getColor(y1);
-        f2.color = this.biome.getColor(y2);
+
+        const z1 = (geometry.vertices[a].z + geometry.vertices[b].z + geometry.vertices[d].z) / 3;
+        const z2 = (geometry.vertices[d].z + geometry.vertices[c].z + geometry.vertices[a].z) / 3;
+
+        const m1 = 0; // this.generator.computeMoisture(x1, z1);
+        const m2 = 0; // this.generator.computeMoisture(x2, z2);
+
+        f1.color = this.generator.paint(y1 / Chunk.MAX_HEIGHT, m1);
+        f2.color = this.generator.paint(y2 / Chunk.MAX_HEIGHT, m2);
 
         /*
         // METHOD 2 : each vertices gets a different color based on height and colors are interpolated
@@ -148,6 +159,10 @@ class Chunk {
     mesh.receiveShadow = true;
 
     return mesh;
+  }
+
+  static normalizedY(y: number) {
+    return y * ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT);
   }
 }
 

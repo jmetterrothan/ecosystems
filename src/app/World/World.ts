@@ -5,15 +5,11 @@ import 'three/examples/js/loaders/MTLLoader';
 
 import Terrain from './Terrain';
 
-import Biome from './Biome/Biome';
-import HillsBiome from './Biome/HillsBiome';
-import FlatLandsBiome from './Biome/FlatLandsBiome';
-import DesertBiome from './Biome/DesertBiome';
-
 import Player from '../Player';
 import Utils from '@shared/Utils';
 
 import { OBJECTS } from '@shared/constants/object.constants';
+import Chunk from './Chunk';
 
 class World {
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
@@ -43,6 +39,30 @@ class World {
     this.initLights();
     await this.initObjects();
 
+    {
+      const geometry = new THREE.PlaneGeometry(Chunk.WIDTH * 32, Chunk.DEPTH * 32, 64, 64);
+      const material = new THREE.MeshPhongMaterial({
+        wireframe:false,
+        emissive: 0xffffff,
+        emissiveIntensity: 0.075,
+        specular: 0x252525,
+        shininess: 60,
+        reflectivity: 0.75,
+        flatShading: true,
+        color: 'blue',
+        opacity:0.5,
+        transparent: true,
+        side: THREE.DoubleSide
+      });
+      const plane = new THREE.Mesh(geometry, material);
+
+      plane.rotateX(Utils.degToRad(90));
+      plane.position.set(-(Chunk.WIDTH * 16), 0, -(Chunk.DEPTH * 16));
+
+      this.water = plane;
+      this.scene.add(plane);
+    }
+
     const spawn = new THREE.Vector3(0, 0, 0);
 
     // stuff
@@ -62,7 +82,7 @@ class World {
   }
 
   private initSeed() {
-    // 1603676994 | 2927331962
+    // 3225555514
     this.seed = Utils.randomUint32().toString();
     Utils.rng = new Math.seedrandom(this.seed);
     console.info(`SEED : ${this.seed}`);
@@ -108,7 +128,7 @@ class World {
       const p = World.loadObjModel(element.name, element.obj, element.mtl);
 
       return p.then((object) => {
-        object.scale.set(100, 100, 100); // scale from maya size to a decent world size
+        object.scale.set(75, 75, 75); // scale from maya size to a decent world size
       });
     });
 
@@ -116,12 +136,14 @@ class World {
   }
 
   public update() {
+    const position = this.player.getPosition();
+
     this.frustum.setFromMatrix(new THREE.Matrix4().multiplyMatrices(
       this.camera.projectionMatrix,
       this.camera.matrixWorldInverse)
     );
-
-    this.terrain.update(this.scene, this.frustum, this.player.getPosition());
+    this.water.position.set(position.x, this.water.position.y, position.z);
+    this.terrain.update(this.scene, this.frustum, position);
   }
 
   public updateMvts(delta) {
