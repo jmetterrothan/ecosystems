@@ -17,6 +17,8 @@ class Terrain {
 
   private time: number;
 
+  private generator: BiomeGenerator;
+
   constructor() {
     this.generator = new BiomeGenerator();
     this.chunks = new Map<string, Chunk>();

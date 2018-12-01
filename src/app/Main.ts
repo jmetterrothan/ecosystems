@@ -5,7 +5,6 @@ import 'seedrandom';
 
 import statsJs from 'stats.js';
 
-import Utils from './Shared/Utils';
 import World from './World/World';
 import Terrain from './World/Terrain';
 

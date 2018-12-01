@@ -10,6 +10,10 @@ interface HTMLElement {
   webkitRequestPointerLock?: any;
 }
 
+interface Window {
+  player: THREE.Object3D;
+}
+
 interface Math {
   seedrandom(seed?: string): void;
 }

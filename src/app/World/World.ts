@@ -4,12 +4,11 @@ import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
 import Terrain from './Terrain';
-
 import Player from '../Player';
-import Utils from '@shared/Utils';
+import Chunk from './Chunk';
 
 import { OBJECTS } from '@shared/constants/object.constants';
-import Chunk from './Chunk';
+import MathUtils from '@utils/Math.utils';
 
 class World {
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
@@ -58,7 +57,7 @@ class World {
       });
 
       const plane = new THREE.Mesh(geometry, material);
-      plane.rotateX(Utils.degToRad(90));
+      plane.rotateX(Math.PI / 2);
       plane.position.set(-(Chunk.WIDTH * 16), 150, -(Chunk.DEPTH * 16));
 
       this.water = plane;
@@ -80,8 +79,8 @@ class World {
   }
 
   private initSeed() {
-    this.seed = Utils.randomUint32().toString();
-    Utils.rng = new Math.seedrandom(this.seed);
+    this.seed = MathUtils.randomUint32().toString();
+    MathUtils.rng = new Math.seedrandom(this.seed);
     console.info(`SEED : ${this.seed}`);
   }
 

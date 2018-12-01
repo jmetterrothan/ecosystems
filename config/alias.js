@@ -3,5 +3,6 @@ const PATHS = require('./paths');
 
 module.exports = {
   "@images": path.resolve(PATHS.IMAGES),
-  "@shared": path.resolve(PATHS.APP, 'Shared')
+  "@shared": path.resolve(PATHS.APP, 'Shared'),
+  "@utils": path.resolve(PATHS.APP, 'Shared', 'utils')
 };

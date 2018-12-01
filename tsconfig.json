@@ -10,6 +10,9 @@
     "paths": {
       "@shared/*": [
         "src/app/Shared/*"
+      ],
+      "@utils/*": [
+        "src/app/Shared/utils/*"
       ]
     },
     "typeRoots": [

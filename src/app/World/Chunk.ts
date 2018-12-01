@@ -1,10 +1,9 @@
 import * as THREE from 'three';
 import poissonDiskSampling from 'poisson-disk-sampling';
 
-import Utils from '@shared/Utils';
-import World from './World';
-import Terrain from './Terrain';
 import BiomeGenerator from './BiomeGenerator';
+
+import MathUtils from '@utils/Math.utils';
 
 class Chunk {
   static readonly MAX_CHUNK_HEIGHT: number = 20000;
@@ -47,7 +46,7 @@ class Chunk {
 
   populate(scene: THREE.Scene) {
     const padding = 300; // object bounding box size / 2
-    const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding * 2, padding * 2, 30, Utils.rng);
+    const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding * 2, padding * 2, 30, MathUtils.rng);
     const points = pds.fill();
 
     points.forEach((point: number[]) => {

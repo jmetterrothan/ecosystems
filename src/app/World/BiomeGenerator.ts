@@ -3,7 +3,7 @@ import simplexNoise from 'simplex-noise';
 
 import World from './World';
 import Chunk from './Chunk';
-import Utils from '@shared/Utils';
+import MathUtils from '@utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 
@@ -63,8 +63,8 @@ class BiomeGenerator {
   protected simplexMoisture: simplexNoise;
 
   constructor() {
-    this.simplexTerrain = new simplexNoise(Utils.rng);
-    this.simplexMoisture = new simplexNoise(Utils.rng);
+    this.simplexTerrain = new simplexNoise(MathUtils.rng);
+    this.simplexMoisture = new simplexNoise(MathUtils.rng);
 
     BIOME_FOREST = {
       color: new THREE.Color(0x5da736),
@@ -154,7 +154,7 @@ class BiomeGenerator {
     const biome = this.getBiome(e, m);
 
     let temp = 0;
-    const rand = Utils.rng(); // random float bewteen 0 - 1 included (sum of weights must be = 1)
+    const rand = MathUtils.rng(); // random float bewteen 0 - 1 included (sum of weights must be = 1)
 
     for (let i = 0, n = biome.organisms.length; i < n; i++) {
       temp += biome.organisms[i].weight;
@@ -163,11 +163,11 @@ class BiomeGenerator {
         const organism = biome.organisms[i];
 
         // test for scarcity and ground elevation criteria
-        if ((organism.scarcity === 0 || Utils.rng() >= organism.scarcity)) {
+        if ((organism.scarcity === 0 || MathUtils.rng() >= organism.scarcity)) {
           const object = organism.object.clone();
 
-          const f = Utils.randomFloat(organism.scale.min, organism.scale.max);
-          const r = Utils.randomFloat(0, Utils.degToRad(360));
+          const f = MathUtils.randomFloat(organism.scale.min, organism.scale.max);
+          const r = MathUtils.randomFloat(0, THREE.Math.degToRad(360));
 
           object.rotateY(r);
           object.scale.multiplyScalar(f);
@@ -285,11 +285,11 @@ class BiomeGenerator {
 
   // make the range of the simplex noise [-1, 1] => [0, 1]
   private elevationNoise(nx: number, nz: number): number {
-    return Utils.mapInterval(this.simplexTerrain.noise2D(nx, nz), -1, 1, 0, 1);
+    return MathUtils.mapInterval(this.simplexTerrain.noise2D(nx, nz), -1, 1, 0, 1);
   }
 
   private moisturenNoise(nx: number, nz: number): number {
-    return Utils.mapInterval(this.simplexMoisture.noise2D(nx, nz), -1, 1, 0, 1);
+    return MathUtils.mapInterval(this.simplexMoisture.noise2D(nx, nz), -1, 1, 0, 1);
   }
 
   /**
