@@ -90,6 +90,23 @@ export const BIOMES = {
     color: new THREE.Color(0xfffffff),
     organisms: []
   },
+  SWAMP: {
+    color: new THREE.Color(0xbed69e),
+    organisms: [
+      {
+        weight: 0.5,
+        name: 'red_mushroom',
+        scarcity: 0.955,
+        scale: { min: 0.75, max: 1.25 },
+      },
+      {
+        weight: 0.5,
+        name: 'brown_mushroom',
+        scarcity: 0.975,
+        scale: { min: 0.75, max: 1.25 },
+      }
+    ]
+  },
   TEST: {
     color: new THREE.Color('purple'),
     organisms: []

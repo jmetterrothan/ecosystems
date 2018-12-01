@@ -12,6 +12,7 @@ import { OBJECTS } from '@shared/constants/object.constants';
 import Chunk from './Chunk';
 
 class World {
+  static SEED = '1577115274';
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
 
   private scene: THREE.Scene;
@@ -78,7 +79,7 @@ class World {
   }
 
   private initSeed() {
-    this.seed = Utils.randomUint32().toString();
+    this.seed = World.SEED ? World.SEED : Utils.randomUint32().toString();
     Utils.rng = new Math.seedrandom(this.seed);
     console.info(`SEED : ${this.seed}`);
   }

@@ -89,7 +89,12 @@ class BiomeGenerator {
    */
   getBiome(e: number, m: number): IBiome {
     if (e < 0.0026) { return BIOMES.OCEAN; }
-    if (e < 0.0175) { return BIOMES.BEACH; }
+    if (e < 0.0210) {
+      if (e > 0.00575 && m > 0.65) {
+        return BIOMES.SWAMP;
+      }
+      return BIOMES.BEACH;
+    }
 
     // level 1
     if (e < 0.05) {
