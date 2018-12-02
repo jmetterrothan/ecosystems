@@ -42,7 +42,7 @@ export const BIOMES = {
     ]
   },
   DESERT: {
-    color: new THREE.Color(0xf0e68c),
+    color: new THREE.Color(0xe6cf87),
     organisms: [
       {
         weight: 0.3,
@@ -50,7 +50,7 @@ export const BIOMES = {
         scarcity: 0.985,
         e: null,
         m: null,
-        scale: { min: 1, max: 2.5 },
+        scale: { min: 1.25, max: 2.5 },
       },
       {
         weight: 0.2,
@@ -58,7 +58,7 @@ export const BIOMES = {
         scarcity: 0.985,
         e: null,
         m: null,
-        scale: { min: 1, max: 2.5 },
+        scale: { min: 1.25, max: 2.5 },
       },
       {
         weight: 0.3,
@@ -66,7 +66,7 @@ export const BIOMES = {
         scarcity: 0.985,
         e: null,
         m: null,
-        scale: { min: 1, max: 2.5 },
+        scale: { min: 1.25, max: 2.5 },
       },
       {
         weight: 0.2,
@@ -74,7 +74,7 @@ export const BIOMES = {
         scarcity: 0.995,
         e: null,
         m: null,
-        scale: { min: 0.75, max: 1.2 },
+        scale: { min: 1, max: 1.2 },
       }
     ]
   },
@@ -115,15 +115,11 @@ export const BIOMES = {
     color: new THREE.Color(0xfffffff),
     organisms: []
   },
-  SWAMP2: {
-    color: new THREE.Color(0xa6b96f),
-    organisms: []
-  },
   SWAMP: {
     color: new THREE.Color(0xbed69e),
     organisms: [
       {
-        weight: 0.5,
+        weight: 0.33,
         name: 'red_mushroom',
         scarcity: 0.955,
         e: null,
@@ -131,13 +127,21 @@ export const BIOMES = {
         scale: { min: 0.75, max: 1.25 },
       },
       {
-        weight: 0.5,
+        weight: 0.33,
         name: 'brown_mushroom',
         scarcity: 0.975,
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.25 },
       },
+      {
+        weight: 0.33,
+        name: 'mangrove',
+        scarcity: 0.975,
+        e: null,
+        m: { low: 0.7, high: 1 },
+        scale: { min: 0.8, max: 1 },
+      }
     ]
   },
   TEST: {

@@ -27,11 +27,20 @@ import rock1Mtl from '@objmodels/rock/rock1.mtl';
 import lilypadObj from '@objmodels/flower/lilypad.obj';
 import lilypadMtl from '@objmodels/flower/lilypad.mtl';
 
+import mangroveObj from '@objmodels/tree/mangrove.obj';
+import mangroveMtl from '@objmodels/tree/mangrove.mtl';
+
 export const OBJECTS: IObject[] = [
   {
     name: 'spruce',
     obj: spruceObj,
     mtl: spruceMtl
+  },
+  {
+    name: 'mangrove',
+    obj: mangroveObj,
+    mtl: mangroveMtl,
+    doubleSide: true
   },
   {
     name: 'red_mushroom',

@@ -92,12 +92,9 @@ class BiomeGenerator {
    * @return {IBiome} Biome informations
    */
   getBiome(e: number, m: number): IBiome {
-    if (e < 0.0026) { return BIOMES.OCEAN; }
+    if (e < 0.0024) { return BIOMES.OCEAN; }
     if (e < 0.028) {
       if (e > 0.00575 && m > 0.65) {
-        if (e < 0.0125) {
-          return BIOMES.SWAMP2;
-        }
         return BIOMES.SWAMP;
       }
       return BIOMES.BEACH;
@@ -106,15 +103,15 @@ class BiomeGenerator {
     // level 1
     if (e < 0.05) {
       if (m > 0.65) { return BIOMES.RAINFOREST; }
-      if (m > 0.24) { return BIOMES.GRASSLAND; }
+      if (m > 0.28) { return BIOMES.GRASSLAND; }
 
       return BIOMES.DESERT;
     }
     // level 2
     if (e < 0.10) {
-      if (m > 0.80) { return BIOMES.RAINFOREST; }
+      if (m > 0.75) { return BIOMES.RAINFOREST; }
       if (m > 0.38) { return BIOMES.FOREST; }
-      if (m > 0.24) { return BIOMES.GRASSLAND; }
+      if (m > 0.28) { return BIOMES.GRASSLAND; }
 
       return BIOMES.DESERT;
     }
@@ -122,7 +119,8 @@ class BiomeGenerator {
     // level 3
     if (e < 0.25) {
       if (m > 0.5) { return BIOMES.MOUNTAIN; }
-      if (m > 0.24) { return BIOMES.TAIGA; }
+      if (m > 0.28) { return BIOMES.TAIGA; }
+
       return BIOMES.DESERT;
     }
 
@@ -181,8 +179,8 @@ class BiomeGenerator {
    * @return {number} moisture value
    */
   computeMoisture(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 80) - 0.5;
-    const nz = z / (Chunk.DEPTH * 80) - 0.5;
+    const nx = x / (Chunk.WIDTH * 192) - 0.5;
+    const nz = z / (Chunk.DEPTH * 192) - 0.5;
 
     let m = 0;
 
