@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 export const BIOMES = {
   GRASSLAND: {
     color: new THREE.Color(0x93c54b),

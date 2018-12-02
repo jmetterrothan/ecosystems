@@ -1,14 +1,15 @@
+import * as THREE from 'three';
 import simplexNoise from 'simplex-noise';
 
 import { BIOMES } from '@shared/constants/biome.constants';
 
-import { IColor } from '@shared/models/color.model';
-import { IBiome } from '@shared/models/biome';
-import { IBiomeWeightedObject } from '@shared/models/biomeWeightedObject';
+import { IBiome } from '@shared/models/biome.model';
 
 import World from './World';
 import Chunk from './Chunk';
-import Utils from '@shared/Utils';
+import MathUtils from '@utils/Math.utils';
+
+import { CHUNK_PARAMS } from '@shared/constants/chunkParams.constants';
 
 /**
  * Biome composition :
@@ -29,8 +30,8 @@ class BiomeGenerator {
   protected simplexMoisture: simplexNoise;
 
   constructor() {
-    this.simplexTerrain = new simplexNoise(Utils.rng);
-    this.simplexMoisture = new simplexNoise(Utils.rng);
+    this.simplexTerrain = new simplexNoise(MathUtils.rng);
+    this.simplexMoisture = new simplexNoise(MathUtils.rng);
 
     // auto load biomes models
     for (const b in BIOMES) {
@@ -55,7 +56,7 @@ class BiomeGenerator {
     const biome = this.getBiome(e, m);
 
     let temp = 0;
-    const rand = Utils.rng(); // random float bewteen 0 - 1 included (sum of weights must be = 1)
+    const rand = MathUtils.rng(); // random float bewteen 0 - 1 included (sum of weights must be = 1)
 
     for (let i = 0, n = biome.organisms.length; i < n; i++) {
       temp += biome.organisms[i].weight;
@@ -65,14 +66,14 @@ class BiomeGenerator {
 
         // test for scarcity and ground elevation criteria
         if (
-          (organism.scarcity === 0 || Utils.rng() >= organism.scarcity) &&
+          (organism.scarcity === 0 || MathUtils.rng() >= organism.scarcity) &&
           (organism.e === null || (e >= organism.e.low && e <= organism.e.high)) &&
           (organism.m === null || (m >= organism.m.low && m <= organism.m.high))
           ) {
           const object = organism.object.clone();
 
-          const f = Utils.randomFloat(organism.scale.min, organism.scale.max);
-          const r = Utils.randomFloat(0, Utils.degToRad(360));
+          const f = MathUtils.randomFloat(organism.scale.min, organism.scale.max);
+          const r = MathUtils.randomFloat(0, Math.PI * 2);
 
           object.rotateY(r);
           object.scale.multiplyScalar(f);
@@ -140,7 +141,7 @@ class BiomeGenerator {
    * @param {number} z coord component
    * @return {IBiome}
    */
-  getBiomeAt(x: number, z:  number): IBiome {
+  getBiomeAt(x: number, z: number): IBiome {
     return this.getBiome(
       this.computeElevation(x, z),
       this.computeMoisture(x, z)
@@ -154,8 +155,8 @@ class BiomeGenerator {
    * @return {number} elevation value
    */
   computeElevation(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 48) - 0.5;
-    const nz = z / (Chunk.DEPTH * 48) - 0.5;
+    const nx = x / (CHUNK_PARAMS.WIDTH * 48) - 0.5;
+    const nz = z / (CHUNK_PARAMS.DEPTH * 48) - 0.5;
 
     let e = 0;
 
@@ -179,8 +180,8 @@ class BiomeGenerator {
    * @return {number} moisture value
    */
   computeMoisture(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 256) - 0.5;
-    const nz = z / (Chunk.DEPTH * 256) - 0.5;
+    const nx = x / (CHUNK_PARAMS.WIDTH * 256) - 0.5;
+    const nz = z / (CHUNK_PARAMS.DEPTH * 256) - 0.5;
 
     let m = 0;
 
@@ -196,11 +197,11 @@ class BiomeGenerator {
 
   // make the range of the simplex noise [-1, 1] => [0, 1]
   private elevationNoise(nx: number, nz: number): number {
-    return Utils.mapInterval(this.simplexTerrain.noise2D(nx, nz), -1, 1, 0, 1);
+    return MathUtils.mapInterval(this.simplexTerrain.noise2D(nx, nz), -1, 1, 0, 1);
   }
 
   private moisturenNoise(nx: number, nz: number): number {
-    return Utils.mapInterval(this.simplexMoisture.noise2D(nx, nz), -1, 1, 0, 1);
+    return MathUtils.mapInterval(this.simplexMoisture.noise2D(nx, nz), -1, 1, 0, 1);
   }
 
   /**
@@ -219,7 +220,7 @@ class BiomeGenerator {
    * @return {number}
    */
   static getElevationFromHeight(y: number) {
-    return y / ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT);
+    return y / ((CHUNK_PARAMS.MAX_CHUNK_HEIGHT - CHUNK_PARAMS.MIN_CHUNK_HEIGHT) + CHUNK_PARAMS.MIN_CHUNK_HEIGHT);
   }
 
   /**
@@ -228,7 +229,16 @@ class BiomeGenerator {
    * @return {number}
    */
   static getHeightAtElevation(e: number) {
-    return e * ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT);
+    return e * ((CHUNK_PARAMS.MAX_CHUNK_HEIGHT - CHUNK_PARAMS.MIN_CHUNK_HEIGHT) + CHUNK_PARAMS.MIN_CHUNK_HEIGHT);
+  }
+
+  /**
+   * Returns the world coordinate at the given elevation
+   * @param {number} e elevation
+   * @return {number}
+   */
+  static getHeightAtElevationWithWater(e: number) {
+    return Math.max(this.getHeightAtElevation(e), World.WATER_LEVEL);
   }
 
   /**

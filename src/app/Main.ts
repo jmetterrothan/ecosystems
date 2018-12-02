@@ -5,9 +5,8 @@ import 'seedrandom';
 
 import statsJs from 'stats.js';
 
-import Utils from './Shared/Utils';
-import World from './World/World';
-import Terrain from './World/Terrain';
+import World from '@world/World';
+import Terrain from '@world/Terrain';
 
 class Main {
   public static readonly MS_PER_UPDATE = 1000 / 25;

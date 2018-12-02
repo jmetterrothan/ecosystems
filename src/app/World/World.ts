@@ -4,12 +4,11 @@ import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
 import Terrain from './Terrain';
-
 import Player from '../Player';
-import Utils from '@shared/Utils';
+import Chunk from './Chunk';
 
 import { OBJECTS } from '@shared/constants/object.constants';
-import Chunk from './Chunk';
+import MathUtils from '@utils/Math.utils';
 
 class World {
   static SEED:string|null = null;
@@ -26,6 +25,8 @@ class World {
   private frustum: THREE.Frustum;
   private seed: string;
 
+  private water: THREE.Mesh;
+
   constructor(scene: THREE.Scene, camera: THREE.PerspectiveCamera, controls: THREE.PointerLockControls) {
     this.scene = scene;
     this.camera = camera;
@@ -41,29 +42,29 @@ class World {
     await this.initObjects();
 
     // WATER START
-    {
-      const geometry = new THREE.PlaneGeometry(Chunk.WIDTH * 48, Chunk.DEPTH * 48, 128, 128);
-      const material = new THREE.MeshPhongMaterial({
-        wireframe:false,
-        emissive: 0x0068b3,
-        emissiveIntensity: 0.25,
-        specular: 0x252525,
-        shininess: 60,
-        reflectivity: 0.75,
-        flatShading: true,
-        color: 0x0095ff,
-        opacity:0.5,
-        transparent: true,
-        side: THREE.DoubleSide
-      });
+    // {
+    //   const geometry = new THREE.PlaneGeometry(Chunk.WIDTH * 48, Chunk.DEPTH * 48, 128, 128);
+    //   const material = new THREE.MeshPhongMaterial({
+    //     wireframe: false,
+    //     emissive: 0x0068b3,
+    //     emissiveIntensity: 0.25,
+    //     specular: 0x252525,
+    //     shininess: 60,
+    //     reflectivity: 0.75,
+    //     flatShading: true,
+    //     color: 0x0095ff,
+    //     opacity: 0.5,
+    //     transparent: true,
+    //     side: THREE.DoubleSide
+    //   });
 
-      const plane = new THREE.Mesh(geometry, material);
-      plane.rotateX(Utils.degToRad(90));
-      plane.position.set(-(Chunk.WIDTH * 16), World.WATER_LEVEL, -(Chunk.DEPTH * 16));
+    // const plane = new THREE.Mesh(geometry, material);
+    // plane.rotateX(Utils.degToRad(90));
+    // plane.position.set(-(Chunk.WIDTH * 16), World.WATER_LEVEL, -(Chunk.DEPTH * 16));
 
-      this.water = plane;
-      this.scene.add(plane);
-    }
+    //   this.water = plane;
+    //   this.scene.add(plane);
+    // }
     // WATER END (+ plane mvt bellow)
 
     const spawn = new THREE.Vector3(14804.494529840922, 3388.0000000062864, 66881.41188408446);
@@ -80,8 +81,8 @@ class World {
   }
 
   private initSeed() {
-    this.seed = World.SEED ? World.SEED : Utils.randomUint32().toString();
-    Utils.rng = new Math.seedrandom(this.seed);
+    this.seed = World.SEED ? World.SEED : MathUtils.randomUint32().toString();
+    MathUtils.rng = new Math.seedrandom(this.seed);
     console.info(`SEED : ${this.seed}`);
   }
 
@@ -139,7 +140,7 @@ class World {
       this.camera.projectionMatrix,
       this.camera.matrixWorldInverse)
     );
-    this.water.position.set(position.x, this.water.position.y, position.z);
+    // this.water.position.set(position.x, this.water.position.y, position.z);
     this.terrain.update(this.scene, this.frustum, position);
   }
 

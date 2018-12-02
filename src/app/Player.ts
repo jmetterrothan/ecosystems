@@ -1,8 +1,6 @@
 import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 
-import Chunk from './World/Chunk';
-
 class Player {
   private controls: THREE.PointerLockControls;
   private moveForward: boolean;
