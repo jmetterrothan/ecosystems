@@ -4,7 +4,6 @@ import BiomeGenerator from './BiomeGenerator';
 import { CHUNK_PARAMS } from '@shared/constants/chunkParams.constants';
 
 class Terrain {
-
   static readonly VIEW_DISTANCE: number = 25000;
   static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(Terrain.VIEW_DISTANCE / CHUNK_PARAMS.WIDTH);
   static readonly INFINITE_TERRAIN: boolean = true;
@@ -54,8 +53,10 @@ class Terrain {
 
     // reset previously visible chunks
     for (let i = 0, n = this.visibleChunks.length; i < n; i++) {
-      this.visibleChunks[i].terrain.visible = true;
-      // this.visibleChunks[i].water.visible = true;
+      const chunk = this.visibleChunks[i];
+
+      chunk.terrain.visible = true;
+      if (chunk.water) chunk.water.visible = true;
     }
 
     // loop through all chunks in range
@@ -71,10 +72,12 @@ class Terrain {
           scene.remove(chunk.terrain);
           chunk.terrain = null;
 
-          // chunk.water.geometry.dispose();
-          // (<THREE.Material>chunk.water.material).dispose();
-          // scene.remove(chunk.water);
-          // chunk.water = null;
+          if (chunk.water) {
+            chunk.water.geometry.dispose();
+            (<THREE.Material>chunk.water.material).dispose();
+            scene.remove(chunk.water);
+            chunk.water = null;
+          }
 
           this.chunks.delete(key);
         }
@@ -92,13 +95,15 @@ class Terrain {
           // chunk.populate(scene);
 
           this.chunks.set(id, chunk);
+
           scene.add(chunk.terrain);
+          if (chunk.water) scene.add(chunk.water);
         }
 
         const chunk = this.chunks.get(id);
         if (frustum.intersectsObject(chunk.terrain)) {
           chunk.terrain.visible = true;
-          // chunk.water.visible = true;
+          if (chunk.water) chunk.water.visible = true;
         }
 
         // mark this chunk as visible

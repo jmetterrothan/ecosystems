@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 import Mesh from './Mesh';
 
 import BiomeGenerator from '@world/BiomeGenerator';

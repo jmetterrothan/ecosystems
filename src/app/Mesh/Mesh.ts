@@ -1,30 +1,35 @@
+
 import * as THREE from 'three';
 
 import BiomeGenerator from '@world/BiomeGenerator';
 
 import { CHUNK_PARAMS } from '@shared/constants/chunkParams.constants';
-import { IChunkParams } from '@shared/models/chunkParams.model';
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
+
+import { WATER_CONSTANTS } from '@shared/constants/water.constants';
+
+import { WATER_MATERIAL } from './constants/waterMaterial.constants';
+import { TERRAIN_MATERIAL } from './constants/terrainMesh.constants';
 
 class Mesh {
   mesh: THREE.Mesh;
-  protected static material: THREE.MeshPhongMaterial;
 
   readonly row: number;
   readonly col: number;
 
-  private low: number;
-  private high: number;
+  protected low: number;
+  protected high: number;
   private readonly type: MESH_TYPES;
   private generator: BiomeGenerator;
-
-  static readonly params: IChunkParams = CHUNK_PARAMS;
 
   constructor(generator: BiomeGenerator, row: number, col: number, type: MESH_TYPES) {
     this.generator = generator;
     this.row = row;
     this.col = col;
     this.type = type;
+
+    this.low = this.generator.computeHeight(this.col * CHUNK_PARAMS.WIDTH, this.row * CHUNK_PARAMS.DEPTH);
+    this.high = 0;
   }
 
   buildGeometry(): THREE.Geometry {
@@ -38,7 +43,7 @@ class Mesh {
       const x = this.col * CHUNK_PARAMS.WIDTH + c * CHUNK_PARAMS.CELL_SIZE;
       for (let r = 0; r < nbVerticesZ; r++) {
         const z = this.row * CHUNK_PARAMS.DEPTH + r * CHUNK_PARAMS.CELL_SIZE;
-        const y = this.type === MESH_TYPES.TERRAIN_MESH ? this.generator.computeHeight(x, z) : 0;
+        const y = this.type === MESH_TYPES.TERRAIN_MESH ? this.generator.computeHeight(x, z) : WATER_CONSTANTS.SEA_LEVEL;
 
         if (this.low > y) this.low = y;
         if (this.high < y) this.high = y;
@@ -107,7 +112,7 @@ class Mesh {
 
   generate(): THREE.Mesh {
     const geometry = this.buildGeometry();
-    const mesh = new THREE.Mesh(geometry, Mesh.material);
+    const mesh = new THREE.Mesh(geometry, this.type === MESH_TYPES.TERRAIN_MESH ? TERRAIN_MATERIAL : WATER_MATERIAL);
 
     mesh.frustumCulled = false;
     mesh.visible = false;
