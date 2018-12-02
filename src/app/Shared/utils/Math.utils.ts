@@ -1,9 +1,6 @@
-class Utils {
-  static rng = new Math.seedrandom(); // current random number generator shared across the app
+class MathUtils {
 
-  static isDev(): boolean {
-    return process.env.NODE_ENV === 'development';
-  }
+  static rng = new Math.seedrandom(); // current random number generator shared across the app
 
   static clamp(x: number, min: number, max: number): number {
     return Math.min(Math.max(x, min), max);
@@ -18,24 +15,21 @@ class Utils {
     }
 
     console.warn('Falling back to pseudo-random client seed');
-    return Math.floor(Utils.rng() * Math.pow(2, 32));
+    return Math.floor(MathUtils.rng() * Math.pow(2, 32));
   }
 
   static randomInt = (min: number, max: number): number => {
-    return Math.floor(Utils.rng() * (max - min + 1)) + min;
+    return Math.floor(MathUtils.rng() * (max - min + 1)) + min;
   }
 
   static randomFloat = (min: number, max: number): number => {
-    return Utils.rng() * (max - min) + min;
+    return MathUtils.rng() * (max - min) + min;
   }
 
-  static degToRad = (deg: number): number => {
-    return (deg * Math.PI) / 180;
+  static mapInterval = (t: number, a: number, b: number, c: number, d: number): number => {
+    return c + (d - c) / (b - a) * (t - a);
   }
 
-  static radToDeg = (rad: number): number => {
-    return (180 / Math.PI) * rad;
-  }
 }
 
-export default Utils;
+export default MathUtils;

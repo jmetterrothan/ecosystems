@@ -5,9 +5,8 @@ import 'seedrandom';
 
 import statsJs from 'stats.js';
 
-import Utils from './Shared/Utils';
-import World from './World/World';
-import Terrain from './World/Terrain';
+import World from '@world/World';
+import Terrain from '@world/Terrain';
 
 class Main {
   public static readonly MS_PER_UPDATE = 1000 / 25;
@@ -39,7 +38,7 @@ class Main {
     document.body.appendChild(this.stats.dom);
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, Terrain.VIEW_DISTANCE + 500);
+    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, World.VIEW_DISTANCE + 1000);
   }
 
   async init() {

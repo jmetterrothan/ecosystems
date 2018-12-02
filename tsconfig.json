@@ -10,6 +10,18 @@
     "paths": {
       "@shared/*": [
         "src/app/Shared/*"
+      ],
+      "@utils/*": [
+        "src/app/Shared/utils/*"
+      ],
+      "@world/*": [
+        "src/app/World/*"
+      ],
+      "@objmodels/*": [
+        "src/public/assets/obj/*"
+      ],
+      "@mesh/*": [
+        "src/app/Mesh/*"
       ]
     },
     "typeRoots": [
