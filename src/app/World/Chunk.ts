@@ -9,7 +9,8 @@ import WaterMesh from '../Mesh/WaterMesh';
 import World from './World';
 import MathUtils from '@utils/Math.utils';
 
-import { CHUNK_PARAMS } from '@shared/constants/chunkParams.constants';
+import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';
+import { WATER_MESH_PARAMS } from './../Mesh/constants/waterMesh.constants';
 
 class Chunk {
   readonly row: number;
@@ -28,17 +29,17 @@ class Chunk {
     const terrainMesh = new TerrainMesh(generator, row, col);
     this.terrain = terrainMesh.generate();
 
-    this.water = terrainMesh.needRenderWater() ? new WaterMesh(generator, row, col).generate() : null;
+    this.water = terrainMesh.needRenderWater() ? new WaterMesh(generator, this.row, this.col).generate() : null;
   }
 
   populate(scene: THREE.Scene) {
     const padding = 300; // object bounding box size / 2
-    const pds = new poissonDiskSampling([CHUNK_PARAMS.WIDTH - padding, CHUNK_PARAMS.DEPTH - padding], padding * 2, padding * 2, 30, MathUtils.rng);
+    const pds = new poissonDiskSampling([TERRAIN_MESH_PARAMS.WIDTH - padding, TERRAIN_MESH_PARAMS.DEPTH - padding], padding * 2, padding * 2, 30, MathUtils.rng);
     const points = pds.fill();
 
     points.forEach((point: number[]) => {
-      const x = padding + this.col * CHUNK_PARAMS.WIDTH + point.shift();
-      const z = padding + this.row * CHUNK_PARAMS.DEPTH + point.shift();
+      const x = padding + this.col * TERRAIN_MESH_PARAMS.WIDTH + point.shift();
+      const z = padding + this.row * TERRAIN_MESH_PARAMS.DEPTH + point.shift();
       const y = this.generator.computeHeight(x, z);
 
       // select an organism based on the current biome

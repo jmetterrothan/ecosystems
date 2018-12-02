@@ -1,11 +1,11 @@
 import Chunk from './Chunk';
 import BiomeGenerator from './BiomeGenerator';
 
-import { CHUNK_PARAMS } from '@shared/constants/chunkParams.constants';
+import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';
 
 class Terrain {
   static readonly VIEW_DISTANCE: number = 25000;
-  static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(Terrain.VIEW_DISTANCE / CHUNK_PARAMS.WIDTH);
+  static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(Terrain.VIEW_DISTANCE / TERRAIN_MESH_PARAMS.WIDTH);
   static readonly INFINITE_TERRAIN: boolean = true;
 
   static readonly MIN_X: number = 0;
@@ -28,8 +28,8 @@ class Terrain {
   }
 
   update(scene: THREE.Scene, frustum: THREE.Frustum, position: THREE.Vector3) {
-    const chunkX = Math.round(position.x / CHUNK_PARAMS.WIDTH);
-    const chunkZ = Math.round(position.z / CHUNK_PARAMS.DEPTH);
+    const chunkX = Math.round(position.x / TERRAIN_MESH_PARAMS.WIDTH);
+    const chunkZ = Math.round(position.z / TERRAIN_MESH_PARAMS.DEPTH);
 
     let startX = chunkX - Terrain.CHUNK_RENDER_LIMIT;
     let startZ = chunkZ - Terrain.CHUNK_RENDER_LIMIT;
@@ -113,8 +113,8 @@ class Terrain {
   }
 
   getChunkAt(x: number, z: number) {
-    const chunkX = Math.trunc(x / CHUNK_PARAMS.WIDTH);
-    const chunkZ = Math.trunc(z / CHUNK_PARAMS.DEPTH);
+    const chunkX = Math.trunc(x / TERRAIN_MESH_PARAMS.WIDTH);
+    const chunkZ = Math.trunc(z / TERRAIN_MESH_PARAMS.DEPTH);
 
     return this.chunks.get(`${chunkZ}:${chunkX}`);
   }

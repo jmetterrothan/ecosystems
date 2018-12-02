@@ -10,8 +10,7 @@ import { OBJECTS } from '@shared/constants/object.constants';
 import MathUtils from '@utils/Math.utils';
 
 class World {
-  static SEED:string|null = null;
-  static WATER_LEVEL: number = 290;
+  static SEED: string | null = null;
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
 
   private scene: THREE.Scene;
