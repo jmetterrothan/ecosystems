@@ -93,7 +93,7 @@ class BiomeGenerator {
    */
   getBiome(e: number, m: number): IBiome {
     if (e < 0.0024) { return BIOMES.OCEAN; }
-    if (e < 0.028) {
+    if (e < 0.024) {
       if (e > 0.00575 && m > 0.65) {
         return BIOMES.SWAMP;
       }
@@ -102,8 +102,8 @@ class BiomeGenerator {
 
     // level 1
     if (e < 0.05) {
-      if (m > 0.65) { return BIOMES.RAINFOREST; }
-      if (m > 0.28) { return BIOMES.GRASSLAND; }
+      if (m > 0.60) { return BIOMES.RAINFOREST; }
+      if (m > 0.32) { return BIOMES.GRASSLAND; }
 
       return BIOMES.DESERT;
     }
@@ -111,7 +111,7 @@ class BiomeGenerator {
     if (e < 0.10) {
       if (m > 0.75) { return BIOMES.RAINFOREST; }
       if (m > 0.38) { return BIOMES.FOREST; }
-      if (m > 0.28) { return BIOMES.GRASSLAND; }
+      if (m > 0.32) { return BIOMES.GRASSLAND; }
 
       return BIOMES.DESERT;
     }

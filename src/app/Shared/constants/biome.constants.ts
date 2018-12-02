@@ -79,10 +79,10 @@ export const BIOMES = {
       {
         weight: 0.1,
         name: 'rock1',
-        scarcity: 0.9,
+        scarcity: 0.985,
         e: null,
         m: null,
-        scale: { min: 1.0, max: 4.0 },
+        scale: { min: 1.0, max: 3.75 },
       }
     ]
   },
@@ -100,7 +100,16 @@ export const BIOMES = {
   },
   RAINFOREST: {
     color: new THREE.Color(0x3ead52),
-    organisms: []
+    organisms: [
+      {
+        weight: 1,
+        name: 'jungle_tree',
+        scarcity: 0.925,
+        e: null,
+        m: null,
+        scale: { min: 0.85, max: 1.5 },
+      }
+    ]
   },
   BEACH: {
     color: new THREE.Color(0xf0e68c),
