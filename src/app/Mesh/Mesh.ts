@@ -29,8 +29,8 @@ class Mesh {
     this.col = col;
     this.type = type;
 
-    this.low = this.generator.computeHeight(this.col * CHUNK_PARAMS.WIDTH, this.row * CHUNK_PARAMS.DEPTH);
-    this.high = 0;
+    this.low = null;
+    this.high = null;
   }
 
   buildGeometry(): THREE.Geometry {
@@ -46,11 +46,10 @@ class Mesh {
         const z = this.row * CHUNK_PARAMS.DEPTH + r * CHUNK_PARAMS.CELL_SIZE;
         const y = this.type === MESH_TYPES.TERRAIN_MESH ? this.generator.computeHeight(x, z) : WATER_CONSTANTS.SEA_LEVEL;
 
-        if (this.low > y) this.low = y;
-        if (this.high < y) this.high = y;
+        if (this.low === null || this.low > y) this.low = y;
+        if (this.high === null || this.high < y) this.high = y;
 
         geometry.vertices.push(new THREE.Vector3(x, y, z));
-        // geometry.colors.push(this.getColor(grad, y));
       }
     }
 
@@ -83,16 +82,6 @@ class Mesh {
           f1.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y1), m1).color;
           f2.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y2), m2).color;
         }
-
-        /*
-        // METHOD 2 : each vertices gets a different color based on height and colors are interpolated
-        f1.vertexColors[0] = geometry.colors[a];
-        f1.vertexColors[1] = geometry.colors[b];
-        f1.vertexColors[2] = geometry.colors[d];
-        f2.vertexColors[0] = geometry.colors[d];
-        f2.vertexColors[1] = geometry.colors[c];
-        f2.vertexColors[2] = geometry.colors[a];
-        */
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);

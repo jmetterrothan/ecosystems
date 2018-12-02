@@ -35,6 +35,10 @@ class Chunk {
     this.water = terrainMesh.needGenerateWater() ? new WaterMesh(generator, row, col).generate() : null;
   }
 
+  /**
+   * Populate the world with objects use Poisson disk sampling
+   * @param scene
+   */
   populate(scene: THREE.Scene) {
     const padding = 300; // object bounding box size / 2
     const pds = new poissonDiskSampling([CHUNK_PARAMS.WIDTH - padding, CHUNK_PARAMS.DEPTH - padding], padding * 2, padding * 2, 30, MathUtils.rng);
@@ -95,6 +99,15 @@ class Chunk {
 
   get visible(): boolean {
     return this.terrain.visible;
+  }
+
+  static debugStacks() {
+    console.log('## CHUNK OBJECT STACKS');
+    let str = '';
+    for (const type in Chunk.CHUNK_OBJECT_STACK)  {
+      str += `${type} : ${Chunk.CHUNK_OBJECT_STACK[type].size}\n`;
+    }
+    console.log(`${str}\n`);
   }
 }
 export default Chunk;

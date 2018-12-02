@@ -33,7 +33,23 @@ import mangroveMtl from '@objmodels/tree/mangrove.mtl';
 import jungle_treeObj from '@objmodels/tree/jungle_tree.obj';
 import jungle_treeMtl from '@objmodels/tree/jungle_tree.mtl';
 
+import tulipObj from '@objmodels/flower/tulip.obj';
+import tulipMtl from '@objmodels/flower/tulip.mtl';
+
+import daisyObj from '@objmodels/flower/daisy.obj';
+import daisyMtl from '@objmodels/flower/daisy.mtl';
+
 export const OBJECTS: IObject[] = [
+  {
+    name: 'daisy',
+    obj: daisyObj,
+    mtl: daisyMtl
+  },
+  {
+    name: 'tulip',
+    obj: tulipObj,
+    mtl: tulipMtl
+  },
   {
     name: 'spruce',
     obj: spruceObj,

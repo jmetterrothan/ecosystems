@@ -42,19 +42,6 @@ class BiomeGenerator {
         BIOMES[b].organisms[o].object = World.LOADED_MODELS.get(name);
       }
     }
-
-    /*
-    window.test = () => {
-      console.log('##################');
-      let str = '';
-      for (const type in Chunk.CHUNK_OBJECT_STACK)  {
-        str += `${type} : ${Chunk.CHUNK_OBJECT_STACK[type].size}\n`;
-      }
-      console.log(`${str}\n`);
-    };
-
-    setInterval(test, 2000);
-    */
   }
 
   /**

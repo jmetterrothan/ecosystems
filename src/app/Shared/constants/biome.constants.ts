@@ -5,12 +5,28 @@ export const BIOMES = {
     color: new THREE.Color(0x93c54b),
     organisms: [
       {
-        weight: 1.0,
+        weight: 0.8,
         name: 'spruce',
         scarcity: 0.995,
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.25 },
+      },
+      {
+        weight: 0.1,
+        name: 'tulip',
+        scarcity: 0.98,
+        e: null,
+        m: null,
+        scale: { min: 0.95, max: 1.25 },
+      },
+      {
+        weight: 0.1,
+        name: 'daisy',
+        scarcity: 0.98,
+        e: null,
+        m: null,
+        scale: { min: 0.95, max: 1.25 },
       }
     ]
   },
@@ -84,7 +100,7 @@ export const BIOMES = {
         scarcity: 0.985,
         e: null,
         m: null,
-        scale: { min: 1.0, max: 3.75 },
+        scale: { min: 1.0, max: 3.25 },
       }
     ]
   },
