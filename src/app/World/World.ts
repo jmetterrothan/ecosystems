@@ -11,6 +11,8 @@ import { OBJECTS } from '@shared/constants/object.constants';
 import MathUtils from '@utils/Math.utils';
 
 class World {
+  static SEED = '1577115274';
+  static WATER_LEVEL = 290;
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
 
   private scene: THREE.Scene;
@@ -56,9 +58,9 @@ class World {
     //     side: THREE.DoubleSide
     //   });
 
-    //   const plane = new THREE.Mesh(geometry, material);
-    //   plane.rotateX(Math.PI / 2);
-    //   plane.position.set(-(Chunk.WIDTH * 16), 150, -(Chunk.DEPTH * 16));
+      const plane = new THREE.Mesh(geometry, material);
+      plane.rotateX(Utils.degToRad(90));
+      plane.position.set(-(Chunk.WIDTH * 16), 150, -(Chunk.DEPTH * 16));
 
     //   this.water = plane;
     //   this.scene.add(plane);
@@ -79,8 +81,8 @@ class World {
   }
 
   private initSeed() {
-    this.seed = MathUtils.randomUint32().toString();
-    MathUtils.rng = new Math.seedrandom(this.seed);
+    this.seed = World.SEED ? World.SEED : Utils.randomUint32().toString();
+    Utils.rng = new Math.seedrandom(this.seed);
     console.info(`SEED : ${this.seed}`);
   }
 
@@ -97,11 +99,11 @@ class World {
 
   private initLights() {
     const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.25);
-    light.position.set(0, 150, 0);
+    light.position.set(0, 190, 0);
     light.castShadow = true;
     this.scene.add(light);
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.375);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
     ambient.position.set(0, 20000, 1500);
     ambient.castShadow = true;
     this.scene.add(ambient);
@@ -121,7 +123,7 @@ class World {
   private async initObjects(): Promise<any> {
     // load all models
     const stack = OBJECTS.map(element => {
-      const p = World.loadObjModel(element.name, element.obj, element.mtl);
+      const p = World.loadObjModel(element);
 
       return p.then((object) => {
         object.scale.set(200, 200, 200); // scale from maya size to a decent world size
@@ -158,30 +160,33 @@ class World {
    * @param mtlSrc mtl source file path
    * @return THREE.Object3D
    */
-  static async loadObjModel(name: string, objSrc: string, mtlSrc: string): Promise<THREE.Object3D> {
+  static async loadObjModel(element): Promise<THREE.Object3D> {
     return new Promise<THREE.Object3D>((resolve, reject) => {
-      if (World.LOADED_MODELS.has(name)) {
-        resolve(World.LOADED_MODELS.get(name));
+      if (World.LOADED_MODELS.has(element.name)) {
+        resolve(World.LOADED_MODELS.get(element.name));
       }
 
       const objLoader = new THREE.OBJLoader();
       const mtlLoader = new THREE.MTLLoader();
 
-      mtlLoader.load(mtlSrc, (materials) => {
+      mtlLoader.load(element.mtl, (materials) => {
         materials.preload();
         objLoader.setMaterials(materials);
 
-        objLoader.load(objSrc, (object) => {
+        objLoader.load(element.obj, (object) => {
           object.castShadow = true;
           object.receiveShadow = true;
 
           object.traverse((child) => {
             if (child instanceof THREE.Mesh) {
               (<THREE.Material>child.material).flatShading = true;
+              if (element.doubleSide === true) {
+                (<THREE.Material>child.material).side = THREE.DoubleSide;
+              }
             }
           });
 
-          World.LOADED_MODELS.set(name, object);
+          World.LOADED_MODELS.set(element.name, object);
           const box = new THREE.Box3().setFromObject(object);
           const size = box.getSize(new THREE.Vector3(0, 0, 0));
 

@@ -86,6 +86,14 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.26 0.26 0.26
 Ns 6.00
+newmtl pasted__spruce_woodSG
+illum 4
+Kd 0.66 0.43 0.33
+Ka 0.42 0.42 0.42
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
 newmtl phong1SG
 illum 4
 Kd 0.67 0.87 0.22

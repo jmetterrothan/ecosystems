@@ -1,12 +1,15 @@
 import * as THREE from 'three';
 import simplexNoise from 'simplex-noise';
 
+import { BIOMES } from '@shared/constants/biome.constants';
+
+import { IColor } from '@shared/models/color.model';
+import { IBiome } from '@shared/models/biome';
+import { IBiomeWeightedObject } from '@shared/models/biomeWeightedObject';
+
 import World from './World';
 import Chunk from './Chunk';
 import MathUtils from '@utils/Math.utils';
-
-import { IBiome } from '@shared/models/biome.model';
-import { CHUNK_PARAMS } from '@shared/constants/chunkParams.constants';
 
 let BIOME_DESERT: IBiome = null;
 let BIOME_FOREST: IBiome = null;
@@ -67,79 +70,14 @@ class BiomeGenerator {
     this.simplexTerrain = new simplexNoise(MathUtils.rng);
     this.simplexMoisture = new simplexNoise(MathUtils.rng);
 
-    BIOME_FOREST = {
-      color: new THREE.Color(0x5da736),
-      organisms: [
-        {
-          weight: 0.9,
-          name: 'spruce',
-          scarcity: 0.5,
-          scale: { min: 0.75, max: 1.25 },
-          object: World.LOADED_MODELS.get('spruce'),
-        },
-        {
-          weight: 0.05,
-          name: 'red_mushroom',
-          scarcity: 0.975,
-          scale: { min: 0.75, max: 1.25 },
-          object: World.LOADED_MODELS.get('red_mushroom'),
-        },
-        {
-          weight: 0.05,
-          name: 'brown_mushroom',
-          scarcity: 0.995,
-          scale: { min: 0.75, max: 1.25 },
-          object: World.LOADED_MODELS.get('brown_mushroom'),
-        }
-      ]
-    };
+    // auto load biomes models
+    for (const b in BIOMES) {
+      for (const o in BIOMES[b].organisms) {
+        const name = BIOMES[b].organisms[o].name;
 
-    BIOME_GRASSLAND = {
-      color: new THREE.Color(0x93c54b),
-      organisms: [
-        {
-          weight: 1.0,
-          name: 'spruce',
-          scarcity: 0.995,
-          scale: { min: 0.75, max: 1.25 },
-          object: World.LOADED_MODELS.get('spruce'),
-        }
-      ]
-    };
-
-    BIOME_DESERT = {
-      color: new THREE.Color(0xf0e68c),
-      organisms: [
-        {
-          weight: 0.3,
-          name: 'cactus1',
-          scarcity: 0.985,
-          scale: { min: 1, max: 2.5 },
-          object: World.LOADED_MODELS.get('cactus1'),
-        },
-        {
-          weight: 0.2,
-          name: 'cactus2',
-          scarcity: 0.985,
-          scale: { min: 1, max: 2.5 },
-          object: World.LOADED_MODELS.get('cactus2'),
-        },
-        {
-          weight: 0.3,
-          name: 'cactus3',
-          scarcity: 0.985,
-          scale: { min: 1, max: 2.5 },
-          object: World.LOADED_MODELS.get('cactus3'),
-        },
-        {
-          weight: 0.2,
-          name: 'cactus4',
-          scarcity: 0.995,
-          scale: { min: 0.75, max: 1.2 },
-          object: World.LOADED_MODELS.get('cactus4'),
-        }
-      ]
-    };
+        BIOMES[b].organisms[o].object = World.LOADED_MODELS.get(name);
+      }
+    }
   }
 
   /**
@@ -164,7 +102,11 @@ class BiomeGenerator {
         const organism = biome.organisms[i];
 
         // test for scarcity and ground elevation criteria
-        if ((organism.scarcity === 0 || MathUtils.rng() >= organism.scarcity)) {
+        if (
+          (organism.scarcity === 0 || Utils.rng() >= organism.scarcity) &&
+          (organism.e === null || (e >= organism.e.low && e <= organism.e.high)) &&
+          (organism.m === null || (m >= organism.m.low && m <= organism.m.high))
+          ) {
           const object = organism.object.clone();
 
           const f = MathUtils.randomFloat(organism.scale.min, organism.scale.max);
@@ -188,40 +130,46 @@ class BiomeGenerator {
    * @return {IBiome} Biome informations
    */
   getBiome(e: number, m: number): IBiome {
-    if (e < 0.0026) { return BIOME_OCEAN; }
-    if (e < 0.0175) { return BIOME_BEACH; }
+    if (e < 0.0024) { return BIOMES.OCEAN; }
+    if (e < 0.028) {
+      if (e > 0.00575 && m > 0.65) {
+        return BIOMES.SWAMP;
+      }
+      return BIOMES.BEACH;
+    }
 
     // level 1
     if (e < 0.05) {
-      if (m > 0.65) { return BIOME_RAINFOREST; }
-      if (m > 0.24) { return BIOME_GRASSLAND; }
+      if (m > 0.65) { return BIOMES.RAINFOREST; }
+      if (m > 0.28) { return BIOMES.GRASSLAND; }
 
-      return BIOME_DESERT;
+      return BIOMES.DESERT;
     }
     // level 2
     if (e < 0.10) {
-      if (m > 0.80) { return BIOME_RAINFOREST; }
-      if (m > 0.38) { return BIOME_FOREST; }
-      if (m > 0.24) { return BIOME_GRASSLAND; }
+      if (m > 0.75) { return BIOMES.RAINFOREST; }
+      if (m > 0.38) { return BIOMES.FOREST; }
+      if (m > 0.28) { return BIOMES.GRASSLAND; }
 
-      return BIOME_DESERT;
+      return BIOMES.DESERT;
     }
 
     // level 3
     if (e < 0.25) {
-      if (m > 0.5) { return BIOME_MOUNTAIN; }
-      if (m > 0.24) { return BIOME_TAIGA; }
-      return BIOME_DESERT;
+      if (m > 0.5) { return BIOMES.MOUNTAIN; }
+      if (m > 0.28) { return BIOMES.TAIGA; }
+
+      return BIOMES.DESERT;
     }
 
     // level 4
     if (e < 0.4) {
-      if (m > 0.65) { return BIOME_SNOW; }
-      if (m > 0.35) { return BIOME_TUNDRA; }
-      return BIOME_MOUNTAIN;
+      if (m > 0.65) { return BIOMES.SNOW; }
+      if (m > 0.35) { return BIOMES.TUNDRA; }
+      return BIOMES.MOUNTAIN;
     }
 
-    return BIOME_SNOW;
+    return BIOMES.SNOW;
   }
 
   /**
@@ -269,8 +217,8 @@ class BiomeGenerator {
    * @return {number} moisture value
    */
   computeMoisture(x: number, z: number): number {
-    const nx = x / (CHUNK_PARAMS.WIDTH * 80) - 0.5;
-    const nz = z / (CHUNK_PARAMS.DEPTH * 80) - 0.5;
+    const nx = x / (Chunk.WIDTH * 192) - 0.5;
+    const nz = z / (Chunk.DEPTH * 192) - 0.5;
 
     let m = 0;
 
@@ -319,6 +267,15 @@ class BiomeGenerator {
    */
   static getHeightAtElevation(e: number) {
     return e * ((CHUNK_PARAMS.MAX_CHUNK_HEIGHT - CHUNK_PARAMS.MIN_CHUNK_HEIGHT) + CHUNK_PARAMS.MIN_CHUNK_HEIGHT);
+  }
+
+  /**
+   * Returns the world coordinate at the given elevation
+   * @param {number} e elevation
+   * @return {number}
+   */
+  static getHeightAtElevationWithWater(e: number) {
+    return Math.max(this.getHeightAtElevation(e), World.WATER_LEVEL);
   }
 }
 

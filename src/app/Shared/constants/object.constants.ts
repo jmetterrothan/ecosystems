@@ -1,34 +1,46 @@
 import { IObject } from './../models/object.model';
 
-import spruceObj from '../../../public/assets/obj/tree/spruce.obj';
-import spruceMtl from '../../../public/assets/obj/tree/spruce.mtl';
+import spruceObj from '@objmodels/tree/spruce.obj';
+import spruceMtl from '@objmodels/tree/spruce.mtl';
 
-import red_mushroomObj from '../../../public/assets/obj/mushroom/red_mushroom.obj';
-import red_mushroomMtl from '../../../public/assets/obj/mushroom/red_mushroom.mtl';
+import red_mushroomObj from '@objmodels/mushroom/red_mushroom.obj';
+import red_mushroomMtl from '@objmodels/mushroom/red_mushroom.mtl';
 
-import brown_mushroomObj from '../../../public/assets/obj/mushroom/brown_mushroom.obj';
-import brown_mushroomMtl from '../../../public/assets/obj/mushroom/brown_mushroom.mtl';
+import brown_mushroomObj from '@objmodels/mushroom/brown_mushroom.obj';
+import brown_mushroomMtl from '@objmodels/mushroom/brown_mushroom.mtl';
 
-import cactus1Obj from '../../../public/assets/obj/cactus/cactus1.obj';
-import cactus1Mtl from '../../../public/assets/obj/cactus/cactus1.mtl';
+import cactus1Obj from '@objmodels/cactus/cactus1.obj';
+import cactus1Mtl from '@objmodels/cactus/cactus1.mtl';
 
-import cactus2Obj from '../../../public/assets/obj/cactus/cactus2.obj';
-import cactus2Mtl from '../../../public/assets/obj/cactus/cactus2.mtl';
+import cactus2Obj from '@objmodels/cactus/cactus2.obj';
+import cactus2Mtl from '@objmodels/cactus/cactus2.mtl';
 
-import cactus3Obj from '../../../public/assets/obj/cactus/cactus3.obj';
-import cactus3Mtl from '../../../public/assets/obj/cactus/cactus3.mtl';
+import cactus3Obj from '@objmodels/cactus/cactus3.obj';
+import cactus3Mtl from '@objmodels/cactus/cactus3.mtl';
 
-import cactus4Obj from '../../../public/assets/obj/cactus/cactus4.obj';
-import cactus4Mtl from '../../../public/assets/obj/cactus/cactus4.mtl';
+import cactus4Obj from '@objmodels/cactus/cactus4.obj';
+import cactus4Mtl from '@objmodels/cactus/cactus4.mtl';
 
-import rock1Obj from '../../../public/assets/obj/rock/rock1.obj';
-import rock1Mtl from '../../../public/assets/obj/rock/rock1.mtl';
+import rock1Obj from '@objmodels/rock/rock1.obj';
+import rock1Mtl from '@objmodels/rock/rock1.mtl';
+
+import lilypadObj from '@objmodels/flower/lilypad.obj';
+import lilypadMtl from '@objmodels/flower/lilypad.mtl';
+
+import mangroveObj from '@objmodels/tree/mangrove.obj';
+import mangroveMtl from '@objmodels/tree/mangrove.mtl';
 
 export const OBJECTS: IObject[] = [
   {
     name: 'spruce',
     obj: spruceObj,
     mtl: spruceMtl
+  },
+  {
+    name: 'mangrove',
+    obj: mangroveObj,
+    mtl: mangroveMtl,
+    doubleSide: true
   },
   {
     name: 'red_mushroom',
@@ -64,5 +76,11 @@ export const OBJECTS: IObject[] = [
     name: 'rock1',
     obj: rock1Obj,
     mtl: rock1Mtl
+  },
+  {
+    name: 'lilypad',
+    obj: lilypadObj,
+    mtl: lilypadMtl,
+    doubleSide: true
   },
 ];
