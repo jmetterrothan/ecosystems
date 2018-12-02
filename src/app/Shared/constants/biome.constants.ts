@@ -53,7 +53,7 @@ export const BIOMES = {
         scale: { min: 1.25, max: 2.5 },
       },
       {
-        weight: 0.2,
+        weight: 0.1,
         name: 'cactus2',
         scarcity: 0.985,
         e: null,
@@ -75,6 +75,14 @@ export const BIOMES = {
         e: null,
         m: null,
         scale: { min: 1, max: 1.2 },
+      },
+      {
+        weight: 0.1,
+        name: 'rock1',
+        scarcity: 0.9,
+        e: null,
+        m: null,
+        scale: { min: 1.0, max: 4.0 },
       }
     ]
   },
@@ -98,12 +106,20 @@ export const BIOMES = {
     color: new THREE.Color(0xf0e68c),
     organisms: [
       {
-        weight: 1,
+        weight: 0.5,
         name: 'lilypad',
         scarcity: 0.975,
         e: { low: 0.0025, high: 0.00575 },
         m: { low: 0.5, high: 1.0 },
         scale: { min: 0.75, max: 1.45 },
+      },
+      {
+        weight: 0.5,
+        name: 'rock1',
+        scarcity: 0.975,
+        e: { low: 0.0175, high: 0.5 },
+        m: null,
+        scale: { min: 0.65, max: 0.95 },
       }
     ]
   },
@@ -137,7 +153,7 @@ export const BIOMES = {
       {
         weight: 0.33,
         name: 'mangrove',
-        scarcity: 0.975,
+        scarcity: 0.985,
         e: null,
         m: { low: 0.7, high: 1 },
         scale: { min: 0.8, max: 1 },
