@@ -6,6 +6,7 @@ import Chunk from './Chunk';
 import MathUtils from '@utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
+import { CHUNK_PARAMS } from '@shared/constants/chunkParams.constants';
 
 let BIOME_DESERT: IBiome = null;
 let BIOME_FOREST: IBiome = null;
@@ -243,8 +244,8 @@ class BiomeGenerator {
    * @return {number} elevation value
    */
   computeElevation(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 48) - 0.5;
-    const nz = z / (Chunk.DEPTH * 48) - 0.5;
+    const nx = x / (CHUNK_PARAMS.WIDTH * 48) - 0.5;
+    const nz = z / (CHUNK_PARAMS.DEPTH * 48) - 0.5;
 
     let e = 0;
 
@@ -268,8 +269,8 @@ class BiomeGenerator {
    * @return {number} moisture value
    */
   computeMoisture(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 80) - 0.5;
-    const nz = z / (Chunk.DEPTH * 80) - 0.5;
+    const nx = x / (CHUNK_PARAMS.WIDTH * 80) - 0.5;
+    const nz = z / (CHUNK_PARAMS.DEPTH * 80) - 0.5;
 
     let m = 0;
 
@@ -308,7 +309,7 @@ class BiomeGenerator {
    * @return {number}
    */
   static getElevationFromHeight(y: number) {
-    return y / ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT);
+    return y / ((CHUNK_PARAMS.MAX_CHUNK_HEIGHT - CHUNK_PARAMS.MIN_CHUNK_HEIGHT) + CHUNK_PARAMS.MIN_CHUNK_HEIGHT);
   }
 
   /**
@@ -317,7 +318,7 @@ class BiomeGenerator {
    * @return {number}
    */
   static getHeightAtElevation(e: number) {
-    return e * ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT);
+    return e * ((CHUNK_PARAMS.MAX_CHUNK_HEIGHT - CHUNK_PARAMS.MIN_CHUNK_HEIGHT) + CHUNK_PARAMS.MIN_CHUNK_HEIGHT);
   }
 }
 

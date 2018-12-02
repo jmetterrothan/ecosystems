@@ -40,29 +40,29 @@ class World {
     await this.initObjects();
 
     // WATER START
-    {
-      const geometry = new THREE.PlaneGeometry(Chunk.WIDTH * 48, Chunk.DEPTH * 48, 128, 128);
-      const material = new THREE.MeshPhongMaterial({
-        wireframe: false,
-        emissive: 0x0068b3,
-        emissiveIntensity: 0.25,
-        specular: 0x252525,
-        shininess: 60,
-        reflectivity: 0.75,
-        flatShading: true,
-        color: 0x0095ff,
-        opacity: 0.5,
-        transparent: true,
-        side: THREE.DoubleSide
-      });
+    // {
+    //   const geometry = new THREE.PlaneGeometry(Chunk.WIDTH * 48, Chunk.DEPTH * 48, 128, 128);
+    //   const material = new THREE.MeshPhongMaterial({
+    //     wireframe: false,
+    //     emissive: 0x0068b3,
+    //     emissiveIntensity: 0.25,
+    //     specular: 0x252525,
+    //     shininess: 60,
+    //     reflectivity: 0.75,
+    //     flatShading: true,
+    //     color: 0x0095ff,
+    //     opacity: 0.5,
+    //     transparent: true,
+    //     side: THREE.DoubleSide
+    //   });
 
-      const plane = new THREE.Mesh(geometry, material);
-      plane.rotateX(Math.PI / 2);
-      plane.position.set(-(Chunk.WIDTH * 16), 150, -(Chunk.DEPTH * 16));
+    //   const plane = new THREE.Mesh(geometry, material);
+    //   plane.rotateX(Math.PI / 2);
+    //   plane.position.set(-(Chunk.WIDTH * 16), 150, -(Chunk.DEPTH * 16));
 
-      this.water = plane;
-      this.scene.add(plane);
-    }
+    //   this.water = plane;
+    //   this.scene.add(plane);
+    // }
     // WATER END (+ plane mvt bellow)
 
     const spawn = new THREE.Vector3(0, 4000, 0);
@@ -138,7 +138,7 @@ class World {
       this.camera.projectionMatrix,
       this.camera.matrixWorldInverse)
     );
-    this.water.position.set(position.x, this.water.position.y, position.z);
+    // this.water.position.set(position.x, this.water.position.y, position.z);
     this.terrain.update(this.scene, this.frustum, position);
   }
 
