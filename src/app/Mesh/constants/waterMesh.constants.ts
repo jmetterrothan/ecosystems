@@ -7,6 +7,6 @@ export const WATER_MESH_PARAMS: IChunkParams = {
   NROWS: 1,
   NCOLS: 1,
   CELL_SIZE: TERRAIN_MESH_PARAMS.WIDTH,
-  WIDTH: 8 * 160,
-  DEPTH: 8 * 160,
+  WIDTH: 8 * 168,
+  DEPTH: 8 * 168,
 };
