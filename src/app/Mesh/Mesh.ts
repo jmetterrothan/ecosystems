@@ -11,6 +11,9 @@ import { TERRAIN_MESH_PARAMS } from './constants/terrainMesh.constants';
 
 import { IChunkParams } from '@shared/models/chunkParams.model';
 
+const water = new THREE.Color(0x0095ff);
+const swampWater = new THREE.Color(0x42a58a);
+
 class Mesh {
   static GEOMETRY_STACK = new Stack<THREE.Geometry>();
 
@@ -79,12 +82,15 @@ class Mesh {
         const z1 = (geometry.vertices[a].z + geometry.vertices[b].z + geometry.vertices[d].z) / 3;
         const z2 = (geometry.vertices[d].z + geometry.vertices[c].z + geometry.vertices[a].z) / 3;
 
-        if (this.type === MESH_TYPES.TERRAIN_MESH) {
-          const m1 = this.generator.computeMoisture(x1, z1);
-          const m2 = this.generator.computeMoisture(x2, z2);
+        const m1 = this.generator.computeMoisture(x1, z1);
+        const m2 = this.generator.computeMoisture(x2, z2);
 
+        if (this.type === MESH_TYPES.TERRAIN_MESH) {
           f1.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y1), m1).color;
           f2.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y2), m2).color;
+        } else {
+          f1.color = m1 > 0.5 ? swampWater : water;
+          f2.color = m2 > 0.5 ? swampWater : water;
         }
 
         geometry.faces.push(f1);

@@ -96,10 +96,12 @@ class World {
     sunlight.target.position.set(0, 0, 0);
     this.scene.add(sunlight);
 
+    /*
     {
       const helper = new THREE.DirectionalLightHelper(sunlight, 100);
       this.scene.add(helper);
     }
+    */
   }
 
   private async initObjects(): Promise<any> {
@@ -122,7 +124,7 @@ class World {
       this.camera.projectionMatrix,
       this.camera.matrixWorldInverse)
     );
-    // this.water.position.set(position.x, this.water.position.y, position.z);
+
     this.terrain.update(this.scene, this.frustum, position);
   }
 
