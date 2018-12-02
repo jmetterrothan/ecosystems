@@ -1,3 +1,4 @@
+import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 import * as THREE from 'three';
 import poissonDiskSampling from 'poisson-disk-sampling';
 
@@ -9,7 +10,8 @@ import WaterMesh from '../Mesh/WaterMesh';
 import World from './World';
 import MathUtils from '@utils/Math.utils';
 
-import { CHUNK_PARAMS } from '@shared/constants/chunkParams.constants';
+import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';
+import { WATER_MESH_PARAMS } from './../Mesh/constants/waterMesh.constants';
 
 class Chunk {
   static CHUNK_OBJECT_STACK = {};
@@ -29,10 +31,10 @@ class Chunk {
     this.key = `${row}:${col}`;
     this.objects = [];
 
-    const terrainMesh = new TerrainMesh(generator, row, col);
+    const terrainMesh = new TerrainMesh(this.generator, this.row, this.col);
     this.terrain = terrainMesh.generate();
 
-    this.water = terrainMesh.needGenerateWater() ? new WaterMesh(generator, row, col).generate() : null;
+    this.water = terrainMesh.needGenerateWater() ? new WaterMesh(this.generator, this.row, this.col).generate() : null;
   }
 
   /**
@@ -41,12 +43,12 @@ class Chunk {
    */
   populate(scene: THREE.Scene) {
     const padding = 300; // object bounding box size / 2
-    const pds = new poissonDiskSampling([CHUNK_PARAMS.WIDTH - padding, CHUNK_PARAMS.DEPTH - padding], padding * 2, padding * 2, 30, MathUtils.rng);
+    const pds = new poissonDiskSampling([TERRAIN_MESH_PARAMS.WIDTH - padding, TERRAIN_MESH_PARAMS.DEPTH - padding], padding * 2, padding * 2, 30, MathUtils.rng);
     const points = pds.fill();
 
     points.forEach((point: number[]) => {
-      const x = padding + this.col * CHUNK_PARAMS.WIDTH + point.shift();
-      const z = padding + this.row * CHUNK_PARAMS.DEPTH + point.shift();
+      const x = padding + this.col * TERRAIN_MESH_PARAMS.WIDTH + point.shift();
+      const z = padding + this.row * TERRAIN_MESH_PARAMS.DEPTH + point.shift();
       const y = this.generator.computeHeight(x, z);
 
       // select an organism based on the current biome
@@ -54,7 +56,7 @@ class Chunk {
 
       if (object) {
         object.visible = true;
-        object.position.set(x, Math.max(y, World.WATER_LEVEL), z);
+        object.position.set(x, Math.max(y, WATER_CONSTANTS.SEA_LEVEL), z);
         this.objects.push(object);
 
         scene.add(object);
@@ -62,10 +64,11 @@ class Chunk {
     });
   }
 
-  clean(scene) {
+  clean(scene: THREE.Scene) {
     for (let i = this.objects.length - 1; i >= 0; i--) {
       if (Chunk.CHUNK_OBJECT_STACK[this.objects[i].stack_ref].size < 256) {
         // collect unused objects
+        this.objects[i].visible = false;
         Chunk.CHUNK_OBJECT_STACK[this.objects[i].stack_ref].push(this.objects[i]);
       } else {
         // remove objects if the stack is full

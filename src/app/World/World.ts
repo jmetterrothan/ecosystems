@@ -10,8 +10,8 @@ import { OBJECTS } from '@shared/constants/object.constants';
 import MathUtils from '@utils/Math.utils';
 
 class World {
-  static SEED:string|null = null;
-  static WATER_LEVEL: number = 290;
+  static SEED: string | null = null;
+  static readonly VIEW_DISTANCE: number = 25000;
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
 
   private scene: THREE.Scene;
@@ -38,33 +38,7 @@ class World {
     this.initLights();
     await this.initObjects();
 
-    // WATER START
-    // {
-    //   const geometry = new THREE.PlaneGeometry(Chunk.WIDTH * 48, Chunk.DEPTH * 48, 128, 128);
-    //   const material = new THREE.MeshPhongMaterial({
-    //     wireframe: false,
-    //     emissive: 0x0068b3,
-    //     emissiveIntensity: 0.25,
-    //     specular: 0x252525,
-    //     shininess: 60,
-    //     reflectivity: 0.75,
-    //     flatShading: true,
-    //     color: 0x0095ff,
-    //     opacity: 0.5,
-    //     transparent: true,
-    //     side: THREE.DoubleSide
-    //   });
-
-    // const plane = new THREE.Mesh(geometry, material);
-    // plane.rotateX(Utils.degToRad(90));
-    // plane.position.set(-(Chunk.WIDTH * 16), World.WATER_LEVEL, -(Chunk.DEPTH * 16));
-
-    //   this.water = plane;
-    //   this.scene.add(plane);
-    // }
-    // WATER END (+ plane mvt bellow)
-
-    const spawn = new THREE.Vector3(0, 0, 0);
+    const spawn = new THREE.Vector3(0, 4000, 0);
 
     // stuff
     this.terrain = new Terrain();
@@ -91,7 +65,7 @@ class World {
   }
 
   private initFog() {
-    this.scene.fog = new THREE.Fog(0xb1d8ff, Terrain.VIEW_DISTANCE - Terrain.VIEW_DISTANCE / 4, Terrain.VIEW_DISTANCE - 500);
+    this.scene.fog = new THREE.Fog(0xb1d8ff, World.VIEW_DISTANCE - World.VIEW_DISTANCE / 4, World.VIEW_DISTANCE - 500);
   }
 
   private initLights() {

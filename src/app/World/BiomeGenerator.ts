@@ -10,7 +10,8 @@ import Chunk from './Chunk';
 import MathUtils from '@utils/Math.utils';
 import Stack from '@shared/Stack';
 
-import { CHUNK_PARAMS } from '@shared/constants/chunkParams.constants';
+import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';
+import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 
 /**
  * Biome composition :
@@ -169,8 +170,8 @@ class BiomeGenerator {
    * @return {number} elevation value
    */
   computeElevation(x: number, z: number): number {
-    const nx = x / (CHUNK_PARAMS.WIDTH * 48) - 0.5;
-    const nz = z / (CHUNK_PARAMS.DEPTH * 48) - 0.5;
+    const nx = x / (TERRAIN_MESH_PARAMS.WIDTH * 48) - 0.5;
+    const nz = z / (TERRAIN_MESH_PARAMS.DEPTH * 48) - 0.5;
 
     let e = 0;
 
@@ -194,8 +195,8 @@ class BiomeGenerator {
    * @return {number} moisture value
    */
   computeMoisture(x: number, z: number): number {
-    const nx = x / (CHUNK_PARAMS.WIDTH * 256) - 0.5;
-    const nz = z / (CHUNK_PARAMS.DEPTH * 256) - 0.5;
+    const nx = x / (TERRAIN_MESH_PARAMS.WIDTH * 256) - 0.5;
+    const nz = z / (TERRAIN_MESH_PARAMS.DEPTH * 256) - 0.5;
 
     let m = 0;
 
@@ -234,7 +235,7 @@ class BiomeGenerator {
    * @return {number}
    */
   static getElevationFromHeight(y: number) {
-    return y / ((CHUNK_PARAMS.MAX_CHUNK_HEIGHT - CHUNK_PARAMS.MIN_CHUNK_HEIGHT) + CHUNK_PARAMS.MIN_CHUNK_HEIGHT);
+    return y / ((TERRAIN_MESH_PARAMS.MAX_CHUNK_HEIGHT - TERRAIN_MESH_PARAMS.MIN_CHUNK_HEIGHT) + TERRAIN_MESH_PARAMS.MIN_CHUNK_HEIGHT);
   }
 
   /**
@@ -243,7 +244,7 @@ class BiomeGenerator {
    * @return {number}
    */
   static getHeightAtElevation(e: number) {
-    return e * ((CHUNK_PARAMS.MAX_CHUNK_HEIGHT - CHUNK_PARAMS.MIN_CHUNK_HEIGHT) + CHUNK_PARAMS.MIN_CHUNK_HEIGHT);
+    return e * ((TERRAIN_MESH_PARAMS.MAX_CHUNK_HEIGHT - TERRAIN_MESH_PARAMS.MIN_CHUNK_HEIGHT) + TERRAIN_MESH_PARAMS.MIN_CHUNK_HEIGHT);
   }
 
   /**
@@ -252,16 +253,7 @@ class BiomeGenerator {
    * @return {number}
    */
   static getHeightAtElevationWithWater(e: number) {
-    return Math.max(this.getHeightAtElevation(e), World.WATER_LEVEL);
-  }
-
-  /**
-   * Returns the world coordinate at the given elevation
-   * @param {number} e elevation
-   * @return {number}
-   */
-  static getHeightAtElevationWithWater(e: number) {
-    return Math.max(this.getHeightAtElevation(e), World.WATER_LEVEL);
+    return Math.max(this.getHeightAtElevation(e), WATER_CONSTANTS.SEA_LEVEL);
   }
 }
 
