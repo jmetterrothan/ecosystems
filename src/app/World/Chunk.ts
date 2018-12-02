@@ -12,6 +12,8 @@ import MathUtils from '@utils/Math.utils';
 import { CHUNK_PARAMS } from '@shared/constants/chunkParams.constants';
 
 class Chunk {
+  static CHUNK_OBJECT_STACK = {};
+
   readonly row: number;
   readonly col: number;
 
@@ -30,7 +32,7 @@ class Chunk {
     const terrainMesh = new TerrainMesh(generator, row, col);
     this.terrain = terrainMesh.generate();
 
-    this.water = terrainMesh.needRenderWater() ? new WaterMesh(generator, row, col).generate() : null;
+    this.water = terrainMesh.needGenerateWater() ? new WaterMesh(generator, row, col).generate() : null;
   }
 
   populate(scene: THREE.Scene) {
@@ -58,15 +60,21 @@ class Chunk {
 
   clean(scene) {
     for (let i = this.objects.length - 1; i >= 0; i--) {
-      this.objects[i].traverse((child) => {
-        if (child.geometry !== undefined) {
-          child.geometry.dispose();
-          child.material.dispose();
-        }
-      });
+      if (Chunk.CHUNK_OBJECT_STACK[this.objects[i].stack_ref].size < 256) {
+        // collect unused objects
+        Chunk.CHUNK_OBJECT_STACK[this.objects[i].stack_ref].push(this.objects[i]);
+      } else {
+        // remove objects if the stack is full
+        this.objects[i].traverse((child) => {
+          if (child.geometry !== undefined) {
+            child.geometry.dispose();
+            child.material.dispose();
+          }
+        });
 
-      scene.remove(this.objects[i]);
-      delete this.objects[i];
+        scene.remove(this.objects[i]);
+        delete this.objects[i];
+      }
     }
 
     this.terrain.geometry.dispose();
@@ -78,6 +86,15 @@ class Chunk {
       this.water.material.dispose();
       scene.remove(this.water);
     }
+  }
+
+  set visible(bool: boolean) {
+    this.terrain.visible = bool;
+    if (this.water) this.water.visible = bool;
+  }
+
+  get visible(): boolean {
+    return this.terrain.visible;
   }
 }
 export default Chunk;

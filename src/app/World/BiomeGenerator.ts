@@ -8,6 +8,7 @@ import { IBiome } from '@shared/models/biome.model';
 import World from './World';
 import Chunk from './Chunk';
 import MathUtils from '@utils/Math.utils';
+import Stack from '@shared/Stack';
 
 import { CHUNK_PARAMS } from '@shared/constants/chunkParams.constants';
 
@@ -41,6 +42,19 @@ class BiomeGenerator {
         BIOMES[b].organisms[o].object = World.LOADED_MODELS.get(name);
       }
     }
+
+    /*
+    window.test = () => {
+      console.log('##################');
+      let str = '';
+      for (const type in Chunk.CHUNK_OBJECT_STACK)  {
+        str += `${type} : ${Chunk.CHUNK_OBJECT_STACK[type].size}\n`;
+      }
+      console.log(`${str}\n`);
+    };
+
+    setInterval(test, 2000);
+    */
   }
 
   /**
@@ -70,13 +84,26 @@ class BiomeGenerator {
           (organism.e === null || (e >= organism.e.low && e <= organism.e.high)) &&
           (organism.m === null || (m >= organism.m.low && m <= organism.m.high))
           ) {
-          const object = organism.object.clone();
+          let object = null;
 
+          // if object stack doesn't exist yet we create one
+          if (!Chunk.CHUNK_OBJECT_STACK[organism.name]) {
+            Chunk.CHUNK_OBJECT_STACK[organism.name] = new Stack<THREE.Object3D>();
+          }
+
+          // if the stack is empty, create a new object else pop an object from the stack
+          if (Chunk.CHUNK_OBJECT_STACK[organism.name].empty) {
+            object = organism.object.clone();
+            object.stack_ref = organism.name;
+          } else {
+            object = Chunk.CHUNK_OBJECT_STACK[organism.name].pop();
+          }
+
+          // reset transforms
           const f = MathUtils.randomFloat(organism.scale.min, organism.scale.max);
-          const r = MathUtils.randomFloat(0, Math.PI * 2);
 
-          object.rotateY(r);
-          object.scale.multiplyScalar(f);
+          object.rotation.y = MathUtils.randomFloat(0, Math.PI * 2);
+          object.scale.set(f * 200, f * 200, f * 200);
 
           return object;
         }

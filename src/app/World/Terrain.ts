@@ -4,7 +4,7 @@ import Mesh from '../Mesh/Mesh';
 import { CHUNK_PARAMS } from '@shared/constants/chunkParams.constants';
 
 class Terrain {
-  static readonly VIEW_DISTANCE: number = 25000;
+  static readonly VIEW_DISTANCE: number = 22000;
   static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(Terrain.VIEW_DISTANCE / CHUNK_PARAMS.WIDTH);
   static readonly INFINITE_TERRAIN: boolean = true;
 
@@ -73,7 +73,7 @@ class Terrain {
 
     if (now >= this.time) {
       this.chunks.forEach(chunk => {
-        if (chunk.col < this.startX || chunk.col > this.endX || chunk.row < this.startZ || chunk.row > this.endZ) {
+        if (chunk && (chunk.col < this.startX || chunk.col > this.endX || chunk.row < this.startZ || chunk.row > this.endZ)) {
           chunk.clean(scene);
           this.chunks.delete(chunk.key);
         }
@@ -86,21 +86,23 @@ class Terrain {
       for (let j = this.startX; j < this.endX; j++) {
         const id = `${i}:${j}`;
 
+        let chunk = null;
+
         // generate chunk if needed
         if (!this.chunks.has(id)) {
-          const chunk = new Chunk(this.generator, i, j);
+          chunk = new Chunk(this.generator, i, j);
           chunk.populate(scene);
 
           this.chunks.set(id, chunk);
 
           scene.add(chunk.terrain);
           if (chunk.water) scene.add(chunk.water);
+        } else {
+          chunk = this.chunks.get(id);
         }
 
-        const chunk = this.chunks.get(id);
         if (frustum.intersectsObject(chunk.terrain)) {
-          chunk.terrain.visible = true;
-          if (chunk.water) chunk.water.visible = true;
+          chunk.visible = true;
         }
 
         // mark this chunk as visible

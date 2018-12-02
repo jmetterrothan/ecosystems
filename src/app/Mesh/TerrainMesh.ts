@@ -15,7 +15,7 @@ class TerrainMesh extends Mesh {
     return this.low;
   }
 
-  needRenderWater(): boolean {
+  needGenerateWater(): boolean {
     return this.low <= WATER_CONSTANTS.SEA_LEVEL;
   }
 }
