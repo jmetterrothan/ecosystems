@@ -5,9 +5,8 @@ import Stack from '@shared/Stack';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
-import { WATER_MATERIAL } from './constants/waterMaterial.constants';
-import { TERRAIN_MATERIAL } from './constants/terrainMaterial.constants';
-import { TERRAIN_MESH_PARAMS } from './constants/terrainMesh.constants';
+import { WATER_MATERIAL } from '@materials/water.material';
+import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 
 import { IChunkParams } from '@shared/models/chunkParams.model';
 

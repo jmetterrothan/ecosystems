@@ -1,4 +1,5 @@
 import Chunk from './Chunk';
+import Clouds from './Clouds';
 import BiomeGenerator from './BiomeGenerator';
 
 import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';

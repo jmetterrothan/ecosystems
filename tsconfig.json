@@ -22,6 +22,9 @@
       ],
       "@mesh/*": [
         "src/app/Mesh/*"
+      ],
+      "@materials/*": [
+        "src/app/Shared/materials/*"
       ]
     },
     "typeRoots": [

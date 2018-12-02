@@ -5,6 +5,7 @@ import 'three/examples/js/loaders/MTLLoader';
 
 import Terrain from './Terrain';
 import Player from '../Player';
+import Clouds from './Clouds';
 
 import { OBJECTS } from '@shared/constants/object.constants';
 import MathUtils from '@utils/Math.utils';
@@ -24,12 +25,16 @@ class World {
   private frustum: THREE.Frustum;
   private seed: string;
 
+  private clouds: Clouds;
+
   constructor(scene: THREE.Scene, camera: THREE.PerspectiveCamera, controls: THREE.PointerLockControls) {
     this.scene = scene;
     this.camera = camera;
     this.controls = controls;
 
     this.frustum = new THREE.Frustum();
+
+    this.clouds = new Clouds();
   }
 
   async init() {
@@ -49,6 +54,8 @@ class World {
     this.player.init(spawn.x, spawn.y, spawn.z);
 
     this.scene.add(this.controls.getObject());
+
+    this.scene.add(this.clouds.pick());
   }
 
   private initSeed() {
@@ -107,9 +114,11 @@ class World {
   public update() {
     const position = this.player.getPosition();
 
-    this.frustum.setFromMatrix(new THREE.Matrix4().multiplyMatrices(
-      this.camera.projectionMatrix,
-      this.camera.matrixWorldInverse)
+    this.frustum.setFromMatrix(
+      new THREE.Matrix4().multiplyMatrices(
+        this.camera.projectionMatrix,
+        this.camera.matrixWorldInverse
+      )
     );
     this.terrain.update(this.scene, this.frustum, position);
   }
