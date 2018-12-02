@@ -1,9 +1,5 @@
 import Chunk from './Chunk';
-<<<<<<< HEAD
-import Clouds from './Clouds';
-=======
 import World from './World';
->>>>>>> 23-optimization
 import BiomeGenerator from './BiomeGenerator';
 
 import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';
