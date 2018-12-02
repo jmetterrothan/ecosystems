@@ -1,4 +1,4 @@
-import { IObject } from './../models/object.model';
+import { IObject } from '@shared/models/object.model';
 
 import spruceObj from '@objmodels/tree/spruce.obj';
 import spruceMtl from '@objmodels/tree/spruce.mtl';

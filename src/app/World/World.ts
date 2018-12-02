@@ -111,7 +111,6 @@ class World {
       this.camera.projectionMatrix,
       this.camera.matrixWorldInverse)
     );
-    // this.water.position.set(position.x, this.water.position.y, position.z);
     this.terrain.update(this.scene, this.frustum, position);
   }
 

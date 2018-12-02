@@ -13,6 +13,8 @@ import Stack from '@shared/Stack';
 import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 
+import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
+
 /**
  * Biome composition :
  * - name
@@ -69,9 +71,9 @@ class BiomeGenerator {
         // test for scarcity and ground elevation criteria
         if (
           (organism.scarcity === 0 || MathUtils.rng() >= organism.scarcity) &&
-          (organism.e === null || (e >= organism.e.low && e <= organism.e.high)) &&
-          (organism.m === null || (m >= organism.m.low && m <= organism.m.high))
-          ) {
+          (organism.e === null || (e >= (<ILowHigh>organism.e).low && e <= (<ILowHigh>organism.e).high)) &&
+          (organism.m === null || (m >= (<ILowHigh>organism.m).low && m <= (<ILowHigh>organism.m).high))
+        ) {
           let object = null;
 
           // if object stack doesn't exist yet we create one
