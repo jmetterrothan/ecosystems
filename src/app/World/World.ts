@@ -12,8 +12,8 @@ import { OBJECTS } from '@shared/constants/object.constants';
 import Chunk from './Chunk';
 
 class World {
-  static SEED = '1577115274';
-  static WATER_LEVEL = 290;
+  static SEED:string|null = null;
+  static WATER_LEVEL: number = 290;
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
 
   private scene: THREE.Scene;
