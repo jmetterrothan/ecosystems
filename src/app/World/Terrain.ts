@@ -55,6 +55,7 @@ class Terrain {
 
       chunk.terrain.visible = true;
       if (chunk.water) chunk.water.visible = true;
+      if (chunk.cloud) chunk.cloud.visible = true;
     }
 
     // loop through all chunks in range
@@ -89,6 +90,7 @@ class Terrain {
 
           scene.add(chunk.terrain);
           if (chunk.water) scene.add(chunk.water);
+          if (chunk.cloud) scene.add(chunk.cloud);
         } else {
           chunk = this.chunks.get(id);
         }

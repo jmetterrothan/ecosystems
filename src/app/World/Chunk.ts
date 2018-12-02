@@ -1,3 +1,4 @@
+import CloudMesh from '@mesh/CloudMesh';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 import * as THREE from 'three';
 import poissonDiskSampling from 'poisson-disk-sampling';
@@ -22,6 +23,7 @@ class Chunk {
 
   terrain: THREE.Mesh;
   water: THREE.Mesh;
+  cloud: THREE.Mesh;
 
   generator: BiomeGenerator;
 
@@ -36,6 +38,8 @@ class Chunk {
     this.terrain = terrainMesh.generate();
 
     this.water = terrainMesh.needGenerateWater() ? new WaterMesh(this.generator, this.row, this.col).generate() : null;
+
+    this.cloud = Math.random() > 0.95 ? new CloudMesh(this.generator, this.row, this.col).generate() : null;
   }
 
   /**

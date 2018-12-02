@@ -5,8 +5,10 @@ import Stack from '@shared/Stack';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
+
 import { WATER_MATERIAL } from '@materials/water.material';
 import { TERRAIN_MATERIAL } from '@materials/terrain.material';
+import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
 import { IChunkParams } from '@shared/models/chunkParams.model';
 
@@ -47,7 +49,25 @@ class Mesh {
       const x = this.col * this.params.WIDTH + c * this.params.CELL_SIZE;
       for (let r = 0; r < nbVerticesZ; r++) {
         const z = this.row * this.params.DEPTH + r * this.params.CELL_SIZE;
-        const y = this.type === MESH_TYPES.TERRAIN_MESH ? this.generator.computeHeight(x, z) : WATER_CONSTANTS.SEA_LEVEL;
+        let y: number = 0;
+        switch (this.type) {
+          case MESH_TYPES.TERRAIN_MESH:
+            y = this.generator.computeHeight(x, z);
+            break;
+
+          case MESH_TYPES.WATER_MESH:
+            y = WATER_CONSTANTS.SEA_LEVEL;
+            break;
+
+          case MESH_TYPES.CLOUD_MESH:
+            y = 4000;
+            break;
+
+          default:
+            break;
+        }
+
+        // const y = this.type === MESH_TYPES.TERRAIN_MESH ? this.generator.computeHeight(x, z) : WATER_CONSTANTS.SEA_LEVEL;
 
         if (this.low === null || this.low > y) this.low = y;
         if (this.high === null || this.high < y) this.high = y;
@@ -109,7 +129,26 @@ class Mesh {
 
   generate(): THREE.Mesh {
     const geometry = this.getGeometry();
-    const mesh = new THREE.Mesh(geometry, this.type === MESH_TYPES.TERRAIN_MESH ? TERRAIN_MATERIAL : WATER_MATERIAL);
+    let material: THREE.MeshPhongMaterial;
+
+    switch (this.type) {
+      case MESH_TYPES.TERRAIN_MESH:
+        material = TERRAIN_MATERIAL;
+        break;
+
+      case MESH_TYPES.WATER_MESH:
+        material = WATER_MATERIAL;
+        break;
+
+      case MESH_TYPES.CLOUD_MESH:
+        material = CLOUD_MATERIAL;
+        break;
+
+      default:
+        break;
+    }
+
+    const mesh = new THREE.Mesh(geometry, material);
 
     mesh.frustumCulled = false;
     mesh.visible = false;

@@ -66,7 +66,7 @@ class World {
 
     this.scene.add(this.controls.getObject());
 
-    this.scene.add(this.clouds.pick());
+    // this.scene.add(this.clouds.pick());
   }
 
   private initSeed() {
