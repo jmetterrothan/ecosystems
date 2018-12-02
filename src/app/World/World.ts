@@ -13,6 +13,7 @@ import Chunk from './Chunk';
 
 class World {
   static SEED = '1577115274';
+  static WATER_LEVEL = 290;
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
 
   private scene: THREE.Scene;
@@ -58,7 +59,7 @@ class World {
 
       const plane = new THREE.Mesh(geometry, material);
       plane.rotateX(Utils.degToRad(90));
-      plane.position.set(-(Chunk.WIDTH * 16), 150, -(Chunk.DEPTH * 16));
+      plane.position.set(-(Chunk.WIDTH * 16), World.WATER_LEVEL, -(Chunk.DEPTH * 16));
 
       this.water = plane;
       this.scene.add(plane);

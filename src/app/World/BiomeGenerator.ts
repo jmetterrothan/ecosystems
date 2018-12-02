@@ -225,6 +225,15 @@ class BiomeGenerator {
   static getHeightAtElevation(e: number) {
     return e * ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT);
   }
+
+  /**
+   * Returns the world coordinate at the given elevation
+   * @param {number} e elevation
+   * @return {number}
+   */
+  static getHeightAtElevationWithWater(e: number) {
+    return Math.max(this.getHeightAtElevation(e), World.WATER_LEVEL);
+  }
 }
 
 export default BiomeGenerator;

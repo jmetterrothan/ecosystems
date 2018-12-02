@@ -59,7 +59,7 @@ class Chunk {
       const object = this.generator.pick(x, z);
 
       if (object) {
-        object.position.set(x, y, z);
+        object.position.set(x, Math.max(y, World.WATER_LEVEL), z);
         scene.add(object);
       }
     });
