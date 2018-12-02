@@ -7,17 +7,18 @@ import BiomeGenerator from './BiomeGenerator';
 import TerrainMesh from '../Mesh/TerrainMesh';
 import WaterMesh from '../Mesh/WaterMesh';
 
-import World from './World';
 import MathUtils from '@utils/Math.utils';
 
 import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';
-import { WATER_MESH_PARAMS } from './../Mesh/constants/waterMesh.constants';
 
 class Chunk {
   static CHUNK_OBJECT_STACK = {};
 
   readonly row: number;
   readonly col: number;
+
+  key: string;
+  objects: any[];
 
   terrain: THREE.Mesh;
   water: THREE.Mesh;
@@ -85,12 +86,12 @@ class Chunk {
     }
 
     this.terrain.geometry.dispose();
-    this.terrain.material.dispose();
+    (<THREE.Material>this.terrain.material).dispose();
     scene.remove(this.terrain);
 
     if (this.water) {
       this.water.geometry.dispose();
-      this.water.material.dispose();
+      (<THREE.Material>this.terrain.material).dispose();
       scene.remove(this.water);
     }
   }
@@ -107,7 +108,7 @@ class Chunk {
   static debugStacks() {
     console.log('## CHUNK OBJECT STACKS');
     let str = '';
-    for (const type in Chunk.CHUNK_OBJECT_STACK)  {
+    for (const type in Chunk.CHUNK_OBJECT_STACK) {
       str += `${type} : ${Chunk.CHUNK_OBJECT_STACK[type].size}\n`;
     }
     console.log(`${str}\n`);
