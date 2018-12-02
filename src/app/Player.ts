@@ -91,9 +91,9 @@ class Player {
     const position = this.controls.getObject().position;
     const y = terrain.getHeightAt(position.x, position.z) + 100;
 
-    if (position.y < y) {
-      this.controls.getObject().position.y = y;
-    }
+    // if (position.y < y) {
+    //   this.controls.getObject().position.y = y;
+    // }
   }
 
   public handleKeyboard(key: string, active: boolean) {

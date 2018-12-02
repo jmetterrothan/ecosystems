@@ -16,6 +16,12 @@
       ],
       "@world/*": [
         "src/app/World/*"
+      ],
+      "@objmodels/*": [
+        "src/public/assets/obj/*"
+      ],
+      "@mesh/*": [
+        "src/app/Mesh/*"
       ]
     },
     "typeRoots": [

@@ -7,5 +7,6 @@ module.exports = {
   "@assets": path.resolve(PATHS.PUBLIC, 'assets'),
   "@objmodels": path.resolve(PATHS.PUBLIC, 'assets', 'obj'),
   "@utils": path.resolve(PATHS.APP, 'Shared', 'utils'),
-  "@world": path.resolve(PATHS.APP, 'World')
+  "@world": path.resolve(PATHS.APP, 'World'),
+  "@mesh": path.resolve(PATHS.APP, 'Mesh')
 };

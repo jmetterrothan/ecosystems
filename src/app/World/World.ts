@@ -5,7 +5,6 @@ import 'three/examples/js/loaders/MTLLoader';
 
 import Terrain from './Terrain';
 import Player from '../Player';
-import Chunk from './Chunk';
 
 import { OBJECTS } from '@shared/constants/object.constants';
 import MathUtils from '@utils/Math.utils';
@@ -24,8 +23,6 @@ class World {
   private terrain: Terrain;
   private frustum: THREE.Frustum;
   private seed: string;
-
-  private water: THREE.Mesh;
 
   constructor(scene: THREE.Scene, camera: THREE.PerspectiveCamera, controls: THREE.PointerLockControls) {
     this.scene = scene;
