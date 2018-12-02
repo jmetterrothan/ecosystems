@@ -106,7 +106,7 @@ export const BIOMES = {
       {
         weight: 1,
         name: 'jungle_tree',
-        scarcity: 0.925,
+        scarcity: 0.95,
         e: null,
         m: null,
         scale: { min: 0.85, max: 1.5 },
