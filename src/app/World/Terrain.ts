@@ -1,18 +1,10 @@
 import Chunk from './Chunk';
+import World from './World';
 import BiomeGenerator from './BiomeGenerator';
 
 import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';
 
 class Terrain {
-  static readonly VIEW_DISTANCE: number = 25000;
-  static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(Terrain.VIEW_DISTANCE / TERRAIN_MESH_PARAMS.WIDTH);
-  static readonly INFINITE_TERRAIN: boolean = true;
-
-  static readonly MIN_X: number = 0;
-  static readonly MIN_Z: number = 0;
-  static readonly MAX_X: number = 1;
-  static readonly MAX_Z: number = 1;
-
   private chunks: Map<string, Chunk>;
   private visibleChunks: Chunk[];
   private startX: number;
@@ -37,23 +29,23 @@ class Terrain {
     this.chunkX = Math.round(position.x / TERRAIN_MESH_PARAMS.WIDTH);
     this.chunkZ = Math.round(position.z / TERRAIN_MESH_PARAMS.DEPTH);
 
-    this.startX = this.chunkX - Terrain.CHUNK_RENDER_LIMIT;
-    this.startZ = this.chunkZ - Terrain.CHUNK_RENDER_LIMIT;
-    this.endX = this.chunkX + Terrain.CHUNK_RENDER_LIMIT;
-    this.endZ = this.chunkZ + Terrain.CHUNK_RENDER_LIMIT;
+    this.startX = this.chunkX - World.CHUNK_RENDER_LIMIT;
+    this.startZ = this.chunkZ - World.CHUNK_RENDER_LIMIT;
+    this.endX = this.chunkX + World.CHUNK_RENDER_LIMIT;
+    this.endZ = this.chunkZ + World.CHUNK_RENDER_LIMIT;
 
-    if (!Terrain.INFINITE_TERRAIN) {
-      if (this.startX < Terrain.MIN_X) {
-        this.startX = Terrain.MIN_X;
+    if (!World.INFINITE_TERRAIN) {
+      if (this.startX < World.MIN_X) {
+        this.startX = World.MIN_X;
       }
-      if (this.startZ < Terrain.MIN_Z) {
-        this.startZ = Terrain.MIN_Z;
+      if (this.startZ < World.MIN_Z) {
+        this.startZ = World.MIN_Z;
       }
-      if (this.endX > Terrain.MAX_X) {
-        this.endX = Terrain.MAX_X;
+      if (this.endX > World.MAX_X) {
+        this.endX = World.MAX_X;
       }
-      if (this.endZ > Terrain.MAX_Z) {
-        this.endZ = Terrain.MAX_Z;
+      if (this.endZ > World.MAX_Z) {
+        this.endZ = World.MAX_Z;
       }
     }
 

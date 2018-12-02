@@ -7,11 +7,22 @@ import Terrain from './Terrain';
 import Player from '../Player';
 
 import { OBJECTS } from '@shared/constants/object.constants';
+import { TERRAIN_MESH_PARAMS } from '../Mesh/constants/terrainMesh.constants';
+
 import MathUtils from '@utils/Math.utils';
 
 class World {
   static SEED: string | null = null;
+
   static readonly VIEW_DISTANCE: number = 25000;
+  static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(World.VIEW_DISTANCE / TERRAIN_MESH_PARAMS.WIDTH);
+
+  static readonly INFINITE_TERRAIN: boolean = true;
+  static readonly MIN_X: number = 0;
+  static readonly MIN_Z: number = 0;
+  static readonly MAX_X: number = 1;
+  static readonly MAX_Z: number = 1;
+
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
 
   private scene: THREE.Scene;

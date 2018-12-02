@@ -28,7 +28,7 @@ class BiomeGenerator {
   static readonly TERRAIN_OCTAVES: number[] = [1.0, 0.35, 0.25, 0.125, 0.0625, 0.005];
   static readonly TERRAIN_OCTAVES_SUM: number = BiomeGenerator.TERRAIN_OCTAVES.reduce((a, b) => a + b, 0);
 
-  static readonly TERRAIN_TEST: number = MathUtils.randomInt(5, 9);
+  static readonly TERRAIN_CURVE_POW: number = MathUtils.randomInt(5, 9);
 
   protected simplexTerrain: simplexNoise;
   protected simplexMoisture: simplexNoise;
@@ -186,7 +186,7 @@ class BiomeGenerator {
     e += BiomeGenerator.TERRAIN_OCTAVES[5] * this.elevationNoise(32 * nx, 32 * nz);
 
     e /= BiomeGenerator.TERRAIN_OCTAVES_SUM;
-    e **= BiomeGenerator.TERRAIN_TEST;
+    e **= BiomeGenerator.TERRAIN_CURVE_POW;
 
     return Math.round(e * 180) / 180;
   }
