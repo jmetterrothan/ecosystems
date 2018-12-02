@@ -24,6 +24,8 @@ class Chunk {
     this.generator = generator;
     this.row = row;
     this.col = col;
+    this.key = `${row}:${col}`;
+    this.objects = [];
 
     const terrainMesh = new TerrainMesh(generator, row, col);
     this.terrain = terrainMesh.generate();
@@ -47,9 +49,35 @@ class Chunk {
       if (object) {
         object.visible = true;
         object.position.set(x, Math.max(y, World.WATER_LEVEL), z);
+        this.objects.push(object);
+
         scene.add(object);
       }
     });
+  }
+
+  clean(scene) {
+    for (let i = this.objects.length - 1; i >= 0; i--) {
+      this.objects[i].traverse((child) => {
+        if (child.geometry !== undefined) {
+          child.geometry.dispose();
+          child.material.dispose();
+        }
+      });
+
+      scene.remove(this.objects[i]);
+      delete this.objects[i];
+    }
+
+    this.terrain.geometry.dispose();
+    this.terrain.material.dispose();
+    scene.remove(this.terrain);
+
+    if (this.water) {
+      this.water.geometry.dispose();
+      this.water.material.dispose();
+      scene.remove(this.water);
+    }
   }
 }
 export default Chunk;

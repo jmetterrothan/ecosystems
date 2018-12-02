@@ -2,16 +2,17 @@
 import * as THREE from 'three';
 
 import BiomeGenerator from '@world/BiomeGenerator';
+import Stack from '@shared/Stack';
 
 import { CHUNK_PARAMS } from '@shared/constants/chunkParams.constants';
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
-
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
-
 import { WATER_MATERIAL } from './constants/waterMaterial.constants';
 import { TERRAIN_MATERIAL } from './constants/terrainMesh.constants';
 
 class Mesh {
+  static GEOMETRY_STACK = new Stack<THREE.Geometry>();
+
   mesh: THREE.Mesh;
 
   readonly row: number;
@@ -110,8 +111,12 @@ class Mesh {
     return geometry;
   }
 
+  rebuildGeometry(geometry: THREE.Geometry) {
+    return geometry;
+  }
+
   generate(): THREE.Mesh {
-    const geometry = this.buildGeometry();
+    const geometry = this.getGeometry();
     const mesh = new THREE.Mesh(geometry, this.type === MESH_TYPES.TERRAIN_MESH ? TERRAIN_MATERIAL : WATER_MATERIAL);
 
     mesh.frustumCulled = false;
@@ -122,6 +127,10 @@ class Mesh {
     return mesh;
   }
 
+  private getGeometry() {
+    return this.buildGeometry();
+    // return Mesh.GEOMETRY_STACK.empty ? this.buildGeometry() : this.rebuildGeometry(Mesh.GEOMETRY_STACK.pop());
+  }
 }
 
 export default Mesh;

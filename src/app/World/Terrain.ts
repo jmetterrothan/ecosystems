@@ -1,6 +1,6 @@
 import Chunk from './Chunk';
 import BiomeGenerator from './BiomeGenerator';
-
+import Mesh from '../Mesh/Mesh';
 import { CHUNK_PARAMS } from '@shared/constants/chunkParams.constants';
 
 class Terrain {
@@ -15,6 +15,12 @@ class Terrain {
 
   private chunks: Map<string, Chunk>;
   private visibleChunks: Chunk[];
+  private startX: number;
+  private startZ: number;
+  private endX: number;
+  private endZ: number;
+  private chunkX: number;
+  private chunkZ: number;
 
   private time: number;
 
@@ -28,26 +34,26 @@ class Terrain {
   }
 
   update(scene: THREE.Scene, frustum: THREE.Frustum, position: THREE.Vector3) {
-    const chunkX = Math.round(position.x / CHUNK_PARAMS.WIDTH);
-    const chunkZ = Math.round(position.z / CHUNK_PARAMS.DEPTH);
+    this.chunkX = Math.round(position.x / CHUNK_PARAMS.WIDTH);
+    this.chunkZ = Math.round(position.z / CHUNK_PARAMS.DEPTH);
 
-    let startX = chunkX - Terrain.CHUNK_RENDER_LIMIT;
-    let startZ = chunkZ - Terrain.CHUNK_RENDER_LIMIT;
-    let endX = chunkX + Terrain.CHUNK_RENDER_LIMIT;
-    let endZ = chunkZ + Terrain.CHUNK_RENDER_LIMIT;
+    this.startX = this.chunkX - Terrain.CHUNK_RENDER_LIMIT;
+    this.startZ = this.chunkZ - Terrain.CHUNK_RENDER_LIMIT;
+    this.endX = this.chunkX + Terrain.CHUNK_RENDER_LIMIT;
+    this.endZ = this.chunkZ + Terrain.CHUNK_RENDER_LIMIT;
 
     if (!Terrain.INFINITE_TERRAIN) {
-      if (startX < Terrain.MIN_X) {
-        startX = Terrain.MIN_X;
+      if (this.startX < Terrain.MIN_X) {
+        this.startX = Terrain.MIN_X;
       }
-      if (startZ < Terrain.MIN_Z) {
-        startZ = Terrain.MIN_Z;
+      if (this.startZ < Terrain.MIN_Z) {
+        this.startZ = Terrain.MIN_Z;
       }
-      if (endX > Terrain.MAX_X) {
-        endX = Terrain.MAX_X;
+      if (this.endX > Terrain.MAX_X) {
+        this.endX = Terrain.MAX_X;
       }
-      if (endZ > Terrain.MAX_Z) {
-        endZ = Terrain.MAX_Z;
+      if (this.endZ > Terrain.MAX_Z) {
+        this.endZ = Terrain.MAX_Z;
       }
     }
 
@@ -64,29 +70,20 @@ class Terrain {
 
     // try to clean from memory unused generated chunks
     const now = window.performance.now();
-    if (this.time >= now) {
-      this.chunks.forEach((chunk, key) => {
-        if (chunk.col < startX || chunk.col > endX || chunk.row < startZ || chunk.row > endZ) {
-          chunk.terrain.geometry.dispose();
-          (<THREE.Material>chunk.terrain.material).dispose();
-          scene.remove(chunk.terrain);
-          chunk.terrain = null;
 
-          if (chunk.water) {
-            chunk.water.geometry.dispose();
-            (<THREE.Material>chunk.water.material).dispose();
-            scene.remove(chunk.water);
-            chunk.water = null;
-          }
-
-          this.chunks.delete(key);
+    if (now >= this.time) {
+      this.chunks.forEach(chunk => {
+        if (chunk.col < this.startX || chunk.col > this.endX || chunk.row < this.startZ || chunk.row > this.endZ) {
+          chunk.clean(scene);
+          this.chunks.delete(chunk.key);
         }
       });
+
       this.time = now + 1000;
     }
 
-    for (let i = startZ; i < endZ; i++) {
-      for (let j = startX; j < endX; j++) {
+    for (let i = this.startZ; i < this.endZ; i++) {
+      for (let j = this.startX; j < this.endX; j++) {
         const id = `${i}:${j}`;
 
         // generate chunk if needed

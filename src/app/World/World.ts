@@ -64,7 +64,7 @@ class World {
     // }
     // WATER END (+ plane mvt bellow)
 
-    const spawn = new THREE.Vector3(14804.494529840922, 3388.0000000062864, 66881.41188408446);
+    const spawn = new THREE.Vector3(0, 0, 0);
 
     // stuff
     this.terrain = new Terrain();
