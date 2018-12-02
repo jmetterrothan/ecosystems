@@ -6,6 +6,8 @@ export const BIOMES = {
         weight: 1.0,
         name: 'spruce',
         scarcity: 0.995,
+        e: null,
+        m: null,
         scale: { min: 0.75, max: 1.25 },
       }
     ]
@@ -17,18 +19,24 @@ export const BIOMES = {
         weight: 0.9,
         name: 'spruce',
         scarcity: 0.5,
+        e: null,
+        m: null,
         scale: { min: 0.75, max: 1.25 },
       },
       {
         weight: 0.05,
         name: 'red_mushroom',
         scarcity: 0.975,
+        e: null,
+        m: null,
         scale: { min: 0.75, max: 1.25 },
       },
       {
         weight: 0.05,
         name: 'brown_mushroom',
         scarcity: 0.995,
+        e: null,
+        m: null,
         scale: { min: 0.75, max: 1.25 },
       }
     ]
@@ -40,24 +48,32 @@ export const BIOMES = {
         weight: 0.3,
         name: 'cactus1',
         scarcity: 0.985,
+        e: null,
+        m: null,
         scale: { min: 1, max: 2.5 },
       },
       {
         weight: 0.2,
         name: 'cactus2',
         scarcity: 0.985,
+        e: null,
+        m: null,
         scale: { min: 1, max: 2.5 },
       },
       {
         weight: 0.3,
         name: 'cactus3',
         scarcity: 0.985,
+        e: null,
+        m: null,
         scale: { min: 1, max: 2.5 },
       },
       {
         weight: 0.2,
         name: 'cactus4',
         scarcity: 0.995,
+        e: null,
+        m: null,
         scale: { min: 0.75, max: 1.2 },
       }
     ]
@@ -80,7 +96,16 @@ export const BIOMES = {
   },
   BEACH: {
     color: new THREE.Color(0xf0e68c),
-    organisms: []
+    organisms: [
+      {
+        weight: 1,
+        name: 'lilypad',
+        scarcity: 0.975,
+        e: { low: 0.0025, high: 0.00575 },
+        m: { low: 0.5, high: 1.0 },
+        scale: { min: 0.75, max: 1.45 },
+      }
+    ]
   },
   OCEAN: {
     color: new THREE.Color(0xedc375),
@@ -90,6 +115,10 @@ export const BIOMES = {
     color: new THREE.Color(0xfffffff),
     organisms: []
   },
+  SWAMP2: {
+    color: new THREE.Color(0xa6b96f),
+    organisms: []
+  },
   SWAMP: {
     color: new THREE.Color(0xbed69e),
     organisms: [
@@ -97,14 +126,18 @@ export const BIOMES = {
         weight: 0.5,
         name: 'red_mushroom',
         scarcity: 0.955,
+        e: null,
+        m: null,
         scale: { min: 0.75, max: 1.25 },
       },
       {
         weight: 0.5,
         name: 'brown_mushroom',
         scarcity: 0.975,
+        e: null,
+        m: null,
         scale: { min: 0.75, max: 1.25 },
-      }
+      },
     ]
   },
   TEST: {

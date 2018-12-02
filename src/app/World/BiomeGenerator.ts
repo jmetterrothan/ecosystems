@@ -64,7 +64,11 @@ class BiomeGenerator {
         const organism = biome.organisms[i];
 
         // test for scarcity and ground elevation criteria
-        if ((organism.scarcity === 0 || Utils.rng() >= organism.scarcity)) {
+        if (
+          (organism.scarcity === 0 || Utils.rng() >= organism.scarcity) &&
+          (organism.e === null || (e >= organism.e.low && e <= organism.e.high)) &&
+          (organism.m === null || (m >= organism.m.low && m <= organism.m.high))
+          ) {
           const object = organism.object.clone();
 
           const f = Utils.randomFloat(organism.scale.min, organism.scale.max);
@@ -89,8 +93,11 @@ class BiomeGenerator {
    */
   getBiome(e: number, m: number): IBiome {
     if (e < 0.0026) { return BIOMES.OCEAN; }
-    if (e < 0.0210) {
+    if (e < 0.028) {
       if (e > 0.00575 && m > 0.65) {
+        if (e < 0.0125) {
+          return BIOMES.SWAMP2;
+        }
         return BIOMES.SWAMP;
       }
       return BIOMES.BEACH;
