@@ -24,11 +24,13 @@ import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
  */
 
 class BiomeGenerator {
-  static readonly MOISTURE_OCTAVES: number[] = [0.59, 0.21, 0.32, 0.13];
+  static readonly MOISTURE_OCTAVES: number[] = [0.20, 0.5, 0.25, 0.0125, 0.005];
   static readonly MOISTURE_OCTAVES_SUM: number = BiomeGenerator.MOISTURE_OCTAVES.reduce((a, b) => a + b, 0);
 
-  static readonly TERRAIN_OCTAVES: number[] = [0.95, 0.35, 0.25, 0.125, 0.0625, 0.0005];
+  static readonly TERRAIN_OCTAVES: number[] = [1.0, 0.35, 0.25, 0.125, 0.0625, 0.005];
   static readonly TERRAIN_OCTAVES_SUM: number = BiomeGenerator.TERRAIN_OCTAVES.reduce((a, b) => a + b, 0);
+
+  static readonly TERRAIN_CURVE_POW: number = MathUtils.randomInt(5, 9);
 
   protected simplexTerrain: simplexNoise;
   protected simplexMoisture: simplexNoise;
@@ -112,7 +114,7 @@ class BiomeGenerator {
   getBiome(e: number, m: number): IBiome {
     if (e < 0.0024) { return BIOMES.OCEAN; }
     if (e < 0.024) {
-      if (e > 0.00575 && m > 0.65) {
+      if (e > 0.00575 && m > 0.5) {
         return BIOMES.SWAMP;
       }
       return BIOMES.BEACH;
@@ -120,32 +122,33 @@ class BiomeGenerator {
 
     // level 1
     if (e < 0.05) {
-      if (m > 0.60) { return BIOMES.RAINFOREST; }
-      if (m > 0.32) { return BIOMES.GRASSLAND; }
+      if (m > 0.66) { return BIOMES.RAINFOREST; }
+      if (m > 0.33) { return BIOMES.GRASSLAND; }
 
       return BIOMES.DESERT;
     }
     // level 2
     if (e < 0.10) {
-      if (m > 0.75) { return BIOMES.RAINFOREST; }
-      if (m > 0.38) { return BIOMES.FOREST; }
-      if (m > 0.32) { return BIOMES.GRASSLAND; }
+      if (m > 0.66) { return BIOMES.RAINFOREST; }
+      if (m > 0.335) { return BIOMES.FOREST; }
+      if (m > 0.33) { return BIOMES.GRASSLAND; }
 
       return BIOMES.DESERT;
     }
 
     // level 3
-    if (e < 0.25) {
-      if (m > 0.5) { return BIOMES.MOUNTAIN; }
-      if (m > 0.28) { return BIOMES.TAIGA; }
+    if (e < 0.45) {
+      if (m > 0.66) { return BIOMES.RAINFOREST; }
+      if (m > 0.33) { return BIOMES.TAIGA; }
 
       return BIOMES.DESERT;
     }
 
     // level 4
-    if (e < 0.4) {
-      if (m > 0.65) { return BIOMES.SNOW; }
-      if (m > 0.35) { return BIOMES.TUNDRA; }
+    if (e < 0.6) {
+      if (m > 0.875) { return BIOMES.SNOW; }
+      if (m > 0.66) { return BIOMES.MOUNTAIN; }
+      if (m > 0.33) { return BIOMES.TUNDRA; }
       return BIOMES.MOUNTAIN;
     }
 
@@ -185,7 +188,7 @@ class BiomeGenerator {
     e += BiomeGenerator.TERRAIN_OCTAVES[5] * this.elevationNoise(32 * nx, 32 * nz);
 
     e /= BiomeGenerator.TERRAIN_OCTAVES_SUM;
-    e **= 5;
+    e **= BiomeGenerator.TERRAIN_CURVE_POW;
 
     return Math.round(e * 180) / 180;
   }
@@ -197,8 +200,8 @@ class BiomeGenerator {
    * @return {number} moisture value
    */
   computeMoisture(x: number, z: number): number {
-    const nx = x / (TERRAIN_MESH_PARAMS.WIDTH * 256) - 0.5;
-    const nz = z / (TERRAIN_MESH_PARAMS.DEPTH * 256) - 0.5;
+    const nx = x / (TERRAIN_MESH_PARAMS.WIDTH * 320) - 0.5;
+    const nz = z / (TERRAIN_MESH_PARAMS.DEPTH * 320) - 0.5;
 
     let m = 0;
 
@@ -206,10 +209,11 @@ class BiomeGenerator {
     m += BiomeGenerator.MOISTURE_OCTAVES[1] * this.moisturenNoise(nx * 2, nz * 2);
     m += BiomeGenerator.MOISTURE_OCTAVES[2] * this.moisturenNoise(nx * 4, nz * 4);
     m += BiomeGenerator.MOISTURE_OCTAVES[3] * this.moisturenNoise(nx * 8, nz * 8);
+    m += BiomeGenerator.MOISTURE_OCTAVES[4] * this.moisturenNoise(nx * 16, nz * 16);
 
     m /= BiomeGenerator.MOISTURE_OCTAVES_SUM;
 
-    return Math.round(m * 180) / 180;
+    return m;
   }
 
   // make the range of the simplex noise [-1, 1] => [0, 1]

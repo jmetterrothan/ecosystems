@@ -41,7 +41,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.9,
         name: 'spruce',
-        scarcity: 0.5,
+        scarcity: 0.65,
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.25 },
@@ -84,7 +84,7 @@ export const BIOMES: IBiomes = {
         scale: { min: 1.25, max: 2.5 },
       },
       {
-        weight: 0.3,
+        weight: 0.2,
         name: 'cactus3',
         scarcity: 0.985,
         e: null,
@@ -105,7 +105,15 @@ export const BIOMES: IBiomes = {
         scarcity: 0.985,
         e: null,
         m: null,
-        scale: { min: 1.0, max: 3.25 },
+        scale: { min: 1.0, max: 2.85 },
+      },
+      {
+        weight: 0.1,
+        name: 'palm_tree',
+        scarcity: 0.995,
+        e: null,
+        m: null,
+        scale: { min: 1.1, max: 1.5 },
       }
     ]
   },
@@ -125,12 +133,20 @@ export const BIOMES: IBiomes = {
     color: new THREE.Color(0x3ead52),
     organisms: [
       {
-        weight: 1,
+        weight: 0.6,
         name: 'jungle_tree',
         scarcity: 0.95,
         e: null,
         m: null,
-        scale: { min: 0.85, max: 1.5 },
+        scale: { min: 0.85, max: 1.35 },
+      },
+      {
+        weight: 0.4,
+        name: 'banana_tree',
+        scarcity: 0.95,
+        e: null,
+        m: null,
+        scale: { min: 0.75, max: 1.5 },
       }
     ]
   },
@@ -152,6 +168,14 @@ export const BIOMES: IBiomes = {
         e: { low: 0.0175, high: 0.5 },
         m: null,
         scale: { min: 0.65, max: 0.95 },
+      },
+      {
+        weight: 0.1,
+        name: 'palm_tree',
+        scarcity: 0.975,
+        e: { low: 0.0175, high: 0.5 },
+        m: { low: 0.0, high: 0.35 },
+        scale: { min: 1.1, max: 1.5 },
       }
     ]
   },
@@ -187,7 +211,7 @@ export const BIOMES: IBiomes = {
         name: 'mangrove',
         scarcity: 0.985,
         e: null,
-        m: { low: 0.7, high: 1 },
+        m: { low: 0.6, high: 1 },
         scale: { min: 0.8, max: 1 },
       }
     ]

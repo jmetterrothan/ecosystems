@@ -39,7 +39,23 @@ import tulipMtl from '@objmodels/flower/tulip.mtl';
 import daisyObj from '@objmodels/flower/daisy.obj';
 import daisyMtl from '@objmodels/flower/daisy.mtl';
 
+import palm_treeObj from '@objmodels/tree/palm_tree.obj';
+import palm_treeMtl from '@objmodels/tree/palm_tree.mtl';
+
+import banana_treeObj from '@objmodels/tree/banana_tree.obj';
+import banana_treeMtl from '@objmodels/tree/banana_tree.mtl';
+
 export const OBJECTS: IObject[] = [
+  {
+    name: 'banana_tree',
+    obj: banana_treeObj,
+    mtl: banana_treeMtl
+  },
+  {
+    name: 'palm_tree',
+    obj: palm_treeObj,
+    mtl: palm_treeMtl
+  },
   {
     name: 'daisy',
     obj: daisyObj,
