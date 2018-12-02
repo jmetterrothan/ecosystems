@@ -58,16 +58,16 @@ class World {
     //     side: THREE.DoubleSide
     //   });
 
-      const plane = new THREE.Mesh(geometry, material);
-      plane.rotateX(Utils.degToRad(90));
-      plane.position.set(-(Chunk.WIDTH * 16), 150, -(Chunk.DEPTH * 16));
+    // const plane = new THREE.Mesh(geometry, material);
+    // plane.rotateX(Utils.degToRad(90));
+    // plane.position.set(-(Chunk.WIDTH * 16), World.WATER_LEVEL, -(Chunk.DEPTH * 16));
 
     //   this.water = plane;
     //   this.scene.add(plane);
     // }
     // WATER END (+ plane mvt bellow)
 
-    const spawn = new THREE.Vector3(0, 4000, 0);
+    const spawn = new THREE.Vector3(14804.494529840922, 3388.0000000062864, 66881.41188408446);
 
     // stuff
     this.terrain = new Terrain();
@@ -81,8 +81,8 @@ class World {
   }
 
   private initSeed() {
-    this.seed = World.SEED ? World.SEED : Utils.randomUint32().toString();
-    Utils.rng = new Math.seedrandom(this.seed);
+    this.seed = World.SEED ? World.SEED : MathUtils.randomUint32().toString();
+    MathUtils.rng = new Math.seedrandom(this.seed);
     console.info(`SEED : ${this.seed}`);
   }
 

@@ -3,50 +3,13 @@ import simplexNoise from 'simplex-noise';
 
 import { BIOMES } from '@shared/constants/biome.constants';
 
-import { IColor } from '@shared/models/color.model';
-import { IBiome } from '@shared/models/biome';
-import { IBiomeWeightedObject } from '@shared/models/biomeWeightedObject';
+import { IBiome } from '@shared/models/biome.model';
 
 import World from './World';
 import Chunk from './Chunk';
 import MathUtils from '@utils/Math.utils';
 
-let BIOME_DESERT: IBiome = null;
-let BIOME_FOREST: IBiome = null;
-let BIOME_GRASSLAND: IBiome = null;
-
-const BIOME_TUNDRA: IBiome = {
-  color: new THREE.Color(0xB4C1A9),
-  organisms: []
-};
-const BIOME_TAIGA: IBiome = {
-  color: new THREE.Color(0xb4c09c),
-  organisms: []
-};
-const BIOME_MOUNTAIN: IBiome = {
-  color: new THREE.Color(0x9C9B7A),
-  organisms: []
-};
-const BIOME_RAINFOREST: IBiome = {
-  color: new THREE.Color(0x3ead52),
-  organisms: []
-};
-const BIOME_BEACH: IBiome = {
-  color: new THREE.Color(0xf0e68c),
-  organisms: []
-};
-const BIOME_OCEAN: IBiome = {
-  color: new THREE.Color(0xedc375),
-  organisms: []
-};
-const BIOME_SNOW: IBiome = {
-  color: new THREE.Color(0xfffffff),
-  organisms: []
-};
-const BIOME_TEST: IBiome = {
-  color: new THREE.Color('purple'),
-  organisms: []
-};
+import { CHUNK_PARAMS } from '@shared/constants/chunkParams.constants';
 
 /**
  * Biome composition :
@@ -103,10 +66,10 @@ class BiomeGenerator {
 
         // test for scarcity and ground elevation criteria
         if (
-          (organism.scarcity === 0 || Utils.rng() >= organism.scarcity) &&
+          (organism.scarcity === 0 || MathUtils.rng() >= organism.scarcity) &&
           (organism.e === null || (e >= organism.e.low && e <= organism.e.high)) &&
           (organism.m === null || (m >= organism.m.low && m <= organism.m.high))
-          ) {
+        ) {
           const object = organism.object.clone();
 
           const f = MathUtils.randomFloat(organism.scale.min, organism.scale.max);
