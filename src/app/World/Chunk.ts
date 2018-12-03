@@ -41,23 +41,6 @@ class Chunk {
     this.initCloudsMesh();
   }
 
-  private innitTerrainMesh() {
-    this.terrain = new TerrainMesh(this.generator, this.row, this.col);
-    this.terrainMesh = this.terrain.generate();
-  }
-
-  private initWaterMesh() {
-    this.waterMesh = this.terrain.needGenerateWater()
-      ? new WaterMesh(this.generator, this.row, this.col).generate()
-      : null;
-  }
-
-  private initCloudsMesh() {
-    this.cloudMesh = this.terrain.needGenerateCloud()
-      ? new CloudMesh(this.generator, this.row, this.col).generate()
-      : null;
-  }
-
   /**
    * Populate the world with objects use Poisson disk sampling
    * @param scene
@@ -132,6 +115,23 @@ class Chunk {
     return this.terrainMesh.visible;
   }
 
+  private innitTerrainMesh() {
+    this.terrain = new TerrainMesh(this.generator, this.row, this.col);
+    this.terrainMesh = this.terrain.generate();
+  }
+
+  private initWaterMesh() {
+    this.waterMesh = this.terrain.needGenerateWater()
+      ? new WaterMesh(this.generator, this.row, this.col).generate()
+      : null;
+  }
+
+  private initCloudsMesh() {
+    this.cloudMesh = this.terrain.needGenerateCloud()
+      ? new CloudMesh(this.generator, this.row, this.col).generate()
+      : null;
+  }
+
   static debugStacks() {
     console.log('## CHUNK OBJECT STACKS');
     let str = '';
@@ -141,4 +141,5 @@ class Chunk {
     console.log(`${str}\n`);
   }
 }
+
 export default Chunk;
