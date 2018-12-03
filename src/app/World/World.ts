@@ -95,7 +95,7 @@ class World {
 
   private initLights() {
     const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.25);
-    light.position.set(0, 190, 0);
+    light.position.set(0, World.SEA_LEVEL, 0);
     light.castShadow = true;
     this.scene.add(light);
 
