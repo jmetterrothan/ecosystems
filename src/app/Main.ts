@@ -36,7 +36,7 @@ class Main {
     this.lastTime = window.performance.now();
 
     this.stats = new statsJs();
-    this.stats.showPanel(2);
+    this.stats.showPanel(1);
     document.body.appendChild(this.stats.dom);
 
     this.scene = new THREE.Scene();
