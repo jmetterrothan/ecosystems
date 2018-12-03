@@ -1,17 +1,16 @@
 import * as THREE from 'three';
 import simplexNoise from 'simplex-noise';
 
-import { BIOMES } from '@shared/constants/biome.constants';
-
-import { IBiome } from '@shared/models/biome.model';
-
 import World from './World';
 import Chunk from './Chunk';
 import MathUtils from '@utils/Math.utils';
 import Stack from '@shared/Stack';
 
+import { IBiome } from '@shared/models/biome.model';
+
 import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
+import { BIOMES } from '@shared/constants/biome.constants';
 
 /**
  * Biome composition :
@@ -101,6 +100,17 @@ class BiomeGenerator {
     }
 
     return null;
+  }
+
+  getWaterColor(m: number): THREE.Color {
+    if (m > 0.55) {
+      return WATER_CONSTANTS.WATER_COLOR_B;
+    }
+    if (m > 0.45) {
+      return WATER_CONSTANTS.WATER_COLOR_TR;
+    }
+
+    return WATER_CONSTANTS.WATER_COLOR_A;
   }
 
   /**
@@ -257,7 +267,7 @@ class BiomeGenerator {
    * @return {number}
    */
   static getHeightAtElevationWithWater(e: number) {
-    return Math.max(this.getHeightAtElevation(e), WATER_CONSTANTS.SEA_LEVEL);
+    return Math.max(this.getHeightAtElevation(e), World.SEA_LEVEL);
   }
 }
 

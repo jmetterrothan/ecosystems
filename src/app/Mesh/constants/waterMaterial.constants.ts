@@ -2,13 +2,13 @@ import * as THREE from 'three';
 
 export const WATER_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
   wireframe: false,
-  emissive: 0x000000,
+  emissive: 0xffffff,
   emissiveIntensity: 0.15,
-  specular: 0x000000,
-  shininess: 60,
+  specular: 0x252525,
+  shininess: 25,
   reflectivity: 0.5,
   flatShading: true,
-  opacity: 0.5,
+  opacity: 0.8,
   transparent: true,
   side: THREE.DoubleSide,
   vertexColors: THREE.FaceColors,

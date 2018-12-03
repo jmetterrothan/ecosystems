@@ -2,17 +2,14 @@ import * as THREE from 'three';
 
 import BiomeGenerator from '@world/BiomeGenerator';
 import Stack from '@shared/Stack';
+import World from '../World/World';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
-import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 import { WATER_MATERIAL } from './constants/waterMaterial.constants';
 import { TERRAIN_MATERIAL } from './constants/terrainMaterial.constants';
 import { TERRAIN_MESH_PARAMS } from './constants/terrainMesh.constants';
 
 import { IChunkParams } from '@shared/models/chunkParams.model';
-
-const water = new THREE.Color(0x0095ff);
-const swampWater = new THREE.Color(0x42a58a);
 
 class Mesh {
   static GEOMETRY_STACK = new Stack<THREE.Geometry>();
@@ -51,7 +48,7 @@ class Mesh {
       const x = this.col * this.params.WIDTH + c * this.params.CELL_SIZE;
       for (let r = 0; r < nbVerticesZ; r++) {
         const z = this.row * this.params.DEPTH + r * this.params.CELL_SIZE;
-        const y = this.type === MESH_TYPES.TERRAIN_MESH ? this.generator.computeHeight(x, z) : WATER_CONSTANTS.SEA_LEVEL;
+        const y = this.type === MESH_TYPES.TERRAIN_MESH ? this.generator.computeHeight(x, z) : World.SEA_LEVEL;
 
         if (this.low === null || this.low > y) this.low = y;
         if (this.high === null || this.high < y) this.high = y;
@@ -88,9 +85,9 @@ class Mesh {
         if (this.type === MESH_TYPES.TERRAIN_MESH) {
           f1.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y1), m1).color;
           f2.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y2), m2).color;
-        } else {
-          f1.color = m1 > 0.5 ? swampWater : water;
-          f2.color = m2 > 0.5 ? swampWater : water;
+        } else if (this.type === MESH_TYPES.WATER_MESH) {
+          f1.color = this.generator.getWaterColor(m1);
+          f2.color = this.generator.getWaterColor(m2);
         }
 
         geometry.faces.push(f1);

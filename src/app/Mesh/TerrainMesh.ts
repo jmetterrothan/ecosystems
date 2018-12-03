@@ -1,7 +1,7 @@
 import Mesh from './Mesh';
+import World from '../World/World';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
-import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 import { TERRAIN_MESH_PARAMS } from './constants/terrainMesh.constants';
 
 import BiomeGenerator from '@world/BiomeGenerator';
@@ -17,7 +17,7 @@ class TerrainMesh extends Mesh {
   }
 
   needGenerateWater(): boolean {
-    return this.low <= WATER_CONSTANTS.SEA_LEVEL;
+    return this.low <= World.SEA_LEVEL;
   }
 }
 

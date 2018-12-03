@@ -14,6 +14,8 @@ import MathUtils from '@utils/Math.utils';
 class World {
   static SEED: string | null = null;
 
+  static SEA_LEVEL: number = 290;
+
   static readonly VIEW_DISTANCE: number = 25000;
   static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(World.VIEW_DISTANCE / TERRAIN_MESH_PARAMS.WIDTH);
 
