@@ -92,12 +92,12 @@ class World {
     light.castShadow = true;
     this.scene.add(light);
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.45);
     ambient.position.set(0, 20000, 1500);
     ambient.castShadow = true;
     this.scene.add(ambient);
 
-    const sunlight = new THREE.DirectionalLight(0xffffff, 0.5);
+    const sunlight = new THREE.DirectionalLight(0xffffff, 0.45);
     sunlight.position.set(0, 20000, 1500);
     sunlight.castShadow = true;
     sunlight.target.position.set(0, 0, 0);
