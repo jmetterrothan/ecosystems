@@ -1,15 +1,13 @@
 import * as THREE from 'three';
 
-export const CLOUD_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
+export const CLOUD_MATERIAL: THREE.MeshLambertMaterial = new THREE.MeshLambertMaterial({
   wireframe: false,
-  emissive: 0,
-  emissiveIntensity: 0.25,
-  specular: 0x252525,
-  shininess: 60,
-  reflectivity: 0.75,
+  emissive: 0xffffff,
+  emissiveIntensity: 0.9,
+  reflectivity: 0,
   flatShading: true,
-  color: 0xf4f4f4,
-  opacity: 0.5,
+  color: 0xffffff,
+  opacity: 0.4,
   transparent: true,
   side: THREE.DoubleSide
 });
