@@ -1,6 +1,6 @@
+import CloudMesh from '@mesh/CloudMesh';
 import * as THREE from 'three';
 import poissonDiskSampling from 'poisson-disk-sampling';
-
 import BiomeGenerator from './BiomeGenerator';
 
 import World from './World';
@@ -10,6 +10,7 @@ import WaterMesh from '../Mesh/WaterMesh';
 import MathUtils from '@utils/Math.utils';
 
 import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';
+import Terrain from './Terrain';
 
 class Chunk {
   static CHUNK_OBJECT_STACK = {};
@@ -20,8 +21,11 @@ class Chunk {
   key: string;
   objects: any[];
 
-  terrain: THREE.Mesh;
-  water: THREE.Mesh;
+  terrainMesh: THREE.Mesh;
+  waterMesh: THREE.Mesh;
+  cloudMesh: THREE.Mesh;
+
+  terrain: TerrainMesh;
 
   generator: BiomeGenerator;
 
@@ -32,10 +36,9 @@ class Chunk {
     this.key = `${row}:${col}`;
     this.objects = [];
 
-    const terrainMesh = new TerrainMesh(this.generator, this.row, this.col);
-    this.terrain = terrainMesh.generate();
-
-    this.water = terrainMesh.needGenerateWater() ? new WaterMesh(this.generator, this.row, this.col).generate() : null;
+    this.innitTerrainMesh();
+    this.initWaterMesh();
+    this.initCloudsMesh();
   }
 
   /**
@@ -85,24 +88,48 @@ class Chunk {
       }
     }
 
-    this.terrain.geometry.dispose();
-    (<THREE.Material>this.terrain.material).dispose();
-    scene.remove(this.terrain);
+    this.terrainMesh.geometry.dispose();
+    (<THREE.Material>this.terrainMesh.material).dispose();
+    scene.remove(this.terrainMesh);
 
-    if (this.water) {
-      this.water.geometry.dispose();
-      (<THREE.Material>this.terrain.material).dispose();
-      scene.remove(this.water);
+    if (this.waterMesh) {
+      this.waterMesh.geometry.dispose();
+      (<THREE.Material>this.waterMesh.material).dispose();
+      scene.remove(this.waterMesh);
+    }
+
+    if (this.cloudMesh) {
+      this.cloudMesh.geometry.dispose();
+      (<THREE.Material>this.cloudMesh.material).dispose();
+      scene.remove(this.cloudMesh);
     }
   }
 
   set visible(bool: boolean) {
-    this.terrain.visible = bool;
-    if (this.water) this.water.visible = bool;
+    this.terrainMesh.visible = bool;
+    if (this.waterMesh) this.waterMesh.visible = bool;
+    if (this.cloudMesh) this.cloudMesh.visible = bool;
   }
 
   get visible(): boolean {
-    return this.terrain.visible;
+    return this.terrainMesh.visible;
+  }
+
+  private innitTerrainMesh() {
+    this.terrain = new TerrainMesh(this.generator, this.row, this.col);
+    this.terrainMesh = this.terrain.generate();
+  }
+
+  private initWaterMesh() {
+    this.waterMesh = this.terrain.needGenerateWater()
+      ? new WaterMesh(this.generator, this.row, this.col).generate()
+      : null;
+  }
+
+  private initCloudsMesh() {
+    this.cloudMesh = this.terrain.needGenerateCloud()
+      ? new CloudMesh(this.generator, this.row, this.col).generate()
+      : null;
   }
 
   static debugStacks() {
@@ -114,4 +141,5 @@ class Chunk {
     console.log(`${str}\n`);
   }
 }
+
 export default Chunk;

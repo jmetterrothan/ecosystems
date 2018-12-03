@@ -1,6 +1,11 @@
 import * as THREE from 'three';
+import { IBiome } from '@shared/models/biome.model';
 
-export const BIOMES = {
+interface IBiomes {
+  [key: string]: IBiome;
+}
+
+export const BIOMES: IBiomes = {
   GRASSLAND: {
     color: new THREE.Color(0x93c54b),
     organisms: [

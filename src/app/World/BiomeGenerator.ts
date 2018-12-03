@@ -12,6 +12,8 @@ import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 import { BIOMES } from '@shared/constants/biome.constants';
 
+import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
+
 /**
  * Biome composition :
  * - name
@@ -19,7 +21,6 @@ import { BIOMES } from '@shared/constants/biome.constants';
  * - simplex noise generator
  * - noise parameters
  */
-
 class BiomeGenerator {
   static readonly MOISTURE_OCTAVES: number[] = [0.20, 0.5, 0.25, 0.0125, 0.005];
   static readonly MOISTURE_OCTAVES_SUM: number = BiomeGenerator.MOISTURE_OCTAVES.reduce((a, b) => a + b, 0);
@@ -70,9 +71,9 @@ class BiomeGenerator {
         // test for scarcity and ground elevation criteria
         if (
           (organism.scarcity === 0 || MathUtils.rng() >= organism.scarcity) &&
-          (organism.e === null || (e >= organism.e.low && e <= organism.e.high)) &&
-          (organism.m === null || (m >= organism.m.low && m <= organism.m.high))
-          ) {
+          (organism.e === null || (e >= (<ILowHigh>organism.e).low && e <= (<ILowHigh>organism.e).high)) &&
+          (organism.m === null || (m >= (<ILowHigh>organism.m).low && m <= (<ILowHigh>organism.m).high))
+        ) {
           let object = null;
 
           // if object stack doesn't exist yet we create one

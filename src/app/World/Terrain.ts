@@ -53,8 +53,9 @@ class Terrain {
     for (let i = 0, n = this.visibleChunks.length; i < n; i++) {
       const chunk = this.visibleChunks[i];
 
-      chunk.terrain.visible = true;
-      if (chunk.water) chunk.water.visible = true;
+      chunk.terrainMesh.visible = true;
+      if (chunk.waterMesh) chunk.waterMesh.visible = true;
+      if (chunk.cloudMesh) chunk.cloudMesh.visible = true;
     }
 
     // loop through all chunks in range
@@ -87,13 +88,14 @@ class Terrain {
 
           this.chunks.set(id, chunk);
 
-          scene.add(chunk.terrain);
-          if (chunk.water) scene.add(chunk.water);
+          scene.add(chunk.terrainMesh);
+          if (chunk.waterMesh) scene.add(chunk.waterMesh);
+          if (chunk.cloudMesh) scene.add(chunk.cloudMesh);
         } else {
           chunk = this.chunks.get(id);
         }
 
-        if (frustum.intersectsObject(chunk.terrain)) {
+        if (frustum.intersectsObject(chunk.terrainMesh)) {
           chunk.visible = true;
         }
 
