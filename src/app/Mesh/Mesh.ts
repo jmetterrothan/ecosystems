@@ -77,7 +77,6 @@ class Mesh {
         const f1 = new THREE.Face3(a, b, d);
         const f2 = new THREE.Face3(d, c, a);
 
-        // METHOD 1 : each face gets a color based on the average height of their vertices
         const x1 = (geometry.vertices[a].x + geometry.vertices[b].x + geometry.vertices[d].x) / 3;
         const x2 = (geometry.vertices[d].x + geometry.vertices[c].x + geometry.vertices[a].x) / 3;
 

@@ -209,8 +209,8 @@ class BiomeGenerator {
    * @return {number} moisture value
    */
   computeMoisture(x: number, z: number): number {
-    const nx = x / (TERRAIN_MESH_PARAMS.WIDTH * 320) - 0.5;
-    const nz = z / (TERRAIN_MESH_PARAMS.DEPTH * 320) - 0.5;
+    const nx = x / (TERRAIN_MESH_PARAMS.WIDTH * 360) - 0.5;
+    const nz = z / (TERRAIN_MESH_PARAMS.DEPTH * 360) - 0.5;
 
     let m = 0;
 

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+
 import 'three/examples/js/controls/PointerLockControls';
 
 import 'seedrandom';
@@ -10,6 +11,7 @@ import Terrain from '@world/Terrain';
 
 class Main {
   public static readonly MS_PER_UPDATE = 1000 / 25;
+
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
 
@@ -38,7 +40,7 @@ class Main {
     document.body.appendChild(this.stats.dom);
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, World.VIEW_DISTANCE + 1000);
+    this.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 10, World.VIEW_DISTANCE);
   }
 
   async init() {
@@ -63,7 +65,7 @@ class Main {
     this.renderer.domElement.style.width = '100vw';
     this.renderer.domElement.style.height = '100vh';
 
-    this.renderer.setClearColor(0xb1d8ff);
+    this.renderer.setClearColor(new THREE.Color(0xb1d8ff));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
 

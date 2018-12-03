@@ -53,6 +53,7 @@ class World {
   async init() {
     this.initSeed();
     this.initFog();
+    this.initSkybox();
     this.initLights();
     await this.initObjects();
 
@@ -85,7 +86,11 @@ class World {
   }
 
   private initFog() {
-    this.scene.fog = new THREE.Fog(0xb1d8ff, World.VIEW_DISTANCE - World.VIEW_DISTANCE / 4, World.VIEW_DISTANCE - 500);
+    this.scene.fog = new THREE.Fog(0xb1d8ff, World.VIEW_DISTANCE - World.VIEW_DISTANCE / 4, World.VIEW_DISTANCE);
+  }
+
+  private initSkybox() {
+
   }
 
   private initLights() {
@@ -104,13 +109,6 @@ class World {
     sunlight.castShadow = true;
     sunlight.target.position.set(0, 0, 0);
     this.scene.add(sunlight);
-
-    /*
-    {
-      const helper = new THREE.DirectionalLightHelper(sunlight, 100);
-      this.scene.add(helper);
-    }
-    */
   }
 
   private async initObjects(): Promise<any> {
