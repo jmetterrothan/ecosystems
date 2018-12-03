@@ -38,7 +38,7 @@ class Chunk {
 
     this.water = terrainMesh.needGenerateWater() ? new WaterMesh(this.generator, this.row, this.col).generate() : null;
 
-    this.cloud = Math.random() > 0.95 ? new CloudMesh(this.generator, this.row, this.col).generate() : null;
+    this.cloud = Math.random() > 0.50 ? new CloudMesh(this.generator, this.row, this.col).generate() : null;
   }
 
   /**
@@ -97,11 +97,18 @@ class Chunk {
       (<THREE.Material>this.terrain.material).dispose();
       scene.remove(this.water);
     }
+
+    if (this.cloud) {
+      this.cloud.geometry.dispose();
+      (<THREE.Material>this.cloud.material).dispose();
+      scene.remove(this.cloud);
+    }
   }
 
   set visible(bool: boolean) {
     this.terrain.visible = bool;
     if (this.water) this.water.visible = bool;
+    if (this.cloud) this.cloud.visible = bool;
   }
 
   get visible(): boolean {
