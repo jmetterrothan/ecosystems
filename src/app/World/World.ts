@@ -15,6 +15,8 @@ import MathUtils from '@utils/Math.utils';
 class World {
   static SEED: string | null = null;
 
+  static SEA_LEVEL: number = 290;
+
   static readonly VIEW_DISTANCE: number = 25000;
   static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(World.VIEW_DISTANCE / TERRAIN_MESH_PARAMS.WIDTH);
 
@@ -103,10 +105,12 @@ class World {
     sunlight.target.position.set(0, 0, 0);
     this.scene.add(sunlight);
 
+    /*
     {
       const helper = new THREE.DirectionalLightHelper(sunlight, 100);
       this.scene.add(helper);
     }
+    */
   }
 
   private async initObjects(): Promise<any> {

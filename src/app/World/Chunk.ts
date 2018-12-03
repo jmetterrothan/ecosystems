@@ -1,10 +1,9 @@
 import CloudMesh from '@mesh/CloudMesh';
-import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 import * as THREE from 'three';
 import poissonDiskSampling from 'poisson-disk-sampling';
-
 import BiomeGenerator from './BiomeGenerator';
 
+import World from './World';
 import TerrainMesh from '../Mesh/TerrainMesh';
 import WaterMesh from '../Mesh/WaterMesh';
 
@@ -61,7 +60,7 @@ class Chunk {
 
       if (object) {
         object.visible = true;
-        object.position.set(x, Math.max(y, WATER_CONSTANTS.SEA_LEVEL), z);
+        object.position.set(x, Math.max(y, World.SEA_LEVEL), z);
         this.objects.push(object);
 
         scene.add(object);
