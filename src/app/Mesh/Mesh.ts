@@ -25,6 +25,8 @@ class Mesh {
   protected low: number;
   protected high: number;
 
+  moistureAverage: number;
+
   private readonly type: MESH_TYPES;
   private readonly params: IChunkParams;
   private generator: BiomeGenerator;
@@ -63,6 +65,7 @@ class Mesh {
     }
 
     // creates the associated faces with their indexes
+    let sumMoisture = 0;
 
     for (let col = 0; col < this.params.NCOLS; col++) {
       for (let row = 0; row < this.params.NROWS; row++) {
@@ -97,9 +100,12 @@ class Mesh {
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);
+
+        sumMoisture += m1 + m2;
       }
     }
 
+    this.moistureAverage = sumMoisture / (this.params.NCOLS * this.params.NROWS * 2);
     // need to tell the engine we updated the vertices
     geometry.verticesNeedUpdate = true;
     geometry.colorsNeedUpdate = true;
@@ -137,9 +143,6 @@ class Mesh {
 
   private getMaterial(type: MESH_TYPES): THREE.Material {
     switch (type) {
-      case MESH_TYPES.TERRAIN_MESH:
-        return TERRAIN_MATERIAL;
-
       case MESH_TYPES.WATER_MESH:
         return WATER_MATERIAL;
 

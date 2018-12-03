@@ -21,7 +21,6 @@ import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
  * - simplex noise generator
  * - noise parameters
  */
-
 class BiomeGenerator {
   static readonly MOISTURE_OCTAVES: number[] = [0.20, 0.5, 0.25, 0.0125, 0.005];
   static readonly MOISTURE_OCTAVES_SUM: number = BiomeGenerator.MOISTURE_OCTAVES.reduce((a, b) => a + b, 0);
