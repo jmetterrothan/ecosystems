@@ -6,8 +6,11 @@ import World from './World';
 import TerrainMesh from '@mesh/TerrainMesh';
 import WaterMesh from '@mesh/WaterMesh';
 import CloudMesh from '@mesh/CloudMesh';
+import Stack from '@shared/Stack';
 
 import MathUtils from '@utils/Math.utils';
+
+import { IPick } from '@shared/models/pick.model';
 
 import Terrain from './Terrain';
 
@@ -33,7 +36,7 @@ class Chunk {
   readonly col: number;
 
   readonly key: string;
-  readonly objects: any[];
+  readonly objects: THREE.Object3D[];
 
   readonly bbox: THREE.Box3;
 
@@ -41,7 +44,9 @@ class Chunk {
   private waterBlueprint: WaterMesh;
   private cloudBlueprint: CloudMesh;
 
-  dirty: boolean;
+  private objectsBlueprint: IPick[];
+
+  public dirty: boolean;
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
     this.generator = generator;
@@ -59,9 +64,11 @@ class Chunk {
 
     // compute the bounding box of the chunk for later optimization
     this.bbox = Chunk.createBoundingBox(row, col);
+
+    this.objectsBlueprint = [];
   }
 
-  init(topography: THREE.Geometry, water: THREE.Geometry, clouds:  THREE.Geometry) {
+  init(scene: THREE.Scene, topography: THREE.Geometry, water: THREE.Geometry, clouds:  THREE.Geometry) {
     // merge generated chunk with region geometry
     if (!this.merged) {
       const terrainMesh = this.terrainBlueprint.generate();
@@ -78,35 +85,65 @@ class Chunk {
         clouds.mergeMesh(cloudMesh);
       }
 
+      this.loadPopulation();
+
       this.merged = true;
+      this.dirty = true;
     }
   }
 
   /**
-   * Populate the world with objects use Poisson disk sampling
-   * @param scene
+   * Poisson disk sampling
    */
-  populate(scene: THREE.Scene) {
+  loadPopulation() {
     const padding = 300; // object bounding box size / 2
-    const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding * 2, padding * 2, 20, MathUtils.rng);
+    const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding * 2, padding * 2, 30, MathUtils.rng);
     const points = pds.fill();
 
     points.forEach((point: number[]) => {
       const x = padding + this.col * Chunk.WIDTH + point.shift();
       const z = padding + this.row * Chunk.DEPTH + point.shift();
-      const y = this.generator.computeHeight(x, z);
 
       // select an organism based on the current biome
-      const object = this.generator.pick(x, z);
+      const item = this.generator.pick(x, z);
 
-      if (object) {
-        object.visible = true;
-        object.position.set(x, Math.max(y, World.SEA_LEVEL), z);
-        this.objects.push(object);
-
-        scene.add(object);
+      if (item !== null) {
+        this.objectsBlueprint.push(item);
       }
     });
+  }
+
+  /**
+   * Populate the world with pre-computed object parameters
+   * @param scene
+   */
+  populate(scene: THREE.Scene) {
+    for (const item of this.objectsBlueprint) {
+      let object = null;
+
+      // if object stack doesn't exist yet we create one
+      if (!Chunk.CHUNK_OBJECT_STACK[item.n]) {
+        Chunk.CHUNK_OBJECT_STACK[item.n] = new Stack<THREE.Object3D>();
+      }
+
+      // if the stack is empty, create a new object else pop an object from the stack
+      if (Chunk.CHUNK_OBJECT_STACK[item.n].empty) {
+        object = World.LOADED_MODELS.get(item.n).clone();
+      } else {
+        object = Chunk.CHUNK_OBJECT_STACK[item.n].pop();
+      }
+
+      object.visible = true;
+
+      // restore transforms
+      object.rotation.y = item.r;
+      object.scale.set(item.s, item.s, item.s);
+      object.position.set(item.x, item.y, item.z);
+      object.stack_ref = item.n;
+
+      scene.add(object);
+      this.objects.push(object);
+    }
   }
 
   clean(scene: THREE.Scene) {
@@ -129,19 +166,8 @@ class Chunk {
         scene.remove(this.objects[i]);
       }
     }
+
     this.objects = [];
-
-    if (this.waterMesh) {
-      this.waterMesh.geometry.dispose();
-      (<THREE.Material>this.waterMesh.material).dispose();
-      scene.remove(this.waterMesh);
-    }
-
-    if (this.cloudMesh) {
-      this.cloudMesh.geometry.dispose();
-      (<THREE.Material>this.cloudMesh.material).dispose();
-      scene.remove(this.cloudMesh);
-    }
   }
 
   set visible(bool: boolean) {

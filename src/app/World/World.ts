@@ -41,7 +41,6 @@ class World {
     this.controls = controls;
 
     this.frustum = new THREE.Frustum();
-
     this.clouds = new Clouds();
   }
 
@@ -65,8 +64,6 @@ class World {
     this.player.init(spawn.x, spawn.y, spawn.z);
 
     this.scene.add(this.controls.getObject());
-
-    // this.scene.add(this.clouds.pick());
 
     this.showAxesHelper();
   }
@@ -166,7 +163,6 @@ class World {
         objLoader.load(element.obj, (object) => {
           object.castShadow = true;
           object.receiveShadow = true;
-          object.stack_ref = element.name;
 
           object.traverse((child) => {
             if (child instanceof THREE.Mesh) {

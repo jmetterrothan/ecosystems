@@ -5,12 +5,12 @@ import World from './World';
 import Terrain from './Terrain';
 import Chunk from './Chunk';
 import MathUtils from '@utils/Math.utils';
-import Stack from '@shared/Stack';
 
 import { IBiome } from '@shared/models/biome.model';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 import { BIOMES } from '@shared/constants/biome.constants';
 import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
+import { IPick } from '@shared/models/pick.model';
 
 /**
  * Biome composition :
@@ -34,27 +34,18 @@ class BiomeGenerator {
   constructor() {
     this.simplexTerrain = new simplexNoise(MathUtils.rng);
     this.simplexMoisture = new simplexNoise(MathUtils.rng);
-
-    // auto load biomes models
-    for (const b in BIOMES) {
-      for (const o in BIOMES[b].organisms) {
-        const name = BIOMES[b].organisms[o].name;
-
-        BIOMES[b].organisms[o].object = World.LOADED_MODELS.get(name);
-      }
-    }
   }
 
   /**
    * Tries to position an object at the given coordinates
    * @param {number} x
    * @param {number} z
-   * @return {THREE.Object3D|null}
+   * @return {IPick|null}
    */
-  pick(x: number, z: number): THREE.Object3D | null {
+  pick(x: number, z: number): IPick | null {
     const e = this.computeElevation(x, z);
     const m = this.computeMoisture(x, z);
-    const y = BiomeGenerator.getHeightAtElevation(e);
+    const y = Math.max(BiomeGenerator.getHeightAtElevation(e), World.SEA_LEVEL);
     const biome = this.getBiome(e, m);
 
     let temp = 0;
@@ -72,28 +63,14 @@ class BiomeGenerator {
           (organism.e === null || (e >= (<ILowHigh>organism.e).low && e <= (<ILowHigh>organism.e).high)) &&
           (organism.m === null || (m >= (<ILowHigh>organism.m).low && m <= (<ILowHigh>organism.m).high))
         ) {
-          let object = null;
-
-          // if object stack doesn't exist yet we create one
-          if (!Chunk.CHUNK_OBJECT_STACK[organism.name]) {
-            Chunk.CHUNK_OBJECT_STACK[organism.name] = new Stack<THREE.Object3D>();
-          }
-
-          // if the stack is empty, create a new object else pop an object from the stack
-          if (Chunk.CHUNK_OBJECT_STACK[organism.name].empty) {
-            object = organism.object.clone();
-          } else {
-            object = Chunk.CHUNK_OBJECT_STACK[organism.name].pop();
-          }
-
-          // reset transforms
-          const f = MathUtils.randomFloat(organism.scale.min, organism.scale.max);
-
-          object.rotation.y = MathUtils.randomFloat(0, Math.PI * 2);
-          object.scale.set(f * 200, f * 200, f * 200);
-          object.stack_ref = organism.name;
-
-          return object;
+          return (<IPick>{
+            x,
+            y,
+            z,
+            n: organism.name,
+            r: MathUtils.randomFloat(0, Math.PI * 2),
+            s: MathUtils.randomFloat(organism.scale.min, organism.scale.max) * 200
+          });
         }
       }
     }
