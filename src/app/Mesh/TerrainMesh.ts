@@ -5,6 +5,7 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
+import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 
 class TerrainMesh extends Mesh implements IMesh {
 
@@ -24,6 +25,10 @@ class TerrainMesh extends Mesh implements IMesh {
 
   getY(x: number, z: number): number {
     return this.generator.computeHeight(x, z);
+  }
+
+  getMaterial(): THREE.Material {
+    return TERRAIN_MATERIAL;
   }
 
   getLow(): number {

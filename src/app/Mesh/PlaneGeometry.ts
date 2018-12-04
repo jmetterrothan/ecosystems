@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 class PlaneGeometry
 {
-  static create(nrows: number, ncols: number, cellsize: number) {
+  static create(nrows: number, ncols: number, cellsizeX: number, cellsizeZ) {
     const geometry: THREE.Geometry = new THREE.Geometry();
 
     const nbVerticesX = ncols + 1;
@@ -11,7 +11,7 @@ class PlaneGeometry
     // creates all our vertices
     for (let col = 0; col < nbVerticesX; col++) {
       for (let row = 0; row < nbVerticesZ; row++) {
-        geometry.vertices.push(new THREE.Vector3(col * cellsize, 0, row * cellsize));
+        geometry.vertices.push(new THREE.Vector3(col * cellsizeX, 0, row * cellsizeZ));
       }
     }
 

@@ -5,6 +5,7 @@ import Chunk from '@world/Chunk';
 import World from '@world/World';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
+import { WATER_MATERIAL } from '@materials/water.material';
 import { IChunkParameters } from '@shared/models/chunkParams.model';
 
 class WaterMesh extends Mesh {
@@ -22,6 +23,10 @@ class WaterMesh extends Mesh {
 
   getY() {
     return World.SEA_LEVEL;
+  }
+
+  getMaterial(): THREE.Material {
+    return WATER_MATERIAL;
   }
 }
 

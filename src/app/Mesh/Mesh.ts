@@ -6,10 +6,6 @@ import World from '../World/World';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
 
-import { CLOUD_MATERIAL } from '@materials/cloud.material';
-import { WATER_MATERIAL } from '@materials/water.material';
-import { TERRAIN_MATERIAL } from '@materials/terrain.material';
-
 import { IChunkParameters } from '@shared/models/chunkParams.model';
 
 class Mesh {
@@ -113,10 +109,7 @@ class Mesh {
   }
 
   generate(): THREE.Mesh {
-    const geometry = this.getGeometry();
-    const material = this.getMaterial(this.type);
-
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = new THREE.Mesh(this.buildGeometry(), this.getMaterial(this.type));
 
     mesh.frustumCulled = false;
     mesh.visible = false;
@@ -125,24 +118,6 @@ class Mesh {
 
     return mesh;
   }
-
-  private getGeometry() {
-    return this.buildGeometry();
-  }
-
-  private getMaterial(type: MESH_TYPES): THREE.Material {
-    switch (type) {
-      case MESH_TYPES.WATER_MESH:
-        return WATER_MATERIAL;
-
-      case MESH_TYPES.CLOUD_MESH:
-        return CLOUD_MATERIAL;
-
-      default:
-        return TERRAIN_MATERIAL;
-    }
-  }
-
 }
 
 export default Mesh;
