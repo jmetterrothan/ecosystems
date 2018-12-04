@@ -41,7 +41,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.9,
         name: 'spruce',
-        scarcity: 0.6,
+        scarcity: 0.825,
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.25 },

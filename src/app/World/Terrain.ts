@@ -51,11 +51,7 @@ class Terrain {
 
     // reset previously visible chunks
     for (let i = 0, n = this.visibleChunks.length; i < n; i++) {
-      const chunk = this.visibleChunks[i];
-
-      chunk.terrainMesh.visible = true;
-      if (chunk.waterMesh) chunk.waterMesh.visible = true;
-      if (chunk.cloudMesh) chunk.cloudMesh.visible = true;
+      this.visibleChunks[i].visible = false;
     }
 
     // loop through all chunks in range
@@ -77,30 +73,25 @@ class Terrain {
 
     for (let i = this.startZ; i < this.endZ; i++) {
       for (let j = this.startX; j < this.endX; j++) {
-        const id = `${i}:${j}`;
-
-        let chunk = null;
+        let chunk = this.chunks.get(`${i}:${j}`);
 
         // generate chunk if needed
-        if (!this.chunks.has(id)) {
+        if (!chunk) {
           chunk = new Chunk(this.generator, i, j);
           chunk.populate(scene);
 
-          this.chunks.set(id, chunk);
+          this.chunks.set(chunk.key, chunk);
 
           scene.add(chunk.terrainMesh);
           if (chunk.waterMesh) scene.add(chunk.waterMesh);
           if (chunk.cloudMesh) scene.add(chunk.cloudMesh);
-        } else {
-          chunk = this.chunks.get(id);
         }
 
         if (frustum.intersectsObject(chunk.terrainMesh)) {
           chunk.visible = true;
+          // mark this chunk as visible
+          this.visibleChunks.push(chunk);
         }
-
-        // mark this chunk as visible
-        this.visibleChunks.push(chunk);
       }
     }
   }

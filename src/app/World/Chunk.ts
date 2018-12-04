@@ -109,6 +109,10 @@ class Chunk {
     this.terrainMesh.visible = bool;
     if (this.waterMesh) this.waterMesh.visible = bool;
     if (this.cloudMesh) this.cloudMesh.visible = bool;
+
+    for (let i = this.objects.length - 1; i >= 0; i--) {
+      this.objects[i].visible = bool;
+    }
   }
 
   get visible(): boolean {
