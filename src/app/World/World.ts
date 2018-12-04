@@ -52,7 +52,7 @@ class World {
     this.initLights();
     await this.initObjects();
 
-    const spawn = new THREE.Vector3(Terrain.OFFSET_X / 2, 4000, Terrain.OFFSET_Z / 2);
+    const spawn = new THREE.Vector3(0, 4000, 0);
 
     // stuff
     this.terrain = new Terrain();
@@ -67,6 +67,8 @@ class World {
     this.scene.add(this.controls.getObject());
 
     // this.scene.add(this.clouds.pick());
+
+    this.showAxesHelper();
   }
 
   private initSeed() {
@@ -78,7 +80,7 @@ class World {
   private showAxesHelper() {
     const gizmo = new THREE.AxesHelper();
     gizmo.position.set(0, 0, 0);
-    gizmo.scale.set(100, 100, 100);
+    gizmo.scale.set(250, 250, 250);
     this.scene.add(gizmo);
   }
 
@@ -122,14 +124,13 @@ class World {
   }
 
   public update() {
-    const position = this.player.getPosition();
-
     this.frustum.setFromMatrix(
       new THREE.Matrix4().multiplyMatrices(
         this.camera.projectionMatrix,
         this.camera.matrixWorldInverse
       )
     );
+    const position = this.player.getPosition();
     this.terrain.update(this.scene, this.frustum, position);
   }
 

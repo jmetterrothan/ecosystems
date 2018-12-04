@@ -15,8 +15,8 @@ class Coord {
 }
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 1;
-  static readonly NCHUNKS_Z: number = 1;
+  static readonly NCHUNKS_X: number = 3;
+  static readonly NCHUNKS_Z: number = 16;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
@@ -71,10 +71,13 @@ class Terrain {
   update(scene: THREE.Scene, frustum: THREE.Frustum, position: THREE.Vector3) {
     this.getChunkCoordAt(this.chunk, position.x, position.z);
 
-    this.startX = this.chunk.col - World.CHUNK_RENDER_LIMIT / 2;
-    this.startZ = this.chunk.row - World.CHUNK_RENDER_LIMIT / 2;
-    this.endX = this.chunk.col + World.CHUNK_RENDER_LIMIT / 2;
-    this.endZ = this.chunk.row + World.CHUNK_RENDER_LIMIT / 2;
+    const nc = Math.min(Terrain.NCHUNKS_X, World.CHUNK_RENDER_LIMIT / 2);
+    const nr = Math.min(Terrain.NCHUNKS_Z, World.CHUNK_RENDER_LIMIT / 2);
+
+    this.startX = this.chunk.col - nc;
+    this.startZ = this.chunk.row - nr;
+    this.endX = this.chunk.col + nc;
+    this.endZ = this.chunk.row + nr;
 
     if (this.startX < 0) { this.startX = 0; }
     if (this.startZ < 0) { this.startZ = 0; }
@@ -115,7 +118,7 @@ class Terrain {
           chunk.populate(scene);
 
           const h = Chunk.createBoundingBoxHelper(chunk.bbox);
-          scene.add(h);
+          // scene.add(h);
 
           this.chunks.set(key, chunk);
         }
@@ -129,9 +132,9 @@ class Terrain {
     }
   }
 
-  getChunkCoordAt(out, x: number, z: number) {
-    out.row = Math.round(z / Chunk.DEPTH);
-    out.col = Math.round(x / Chunk.WIDTH);
+  getChunkCoordAt(out: Coord, x: number, z: number): Coord {
+    out.row = parseInt(z / Chunk.DEPTH, 10);
+    out.col = parseInt(x / Chunk.WIDTH, 10);
 
     return out;
   }

@@ -20,7 +20,6 @@ class TerrainMesh extends Mesh {
       height: Chunk.HEIGHT,
       depth: Chunk.DEPTH
     });
-    console.log(this);
   }
 
   getLow(): number {
