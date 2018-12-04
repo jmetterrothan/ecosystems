@@ -15,8 +15,8 @@ class Coord {
 }
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 3;
-  static readonly NCHUNKS_Z: number = 16;
+  static readonly NCHUNKS_X: number = 2;
+  static readonly NCHUNKS_Z: number = 2;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
@@ -81,8 +81,8 @@ class Terrain {
 
     if (this.startX < 0) { this.startX = 0; }
     if (this.startZ < 0) { this.startZ = 0; }
-    if (this.endX > Terrain.NCOLS) { this.endX = Terrain.NCOLS; }
-    if (this.endZ > Terrain.NROWS) { this.endZ = Terrain.NROWS; }
+    if (this.endX > Terrain.NCHUNKS_X) { this.endX = Terrain.NCHUNKS_X; }
+    if (this.endZ > Terrain.NCHUNKS_Z) { this.endZ = Terrain.NCHUNKS_Z; }
 
     // reset previously visible chunks
     for (let i = 0, n = this.visibleChunks.length; i < n; i++) {
@@ -105,7 +105,7 @@ class Terrain {
 
       this.time = now + 1000;
     }
-
+    console.log(this.startZ, this.startZ, this.endX, this.endZ);
     for (let i = this.startZ; i < this.endZ; i++) {
       for (let j = this.startX; j < this.endX; j++) {
         const key = `${i}:${j}`;
@@ -115,10 +115,10 @@ class Terrain {
         if (chunk === undefined) {
           chunk = new Chunk(this.generator, i, j);
           chunk.init(this.topography, this.water, this.clouds);
-          chunk.populate(scene);
+          // chunk.populate(scene);
 
           const h = Chunk.createBoundingBoxHelper(chunk.bbox);
-          // scene.add(h);
+          scene.add(h);
 
           this.chunks.set(key, chunk);
         }
