@@ -15,30 +15,59 @@ import Terrain from './Terrain';
 class Chunk {
   static CHUNK_OBJECT_STACK = {};
 
+  private generator: BiomeGenerator;
+
   readonly row: number;
   readonly col: number;
 
-  key: string;
-  objects: any[];
+  readonly key: string;
+  readonly objects: any[];
 
-  terrainMesh: THREE.Mesh;
-  waterMesh: THREE.Mesh;
-  cloudMesh: THREE.Mesh;
+  readonly bbox: THREE.Box3;
 
-  terrain: TerrainMesh;
+  private terrainBlueprint: TerrainMesh;
+  private waterBlueprint: WaterMesh;
+  private cloudBlueprint: CloudMesh;
 
-  generator: BiomeGenerator;
+  dirty: boolean;
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
     this.generator = generator;
     this.row = row;
     this.col = col;
+
     this.key = `${row}:${col}`;
     this.objects = [];
+    this.dirty = false;
+    this.merged = false;
 
-    this.innitTerrainMesh();
-    this.initWaterMesh();
-    this.initCloudsMesh();
+    this.terrainBlueprint = new TerrainMesh(this.generator, this.row, this.col);
+    this.waterBlueprint = new WaterMesh(this.generator, this.row, this.col);
+    this.cloudBlueprint = new CloudMesh(this.generator, this.row, this.col);
+
+    // compute the bounding box of the chunk for later optimization
+    this.bbox = Chunk.createBoundingBox(row, col);
+  }
+
+  init(topography: THREE.Geometry, water: THREE.Geometry, clouds:  THREE.Geometry) {
+    // merge generated chunk with region geometry
+    if (!this.merged) {
+      const terrainMesh = this.terrainBlueprint.generate();
+      topography.mergeMesh(terrainMesh);
+
+      // TODO optimize this part (mesh could be static objects reused using transformations and data could just be copied to the global geometry)
+      if (this.terrainBlueprint.needGenerateWater()) {
+        const waterMesh = this.waterBlueprint.generate();
+        water.mergeMesh(waterMesh);
+      }
+
+      if (this.terrainBlueprint.needGenerateCloud()) {
+        const cloudMesh = this.cloudBlueprint.generate();
+        clouds.mergeMesh(cloudMesh);
+      }
+
+      this.merged = true;
+    }
   }
 
   /**
@@ -47,7 +76,7 @@ class Chunk {
    */
   populate(scene: THREE.Scene) {
     const padding = 300; // object bounding box size / 2
-    const pds = new poissonDiskSampling([TERRAIN_MESH_PARAMS.WIDTH - padding, TERRAIN_MESH_PARAMS.DEPTH - padding], padding * 2, padding * 2, 30, MathUtils.rng);
+    const pds = new poissonDiskSampling([TERRAIN_MESH_PARAMS.WIDTH - padding, TERRAIN_MESH_PARAMS.DEPTH - padding], padding * 2, padding * 2, 20, MathUtils.rng);
     const points = pds.fill();
 
     points.forEach((point: number[]) => {
@@ -70,10 +99,14 @@ class Chunk {
 
   clean(scene: THREE.Scene) {
     for (let i = this.objects.length - 1; i >= 0; i--) {
-      if (Chunk.CHUNK_OBJECT_STACK[this.objects[i].stack_ref].size < 256) {
+      const ref = this.objects[i].stack_ref;
+
+      if (!ref) continue;
+
+      if (Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
         // collect unused objects
         this.objects[i].visible = false;
-        Chunk.CHUNK_OBJECT_STACK[this.objects[i].stack_ref].push(this.objects[i]);
+        Chunk.CHUNK_OBJECT_STACK[ref].push(this.objects[i]);
       } else {
         // remove objects if the stack is full
         this.objects[i].traverse((child) => {
@@ -87,10 +120,6 @@ class Chunk {
         delete this.objects[i];
       }
     }
-
-    this.terrainMesh.geometry.dispose();
-    (<THREE.Material>this.terrainMesh.material).dispose();
-    scene.remove(this.terrainMesh);
 
     if (this.waterMesh) {
       this.waterMesh.geometry.dispose();
@@ -106,7 +135,6 @@ class Chunk {
   }
 
   set visible(bool: boolean) {
-    this.terrainMesh.visible = bool;
     if (this.waterMesh) this.waterMesh.visible = bool;
     if (this.cloudMesh) this.cloudMesh.visible = bool;
 
@@ -115,25 +143,22 @@ class Chunk {
     }
   }
 
-  get visible(): boolean {
-    return this.terrainMesh.visible;
+  static createBoundingBox(row: number, col: number): THREE.Box3 {
+    return new THREE.Box3().setFromCenterAndSize(
+      new THREE.Vector3(
+        col * TERRAIN_MESH_PARAMS.WIDTH + TERRAIN_MESH_PARAMS.WIDTH / 2,
+        TERRAIN_MESH_PARAMS.HEIGHT / 2,
+        row * TERRAIN_MESH_PARAMS.DEPTH + TERRAIN_MESH_PARAMS.DEPTH / 2
+      ),
+      new THREE.Vector3(
+        TERRAIN_MESH_PARAMS.WIDTH,
+        TERRAIN_MESH_PARAMS.HEIGHT,
+        TERRAIN_MESH_PARAMS.DEPTH
+      ));
   }
 
-  private innitTerrainMesh() {
-    this.terrain = new TerrainMesh(this.generator, this.row, this.col);
-    this.terrainMesh = this.terrain.generate();
-  }
-
-  private initWaterMesh() {
-    this.waterMesh = this.terrain.needGenerateWater()
-      ? new WaterMesh(this.generator, this.row, this.col).generate()
-      : null;
-  }
-
-  private initCloudsMesh() {
-    this.cloudMesh = this.terrain.needGenerateCloud()
-      ? new CloudMesh(this.generator, this.row, this.col).generate()
-      : null;
+  static createBoundingBoxHelper(bbox: THREE.Box3): THREE.Box3Helper {
+    return new THREE.Box3Helper(bbox, 0xffff00);
   }
 
   static debugStacks() {
@@ -145,5 +170,9 @@ class Chunk {
     console.log(`${str}\n`);
   }
 }
+
+window.debug = () => {
+  Chunk.debugStacks();
+};
 
 export default Chunk;

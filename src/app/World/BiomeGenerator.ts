@@ -84,7 +84,6 @@ class BiomeGenerator {
           // if the stack is empty, create a new object else pop an object from the stack
           if (Chunk.CHUNK_OBJECT_STACK[organism.name].empty) {
             object = organism.object.clone();
-            object.stack_ref = organism.name;
           } else {
             object = Chunk.CHUNK_OBJECT_STACK[organism.name].pop();
           }

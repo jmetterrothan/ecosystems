@@ -17,14 +17,8 @@ class World {
 
   static SEA_LEVEL: number = 290;
 
-  static readonly VIEW_DISTANCE: number = 25000;
-  static readonly CHUNK_RENDER_LIMIT: number = Math.ceil(World.VIEW_DISTANCE / TERRAIN_MESH_PARAMS.WIDTH);
-
-  static readonly INFINITE_TERRAIN: boolean = true;
-  static readonly MIN_X: number = 0;
-  static readonly MIN_Z: number = 0;
-  static readonly MAX_X: number = 1;
-  static readonly MAX_Z: number = 1;
+  static readonly CHUNK_RENDER_LIMIT: number = 64;
+  static readonly VIEW_DISTANCE: number = World.CHUNK_RENDER_LIMIT * TERRAIN_MESH_PARAMS.WIDTH;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
 
@@ -52,15 +46,17 @@ class World {
 
   async init() {
     this.initSeed();
-    this.initFog();
-    this.initSkybox();
+    // this.initFog();
+    // this.initSkybox();
     this.initLights();
     await this.initObjects();
 
-    const spawn = new THREE.Vector3(0, 4000, 0);
+    const spawn = new THREE.Vector3(Terrain.OFFSET_X / 2, 4000, Terrain.OFFSET_Z / 2);
 
     // stuff
     this.terrain = new Terrain();
+    this.terrain.init(this.scene);
+
     // preload terrain
     this.terrain.update(this.scene, this.frustum, spawn);
 
@@ -168,6 +164,7 @@ class World {
         objLoader.load(element.obj, (object) => {
           object.castShadow = true;
           object.receiveShadow = true;
+          object.stack_ref = element.name;
 
           object.traverse((child) => {
             if (child instanceof THREE.Mesh) {

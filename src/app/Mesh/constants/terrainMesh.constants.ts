@@ -7,5 +7,6 @@ export const TERRAIN_MESH_PARAMS: IChunkParams = {
   NCOLS: 8,
   CELL_SIZE: 168,
   WIDTH: 8 * 168,
+  HEIGHT: 30000,
   DEPTH: 8 * 168
 };

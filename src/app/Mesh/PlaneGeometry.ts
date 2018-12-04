@@ -35,7 +35,7 @@ class PlaneGeometry
     geometry.computeFaceNormals();
     geometry.computeVertexNormals();
     geometry.normalsNeedUpdate = true;
-    console.log(geometry);
+
     return geometry;
   }
 }

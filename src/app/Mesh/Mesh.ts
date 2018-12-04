@@ -17,8 +17,6 @@ import { IChunkParams } from '@shared/models/chunkParams.model';
 class Mesh {
   static GEOMETRY_STACK = new Stack<THREE.Geometry>();
 
-  mesh: THREE.Mesh;
-
   readonly row: number;
   readonly col: number;
 
@@ -90,8 +88,10 @@ class Mesh {
         const m2 = this.generator.computeMoisture(x2, z2);
 
         if (this.type === MESH_TYPES.TERRAIN_MESH) {
-          f1.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y1), m1).color;
-          f2.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y2), m2).color;
+          const f1c = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y1), m1).color;
+          const f2c = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y2), m2).color;
+          f1.color = f1c;
+          f2.color = f2c;
         } else if (this.type === MESH_TYPES.WATER_MESH) {
           f1.color = this.generator.getWaterColor(m1);
           f2.color = this.generator.getWaterColor(m2);
@@ -117,10 +117,6 @@ class Mesh {
     return geometry;
   }
 
-  rebuildGeometry(geometry: THREE.Geometry) {
-    return geometry;
-  }
-
   generate(): THREE.Mesh {
     const geometry = this.getGeometry();
     const material = this.getMaterial(this.type);
@@ -137,7 +133,6 @@ class Mesh {
 
   private getGeometry() {
     return this.buildGeometry();
-    // return Mesh.GEOMETRY_STACK.empty ? this.buildGeometry() : this.rebuildGeometry(Mesh.GEOMETRY_STACK.pop());
   }
 
   private getMaterial(type: MESH_TYPES): THREE.Material {

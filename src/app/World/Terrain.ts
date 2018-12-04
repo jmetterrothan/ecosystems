@@ -1,53 +1,86 @@
 import Chunk from './Chunk';
 import World from './World';
 import BiomeGenerator from './BiomeGenerator';
+import PlaneGeometry from '@mesh/PlaneGeometry';
 
 import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';
+import { TERRAIN_MATERIAL } from '@materials/terrain.material';
+import { WATER_MATERIAL } from '@materials/water.material';
+import { CLOUD_MATERIAL } from '@materials/cloud.material';
+
+class Coord {
+  constructor(row: number = 0, col: number = 0) {
+    this.row = row;
+    this.col = col;
+  }
+}
 
 class Terrain {
+  static readonly NCHUNKS_X: number = 16;
+  static readonly NCHUNKS_Z: number = 16;
+  static readonly NCOLS: number = Terrain.NCHUNKS_X * TERRAIN_MESH_PARAMS.NCOLS;
+  static readonly NROWS: number = Terrain.NCHUNKS_Z * TERRAIN_MESH_PARAMS.NROWS;
+
+  static readonly SIZE_X: number = Terrain.NCHUNKS_X * TERRAIN_MESH_PARAMS.WIDTH;
+  static readonly SIZE_Y: number = TERRAIN_MESH_PARAMS.MAX_CHUNK_HEIGHT + Math.abs(TERRAIN_MESH_PARAMS.MIN_CHUNK_HEIGHT);
+  static readonly SIZE_Z: number = Terrain.NCHUNKS_Z * TERRAIN_MESH_PARAMS.DEPTH;
+
+  static readonly OFFSET_X: number = Terrain.SIZE_X / 2;
+  static readonly OFFSET_Z: number = Terrain.SIZE_Z / 2;
+
   private chunks: Map<string, Chunk>;
   private visibleChunks: Chunk[];
   private startX: number;
   private startZ: number;
   private endX: number;
   private endZ: number;
-  private chunkX: number;
-  private chunkZ: number;
+  private chunk : Coord;
 
   private time: number;
 
   private generator: BiomeGenerator;
+  private topography: THREE.Geometry;
+  private water: THREE.Geometry;
+  private clouds: THREE.Geometry;
 
   constructor() {
     this.generator = new BiomeGenerator();
-    this.chunks = new Map<string, Chunk>();
+    this.chunks = new Map<string, bool>();
     this.visibleChunks = [];
     this.time = window.performance.now();
+
+    this.topography = new THREE.Geometry();
+    this.water = new THREE.Geometry();
+    this.clouds = new THREE.Geometry();
+
+    this.chunk = new Coord();
+  }
+
+  init(scene: THREE.Scene) {
+    const terrain = new THREE.Mesh(this.topography, TERRAIN_MATERIAL);
+    scene.add(terrain);
+
+    const water = new THREE.Mesh(this.water, WATER_MATERIAL);
+    scene.add(water);
+
+    const clouds = new THREE.Mesh(this.clouds, CLOUD_MATERIAL);
+    scene.add(clouds);
+
+    scene.add(Terrain.createBoundingBoxHelper());
   }
 
   update(scene: THREE.Scene, frustum: THREE.Frustum, position: THREE.Vector3) {
-    this.chunkX = Math.round(position.x / TERRAIN_MESH_PARAMS.WIDTH);
-    this.chunkZ = Math.round(position.z / TERRAIN_MESH_PARAMS.DEPTH);
+    this.getChunkCoordAt(this.chunk, position.x, position.z);
 
-    this.startX = this.chunkX - World.CHUNK_RENDER_LIMIT;
-    this.startZ = this.chunkZ - World.CHUNK_RENDER_LIMIT;
-    this.endX = this.chunkX + World.CHUNK_RENDER_LIMIT;
-    this.endZ = this.chunkZ + World.CHUNK_RENDER_LIMIT;
+    this.startX = this.chunk.col - World.CHUNK_RENDER_LIMIT / 2;
+    this.startZ = this.chunk.row - World.CHUNK_RENDER_LIMIT / 2;
+    this.endX = this.chunk.col + World.CHUNK_RENDER_LIMIT / 2;
+    this.endZ = this.chunk.row + World.CHUNK_RENDER_LIMIT / 2;
 
-    if (!World.INFINITE_TERRAIN) {
-      if (this.startX < World.MIN_X) {
-        this.startX = World.MIN_X;
-      }
-      if (this.startZ < World.MIN_Z) {
-        this.startZ = World.MIN_Z;
-      }
-      if (this.endX > World.MAX_X) {
-        this.endX = World.MAX_X;
-      }
-      if (this.endZ > World.MAX_Z) {
-        this.endZ = World.MAX_Z;
-      }
-    }
+    if (this.startX < 0) { this.startX = 0; }
+    if (this.startZ < 0) { this.startZ = 0; }
+    if (this.endX > Terrain.NCOLS) { this.endX = Terrain.NCOLS; }
+    if (this.endZ > Terrain.NROWS) { this.endZ = Terrain.NROWS; }
 
     // reset previously visible chunks
     for (let i = 0, n = this.visibleChunks.length; i < n; i++) {
@@ -64,7 +97,7 @@ class Terrain {
       this.chunks.forEach(chunk => {
         if (chunk && (chunk.col < this.startX || chunk.col > this.endX || chunk.row < this.startZ || chunk.row > this.endZ)) {
           chunk.clean(scene);
-          this.chunks.delete(chunk.key);
+          chunk.dirty = true;
         }
       });
 
@@ -73,21 +106,22 @@ class Terrain {
 
     for (let i = this.startZ; i < this.endZ; i++) {
       for (let j = this.startX; j < this.endX; j++) {
-        let chunk = this.chunks.get(`${i}:${j}`);
+        const key = `${i}:${j}`;
+        let chunk = this.chunks.get(key);
 
         // generate chunk if needed
-        if (!chunk) {
+        if (chunk === undefined) {
           chunk = new Chunk(this.generator, i, j);
+          chunk.init(this.topography, this.water, this.clouds);
           chunk.populate(scene);
 
-          this.chunks.set(chunk.key, chunk);
+          // const h = Chunk.createBoundingBoxHelper(chunk.bbox);
+          // scene.add(h);
 
-          scene.add(chunk.terrainMesh);
-          if (chunk.waterMesh) scene.add(chunk.waterMesh);
-          if (chunk.cloudMesh) scene.add(chunk.cloudMesh);
+          this.chunks.set(key, chunk);
         }
 
-        if (frustum.intersectsObject(chunk.terrainMesh)) {
+        if (frustum.intersectsBox(chunk.bbox)) {
           chunk.visible = true;
           // mark this chunk as visible
           this.visibleChunks.push(chunk);
@@ -96,17 +130,40 @@ class Terrain {
     }
   }
 
-  getChunkAt(x: number, z: number) {
-    const chunkX = Math.trunc(x / TERRAIN_MESH_PARAMS.WIDTH);
-    const chunkZ = Math.trunc(z / TERRAIN_MESH_PARAMS.DEPTH);
+  getChunkCoordAt(out, x: number, z: number) {
+    out.row = Math.round(z / TERRAIN_MESH_PARAMS.DEPTH);
+    out.col = Math.round(x / TERRAIN_MESH_PARAMS.WIDTH);
 
-    return this.chunks.get(`${chunkZ}:${chunkX}`);
+    return out;
+  }
+
+  getChunkAt(x: number, z: number) {
+    const p = this.getChunkCoordAt(new Coord(), x, z);
+
+    return this.chunks.get(`${p.row}:${p.col}`);
   }
 
   getHeightAt(x: number, z: number) {
     return this.generator.computeHeight(x, z);
   }
 
-}
+  static createBoundingBox(): THREE.Box3 {
+    return new THREE.Box3().setFromCenterAndSize(
+      new THREE.Vector3(
+        Terrain.SIZE_X / 2,
+        Terrain.SIZE_Y / 2,
+        Terrain.SIZE_Z / 2
+      ),
+      new THREE.Vector3(
+        Terrain.SIZE_X,
+        Terrain.SIZE_Y,
+        Terrain.SIZE_Z
+      ));
+  }
 
+  static createBoundingBoxHelper(bbox: THREE.Box3 = null): THREE.Box3Helper {
+    return new THREE.Box3Helper(bbox ? bbox : Terrain.createBoundingBox(), 0xff0000);
+  }
+}
+console.log(Terrain.NCHUNKS_X * TERRAIN_MESH_PARAMS.WIDTH);
 export default Terrain;
