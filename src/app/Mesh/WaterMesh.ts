@@ -6,7 +6,7 @@ import World from '@world/World';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
 import { WATER_MATERIAL } from '@materials/water.material';
-import { IChunkParameters } from '@shared/models/chunkParams.model';
+import { IChunkParameters } from '@shared/models/chunkParameters.model';
 
 class WaterMesh extends Mesh {
   constructor(generator: BiomeGenerator, row: number, col: number) {

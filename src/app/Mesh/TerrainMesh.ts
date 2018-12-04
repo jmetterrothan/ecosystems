@@ -7,7 +7,9 @@ import MathUtils from '@shared/utils/Math.utils';
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
 import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 
-class TerrainMesh extends Mesh implements IMesh {
+import { IChunkParameters } from '@shared/models/chunkParameters.model';
+
+class TerrainMesh extends Mesh {
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
     super(generator, row, col, MESH_TYPES.TERRAIN_MESH, <IChunkParameters>{

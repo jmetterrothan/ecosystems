@@ -6,10 +6,10 @@ import Chunk from '@world/Chunk';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
-import { IChunkParameters } from '@shared/models/chunkParams.model';
+import { IChunkParameters } from '@shared/models/chunkParameters.model';
 
-class CloudMesh extends Mesh implements IMesh {
-  static readonly GEOMETRY = null;
+class CloudMesh extends Mesh {
+  static GEOMETRY = null;
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
     super(generator, row, col, MESH_TYPES.CLOUD_MESH, <IChunkParameters>{
