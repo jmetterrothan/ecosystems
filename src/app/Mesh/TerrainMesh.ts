@@ -6,7 +6,7 @@ import MathUtils from '@shared/utils/Math.utils';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
 
-class TerrainMesh extends Mesh {
+class TerrainMesh extends Mesh implements IMesh {
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
     super(generator, row, col, MESH_TYPES.TERRAIN_MESH, <IChunkParameters>{
@@ -20,6 +20,10 @@ class TerrainMesh extends Mesh {
       height: Chunk.HEIGHT,
       depth: Chunk.DEPTH
     });
+  }
+
+  getY(x: number, z: number): number {
+    return this.generator.computeHeight(x, z);
   }
 
   getLow(): number {

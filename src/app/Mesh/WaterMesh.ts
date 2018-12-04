@@ -2,6 +2,7 @@ import Mesh from './Mesh';
 
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
+import World from '@world/World';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
 import { IChunkParameters } from '@shared/models/chunkParams.model';
@@ -17,6 +18,10 @@ class WaterMesh extends Mesh {
       height: Chunk.HEIGHT,
       depth: Chunk.DEPTH
     });
+  }
+
+  getY() {
+    return World.SEA_LEVEL;
   }
 }
 

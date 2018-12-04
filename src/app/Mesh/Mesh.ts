@@ -49,7 +49,7 @@ class Mesh {
       const x = this.col * this.parameters.width + c * this.parameters.cellSizeX;
       for (let r = 0; r < nbVerticesZ; r++) {
         const z = this.row * this.parameters.depth + r * this.parameters.cellSizeZ;
-        const y = this.getY(this.type, x, z);
+        const y = this.getY(x, z);
 
         if (this.low === null || this.low > y) this.low = y;
         if (this.high === null || this.high < y) this.high = y;
@@ -140,19 +140,6 @@ class Mesh {
 
       default:
         return TERRAIN_MATERIAL;
-    }
-  }
-
-  private getY(type: MESH_TYPES, x?: number, z?: number): number {
-    switch (type) {
-      case MESH_TYPES.TERRAIN_MESH:
-        return this.generator.computeHeight(x, z);
-
-      case MESH_TYPES.WATER_MESH:
-        return World.SEA_LEVEL;
-
-      case MESH_TYPES.CLOUD_MESH:
-        return World.CLOUD_LEVEL;
     }
   }
 

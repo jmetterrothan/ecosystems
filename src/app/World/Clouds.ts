@@ -29,7 +29,7 @@ class Clouds {
       MathUtils.randomInt(Clouds.scaleY.min, Clouds.scaleY.max),
       MathUtils.randomInt(Clouds.scaleZ.min, Clouds.scaleZ.max)
     );
-    mesh.rotateY(Math.PI / Math.round(Math.random()) + 1);
+    mesh.rotateY(Math.PI / Math.round(MathUtils.rng()) + 1);
     mesh.position.set(0, 4000, 0);
 
     this.visibleClouds.push(mesh);
