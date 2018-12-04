@@ -127,9 +127,9 @@ class Chunk {
         });
 
         scene.remove(this.objects[i]);
-        delete this.objects[i];
       }
     }
+    this.objects = [];
 
     if (this.waterMesh) {
       this.waterMesh.geometry.dispose();
