@@ -113,8 +113,6 @@ class Chunk {
     for (let i = this.objects.length - 1; i >= 0; i--) {
       const ref = this.objects[i].stack_ref;
 
-      if (!ref) continue;
-
       if (Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
         // collect unused objects
         this.objects[i].visible = false;

@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import simplexNoise from 'simplex-noise';
 
 import World from './World';
+import Terrain from './Terrain';
 import Chunk from './Chunk';
 import MathUtils from '@utils/Math.utils';
 import Stack from '@shared/Stack';
@@ -90,6 +91,7 @@ class BiomeGenerator {
 
           object.rotation.y = MathUtils.randomFloat(0, Math.PI * 2);
           object.scale.set(f * 200, f * 200, f * 200);
+          object.stack_ref = organism.name;
 
           return object;
         }
