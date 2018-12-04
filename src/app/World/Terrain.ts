@@ -3,7 +3,6 @@ import World from './World';
 import BiomeGenerator from './BiomeGenerator';
 import PlaneGeometry from '@mesh/PlaneGeometry';
 
-import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';
 import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 import { WATER_MATERIAL } from '@materials/water.material';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
@@ -16,14 +15,14 @@ class Coord {
 }
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 16;
-  static readonly NCHUNKS_Z: number = 16;
-  static readonly NCOLS: number = Terrain.NCHUNKS_X * TERRAIN_MESH_PARAMS.NCOLS;
-  static readonly NROWS: number = Terrain.NCHUNKS_Z * TERRAIN_MESH_PARAMS.NROWS;
+  static readonly NCHUNKS_X: number = 1;
+  static readonly NCHUNKS_Z: number = 1;
+  static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
+  static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
-  static readonly SIZE_X: number = Terrain.NCHUNKS_X * TERRAIN_MESH_PARAMS.WIDTH;
-  static readonly SIZE_Y: number = TERRAIN_MESH_PARAMS.MAX_CHUNK_HEIGHT + Math.abs(TERRAIN_MESH_PARAMS.MIN_CHUNK_HEIGHT);
-  static readonly SIZE_Z: number = Terrain.NCHUNKS_Z * TERRAIN_MESH_PARAMS.DEPTH;
+  static readonly SIZE_X: number = Terrain.NCOLS * Chunk.CELL_SIZE_X;
+  static readonly SIZE_Y: number = Chunk.HEIGHT;
+  static readonly SIZE_Z: number = Terrain.NROWS * Chunk.CELL_SIZE_Z;
 
   static readonly OFFSET_X: number = Terrain.SIZE_X / 2;
   static readonly OFFSET_Z: number = Terrain.SIZE_Z / 2;
@@ -115,8 +114,8 @@ class Terrain {
           chunk.init(this.topography, this.water, this.clouds);
           chunk.populate(scene);
 
-          // const h = Chunk.createBoundingBoxHelper(chunk.bbox);
-          // scene.add(h);
+          const h = Chunk.createBoundingBoxHelper(chunk.bbox);
+          scene.add(h);
 
           this.chunks.set(key, chunk);
         }
@@ -131,8 +130,8 @@ class Terrain {
   }
 
   getChunkCoordAt(out, x: number, z: number) {
-    out.row = Math.round(z / TERRAIN_MESH_PARAMS.DEPTH);
-    out.col = Math.round(x / TERRAIN_MESH_PARAMS.WIDTH);
+    out.row = Math.round(z / Chunk.DEPTH);
+    out.col = Math.round(x / Chunk.WIDTH);
 
     return out;
   }
@@ -165,5 +164,5 @@ class Terrain {
     return new THREE.Box3Helper(bbox ? bbox : Terrain.createBoundingBox(), 0xff0000);
   }
 }
-console.log(Terrain.NCHUNKS_X * TERRAIN_MESH_PARAMS.WIDTH);
+
 export default Terrain;

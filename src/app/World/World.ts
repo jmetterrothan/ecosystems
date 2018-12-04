@@ -4,21 +4,22 @@ import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
 import Terrain from './Terrain';
+import Chunk from './Chunk';
 import Player from '../Player';
 import Clouds from './Clouds';
 
 import { OBJECTS } from '@shared/constants/object.constants';
-import { TERRAIN_MESH_PARAMS } from '../Mesh/constants/terrainMesh.constants';
 
 import MathUtils from '@utils/Math.utils';
 
 class World {
-  static SEED: string | null = null;
+  static SEED: string | null = 'LaMeilleureSeed';
 
   static SEA_LEVEL: number = 290;
+  static CLOUD_LEVEL: number = 7500;
 
   static readonly CHUNK_RENDER_LIMIT: number = 64;
-  static readonly VIEW_DISTANCE: number = World.CHUNK_RENDER_LIMIT * TERRAIN_MESH_PARAMS.WIDTH;
+  static readonly VIEW_DISTANCE: number = World.CHUNK_RENDER_LIMIT * Chunk.WIDTH;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
 

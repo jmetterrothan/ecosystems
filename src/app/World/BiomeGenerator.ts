@@ -7,11 +7,8 @@ import MathUtils from '@utils/Math.utils';
 import Stack from '@shared/Stack';
 
 import { IBiome } from '@shared/models/biome.model';
-
-import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 import { BIOMES } from '@shared/constants/biome.constants';
-
 import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
 
 /**
@@ -183,8 +180,8 @@ class BiomeGenerator {
    * @return {number} elevation value
    */
   computeElevation(x: number, z: number): number {
-    const nx = x / (TERRAIN_MESH_PARAMS.WIDTH * 48) - 0.5;
-    const nz = z / (TERRAIN_MESH_PARAMS.DEPTH * 48) - 0.5;
+    const nx = x / (Chunk.WIDTH * 48) - 0.5;
+    const nz = z / (Chunk.DEPTH * 48) - 0.5;
 
     let e = 0;
 
@@ -208,8 +205,8 @@ class BiomeGenerator {
    * @return {number} moisture value
    */
   computeMoisture(x: number, z: number): number {
-    const nx = x / (TERRAIN_MESH_PARAMS.WIDTH * 360) - 0.5;
-    const nz = z / (TERRAIN_MESH_PARAMS.DEPTH * 360) - 0.5;
+    const nx = x / (Chunk.WIDTH * 360) - 0.5;
+    const nz = z / (Chunk.DEPTH * 360) - 0.5;
 
     let m = 0;
 
@@ -249,7 +246,7 @@ class BiomeGenerator {
    * @return {number}
    */
   static getElevationFromHeight(y: number) {
-    return y / ((TERRAIN_MESH_PARAMS.MAX_CHUNK_HEIGHT - TERRAIN_MESH_PARAMS.MIN_CHUNK_HEIGHT) + TERRAIN_MESH_PARAMS.MIN_CHUNK_HEIGHT);
+    return y / ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT);
   }
 
   /**
@@ -258,7 +255,7 @@ class BiomeGenerator {
    * @return {number}
    */
   static getHeightAtElevation(e: number) {
-    return e * ((TERRAIN_MESH_PARAMS.MAX_CHUNK_HEIGHT - TERRAIN_MESH_PARAMS.MIN_CHUNK_HEIGHT) + TERRAIN_MESH_PARAMS.MIN_CHUNK_HEIGHT);
+    return e * ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT);
   }
 
   /**

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-/*
+
 export const TERRAIN_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
   wireframe: false,
   emissive: 0xffffff,
@@ -9,14 +9,4 @@ export const TERRAIN_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMate
   reflectivity: 0,
   flatShading: true,
   vertexColors: THREE.FaceColors
-});
-*/
-export const TERRAIN_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
-  wireframe: true,
-  emissiveIntensity: 0,
-  specular: 0x000000,
-  shininess: 0,
-  reflectivity: 0,
-  flatShading: true,
-  color: 0x000000
 });

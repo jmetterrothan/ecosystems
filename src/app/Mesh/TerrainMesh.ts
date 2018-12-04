@@ -1,18 +1,26 @@
-import Mesh from './Mesh';
-import World from '../World/World';
+import Mesh from '@mesh/Mesh';
+import World from '@world/World';
+import Chunk from '@world/Chunk';
+import BiomeGenerator from '@world/BiomeGenerator';
+import MathUtils from '@shared/utils/Math.utils';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
-import { TERRAIN_MESH_PARAMS } from './constants/terrainMesh.constants';
-
-import BiomeGenerator from '@world/BiomeGenerator';
-import { CLOUD_CONSTANTS } from '@shared/constants/cloud.constants';
-
-import MathUtils from '@shared/utils/Math.utils';
 
 class TerrainMesh extends Mesh {
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
-    super(generator, row, col, MESH_TYPES.TERRAIN_MESH, TERRAIN_MESH_PARAMS);
+    super(generator, row, col, MESH_TYPES.TERRAIN_MESH, <IChunkParameters>{
+      maxChunkHeight: Chunk.MAX_CHUNK_HEIGHT,
+      minChunkHeight: Chunk.MIN_CHUNK_HEIGHT,
+      nRows: Chunk.NROWS,
+      nCols: Chunk.NCOLS,
+      cellSizeX: Chunk.CELL_SIZE_X,
+      cellSizeZ: Chunk.CELL_SIZE_Z,
+      width: Chunk.WIDTH,
+      height: Chunk.HEIGHT,
+      depth: Chunk.DEPTH
+    });
+    console.log(this);
   }
 
   getLow(): number {
@@ -24,7 +32,7 @@ class TerrainMesh extends Mesh {
   }
 
   needGenerateCloud(): boolean {
-    return this.moistureAverage > CLOUD_CONSTANTS.MIN_MOISTURE_AVERAGE && MathUtils.rng() > 0.925;
+    return this.moistureAverage > 0.33 && MathUtils.rng() > 0.925;
   }
 }
 

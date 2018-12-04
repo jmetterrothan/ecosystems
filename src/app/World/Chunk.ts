@@ -1,19 +1,31 @@
-import CloudMesh from '@mesh/CloudMesh';
 import * as THREE from 'three';
 import poissonDiskSampling from 'poisson-disk-sampling';
 import BiomeGenerator from './BiomeGenerator';
 
 import World from './World';
-import TerrainMesh from '../Mesh/TerrainMesh';
-import WaterMesh from '../Mesh/WaterMesh';
+import TerrainMesh from '@mesh/TerrainMesh';
+import WaterMesh from '@mesh/WaterMesh';
+import CloudMesh from '@mesh/CloudMesh';
 
 import MathUtils from '@utils/Math.utils';
 
-import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';
 import Terrain from './Terrain';
 
 class Chunk {
-  static CHUNK_OBJECT_STACK = {};
+  static readonly MAX_CHUNK_HEIGHT: number = 20000;
+  static readonly MIN_CHUNK_HEIGHT: number = -10000;
+
+  static readonly NROWS: number = 8;
+  static readonly NCOLS: number = 8;
+
+  static readonly CELL_SIZE_X: number = 168;
+  static readonly CELL_SIZE_Z: number = 168;
+
+  static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE_X;
+  static readonly HEIGHT: number = Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT;
+  static readonly DEPTH: number = Chunk.NROWS * Chunk.CELL_SIZE_Z;
+
+  static readonly CHUNK_OBJECT_STACK = {};
 
   private generator: BiomeGenerator;
 
@@ -76,12 +88,12 @@ class Chunk {
    */
   populate(scene: THREE.Scene) {
     const padding = 300; // object bounding box size / 2
-    const pds = new poissonDiskSampling([TERRAIN_MESH_PARAMS.WIDTH - padding, TERRAIN_MESH_PARAMS.DEPTH - padding], padding * 2, padding * 2, 20, MathUtils.rng);
+    const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding * 2, padding * 2, 20, MathUtils.rng);
     const points = pds.fill();
 
     points.forEach((point: number[]) => {
-      const x = padding + this.col * TERRAIN_MESH_PARAMS.WIDTH + point.shift();
-      const z = padding + this.row * TERRAIN_MESH_PARAMS.DEPTH + point.shift();
+      const x = padding + this.col * Chunk.WIDTH + point.shift();
+      const z = padding + this.row * Chunk.DEPTH + point.shift();
       const y = this.generator.computeHeight(x, z);
 
       // select an organism based on the current biome
@@ -146,14 +158,14 @@ class Chunk {
   static createBoundingBox(row: number, col: number): THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
       new THREE.Vector3(
-        col * TERRAIN_MESH_PARAMS.WIDTH + TERRAIN_MESH_PARAMS.WIDTH / 2,
-        TERRAIN_MESH_PARAMS.HEIGHT / 2,
-        row * TERRAIN_MESH_PARAMS.DEPTH + TERRAIN_MESH_PARAMS.DEPTH / 2
+        col * Chunk.WIDTH + Chunk.WIDTH / 2,
+        Chunk.HEIGHT / 2,
+        row * Chunk.DEPTH + Chunk.DEPTH / 2
       ),
       new THREE.Vector3(
-        TERRAIN_MESH_PARAMS.WIDTH,
-        TERRAIN_MESH_PARAMS.HEIGHT,
-        TERRAIN_MESH_PARAMS.DEPTH
+        Chunk.WIDTH,
+        Chunk.HEIGHT,
+        Chunk.DEPTH
       ));
   }
 

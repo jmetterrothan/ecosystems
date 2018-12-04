@@ -5,14 +5,12 @@ import Stack from '@shared/Stack';
 import World from '../World/World';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
-import { WATER_CONSTANTS } from '@shared/constants/water.constants';
-import { CLOUD_CONSTANTS } from '@shared/constants/cloud.constants';
 
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 import { WATER_MATERIAL } from '@materials/water.material';
 import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 
-import { IChunkParams } from '@shared/models/chunkParams.model';
+import { IChunkParameters } from '@shared/models/chunkParams.model';
 
 class Mesh {
   static GEOMETRY_STACK = new Stack<THREE.Geometry>();
@@ -23,18 +21,18 @@ class Mesh {
   protected low: number;
   protected high: number;
 
-  moistureAverage: number;
+  protected moistureAverage: number;
 
   private readonly type: MESH_TYPES;
-  private readonly params: IChunkParams;
+  private readonly parameters: IChunkParams;
   private generator: BiomeGenerator;
 
-  constructor(generator: BiomeGenerator, row: number, col: number, type: MESH_TYPES, params: IChunkParams) {
+  constructor(generator: BiomeGenerator, row: number, col: number, type: MESH_TYPES, parameters: IChunkParameters) {
     this.generator = generator;
     this.row = row;
     this.col = col;
     this.type = type;
-    this.params = params;
+    this.parameters = parameters;
 
     this.low = null;
     this.high = null;
@@ -43,17 +41,15 @@ class Mesh {
   buildGeometry(): THREE.Geometry {
     const geometry: THREE.Geometry = new THREE.Geometry();
 
-    const nbVerticesX = this.params.NCOLS + 1;
-    const nbVerticesZ = this.params.NROWS + 1;
+    const nbVerticesX = this.parameters.nCols + 1;
+    const nbVerticesZ = this.parameters.nRows + 1;
 
     // creates all our vertices
     for (let c = 0; c < nbVerticesX; c++) {
-      const x = this.col * this.params.WIDTH + c * this.params.CELL_SIZE;
+      const x = this.col * this.parameters.width + c * this.parameters.cellSizeX;
       for (let r = 0; r < nbVerticesZ; r++) {
-        const z = this.row * this.params.DEPTH + r * this.params.CELL_SIZE;
+        const z = this.row * this.parameters.depth + r * this.parameters.cellSizeZ;
         const y = this.getY(this.type, x, z);
-
-        // const y = this.type === MESH_TYPES.TERRAIN_MESH ? this.generator.computeHeight(x, z) : WATER_CONSTANTS.SEA_LEVEL;
 
         if (this.low === null || this.low > y) this.low = y;
         if (this.high === null || this.high < y) this.high = y;
@@ -65,8 +61,8 @@ class Mesh {
     // creates the associated faces with their indexes
     let sumMoisture = 0;
 
-    for (let col = 0; col < this.params.NCOLS; col++) {
-      for (let row = 0; row < this.params.NROWS; row++) {
+    for (let col = 0; col < this.parameters.nCols; col++) {
+      for (let row = 0; row < this.parameters.nRows; row++) {
         const a = col + nbVerticesX * row;
         const b = (col + 1) + nbVerticesX * row;
         const c = col + nbVerticesX * (row + 1);
@@ -88,10 +84,8 @@ class Mesh {
         const m2 = this.generator.computeMoisture(x2, z2);
 
         if (this.type === MESH_TYPES.TERRAIN_MESH) {
-          const f1c = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y1), m1).color;
-          const f2c = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y2), m2).color;
-          f1.color = f1c;
-          f2.color = f2c;
+          f1.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y1), m1).color;
+          f2.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y2), m2).color;
         } else if (this.type === MESH_TYPES.WATER_MESH) {
           f1.color = this.generator.getWaterColor(m1);
           f2.color = this.generator.getWaterColor(m2);
@@ -104,7 +98,8 @@ class Mesh {
       }
     }
 
-    this.moistureAverage = sumMoisture / (this.params.NCOLS * this.params.NROWS * 2);
+    this.moistureAverage = sumMoisture / (this.parameters.nCols * this.parameters.nRows * 2);
+
     // need to tell the engine we updated the vertices
     geometry.verticesNeedUpdate = true;
     geometry.colorsNeedUpdate = true;
@@ -157,7 +152,7 @@ class Mesh {
         return World.SEA_LEVEL;
 
       case MESH_TYPES.CLOUD_MESH:
-        return CLOUD_CONSTANTS.ALTITUDE;
+        return World.CLOUD_LEVEL;
     }
   }
 

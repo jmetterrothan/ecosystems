@@ -1,10 +1,6 @@
 import * as THREE from 'three';
 import { IBiome } from '@shared/models/biome.model';
 
-interface IBiomes {
-  [key: string]: IBiome;
-}
-
 export const BIOMES: IBiomes = {
   GRASSLAND: {
     color: new THREE.Color(0x93c54b),
@@ -41,7 +37,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.9,
         name: 'spruce',
-        scarcity: 0.825,
+        scarcity: 0.9,
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.25 },
