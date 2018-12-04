@@ -13,7 +13,7 @@ import { OBJECTS } from '@shared/constants/object.constants';
 import MathUtils from '@utils/Math.utils';
 
 class World {
-  static SEED: string | null = 'LaMeilleureSeed';
+  static SEED: string | null = null;
 
   static SEA_LEVEL: number = 290;
   static CLOUD_LEVEL: number = 7500;

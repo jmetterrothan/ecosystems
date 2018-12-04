@@ -15,8 +15,8 @@ class Chunk {
   static readonly MAX_CHUNK_HEIGHT: number = 20000;
   static readonly MIN_CHUNK_HEIGHT: number = -10000;
 
-  static readonly NROWS: number = 2;
-  static readonly NCOLS: number = 2;
+  static readonly NROWS: number = 8;
+  static readonly NCOLS: number = 8;
 
   static readonly CELL_SIZE_X: number = 168;
   static readonly CELL_SIZE_Z: number = 168;
