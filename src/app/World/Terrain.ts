@@ -1,7 +1,6 @@
 import Chunk from './Chunk';
 import World from './World';
 import BiomeGenerator from './BiomeGenerator';
-import PlaneGeometry from '@mesh/PlaneGeometry';
 
 import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 import { WATER_MATERIAL } from '@materials/water.material';
@@ -15,8 +14,8 @@ class Coord {
 }
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 64;
-  static readonly NCHUNKS_Z: number = 64;
+  static readonly NCHUNKS_X: number = 128;
+  static readonly NCHUNKS_Z: number = 128;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
@@ -29,10 +28,9 @@ class Terrain {
 
   private chunks: Map<string, Chunk>;
   private visibleChunks: Chunk[];
-  private startX: number;
-  private startZ: number;
-  private endX: number;
-  private endZ: number;
+
+  private start: Coord;
+  private end: Coord;
   private chunk : Coord;
 
   private time: number;
@@ -53,6 +51,8 @@ class Terrain {
     this.clouds = new THREE.Geometry();
 
     this.chunk = new Coord();
+    this.start = new Coord();
+    this.end = new Coord();
   }
 
   init(scene: THREE.Scene) {
@@ -65,24 +65,33 @@ class Terrain {
     const clouds = new THREE.Mesh(this.clouds, CLOUD_MATERIAL);
     scene.add(clouds);
 
-    scene.add(Terrain.createBoundingBoxHelper());
+    scene.add(Terrain.createRegionBoundingBoxHelper());
+
+    window.test = (r, c) => {
+      const chunk = this.loadChunk(scene, r, c);
+      chunk.visible = true;
+    };
   }
 
   update(scene: THREE.Scene, frustum: THREE.Frustum, position: THREE.Vector3) {
     this.getChunkCoordAt(this.chunk, position.x, position.z);
 
+    // console.log(this.chunk);
+
     const nc = Math.min(Terrain.NCHUNKS_X, World.CHUNK_RENDER_LIMIT / 2);
     const nr = Math.min(Terrain.NCHUNKS_Z, World.CHUNK_RENDER_LIMIT / 2);
 
-    this.startX = this.chunk.col - nc;
-    this.startZ = this.chunk.row - nr;
-    this.endX = this.chunk.col + nc;
-    this.endZ = this.chunk.row + nr;
+    this.start.col = this.chunk.col - nc;
+    this.start.row = this.chunk.row - nr;
+    this.end.col = this.chunk.col + nc;
+    this.end.row = this.chunk.row + nr;
 
-    if (this.startX < 0) { this.startX = 0; }
-    if (this.startZ < 0) { this.startZ = 0; }
-    if (this.endX > Terrain.NCHUNKS_X) { this.endX = Terrain.NCHUNKS_X; }
-    if (this.endZ > Terrain.NCHUNKS_Z) { this.endZ = Terrain.NCHUNKS_Z; }
+    // limit visible chunk range to region boundaries
+    if (this.start.col < 0) { this.start.col = 0; this.end.col = nc; }
+    if (this.start.row < 0) { this.start.row = 0; this.end.col = nr; }
+
+    if (this.end.col > Terrain.NCHUNKS_X) { this.end.col = Terrain.NCHUNKS_X; this.start.col = Terrain.NCHUNKS_X - nc; }
+    if (this.end.row > Terrain.NCHUNKS_Z) { this.end.row = Terrain.NCHUNKS_Z; this.start.row = Terrain.NCHUNKS_Z - nr; }
 
     // reset previously visible chunks
     for (let i = 0, n = this.visibleChunks.length; i < n; i++) {
@@ -97,7 +106,7 @@ class Terrain {
 
     if (now >= this.time) {
       this.chunks.forEach(chunk => {
-        if (chunk && (chunk.col < this.startX || chunk.col > this.endX || chunk.row < this.startZ || chunk.row > this.endZ)) {
+        if (chunk && (chunk.col < this.start.col || chunk.col > this.end.col || chunk.row < this.start.row || chunk.row > this.end.row)) {
           chunk.clean(scene);
           chunk.dirty = true;
         }
@@ -106,30 +115,41 @@ class Terrain {
       this.time = now + 1000;
     }
 
-    for (let i = this.startZ; i < this.endZ; i++) {
-      for (let j = this.startX; j < this.endX; j++) {
-        const key = `${i}:${j}`;
-        let chunk = this.chunks.get(key);
+    for (let i = this.start.row; i < this.end.row; i++) {
+      for (let j = this.start.col; j < this.end.col; j++) {
+        let chunk = this.chunks.get(`${i}:${j}`);
 
         // generate chunk if needed
         if (chunk === undefined) {
-          chunk = new Chunk(this.generator, i, j);
-          chunk.init(this.topography, this.water, this.clouds);
-          chunk.populate(scene);
-
-          // const h = Chunk.createBoundingBoxHelper(chunk.bbox);
-          // scene.add(h);
-
-          this.chunks.set(key, chunk);
+          chunk = this.loadChunk(scene, i, j);
         }
 
+        // chunk is visible in frustum
         if (frustum.intersectsBox(chunk.bbox)) {
           chunk.visible = true;
-          // mark this chunk as visible
+
+          if (chunk.dirty) {
+            chunk.populate(scene);
+            chunk.dirty = false;
+          }
+
+          // mark this chunk as visible for the next update
           this.visibleChunks.push(chunk);
         }
       }
     }
+  }
+
+  loadChunk(scene, chunkRow: number, chunkCol: number): Chunk {
+    const chunk = new Chunk(this.generator, chunkRow, chunkCol);
+    chunk.init(scene, this.topography, this.water, this.clouds);
+
+    // const h = Chunk.createBoundingBoxHelper(chunk.bbox);
+    // scene.add(h);
+
+    this.chunks.set(`${chunkRow}:${chunkCol}`, chunk);
+
+    return chunk;
   }
 
   getChunkCoordAt(out: Coord, x: number, z: number): Coord {
@@ -149,7 +169,7 @@ class Terrain {
     return this.generator.computeHeight(x, z);
   }
 
-  static createBoundingBox(): THREE.Box3 {
+  static createRegionBoundingBox(): THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
       new THREE.Vector3(
         Terrain.SIZE_X / 2,
@@ -163,8 +183,8 @@ class Terrain {
       ));
   }
 
-  static createBoundingBoxHelper(bbox: THREE.Box3 = null): THREE.Box3Helper {
-    return new THREE.Box3Helper(bbox ? bbox : Terrain.createBoundingBox(), 0xff0000);
+  static createRegionBoundingBoxHelper(bbox: THREE.Box3 = null): THREE.Box3Helper {
+    return new THREE.Box3Helper(bbox ? bbox : Terrain.createRegionBoundingBox(), 0xff0000);
   }
 }
 

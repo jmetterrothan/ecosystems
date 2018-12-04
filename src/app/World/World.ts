@@ -6,20 +6,21 @@ import 'three/examples/js/loaders/MTLLoader';
 import Terrain from './Terrain';
 import Chunk from './Chunk';
 import Player from '../Player';
-import Clouds from './Clouds';
 
 import { OBJECTS } from '@shared/constants/object.constants';
 
 import MathUtils from '@utils/Math.utils';
 
 class World {
+  // static SEED: string | null = '1891341357';
   static SEED: string | null = null;
 
   static SEA_LEVEL: number = 290;
   static CLOUD_LEVEL: number = 7500;
 
-  static readonly CHUNK_RENDER_LIMIT: number = 64;
-  static readonly VIEW_DISTANCE: number = World.CHUNK_RENDER_LIMIT * Chunk.WIDTH;
+  static readonly CHUNK_RENDER_LIMIT: number = 16;
+  static readonly CHUNK_RENDER_DISTANCE: number = World.CHUNK_RENDER_LIMIT * Chunk.WIDTH;
+  static readonly VIEW_DISTANCE: number = 128 * Chunk.WIDTH;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
 
@@ -33,25 +34,22 @@ class World {
   private frustum: THREE.Frustum;
   private seed: string;
 
-  private clouds: Clouds;
-
   constructor(scene: THREE.Scene, camera: THREE.PerspectiveCamera, controls: THREE.PointerLockControls) {
     this.scene = scene;
     this.camera = camera;
     this.controls = controls;
 
     this.frustum = new THREE.Frustum();
-    this.clouds = new Clouds();
   }
 
   async init() {
     this.initSeed();
     // this.initFog();
-    // this.initSkybox();
+    this.initSkybox();
     this.initLights();
     await this.initObjects();
 
-    const spawn = new THREE.Vector3(0, 4000, 0);
+    const spawn = new THREE.Vector3(Terrain.SIZE_X / 2, 4000, Terrain.SIZE_Z / 2);
 
     // stuff
     this.terrain = new Terrain();
@@ -82,7 +80,7 @@ class World {
   }
 
   private initFog() {
-    this.scene.fog = new THREE.Fog(0xb1d8ff, World.VIEW_DISTANCE - World.VIEW_DISTANCE / 4, World.VIEW_DISTANCE);
+    this.scene.fog = new THREE.Fog(0xb1d8ff, World.CHUNK_RENDER_DISTANCE - World.CHUNK_RENDER_DISTANCE / 4, World.CHUNK_RENDER_DISTANCE);
   }
 
   private initSkybox() {
