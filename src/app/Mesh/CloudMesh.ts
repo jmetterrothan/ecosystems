@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 import PlaneGeometry from '@mesh/PlaneGeometry';
 import Mesh from './Mesh';
 import World from '@world/World';
@@ -10,6 +12,7 @@ import { IChunkParameters } from '@shared/models/chunkParameters.model';
 
 class CloudMesh extends Mesh {
   static GEOMETRY = null;
+  static lastPosition: THREE.Vector3 = null;
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
     super(generator, row, col, MESH_TYPES.CLOUD_MESH, <IChunkParameters>{
@@ -27,6 +30,7 @@ class CloudMesh extends Mesh {
     // unique geometry
     if (CloudMesh.GEOMETRY === null) {
       CloudMesh.GEOMETRY = PlaneGeometry.create(this.parameters.nRows, this.parameters.nCols, this.parameters.cellSizeX, this.parameters.cellSizeZ);
+      CloudMesh.lastPosition = new THREE.Vector3(0, 0, 0);
     }
 
     return CloudMesh.GEOMETRY;
@@ -35,10 +39,15 @@ class CloudMesh extends Mesh {
   generate(): THREE.Mesh {
     const mesh = super.generate();
 
+    mesh.geometry.translate(-CloudMesh.lastPosition.x, -CloudMesh.lastPosition.y, -CloudMesh.lastPosition.z);
+
     // TODO : find out why the mesh doesn't move
-    mesh.position.x = this.col * this.parameters.width;
-    mesh.position.y = this.getY();
-    mesh.position.z = this.row * this.parameters.height;
+    const x = this.col * this.parameters.width;
+    const y = World.CLOUD_LEVEL;
+    const z = this.row * this.parameters.depth;
+
+    mesh.geometry.translate(x, y, z);
+    CloudMesh.lastPosition.set(x, y, z);
 
     return mesh;
   }

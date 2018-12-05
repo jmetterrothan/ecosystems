@@ -33,7 +33,7 @@ class Player {
     this.controls.getObject().position.set(x, y, z);
   }
 
-  public updateMvts(delta) {
+  updateMvts(delta) {
     if (this.moveForward) {
       this.velocity.z = -this.speed.z;
     } else {
@@ -96,7 +96,7 @@ class Player {
     }
   }
 
-  public handleKeyboard(key: string, active: boolean) {
+  handleKeyboard(key: string, active: boolean) {
     switch (key) {
       case 'ArrowUp': case 'z': this.moveForward = active; break;
       case 'ArrowDown': case 's': this.moveBackward = active; break;
@@ -107,7 +107,7 @@ class Player {
     }
   }
 
-  public getPosition(): THREE.Vector3 {
+  getPosition(): THREE.Vector3 {
     return this.controls.getObject().position.clone();
   }
 }

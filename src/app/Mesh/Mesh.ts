@@ -34,6 +34,7 @@ abstract class Mesh {
   }
 
   abstract getY(x?: number, z?: number): number;
+  abstract getMaterial(): THREE.Material;
 
   buildGeometry(): THREE.Geometry {
     const geometry: THREE.Geometry = new THREE.Geometry();
@@ -110,7 +111,7 @@ abstract class Mesh {
   }
 
   generate(): THREE.Mesh {
-    const mesh = new THREE.Mesh(this.buildGeometry(), this.getMaterial(this.type));
+    const mesh = new THREE.Mesh(this.buildGeometry(), this.getMaterial());
 
     mesh.frustumCulled = false;
     mesh.visible = false;

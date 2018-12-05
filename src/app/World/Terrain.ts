@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 import Chunk from './Chunk';
 import World from './World';
 import BiomeGenerator from './BiomeGenerator';
@@ -7,6 +9,8 @@ import { WATER_MATERIAL } from '@materials/water.material';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
 class Coord {
+  row: number;
+  col: number;
   constructor(row: number = 0, col: number = 0) {
     this.row = row;
     this.col = col;
@@ -31,7 +35,7 @@ class Terrain {
 
   private start: Coord;
   private end: Coord;
-  private chunk : Coord;
+  private chunk: Coord;
 
   private time: number;
 
@@ -42,7 +46,7 @@ class Terrain {
 
   constructor() {
     this.generator = new BiomeGenerator();
-    this.chunks = new Map<string, bool>();
+    this.chunks = new Map<string, Chunk>();
     this.visibleChunks = [];
     this.time = window.performance.now();
 
@@ -187,7 +191,7 @@ class Terrain {
       ));
   }
 
-  static createRegionBoundingBoxHelper(bbox: THREE.Box3 = null): THREE.Box3Helper {
+  static createRegionBoundingBoxHelper(bbox: THREE.Box3 = null): THREE.BoxHelper {
     return new THREE.Box3Helper(bbox ? bbox : Terrain.createRegionBoundingBox(), 0xff0000);
   }
 }
