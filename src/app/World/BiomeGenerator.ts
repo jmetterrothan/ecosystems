@@ -26,7 +26,7 @@ class BiomeGenerator {
   static readonly TERRAIN_OCTAVES: number[] = [1.0, 0.35, 0.25, 0.125, 0.0625, 0.005];
   static readonly TERRAIN_OCTAVES_SUM: number = BiomeGenerator.TERRAIN_OCTAVES.reduce((a, b) => a + b, 0);
 
-  protected curvePow: number = MathUtils.randomInt(5, 9);
+  protected curvePow: number = MathUtils.randomInt(4, 10);
 
   protected simplexTerrain: simplexNoise;
   protected simplexMoisture: simplexNoise;
