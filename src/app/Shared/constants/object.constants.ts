@@ -51,7 +51,31 @@ import bushMtl from '@objmodels/tree/bush.mtl';
 import stackObj from '@objmodels/tree/stack.obj';
 import stackMtl from '@objmodels/tree/stack.mtl';
 
+import pinkObj from '@objmodels/tree/pink.obj';
+import pinkMtl from '@objmodels/tree/pink.mtl';
+
+import blueObj from '@objmodels/tree/blue.obj';
+import blueMtl from '@objmodels/tree/blue.mtl';
+
+import diamondObj from '@objmodels/tree/diamond.obj';
+import diamondMtl from '@objmodels/tree/diamond.mtl';
+
 export const OBJECTS: IObject[] = [
+  {
+    name: 'diamond',
+    obj: diamondObj,
+    mtl: diamondMtl
+  },
+  {
+    name: 'blue',
+    obj: blueObj,
+    mtl: blueMtl
+  },
+  {
+    name: 'pink',
+    obj: pinkObj,
+    mtl: pinkMtl
+  },
   {
     name: 'stack',
     obj: stackObj,

@@ -158,9 +158,7 @@ class World {
 
       mtlLoader.load(element.mtl, (materials) => {
         materials.preload();
-        for (const m in materials.materials) {
-          materials.materials[m].flatShading = true;
-        }
+
         objLoader.setMaterials(materials);
 
         objLoader.load(element.obj, (object) => {

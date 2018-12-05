@@ -98,7 +98,7 @@ class Chunk {
    * Poisson disk sampling
    */
   loadPopulation() {
-    const padding = 600; // object bounding box size / 2
+    const padding = 700; // object bounding box size / 2
     const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding * 2, padding * 2, 30, MathUtils.rng);
     const points = pds.fill();
 
