@@ -14,6 +14,8 @@ class CloudMesh extends Mesh {
   static GEOMETRY = null;
   static lastPosition: THREE.Vector3 = null;
 
+  static cloudHeight: number = 300;
+
   constructor(generator: BiomeGenerator, row: number, col: number) {
     super(generator, row, col, MESH_TYPES.CLOUD_MESH, <IChunkParameters>{
       nRows: 1,
@@ -29,7 +31,8 @@ class CloudMesh extends Mesh {
   buildGeometry(): THREE.Geometry {
     // unique geometry
     if (CloudMesh.GEOMETRY === null) {
-      CloudMesh.GEOMETRY = PlaneGeometry.create(this.parameters.nRows, this.parameters.nCols, this.parameters.cellSizeX, this.parameters.cellSizeZ);
+      CloudMesh.GEOMETRY = new THREE.BoxGeometry(this.parameters.width, CloudMesh.cloudHeight, this.parameters.depth, 1, 1, 1);
+      // CloudMesh.GEOMETRY = PlaneGeometry.create(this.parameters.nRows, this.parameters.nCols, this.parameters.cellSizeX, this.parameters.cellSizeZ);
       CloudMesh.lastPosition = new THREE.Vector3(0, 0, 0);
     }
 
@@ -39,13 +42,11 @@ class CloudMesh extends Mesh {
   generate(): THREE.Mesh {
     const mesh = super.generate();
 
-    mesh.geometry.translate(-CloudMesh.lastPosition.x, -CloudMesh.lastPosition.y, -CloudMesh.lastPosition.z);
-
     const x = this.col * this.parameters.width;
     const y = World.CLOUD_LEVEL;
     const z = this.row * this.parameters.depth;
 
-    mesh.geometry.translate(x, y, z);
+    mesh.geometry.translate(x - CloudMesh.lastPosition.x, y - CloudMesh.lastPosition.y, z - CloudMesh.lastPosition.z);
     CloudMesh.lastPosition.set(x, y, z);
 
     return mesh;
