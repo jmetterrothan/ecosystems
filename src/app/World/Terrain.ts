@@ -128,6 +128,11 @@ class Terrain {
         if (frustum.intersectsBox(chunk.bbox)) {
           chunk.visible = true;
 
+          if (!chunk.initialized) {
+            chunk.init(scene, this.topography, this.water, this.clouds);
+            chunk.initialized = true;
+          }
+
           if (chunk.dirty) {
             chunk.populate(scene);
             chunk.dirty = false;
@@ -142,7 +147,6 @@ class Terrain {
 
   loadChunk(scene, chunkRow: number, chunkCol: number): Chunk {
     const chunk = new Chunk(this.generator, chunkRow, chunkCol);
-    chunk.init(scene, this.topography, this.water, this.clouds);
 
     // const h = Chunk.createBoundingBoxHelper(chunk.bbox);
     // scene.add(h);

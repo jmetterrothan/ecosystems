@@ -47,6 +47,7 @@ class Chunk {
   private objectsBlueprint: IPick[];
 
   public dirty: boolean;
+  public initialized: boolean;
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
     this.generator = generator;
@@ -56,6 +57,7 @@ class Chunk {
     this.key = `${row}:${col}`;
     this.objects = [];
     this.dirty = false;
+    this.initialized = false;
     this.merged = false;
 
     this.terrainBlueprint = new TerrainMesh(this.generator, this.row, this.col);
