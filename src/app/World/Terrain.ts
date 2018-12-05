@@ -119,9 +119,8 @@ class Terrain {
         if (frustum.intersectsBox(chunk.bbox)) {
           chunk.visible = true;
 
-          if (!chunk.initialized) {
-            chunk.init(scene, this.topography, this.water, this.clouds);
-            chunk.initialized = true;
+          if (!chunk.merged) {
+            chunk.init(this.topography, this.water, this.clouds);
           }
 
           if (chunk.dirty) {

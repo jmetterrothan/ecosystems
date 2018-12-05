@@ -45,7 +45,6 @@ class Chunk {
 
   public dirty: boolean;
   public merged: boolean;
-  public initialized: boolean;
 
   public readonly key: string;
 
@@ -57,7 +56,6 @@ class Chunk {
     this.key = `${row}:${col}`;
     this.objects = [];
     this.dirty = false;
-    this.initialized = false;
     this.merged = false;
 
     this.terrainBlueprint = new TerrainMesh(this.generator, this.row, this.col);
@@ -70,7 +68,7 @@ class Chunk {
     this.objectsBlueprint = [];
   }
 
-  init(scene: THREE.Scene, topography: THREE.Geometry, water: THREE.Geometry, clouds:  THREE.Geometry) {
+  init(topography: THREE.Geometry, water: THREE.Geometry, clouds:  THREE.Geometry) {
     // merge generated chunk with region geometry
     if (!this.merged) {
       const terrainMesh = this.terrainBlueprint.generate();
@@ -150,6 +148,7 @@ class Chunk {
 
   clean(scene: THREE.Scene) {
     for (let i = this.objects.length - 1; i >= 0; i--) {
+      // @ts-ignore
       const ref = this.objects[i].stackReference;
 
       if (Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
