@@ -164,12 +164,11 @@ class BiomeGenerator {
 
     let e = 0;
 
-    e += BiomeGenerator.TERRAIN_OCTAVES[0] * this.elevationNoise(nx, nz);
-    e += BiomeGenerator.TERRAIN_OCTAVES[1] * this.elevationNoise(2 * nx, 2 * nz);
-    e += BiomeGenerator.TERRAIN_OCTAVES[2] * this.elevationNoise(4 * nx, 4 * nz);
-    e += BiomeGenerator.TERRAIN_OCTAVES[3] * this.elevationNoise(8 * nx, 8 * nz);
-    e += BiomeGenerator.TERRAIN_OCTAVES[4] * this.elevationNoise(16 * nx, 16 * nz);
-    e += BiomeGenerator.TERRAIN_OCTAVES[5] * this.elevationNoise(32 * nx, 32 * nz);
+    let freq = 1;
+    for (let i = 0; i < BiomeGenerator.TERRAIN_OCTAVES.length; i++)  {
+      e += BiomeGenerator.TERRAIN_OCTAVES[i] * this.elevationNoise(freq * nx, freq * nz);
+      freq *= 2;
+    }
 
     e /= BiomeGenerator.TERRAIN_OCTAVES_SUM;
     e **= this.curvePow;
@@ -189,11 +188,11 @@ class BiomeGenerator {
 
     let m = 0;
 
-    m += BiomeGenerator.MOISTURE_OCTAVES[0] * this.moisturenNoise(nx, nz);
-    m += BiomeGenerator.MOISTURE_OCTAVES[1] * this.moisturenNoise(nx * 2, nz * 2);
-    m += BiomeGenerator.MOISTURE_OCTAVES[2] * this.moisturenNoise(nx * 4, nz * 4);
-    m += BiomeGenerator.MOISTURE_OCTAVES[3] * this.moisturenNoise(nx * 8, nz * 8);
-    m += BiomeGenerator.MOISTURE_OCTAVES[4] * this.moisturenNoise(nx * 16, nz * 16);
+    let freq = 1;
+    for (let i = 0; i < BiomeGenerator.MOISTURE_OCTAVES.length; i++)  {
+      m += BiomeGenerator.MOISTURE_OCTAVES[i] * this.moisturenNoise(freq * nx, freq * nz);
+      freq *= 2;
+    }
 
     m /= BiomeGenerator.MOISTURE_OCTAVES_SUM;
 

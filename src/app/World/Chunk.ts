@@ -47,6 +47,7 @@ class Chunk {
   private objectsBlueprint: IPick[];
 
   public dirty: boolean;
+  public initialized: boolean;
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
     this.generator = generator;
@@ -56,6 +57,7 @@ class Chunk {
     this.key = `${row}:${col}`;
     this.objects = [];
     this.dirty = false;
+    this.initialized = false;
     this.merged = false;
 
     this.terrainBlueprint = new TerrainMesh(this.generator, this.row, this.col);
@@ -171,9 +173,6 @@ class Chunk {
   }
 
   set visible(bool: boolean) {
-    if (this.waterMesh) this.waterMesh.visible = bool;
-    if (this.cloudMesh) this.cloudMesh.visible = bool;
-
     for (let i = this.objects.length - 1; i >= 0; i--) {
       this.objects[i].visible = bool;
     }
