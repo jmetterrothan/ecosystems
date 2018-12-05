@@ -23,6 +23,10 @@ class World {
   static readonly CHUNK_RENDER_DISTANCE: number = World.CHUNK_RENDER_LIMIT * Chunk.WIDTH;
   static readonly VIEW_DISTANCE: number = 128 * Chunk.WIDTH;
 
+  static readonly SHOW_FOG: boolean = true;
+  static readonly FOG_NEAR: number = World.CHUNK_RENDER_DISTANCE / 3;
+  static readonly FOG_FAR: number = World.CHUNK_RENDER_DISTANCE;
+
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
 
   private scene: THREE.Scene;
@@ -81,7 +85,9 @@ class World {
   }
 
   private initFog() {
-    this.scene.fog = new THREE.Fog(0xb1d8ff, World.CHUNK_RENDER_DISTANCE / 6, World.CHUNK_RENDER_DISTANCE - 2500);
+    if (World.SHOW_FOG) {
+      this.scene.fog = new THREE.Fog(0xb1d8ff, World.FOG_NEAR, World.FOG_FAR);
+    }
   }
 
   private initSkybox() {
