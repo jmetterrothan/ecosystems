@@ -156,8 +156,8 @@ class BiomeGenerator {
    * @return {number} elevation value
    */
   computeElevation(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 48) - 0.5;
-    const nz = z / (Chunk.DEPTH * 48) - 0.5;
+    const nx = x / (Chunk.WIDTH * 48);
+    const nz = z / (Chunk.DEPTH * 48);
 
     let e = 0;
 
@@ -180,8 +180,8 @@ class BiomeGenerator {
    * @return {number} moisture value
    */
   computeMoisture(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 2048) - 0.5;
-    const nz = z / (Chunk.DEPTH * 2048) - 0.5;
+    const nx = x / (Chunk.WIDTH * 1024);
+    const nz = z / (Chunk.DEPTH * 1024);
 
     let m = 0;
 
