@@ -31,13 +31,13 @@ export const BIOMES: IBiomes = {
       }
     ]
   },
-  FOREST: {
+  TAIGA: {
     color: new THREE.Color(0x5da736),
     organisms: [
       {
         weight: 0.9,
         name: 'spruce',
-        scarcity: 0.9,
+        scarcity: 0.825,
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.25 },
@@ -117,12 +117,8 @@ export const BIOMES: IBiomes = {
     color: new THREE.Color(0xB4C1A9),
     organisms: []
   },
-  TAIGA: {
-    color: new THREE.Color(0xb4c09c),
-    organisms: []
-  },
   MOUNTAIN: {
-    color: new THREE.Color(0x9C9B7A),
+    color: new THREE.Color(0x5da736),
     organisms: []
   },
   RAINFOREST: {

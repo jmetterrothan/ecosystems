@@ -13,12 +13,14 @@ import MathUtils from '@utils/Math.utils';
 
 class World {
   // static SEED: string | null = '1891341357';
-  static SEED: string | null = null;
+  static SEED: string | null = null; // '2036719483';
 
-  static SEA_LEVEL: number = 290;
-  static CLOUD_LEVEL: number = 7500;
+  static readonly SEA_LEVEL: number = 290;
+  static readonly CLOUD_LEVEL: number = 7500;
 
-  static readonly CHUNK_RENDER_LIMIT: number = 64;
+  static readonly OBJ_INITIAL_SCALE: number = 360;
+
+  static readonly CHUNK_RENDER_LIMIT: number = 48;
   static readonly CHUNK_RENDER_DISTANCE: number = World.CHUNK_RENDER_LIMIT * Chunk.WIDTH;
   static readonly VIEW_DISTANCE: number = 128 * Chunk.WIDTH;
 
@@ -44,7 +46,7 @@ class World {
 
   async init() {
     this.initSeed();
-    // this.initFog();
+    this.initFog();
     this.initSkybox();
     this.initLights();
     await this.initObjects();
@@ -80,7 +82,7 @@ class World {
   }
 
   private initFog() {
-    this.scene.fog = new THREE.Fog(0xb1d8ff, World.CHUNK_RENDER_DISTANCE - World.CHUNK_RENDER_DISTANCE / 4, World.CHUNK_RENDER_DISTANCE);
+    this.scene.fog = new THREE.Fog(0xb1d8ff, World.CHUNK_RENDER_DISTANCE / 6, World.CHUNK_RENDER_DISTANCE - 2500);
   }
 
   private initSkybox() {
@@ -111,7 +113,7 @@ class World {
       const p = World.loadObjModel(element);
 
       return p.then((object) => {
-        object.scale.set(200, 200, 200); // scale from maya size to a decent world size
+        object.scale.set(World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE); // scale from maya size to a decent world size
       });
     });
 
@@ -164,6 +166,8 @@ class World {
 
           object.traverse((child) => {
             if (child instanceof THREE.Mesh) {
+              child.castShadow = true;
+              child.receiveShadow = true;
               (<THREE.Material>child.material).flatShading = true;
               if (element.doubleSide === true) {
                 (<THREE.Material>child.material).side = THREE.DoubleSide;

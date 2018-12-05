@@ -41,7 +41,6 @@ class CloudMesh extends Mesh {
 
     mesh.geometry.translate(-CloudMesh.lastPosition.x, -CloudMesh.lastPosition.y, -CloudMesh.lastPosition.z);
 
-    // TODO : find out why the mesh doesn't move
     const x = this.col * this.parameters.width;
     const y = World.CLOUD_LEVEL;
     const z = this.row * this.parameters.depth;
