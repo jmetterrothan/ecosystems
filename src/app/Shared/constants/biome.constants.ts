@@ -107,7 +107,7 @@ export const BIOMES: IBiomes = {
         weight: 0.1,
         name: 'palm_tree',
         scarcity: 0.995,
-        e: null,
+        e: { low: 0.26, high: 0.5 },
         m: null,
         scale: { min: 1.1, max: 1.5 },
       }
