@@ -2,7 +2,8 @@ import * as THREE from 'three';
 import BiomeGenerator from '@world/BiomeGenerator';
 
 class PlaneGeometry {
-  static create(nrows: number, ncols: number, cellsizeX: number, cellsizeZ: number, generator: BiomeGenerator): THREE.Geometry {
+
+  static create(nrows: number, ncols: number, cellsizeX: number, cellsizeZ: number): THREE.Geometry {
     const geometry: THREE.Geometry = new THREE.Geometry();
 
     const nbVerticesX = ncols + 1;
@@ -22,23 +23,8 @@ class PlaneGeometry {
         const c = col + nbVerticesX * (row + 1);
         const d = (col + 1) + nbVerticesX * (row + 1);
 
-        const f1 = new THREE.Face3(a, b, d);
-        const f2 = new THREE.Face3(d, c, a);
-
-        const x1 = (geometry.vertices[a].x + geometry.vertices[b].x + geometry.vertices[d].x) / 3;
-        const x2 = (geometry.vertices[d].x + geometry.vertices[c].x + geometry.vertices[a].x) / 3;
-
-        const z1 = (geometry.vertices[a].z + geometry.vertices[b].z + geometry.vertices[d].z) / 3;
-        const z2 = (geometry.vertices[d].z + geometry.vertices[c].z + geometry.vertices[a].z) / 3;
-
-        const m1 = generator.computeMoisture(x1, z1);
-        const m2 = generator.computeMoisture(x2, z2);
-
-        f1.color = generator.getWaterColor(m1);
-        f2.color = generator.getWaterColor(m2);
-
-        geometry.faces.push(f1);
-        geometry.faces.push(f2);
+        geometry.faces.push(new THREE.Face3(a, b, d));
+        geometry.faces.push(new THREE.Face3(d, c, a));
       }
     }
 

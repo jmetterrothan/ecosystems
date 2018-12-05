@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 
-import PlaneGeometry from '@mesh/PlaneGeometry';
 import Mesh from './Mesh';
 import World from '@world/World';
 import BiomeGenerator from '@world/BiomeGenerator';
@@ -11,7 +10,9 @@ import { CLOUD_MATERIAL } from '@materials/cloud.material';
 import { IChunkParameters } from '@shared/models/chunkParameters.model';
 
 class CloudMesh extends Mesh {
-  static GEOMETRY = null;
+  static GEOMETRY: THREE.Geometry = null;
+
+  static CLOUD_HEIGHT: number = 250;
   static lastPosition: THREE.Vector3 = null;
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
@@ -29,7 +30,7 @@ class CloudMesh extends Mesh {
   buildGeometry(): THREE.Geometry {
     // unique geometry
     if (CloudMesh.GEOMETRY === null) {
-      CloudMesh.GEOMETRY = PlaneGeometry.create(this.parameters.nRows, this.parameters.nCols, this.parameters.cellSizeX, this.parameters.cellSizeZ);
+      CloudMesh.GEOMETRY = new THREE.BoxGeometry(this.parameters.width, CloudMesh.CLOUD_HEIGHT, this.parameters.depth, 1, 1, 1);
       CloudMesh.lastPosition = new THREE.Vector3(0, 0, 0);
     }
 

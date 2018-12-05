@@ -11,8 +11,6 @@ import { WATER_MATERIAL } from '@materials/water.material';
 import { IChunkParameters } from '@shared/models/chunkParameters.model';
 
 class WaterMesh extends Mesh {
-  static GEOMETRY = null;
-  static lastPosition: THREE.Vector3 = null;
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
     super(generator, row, col, MESH_TYPES.WATER_MESH, <IChunkParameters>{
@@ -34,27 +32,6 @@ class WaterMesh extends Mesh {
     return WATER_MATERIAL;
   }
 
-  buildGeometry(): THREE.Geometry {
-    if (WaterMesh.GEOMETRY === null) {
-      WaterMesh.GEOMETRY = PlaneGeometry.create(this.parameters.nRows, this.parameters.nCols, this.parameters.cellSizeX, this.parameters.cellSizeZ, this.generator);
-      WaterMesh.lastPosition = new THREE.Vector3(0, 0, 0);
-    }
-
-    return WaterMesh.GEOMETRY;
-  }
-
-  generate(): THREE.Mesh {
-    const mesh = super.generate();
-
-    const x = this.col * this.parameters.width;
-    const y = World.SEA_LEVEL;
-    const z = this.row * this.parameters.depth;
-
-    mesh.geometry.translate(x - WaterMesh.lastPosition.x, y - WaterMesh.lastPosition.y, z - WaterMesh.lastPosition.z);
-    WaterMesh.lastPosition.set(x, y, z);
-
-    return mesh;
-  }
 }
 
 export default WaterMesh;
