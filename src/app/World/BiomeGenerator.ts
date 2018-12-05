@@ -20,10 +20,10 @@ import { IPick } from '@shared/models/pick.model';
  * - noise parameters
  */
 class BiomeGenerator {
-  static readonly MOISTURE_OCTAVES: number[] = [0.20, 0.5, 0.25, 0.0125, 0.005];
+  static readonly MOISTURE_OCTAVES: number[] = [0.01, 0.75, 0.50, 0.33, 1.00];
   static readonly MOISTURE_OCTAVES_SUM: number = BiomeGenerator.MOISTURE_OCTAVES.reduce((a, b) => a + b, 0);
 
-  static readonly TERRAIN_OCTAVES: number[] = [1.0, 0.35, 0.25, 0.125, 0.0625, 0.005];
+  static readonly TERRAIN_OCTAVES: number[] = [1.0, 0.35, 0.25, 0.125, 0.0625];
   static readonly TERRAIN_OCTAVES_SUM: number = BiomeGenerator.TERRAIN_OCTAVES.reduce((a, b) => a + b, 0);
 
   protected curvePow: number = MathUtils.randomInt(4, 10);
@@ -183,8 +183,8 @@ class BiomeGenerator {
    * @return {number} moisture value
    */
   computeMoisture(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 360) - 0.5;
-    const nz = z / (Chunk.DEPTH * 360) - 0.5;
+    const nx = x / (Chunk.WIDTH * 1024) - 0.5;
+    const nz = z / (Chunk.DEPTH * 1024) - 0.5;
 
     let m = 0;
 
