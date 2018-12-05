@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import { IBiome } from '@shared/models/biome.model';
+
+import { IBiomes } from '@shared/models/biomes.model';
 
 export const BIOMES: IBiomes = {
   GRASSLAND: {

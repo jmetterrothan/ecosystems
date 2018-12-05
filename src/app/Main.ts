@@ -1,13 +1,10 @@
 import * as THREE from 'three';
 
 import 'three/examples/js/controls/PointerLockControls';
-
 import 'seedrandom';
 
 import statsJs from 'stats.js';
-
 import World from '@world/World';
-import Terrain from '@world/Terrain';
 
 class Main {
   public static readonly MS_PER_UPDATE = 1000 / 25;

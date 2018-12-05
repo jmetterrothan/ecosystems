@@ -12,15 +12,14 @@ import { OBJECTS } from '@shared/constants/object.constants';
 import MathUtils from '@utils/Math.utils';
 
 class World {
-  // static SEED: string | null = '1891341357';
-  static SEED: string | null = null; // '789005037'; // '2036719483';
+  static SEED: string | null = null; // '789005037'
 
   static readonly SEA_LEVEL: number = 290;
   static readonly CLOUD_LEVEL: number = 7500;
 
   static readonly OBJ_INITIAL_SCALE: number = 360;
 
-  static readonly CHUNK_RENDER_LIMIT: number = 64;
+  static readonly CHUNK_RENDER_LIMIT: number = 48;
   static readonly CHUNK_RENDER_DISTANCE: number = World.CHUNK_RENDER_LIMIT * Chunk.WIDTH;
   static readonly VIEW_DISTANCE: number = 128 * Chunk.WIDTH;
 

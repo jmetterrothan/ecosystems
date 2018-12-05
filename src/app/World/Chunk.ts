@@ -12,8 +12,6 @@ import MathUtils from '@utils/Math.utils';
 
 import { IPick } from '@shared/models/pick.model';
 
-import Terrain from './Terrain';
-
 class Chunk {
   static readonly MAX_CHUNK_HEIGHT: number = 18000;
   static readonly MIN_CHUNK_HEIGHT: number = -10000;
@@ -35,8 +33,7 @@ class Chunk {
   readonly row: number;
   readonly col: number;
 
-  readonly key: string;
-  readonly objects: THREE.Object3D[];
+  private objects: THREE.Object3D[];
 
   readonly bbox: THREE.Box3;
 
@@ -47,7 +44,10 @@ class Chunk {
   private objectsBlueprint: IPick[];
 
   public dirty: boolean;
+  public merged: boolean;
   public initialized: boolean;
+
+  public readonly key: string;
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
     this.generator = generator;
@@ -141,7 +141,7 @@ class Chunk {
       object.rotation.y = item.r;
       object.scale.set(item.s, item.s, item.s);
       object.position.set(item.x, item.y, item.z);
-      object.stack_ref = item.n;
+      object.stackReference = item.n;
 
       scene.add(object);
       this.objects.push(object);
@@ -150,21 +150,13 @@ class Chunk {
 
   clean(scene: THREE.Scene) {
     for (let i = this.objects.length - 1; i >= 0; i--) {
-      const ref = this.objects[i].stack_ref;
+      const ref = this.objects[i].stackReference;
 
       if (Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
         // collect unused objects
         this.objects[i].visible = false;
         Chunk.CHUNK_OBJECT_STACK[ref].push(this.objects[i]);
       } else {
-        // remove objects if the stack is full
-        this.objects[i].traverse((child) => {
-          if (child.geometry !== undefined) {
-            child.geometry.dispose();
-            child.material.dispose();
-          }
-        });
-
         scene.remove(this.objects[i]);
       }
     }
@@ -205,9 +197,5 @@ class Chunk {
     console.log(`${str}\n`);
   }
 }
-
-window.debug = () => {
-  Chunk.debugStacks();
-};
 
 export default Chunk;

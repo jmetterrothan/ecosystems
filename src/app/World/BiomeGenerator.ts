@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import simplexNoise from 'simplex-noise';
 
 import World from './World';
-import Terrain from './Terrain';
 import Chunk from './Chunk';
 import MathUtils from '@utils/Math.utils';
 

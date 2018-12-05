@@ -9,5 +9,5 @@ export const CLOUD_MATERIAL: THREE.MeshLambertMaterial = new THREE.MeshLambertMa
   color: 0xffffff,
   opacity: 0.4,
   transparent: true,
-  side: THREE.DoubleSide
+  side: THREE.FrontSide
 });

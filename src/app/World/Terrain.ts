@@ -69,12 +69,7 @@ class Terrain {
     const clouds = new THREE.Mesh(this.clouds, CLOUD_MATERIAL);
     scene.add(clouds);
 
-    scene.add(Terrain.createRegionBoundingBoxHelper());
-
-    window.test = (r, c) => {
-      const chunk = this.loadChunk(scene, r, c);
-      chunk.visible = true;
-    };
+    scene.add(<THREE.Object3D>Terrain.createRegionBoundingBoxHelper());
   }
 
   update(scene: THREE.Scene, frustum: THREE.Frustum, position: THREE.Vector3) {
@@ -161,8 +156,8 @@ class Terrain {
   }
 
   getChunkCoordAt(out: Coord, x: number, z: number): Coord {
-    out.row = parseInt(z / Chunk.DEPTH, 10);
-    out.col = parseInt(x / Chunk.WIDTH, 10);
+    out.row = z / Chunk.DEPTH | 0;
+    out.col = x / Chunk.WIDTH | 0;
 
     return out;
   }
@@ -191,7 +186,7 @@ class Terrain {
       ));
   }
 
-  static createRegionBoundingBoxHelper(bbox: THREE.Box3 = null): THREE.BoxHelper {
+  static createRegionBoundingBoxHelper(bbox: THREE.Box3 = null): THREE.Box3Helper {
     return new THREE.Box3Helper(bbox ? bbox : Terrain.createRegionBoundingBox(), 0xff0000);
   }
 }

@@ -4,7 +4,6 @@ import Mesh from './Mesh';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 import World from '@world/World';
-import PlaneGeometry from '@mesh/PlaneGeometry';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
 import { WATER_MATERIAL } from '@materials/water.material';

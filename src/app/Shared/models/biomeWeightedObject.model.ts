@@ -1,6 +1,3 @@
-
-import { Object3D } from 'THREE';
-
 export interface IMinMax {
   min: number;
   max: number;
