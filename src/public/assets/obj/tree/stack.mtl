@@ -6,7 +6,15 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.20 0.20 0.20
 Ns 18.00
-newmtl TreeDiamondASG
+newmtl TreePinkASG
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 18.00
+newmtl TreeRoundASG
 illum 4
 Kd 0.50 0.50 0.50
 Ka 0.00 0.00 0.00

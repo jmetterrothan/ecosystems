@@ -13,14 +13,14 @@ import MathUtils from '@utils/Math.utils';
 
 class World {
   // static SEED: string | null = '1891341357';
-  static SEED: string | null = null; // '2036719483';
+  static SEED: string | null =  null; // '789005037'; // '2036719483';
 
   static readonly SEA_LEVEL: number = 290;
   static readonly CLOUD_LEVEL: number = 7500;
 
   static readonly OBJ_INITIAL_SCALE: number = 360;
 
-  static readonly CHUNK_RENDER_LIMIT: number = 48;
+  static readonly CHUNK_RENDER_LIMIT: number = 64;
   static readonly CHUNK_RENDER_DISTANCE: number = World.CHUNK_RENDER_LIMIT * Chunk.WIDTH;
   static readonly VIEW_DISTANCE: number = 128 * Chunk.WIDTH;
 
@@ -158,6 +158,9 @@ class World {
 
       mtlLoader.load(element.mtl, (materials) => {
         materials.preload();
+        for (const m in materials.materials) {
+          materials.materials[m].flatShading = true;
+        }
         objLoader.setMaterials(materials);
 
         objLoader.load(element.obj, (object) => {
@@ -168,6 +171,9 @@ class World {
             if (child instanceof THREE.Mesh) {
               child.castShadow = true;
               child.receiveShadow = true;
+              child.geometry.computeFaceNormals();
+              child.geometry.computeVertexNormals();
+              child.geometry.normalsNeedUpdate = true;
               (<THREE.Material>child.material).flatShading = true;
               if (element.doubleSide === true) {
                 (<THREE.Material>child.material).side = THREE.DoubleSide;

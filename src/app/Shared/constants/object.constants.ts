@@ -45,7 +45,23 @@ import palm_treeMtl from '@objmodels/tree/palm_tree.mtl';
 import banana_treeObj from '@objmodels/tree/banana_tree.obj';
 import banana_treeMtl from '@objmodels/tree/banana_tree.mtl';
 
+import bushObj from '@objmodels/tree/bush.obj';
+import bushMtl from '@objmodels/tree/bush.mtl';
+
+import stackObj from '@objmodels/tree/stack.obj';
+import stackMtl from '@objmodels/tree/stack.mtl';
+
 export const OBJECTS: IObject[] = [
+  {
+    name: 'stack',
+    obj: stackObj,
+    mtl: stackMtl
+  },
+  {
+    name: 'bush',
+    obj: bushObj,
+    mtl: bushMtl
+  },
   {
     name: 'banana_tree',
     obj: banana_treeObj,

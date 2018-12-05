@@ -6,7 +6,7 @@ export const BIOMES: IBiomes = {
     color: new THREE.Color(0x93c54b),
     organisms: [
       {
-        weight: 0.8,
+        weight: 0.7,
         name: 'spruce',
         scarcity: 0.995,
         e: null,
@@ -28,6 +28,14 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 0.95, max: 1.25 },
+      },
+      {
+        weight: 0.1,
+        name: 'bush',
+        scarcity: 0.9925,
+        e: null,
+        m: null,
+        scale: { min: 0.85, max: 1.00 },
       }
     ]
   },
@@ -183,7 +191,7 @@ export const BIOMES: IBiomes = {
     color: new THREE.Color(0xbed69e),
     organisms: [
       {
-        weight: 0.33,
+        weight: 0.25,
         name: 'red_mushroom',
         scarcity: 0.85,
         e: { low: 0.02, high: 0.025 },
@@ -191,7 +199,7 @@ export const BIOMES: IBiomes = {
         scale: { min: 0.75, max: 1.25 },
       },
       {
-        weight: 0.33,
+        weight: 0.25,
         name: 'brown_mushroom',
         scarcity: 0.85,
         e: { low: 0.02, high: 0.025 },
@@ -199,13 +207,21 @@ export const BIOMES: IBiomes = {
         scale: { min: 0.75, max: 1.25 },
       },
       {
-        weight: 0.33,
+        weight: 0.25,
         name: 'mangrove',
         scarcity: 0.985,
         e: null,
         m: { low: 0.6, high: 1 },
         scale: { min: 0.8, max: 1 },
-      }
+      },
+      {
+        weight: 0.25,
+        name: 'stack',
+        scarcity: 0.99,
+        e: { low: 0.02, high: 0.025 },
+        m: null,
+        scale: { min: 0.75, max: 1.25 },
+      },
     ]
   },
   TEST: {
