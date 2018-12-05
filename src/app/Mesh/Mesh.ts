@@ -2,13 +2,12 @@ import * as THREE from 'three';
 
 import BiomeGenerator from '@world/BiomeGenerator';
 import Stack from '@shared/Stack';
-import World from '../World/World';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
 
-import { IChunkParameters } from '@shared/models/chunkParams.model';
+import { IChunkParameters } from '@shared/models/chunkParameters.model';
 
-class Mesh {
+abstract class Mesh {
   static GEOMETRY_STACK = new Stack<THREE.Geometry>();
 
   readonly row: number;
@@ -20,8 +19,8 @@ class Mesh {
   protected moistureAverage: number;
 
   private readonly type: MESH_TYPES;
-  private readonly parameters: IChunkParams;
-  private generator: BiomeGenerator;
+  protected readonly parameters: IChunkParameters;
+  protected generator: BiomeGenerator;
 
   constructor(generator: BiomeGenerator, row: number, col: number, type: MESH_TYPES, parameters: IChunkParameters) {
     this.generator = generator;
@@ -33,6 +32,8 @@ class Mesh {
     this.low = null;
     this.high = null;
   }
+
+  abstract getY(x?: number, z?: number): number;
 
   buildGeometry(): THREE.Geometry {
     const geometry: THREE.Geometry = new THREE.Geometry();

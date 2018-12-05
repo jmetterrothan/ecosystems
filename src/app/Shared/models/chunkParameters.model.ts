@@ -1,9 +1,11 @@
 export interface IChunkParameters {
-  maxChunkHeight: number;
-  minChunkHeight: number;
-  nrows: number;
-  ncols: number;
-  cellSize: number;
+  maxChunkHeight?: number;
+  minChunkHeight?: number;
+  nRows: number;
+  nCols: number;
+  cellSizeX: number;
+  cellSizeZ: number;
   width: number;
+  height: number;
   depth: number;
 }
