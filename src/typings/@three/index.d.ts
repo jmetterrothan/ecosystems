@@ -8,7 +8,7 @@ declare module 'THREE' {
     enabled: boolean;
 
     constructor(camera: THREE.Camera, domElemenTHREE?: HTMLElement);
-    getObject(): THREE.Object3D
+    getObject(): THREE.Object3D;
   }
 
 }

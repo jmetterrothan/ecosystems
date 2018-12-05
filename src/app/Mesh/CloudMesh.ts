@@ -39,13 +39,11 @@ class CloudMesh extends Mesh {
   generate(): THREE.Mesh {
     const mesh = super.generate();
 
-    mesh.geometry.translate(-CloudMesh.lastPosition.x, -CloudMesh.lastPosition.y, -CloudMesh.lastPosition.z);
-
     const x = this.col * this.parameters.width;
     const y = World.CLOUD_LEVEL;
     const z = this.row * this.parameters.depth;
 
-    mesh.geometry.translate(x, y, z);
+    mesh.geometry.translate(x - CloudMesh.lastPosition.x, y - CloudMesh.lastPosition.y, z - CloudMesh.lastPosition.z);
     CloudMesh.lastPosition.set(x, y, z);
 
     return mesh;

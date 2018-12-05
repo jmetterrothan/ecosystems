@@ -13,7 +13,7 @@ import MathUtils from '@utils/Math.utils';
 
 class World {
   // static SEED: string | null = '1891341357';
-  static SEED: string | null =  null; // '789005037'; // '2036719483';
+  static SEED: string | null = null; // '789005037'; // '2036719483';
 
   static readonly SEA_LEVEL: number = 290;
   static readonly CLOUD_LEVEL: number = 7500;
@@ -171,9 +171,9 @@ class World {
             if (child instanceof THREE.Mesh) {
               child.castShadow = true;
               child.receiveShadow = true;
-              child.geometry.computeFaceNormals();
+              (<THREE.Geometry>child.geometry).computeFaceNormals();
               child.geometry.computeVertexNormals();
-              child.geometry.normalsNeedUpdate = true;
+              (<THREE.Geometry>child.geometry).normalsNeedUpdate = true;
               (<THREE.Material>child.material).flatShading = true;
               if (element.doubleSide === true) {
                 (<THREE.Material>child.material).side = THREE.DoubleSide;
