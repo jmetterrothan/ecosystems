@@ -3,19 +3,11 @@ import * as THREE from 'three';
 import Chunk from './Chunk';
 import World from './World';
 import BiomeGenerator from './BiomeGenerator';
+import Coord from './Coord';
 
 import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 import { WATER_MATERIAL } from '@materials/water.material';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
-
-class Coord {
-  row: number;
-  col: number;
-  constructor(row: number = 0, col: number = 0) {
-    this.row = row;
-    this.col = col;
-  }
-}
 
 class Terrain {
   static readonly NCHUNKS_X: number = 128;
