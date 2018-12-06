@@ -37,7 +37,7 @@ class Main {
     document.body.appendChild(this.stats.dom);
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, World.VIEW_DISTANCE);
+    this.camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 10, World.VIEW_DISTANCE);
   }
 
   async init() {
