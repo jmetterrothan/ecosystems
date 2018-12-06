@@ -30,6 +30,9 @@ class MathUtils {
     return c + (d - c) / (b - a) * (t - a);
   }
 
+  static lerp(a, b, t) {
+    return (1 - t) * a + t * b;
+  }
 }
 
 export default MathUtils;
