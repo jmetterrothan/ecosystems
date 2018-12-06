@@ -14,18 +14,15 @@ import MathUtils from '@utils/Math.utils';
 import { IPick } from '@shared/models/pick.model';
 
 class Chunk {
-  static readonly MAX_CHUNK_HEIGHT: number = 20000;
-  static readonly MIN_CHUNK_HEIGHT: number = 0;
+  static readonly WIDTH: number = 2048;
+  static readonly HEIGHT: number = 20000;
+  static readonly DEPTH: number = 2048;
 
-  static readonly NROWS: number = 8;
-  static readonly NCOLS: number = 8;
+  static readonly NROWS: number = 4;
+  static readonly NCOLS: number = 4;
 
-  static readonly CELL_SIZE_X: number = 320;
-  static readonly CELL_SIZE_Z: number = 320;
-
-  static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE_X;
-  static readonly HEIGHT: number = Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT;
-  static readonly DEPTH: number = Chunk.NROWS * Chunk.CELL_SIZE_Z;
+  static readonly CELL_SIZE_X: number = Chunk.WIDTH / Chunk.NROWS | 0;
+  static readonly CELL_SIZE_Z: number = Chunk.DEPTH / Chunk.NCOLS | 0;
 
   static readonly CHUNK_OBJECT_STACK = {};
 

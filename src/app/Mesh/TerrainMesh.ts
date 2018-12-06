@@ -15,8 +15,8 @@ class TerrainMesh extends Mesh {
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
     super(generator, row, col, MESH_TYPES.TERRAIN_MESH, <IChunkParameters>{
-      maxChunkHeight: Chunk.MAX_CHUNK_HEIGHT,
-      minChunkHeight: Chunk.MIN_CHUNK_HEIGHT,
+      maxChunkHeight: Chunk.HEIGHT,
+      minChunkHeight: Chunk.HEIGHT,
       nRows: Chunk.NROWS,
       nCols: Chunk.NCOLS,
       cellSizeX: Chunk.CELL_SIZE_X,

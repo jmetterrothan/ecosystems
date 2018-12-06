@@ -221,7 +221,7 @@ class BiomeGenerator {
    * @return {number}
    */
   static getElevationFromHeight(y: number) {
-    return y / ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT);
+    return y / Chunk.HEIGHT;
   }
 
   /**
@@ -230,7 +230,7 @@ class BiomeGenerator {
    * @return {number}
    */
   static getHeightAtElevation(e: number) {
-    return e * ((Chunk.MAX_CHUNK_HEIGHT - Chunk.MIN_CHUNK_HEIGHT) + Chunk.MIN_CHUNK_HEIGHT);
+    return e * Chunk.HEIGHT;
   }
 
   /**
