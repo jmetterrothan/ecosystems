@@ -15,8 +15,11 @@ import { IPick } from '@shared/models/pick.model';
 
 class Chunk {
   static readonly WIDTH: number = 2048;
-  static readonly HEIGHT: number = 20000;
+  static readonly HEIGHT: number = 24000;
   static readonly DEPTH: number = 2048;
+
+  static readonly SEA_LEVEL: number = Chunk.HEIGHT / 4;
+  static readonly CLOUD_LEVEL: number = Chunk.HEIGHT - Chunk.HEIGHT / 5;
 
   static readonly NROWS: number = 4;
   static readonly NCOLS: number = 4;

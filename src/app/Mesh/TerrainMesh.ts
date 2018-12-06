@@ -40,11 +40,11 @@ class TerrainMesh extends Mesh {
   }
 
   needGenerateWater(): boolean {
-    return this.low <= World.SEA_LEVEL;
+    return this.low <= Chunk.SEA_LEVEL;
   }
 
   needGenerateCloud(): boolean {
-    const t = (this.moistureAverage > 0.66) ? (1 - this.moistureAverage) + 0.55 : 0.975;
+    const t = (this.moistureAverage > 0.66) ? (1 - this.moistureAverage) + 0.65 : 0.975;
 
     return this.moistureAverage > 0.34 && MathUtils.rng() > t;
   }

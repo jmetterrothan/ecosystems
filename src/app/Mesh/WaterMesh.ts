@@ -24,7 +24,7 @@ class WaterMesh extends Mesh {
   }
 
   getY() {
-    return World.SEA_LEVEL;
+    return Chunk.SEA_LEVEL;
   }
 
   getMaterial(): THREE.Material {

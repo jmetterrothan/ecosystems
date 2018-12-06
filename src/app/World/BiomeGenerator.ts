@@ -44,7 +44,7 @@ class BiomeGenerator {
   pick(x: number, z: number): IPick | null {
     const e = this.computeElevation(x, z);
     const m = this.computeMoisture(x, z);
-    const y = Math.max(BiomeGenerator.getHeightAtElevation(e), World.SEA_LEVEL);
+    const y = Math.max(BiomeGenerator.getHeightAtElevation(e), Chunk.SEA_LEVEL);
     const biome = this.getBiome(e, m);
 
     let temp = 0;
@@ -239,7 +239,7 @@ class BiomeGenerator {
    * @return {number}
    */
   static getHeightAtElevationWithWater(e: number) {
-    return Math.max(this.getHeightAtElevation(e), World.SEA_LEVEL);
+    return Math.max(this.getHeightAtElevation(e), Chunk.SEA_LEVEL);
   }
 }
 

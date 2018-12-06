@@ -41,7 +41,7 @@ class CloudMesh extends Mesh {
     const mesh = super.generate();
 
     const x = this.col * this.parameters.width;
-    const y = World.CLOUD_LEVEL;
+    const y = Chunk.CLOUD_LEVEL;
     const z = this.row * this.parameters.depth;
 
     mesh.geometry.translate(x - CloudMesh.lastPosition.x, y - CloudMesh.lastPosition.y, z - CloudMesh.lastPosition.z);
@@ -51,7 +51,7 @@ class CloudMesh extends Mesh {
   }
 
   getY() {
-    return World.CLOUD_LEVEL;
+    return Chunk.CLOUD_LEVEL;
   }
 
   getMaterial(): THREE.Material {
