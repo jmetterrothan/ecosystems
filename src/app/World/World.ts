@@ -19,7 +19,7 @@ class World {
 
   static readonly OBJ_INITIAL_SCALE: number = 360;
 
-  static readonly CHUNK_RENDER_LIMIT: number = 8;
+  static readonly CHUNK_RENDER_LIMIT: number = 32;
   static readonly CHUNK_RENDER_DISTANCE: number = World.CHUNK_RENDER_LIMIT * Chunk.WIDTH;
   static readonly VIEW_DISTANCE: number = 128 * Chunk.WIDTH;
 
