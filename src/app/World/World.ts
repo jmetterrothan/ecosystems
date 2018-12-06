@@ -19,7 +19,7 @@ class World {
   static readonly VIEW_DISTANCE: number = 256 * Chunk.WIDTH;
 
   static readonly SHOW_FOG: boolean = true;
-  static readonly FOG_COLOR: THREE.Color = new THREE.Color(0xb1d8ff);
+  static readonly FOG_COLOR: number = 0xb1d8ff;
   static readonly FOG_NEAR: number = World.VIEW_DISTANCE;
   static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 
