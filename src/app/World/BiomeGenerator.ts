@@ -19,20 +19,8 @@ import { IPick } from '@shared/models/pick.model';
  * - noise parameters
  */
 class BiomeGenerator {
-  static readonly MOISTURE_OCTAVES: number[] = [0.01, 0.75, 0.50, 0.33, 2.00];
-  static readonly MOISTURE_OCTAVES_SUM: number = BiomeGenerator.MOISTURE_OCTAVES.reduce((a, b) => a + b, 0);
-
-  static readonly TERRAIN_OCTAVES: number[] = [1.0, 0.35, 0.25, 0.125];
-  static readonly TERRAIN_OCTAVES_SUM: number = BiomeGenerator.TERRAIN_OCTAVES.reduce((a, b) => a + b, 0);
-
-  protected curvePow: number = MathUtils.randomInt(4, 9);
-
-  protected simplexTerrain: simplexNoise;
-  protected simplexMoisture: simplexNoise;
-
   constructor() {
-    this.simplexTerrain = new simplexNoise(MathUtils.rng);
-    this.simplexMoisture = new simplexNoise(MathUtils.rng);
+
   }
 
   /**
@@ -44,7 +32,7 @@ class BiomeGenerator {
   pick(x: number, z: number): IPick | null {
     const e = this.computeElevation(x, z);
     const m = this.computeMoisture(x, z);
-    const y = Math.max(BiomeGenerator.getHeightAtElevation(e), Chunk.SEA_LEVEL);
+    const y = BiomeGenerator.getHeightAtElevation(e);
     const biome = this.getBiome(e, m);
 
     let temp = 0;
@@ -55,6 +43,7 @@ class BiomeGenerator {
 
       if (rand <= temp) {
         const organism = biome.organisms[i];
+        const ty = organism.float ? Math.max(y, Chunk.SEA_LEVEL) : y;
 
         // test for scarcity and ground elevation criteria
         if (
@@ -64,8 +53,8 @@ class BiomeGenerator {
         ) {
           return (<IPick>{
             x,
-            y,
             z,
+            y: ty,
             n: organism.name,
             r: MathUtils.randomFloat(0, Math.PI * 2),
             s: MathUtils.randomFloat(organism.scale.min, organism.scale.max) * World.OBJ_INITIAL_SCALE
@@ -95,45 +84,12 @@ class BiomeGenerator {
    * @return {IBiome} Biome informations
    */
   getBiome(e: number, m: number): IBiome {
-    if (e < 0.0024) { return BIOMES.OCEAN; }
-    if (e < 0.032) {
-      if (e > 0.004 && m > 0.5) {
-        return BIOMES.SWAMP;
-      }
-      return BIOMES.BEACH;
+    const seaLevel = Chunk.SEA_LEVEL / Chunk.HEIGHT;
+    if (e < seaLevel) {
+      return BIOMES.OCEAN;
     }
 
-    // level 1
-    if (e < 0.065) {
-      if (m > 0.66) { return BIOMES.RAINFOREST; }
-      if (m > 0.33) { return BIOMES.GRASSLAND; }
-
-      return BIOMES.DESERT;
-    }
-    // level 2
-    if (e < 0.10) {
-      if (m > 0.66) { return BIOMES.RAINFOREST; }
-      if (m > 0.33) { return BIOMES.TAIGA; }
-
-      return BIOMES.DESERT;
-    }
-
-    // level 3
-    if (e < 0.45) {
-      if (m > 0.66) { return BIOMES.RAINFOREST; }
-      if (m > 0.33) { return BIOMES.MOUNTAIN; }
-
-      return BIOMES.DESERT;
-    }
-
-    // level 4
-    if (e < 0.6) {
-      if (m > 0.875) { return BIOMES.SNOW; }
-      if (m > 0.33) { return BIOMES.TUNDRA; }
-      return BIOMES.MOUNTAIN;
-    }
-
-    return BIOMES.SNOW;
+    return BIOMES.BEACH;
   }
 
   /**
@@ -143,10 +99,7 @@ class BiomeGenerator {
    * @return {IBiome}
    */
   getBiomeAt(x: number, z: number): IBiome {
-    return this.getBiome(
-      this.computeElevation(x, z),
-      this.computeMoisture(x, z)
-    );
+    return this.getBiome(this.computeElevation(x, z), this.computeMoisture(x, z));
   }
 
   /**
@@ -156,21 +109,7 @@ class BiomeGenerator {
    * @return {number} elevation value
    */
   computeElevation(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 48);
-    const nz = z / (Chunk.DEPTH * 48);
-
-    let e = 0;
-
-    let freq = 1;
-    for (let i = 0; i < BiomeGenerator.TERRAIN_OCTAVES.length; i++)  {
-      e += BiomeGenerator.TERRAIN_OCTAVES[i] * this.elevationNoise(freq * nx, freq * nz);
-      freq *= 2;
-    }
-
-    e /= BiomeGenerator.TERRAIN_OCTAVES_SUM;
-    e **= this.curvePow;
-
-    return Math.round(e * 100) / 100;
+    return 0;
   }
 
   /**
@@ -180,29 +119,7 @@ class BiomeGenerator {
    * @return {number} moisture value
    */
   computeMoisture(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 720);
-    const nz = z / (Chunk.DEPTH * 720);
-
-    let m = 0;
-
-    let freq = 1;
-    for (let i = 0; i < BiomeGenerator.MOISTURE_OCTAVES.length; i++)  {
-      m += BiomeGenerator.MOISTURE_OCTAVES[i] * this.moisturenNoise(freq * nx, freq * nz);
-      freq *= 2;
-    }
-
-    m /= BiomeGenerator.MOISTURE_OCTAVES_SUM;
-
-    return m;
-  }
-
-  // make the range of the simplex noise [-1, 1] => [0, 1]
-  private elevationNoise(nx: number, nz: number): number {
-    return MathUtils.mapInterval(this.simplexTerrain.noise2D(nx, nz), -1, 1, 0, 1);
-  }
-
-  private moisturenNoise(nx: number, nz: number): number {
-    return MathUtils.mapInterval(this.simplexMoisture.noise2D(nx, nz), -1, 1, 0, 1);
+    return 0.5;
   }
 
   /**

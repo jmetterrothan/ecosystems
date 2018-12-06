@@ -12,5 +12,4 @@ export const WATER_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMateri
   transparent: true,
   side: THREE.DoubleSide,
   vertexColors: THREE.FaceColors,
-  blending: THREE.NormalBlending
 });

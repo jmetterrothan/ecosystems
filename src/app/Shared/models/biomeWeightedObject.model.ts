@@ -17,4 +17,5 @@ export interface IBiomeWeightedObject {
   m: number | ILowHigh;
   low?: number;
   high?: number;
+  float: boolean;
 }

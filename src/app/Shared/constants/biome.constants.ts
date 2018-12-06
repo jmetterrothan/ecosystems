@@ -13,6 +13,7 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.25 },
+        float: false,
       },
       {
         weight: 0.1,
@@ -21,6 +22,7 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 0.95, max: 1.25 },
+        float: false,
       },
       {
         weight: 0.1,
@@ -29,6 +31,7 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 0.95, max: 1.25 },
+        float: false,
       },
       {
         weight: 0.1,
@@ -37,6 +40,7 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 0.85, max: 1.00 },
+        float: false,
       },
       {
         weight: 0.1,
@@ -45,6 +49,7 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 0.85, max: 1.1 },
+        float: false,
       },
     ]
   },
@@ -58,6 +63,7 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.25 },
+        float: false,
       },
       {
         weight: 0.05,
@@ -66,6 +72,7 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.25 },
+        float: false,
       },
       {
         weight: 0.05,
@@ -74,6 +81,7 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.25 },
+        float: false,
       }
     ]
   },
@@ -87,6 +95,7 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 1.25, max: 2.5 },
+        float: false,
       },
       {
         weight: 0.1,
@@ -95,6 +104,7 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 1.25, max: 2.5 },
+        float: false,
       },
       {
         weight: 0.2,
@@ -103,6 +113,7 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 1.25, max: 2.5 },
+        float: false,
       },
       {
         weight: 0.2,
@@ -111,6 +122,7 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 1, max: 1.2 },
+        float: false,
       },
       {
         weight: 0.1,
@@ -119,6 +131,7 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 1.0, max: 2.85 },
+        float: false,
       },
       {
         weight: 0.1,
@@ -127,6 +140,7 @@ export const BIOMES: IBiomes = {
         e: { low: 0.26, high: 0.5 },
         m: null,
         scale: { min: 1.1, max: 1.5 },
+        float: false,
       }
     ]
   },
@@ -148,6 +162,7 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 0.85, max: 1.35 },
+        float: false,
       },
       {
         weight: 0.4,
@@ -156,6 +171,7 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.5 },
+        float: false,
       }
     ]
   },
@@ -169,6 +185,7 @@ export const BIOMES: IBiomes = {
         e: { low: 0.0025, high: 0.00575 },
         m: { low: 0.5, high: 1.0 },
         scale: { min: 0.75, max: 1.45 },
+        float: false,
       },
       {
         weight: 0.5,
@@ -177,6 +194,7 @@ export const BIOMES: IBiomes = {
         e: { low: 0.0175, high: 0.5 },
         m: null,
         scale: { min: 0.65, max: 0.95 },
+        float: false,
       },
       {
         weight: 0.1,
@@ -185,12 +203,32 @@ export const BIOMES: IBiomes = {
         e: { low: 0.0175, high: 0.5 },
         m: { low: 0.0, high: 0.35 },
         scale: { min: 1.1, max: 1.5 },
+        float: false,
       }
     ]
   },
   OCEAN: {
     color: new THREE.Color(0xedc375),
-    organisms: []
+    organisms: [
+      {
+        weight: 0.5,
+        name: 'lilypad',
+        scarcity: 0.975,
+        e: null,
+        m: { low: 0.5, high: 1.0 },
+        scale: { min: 0.75, max: 1.45 },
+        float: true,
+      },
+      {
+        weight: 0.5,
+        name: 'rock1',
+        scarcity: 0.975,
+        e: null,
+        m: null,
+        scale: { min: 0.65, max: 2.75 },
+        float: false,
+      },
+    ]
   },
   SNOW: {
     color: new THREE.Color(0xfffffff),
@@ -206,6 +244,7 @@ export const BIOMES: IBiomes = {
         e: { low: 0.02, high: 0.025 },
         m: null,
         scale: { min: 0.75, max: 1.25 },
+        float: false,
       },
       {
         weight: 0.20,
@@ -214,6 +253,7 @@ export const BIOMES: IBiomes = {
         e: { low: 0.02, high: 0.025 },
         m: null,
         scale: { min: 0.75, max: 1.25 },
+        float: false,
       },
       {
         weight: 0.20,
@@ -222,6 +262,7 @@ export const BIOMES: IBiomes = {
         e: null,
         m: { low: 0.6, high: 1 },
         scale: { min: 0.8, max: 1 },
+        float: false,
       },
       {
         weight: 0.20,
@@ -230,6 +271,7 @@ export const BIOMES: IBiomes = {
         e: { low: 0.02, high: 0.025 },
         m: null,
         scale: { min: 0.75, max: 1.25 },
+        float: false,
       },
       {
         weight: 0.10,
@@ -238,6 +280,7 @@ export const BIOMES: IBiomes = {
         e: { low: 0.02, high: 0.025 },
         m: null,
         scale: { min: 0.75, max: 1.25 },
+        float: false,
       },
       {
         weight: 0.10,
@@ -246,6 +289,7 @@ export const BIOMES: IBiomes = {
         e: { low: 0.02, high: 0.025 },
         m: null,
         scale: { min: 0.75, max: 1.25 },
+        float: false,
       },
     ]
   },
