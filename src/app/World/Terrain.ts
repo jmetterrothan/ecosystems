@@ -68,10 +68,20 @@ class Terrain {
     this.scene.add(this.layers);
   }
 
+  /**
+   * Loads region chunks
+   */
   preload() {
     this.loadChunks(0, 0, Terrain.NCHUNKS_Z, Terrain.NCHUNKS_X);
   }
 
+  /**
+   * Loads chunks in a specified area
+   * @param {number} startRow
+   * @param {number} startCol
+   * @param {number} endRow
+   * @param {number} endCol
+   */
   loadChunks(startRow: number, startCol: number, endRow: number, endCol: number) {
     for (let row = startRow; row < endRow; row++) {
       for (let col = startCol; col < endCol; col++) {
@@ -80,6 +90,12 @@ class Terrain {
     }
   }
 
+  /**
+   * Loads and initializes a chunk at the given coordinates
+   * @param {number} row
+   * @param {number} col
+   * @return {Chunk}
+   */
   loadChunk(row: number, col: number): Chunk {
     const chunk = new Chunk(this.generator, row, col);
     chunk.init(this);
@@ -99,9 +115,7 @@ class Terrain {
 
     // reset previously visible chunks
     for (const chunk of this.visibleChunks) {
-      if (chunk && (chunk.col < this.start.col || chunk.col > this.end.col || chunk.row < this.start.row || chunk.row > this.end.row)) {
-        chunk.clean(this.scene);
-      }
+      // chunk.clean(this.scene);
       chunk.setVisible(false);
     }
 
@@ -131,6 +145,13 @@ class Terrain {
     }
   }
 
+  /**
+   * Retrieve the chunk coordinates at the given position
+   * @param {Coord} out
+   * @param {number} x
+   * @param {number} z
+   * @return {Coord}
+   */
   getChunkCoordAt(out: Coord, x: number, z: number) : Coord {
     out.row = (z / Chunk.DEPTH) | 0;
     out.col = (x / Chunk.WIDTH) | 0;
@@ -138,20 +159,41 @@ class Terrain {
     return out;
   }
 
+  /**
+   * Retrieve the chunk at the given coordinates (row, col) if it exists
+   * @param {number} row
+   * @param {number} col
+   * @return {Chunk|undefined}
+   */
   getChunk(row: number, col: number): Chunk|undefined {
     return this.chunks.get(`${row}:${col}`);
   }
 
-  getChunkAt(x: number, z: number) {
+  /**
+   * Retrieve the chunk at the given location (x, z) if it exists
+   * @param {number} x
+   * @param {number} z
+   * @return {Chunk|undefined}
+   */
+  getChunkAt(x: number, z: number): Chunk {
     const p = this.getChunkCoordAt(new Coord(), x, z);
-
     return this.chunks.get(`${p.row}:${p.col}`);
   }
 
-  getHeightAt(x: number, z: number) {
+  /**
+   * Retrieve the height at the given coordinates
+   * @param {number} x
+   * @param {number} z
+   * @return {number}
+   */
+  getHeightAt(x: number, z: number): number {
     return this.generator.computeHeight(x, z);
   }
 
+  /**
+   * Retrieve the region's bounding box
+   * @return {THREE.Box3}
+   */
   static createRegionBoundingBox() : THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
         new THREE.Vector3(
@@ -166,6 +208,11 @@ class Terrain {
         ));
   }
 
+  /**
+   * Retrieve the region's bounding box helper
+   * @param {THREE.Box3|null} bbox Region's bounding box (if not set it will be created)
+   * @return {THREE.Box3Helper}
+   */
   static createRegionBoundingBoxHelper(bbox: THREE.Box3 = null) : THREE.Box3Helper {
     return new THREE.Box3Helper(bbox ? bbox : Terrain.createRegionBoundingBox(), 0xff0000);
   }
