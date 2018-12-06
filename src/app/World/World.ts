@@ -12,19 +12,19 @@ import { OBJECTS } from '@shared/constants/object.constants';
 import MathUtils from '@utils/Math.utils';
 
 class World {
-  static SEED: string | null = null; // '789005037'
+  static SEED: string | null = '1204733188'; // '789005037'
 
   static readonly SEA_LEVEL: number = 290;
   static readonly CLOUD_LEVEL: number = 7500;
 
   static readonly OBJ_INITIAL_SCALE: number = 360;
 
-  static readonly CHUNK_RENDER_LIMIT: number = 48;
+  static readonly CHUNK_RENDER_LIMIT: number = 8;
   static readonly CHUNK_RENDER_DISTANCE: number = World.CHUNK_RENDER_LIMIT * Chunk.WIDTH;
   static readonly VIEW_DISTANCE: number = 128 * Chunk.WIDTH;
 
   static readonly SHOW_FOG: boolean = true;
-  static readonly FOG_NEAR: number = World.CHUNK_RENDER_DISTANCE / 3;
+  static readonly FOG_NEAR: number = World.CHUNK_RENDER_DISTANCE / 4;
   static readonly FOG_FAR: number = World.CHUNK_RENDER_DISTANCE;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
@@ -59,9 +59,6 @@ class World {
     // stuff
     this.terrain = new Terrain();
     this.terrain.init(this.scene);
-
-    // preload terrain
-    this.terrain.update(this.scene, this.frustum, spawn);
 
     this.player = new Player(this.controls);
     this.player.init(spawn.x, spawn.y, spawn.z);
@@ -143,6 +140,8 @@ class World {
 
   public handleKeyboard(key: string, active: boolean) {
     this.player.handleKeyboard(key, active);
+
+    if (active && key === 'Enter') this.terrain.update(this.scene, this.frustum, this.player.getPosition());
   }
 
   /**

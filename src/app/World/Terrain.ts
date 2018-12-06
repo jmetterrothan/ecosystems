@@ -32,9 +32,11 @@ class Terrain {
   private time: number;
 
   private generator: BiomeGenerator;
-  private topography: THREE.Geometry;
-  private water: THREE.Geometry;
-  private clouds: THREE.Geometry;
+  public terrain: THREE.Mesh;
+  public water: THREE.Mesh;
+  public clouds: THREE.Mesh;
+
+  private layers: THREE.Group;
 
   constructor() {
     this.generator = new BiomeGenerator();
@@ -42,9 +44,8 @@ class Terrain {
     this.visibleChunks = [];
     this.time = window.performance.now();
 
-    this.topography = new THREE.Geometry();
-    this.water = new THREE.Geometry();
-    this.clouds = new THREE.Geometry();
+    this.layers = new THREE.Group();
+    this.layers.frustumCulled = false;
 
     this.chunk = new Coord();
     this.start = new Coord();
@@ -52,16 +53,21 @@ class Terrain {
   }
 
   init(scene: THREE.Scene) {
-    const terrain = new THREE.Mesh(this.topography, TERRAIN_MATERIAL);
-    scene.add(terrain);
+    this.terrain = new THREE.Mesh(new THREE.Geometry(), TERRAIN_MATERIAL);
+    this.terrain.frustumCulled = false;
+    this.layers.add(this.terrain);
 
-    const water = new THREE.Mesh(this.water, WATER_MATERIAL);
-    scene.add(water);
+    this.water = new THREE.Mesh(new THREE.Geometry(), WATER_MATERIAL);
+    this.water.frustumCulled = false;
+    this.layers.add(this.water);
 
-    const clouds = new THREE.Mesh(this.clouds, CLOUD_MATERIAL);
-    scene.add(clouds);
+    this.clouds = new THREE.Mesh(new THREE.Geometry(), CLOUD_MATERIAL);
+    this.clouds.frustumCulled = false;
+    this.layers.add(this.clouds);
 
-    scene.add(<THREE.Object3D>Terrain.createRegionBoundingBoxHelper());
+    this.layers.add(<THREE.Object3D>Terrain.createRegionBoundingBoxHelper());
+
+    scene.add(this.layers);
   }
 
   update(scene: THREE.Scene, frustum: THREE.Frustum, position: THREE.Vector3) {
@@ -69,8 +75,8 @@ class Terrain {
 
     // console.log(this.chunk);
 
-    const nc = Math.min(Terrain.NCHUNKS_X, World.CHUNK_RENDER_LIMIT / 2);
-    const nr = Math.min(Terrain.NCHUNKS_Z, World.CHUNK_RENDER_LIMIT / 2);
+    const nc = Math.min(Terrain.NCHUNKS_X, (World.CHUNK_RENDER_LIMIT / 2) | 0);
+    const nr = Math.min(Terrain.NCHUNKS_Z, (World.CHUNK_RENDER_LIMIT / 2) | 0);
 
     this.start.col = this.chunk.col - nc;
     this.start.row = this.chunk.row - nr;
@@ -117,10 +123,8 @@ class Terrain {
 
         // chunk is visible in frustum
         if (frustum.intersectsBox(chunk.bbox)) {
-          chunk.visible = true;
-
           if (!chunk.merged) {
-            chunk.init(this.topography, this.water, this.clouds);
+            chunk.init(this);
           }
 
           if (chunk.dirty) {
@@ -129,6 +133,7 @@ class Terrain {
           }
 
           // mark this chunk as visible for the next update
+          chunk.visible = true;
           this.visibleChunks.push(chunk);
         }
       }
@@ -146,9 +151,9 @@ class Terrain {
     return chunk;
   }
 
-  getChunkCoordAt(out: Coord, x: number, z: number): Coord {
-    out.row = z / Chunk.DEPTH | 0;
-    out.col = x / Chunk.WIDTH | 0;
+  getChunkCoordAt(out: Coord, x: number, z: number) : Coord {
+    out.row = (z / Chunk.DEPTH) | 0;
+    out.col = (x / Chunk.WIDTH) | 0;
 
     return out;
   }
@@ -163,21 +168,21 @@ class Terrain {
     return this.generator.computeHeight(x, z);
   }
 
-  static createRegionBoundingBox(): THREE.Box3 {
+  static createRegionBoundingBox() : THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
-      new THREE.Vector3(
-        Terrain.SIZE_X / 2,
-        Terrain.SIZE_Y / 2,
-        Terrain.SIZE_Z / 2
-      ),
-      new THREE.Vector3(
-        Terrain.SIZE_X,
-        Terrain.SIZE_Y,
-        Terrain.SIZE_Z
-      ));
+        new THREE.Vector3(
+          Terrain.SIZE_X / 2,
+          Terrain.SIZE_Y / 2,
+          Terrain.SIZE_Z / 2
+        ),
+        new THREE.Vector3(
+          Terrain.SIZE_X,
+          Terrain.SIZE_Y,
+          Terrain.SIZE_Z
+        ));
   }
 
-  static createRegionBoundingBoxHelper(bbox: THREE.Box3 = null): THREE.Box3Helper {
+  static createRegionBoundingBoxHelper(bbox: THREE.Box3 = null) : THREE.Box3Helper {
     return new THREE.Box3Helper(bbox ? bbox : Terrain.createRegionBoundingBox(), 0xff0000);
   }
 }

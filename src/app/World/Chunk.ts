@@ -3,6 +3,7 @@ import poissonDiskSampling from 'poisson-disk-sampling';
 import BiomeGenerator from './BiomeGenerator';
 
 import World from './World';
+import Terrain from './Terrain';
 import TerrainMesh from '@mesh/TerrainMesh';
 import WaterMesh from '@mesh/WaterMesh';
 import CloudMesh from '@mesh/CloudMesh';
@@ -13,8 +14,8 @@ import MathUtils from '@utils/Math.utils';
 import { IPick } from '@shared/models/pick.model';
 
 class Chunk {
-  static readonly MAX_CHUNK_HEIGHT: number = 18000;
-  static readonly MIN_CHUNK_HEIGHT: number = -10000;
+  static readonly MAX_CHUNK_HEIGHT: number = 20000;
+  static readonly MIN_CHUNK_HEIGHT: number = 0;
 
   static readonly NROWS: number = 8;
   static readonly NCOLS: number = 8;
@@ -68,28 +69,31 @@ class Chunk {
     this.objectsBlueprint = [];
   }
 
-  init(topography: THREE.Geometry, water: THREE.Geometry, clouds:  THREE.Geometry) {
+  init(terrain: Terrain) {
     // merge generated chunk with region geometry
-    if (!this.merged) {
-      const terrainMesh = this.terrainBlueprint.generate();
-      topography.mergeMesh(terrainMesh);
+
+    const terrainMesh = this.terrainBlueprint.generate();
+    (<THREE.Geometry>terrain.terrain.geometry).mergeMesh(terrainMesh);
+    (<THREE.Geometry>terrain.terrain.geometry).elementsNeedUpdate = true;
 
       // TODO optimize this part (mesh could be static objects reused using transformations and data could just be copied to the global geometry)
-      if (this.terrainBlueprint.needGenerateWater()) {
-        const waterMesh = this.waterBlueprint.generate();
-        water.mergeMesh(waterMesh);
-      }
-
-      if (this.terrainBlueprint.needGenerateCloud()) {
-        const cloudMesh = this.cloudBlueprint.generate();
-        clouds.mergeMesh(cloudMesh);
-      }
-
-      this.loadPopulation();
-
-      this.merged = true;
-      this.dirty = true;
+    if (this.terrainBlueprint.needGenerateWater()) {
+      const waterMesh = this.waterBlueprint.generate();
+      (<THREE.Geometry>terrain.water.geometry).mergeMesh(waterMesh);
+      (<THREE.Geometry>terrain.water.geometry).elementsNeedUpdate = true;
     }
+
+    if (this.terrainBlueprint.needGenerateCloud()) {
+      const cloudMesh = this.cloudBlueprint.generate();
+      (<THREE.Geometry>terrain.clouds.geometry).mergeMesh(cloudMesh);
+      (<THREE.Geometry>terrain.clouds.geometry).elementsNeedUpdate = true;
+    }
+
+    this.loadPopulation();
+
+    this.merged = true;
+    this.dirty = true;
+
   }
 
   /**
@@ -173,18 +177,22 @@ class Chunk {
     return new THREE.Box3().setFromCenterAndSize(
       new THREE.Vector3(
         col * Chunk.WIDTH + Chunk.WIDTH / 2,
-        Chunk.HEIGHT / 2,
+        Chunk.WIDTH / 2,
         row * Chunk.DEPTH + Chunk.DEPTH / 2
       ),
       new THREE.Vector3(
         Chunk.WIDTH,
-        Chunk.HEIGHT,
+        Chunk.WIDTH,
         Chunk.DEPTH
       ));
   }
 
   static createBoundingBoxHelper(bbox: THREE.Box3): THREE.Box3Helper {
     return new THREE.Box3Helper(bbox, 0xffff00);
+  }
+
+  static createBoundingBoxHelperFromCoords(row: number, col: number): THREE.Box3Helper {
+    return new THREE.Box3Helper(Chunk.createBoundingBox(row, col), 0xffff00);
   }
 
   static debugStacks() {

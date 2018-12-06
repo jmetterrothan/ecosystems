@@ -180,8 +180,8 @@ class BiomeGenerator {
    * @return {number} moisture value
    */
   computeMoisture(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 1024);
-    const nz = z / (Chunk.DEPTH * 1024);
+    const nx = x / (Chunk.WIDTH * 720);
+    const nz = z / (Chunk.DEPTH * 720);
 
     let m = 0;
 
