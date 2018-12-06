@@ -10,10 +10,10 @@ import { WATER_MATERIAL } from '@materials/water.material';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
 class Terrain {
-  static readonly NCOLS: number = 128;
-  static readonly NROWS: number = 256;
-  static readonly NCHUNKS_X: number = Terrain.NCOLS / Chunk.NCOLS;
-  static readonly NCHUNKS_Z: number = Terrain.NROWS / Chunk.NROWS;
+  static readonly NCHUNKS_X: number = 64;
+  static readonly NCHUNKS_Z: number = 64;
+  static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
+  static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
   static readonly SIZE_X: number = Terrain.NCOLS * Chunk.CELL_SIZE_X;
   static readonly SIZE_Y: number = Chunk.HEIGHT;
@@ -29,8 +29,7 @@ class Terrain {
   private end: Coord;
   private chunk: Coord;
 
-  private time: number;
-
+  private scene: THREE.Scene;
   private generator: BiomeGenerator;
   public terrain: THREE.Mesh;
   public water: THREE.Mesh;
@@ -38,117 +37,98 @@ class Terrain {
 
   private layers: THREE.Group;
 
-  constructor() {
+  constructor(scene: THREE.Scene) {
+    this.scene = scene;
     this.generator = new BiomeGenerator();
     this.chunks = new Map<string, Chunk>();
     this.visibleChunks = [];
-    this.time = window.performance.now();
 
     this.layers = new THREE.Group();
-    this.layers.frustumCulled = false;
 
     this.chunk = new Coord();
     this.start = new Coord();
     this.end = new Coord();
   }
 
-  init(scene: THREE.Scene) {
+  init() {
     this.terrain = new THREE.Mesh(new THREE.Geometry(), TERRAIN_MATERIAL);
-    this.terrain.frustumCulled = false;
+    this.terrain.frustumCulled = true;
     this.layers.add(this.terrain);
 
     this.water = new THREE.Mesh(new THREE.Geometry(), WATER_MATERIAL);
-    this.water.frustumCulled = false;
+    this.water.frustumCulled = true;
     this.layers.add(this.water);
 
     this.clouds = new THREE.Mesh(new THREE.Geometry(), CLOUD_MATERIAL);
-    this.clouds.frustumCulled = false;
+    this.clouds.frustumCulled = true;
     this.layers.add(this.clouds);
 
     this.layers.add(<THREE.Object3D>Terrain.createRegionBoundingBoxHelper());
 
-    scene.add(this.layers);
+    this.scene.add(this.layers);
   }
 
-  update(scene: THREE.Scene, frustum: THREE.Frustum, position: THREE.Vector3) {
-    this.getChunkCoordAt(this.chunk, position.x, position.z);
+  preload() {
+    this.loadChunks(0, 0, Terrain.NCHUNKS_Z, Terrain.NCHUNKS_X);
+  }
 
-    // console.log(this.chunk);
-
-    const nc = Math.min(Terrain.NCHUNKS_X, (World.CHUNK_RENDER_LIMIT / 2) | 0);
-    const nr = Math.min(Terrain.NCHUNKS_Z, (World.CHUNK_RENDER_LIMIT / 2) | 0);
-
-    this.start.col = this.chunk.col - nc;
-    this.start.row = this.chunk.row - nr;
-    this.end.col = this.chunk.col + nc;
-    this.end.row = this.chunk.row + nr;
-
-    // limit visible chunk range to region boundaries
-    if (this.start.col < 0) { this.start.col = 0; this.end.col = nc; }
-    if (this.start.row < 0) { this.start.row = 0; this.end.col = nr; }
-
-    if (this.end.col > Terrain.NCHUNKS_X) { this.end.col = Terrain.NCHUNKS_X; this.start.col = Terrain.NCHUNKS_X - nc; }
-    if (this.end.row > Terrain.NCHUNKS_Z) { this.end.row = Terrain.NCHUNKS_Z; this.start.row = Terrain.NCHUNKS_Z - nr; }
-
-    // reset previously visible chunks
-    for (let i = 0, n = this.visibleChunks.length; i < n; i++) {
-      this.visibleChunks[i].visible = false;
-    }
-
-    // loop through all chunks in range
-    this.visibleChunks = [];
-
-    // try to clean from memory unused generated chunks
-    const now = window.performance.now();
-
-    if (now >= this.time) {
-      this.chunks.forEach(chunk => {
-        if (chunk && (chunk.col < this.start.col || chunk.col > this.end.col || chunk.row < this.start.row || chunk.row > this.end.row)) {
-          chunk.clean(scene);
-          chunk.dirty = true;
-        }
-      });
-
-      this.time = now + 1000;
-    }
-
-    for (let i = this.start.row; i < this.end.row; i++) {
-      for (let j = this.start.col; j < this.end.col; j++) {
-        let chunk = this.chunks.get(`${i}:${j}`);
-
-        // generate chunk if needed
-        if (chunk === undefined) {
-          chunk = this.loadChunk(scene, i, j);
-        }
-
-        // chunk is visible in frustum
-        if (frustum.intersectsBox(chunk.bbox)) {
-          if (!chunk.merged) {
-            chunk.init(this);
-          }
-
-          if (chunk.dirty) {
-            chunk.populate(scene);
-            chunk.dirty = false;
-          }
-
-          // mark this chunk as visible for the next update
-          chunk.visible = true;
-          this.visibleChunks.push(chunk);
-        }
+  loadChunks(startRow: number, startCol: number, endRow: number, endCol: number) {
+    for (let row = startRow; row < endRow; row++) {
+      for (let col = startCol; col < endCol; col++) {
+        this.chunks.set(`${row}:${col}`, this.loadChunk(row, col));
       }
     }
   }
 
-  loadChunk(scene, chunkRow: number, chunkCol: number): Chunk {
-    const chunk = new Chunk(this.generator, chunkRow, chunkCol);
+  loadChunk(row: number, col: number): Chunk {
+    const chunk = new Chunk(this.generator, row, col);
+    chunk.init(this);
 
-    // const h = Chunk.createBoundingBoxHelper(chunk.bbox);
-    // scene.add(h);
-
-    this.chunks.set(`${chunkRow}:${chunkCol}`, chunk);
+    // this.scene.add(Chunk.createBoundingBoxHelper(chunk.bbox));
 
     return chunk;
+  }
+
+  update(frustum: THREE.Frustum, position: THREE.Vector3) {
+    this.getChunkCoordAt(this.chunk, position.x, position.z);
+
+    this.start.col = Math.max(this.chunk.col - Terrain.NCHUNKS_X, 0);
+    this.start.row = Math.max(this.chunk.row - Terrain.NCHUNKS_Z, 0);
+    this.end.col = Math.min(this.chunk.col + Terrain.NCHUNKS_X, Terrain.NCHUNKS_X);
+    this.end.row = Math.min(this.chunk.row + Terrain.NCHUNKS_Z, Terrain.NCHUNKS_Z);
+
+    // reset previously visible chunks
+    for (const chunk of this.visibleChunks) {
+      if (chunk && (chunk.col < this.start.col || chunk.col > this.end.col || chunk.row < this.start.row || chunk.row > this.end.row)) {
+        chunk.clean(this.scene);
+      }
+      chunk.setVisible(false);
+    }
+
+    this.visibleChunks = [];
+
+    // loop through all chunks in range
+    for (let i = this.start.row; i < this.end.row; i++) {
+      for (let j = this.start.col; j < this.end.col; j++) {
+        let chunk = this.getChunk(i, j);
+
+        // generate chunk if needed
+        if (chunk === undefined) {
+          chunk = this.loadChunk(i, j);
+        }
+
+        // chunk is visible in frustum
+        if (frustum.intersectsBox(chunk.bbox)) {
+          if (chunk.dirty) {
+            chunk.populate(this.scene);
+          }
+
+          // mark this chunk as visible for the next update
+          chunk.setVisible(true);
+          this.visibleChunks.push(chunk);
+        }
+      }
+    }
   }
 
   getChunkCoordAt(out: Coord, x: number, z: number) : Coord {
@@ -156,6 +136,10 @@ class Terrain {
     out.col = (x / Chunk.WIDTH) | 0;
 
     return out;
+  }
+
+  getChunk(row: number, col: number): Chunk|undefined {
+    return this.chunks.get(`${row}:${col}`);
   }
 
   getChunkAt(x: number, z: number) {

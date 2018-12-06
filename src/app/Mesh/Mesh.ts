@@ -113,10 +113,10 @@ abstract class Mesh {
   generate(): THREE.Mesh {
     const mesh = new THREE.Mesh(this.buildGeometry(), this.getMaterial());
 
-    mesh.frustumCulled = false;
-    mesh.visible = false;
+    mesh.frustumCulled = true;
     mesh.matrixAutoUpdate = false;
     mesh.receiveShadow = true;
+    mesh.castShadow = true;
 
     return mesh;
   }

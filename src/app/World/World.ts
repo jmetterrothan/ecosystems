@@ -50,11 +50,12 @@ class World {
     this.initLights();
     await this.initObjects();
 
-    const spawn = new THREE.Vector3(Terrain.SIZE_X / 2, 4000, Terrain.SIZE_Z / 2);
+    const spawn = new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.HEIGHT / 2, Terrain.SIZE_Z / 2);
 
     // stuff
-    this.terrain = new Terrain();
-    this.terrain.init(this.scene);
+    this.terrain = new Terrain(this.scene);
+    this.terrain.init();
+    this.terrain.preload();
 
     this.player = new Player(this.controls);
     this.player.init(spawn.x, spawn.y, spawn.z);
@@ -126,7 +127,7 @@ class World {
       )
     );
     const position = this.player.getPosition();
-    this.terrain.update(this.scene, this.frustum, position);
+    this.terrain.update(this.frustum, position);
   }
 
   public updateMvts(delta) {
@@ -136,8 +137,6 @@ class World {
 
   public handleKeyboard(key: string, active: boolean) {
     this.player.handleKeyboard(key, active);
-
-    if (active && key === 'Enter') this.terrain.update(this.scene, this.frustum, this.player.getPosition());
   }
 
   /**
@@ -164,6 +163,7 @@ class World {
         objLoader.load(element.obj, (object) => {
           object.castShadow = true;
           object.receiveShadow = true;
+          object.frustumCulled = false;
 
           object.traverse((child) => {
             if (child instanceof THREE.Mesh) {
@@ -171,6 +171,8 @@ class World {
               child.receiveShadow = true;
               (<THREE.Geometry>child.geometry).computeFaceNormals();
               child.geometry.computeVertexNormals();
+              child.geometry.computeBoundingBox();
+              child.geometry.computeBoundingSphere();
               (<THREE.Geometry>child.geometry).normalsNeedUpdate = true;
               (<THREE.Material>child.material).flatShading = true;
               if (element.doubleSide === true) {
@@ -180,8 +182,8 @@ class World {
           });
 
           World.LOADED_MODELS.set(element.name, object);
-          const box = new THREE.Box3().setFromObject(object);
-          const size = box.getSize(new THREE.Vector3(0, 0, 0));
+          // const box = new THREE.Box3().setFromObject(object);
+         // const size = box.getSize(new THREE.Vector3(0, 0, 0));
 
           resolve(object);
         }, null, () => reject());
