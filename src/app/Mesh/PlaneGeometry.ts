@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import BiomeGenerator from '@world/BiomeGenerator';
 
 class PlaneGeometry {
 
