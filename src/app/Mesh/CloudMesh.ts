@@ -12,7 +12,6 @@ import { IChunkParameters } from '@shared/models/chunkParameters.model';
 class CloudMesh extends Mesh {
   static GEOMETRY: THREE.Geometry = null;
 
-  static CLOUD_HEIGHT: number = 250;
   static lastPosition: THREE.Vector3 = null;
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
@@ -22,7 +21,7 @@ class CloudMesh extends Mesh {
       cellSizeX: Chunk.WIDTH / 1,
       cellSizeZ: Chunk.WIDTH / 1,
       width: Chunk.WIDTH,
-      height: Chunk.HEIGHT,
+      height: 250,
       depth: Chunk.DEPTH
     });
   }
@@ -30,7 +29,7 @@ class CloudMesh extends Mesh {
   buildGeometry(): THREE.Geometry {
     // unique geometry
     if (CloudMesh.GEOMETRY === null) {
-      CloudMesh.GEOMETRY = new THREE.BoxGeometry(this.parameters.width, CloudMesh.CLOUD_HEIGHT, this.parameters.depth, 1, 1, 1);
+      CloudMesh.GEOMETRY = new THREE.BoxGeometry(this.parameters.width, this.parameters.height, this.parameters.depth, 1, 1, 1);
       CloudMesh.lastPosition = new THREE.Vector3(0, 0, 0);
     }
 
