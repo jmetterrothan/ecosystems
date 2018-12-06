@@ -46,6 +46,7 @@ class Chunk {
 
   public dirty: boolean;
   public merged: boolean;
+  private visible: boolean;
 
   public readonly key: string;
 
@@ -71,22 +72,25 @@ class Chunk {
 
   init(terrain: Terrain) {
     // merge generated chunk with region geometry
-
     const terrainMesh = this.terrainBlueprint.generate();
+
     (<THREE.Geometry>terrain.terrain.geometry).mergeMesh(terrainMesh);
     (<THREE.Geometry>terrain.terrain.geometry).elementsNeedUpdate = true;
 
       // TODO optimize this part (mesh could be static objects reused using transformations and data could just be copied to the global geometry)
     if (this.terrainBlueprint.needGenerateWater()) {
       const waterMesh = this.waterBlueprint.generate();
+
       (<THREE.Geometry>terrain.water.geometry).mergeMesh(waterMesh);
       (<THREE.Geometry>terrain.water.geometry).elementsNeedUpdate = true;
     }
 
     if (this.terrainBlueprint.needGenerateCloud()) {
       const cloudMesh = this.cloudBlueprint.generate();
+
       (<THREE.Geometry>terrain.clouds.geometry).mergeMesh(cloudMesh);
       (<THREE.Geometry>terrain.clouds.geometry).elementsNeedUpdate = true;
+
     }
 
     this.loadPopulation();
@@ -137,8 +141,6 @@ class Chunk {
         object = Chunk.CHUNK_OBJECT_STACK[item.n].pop();
       }
 
-      object.visible = true;
-
       // restore transforms
       object.rotation.y = item.r;
       object.scale.set(item.s, item.s, item.s);
@@ -148,6 +150,8 @@ class Chunk {
       scene.add(object);
       this.objects.push(object);
     }
+
+    this.dirty = false;
   }
 
   clean(scene: THREE.Scene) {
@@ -161,16 +165,24 @@ class Chunk {
         Chunk.CHUNK_OBJECT_STACK[ref].push(this.objects[i]);
       } else {
         scene.remove(this.objects[i]);
+        this.dirty = true;
       }
     }
 
     this.objects = [];
   }
 
-  set visible(bool: boolean) {
-    for (let i = this.objects.length - 1; i >= 0; i--) {
-      this.objects[i].visible = bool;
+  setVisible(bool: boolean) {
+    if (this.visible !== bool) {
+      for (let i = this.objects.length - 1; i >= 0; i--) {
+        this.objects[i].visible = bool;
+      }
+      this.visible = bool;
     }
+  }
+
+  getVisible() {
+    return this.visible;
   }
 
   static createBoundingBox(row: number, col: number): THREE.Box3 {
