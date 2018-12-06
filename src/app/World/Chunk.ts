@@ -19,7 +19,7 @@ class Chunk {
   static readonly DEPTH: number = 2048;
 
   static readonly SEA_LEVEL: number = Chunk.HEIGHT / 4;
-  static readonly CLOUD_LEVEL: number = Chunk.HEIGHT - Chunk.HEIGHT / 5;
+  static readonly CLOUD_LEVEL: number = Chunk.HEIGHT - Chunk.HEIGHT / 6;
 
   static readonly NROWS: number = 4;
   static readonly NCOLS: number = 4;

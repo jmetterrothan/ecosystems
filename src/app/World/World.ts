@@ -16,13 +16,12 @@ class World {
 
   static readonly OBJ_INITIAL_SCALE: number = 360;
 
-  static readonly CHUNK_RENDER_LIMIT: number = 128;
-  static readonly CHUNK_RENDER_DISTANCE: number = World.CHUNK_RENDER_LIMIT * Chunk.WIDTH;
-  static readonly VIEW_DISTANCE: number = 128 * Chunk.WIDTH;
+  static readonly VIEW_DISTANCE: number = 256 * Chunk.WIDTH;
 
   static readonly SHOW_FOG: boolean = true;
-  static readonly FOG_NEAR: number = World.CHUNK_RENDER_DISTANCE / 4;
-  static readonly FOG_FAR: number = World.CHUNK_RENDER_DISTANCE;
+  static readonly FOG_COLOR: THREE.Color = new THREE.Color(0xb1d8ff);
+  static readonly FOG_NEAR: number = World.VIEW_DISTANCE;
+  static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
 
@@ -80,7 +79,7 @@ class World {
 
   private initFog() {
     if (World.SHOW_FOG) {
-      this.scene.fog = new THREE.Fog(0xb1d8ff, World.FOG_NEAR, World.FOG_FAR);
+      this.scene.fog = new THREE.Fog(World.FOG_COLOR, World.FOG_NEAR, World.FOG_FAR);
     }
   }
 
