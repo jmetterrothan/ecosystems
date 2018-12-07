@@ -8,7 +8,7 @@ export const WATER_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMateri
   shininess: 25,
   reflectivity: 0.5,
   flatShading: true,
-  opacity: 0.8,
+  opacity: 0.75,
   transparent: true,
   side: THREE.DoubleSide,
   vertexColors: THREE.FaceColors,

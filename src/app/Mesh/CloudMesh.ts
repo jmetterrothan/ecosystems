@@ -38,6 +38,8 @@ class CloudMesh extends Mesh {
 
   generate(): THREE.Mesh {
     const mesh = super.generate();
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
 
     const x = this.col * this.parameters.width;
     const y = Chunk.CLOUD_LEVEL;

@@ -89,21 +89,21 @@ class World {
   }
 
   private initLights() {
-    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.25);
+    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.75);
     light.position.set(0, Chunk.SEA_LEVEL, 0);
-    light.castShadow = true;
+    light.castShadow = false;
     this.scene.add(light);
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.45);
-    ambient.position.set(0, 20000, 1500);
-    ambient.castShadow = true;
+    const ambient = new THREE.AmbientLight(0xffffff, 0.275);
+    ambient.position.set(0, Chunk.HEIGHT, 1500);
+    ambient.castShadow = false;
     this.scene.add(ambient);
 
-    const sunlight = new THREE.DirectionalLight(0xffffff, 0.45);
-    sunlight.position.set(0, 20000, 1500);
+    const sunlight = new THREE.DirectionalLight(0xffffff, 0.325);
+    sunlight.position.set(0, Chunk.HEIGHT, 1500);
     sunlight.castShadow = true;
-    sunlight.target.position.set(0, 0, 0);
     this.scene.add(sunlight);
+
   }
 
   private async initObjects(): Promise<any> {
