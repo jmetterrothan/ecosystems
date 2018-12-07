@@ -9,6 +9,8 @@ import 'three/examples/js/postprocessing/ShaderPass';
 
 import 'seedrandom';
 
+import './vergil_water_shader';
+
 import statsJs from 'stats.js';
 import World from '@world/World';
 
@@ -68,6 +70,8 @@ class Main {
     this.renderer.domElement.style.left = '0';
     this.renderer.domElement.style.width = '100vw';
     this.renderer.domElement.style.height = '100vh';
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     this.renderer.setClearColor(new THREE.Color(0xb1d8ff));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -92,8 +96,29 @@ class Main {
     this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
 
     const pass = new THREE.RenderPass(this.scene, this.camera);
-    pass.renderToScreen = true;
+    // pass.renderToScreen = true;
     this.composer.addPass(pass);
+
+    this.effect = new THREE.ShaderPass(THREE.VergilWaterShader);
+    this.effect.uniforms['centerX'].value = 0.8;
+    this.effect.uniforms['centerY'].value = 0.8;
+    this.composer.addPass(this.effect);
+
+    this.effect2 = new THREE.ShaderPass(THREE.VergilWaterShader);
+    this.effect2.uniforms['centerX'].value = 0.2;
+    this.effect2.uniforms['centerY'].value = 0.2;
+    this.composer.addPass(this.effect2);
+
+    this.effect3 = new THREE.ShaderPass(THREE.VergilWaterShader);
+    this.effect3.uniforms['centerX'].value = 0.2;
+    this.effect3.uniforms['centerY'].value = 0.8;
+    this.composer.addPass(this.effect3);
+
+    this.effect4 = new THREE.ShaderPass(THREE.VergilWaterShader);
+    this.effect4.uniforms['centerX'].value = 0.8;
+    this.effect4.uniforms['centerY'].value = 0.2;
+    this.effect4.renderToScreen = true;
+    this.composer.addPass(this.effect4);
   }
 
   private initPointerLock() {
@@ -123,7 +148,7 @@ class Main {
     }
   }
 
-  private render() {
+  private render(delta) {
     this.stats.begin();
 
     const time = window.performance.now();
@@ -145,7 +170,7 @@ class Main {
     // updated every 16ms
     let nbOfSteps = 0;
     while (this.lag >= Main.MS_PER_UPDATE) {
-      this.world.update();
+      this.world.update(delta);
       this.ups++;
 
       this.lag -= Main.MS_PER_UPDATE;
@@ -155,6 +180,12 @@ class Main {
       }
     }
 
+    /*
+    this.effect.uniforms['time'].value += Math.random();
+    this.effect2.uniforms['time'].value += Math.random();
+    this.effect3.uniforms['time'].value += Math.random();
+    this.effect4.uniforms['time'].value += Math.random();
+    */
 
     // this.renderer.render(this.scene, this.camera);
     this.composer.render();
