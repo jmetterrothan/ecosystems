@@ -108,15 +108,23 @@ class Terrain {
   update(frustum: THREE.Frustum, position: THREE.Vector3) {
     this.getChunkCoordAt(this.chunk, position.x, position.z);
 
-    this.start.col = Math.max(this.chunk.col - Terrain.NCHUNKS_X, 0);
-    this.start.row = Math.max(this.chunk.row - Terrain.NCHUNKS_Z, 0);
-    this.end.col = Math.min(this.chunk.col + Terrain.NCHUNKS_X, Terrain.NCHUNKS_X);
-    this.end.row = Math.min(this.chunk.row + Terrain.NCHUNKS_Z, Terrain.NCHUNKS_Z);
+    this.start.col = this.chunk.col - World.VIEW_DISTANCE;
+    this.start.row = this.chunk.row - World.VIEW_DISTANCE;
+    this.end.col = this.chunk.col + World.VIEW_DISTANCE;
+    this.end.row = this.chunk.row + World.VIEW_DISTANCE;
+
+    if (this.start.col < 0) { this.start.col = 0; }
+    if (this.start.row < 0) { this.start.row = 0; }
+    if (this.end.col > Terrain.NCHUNKS_X) { this.end.col = Terrain.NCHUNKS_X; }
+    if (this.end.row > Terrain.NCHUNKS_Z) { this.end.row = Terrain.NCHUNKS_Z; }
 
     // reset previously visible chunks
     for (const chunk of this.visibleChunks) {
-      // chunk.clean(this.scene);
-      chunk.setVisible(false);
+      chunk.setVisible(frustum.intersectsBox(chunk.bbox));
+
+      if (!chunk.isVisible()) {
+        chunk.clean(this.scene);
+      }
     }
 
     this.visibleChunks = [];
@@ -124,21 +132,22 @@ class Terrain {
     // loop through all chunks in range
     for (let i = this.start.row; i < this.end.row; i++) {
       for (let j = this.start.col; j < this.end.col; j++) {
-        let chunk = this.getChunk(i, j);
+        const chunk = this.getChunk(i, j);
 
+        /*
         // generate chunk if needed
         if (chunk === undefined) {
           chunk = this.loadChunk(i, j);
         }
+        */
 
         // chunk is visible in frustum
         if (frustum.intersectsBox(chunk.bbox)) {
-          if (chunk.dirty) {
+          if (chunk.isDirty()) {
             chunk.populate(this.scene);
           }
 
           // mark this chunk as visible for the next update
-          chunk.setVisible(true);
           this.visibleChunks.push(chunk);
         }
       }

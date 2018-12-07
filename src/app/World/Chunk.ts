@@ -13,6 +13,10 @@ import MathUtils from '@utils/Math.utils';
 
 import { IPick } from '@shared/models/pick.model';
 
+setInterval(() => {
+  Chunk.debugStacks();
+}, 1000);
+
 class Chunk {
   static readonly WIDTH: number = 2048;
   static readonly HEIGHT: number = 24000;
@@ -44,8 +48,8 @@ class Chunk {
 
   private objectsBlueprint: IPick[];
 
-  public dirty: boolean;
-  public merged: boolean;
+  private dirty: boolean;
+  private merged: boolean;
   private visible: boolean;
 
   public readonly key: string;
@@ -147,6 +151,8 @@ class Chunk {
       object.position.set(item.x, item.y, item.z);
       object.stackReference = item.n;
 
+      object.visible = true;
+
       scene.add(object);
       this.objects.push(object);
     }
@@ -165,25 +171,28 @@ class Chunk {
         Chunk.CHUNK_OBJECT_STACK[ref].push(this.objects[i]);
       } else {
         scene.remove(this.objects[i]);
-        this.dirty = true;
       }
     }
 
     this.objects = [];
+    this.dirty = true;
   }
 
   setVisible(bool: boolean) {
+    /*
     if (this.visible !== bool) {
       for (let i = this.objects.length - 1; i >= 0; i--) {
         this.objects[i].visible = bool;
       }
       this.visible = bool;
     }
+    */
+    this.visible = bool;
   }
 
-  getVisible() {
-    return this.visible;
-  }
+  isVisible() {  return this.visible; }
+  isDirty() { return this.dirty; }
+  isMerged() { return this.merged; }
 
   static createBoundingBox(row: number, col: number): THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(

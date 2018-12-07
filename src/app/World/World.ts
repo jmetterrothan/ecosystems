@@ -16,7 +16,7 @@ class World {
 
   static readonly OBJ_INITIAL_SCALE: number = 360;
 
-  static readonly VIEW_DISTANCE: number = 64 * Chunk.WIDTH;
+  static readonly VIEW_DISTANCE: number = 32 * Chunk.WIDTH;
 
   static readonly SHOW_FOG: boolean = true;
   static readonly FOG_COLOR: number = 0xb1d8ff;
@@ -130,7 +130,7 @@ class World {
     this.terrain.update(this.frustum, position);
 
     if (position.y < Chunk.SEA_LEVEL) {
-      console.log('underwater');
+      // console.log('underwater');
     }
   }
 
