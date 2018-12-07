@@ -111,9 +111,9 @@ class BiomeGenerator {
    * @return {number} elevation value
    */
   computeElevation(x: number, z: number): number {
-    const nx = x / 1024;
-    const nz = z / 1024;
-    return 0.01 * this.simplex.noise2D(16 * nx, 16 * nz);
+    const nx = x / 100000;
+    const nz = z / 100000;
+    return 0.02 * (this.simplex.noise3D(64 * nx, 1, 64 * nz) + 1) / 2;
   }
 
   /**

@@ -63,7 +63,7 @@ class Terrain {
     this.clouds.frustumCulled = true;
     this.layers.add(this.clouds);
 
-    this.layers.add(<THREE.Object3D>Terrain.createRegionBoundingBoxHelper());
+    this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
 
     this.scene.add(this.layers);
   }
@@ -208,6 +208,20 @@ class Terrain {
         ));
   }
 
+  static createRegionWaterBoundingBox() : THREE.Box3 {
+    return new THREE.Box3().setFromCenterAndSize(
+        new THREE.Vector3(
+          Terrain.SIZE_X / 2,
+          Chunk.SEA_LEVEL / 2,
+          Terrain.SIZE_Z / 2
+        ),
+        new THREE.Vector3(
+          Terrain.SIZE_X,
+          Chunk.SEA_LEVEL,
+          Terrain.SIZE_Z
+        ));
+  }
+
   /**
    * Retrieve the region's bounding box helper
    * @param {THREE.Box3|null} bbox Region's bounding box (if not set it will be created)
@@ -215,6 +229,15 @@ class Terrain {
    */
   static createRegionBoundingBoxHelper(bbox: THREE.Box3 = null) : THREE.Box3Helper {
     return new THREE.Box3Helper(bbox ? bbox : Terrain.createRegionBoundingBox(), 0xff0000);
+  }
+
+  /**
+   * Retrieve the region's water bounding box helper
+   * @param {THREE.Box3|null} bbox Region's bounding box (if not set it will be created)
+   * @return {THREE.Box3Helper}
+   */
+  static createRegionWaterBoundingBoxHelper(bbox: THREE.Box3 = null) : THREE.Box3Helper {
+    return new THREE.Box3Helper(bbox ? bbox : Terrain.createRegionWaterBoundingBox(), 0x0000ff);
   }
 }
 
