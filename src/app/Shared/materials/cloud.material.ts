@@ -3,11 +3,11 @@ import * as THREE from 'three';
 export const CLOUD_MATERIAL: THREE.MeshLambertMaterial = new THREE.MeshLambertMaterial({
   wireframe: false,
   emissive: 0xffffff,
-  emissiveIntensity: 0.9,
+  emissiveIntensity: 0.5,
   reflectivity: 0,
   flatShading: true,
   color: 0xffffff,
-  opacity: 0.4,
+  opacity: 0.5,
   transparent: true,
-  side: THREE.FrontSide
+  side: THREE.FrontSide,
 });

@@ -119,7 +119,7 @@ class World {
     await Promise.all(stack);
   }
 
-  public update() {
+  public update(delta) {
     this.frustum.setFromMatrix(
       new THREE.Matrix4().multiplyMatrices(
         this.camera.projectionMatrix,
@@ -128,6 +128,10 @@ class World {
     );
     const position = this.player.getPosition();
     this.terrain.update(this.frustum, position);
+
+    if (position.y < Chunk.SEA_LEVEL) {
+      console.log('underwater');
+    }
   }
 
   public updateMvts(delta) {
