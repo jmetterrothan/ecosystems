@@ -22,9 +22,7 @@ class Main {
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
   private composer: THREE.EffectComposer;
-
-  private camera2: THREE.PerspectiveCamera;
-  private camera: THREE.OrthographicCamera;
+  private camera: THREE.PerspectiveCamera;
   private controls: THREE.PointerLockControls;
   private containerElement: HTMLElement;
 
@@ -50,12 +48,14 @@ class Main {
     this.scene = new THREE.Scene();
 
     const aspect = window.innerWidth / window.innerHeight;
-    this.camera2 = new THREE.PerspectiveCamera(65, aspect, 10, World.VIEW_DISTANCE);
+    this.camera = new THREE.PerspectiveCamera(65, aspect, 1, World.VIEW_DISTANCE);
 
+    /*
     const d = 15000;
     this.camera = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, 0.01, World.VIEW_DISTANCE);
     this.camera.position.set(0, 15000, 0);
     this.camera.lookAt(new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2));
+    */
   }
 
   async init() {
@@ -79,8 +79,6 @@ class Main {
     this.renderer.domElement.style.left = '0';
     this.renderer.domElement.style.width = '100vw';
     this.renderer.domElement.style.height = '100vh';
-    this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     this.renderer.setClearColor(new THREE.Color(0xb1d8ff));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -104,6 +102,7 @@ class Main {
     this.composer = new THREE.EffectComposer(this.renderer);
     this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
 
+    /*
     const pass = new THREE.RenderPass(this.scene, this.camera);
     // pass.renderToScreen = true;
     this.composer.addPass(pass);
@@ -128,6 +127,7 @@ class Main {
     this.effect4.uniforms['centerY'].value = 0.2;
     this.effect4.renderToScreen = true;
     this.composer.addPass(this.effect4);
+    */
   }
 
   private initPointerLock() {
@@ -152,9 +152,7 @@ class Main {
         document.body.requestPointerLock();
       });
 
-      document.body.addEventListener('keydown', e => {
-        this.world.handleKeyboard(e.key, true && this.controls.enabled);
-      });
+      document.body.addEventListener('keydown', e => this.world.handleKeyboard(e.key, true && this.controls.enabled));
       document.body.addEventListener('keyup', e => this.world.handleKeyboard(e.key, false));
     }
   }
@@ -198,8 +196,8 @@ class Main {
     this.effect4.uniforms['time'].value += Math.random();
     */
 
-    // this.renderer.render(this.scene, this.getActiveCamera());
-    this.composer.render(delta);
+    this.renderer.render(this.scene, this.getActiveCamera());
+    // this.composer.render(delta);
     this.stats.end();
 
     window.requestAnimationFrame(this.render.bind(this));
