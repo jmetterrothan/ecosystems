@@ -12,7 +12,9 @@ import 'seedrandom';
 import './vergil_water_shader';
 
 import statsJs from 'stats.js';
+
 import World from '@world/World';
+import Terrain from '@world/Terrain';
 
 class Main {
   public static readonly MS_PER_UPDATE = 1000 / 25;
@@ -22,6 +24,7 @@ class Main {
   private composer: THREE.EffectComposer;
 
   private camera: THREE.PerspectiveCamera;
+  private camera2: THREE.OrthographicCamera;
   private controls: THREE.PointerLockControls;
   private containerElement: HTMLElement;
 
@@ -46,7 +49,14 @@ class Main {
     document.body.appendChild(this.stats.dom);
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 10, World.VIEW_DISTANCE);
+
+    const aspect = window.innerWidth / window.innerHeight;
+    this.camera = new THREE.PerspectiveCamera(65, aspect, 10, World.VIEW_DISTANCE);
+
+    const d = 15000;
+    this.camera2 = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, 0.01, World.VIEW_DISTANCE);
+    this.camera2.position.set(0, 15000, 0);
+    this.camera2.lookAt(new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2));
   }
 
   async init() {
@@ -143,7 +153,9 @@ class Main {
         document.body.requestPointerLock();
       });
 
-      document.body.addEventListener('keydown', e => this.world.handleKeyboard(e.key, true && this.controls.enabled));
+      document.body.addEventListener('keydown', e => {
+        this.world.handleKeyboard(e.key, true && this.controls.enabled);
+      });
       document.body.addEventListener('keyup', e => this.world.handleKeyboard(e.key, false));
     }
   }
@@ -187,11 +199,15 @@ class Main {
     this.effect4.uniforms['time'].value += Math.random();
     */
 
-    // this.renderer.render(this.scene, this.camera);
-    this.composer.render();
+    // this.renderer.render(this.scene, this.getActiveCamera());
+    this.composer.render(delta);
     this.stats.end();
 
     window.requestAnimationFrame(this.render.bind(this));
+  }
+
+  getActiveCamera()  {
+    return this.camera;
   }
 
   public run() {
