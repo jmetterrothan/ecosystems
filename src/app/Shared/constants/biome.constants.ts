@@ -215,7 +215,7 @@ export const BIOMES: IBiomes = {
         name: 'lilypad',
         scarcity: 0.975,
         e: null,
-        m: { low: 0.5, high: 1.0 },
+        m: { low: 0.65, high: 1.0 },
         scale: { min: 1.0, max: 2.0 },
         float: true,
       },

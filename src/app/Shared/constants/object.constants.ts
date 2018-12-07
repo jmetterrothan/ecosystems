@@ -27,6 +27,9 @@ import rock1Mtl from '@objmodels/rock/rock1.mtl';
 import rock2Obj from '@objmodels/rock/rock2.obj';
 import rock2Mtl from '@objmodels/rock/rock2.mtl';
 
+import rock3Obj from '@objmodels/rock/rock3.obj';
+import rock3Mtl from '@objmodels/rock/rock3.mtl';
+
 import lilypadObj from '@objmodels/flower/lilypad.obj';
 import lilypadMtl from '@objmodels/flower/lilypad.mtl';
 
@@ -164,6 +167,11 @@ export const OBJECTS: IObject[] = [
     name: 'rock2',
     obj: rock2Obj,
     mtl: rock2Mtl
+  },
+  {
+    name: 'rock3',
+    obj: rock3Obj,
+    mtl: rock3Mtl
   },
   {
     name: 'lilypad',
