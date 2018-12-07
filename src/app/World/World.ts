@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+
 import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';

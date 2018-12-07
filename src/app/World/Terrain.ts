@@ -133,13 +133,7 @@ class Terrain {
     for (let i = this.start.row; i < this.end.row; i++) {
       for (let j = this.start.col; j < this.end.col; j++) {
         const chunk = this.getChunk(i, j);
-
-        /*
-        // generate chunk if needed
-        if (chunk === undefined) {
-          chunk = this.loadChunk(i, j);
-        }
-        */
+        if (!chunk) { continue; }
 
         // chunk is visible in frustum
         if (frustum.intersectsBox(chunk.bbox)) {

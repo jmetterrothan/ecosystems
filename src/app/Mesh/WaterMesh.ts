@@ -9,7 +9,6 @@ import { WATER_MATERIAL } from '@materials/water.material';
 import { IChunkParameters } from '@shared/models/chunkParameters.model';
 
 class WaterMesh extends Mesh {
-
   constructor(generator: BiomeGenerator, row: number, col: number) {
     super(generator, row, col, MESH_TYPES.WATER_MESH, <IChunkParameters>{
       nRows: 4,
@@ -29,7 +28,6 @@ class WaterMesh extends Mesh {
   getMaterial(): THREE.Material {
     return WATER_MATERIAL;
   }
-
 }
 
 export default WaterMesh;

@@ -4,6 +4,7 @@ import simplexNoise from 'simplex-noise';
 import World from './World';
 import Chunk from './Chunk';
 import MathUtils from '@utils/Math.utils';
+import CommonUtils from '@shared/utils/Common.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
@@ -19,6 +20,8 @@ import { IPick } from '@shared/models/pick.model';
  * - noise parameters
  */
 class BiomeGenerator {
+  private static WATER_COLORS = new Map<number, THREE.Color>();
+
   private simplex: simplexNoise;
 
   constructor() {
@@ -69,14 +72,11 @@ class BiomeGenerator {
   }
 
   getWaterColor(m: number): THREE.Color {
-    if (m > 0.55) {
-      return WATER_CONSTANTS.WATER_COLOR_B;
+    const value = Math.round(m * 100);
+    if (!BiomeGenerator.WATER_COLORS.has(value)) {
+      BiomeGenerator.WATER_COLORS.set(value, new THREE.Color(CommonUtils.lerpColor(WATER_CONSTANTS.WATER_COLOR_A.getHexString(), WATER_CONSTANTS.WATER_COLOR_B.getHexString(), value / 100)));
     }
-    if (m > 0.45) {
-      return WATER_CONSTANTS.WATER_COLOR_TR;
-    }
-
-    return WATER_CONSTANTS.WATER_COLOR_A;
+    return BiomeGenerator.WATER_COLORS.get(value);
   }
 
   /**
@@ -123,7 +123,13 @@ class BiomeGenerator {
    * @return {number} moisture value
    */
   computeMoisture(x: number, z: number): number {
-    return 0.5;
+    const nx = x / (Chunk.CELL_SIZE_X * 256);
+    const nz = z / (Chunk.CELL_SIZE_X * 256);
+    return 1 * this.noise(nx, nz);
+  }
+
+  noise(x: number, z: number) {
+    return (this.simplex.noise2D(x, z) + 1) / 2;
   }
 
   /**

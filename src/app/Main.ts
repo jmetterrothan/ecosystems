@@ -12,9 +12,7 @@ import 'seedrandom';
 import './vergil_water_shader';
 
 import statsJs from 'stats.js';
-
 import World from '@world/World';
-import Terrain from '@world/Terrain';
 
 class Main {
   public static readonly MS_PER_UPDATE = 1000 / 25;
@@ -97,7 +95,7 @@ class Main {
 
     this.containerElement.append(this.renderer.domElement);
 
-    // compsoser
+    // composser
     const size = this.renderer.getSize();
     this.composer = new THREE.EffectComposer(this.renderer);
     this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
