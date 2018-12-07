@@ -19,8 +19,10 @@ import { IPick } from '@shared/models/pick.model';
  * - noise parameters
  */
 class BiomeGenerator {
-  constructor() {
+  private simplex: simplexNoise;
 
+  constructor() {
+    this.simplex = new simplexNoise();
   }
 
   /**
@@ -109,7 +111,9 @@ class BiomeGenerator {
    * @return {number} elevation value
    */
   computeElevation(x: number, z: number): number {
-    return 0;
+    const nx = x / 1024;
+    const nz = z / 1024;
+    return 0.01 * this.simplex.noise2D(16 * nx, 16 * nz);
   }
 
   /**
