@@ -23,8 +23,8 @@ class Main {
   private scene: THREE.Scene;
   private composer: THREE.EffectComposer;
 
-  private camera: THREE.PerspectiveCamera;
-  private camera2: THREE.OrthographicCamera;
+  private camera2: THREE.PerspectiveCamera;
+  private camera: THREE.OrthographicCamera;
   private controls: THREE.PointerLockControls;
   private containerElement: HTMLElement;
 
@@ -36,7 +36,6 @@ class Main {
   private scheduledTime: number;
 
   private stats: statsJs;
-
   constructor() {
     this.containerElement = document.body;
     this.lag = 0;
@@ -51,12 +50,12 @@ class Main {
     this.scene = new THREE.Scene();
 
     const aspect = window.innerWidth / window.innerHeight;
-    this.camera = new THREE.PerspectiveCamera(65, aspect, 10, World.VIEW_DISTANCE);
+    this.camera2 = new THREE.PerspectiveCamera(65, aspect, 10, World.VIEW_DISTANCE);
 
     const d = 15000;
-    this.camera2 = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, 0.01, World.VIEW_DISTANCE);
-    this.camera2.position.set(0, 15000, 0);
-    this.camera2.lookAt(new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2));
+    this.camera = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, 0.01, World.VIEW_DISTANCE);
+    this.camera.position.set(0, 15000, 0);
+    this.camera.lookAt(new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2));
   }
 
   async init() {
