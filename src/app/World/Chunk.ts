@@ -13,10 +13,6 @@ import MathUtils from '@utils/Math.utils';
 
 import { IPick } from '@shared/models/pick.model';
 
-setInterval(() => {
-  Chunk.debugStacks();
-}, 1000);
-
 class Chunk {
   static readonly WIDTH: number = 2048;
   static readonly HEIGHT: number = 24000;
