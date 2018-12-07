@@ -1,6 +1,12 @@
 import * as THREE from 'three';
 
+import 'three/examples/js/postprocessing/EffectComposer';
 import 'three/examples/js/controls/PointerLockControls';
+import 'three/examples/js/shaders/CopyShader';
+import 'three/examples/js/postprocessing/RenderPass';
+import 'three/examples/js/postprocessing/MaskPass';
+import 'three/examples/js/postprocessing/ShaderPass';
+
 import 'seedrandom';
 
 import statsJs from 'stats.js';
@@ -11,6 +17,7 @@ class Main {
 
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
+  private composer: THREE.EffectComposer;
 
   private camera: THREE.PerspectiveCamera;
   private controls: THREE.PointerLockControls;
@@ -72,9 +79,21 @@ class Main {
 
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.renderer.setPixelRatio(window.devicePixelRatio);
+
+      const size = this.renderer.getSize();
+      this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
     });
 
     this.containerElement.append(this.renderer.domElement);
+
+    // compsoser
+    const size = this.renderer.getSize();
+    this.composer = new THREE.EffectComposer(this.renderer);
+    this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
+
+    const pass = new THREE.RenderPass(this.scene, this.camera);
+    pass.renderToScreen = true;
+    this.composer.addPass(pass);
   }
 
   private initPointerLock() {
@@ -136,7 +155,9 @@ class Main {
       }
     }
 
-    this.renderer.render(this.scene, this.camera);
+
+    // this.renderer.render(this.scene, this.camera);
+    this.composer.render();
     this.stats.end();
 
     window.requestAnimationFrame(this.render.bind(this));
