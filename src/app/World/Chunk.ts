@@ -18,14 +18,14 @@ class Chunk {
   static readonly HEIGHT: number = 24000;
   static readonly DEPTH: number = 2048;
 
-  static readonly SEA_LEVEL: number = Chunk.HEIGHT / 5;
+  static readonly SEA_LEVEL: number = Chunk.HEIGHT / 4;
   static readonly CLOUD_LEVEL: number = Chunk.HEIGHT - Chunk.HEIGHT / 6;
 
-  static readonly NROWS: number = 4;
-  static readonly NCOLS: number = 4;
+  static readonly NROWS: number = 2;
+  static readonly NCOLS: number = 2;
 
-  static readonly CELL_SIZE_X: number = Chunk.WIDTH / Chunk.NROWS | 0;
-  static readonly CELL_SIZE_Z: number = Chunk.DEPTH / Chunk.NCOLS | 0;
+  static readonly CELL_SIZE_X: number = (Chunk.WIDTH / Chunk.NROWS) | 0;
+  static readonly CELL_SIZE_Z: number = (Chunk.DEPTH / Chunk.NCOLS) | 0;
 
   static readonly CHUNK_OBJECT_STACK = {};
 

@@ -83,10 +83,6 @@ class BiomeGenerator {
     return null;
   }
 
-  getWaterHeight(x, z) {
-    return Chunk.SEA_LEVEL + (this.noise(x / 1024, z / 1024) * 400);
-  }
-
   getWaterColor(m: number): THREE.Color {
     const value = Math.round(m * 100);
     if (!BiomeGenerator.WATER_COLORS.has(value)) {
@@ -127,9 +123,9 @@ class BiomeGenerator {
    * @return {number} elevation value
    */
   computeElevation(x: number, z: number): number {
-    const nx = x / 100000;
-    const nz = z / 100000;
-    return 0.02 * (this.simplex.noise3D(64 * nx, 1, 64 * nz) + 1) / 2;
+    const nx = x / (Chunk.WIDTH * 128);
+    const nz = z / (Chunk.DEPTH * 128);
+    return 0.075 * this.noise(nx * 8, nz * 8) + 0.03 * this.noise(nx * 128, nz * 128) + 0.0025 * this.noise(nx * 256, nz * 256);
   }
 
   /**
@@ -139,9 +135,15 @@ class BiomeGenerator {
    * @return {number} moisture value
    */
   computeMoisture(x: number, z: number): number {
-    const nx = x / (Chunk.CELL_SIZE_X * 256);
-    const nz = z / (Chunk.CELL_SIZE_X * 256);
-    return 1 * this.noise(nx, nz);
+    const nx = x / (Chunk.WIDTH * 64);
+    const nz = z / (Chunk.DEPTH * 64);
+    return this.noise(nx, nz);
+  }
+
+  getWaterHeight(x, z) {
+    const nx = x / (Chunk.WIDTH * 0.5);
+    const nz = z / (Chunk.DEPTH * 0.5);
+    return Chunk.SEA_LEVEL + this.noise(nx, nz) * 400;
   }
 
   noise(x: number, z: number) {
