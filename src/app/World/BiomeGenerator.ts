@@ -1,14 +1,15 @@
 import * as THREE from 'three';
 import simplexNoise from 'simplex-noise';
 
-import World from './World';
-import Chunk from './Chunk';
+import World from '@world/World';
+import Chunk from '@world/Chunk';
+import Biome from '@world/Biome';
+import RainForestBiome from '@world/Biomes/RainForestBiome';
 import MathUtils from '@utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
 import { IPick } from '@shared/models/pick.model';
-import Biome, { RainForestBiome } from './Biome';
 
 class BiomeGenerator {
   private simplex: simplexNoise;
