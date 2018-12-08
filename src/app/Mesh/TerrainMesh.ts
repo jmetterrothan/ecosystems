@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 
 import Mesh from '@mesh/Mesh';
-import World from '@world/World';
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
 import MathUtils from '@shared/utils/Math.utils';
@@ -28,7 +27,7 @@ class TerrainMesh extends Mesh {
   }
 
   getY(x: number, z: number): number {
-    return this.generator.computeHeight(x, z);
+    return this.generator.computeHeightAt(x, z);
   }
 
   getMaterial(): THREE.Material {
@@ -91,11 +90,11 @@ class TerrainMesh extends Mesh {
         const z1 = (geometry.vertices[a].z + geometry.vertices[b].z + geometry.vertices[d].z) / 3;
         const z2 = (geometry.vertices[d].z + geometry.vertices[c].z + geometry.vertices[a].z) / 3;
 
-        const m1 = this.generator.computeMoisture(x1, z1);
-        const m2 = this.generator.computeMoisture(x2, z2);
+        const m1 = this.generator.computeMoistureAt(x1, z1);
+        const m2 = this.generator.computeMoistureAt(x2, z2);
 
-        f1.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y1), m1).color;
-        f2.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y2), m2).color;
+        f1.color = this.generator.getBiome(y1 / Chunk.HEIGHT, m1).color;
+        f2.color = this.generator.getBiome(y2 / Chunk.HEIGHT, m2).color;
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);

@@ -22,7 +22,7 @@ class WaterMesh extends Mesh {
   }
 
   getY(x, z) {
-    return this.generator.getWaterHeight(x, z);
+    return this.generator.computeWaterHeightAt(x, z);
   }
 
   getMaterial(): THREE.Material {

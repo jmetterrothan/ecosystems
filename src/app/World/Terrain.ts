@@ -190,7 +190,7 @@ class Terrain {
    * @return {number}
    */
   getHeightAt(x: number, z: number): number {
-    return this.generator.computeHeight(x, z);
+    return this.generator.computeHeightAt(x, z);
   }
 
   /**

@@ -15,11 +15,13 @@ import { IPick } from '@shared/models/pick.model';
 
 class Chunk {
   static readonly WIDTH: number = 2048;
-  static readonly HEIGHT: number = 24000;
+  static readonly HEIGHT: number = 48000;
   static readonly DEPTH: number = 2048;
 
   static readonly SEA_LEVEL: number = Chunk.HEIGHT / 4;
-  static readonly CLOUD_LEVEL: number = Chunk.HEIGHT - Chunk.HEIGHT / 6;
+  static readonly CLOUD_LEVEL: number = Chunk.HEIGHT - Chunk.HEIGHT / 8;
+
+  static readonly SEA_ELEVATION: number = Chunk.SEA_LEVEL / Chunk.HEIGHT;
 
   static readonly NROWS: number = 2;
   static readonly NCOLS: number = 2;
@@ -175,14 +177,11 @@ class Chunk {
   }
 
   setVisible(bool: boolean) {
-    /*
     if (this.visible !== bool) {
       for (let i = this.objects.length - 1; i >= 0; i--) {
         this.objects[i].visible = bool;
       }
-      this.visible = bool;
     }
-    */
     this.visible = bool;
   }
 

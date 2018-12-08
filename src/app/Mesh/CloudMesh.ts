@@ -21,7 +21,7 @@ class CloudMesh extends Mesh {
       cellSizeX: Chunk.WIDTH / 1,
       cellSizeZ: Chunk.WIDTH / 1,
       width: Chunk.WIDTH,
-      height: 350,
+      height: 400,
       depth: Chunk.DEPTH
     });
   }

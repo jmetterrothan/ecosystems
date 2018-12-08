@@ -161,7 +161,7 @@ export const BIOMES: IBiomes = {
         scarcity: 0.95,
         e: null,
         m: null,
-        scale: { min: 0.85, max: 1.35 },
+        scale: { min: 1.0, max: 1.5 },
         float: false,
       },
       {
@@ -196,15 +196,6 @@ export const BIOMES: IBiomes = {
         scale: { min: 0.65, max: 0.95 },
         float: false,
       },
-      {
-        weight: 0.1,
-        name: 'palm_tree',
-        scarcity: 0.975,
-        e: { low: 0.0175, high: 0.5 },
-        m: { low: 0.0, high: 0.35 },
-        scale: { min: 1.1, max: 1.5 },
-        float: false,
-      }
     ]
   },
   OCEAN: {

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import BiomeGenerator from '@world/BiomeGenerator';
+import Chunk from '@world/Chunk';
 import Stack from '@shared/Stack';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
@@ -78,12 +79,12 @@ abstract class Mesh {
         const z1 = (geometry.vertices[a].z + geometry.vertices[b].z + geometry.vertices[d].z) / 3;
         const z2 = (geometry.vertices[d].z + geometry.vertices[c].z + geometry.vertices[a].z) / 3;
 
-        const m1 = this.generator.computeMoisture(x1, z1);
-        const m2 = this.generator.computeMoisture(x2, z2);
+        const m1 = this.generator.computeMoistureAt(x1, z1);
+        const m2 = this.generator.computeMoistureAt(x2, z2);
 
         if (this.type === MESH_TYPES.TERRAIN_MESH) {
-          f1.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y1), m1).color;
-          f2.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y2), m2).color;
+          f1.color = this.generator.getBiome(y1 / Chunk.HEIGHT, m1).color;
+          f2.color = this.generator.getBiome(y2 / Chunk.HEIGHT, m2).color;
         } else if (this.type === MESH_TYPES.WATER_MESH) {
           f1.color = this.generator.getWaterColor(m1);
           f2.color = this.generator.getWaterColor(m2);

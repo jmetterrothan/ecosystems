@@ -4,28 +4,19 @@ import simplexNoise from 'simplex-noise';
 import World from './World';
 import Chunk from './Chunk';
 import MathUtils from '@utils/Math.utils';
-import CommonUtils from '@shared/utils/Common.utils';
 
 import { IBiome } from '@shared/models/biome.model';
-import { WATER_CONSTANTS } from '@shared/constants/water.constants';
-import { BIOMES } from '@shared/constants/biome.constants';
 import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
 import { IPick } from '@shared/models/pick.model';
+import Biome, { RainForestBiome } from './Biome';
 
-/**
- * Biome composition :
- * - name
- * - color gradient
- * - simplex noise generator
- * - noise parameters
- */
 class BiomeGenerator {
-  private static WATER_COLORS = new Map<number, THREE.Color>();
-
   private simplex: simplexNoise;
+  private biome: Biome;
 
   constructor() {
     this.simplex = new simplexNoise();
+    this.biome = new RainForestBiome(this);
   }
 
   /**
@@ -35,10 +26,10 @@ class BiomeGenerator {
    * @return {IPick|null}
    */
   pick(x: number, z: number): IPick | null {
-    const e = this.computeElevation(x, z);
-    const m = this.computeMoisture(x, z);
-    const y = BiomeGenerator.getHeightAtElevation(e);
-    const biome = this.getBiome(e, m);
+    const e = this.computeElevationAt(x, z);
+    const m = this.computeMoistureAt(x, z);
+    const y = e * Chunk.HEIGHT;
+    const biome = this.biome.getParametersAt(e, m);
 
     let temp = 0;
     const rand = MathUtils.rng(); // random float bewteen 0 - 1 included (sum of weights must be = 1)
@@ -53,10 +44,10 @@ class BiomeGenerator {
 
         if (organism.float) {
           // sample 4 points and take the highest one to prevent (as much as possible) clipping into the water
-          const p1 = this.getWaterHeight(x - 350, z);
-          const p2 = this.getWaterHeight(x + 350, z);
-          const p3 = this.getWaterHeight(x, z + 350);
-          const p4 = this.getWaterHeight(x, z + 350);
+          const p1 = this.computeWaterHeightAt(x - 350, z);
+          const p2 = this.computeWaterHeightAt(x + 350, z);
+          const p3 = this.computeWaterHeightAt(x, z + 350);
+          const p4 = this.computeWaterHeightAt(x, z + 350);
 
           const p = Math.max(p1, p2, p3, p4);
           ty = Math.max(y, p);
@@ -83,14 +74,6 @@ class BiomeGenerator {
     return null;
   }
 
-  getWaterColor(m: number): THREE.Color {
-    const value = Math.round(m * 100);
-    if (!BiomeGenerator.WATER_COLORS.has(value)) {
-      BiomeGenerator.WATER_COLORS.set(value, new THREE.Color(CommonUtils.lerpColor(WATER_CONSTANTS.WATER_COLOR_A.getHexString(), WATER_CONSTANTS.WATER_COLOR_B.getHexString(), value / 100)));
-    }
-    return BiomeGenerator.WATER_COLORS.get(value);
-  }
-
   /**
    * Return the biom corresponding to the given elevation and moisture
    * @param {number} e elevation value
@@ -98,56 +81,17 @@ class BiomeGenerator {
    * @return {IBiome} Biome informations
    */
   getBiome(e: number, m: number): IBiome {
-    const seaLevel = Chunk.SEA_LEVEL / Chunk.HEIGHT;
-    if (e < seaLevel) {
-      return BIOMES.OCEAN;
-    }
-
-    return BIOMES.BEACH;
+    return this.biome.getParametersAt(e, m);
   }
 
   /**
-   * Retrieve the biome at the given coordinates
-   * @param {number} x coord component
-   * @param {number} z coord component
-   * @return {IBiome}
-   */
-  getBiomeAt(x: number, z: number): IBiome {
-    return this.getBiome(this.computeElevation(x, z), this.computeMoisture(x, z));
-  }
-
-  /**
-   * Compute elevation
+   * Compute elevation (0 - 1)
    * @param {number} x coord component
    * @param {number} z coord component
    * @return {number} elevation value
    */
-  computeElevation(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 128);
-    const nz = z / (Chunk.DEPTH * 128);
-    return 0.075 * this.noise(nx * 8, nz * 8) + 0.03 * this.noise(nx * 128, nz * 128) + 0.0025 * this.noise(nx * 256, nz * 256);
-  }
-
-  /**
-   * Compute moisture
-   * @param {number} x coord component
-   * @param {number} z coord component
-   * @return {number} moisture value
-   */
-  computeMoisture(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 64);
-    const nz = z / (Chunk.DEPTH * 64);
-    return this.noise(nx, nz);
-  }
-
-  getWaterHeight(x, z) {
-    const nx = x / (Chunk.WIDTH * 0.5);
-    const nz = z / (Chunk.DEPTH * 0.5);
-    return Chunk.SEA_LEVEL + this.noise(nx, nz) * 400;
-  }
-
-  noise(x: number, z: number) {
-    return (this.simplex.noise2D(x, z) + 1) / 2;
+  computeElevationAt(x: number, z: number): number {
+    return this.biome.computeElevationAt(x, z);
   }
 
   /**
@@ -156,35 +100,65 @@ class BiomeGenerator {
    * @param {number} z coord component
    * @return {number}
    */
-  computeHeight(x: number, z: number) {
-    return BiomeGenerator.getHeightAtElevation(this.computeElevation(x, z));
+  computeHeightAt(x: number, z: number) {
+    return this.biome.computeElevationAt(x, z) * Chunk.HEIGHT;
   }
 
   /**
-   * Returns the elevation at the given y world coordinate
-   * @param {number} y coord component
-   * @return {number}
+   * Compute moisture
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number} moisture value
    */
-  static getElevationFromHeight(y: number) {
-    return y / Chunk.HEIGHT;
+  computeMoistureAt(x: number, z: number): number {
+    const nx = x / (Chunk.WIDTH * 64);
+    const nz = z / (Chunk.DEPTH * 64);
+    return this.noise(nx, nz);
   }
 
   /**
-   * Returns the world coordinate at the given elevation
-   * @param {number} e elevation
-   * @return {number}
+   * Compute water height
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number} water height
    */
-  static getHeightAtElevation(e: number) {
-    return e * Chunk.HEIGHT;
+  computeWaterHeightAt(x, z) {
+    const nx = x / (Chunk.WIDTH * 0.5);
+    const nz = z / (Chunk.DEPTH * 0.5);
+    return Chunk.SEA_LEVEL + this.noise(nx, nz) * 400;
   }
 
   /**
-   * Returns the world coordinate at the given elevation
-   * @param {number} e elevation
-   * @return {number}
+   * Retrieve water color from current biome
+   * @param {number} m moisture value
+   * @return {THREE.Color}
    */
-  static getHeightAtElevationWithWater(e: number) {
-    return Math.max(this.getHeightAtElevation(e), Chunk.SEA_LEVEL);
+  getWaterColor(m: number): THREE.Color {
+    return this.biome.getWaterColor(m);
+  }
+
+  noise(x: number, z: number) {
+    return (this.simplex.noise2D(x, z) + 1) / 2;
+  }
+
+  ridgeNoise(x: number, z: number) {
+    return 2 * (0.5 - Math.abs(0.5 - this.noise(x, z)));
+  }
+
+  static islandAddMethod(a, b, c, d, e) {
+    return e + a - b * Math.pow(d, c);
+  }
+
+  static islandMultiplyMethod(a, b, c, d, e) {
+    return (e + a) * (1 - b * Math.pow(d, c));
+  }
+
+  static getEuclideanDistance(x, z) {
+    return 2 * Math.sqrt(x * x + z * z);
+  }
+
+  static getManhattanDistance(x, z) {
+    return Math.max(Math.abs(x), Math.abs(z));
   }
 }
 
