@@ -13,6 +13,7 @@ import './vergil_water_shader';
 
 import statsJs from 'stats.js';
 import World from '@world/World';
+import Terrain from '@world/Terrain';
 
 class Main {
   public static readonly MS_PER_UPDATE = 1000 / 25;
@@ -47,7 +48,6 @@ class Main {
 
     const aspect = window.innerWidth / window.innerHeight;
     this.camera = new THREE.PerspectiveCamera(65, aspect, 0.1, World.VIEW_DISTANCE);
-
     /*
     const d = 15000;
     this.camera = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, 0.01, World.VIEW_DISTANCE);

@@ -39,12 +39,16 @@ export class RainForestBiome extends Biome
   private b: number;
   private c: number;
 
+  private amplified: boolean;
+
   constructor(generator: BiomeGenerator) {
     super('RAINFOREST', generator);
 
     this.a = MathUtils.randomFloat(0.1, 0.8); // best around 0.65;
     this.b = MathUtils.randomFloat(0.7, 1.5); // best around 0.80;
     this.c = MathUtils.randomFloat(0.8, 1.5); // best around 0.80;
+
+    this.amplified = MathUtils.rng() > 0.5;
   }
 
   /**
@@ -67,7 +71,9 @@ export class RainForestBiome extends Biome
     e /= (1.00 + 0.50 + 0.25 + 0.13 + 0.06 + 0.035 + 0.025);
 
     const d = BiomeGenerator.getEuclideanDistance(nx, nz);
-    return BiomeGenerator.islandAddMethod(this.a, this.b, this.c, d, e);
+    const ne = BiomeGenerator.islandAddMethod(this.a, this.b, this.c, d, e);
+
+    return this.amplified ? (e + ne) / 2 : ne;
   }
 
   getParametersAt(e: number, m: number) : IBiome {
