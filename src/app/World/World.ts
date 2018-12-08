@@ -17,11 +17,11 @@ class World {
 
   static readonly OBJ_INITIAL_SCALE: number = 400;
 
-  static readonly VIEW_DISTANCE: number = 32 * Chunk.WIDTH;
+  static readonly VIEW_DISTANCE: number = 48 * Chunk.WIDTH;
 
   static readonly SHOW_FOG: boolean = true;
   static readonly FOG_COLOR: number = 0xb1d8ff;
-  static readonly FOG_NEAR: number = World.VIEW_DISTANCE / 4;
+  static readonly FOG_NEAR: number = World.VIEW_DISTANCE / 3;
   static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
