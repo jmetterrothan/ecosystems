@@ -155,7 +155,7 @@ class BiomeGenerator {
   }
 
   static getEuclideanDistance(x, z) {
-    return 2 * Math.sqrt(x * x + z * z);
+    return Math.sqrt(x * x + z * z);
   }
 
   static getManhattanDistance(x, z) {

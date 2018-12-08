@@ -15,6 +15,7 @@ class RainForestBiome extends Biome
   private c: number;
 
   private amplified: boolean;
+  private spread: number;
 
   constructor(generator: BiomeGenerator) {
     super('RAINFOREST', generator);
@@ -23,7 +24,8 @@ class RainForestBiome extends Biome
     this.b = MathUtils.randomFloat(0.7, 1.5); // best around 0.80;
     this.c = MathUtils.randomFloat(0.8, 1.5); // best around 0.80;
 
-    this.amplified = MathUtils.rng() > 0.5;
+    this.amplified = MathUtils.rng() > 0.5; // magnify everything
+    this.spread = MathUtils.randomFloat(0.9, 2.35); // expand over the map (higher valuses means more space available for water)
   }
 
   /**
@@ -45,7 +47,7 @@ class RainForestBiome extends Biome
     + 0.025 * this.generator.noise(512 * nx, 512 * nz));
     e /= (1.00 + 0.50 + 0.25 + 0.13 + 0.06 + 0.035 + 0.025);
 
-    const d = BiomeGenerator.getEuclideanDistance(nx, nz);
+    const d = this.spread * BiomeGenerator.getEuclideanDistance(nx, nz);
     const ne = BiomeGenerator.islandAddMethod(this.a, this.b, this.c, d, e);
 
     return this.amplified ? (e + ne) / 2 : ne;
