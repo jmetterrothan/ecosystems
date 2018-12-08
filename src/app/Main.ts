@@ -46,7 +46,7 @@ class Main {
     this.scene = new THREE.Scene();
 
     const aspect = window.innerWidth / window.innerHeight;
-    this.camera = new THREE.PerspectiveCamera(65, aspect, 1, World.VIEW_DISTANCE);
+    this.camera = new THREE.PerspectiveCamera(65, aspect, 0.1, World.VIEW_DISTANCE);
 
     /*
     const d = 15000;
@@ -71,7 +71,7 @@ class Main {
 
   private initRenderer() {
     // renderer setup
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
     this.renderer.domElement.style.position = 'fixed';
     this.renderer.domElement.style.top = '0';
     this.renderer.domElement.style.left = '0';
