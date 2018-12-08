@@ -15,7 +15,7 @@ import MathUtils from '@utils/Math.utils';
 class World {
   static SEED: string | null = null; // '789005037'
 
-  static readonly OBJ_INITIAL_SCALE: number = 400;
+  static readonly OBJ_INITIAL_SCALE: number = 500;
 
   static readonly MAX_VISIBLE_CHUNKS: number = 48;
   static readonly VIEW_DISTANCE: number = World.MAX_VISIBLE_CHUNKS * Chunk.WIDTH;
