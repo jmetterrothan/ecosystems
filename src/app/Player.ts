@@ -23,7 +23,7 @@ class Player {
     this.moveUp = false;
     this.moveDown = false;
 
-    this.speed = new THREE.Vector3(10000, 10000, 10000);
+    this.speed = new THREE.Vector3(20000, 20000, 20000);
     this.velocity = new THREE.Vector3(0, 0, 0);
 
     window.player = this.controls.getObject();
@@ -89,7 +89,7 @@ class Player {
 
   updatePosition(terrain) {
     const position = this.controls.getObject().position;
-    const y = terrain.getHeightAt(position.x, position.z) + 100;
+    const y = terrain.getHeightAt(position.x, position.z) + 1024;
 
     if (position.y < y) {
       this.controls.getObject().position.y = y;
