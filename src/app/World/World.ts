@@ -174,6 +174,7 @@ class World {
             if (child instanceof THREE.Mesh) {
               child.castShadow = true;
               child.receiveShadow = true;
+              child.frustumCulled = false;
               (<THREE.Geometry>child.geometry).computeFaceNormals();
               child.geometry.computeVertexNormals();
               child.geometry.computeBoundingBox();
