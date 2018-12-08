@@ -66,7 +66,16 @@ import blueMtl from '@objmodels/tree/blue.mtl';
 import diamondObj from '@objmodels/tree/diamond.obj';
 import diamondMtl from '@objmodels/tree/diamond.mtl';
 
+import algeaObj from '@objmodels/flower/algea.obj';
+import algeaMtl from '@objmodels/flower/algea.mtl';
+
 export const OBJECTS: IObject[] = [
+  {
+    name: 'algea',
+    obj: algeaObj,
+    mtl: algeaMtl,
+    doubleSide: true
+  },
   {
     name: 'diamond',
     obj: diamondObj,
