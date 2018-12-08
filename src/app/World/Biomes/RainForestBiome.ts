@@ -16,16 +16,19 @@ class RainForestBiome extends Biome
 
   private amplified: boolean;
   private spread: number;
+  private ridges: number;
 
   constructor(generator: BiomeGenerator) {
     super('RAINFOREST', generator);
 
-    this.a = MathUtils.randomFloat(0.1, 0.8); // best around 0.65;
-    this.b = MathUtils.randomFloat(0.7, 1.5); // best around 0.80;
-    this.c = MathUtils.randomFloat(0.8, 1.5); // best around 0.80;
+    this.a = MathUtils.randomFloat(0, 0.85); // best around 0.65, size of the island
+    this.b = MathUtils.randomFloat(0.7, 1.5); // best around 0.80, makes multiple hills even when low
+    this.c = MathUtils.randomFloat(0.85, 1.5); // best around 0.85;
 
-    this.amplified = MathUtils.rng() > 0.5; // magnify everything
+    this.amplified = MathUtils.rng() >= 0.55; // magnify everything
     this.spread = MathUtils.randomFloat(0.9, 2.35); // expand over the map (higher valuses means more space available for water)
+
+    this.ridges = MathUtils.randomFloat(0.2, 0.4); // makes ridges more prevalent
   }
 
   /**
@@ -40,12 +43,13 @@ class RainForestBiome extends Biome
 
     let e = (0.50 * this.generator.noise(1 * nx,  1 * nz)
     + 1.00 * this.generator.noise(2 * nx,  2 * nz)
-    + 0.25 * this.generator.ridgeNoise(4 * nx,  4 * nz)
+    + this.ridges * this.generator.ridgeNoise(4 * nx,  4 * nz)
     + 0.13 * this.generator.noise(8 * nx,  8 * nz)
     + 0.06 * this.generator.noise(16 * nx, 16 * nz)
     + 0.035 * this.generator.noise(128 * nx, 128 * nz)
     + 0.025 * this.generator.noise(512 * nx, 512 * nz));
-    e /= (1.00 + 0.50 + 0.25 + 0.13 + 0.06 + 0.035 + 0.025);
+
+    e /= (1.00 + 0.50 + this.ridges + 0.13 + 0.06 + 0.035 + 0.025);
 
     const d = this.spread * BiomeGenerator.getEuclideanDistance(nx, nz);
     const ne = BiomeGenerator.islandAddMethod(this.a, this.b, this.c, d, e);
@@ -66,6 +70,9 @@ class RainForestBiome extends Biome
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.1) {
+      if (m > 75) {
+        return BIOMES.TEST;
+      }
       return BIOMES.RAINFOREST_HILLS;
     }
 
