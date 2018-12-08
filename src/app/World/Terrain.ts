@@ -10,8 +10,8 @@ import { WATER_MATERIAL } from '@materials/water.material';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 64;
-  static readonly NCHUNKS_Z: number = 64;
+  static readonly NCHUNKS_X: number = 96;
+  static readonly NCHUNKS_Z: number = 96;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
