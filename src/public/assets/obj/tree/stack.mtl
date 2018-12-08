@@ -1,27 +1,11 @@
-newmtl TreeBellASG
+newmtl blueSG
 illum 4
-Kd 0.80 0.80 0.80
-Ka 0.20 0.20 0.20
+Kd 0.06 0.55 0.47
+Ka 0.09 0.19 0.28
 Tf 1.00 1.00 1.00
 Ni 1.00
-Ks 0.20 0.20 0.20
-Ns 18.00
-newmtl TreePinkASG
-illum 4
-Kd 0.50 0.50 0.50
-Ka 0.00 0.00 0.00
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.00 0.00 0.00
-Ns 18.00
-newmtl TreeRoundASG
-illum 4
-Kd 0.50 0.50 0.50
-Ka 0.00 0.00 0.00
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.00 0.00 0.00
-Ns 18.00
+Ks 0.27 0.27 0.27
+Ns 6.00
 newmtl lilypad1SG
 illum 4
 Kd 0.12 0.51 0.32
@@ -54,6 +38,14 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
 Ns 6.00
+newmtl pasted__pasted__lilypad1SG
+illum 4
+Kd 0.24 0.55 0.18
+Ka 0.29 0.29 0.29
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
 newmtl pasted__pasted__phong2SG3
 illum 4
 Kd 1.00 0.90 0.76
@@ -78,10 +70,18 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
 Ns 6.00
+newmtl pasted__pasted__phong4SG
+illum 4
+Kd 0.59 0.55 0.43
+Ka 0.65 0.65 0.65
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.52 0.52 0.52
+Ns 6.00
 newmtl pasted__phong1SG
 illum 4
 Kd 0.03 0.30 0.10
-Ka 0.46 0.46 0.46
+Ka 0.37 0.50 0.40
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
@@ -125,6 +125,14 @@ Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.26 0.26 0.26
+Ns 6.00
+newmtl pasted__phong4SG
+illum 4
+Kd 0.59 0.55 0.43
+Ka 0.65 0.65 0.65
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.52 0.52 0.52
 Ns 6.00
 newmtl pasted__phong5SG
 illum 4
@@ -184,11 +192,11 @@ Ks 1.00 0.77 0.05
 Ns 0.00
 newmtl phong6SG
 illum 4
-Kd 1.00 0.45 0.60
-Ka 0.88 0.19 0.19
+Kd 1.00 0.61 0.60
+Ka 1.00 0.21 0.21
 Tf 1.00 1.00 1.00
 Ni 1.00
-Ks 0.41 0.41 0.41
+Ks 0.27 0.27 0.27
 Ns 6.00
 newmtl phong7SG
 illum 4
@@ -198,6 +206,14 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
 Ns 6.00
+newmtl phong15SG
+illum 4
+Kd 1.00 0.48 0.00
+Ka 0.35 0.09 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 1.00 1.00 1.00
+Ns 21.84
 newmtl plain_foliageSG
 illum 4
 Kd 0.17 0.70 0.15
