@@ -1,13 +1,14 @@
+import * as THREE from 'three';
+
+import Terrain from './Terrain';
 import MathUtils from '@shared/utils/Math.utils';
 import BiomeGenerator from '@world/BiomeGenerator';
 import CommonUtils from '@shared/utils/Common.utils';
 import Chunk from '@world/Chunk';
-import * as THREE from 'three';
 
 import { IBiome } from '@shared/models/biome.model';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 import { BIOMES } from '@shared/constants/biome.constants';
-import Terrain from './Terrain';
 
 abstract class Biome
 {
@@ -21,6 +22,7 @@ abstract class Biome
   }
   abstract getParametersAt(e: number, m: number) : IBiome;
   abstract computeElevationAt(x: number, z: number): number;
+  abstract computeMoistureAt(x: number, z: number): number;
 
   getWaterColor(m: number): THREE.Color {
     const value = Math.round(m * 100);
@@ -74,6 +76,13 @@ export class RainForestBiome extends Biome
     const ne = BiomeGenerator.islandAddMethod(this.a, this.b, this.c, d, e);
 
     return this.amplified ? (e + ne) / 2 : ne;
+  }
+
+  computeMoistureAt(x: number, z: number): number {
+    const nx = x / (Chunk.WIDTH * 48);
+    const nz = z / (Chunk.DEPTH * 48);
+
+    return this.generator.noise(nx, nz);
   }
 
   getParametersAt(e: number, m: number) : IBiome {
