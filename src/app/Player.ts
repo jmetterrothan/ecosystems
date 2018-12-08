@@ -25,12 +25,12 @@ class Player {
 
     this.speed = new THREE.Vector3(20000, 20000, 20000);
     this.velocity = new THREE.Vector3(0, 0, 0);
-
-    window.player = this.controls.getObject();
   }
 
   init(x, y, z) {
-    this.controls.getObject().position.set(x, y, z);
+    this.controls.getObject().translateX(x);
+    this.controls.getObject().translateY(y);
+    this.controls.getObject().translateZ(z);
   }
 
   updateMvts(delta) {
@@ -105,10 +105,6 @@ class Player {
       case '+': case 'a': this.moveUp = active; break;
       case '-': case 'e': this.moveDown = active; break;
     }
-  }
-
-  getPosition(): THREE.Vector3 {
-    return this.controls.getObject().position.clone();
   }
 }
 

@@ -193,12 +193,12 @@ class Chunk {
     return new THREE.Box3().setFromCenterAndSize(
       new THREE.Vector3(
         col * Chunk.WIDTH + Chunk.WIDTH / 2,
-        Chunk.WIDTH / 2,
+        Chunk.HEIGHT / 2,
         row * Chunk.DEPTH + Chunk.DEPTH / 2
       ),
       new THREE.Vector3(
         Chunk.WIDTH,
-        Chunk.WIDTH,
+        Chunk.HEIGHT,
         Chunk.DEPTH
       ));
   }

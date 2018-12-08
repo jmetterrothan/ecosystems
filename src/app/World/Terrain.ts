@@ -10,8 +10,8 @@ import { WATER_MATERIAL } from '@materials/water.material';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 96;
-  static readonly NCHUNKS_Z: number = 96;
+  static readonly NCHUNKS_X: number = 128;
+  static readonly NCHUNKS_Z: number = 128;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
@@ -108,10 +108,10 @@ class Terrain {
   update(frustum: THREE.Frustum, position: THREE.Vector3) {
     this.getChunkCoordAt(this.chunk, position.x, position.z);
 
-    this.start.col = this.chunk.col - World.VIEW_DISTANCE;
-    this.start.row = this.chunk.row - World.VIEW_DISTANCE;
-    this.end.col = this.chunk.col + World.VIEW_DISTANCE;
-    this.end.row = this.chunk.row + World.VIEW_DISTANCE;
+    this.start.col = this.chunk.col - World.MAX_VISIBLE_CHUNKS;
+    this.start.row = this.chunk.row - World.MAX_VISIBLE_CHUNKS;
+    this.end.col = this.chunk.col + World.MAX_VISIBLE_CHUNKS;
+    this.end.row = this.chunk.row + World.MAX_VISIBLE_CHUNKS;
 
     if (this.start.col < 0) { this.start.col = 0; }
     if (this.start.row < 0) { this.start.row = 0; }
@@ -120,9 +120,8 @@ class Terrain {
 
     // reset previously visible chunks
     for (const chunk of this.visibleChunks) {
-      chunk.setVisible(frustum.intersectsBox(chunk.bbox));
-
-      if (!chunk.isVisible()) {
+      chunk.setVisible(false);
+      if (chunk.col < this.start.col || chunk.row < this.start.row || chunk.col > this.end.col || chunk.row > this.end.row) {
         chunk.clean(this.scene);
       }
     }
@@ -142,6 +141,7 @@ class Terrain {
           }
 
           // mark this chunk as visible for the next update
+          chunk.setVisible(true);
           this.visibleChunks.push(chunk);
         }
       }

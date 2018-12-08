@@ -1,3 +1,4 @@
+import Chunk from '@world/Chunk';
 import * as THREE from 'three';
 
 import { IBiomes } from '@shared/models/biomes.model';
@@ -214,7 +215,7 @@ export const BIOMES: IBiomes = {
         weight: 0.5,
         name: 'rock1',
         scarcity: 0.975,
-        e: null,
+        e: { low: Chunk.SEA_ELEVATION - 0.2, high: 1.0 },
         m: null,
         scale: { min: 0.5, max: 2 },
         float: false,

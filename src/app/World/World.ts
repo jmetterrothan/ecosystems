@@ -17,11 +17,12 @@ class World {
 
   static readonly OBJ_INITIAL_SCALE: number = 400;
 
-  static readonly VIEW_DISTANCE: number = 48 * Chunk.WIDTH;
+  static readonly MAX_VISIBLE_CHUNKS: number = 48;
+  static readonly VIEW_DISTANCE: number = World.MAX_VISIBLE_CHUNKS * Chunk.WIDTH;
 
   static readonly SHOW_FOG: boolean = true;
   static readonly FOG_COLOR: number = 0xb1d8ff;
-  static readonly FOG_NEAR: number = World.VIEW_DISTANCE / 3;
+  static readonly FOG_NEAR: number = World.VIEW_DISTANCE / 2;
   static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
@@ -121,18 +122,22 @@ class World {
   }
 
   public update(delta) {
+    this.camera.updateMatrixWorld(true);
+
     this.frustum.setFromMatrix(
       new THREE.Matrix4().multiplyMatrices(
         this.camera.projectionMatrix,
         this.camera.matrixWorldInverse
       )
     );
-    const position = this.player.getPosition();
-    this.terrain.update(this.frustum, position);
 
+    this.terrain.update(this.frustum, this.controls.getObject().position);
+
+    /*
     if (position.y < Chunk.SEA_LEVEL) {
       // console.log('underwater');
     }
+    */
   }
 
   public updateMvts(delta) {

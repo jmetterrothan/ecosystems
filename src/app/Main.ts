@@ -16,7 +16,7 @@ import World from '@world/World';
 import Terrain from '@world/Terrain';
 
 class Main {
-  public static readonly MS_PER_UPDATE = 1000 / 25;
+  public static readonly MS_PER_UPDATE = 1000 / 30;
 
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
@@ -47,7 +47,10 @@ class Main {
     this.scene = new THREE.Scene();
 
     const aspect = window.innerWidth / window.innerHeight;
-    this.camera = new THREE.PerspectiveCamera(65, aspect, 0.1, World.VIEW_DISTANCE);
+    this.camera = new THREE.PerspectiveCamera(55, aspect, 0.1, World.VIEW_DISTANCE);
+
+    // this.scene.add(new THREE.CameraHelper(this.camera));
+
     /*
     const d = 15000;
     this.camera = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, 0.01, World.VIEW_DISTANCE);
