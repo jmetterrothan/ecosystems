@@ -48,7 +48,19 @@ class BiomeGenerator {
 
       if (rand <= temp) {
         const organism = biome.organisms[i];
-        const ty = organism.float ? Math.max(y, Chunk.SEA_LEVEL) : y;
+
+        let ty = y;
+
+        if (organism.float) {
+          // sample 4 points and take the highest one to prevent (as much as possible) clipping into the water
+          const p1 = this.getWaterHeight(x - 350, z);
+          const p2 = this.getWaterHeight(x + 350, z);
+          const p3 = this.getWaterHeight(x, z + 350);
+          const p4 = this.getWaterHeight(x, z + 350);
+
+          const p = Math.max(p1, p2, p3, p4);
+          ty = Math.max(y, p);
+        }
 
         // test for scarcity and ground elevation criteria
         if (
@@ -69,6 +81,10 @@ class BiomeGenerator {
     }
 
     return null;
+  }
+
+  getWaterHeight(x, z) {
+    return Chunk.SEA_LEVEL + (this.noise(x / 1024, z / 1024) * 400);
   }
 
   getWaterColor(m: number): THREE.Color {

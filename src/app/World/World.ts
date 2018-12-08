@@ -15,7 +15,7 @@ import MathUtils from '@utils/Math.utils';
 class World {
   static SEED: string | null = null; // '789005037'
 
-  static readonly OBJ_INITIAL_SCALE: number = 360;
+  static readonly OBJ_INITIAL_SCALE: number = 400;
 
   static readonly VIEW_DISTANCE: number = 32 * Chunk.WIDTH;
 
@@ -96,12 +96,12 @@ class World {
     this.scene.add(light);
 
     const ambient = new THREE.AmbientLight(0xffffff, 0.275);
-    ambient.position.set(0, Chunk.HEIGHT, 1500);
+    ambient.position.set(0, Chunk.HEIGHT, 15000);
     ambient.castShadow = false;
     this.scene.add(ambient);
 
     const sunlight = new THREE.DirectionalLight(0xffffff, 0.325);
-    sunlight.position.set(0, Chunk.HEIGHT, 1500);
+    sunlight.position.set(0, Chunk.HEIGHT, 15000);
     sunlight.castShadow = true;
     this.scene.add(sunlight);
 
