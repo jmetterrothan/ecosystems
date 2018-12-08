@@ -29,6 +29,8 @@ class BiomeGenerator {
     const e = this.computeElevationAt(x, z);
     const m = this.computeMoistureAt(x, z);
     const y = e * Chunk.HEIGHT;
+    if (e < 0 && e > 1) return;
+
     const biome = this.biome.getParametersAt(e, m);
 
     let temp = 0;

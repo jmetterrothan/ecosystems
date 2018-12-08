@@ -86,16 +86,16 @@ export class RainForestBiome extends Biome
   }
 
   getParametersAt(e: number, m: number) : IBiome {
-    if (e < Chunk.SEA_ELEVATION - 0.05) {
+    if (e < Chunk.SEA_ELEVATION - 0.1) {
       return BIOMES.OCEAN;
     }
 
-    if (e > Chunk.SEA_ELEVATION + 0.075) {
-      return BIOMES.RAINFOREST;
+    if (e > Chunk.SEA_ELEVATION + 0.1) {
+      return BIOMES.RAINFOREST_HILLS;
     }
 
     if (m > 0.6) {
-      return BIOMES.SWAMP;
+      return BIOMES.RAINFOREST_SWAMPS;
     }
     return BIOMES.BEACH;
   }
