@@ -35,7 +35,7 @@ export const BIOMES: IBiomes = {
         scarcity: 0.975,
         e: null,
         m: null,
-        scale: { min: 1.5, max: 2.50 },
+        scale: { min: 1.25, max: 1.75 },
         float: false,
       },
       {
@@ -53,7 +53,7 @@ export const BIOMES: IBiomes = {
         scarcity: 0.995,
         e: null,
         m: null,
-        scale: { min: 0.9, max: 1.3 },
+        scale: { min: 0.9, max: 2.0 },
         float: false,
       },
     ]
@@ -280,11 +280,11 @@ export const BIOMES: IBiomes = {
         scarcity: 0.85,
         e: null,
         m: null,
-        scale: { min: 1.0, max: 2.25 },
+        scale: { min: 1.0, max: 3 },
         float: false,
       },
       {
-        weight: 0.4,
+        weight: 0.35,
         name: 'jungle_tree',
         scarcity: 0.95,
         e: null,
@@ -313,6 +313,15 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.05,
         name: 'pink_mushroom',
+        scarcity: 0.9975,
+        e: null,
+        m: null,
+        scale: { min: 0.85, max: 1.35 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: 'blue_mushroom',
         scarcity: 0.9975,
         e: null,
         m: null,
