@@ -24,7 +24,7 @@ abstract class Biome
   }
 
   /**
-   * Retrieve biome object at the given position
+   * Retrieve biome object (color and organisms) at the given position
    * @param {number} e elevation (0 - 1)
    * @param {number} m moisture (0 - 1)
    * @return {IBiome}

@@ -153,8 +153,8 @@ export const BIOMES: IBiomes = {
     color: new THREE.Color(0x5da736),
     organisms: []
   },
-  RAINFOREST_HILLS: {
-    color: new THREE.Color(0x3ead52),
+  RAINFOREST: {
+    color: new THREE.Color(0x3ead65),
     organisms: [
       {
         weight: 0.6,
@@ -162,16 +162,48 @@ export const BIOMES: IBiomes = {
         scarcity: 0.975,
         e: null,
         m: null,
-        scale: { min: 1.0, max: 1.5 },
+        scale: { min: 1.0, max: 1.25 },
         float: false,
       },
       {
-        weight: 0.4,
+        weight: 0.35,
         name: 'banana_tree',
-        scarcity: 0.95,
+        scarcity: 0.975,
         e: null,
         m: null,
-        scale: { min: 0.75, max: 1.5 },
+        scale: { min: 0.5, max: 1.5 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: 'blue',
+        scarcity: 0.995,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
+        m: null,
+        scale: { min: 1., max: 1.25 },
+        float: false,
+      },
+    ]
+  },
+  RAINFOREST_HILLS: {
+    color: new THREE.Color(0x3ead52),
+    organisms: [
+      {
+        weight: 0.5,
+        name: 'jungle_tree',
+        scarcity: 0.985,
+        e: null,
+        m: null,
+        scale: { min: 1, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.5,
+        name: 'banana_tree',
+        scarcity: 0.985,
+        e: null,
+        m: null,
+        scale: { min: 0.5, max: 1.5 },
         float: false,
       }
     ]
@@ -182,7 +214,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.50,
         name: 'mangrove',
-        scarcity: 0.99,
+        scarcity: 0.995,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
         m: null,
         scale: { min: 1.0, max: 1.25 },
@@ -194,7 +226,7 @@ export const BIOMES: IBiomes = {
         scarcity: 0.995,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
         m: null,
-        scale: { min: 1.0, max: 1.25 },
+        scale: { min: 1.00, max: 1.25 },
         float: false,
       },
     ]

@@ -26,9 +26,9 @@ class RainForestBiome extends Biome
     this.c = MathUtils.randomFloat(0.85, 1.5); // best around 0.85;
 
     this.amplified = MathUtils.rng() >= 0.55; // magnify everything
-    this.spread = MathUtils.randomFloat(0.9, 2.35); // expand over the map (higher valuses means more space available for water)
+    this.spread =  MathUtils.randomFloat(0.95, 2.35); // expand over the map (higher values means more space available for water)
 
-    this.ridges = MathUtils.randomFloat(0.2, 0.4); // makes ridges more prevalent
+    this.ridges = MathUtils.randomFloat(0.2, 0.375); // makes ridges more prevalent
   }
 
   /**
@@ -58,10 +58,10 @@ class RainForestBiome extends Biome
   }
 
   computeMoistureAt(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 48);
-    const nz = z / (Chunk.DEPTH * 48);
+    const nx = x / (Chunk.WIDTH * 64);
+    const nz = z / (Chunk.DEPTH * 64);
 
-    return this.generator.noise(nx, nz);
+    return this.generator.noise2(nx, nz);
   }
 
   getParametersAt(e: number, m: number) : IBiome {
@@ -69,9 +69,9 @@ class RainForestBiome extends Biome
       return BIOMES.OCEAN;
     }
 
-    if (e > Chunk.SEA_ELEVATION + 0.1) {
-      if (m > 75) {
-        return BIOMES.TEST;
+    if (e > Chunk.SEA_ELEVATION + 0.135) {
+      if (m > 0.75) {
+        return BIOMES.RAINFOREST;
       }
       return BIOMES.RAINFOREST_HILLS;
     }

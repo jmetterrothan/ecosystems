@@ -104,7 +104,8 @@ export const OBJECTS: IObject[] = [
   {
     name: 'banana_tree',
     obj: banana_treeObj,
-    mtl: banana_treeMtl
+    mtl: banana_treeMtl,
+    doubleSide: true
   },
   {
     name: 'palm_tree',

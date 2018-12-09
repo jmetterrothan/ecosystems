@@ -13,10 +13,12 @@ import { IPick } from '@shared/models/pick.model';
 
 class BiomeGenerator {
   private simplex: simplexNoise;
+  private simplex2: simplexNoise;
   private biome: Biome;
 
   constructor() {
-    this.simplex = new simplexNoise();
+    this.simplex = new simplexNoise(MathUtils.rng);
+    this.simplex2 = new simplexNoise(MathUtils.rng);
     this.biome = new RainForestBiome(this);
   }
 
@@ -126,7 +128,7 @@ class BiomeGenerator {
   computeWaterHeightAt(x, z) {
     const nx = x / (Chunk.WIDTH * 0.5);
     const nz = z / (Chunk.DEPTH * 0.5);
-    return Chunk.SEA_LEVEL + this.noise(nx, nz) * 400;
+    return Chunk.SEA_LEVEL + this.noise2(nx, nz) * 400;
   }
 
   /**
@@ -140,6 +142,10 @@ class BiomeGenerator {
 
   noise(x: number, z: number) {
     return (this.simplex.noise2D(x, z) + 1) / 2;
+  }
+
+  noise2(x: number, z: number) {
+    return (this.simplex2.noise2D(x, z) + 1) / 2;
   }
 
   ridgeNoise(x: number, z: number) {

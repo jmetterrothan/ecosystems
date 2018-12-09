@@ -180,14 +180,15 @@ class World {
               child.castShadow = true;
               child.receiveShadow = true;
               child.frustumCulled = false;
-              (<THREE.Geometry>child.geometry).computeFaceNormals();
-              child.geometry.computeVertexNormals();
-              child.geometry.computeBoundingBox();
-              child.geometry.computeBoundingSphere();
-              (<THREE.Geometry>child.geometry).normalsNeedUpdate = true;
-              (<THREE.Material>child.material).flatShading = true;
-              if (element.doubleSide === true) {
-                (<THREE.Material>child.material).side = THREE.DoubleSide;
+
+              if (!(child.material instanceof THREE.Material)) {
+                child.material.forEach(material => {
+                  material.flatShading = true;
+                  if (element.doubleSide === true) material.side = THREE.DoubleSide;
+                });
+              } else {
+                child.material.flatShading = true;
+                if (element.doubleSide === true) child.material.side = THREE.DoubleSide;
               }
             }
           });
