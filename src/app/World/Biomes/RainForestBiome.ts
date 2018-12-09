@@ -25,10 +25,10 @@ class RainForestBiome extends Biome
     this.b = MathUtils.randomFloat(0.7, 1.5); // best around 0.80, makes multiple hills even when low
     this.c = MathUtils.randomFloat(0.85, 1.5); // best around 0.85;
 
-    this.amplified = MathUtils.rng() >= 0.55; // magnify everything
+    this.amplified = MathUtils.rng() >= 0.25; // magnify everything
     this.spread =  MathUtils.randomFloat(0.95, 2.35); // expand over the map (higher values means more space available for water)
 
-    this.ridges = MathUtils.randomFloat(0.2, 0.375); // makes ridges more prevalent
+    this.ridges = MathUtils.randomFloat(0.225, 0.375); // makes ridges more prevalent
   }
 
   /**
@@ -70,7 +70,7 @@ class RainForestBiome extends Biome
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.135) {
-      if (m > 0.75) {
+      if (m > 0.70 + MathUtils.randomFloat(0.25, 0.5)) {
         return BIOMES.RAINFOREST;
       }
       return BIOMES.RAINFOREST_HILLS;

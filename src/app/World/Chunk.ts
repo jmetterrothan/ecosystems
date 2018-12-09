@@ -22,6 +22,7 @@ class Chunk {
   static readonly CLOUD_LEVEL: number = Chunk.HEIGHT - Chunk.HEIGHT / 8;
 
   static readonly SEA_ELEVATION: number = Chunk.SEA_LEVEL / Chunk.HEIGHT;
+  static readonly CLOUD_ELEVATION: number = Chunk.CLOUD_LEVEL / Chunk.HEIGHT;
 
   static readonly NROWS: number = 2;
   static readonly NCOLS: number = 2;
@@ -92,14 +93,12 @@ class Chunk {
 
       (<THREE.Geometry>terrain.clouds.geometry).mergeMesh(cloudMesh);
       (<THREE.Geometry>terrain.clouds.geometry).elementsNeedUpdate = true;
-
     }
 
     this.loadPopulation();
 
     this.merged = true;
     this.dirty = true;
-
   }
 
   /**

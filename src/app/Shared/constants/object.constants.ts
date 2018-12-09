@@ -69,7 +69,16 @@ import diamondMtl from '@objmodels/tree/diamond.mtl';
 import algeaObj from '@objmodels/flower/algea.obj';
 import algeaMtl from '@objmodels/flower/algea.mtl';
 
+import highlands_treeObj from '@objmodels/tree/highlands_tree.obj';
+import highlands_treeMtl from '@objmodels/tree/highlands_tree.mtl';
+
 export const OBJECTS: IObject[] = [
+  {
+    name: 'highlands_tree',
+    obj: highlands_treeObj,
+    mtl: highlands_treeMtl,
+    doubleSide: true
+  },
   {
     name: 'algea',
     obj: algeaObj,

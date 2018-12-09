@@ -6,6 +6,14 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.27 0.27 0.27
 Ns 6.00
+newmtl highland_leavesSG
+illum 4
+Kd 1.00 0.38 0.12
+Ka 1.00 0.61 0.29
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.55 0.55 0.55
+Ns 6.00
 newmtl lilypad1SG
 illum 4
 Kd 0.12 0.51 0.32
@@ -25,6 +33,14 @@ Ns 6.00
 newmtl pasted__lilypad1SG
 illum 4
 Kd 0.24 0.55 0.18
+Ka 0.29 0.29 0.29
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
+newmtl pasted__lilypad1SG1
+illum 4
+Kd 0.18 0.59 0.35
 Ka 0.29 0.29 0.29
 Tf 1.00 1.00 1.00
 Ni 1.00

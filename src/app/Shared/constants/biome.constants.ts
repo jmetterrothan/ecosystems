@@ -4,25 +4,20 @@ import * as THREE from 'three';
 import { IBiomes } from '@shared/models/biomes.model';
 
 export const BIOMES: IBiomes = {
+  FROZEN_GRASSLAND: {
+    color: new THREE.Color(0x96c47b),
+    organisms: []
+  },
   GRASSLAND: {
     color: new THREE.Color(0x93c54b),
     organisms: [
-      {
-        weight: 0.6,
-        name: 'spruce',
-        scarcity: 0.995,
-        e: null,
-        m: null,
-        scale: { min: 0.75, max: 1.25 },
-        float: false,
-      },
       {
         weight: 0.1,
         name: 'tulip',
         scarcity: 0.98,
         e: null,
         m: null,
-        scale: { min: 0.95, max: 1.25 },
+        scale: { min: 1.5, max: 2 },
         float: false,
       },
       {
@@ -31,22 +26,22 @@ export const BIOMES: IBiomes = {
         scarcity: 0.98,
         e: null,
         m: null,
-        scale: { min: 0.95, max: 1.25 },
+        scale: { min: 1.5, max: 2 },
         float: false,
       },
       {
         weight: 0.1,
         name: 'bush',
-        scarcity: 0.9925,
+        scarcity: 0.975,
         e: null,
         m: null,
-        scale: { min: 0.85, max: 1.00 },
+        scale: { min: 1.5, max: 2.50 },
         float: false,
       },
       {
         weight: 0.1,
         name: 'diamond',
-        scarcity: 0.975,
+        scarcity: 0.9875,
         e: null,
         m: null,
         scale: { min: 0.85, max: 1.1 },
@@ -55,12 +50,12 @@ export const BIOMES: IBiomes = {
     ]
   },
   TAIGA: {
-    color: new THREE.Color(0x5da736),
+    color: new THREE.Color(0x298c2d),
     organisms: [
       {
         weight: 0.9,
         name: 'spruce',
-        scarcity: 0.825,
+        scarcity: 0.925,
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.25 },
@@ -92,7 +87,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.3,
         name: 'cactus1',
-        scarcity: 0.985,
+        scarcity: 0.99,
         e: null,
         m: null,
         scale: { min: 1.25, max: 2.5 },
@@ -101,7 +96,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.1,
         name: 'cactus2',
-        scarcity: 0.985,
+        scarcity: 0.999,
         e: null,
         m: null,
         scale: { min: 1.25, max: 2.5 },
@@ -110,7 +105,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.2,
         name: 'cactus3',
-        scarcity: 0.985,
+        scarcity: 0.999,
         e: null,
         m: null,
         scale: { min: 1.25, max: 2.5 },
@@ -119,7 +114,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.2,
         name: 'cactus4',
-        scarcity: 0.995,
+        scarcity: 0.999,
         e: null,
         m: null,
         scale: { min: 1, max: 1.2 },
@@ -128,7 +123,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.1,
         name: 'rock1',
-        scarcity: 0.985,
+        scarcity: 0.995,
         e: null,
         m: null,
         scale: { min: 1.0, max: 2.85 },
@@ -137,7 +132,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.1,
         name: 'palm_tree',
-        scarcity: 0.995,
+        scarcity: 0.999,
         e: { low: 0.26, high: 0.5 },
         m: null,
         scale: { min: 1.1, max: 1.5 },
@@ -146,11 +141,48 @@ export const BIOMES: IBiomes = {
     ]
   },
   TUNDRA: {
-    color: new THREE.Color(0xB4C1A9),
-    organisms: []
+    color: new THREE.Color(0xe8d587),
+    organisms: [
+      {
+        weight: 0.4,
+        name: 'rock2',
+        scarcity: 0.975,
+        e: null,
+        m: null,
+        scale: { min: 0.8, max: 2.75 },
+        float: false,
+      },
+      {
+        weight: 0.4,
+        name: 'rock3',
+        scarcity: 0.995,
+        e: null,
+        m: null,
+        scale: { min: 0.8, max: 1 },
+        float: false,
+      },
+      {
+        weight: 0.1,
+        name: 'highlands_tree',
+        scarcity: 0.995,
+        e: null,
+        m: null,
+        scale: { min: 1.0, max: 1.5 },
+        float: false,
+      },
+      {
+        weight: 0.1,
+        name: 'brown_mushroom',
+        scarcity: 0.995,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
+        m: null,
+        scale: { min: 1.0, max: 1.25 },
+        float: false,
+      }
+    ]
   },
   MOUNTAIN: {
-    color: new THREE.Color(0x5da736),
+    color: new THREE.Color(0xCEBD64),
     organisms: []
   },
   RAINFOREST: {
@@ -203,7 +235,7 @@ export const BIOMES: IBiomes = {
         scarcity: 0.985,
         e: null,
         m: null,
-        scale: { min: 0.5, max: 1.5 },
+        scale: { min: 1.0, max: 1.5 },
         float: false,
       }
     ]
@@ -262,15 +294,15 @@ export const BIOMES: IBiomes = {
         name: 'lilypad',
         scarcity: 0.985,
         e: null,
-        m: { low: 0.65, high: 1.0 },
+        m: { low: 0.75, high: 1.0 },
         scale: { min: 1.0, max: 1.5 },
         float: true,
       },
       {
         weight: 0.5,
         name: 'rock1',
-        scarcity: 0.985,
-        e: { low: Chunk.SEA_ELEVATION - 0.25, high: 0.50 },
+        scarcity: 0.995,
+        e: { low: Chunk.SEA_ELEVATION - 0.5, high: 0.50 },
         m: null,
         scale: { min: 1.5, max: 4 },
         float: false,
@@ -287,7 +319,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.20,
         name: 'red_mushroom',
-        scarcity: 0.85,
+        scarcity: 0.95,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
         m: null,
         scale: { min: 1.0, max: 1.25 },
@@ -296,7 +328,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.20,
         name: 'brown_mushroom',
-        scarcity: 0.85,
+        scarcity: 0.95,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
         m: null,
         scale: { min: 1.0, max: 1.25 },
@@ -305,7 +337,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.20,
         name: 'mangrove',
-        scarcity: 0.99,
+        scarcity: 0.995,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
         m: null,
         scale: { min: 1.0, max: 1.25 },

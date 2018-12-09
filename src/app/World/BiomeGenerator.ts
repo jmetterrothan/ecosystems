@@ -5,6 +5,7 @@ import World from '@world/World';
 import Chunk from '@world/Chunk';
 import Biome from '@world/Biome';
 import RainForestBiome from '@world/Biomes/RainForestBiome';
+import HighlandBiome from '@world/Biomes/HighlandBiome';
 import MathUtils from '@utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
@@ -19,7 +20,7 @@ class BiomeGenerator {
   constructor() {
     this.simplex = new simplexNoise(MathUtils.rng);
     this.simplex2 = new simplexNoise(MathUtils.rng);
-    this.biome = new RainForestBiome(this);
+    this.biome = new HighlandBiome(this); // MathUtils.rng() > 0.5 ? new HighlandBiome(this) : new RainForestBiome(this);
   }
 
   /**
