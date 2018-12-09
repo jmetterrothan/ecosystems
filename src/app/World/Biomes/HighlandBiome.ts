@@ -55,7 +55,7 @@ class HighlandBiome extends Biome
     + 0.035 * this.generator.noise2(128 * nx, 128 * nz)
     + 0.025 * this.generator.noise2(512 * nx, 512 * nz));
 
-    e /= 0.5  + 1.0 + 0.35 + 0.13 + 0.06 + 0.035 * 2 + 0.025 + 1.00 + 0.50 + 0.4 + 0.13 + 0.06 + 0.035 + 0.025;
+    e /= 0.5 + 1.0 + 0.35 + 0.13 + 0.06 + 0.035 * 2 + 0.025 + 1.00 + 0.50 + 0.4 + 0.13 + 0.06 + 0.035 + 0.025;
     e **= this.f;
     const d = this.spread * BiomeGenerator.getEuclideanDistance(nx, nz);
     e = BiomeGenerator.islandAddMethod(this.a, this.b, this.c, d, e);

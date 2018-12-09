@@ -39,12 +39,21 @@ export const BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.25,
+        weight: 0.05,
         name: 'diamond',
         scarcity: 0.9875,
         e: null,
         m: null,
         scale: { min: 0.85, max: 1.1 },
+        float: false,
+      },
+      {
+        weight: 0.20,
+        name: 'birch',
+        scarcity: 0.995,
+        e: null,
+        m: null,
+        scale: { min: 0.9, max: 1.3 },
         float: false,
       },
     ]
@@ -53,7 +62,7 @@ export const BIOMES: IBiomes = {
     color: new THREE.Color(0x298c2d),
     organisms: [
       {
-        weight: 0.9,
+        weight: 0.6,
         name: 'spruce',
         scarcity: 0.925,
         e: null,
@@ -78,7 +87,25 @@ export const BIOMES: IBiomes = {
         m: null,
         scale: { min: 0.75, max: 1.25 },
         float: false,
-      }
+      },
+      {
+        weight: 0.05,
+        name: 'blue_mushroom',
+        scarcity: 0,
+        e: null,
+        m: null,
+        scale: { min: 0.75, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.25,
+        name: 'birch',
+        scarcity: 0.99,
+        e: null,
+        m: null,
+        scale: { min: 0.9, max: 1.3 },
+        float: false,
+      },
     ]
   },
   DESERT: {
@@ -171,14 +198,23 @@ export const BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.1,
+        weight: 0.05,
         name: 'brown_mushroom',
         scarcity: 0.995,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
         m: null,
         scale: { min: 1.0, max: 1.25 },
         float: false,
-      }
+      },
+      {
+        weight: 0.05,
+        name: 'blue_mushroom',
+        scarcity: 0.995,
+        e: null,
+        m: null,
+        scale: { min: 0.85, max: 1.75 },
+        float: false,
+      },
     ]
   },
   MOUNTAIN: {
@@ -189,7 +225,7 @@ export const BIOMES: IBiomes = {
     color: new THREE.Color(0x3ead68),
     organisms: [
       {
-        weight: 0.5,
+        weight: 0.45,
         name: 'jungle_tree',
         scarcity: 0.975,
         e: null,
@@ -222,6 +258,15 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 1.5, max: 2 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: 'pink_mushroom',
+        scarcity: 0.995,
+        e: null,
+        m: null,
+        scale: { min: 0.85, max: 1.75 },
         float: false,
       },
     ]
@@ -257,14 +302,23 @@ export const BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.4,
+        weight: 0.35,
         name: 'banana_tree',
         scarcity: 0.985,
         e: null,
         m: null,
         scale: { min: 1.0, max: 1.5 },
         float: false,
-      }
+      },
+      {
+        weight: 0.05,
+        name: 'pink_mushroom',
+        scarcity: 0.9975,
+        e: null,
+        m: null,
+        scale: { min: 0.85, max: 1.35 },
+        float: false,
+      },
     ]
   },
   RAINFOREST_SWAMPS: {

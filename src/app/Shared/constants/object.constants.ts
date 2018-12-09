@@ -78,7 +78,31 @@ import algeaMtl from '@objmodels/flower/algea.mtl';
 import highlands_treeObj from '@objmodels/tree/highlands_tree.obj';
 import highlands_treeMtl from '@objmodels/tree/highlands_tree.mtl';
 
+import birchObj from '@objmodels/tree/birch.obj';
+import birchMtl from '@objmodels/tree/birch.mtl';
+
+import blue_mushroomObj from '@objmodels/mushroom/blue_mushroom.obj';
+import blue_mushroomMtl from '@objmodels/mushroom/blue_mushroom.mtl';
+
+import pink_mushroomObj from '@objmodels/mushroom/pink_mushroom.obj';
+import pink_mushroomMtl from '@objmodels/mushroom/pink_mushroom.mtl';
+
 export const OBJECTS: IObject[] = [
+  {
+    name: 'pink_mushroom',
+    obj: pink_mushroomObj,
+    mtl: pink_mushroomMtl
+  },
+  {
+    name: 'blue_mushroom',
+    obj: blue_mushroomObj,
+    mtl: blue_mushroomMtl
+  },
+  {
+    name: 'birch',
+    obj: birchObj,
+    mtl: birchMtl
+  },
   {
     name: 'highlands_tree',
     obj: highlands_treeObj,
