@@ -30,6 +30,9 @@ import rock2Mtl from '@objmodels/rock/rock2.mtl';
 import rock3Obj from '@objmodels/rock/rock3.obj';
 import rock3Mtl from '@objmodels/rock/rock3.mtl';
 
+import rock4Obj from '@objmodels/rock/rock4.obj';
+import rock4Mtl from '@objmodels/rock/rock4.mtl';
+
 import lilypadObj from '@objmodels/flower/lilypad.obj';
 import lilypadMtl from '@objmodels/flower/lilypad.mtl';
 
@@ -38,6 +41,9 @@ import mangroveMtl from '@objmodels/tree/mangrove.mtl';
 
 import jungle_treeObj from '@objmodels/tree/jungle_tree.obj';
 import jungle_treeMtl from '@objmodels/tree/jungle_tree.mtl';
+
+import jungle_tree2Obj from '@objmodels/tree/jungle_tree2.obj';
+import jungle_tree2Mtl from '@objmodels/tree/jungle_tree2.mtl';
 
 import tulipObj from '@objmodels/flower/tulip.obj';
 import tulipMtl from '@objmodels/flower/tulip.mtl';
@@ -142,6 +148,11 @@ export const OBJECTS: IObject[] = [
     mtl: jungle_treeMtl
   },
   {
+    name: 'jungle_tree2',
+    obj: jungle_tree2Obj,
+    mtl: jungle_tree2Mtl
+  },
+  {
     name: 'mangrove',
     obj: mangroveObj,
     mtl: mangroveMtl,
@@ -181,6 +192,11 @@ export const OBJECTS: IObject[] = [
     name: 'rock1',
     obj: rock1Obj,
     mtl: rock1Mtl
+  },
+  {
+    name: 'rock4',
+    obj: rock4Obj,
+    mtl: rock4Mtl
   },
   {
     name: 'rock2',

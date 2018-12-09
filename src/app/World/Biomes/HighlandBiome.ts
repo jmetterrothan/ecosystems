@@ -26,8 +26,6 @@ class DesertBiome extends Biome
 
     this.spread = MathUtils.randomFloat(1.5, 2.25); // expand over the map (higher values means more space available for water)
     this.f = MathUtils.randomFloat(0.85, 3);
-
-    console.log(this);
   }
 
   /**
@@ -69,7 +67,7 @@ class DesertBiome extends Biome
     const nx = x / (Chunk.WIDTH * 96);
     const nz = z / (Chunk.DEPTH * 96);
 
-    return this.generator.noise2(nx, nz);
+    return Math.round(this.generator.noise2(nx, nz) * 100) / 100;
   }
 
   getParametersAt(e: number, m: number) : IBiome {
@@ -85,13 +83,13 @@ class DesertBiome extends Biome
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.05) {
-      if (m < 0.35) {
+      if (m < 0.35 + MathUtils.randomFloat(0.00, 0.06)) {
         return BIOMES.TUNDRA;
       }
       return BIOMES.GRASSLAND;
     }
 
-    if (m > 0.5) {
+    if (m > 0.5 + MathUtils.randomFloat(0.01, 0.06)) {
       return BIOMES.SWAMP;
     }
     return BIOMES.BEACH;

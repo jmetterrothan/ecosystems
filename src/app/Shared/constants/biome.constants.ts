@@ -12,7 +12,7 @@ export const BIOMES: IBiomes = {
     color: new THREE.Color(0x93c54b),
     organisms: [
       {
-        weight: 0.1,
+        weight: 0.25,
         name: 'tulip',
         scarcity: 0.98,
         e: null,
@@ -21,7 +21,7 @@ export const BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.1,
+        weight: 0.25,
         name: 'daisy',
         scarcity: 0.98,
         e: null,
@@ -30,7 +30,7 @@ export const BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.1,
+        weight: 0.25,
         name: 'bush',
         scarcity: 0.975,
         e: null,
@@ -39,7 +39,7 @@ export const BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.1,
+        weight: 0.25,
         name: 'diamond',
         scarcity: 0.9875,
         e: null,
@@ -186,10 +186,10 @@ export const BIOMES: IBiomes = {
     organisms: []
   },
   RAINFOREST: {
-    color: new THREE.Color(0x3ead65),
+    color: new THREE.Color(0x3ead68),
     organisms: [
       {
-        weight: 0.6,
+        weight: 0.5,
         name: 'jungle_tree',
         scarcity: 0.975,
         e: null,
@@ -198,21 +198,30 @@ export const BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.35,
-        name: 'banana_tree',
+        weight: 0.40,
+        name: 'jungle_tree2',
         scarcity: 0.975,
         e: null,
         m: null,
-        scale: { min: 0.5, max: 1.5 },
+        scale: { min: 1.0, max: 1.25 },
         float: false,
       },
       {
         weight: 0.05,
         name: 'blue',
-        scarcity: 0.995,
+        scarcity: 0.999,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
         m: null,
         scale: { min: 1., max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: 'tulip',
+        scarcity: 0.98,
+        e: null,
+        m: null,
+        scale: { min: 1.5, max: 2 },
         float: false,
       },
     ]
@@ -221,16 +230,34 @@ export const BIOMES: IBiomes = {
     color: new THREE.Color(0x3ead52),
     organisms: [
       {
-        weight: 0.5,
+        weight: 0.1,
+        name: 'rock4',
+        scarcity: 0.85,
+        e: null,
+        m: null,
+        scale: { min: 1.0, max: 2.25 },
+        float: false,
+      },
+      {
+        weight: 0.4,
         name: 'jungle_tree',
-        scarcity: 0.985,
+        scarcity: 0.95,
         e: null,
         m: null,
         scale: { min: 1, max: 1.25 },
         float: false,
       },
       {
-        weight: 0.5,
+        weight: 0.1,
+        name: 'jungle_tree2',
+        scarcity: 0.975,
+        e: null,
+        m: null,
+        scale: { min: 1, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.4,
         name: 'banana_tree',
         scarcity: 0.985,
         e: null,

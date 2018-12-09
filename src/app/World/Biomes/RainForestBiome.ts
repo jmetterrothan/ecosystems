@@ -70,13 +70,13 @@ class RainForestBiome extends Biome
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.135) {
-      if (m > 0.70 + MathUtils.randomFloat(0.25, 0.5)) {
+      if (m > 0.65 + MathUtils.randomFloat(0.01, 0.08)) {
         return BIOMES.RAINFOREST;
       }
       return BIOMES.RAINFOREST_HILLS;
     }
 
-    if (m > 0.6) {
+    if (m > 0.6 + MathUtils.randomFloat(0.01, 0.06)) {
       return BIOMES.RAINFOREST_SWAMPS;
     }
     return BIOMES.BEACH;
