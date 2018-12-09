@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 import BiomeGenerator from '@world/BiomeGenerator';
 import CommonUtils from '@shared/utils/Common.utils';
+import Chunk from '@world/Chunk';
 
 import { IBiome } from '@shared/models/biome.model';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
@@ -45,7 +46,13 @@ abstract class Biome
    * @param {number} z
    * @return {number}
    */
-  abstract computeMoistureAt(x: number, z: number): number;
+
+  computeMoistureAt(x: number, z: number): number {
+    const nx = x / (Chunk.WIDTH * 96);
+    const nz = z / (Chunk.DEPTH * 96);
+
+    return Math.round(this.generator.noise2(nx, nz) * 100) / 100;
+  }
 
   /**
    * Retrieve water color

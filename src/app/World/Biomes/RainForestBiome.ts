@@ -57,13 +57,6 @@ class RainForestBiome extends Biome
     return this.amplified ? (e + ne) / 2 : ne;
   }
 
-  computeMoistureAt(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 64);
-    const nz = z / (Chunk.DEPTH * 64);
-
-    return this.generator.noise2(nx, nz);
-  }
-
   getParametersAt(e: number, m: number) : IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.1) {
       return BIOMES.OCEAN;

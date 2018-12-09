@@ -8,7 +8,7 @@ import MathUtils from '@shared/utils/Math.utils';
 import { IBiome } from '@shared/models/biome.model';
 import { BIOMES } from '@shared/constants/biome.constants';
 
-class DesertBiome extends Biome
+class HighlandBiome extends Biome
 {
   private a: number;
   private b: number;
@@ -63,13 +63,6 @@ class DesertBiome extends Biome
     return e;
   }
 
-  computeMoistureAt(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 96);
-    const nz = z / (Chunk.DEPTH * 96);
-
-    return Math.round(this.generator.noise2(nx, nz) * 100) / 100;
-  }
-
   getParametersAt(e: number, m: number) : IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.05) {
       return BIOMES.OCEAN;
@@ -96,4 +89,4 @@ class DesertBiome extends Biome
   }
 }
 
-export default DesertBiome;
+export default HighlandBiome;
