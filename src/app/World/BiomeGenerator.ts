@@ -36,7 +36,7 @@ class BiomeGenerator {
   pick(x: number, z: number): IPick | null {
     const e = this.computeElevationAt(x, z);
     const m = this.computeMoistureAt(x, z);
-    const y = e * Chunk.HEIGHT;
+
     if (e < 0 && e > 1) return;
 
     const biome = this.biome.getParametersAt(e, m);
@@ -45,14 +45,21 @@ class BiomeGenerator {
     const rand = MathUtils.rng(); // random float bewteen 0 - 1 included (sum of weights must be = 1)
 
     for (let i = 0, n = biome.organisms.length; i < n; i++) {
+      let y = e * Chunk.HEIGHT;
       temp += biome.organisms[i].weight;
 
       if (rand <= temp) {
         const organism = biome.organisms[i];
 
-        let ty = y;
+        const scale = organism.scale ? MathUtils.randomFloat(organism.scale.min, organism.scale.max) : 1;
 
-        if (organism.float) {
+        const lowM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).low : 0;
+        const highM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).high : 1;
+
+        const lowE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).low : 0;
+        const highE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).high : 1;
+
+        if (organism.float === true) {
           // sample 4 points and take the highest one to prevent (as much as possible) clipping into the water
           const p1 = this.computeWaterHeightAt(x - 350, z);
           const p2 = this.computeWaterHeightAt(x + 350, z);
@@ -60,22 +67,20 @@ class BiomeGenerator {
           const p4 = this.computeWaterHeightAt(x, z + 350);
 
           const p = Math.max(p1, p2, p3, p4);
-          ty = Math.max(y, p);
+          y = Math.max(y, p);
         }
 
         // test for scarcity and ground elevation criteria
-        if (
-          (organism.scarcity === 0 || MathUtils.rng() >= organism.scarcity) &&
-          (organism.e === null || (e >= (<ILowHigh>organism.e).low && e <= (<ILowHigh>organism.e).high)) &&
-          (organism.m === null || (m >= (<ILowHigh>organism.m).low && m <= (<ILowHigh>organism.m).high))
-        ) {
+        if ((organism.scarcity === 0 || MathUtils.rng() >= organism.scarcity) &&
+          (e >= lowE && e <= highE) &&
+          (m >= lowM && m <= highM)) {
           return (<IPick>{
             x,
             z,
-            y: ty,
+            y,
             n: organism.name,
             r: MathUtils.randomFloat(0, Math.PI * 2),
-            s: MathUtils.randomFloat(organism.scale.min, organism.scale.max) * World.OBJ_INITIAL_SCALE
+            s: scale * World.OBJ_INITIAL_SCALE
           });
         }
       }

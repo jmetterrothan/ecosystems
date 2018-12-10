@@ -280,7 +280,7 @@ export const BIOMES: IBiomes = {
         scarcity: 0.85,
         e: null,
         m: null,
-        scale: { min: 1.0, max: 3 },
+        scale: { min: 1.0, max: 2.0 },
         float: false,
       },
       {
