@@ -36,18 +36,18 @@ class MountainBiome extends Biome
 
     let e = 0.5 * this.generator.ridgeNoise2(1 * nx, 1 * nz);
     e += 0.0035 * this.generator.noise(8 * nx, 8 * nz);
-    e += 0.0075 * this.generator.ridgeNoise(32 * nx, 32 * nz);
+    e += 0.0075 * this.generator.noise2(32 * nx, 32 * nz);
     e += 0.025 * this.generator.ridgeNoise2(8 * nx, 8 * nz);
     e += 0.25 * this.generator.noise(4 * nx, 4 * nz) * this.generator.noise3(nx, nz);
 
-    e /= (0.25 + 0.0035 + 0.0075 + 0.025 + 0.25) - this.spike;
+    e /= (0.5 + 0.0035 + 0.0075 + 0.025 + 0.25) - this.spike;
 
     e **= 1.25;
 
-    const d = 1.50 * BiomeGenerator.getEuclideanDistance(nx, nz);
-    const ne = BiomeGenerator.islandMultiplyMethod(this.a, this.b, this.c, d, e);
+    const d = 1.50 * BiomeGenerator.getManhattanDistance(nx, nz);
+    const ne = BiomeGenerator.islandAddMethod(this.a, this.b, this.c, d, e);
 
-    return ne / 1.5;
+    return ne;
   }
 
   getParametersAt(e: number, m: number) : IBiome {
