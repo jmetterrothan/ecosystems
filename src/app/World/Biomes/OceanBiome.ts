@@ -17,7 +17,7 @@ class OceanBiome extends Biome
     super('OCEAN', generator);
 
     this.spike = MathUtils.randomFloat(0.025, 0.125);
-    this.depth = MathUtils.randomFloat(0.175, 0.3);
+    this.depth = MathUtils.randomFloat(0.2, 0.3);
   }
 
   /**
