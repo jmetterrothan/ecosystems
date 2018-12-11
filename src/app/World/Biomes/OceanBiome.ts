@@ -6,11 +6,18 @@ import Chunk from '@world/Chunk';
 
 import { IBiome } from '@shared/models/biome.model';
 import { BIOMES } from '@shared/constants/biome.constants';
+import MathUtils from '@shared/utils/Math.utils';
 
 class OceanBiome extends Biome
 {
+  spike: number;
+  depth: number;
+
   constructor(generator: BiomeGenerator) {
     super('OCEAN', generator);
+
+    this.spike = MathUtils.randomFloat(0.025, 0.125);
+    this.depth = MathUtils.randomFloat(0.175, 0.3);
   }
 
   /**
@@ -29,9 +36,10 @@ class OceanBiome extends Biome
     e += 0.025 * this.generator.ridgeNoise2(8 * nx, 8 * nz);
     e += 0.25 * this.generator.noise(4 * nx, 4 * nz) * this.generator.noise3(nx, nz);
 
-    e /= 0.2 + 0.0035 + 0.015 + 0.025 + 0.25;
+    e /= (0.25 + 0.0035 + 0.015 + 0.025 + 0.25) - this.spike;
 
-    return e - 1.25;
+    e **= 2.5;
+    return e - this.depth;
   }
 
   getParametersAt(e: number, m: number) : IBiome {
