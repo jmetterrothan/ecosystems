@@ -1,20 +1,15 @@
 import * as THREE from 'three';
 
 import BiomeGenerator from '@world/BiomeGenerator';
+import Chunk from '@world/Chunk';
 import Stack from '@shared/Stack';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
-import { WATER_CONSTANTS } from '@shared/constants/water.constants';
-import { WATER_MATERIAL } from './constants/waterMaterial.constants';
-import { TERRAIN_MATERIAL } from './constants/terrainMaterial.constants';
-import { TERRAIN_MESH_PARAMS } from './constants/terrainMesh.constants';
 
-import { IChunkParams } from '@shared/models/chunkParams.model';
+import { IChunkParameters } from '@shared/models/chunkParameters.model';
 
-class Mesh {
+abstract class Mesh {
   static GEOMETRY_STACK = new Stack<THREE.Geometry>();
-
-  mesh: THREE.Mesh;
 
   readonly row: number;
   readonly col: number;
@@ -22,33 +17,38 @@ class Mesh {
   protected low: number;
   protected high: number;
 
-  private readonly type: MESH_TYPES;
-  private readonly params: IChunkParams;
-  private generator: BiomeGenerator;
+  protected moistureAverage: number;
 
-  constructor(generator: BiomeGenerator, row: number, col: number, type: MESH_TYPES, params: IChunkParams) {
+  private readonly type: MESH_TYPES;
+  protected readonly parameters: IChunkParameters;
+  protected generator: BiomeGenerator;
+
+  constructor(generator: BiomeGenerator, row: number, col: number, type: MESH_TYPES, parameters: IChunkParameters) {
     this.generator = generator;
     this.row = row;
     this.col = col;
     this.type = type;
-    this.params = params;
+    this.parameters = parameters;
 
     this.low = null;
     this.high = null;
   }
 
+  abstract getY(x?: number, z?: number): number;
+  abstract getMaterial(): THREE.Material;
+
   buildGeometry(): THREE.Geometry {
     const geometry: THREE.Geometry = new THREE.Geometry();
 
-    const nbVerticesX = this.params.NCOLS + 1;
-    const nbVerticesZ = this.params.NROWS + 1;
+    const nbVerticesX = this.parameters.nCols + 1;
+    const nbVerticesZ = this.parameters.nRows + 1;
 
     // creates all our vertices
     for (let c = 0; c < nbVerticesX; c++) {
-      const x = this.col * this.params.WIDTH + c * this.params.CELL_SIZE;
+      const x = this.col * this.parameters.width + c * this.parameters.cellSizeX;
       for (let r = 0; r < nbVerticesZ; r++) {
-        const z = this.row * this.params.DEPTH + r * this.params.CELL_SIZE;
-        const y = this.type === MESH_TYPES.TERRAIN_MESH ? this.generator.computeHeight(x, z) : WATER_CONSTANTS.SEA_LEVEL;
+        const z = this.row * this.parameters.depth + r * this.parameters.cellSizeZ;
+        const y = this.getY(x, z);
 
         if (this.low === null || this.low > y) this.low = y;
         if (this.high === null || this.high < y) this.high = y;
@@ -58,9 +58,10 @@ class Mesh {
     }
 
     // creates the associated faces with their indexes
+    let sumMoisture = 0;
 
-    for (let col = 0; col < this.params.NCOLS; col++) {
-      for (let row = 0; row < this.params.NROWS; row++) {
+    for (let col = 0; col < this.parameters.nCols; col++) {
+      for (let row = 0; row < this.parameters.nRows; row++) {
         const a = col + nbVerticesX * row;
         const b = (col + 1) + nbVerticesX * row;
         const c = col + nbVerticesX * (row + 1);
@@ -69,7 +70,6 @@ class Mesh {
         const f1 = new THREE.Face3(a, b, d);
         const f2 = new THREE.Face3(d, c, a);
 
-        // METHOD 1 : each face gets a color based on the average height of their vertices
         const x1 = (geometry.vertices[a].x + geometry.vertices[b].x + geometry.vertices[d].x) / 3;
         const x2 = (geometry.vertices[d].x + geometry.vertices[c].x + geometry.vertices[a].x) / 3;
 
@@ -79,18 +79,25 @@ class Mesh {
         const z1 = (geometry.vertices[a].z + geometry.vertices[b].z + geometry.vertices[d].z) / 3;
         const z2 = (geometry.vertices[d].z + geometry.vertices[c].z + geometry.vertices[a].z) / 3;
 
-        if (this.type === MESH_TYPES.TERRAIN_MESH) {
-          const m1 = this.generator.computeMoisture(x1, z1);
-          const m2 = this.generator.computeMoisture(x2, z2);
+        const m1 = this.generator.computeMoistureAt(x1, z1);
+        const m2 = this.generator.computeMoistureAt(x2, z2);
 
-          f1.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y1), m1).color;
-          f2.color = this.generator.getBiome(BiomeGenerator.getElevationFromHeight(y2), m2).color;
+        if (this.type === MESH_TYPES.TERRAIN_MESH) {
+          f1.color = this.generator.getBiome(y1 / Chunk.HEIGHT, m1).color;
+          f2.color = this.generator.getBiome(y2 / Chunk.HEIGHT, m2).color;
+        } else if (this.type === MESH_TYPES.WATER_MESH) {
+          f1.color = this.generator.getWaterColor(m1);
+          f2.color = this.generator.getWaterColor(m2);
         }
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);
+
+        sumMoisture += m1 + m2;
       }
     }
+
+    this.moistureAverage = sumMoisture / (this.parameters.nCols * this.parameters.nRows * 2);
 
     // need to tell the engine we updated the vertices
     geometry.verticesNeedUpdate = true;
@@ -104,25 +111,15 @@ class Mesh {
     return geometry;
   }
 
-  rebuildGeometry(geometry: THREE.Geometry) {
-    return geometry;
-  }
-
   generate(): THREE.Mesh {
-    const geometry = this.getGeometry();
-    const mesh = new THREE.Mesh(geometry, this.type === MESH_TYPES.TERRAIN_MESH ? TERRAIN_MATERIAL : WATER_MATERIAL);
+    const mesh = new THREE.Mesh(this.buildGeometry(), this.getMaterial());
 
-    mesh.frustumCulled = false;
-    mesh.visible = false;
+    mesh.frustumCulled = true;
     mesh.matrixAutoUpdate = false;
     mesh.receiveShadow = true;
+    mesh.castShadow = true;
 
     return mesh;
-  }
-
-  private getGeometry() {
-    return this.buildGeometry();
-    // return Mesh.GEOMETRY_STACK.empty ? this.buildGeometry() : this.rebuildGeometry(Mesh.GEOMETRY_STACK.pop());
   }
 }
 

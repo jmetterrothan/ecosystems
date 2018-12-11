@@ -8,7 +8,10 @@ declare module 'THREE' {
     enabled: boolean;
 
     constructor(camera: THREE.Camera, domElemenTHREE?: HTMLElement);
-    getObject(): THREE.Object3D
+    getObject(): THREE.Object3D;
   }
 
+  export class Box3Helper {
+    constructor(box: THREE.Box3, color: THREE.Color|number);
+  }
 }

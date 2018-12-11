@@ -23,17 +23,17 @@ class Player {
     this.moveUp = false;
     this.moveDown = false;
 
-    this.speed = new THREE.Vector3(5000, 5000, 5000);
+    this.speed = new THREE.Vector3(20000, 20000, 20000);
     this.velocity = new THREE.Vector3(0, 0, 0);
-
-    window.player = this.controls.getObject();
   }
 
   init(x, y, z) {
-    this.controls.getObject().position.set(x, y, z);
+    this.controls.getObject().translateX(x);
+    this.controls.getObject().translateY(y);
+    this.controls.getObject().translateZ(z);
   }
 
-  public updateMvts(delta) {
+  updateMvts(delta) {
     if (this.moveForward) {
       this.velocity.z = -this.speed.z;
     } else {
@@ -89,14 +89,14 @@ class Player {
 
   updatePosition(terrain) {
     const position = this.controls.getObject().position;
-    const y = terrain.getHeightAt(position.x, position.z) + 100;
+    const y = terrain.getHeightAt(position.x, position.z) + 1024;
 
     if (position.y < y) {
       this.controls.getObject().position.y = y;
     }
   }
 
-  public handleKeyboard(key: string, active: boolean) {
+  handleKeyboard(key: string, active: boolean) {
     switch (key) {
       case 'ArrowUp': case 'z': this.moveForward = active; break;
       case 'ArrowDown': case 's': this.moveBackward = active; break;
@@ -105,10 +105,6 @@ class Player {
       case '+': case 'a': this.moveUp = active; break;
       case '-': case 'e': this.moveDown = active; break;
     }
-  }
-
-  public getPosition(): THREE.Vector3 {
-    return this.controls.getObject().position.clone();
   }
 }
 

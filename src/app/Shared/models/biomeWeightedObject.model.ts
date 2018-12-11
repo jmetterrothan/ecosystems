@@ -1,13 +1,21 @@
+export interface IMinMax {
+  min: number;
+  max: number;
+}
 
-import { Object3D } from 'THREE';
+export interface ILowHigh {
+  low: number;
+  high: number;
+}
+
 export interface IBiomeWeightedObject {
   weight: number;
   name: string;
+  scarcity: number;
+  scale: IMinMax;
+  e: number | ILowHigh;
+  m: number | ILowHigh;
   low?: number;
   high?: number;
-  scarcity?: number;
-  scale?: { min: number; max: number; };
-  e: any;
-  m: any;
-  object?: Object3D;
+  float: boolean;
 }

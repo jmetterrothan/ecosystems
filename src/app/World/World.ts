@@ -1,17 +1,30 @@
 import * as THREE from 'three';
+
 import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
 import Terrain from './Terrain';
+import Chunk from './Chunk';
 import Player from '../Player';
 
 import { OBJECTS } from '@shared/constants/object.constants';
+
 import MathUtils from '@utils/Math.utils';
 
 class World {
-  static SEED: string | null = null;
-  static readonly VIEW_DISTANCE: number = 25000;
+  static SEED: string | null = null; // '789005037'
+
+  static readonly OBJ_INITIAL_SCALE: number = 500;
+
+  static readonly MAX_VISIBLE_CHUNKS: number = 64;
+  static readonly VIEW_DISTANCE: number = World.MAX_VISIBLE_CHUNKS * Chunk.WIDTH;
+
+  static readonly SHOW_FOG: boolean = true;
+  static readonly FOG_COLOR: number = 0xb1d8ff;
+  static readonly FOG_NEAR: number = World.VIEW_DISTANCE / 2;
+  static readonly FOG_FAR: number = World.VIEW_DISTANCE;
+
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
 
   private scene: THREE.Scene;
@@ -35,20 +48,23 @@ class World {
   async init() {
     this.initSeed();
     this.initFog();
+    this.initSkybox();
     this.initLights();
     await this.initObjects();
 
-    const spawn = new THREE.Vector3(0, 4000, 0);
+    const spawn = new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.HEIGHT / 2, Terrain.SIZE_Z);
 
     // stuff
-    this.terrain = new Terrain();
-    // preload terrain
-    this.terrain.update(this.scene, this.frustum, spawn);
+    this.terrain = new Terrain(this.scene);
+    this.terrain.init();
+    this.terrain.preload();
 
     this.player = new Player(this.controls);
     this.player.init(spawn.x, spawn.y, spawn.z);
 
     this.scene.add(this.controls.getObject());
+
+    this.showAxesHelper();
   }
 
   private initSeed() {
@@ -60,35 +76,36 @@ class World {
   private showAxesHelper() {
     const gizmo = new THREE.AxesHelper();
     gizmo.position.set(0, 0, 0);
-    gizmo.scale.set(100, 100, 100);
+    gizmo.scale.set(250, 250, 250);
     this.scene.add(gizmo);
   }
 
   private initFog() {
-    this.scene.fog = new THREE.Fog(0xb1d8ff, World.VIEW_DISTANCE - World.VIEW_DISTANCE / 4, World.VIEW_DISTANCE - 500);
+    if (World.SHOW_FOG) {
+      this.scene.fog = new THREE.Fog(World.FOG_COLOR, World.FOG_NEAR, World.FOG_FAR);
+    }
+  }
+
+  private initSkybox() {
+
   }
 
   private initLights() {
-    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.25);
-    light.position.set(0, 190, 0);
-    light.castShadow = true;
+    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.75);
+    light.position.set(0, Chunk.SEA_LEVEL, 0);
+    light.castShadow = false;
     this.scene.add(light);
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
-    ambient.position.set(0, 20000, 1500);
-    ambient.castShadow = true;
+    const ambient = new THREE.AmbientLight(0xffffff, 0.275);
+    ambient.position.set(0, Chunk.HEIGHT, 15000);
+    ambient.castShadow = false;
     this.scene.add(ambient);
 
-    const sunlight = new THREE.DirectionalLight(0xffffff, 0.5);
-    sunlight.position.set(0, 20000, 1500);
+    const sunlight = new THREE.DirectionalLight(0xffffff, 0.325);
+    sunlight.position.set(0, Chunk.HEIGHT, 15000);
     sunlight.castShadow = true;
-    sunlight.target.position.set(0, 0, 0);
     this.scene.add(sunlight);
 
-    {
-      const helper = new THREE.DirectionalLightHelper(sunlight, 100);
-      this.scene.add(helper);
-    }
   }
 
   private async initObjects(): Promise<any> {
@@ -97,22 +114,30 @@ class World {
       const p = World.loadObjModel(element);
 
       return p.then((object) => {
-        object.scale.set(200, 200, 200); // scale from maya size to a decent world size
+        object.scale.set(World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE); // scale from maya size to a decent world size
       });
     });
 
     await Promise.all(stack);
   }
 
-  public update() {
-    const position = this.player.getPosition();
+  public update(delta) {
+    this.camera.updateMatrixWorld(true);
 
-    this.frustum.setFromMatrix(new THREE.Matrix4().multiplyMatrices(
-      this.camera.projectionMatrix,
-      this.camera.matrixWorldInverse)
+    this.frustum.setFromMatrix(
+      new THREE.Matrix4().multiplyMatrices(
+        this.camera.projectionMatrix,
+        this.camera.matrixWorldInverse
+      )
     );
-    // this.water.position.set(position.x, this.water.position.y, position.z);
-    this.terrain.update(this.scene, this.frustum, position);
+
+    this.terrain.update(this.frustum, this.controls.getObject().position);
+
+    /*
+    if (position.y < Chunk.SEA_LEVEL) {
+      // console.log('underwater');
+    }
+    */
   }
 
   public updateMvts(delta) {
@@ -142,24 +167,35 @@ class World {
 
       mtlLoader.load(element.mtl, (materials) => {
         materials.preload();
+
         objLoader.setMaterials(materials);
 
         objLoader.load(element.obj, (object) => {
           object.castShadow = true;
           object.receiveShadow = true;
+          object.frustumCulled = false;
 
           object.traverse((child) => {
             if (child instanceof THREE.Mesh) {
-              (<THREE.Material>child.material).flatShading = true;
-              if (element.doubleSide === true) {
-                (<THREE.Material>child.material).side = THREE.DoubleSide;
+              child.castShadow = true;
+              child.receiveShadow = true;
+              child.frustumCulled = false;
+
+              if (!(child.material instanceof THREE.Material)) {
+                child.material.forEach(material => {
+                  material.flatShading = true;
+                  if (element.doubleSide === true) material.side = THREE.DoubleSide;
+                });
+              } else {
+                child.material.flatShading = true;
+                if (element.doubleSide === true) child.material.side = THREE.DoubleSide;
               }
             }
           });
 
           World.LOADED_MODELS.set(element.name, object);
-          const box = new THREE.Box3().setFromObject(object);
-          const size = box.getSize(new THREE.Vector3(0, 0, 0));
+          // const box = new THREE.Box3().setFromObject(object);
+         // const size = box.getSize(new THREE.Vector3(0, 0, 0));
 
           resolve(object);
         }, null, () => reject());

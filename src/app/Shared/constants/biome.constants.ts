@@ -1,45 +1,74 @@
 import * as THREE from 'three';
 
-export const BIOMES = {
+import Chunk from '@world/Chunk';
+import { IBiomes } from '@shared/models/biomes.model';
+
+export const BIOMES: IBiomes = {
+  FROZEN_GRASSLAND: {
+    color: new THREE.Color(0x96c47b),
+    organisms: []
+  },
   GRASSLAND: {
     color: new THREE.Color(0x93c54b),
     organisms: [
       {
-        weight: 0.8,
-        name: 'spruce',
-        scarcity: 0.995,
-        e: null,
-        m: null,
-        scale: { min: 0.75, max: 1.25 },
-      },
-      {
-        weight: 0.1,
+        weight: 0.25,
         name: 'tulip',
         scarcity: 0.98,
         e: null,
         m: null,
-        scale: { min: 0.95, max: 1.25 },
+        scale: { min: 1.5, max: 2 },
+        float: false,
       },
       {
-        weight: 0.1,
+        weight: 0.25,
         name: 'daisy',
         scarcity: 0.98,
         e: null,
         m: null,
-        scale: { min: 0.95, max: 1.25 },
-      }
+        scale: { min: 1.5, max: 2 },
+        float: false,
+      },
+      {
+        weight: 0.25,
+        name: 'bush',
+        scarcity: 0.975,
+        e: null,
+        m: null,
+        scale: { min: 1.25, max: 1.75 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: 'diamond',
+        scarcity: 0.9875,
+        e: null,
+        m: null,
+        scale: { min: 0.85, max: 1.1 },
+        float: false,
+      },
+      {
+        weight: 0.20,
+        name: 'birch',
+        scarcity: 0.995,
+        e: null,
+        m: null,
+        scale: { min: 0.9, max: 2.0 },
+        float: false,
+      },
     ]
   },
-  FOREST: {
-    color: new THREE.Color(0x5da736),
+  TAIGA: {
+    color: new THREE.Color(0x298c2d),
     organisms: [
       {
-        weight: 0.9,
+        weight: 0.6,
         name: 'spruce',
-        scarcity: 0.5,
+        scarcity: 0.925,
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.25 },
+        float: false,
       },
       {
         weight: 0.05,
@@ -48,6 +77,7 @@ export const BIOMES = {
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.25 },
+        float: false,
       },
       {
         weight: 0.05,
@@ -56,7 +86,26 @@ export const BIOMES = {
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.25 },
-      }
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: 'blue_mushroom',
+        scarcity: 0,
+        e: null,
+        m: null,
+        scale: { min: 0.75, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.25,
+        name: 'birch',
+        scarcity: 0.99,
+        e: null,
+        m: null,
+        scale: { min: 0.9, max: 1.3 },
+        float: false,
+      },
     ]
   },
   DESERT: {
@@ -65,68 +114,247 @@ export const BIOMES = {
       {
         weight: 0.3,
         name: 'cactus1',
-        scarcity: 0.985,
+        scarcity: 0.99,
         e: null,
         m: null,
         scale: { min: 1.25, max: 2.5 },
+        float: false,
       },
       {
         weight: 0.1,
         name: 'cactus2',
-        scarcity: 0.985,
+        scarcity: 0.999,
         e: null,
         m: null,
         scale: { min: 1.25, max: 2.5 },
+        float: false,
       },
       {
-        weight: 0.3,
+        weight: 0.2,
         name: 'cactus3',
-        scarcity: 0.985,
+        scarcity: 0.999,
         e: null,
         m: null,
         scale: { min: 1.25, max: 2.5 },
+        float: false,
       },
       {
         weight: 0.2,
         name: 'cactus4',
-        scarcity: 0.995,
+        scarcity: 0.999,
         e: null,
         m: null,
         scale: { min: 1, max: 1.2 },
+        float: false,
       },
       {
         weight: 0.1,
         name: 'rock1',
-        scarcity: 0.985,
+        scarcity: 0.995,
         e: null,
         m: null,
-        scale: { min: 1.0, max: 3.25 },
+        scale: { min: 1.0, max: 2.85 },
+        float: false,
+      },
+      {
+        weight: 0.1,
+        name: 'palm_tree',
+        scarcity: 0.999,
+        e: { low: 0.26, high: 0.5 },
+        m: null,
+        scale: { min: 1.1, max: 1.5 },
+        float: false,
       }
     ]
   },
   TUNDRA: {
-    color: new THREE.Color(0xB4C1A9),
-    organisms: []
-  },
-  TAIGA: {
-    color: new THREE.Color(0xb4c09c),
-    organisms: []
+    color: new THREE.Color(0xe8d587),
+    organisms: [
+      {
+        weight: 0.4,
+        name: 'rock2',
+        scarcity: 0.975,
+        e: null,
+        m: null,
+        scale: { min: 0.8, max: 2.75 },
+        float: false,
+      },
+      {
+        weight: 0.4,
+        name: 'rock3',
+        scarcity: 0.995,
+        e: null,
+        m: null,
+        scale: { min: 0.8, max: 1 },
+        float: false,
+      },
+      {
+        weight: 0.1,
+        name: 'highlands_tree',
+        scarcity: 0.995,
+        e: null,
+        m: null,
+        scale: { min: 1.0, max: 1.5 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: 'brown_mushroom',
+        scarcity: 0.995,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
+        m: null,
+        scale: { min: 1.0, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: 'blue_mushroom',
+        scarcity: 0.995,
+        e: null,
+        m: null,
+        scale: { min: 0.85, max: 1.75 },
+        float: false,
+      },
+    ]
   },
   MOUNTAIN: {
-    color: new THREE.Color(0x9C9B7A),
+    color: new THREE.Color(0xd2c8a6),
+    organisms: []
+  },
+  CORAL_REEF: {
+    color: new THREE.Color(0xd0b480),
     organisms: []
   },
   RAINFOREST: {
+    color: new THREE.Color(0x3ead68),
+    organisms: [
+      {
+        weight: 0.45,
+        name: 'jungle_tree',
+        scarcity: 0.975,
+        e: null,
+        m: null,
+        scale: { min: 1.0, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.40,
+        name: 'jungle_tree2',
+        scarcity: 0.975,
+        e: null,
+        m: null,
+        scale: { min: 1.0, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: 'blue',
+        scarcity: 0.999,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
+        m: null,
+        scale: { min: 1., max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: 'tulip',
+        scarcity: 0.98,
+        e: null,
+        m: null,
+        scale: { min: 1.5, max: 2 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: 'pink_mushroom',
+        scarcity: 0.995,
+        e: null,
+        m: null,
+        scale: { min: 0.85, max: 1.75 },
+        float: false,
+      },
+    ]
+  },
+  RAINFOREST_HILLS: {
     color: new THREE.Color(0x3ead52),
     organisms: [
       {
-        weight: 1,
+        weight: 0.1,
+        name: 'rock4',
+        scarcity: 0.85,
+        e: null,
+        m: null,
+        scale: { min: 1.0, max: 2.0 },
+        float: false,
+      },
+      {
+        weight: 0.35,
         name: 'jungle_tree',
         scarcity: 0.95,
         e: null,
         m: null,
-        scale: { min: 0.85, max: 1.5 },
-      }
+        scale: { min: 1, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.1,
+        name: 'jungle_tree2',
+        scarcity: 0.975,
+        e: null,
+        m: null,
+        scale: { min: 1, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.35,
+        name: 'banana_tree',
+        scarcity: 0.985,
+        e: null,
+        m: null,
+        scale: { min: 1.0, max: 1.5 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: 'pink_mushroom',
+        scarcity: 0.9975,
+        e: null,
+        m: null,
+        scale: { min: 0.85, max: 1.35 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: 'blue_mushroom',
+        scarcity: 0.9975,
+        e: null,
+        m: null,
+        scale: { min: 0.85, max: 1.35 },
+        float: false,
+      },
+    ]
+  },
+  RAINFOREST_SWAMPS: {
+    color: new THREE.Color(0xbed69e),
+    organisms: [
+      {
+        weight: 0.50,
+        name: 'mangrove',
+        scarcity: 0.995,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
+        m: null,
+        scale: { min: 1.0, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.50,
+        name: 'blue',
+        scarcity: 0.995,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
+        m: null,
+        scale: { min: 1.00, max: 1.25 },
+        float: false,
+      },
     ]
   },
   BEACH: {
@@ -139,6 +367,7 @@ export const BIOMES = {
         e: { low: 0.0025, high: 0.00575 },
         m: { low: 0.5, high: 1.0 },
         scale: { min: 0.75, max: 1.45 },
+        float: false,
       },
       {
         weight: 0.5,
@@ -147,12 +376,32 @@ export const BIOMES = {
         e: { low: 0.0175, high: 0.5 },
         m: null,
         scale: { min: 0.65, max: 0.95 },
-      }
+        float: false,
+      },
     ]
   },
   OCEAN: {
     color: new THREE.Color(0xedc375),
-    organisms: []
+    organisms: [
+      {
+        weight: 0.5,
+        name: 'lilypad',
+        scarcity: 0.965,
+        e: null,
+        m: { low: 0.65, high: 1.0 },
+        scale: { min: 1.0, max: 1.5 },
+        float: true,
+      },
+      {
+        weight: 0.5,
+        name: 'rock1',
+        scarcity: 0.995,
+        e: { low: Chunk.SEA_ELEVATION - 0.5, high: 0.50 },
+        m: null,
+        scale: { min: 1.5, max: 4 },
+        float: false,
+      },
+    ]
   },
   SNOW: {
     color: new THREE.Color(0xfffffff),
@@ -162,29 +411,59 @@ export const BIOMES = {
     color: new THREE.Color(0xbed69e),
     organisms: [
       {
-        weight: 0.33,
+        weight: 0.20,
         name: 'red_mushroom',
-        scarcity: 0.85,
-        e: { low: 0.02, high: 0.025 },
+        scarcity: 0.95,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
         m: null,
-        scale: { min: 0.75, max: 1.25 },
+        scale: { min: 1.0, max: 1.25 },
+        float: false,
       },
       {
-        weight: 0.33,
+        weight: 0.20,
         name: 'brown_mushroom',
-        scarcity: 0.85,
-        e: { low: 0.02, high: 0.025 },
+        scarcity: 0.95,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
         m: null,
-        scale: { min: 0.75, max: 1.25 },
+        scale: { min: 1.0, max: 1.25 },
+        float: false,
       },
       {
-        weight: 0.33,
+        weight: 0.20,
         name: 'mangrove',
-        scarcity: 0.985,
-        e: null,
-        m: { low: 0.7, high: 1 },
-        scale: { min: 0.8, max: 1 },
-      }
+        scarcity: 0.995,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
+        m: null,
+        scale: { min: 1.0, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.20,
+        name: 'stack',
+        scarcity: 0.995,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
+        m: null,
+        scale: { min: 1.0, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.10,
+        name: 'pink',
+        scarcity: 0.995,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
+        m: null,
+        scale: { min: 1.0, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.10,
+        name: 'blue',
+        scarcity: 0.995,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
+        m: null,
+        scale: { min: 1.0, max: 1.25 },
+        float: false,
+      },
     ]
   },
   TEST: {

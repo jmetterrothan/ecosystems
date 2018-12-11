@@ -18,7 +18,7 @@ class Stack<T>
     return this.list.pop();
   }
 
-  get empty(): number {
+  get empty(): boolean {
     return this.size === 0;
   }
 }

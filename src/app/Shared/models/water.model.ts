@@ -1,3 +1,5 @@
+import * as THREE from 'three';
 export interface IWater {
-  SEA_LEVEL: number;
+  WATER_COLOR_A: THREE.Color;
+  WATER_COLOR_B: THREE.Color;
 }

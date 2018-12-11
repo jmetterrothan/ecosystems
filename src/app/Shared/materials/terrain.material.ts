@@ -3,10 +3,10 @@ import * as THREE from 'three';
 export const TERRAIN_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
   wireframe: false,
   emissive: 0x505050,
-  emissiveIntensity: 0.01,
-  specular: 0x353535,
-  shininess: 6,
-  reflectivity: 0.1,
+  emissiveIntensity: 0.05,
+  specular: 0x404040,
+  shininess: 12,
+  reflectivity: 0.15,
   flatShading: true,
   vertexColors: THREE.FaceColors
 });

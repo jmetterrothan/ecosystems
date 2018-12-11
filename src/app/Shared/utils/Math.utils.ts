@@ -1,6 +1,6 @@
 class MathUtils {
 
-  static rng = new Math.seedrandom(); // current random number generator shared across the app
+  static rng = null; // current random number generator shared across the app
 
   static clamp(x: number, min: number, max: number): number {
     return Math.min(Math.max(x, min), max);
@@ -30,6 +30,9 @@ class MathUtils {
     return c + (d - c) / (b - a) * (t - a);
   }
 
+  static lerp(a, b, t) {
+    return (1 - t) * a + t * b;
+  }
 }
 
 export default MathUtils;

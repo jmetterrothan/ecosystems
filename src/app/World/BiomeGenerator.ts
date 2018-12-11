@@ -1,99 +1,90 @@
 import * as THREE from 'three';
 import simplexNoise from 'simplex-noise';
 
-import { BIOMES } from '@shared/constants/biome.constants';
+import World from '@world/World';
+import Chunk from '@world/Chunk';
+import MathUtils from '@utils/Math.utils';
+
+import Biome from '@world/Biome';
+import RainForestBiome from '@world/Biomes/RainForestBiome';
+import HighlandBiome from '@world/Biomes/HighlandBiome';
+import OceanBiome from '@world/Biomes/OceanBiome';
+import MountainBiome from '@world/Biomes/MountainBiome';
 
 import { IBiome } from '@shared/models/biome.model';
-
-import World from './World';
-import Chunk from './Chunk';
-import MathUtils from '@utils/Math.utils';
-import Stack from '@shared/Stack';
-
-import { TERRAIN_MESH_PARAMS } from '@mesh/constants/terrainMesh.constants';
-import { WATER_CONSTANTS } from '@shared/constants/water.constants';
-
-/**
- * Biome composition :
- * - name
- * - color gradient
- * - simplex noise generator
- * - noise parameters
- */
+import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
+import { IPick } from '@shared/models/pick.model';
 
 class BiomeGenerator {
-  static readonly MOISTURE_OCTAVES: number[] = [0.59, 0.21, 0.32, 0.13];
-  static readonly MOISTURE_OCTAVES_SUM: number = BiomeGenerator.MOISTURE_OCTAVES.reduce((a, b) => a + b, 0);
-
-  static readonly TERRAIN_OCTAVES: number[] = [0.95, 0.35, 0.25, 0.125, 0.0625, 0.0005];
-  static readonly TERRAIN_OCTAVES_SUM: number = BiomeGenerator.TERRAIN_OCTAVES.reduce((a, b) => a + b, 0);
-
-  protected simplexTerrain: simplexNoise;
-  protected simplexMoisture: simplexNoise;
+  private simplex: simplexNoise;
+  private simplex2: simplexNoise;
+  private simplex3: simplexNoise;
+  private biome: Biome;
 
   constructor() {
-    this.simplexTerrain = new simplexNoise(MathUtils.rng);
-    this.simplexMoisture = new simplexNoise(MathUtils.rng);
+    this.simplex = new simplexNoise(MathUtils.rng);
+    this.simplex2 = new simplexNoise(MathUtils.rng);
+    this.simplex3 = new simplexNoise(MathUtils.rng);
+    this.biome = new OceanBiome(this); // MathUtils.rng() > 0.5 ? new HighlandBiome(this) : new RainForestBiome(this);
 
-    // auto load biomes models
-    for (const b in BIOMES) {
-      for (const o in BIOMES[b].organisms) {
-        const name = BIOMES[b].organisms[o].name;
-
-        BIOMES[b].organisms[o].object = World.LOADED_MODELS.get(name);
-      }
-    }
+    console.info(this.biome);
   }
 
   /**
    * Tries to position an object at the given coordinates
    * @param {number} x
    * @param {number} z
-   * @return {THREE.Object3D|null}
+   * @return {IPick|null}
    */
-  pick(x: number, z: number): THREE.Object3D | null {
-    const e = this.computeElevation(x, z);
-    const m = this.computeMoisture(x, z);
-    const y = BiomeGenerator.getHeightAtElevation(e);
-    const biome = this.getBiome(e, m);
+  pick(x: number, z: number): IPick | null {
+    const e = this.computeElevationAt(x, z);
+    const m = this.computeMoistureAt(x, z);
+
+    if (e < 0 && e > 1) return;
+
+    const biome = this.biome.getParametersAt(e, m);
 
     let temp = 0;
     const rand = MathUtils.rng(); // random float bewteen 0 - 1 included (sum of weights must be = 1)
 
     for (let i = 0, n = biome.organisms.length; i < n; i++) {
+      let y = e * Chunk.HEIGHT;
       temp += biome.organisms[i].weight;
 
       if (rand <= temp) {
         const organism = biome.organisms[i];
 
+        const scale = organism.scale ? MathUtils.randomFloat(organism.scale.min, organism.scale.max) : 1;
+
+        const lowM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).low : 0;
+        const highM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).high : 1;
+
+        const lowE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).low : 0;
+        const highE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).high : 1;
+
+        if (organism.float === true) {
+          // sample 4 points and take the highest one to prevent (as much as possible) clipping into the water
+          const p1 = this.computeWaterHeightAt(x - 350, z);
+          const p2 = this.computeWaterHeightAt(x + 350, z);
+          const p3 = this.computeWaterHeightAt(x, z + 350);
+          const p4 = this.computeWaterHeightAt(x, z + 350);
+
+          const p = Math.max(p1, p2, p3, p4);
+          y = Math.max(y, p);
+        }
+
         // test for scarcity and ground elevation criteria
-        if (
-          (organism.scarcity === 0 || MathUtils.rng() >= organism.scarcity) &&
-          (organism.e === null || (e >= organism.e.low && e <= organism.e.high)) &&
-          (organism.m === null || (m >= organism.m.low && m <= organism.m.high))
-          ) {
-          let object = null;
-
-          // if object stack doesn't exist yet we create one
-          if (!Chunk.CHUNK_OBJECT_STACK[organism.name]) {
-            Chunk.CHUNK_OBJECT_STACK[organism.name] = new Stack<THREE.Object3D>();
-          }
-
-          // if the stack is empty, create a new object else pop an object from the stack
-          if (Chunk.CHUNK_OBJECT_STACK[organism.name].empty) {
-            object = organism.object.clone();
-            object.stack_ref = organism.name;
-          } else {
-            object = Chunk.CHUNK_OBJECT_STACK[organism.name].pop();
-          }
-
-          // reset transforms
-          const f = MathUtils.randomFloat(organism.scale.min, organism.scale.max);
-
-          object.rotation.y = MathUtils.randomFloat(0, Math.PI * 2);
-          object.scale.set(f * 200, f * 200, f * 200);
-
-          return object;
+        if ((organism.scarcity === 0 || MathUtils.rng() >= organism.scarcity) &&
+          (e >= lowE && e <= highE) &&
+          (m >= lowM && m <= highM)) {
+          return (<IPick>{
+            x,
+            z,
+            y,
+            n: organism.name,
+            r: MathUtils.randomFloat(0, Math.PI * 2),
+            s: scale * World.OBJ_INITIAL_SCALE
+          });
         }
       }
     }
@@ -108,115 +99,17 @@ class BiomeGenerator {
    * @return {IBiome} Biome informations
    */
   getBiome(e: number, m: number): IBiome {
-    if (e < 0.0024) { return BIOMES.OCEAN; }
-    if (e < 0.024) {
-      if (e > 0.00575 && m > 0.65) {
-        return BIOMES.SWAMP;
-      }
-      return BIOMES.BEACH;
-    }
-
-    // level 1
-    if (e < 0.05) {
-      if (m > 0.60) { return BIOMES.RAINFOREST; }
-      if (m > 0.32) { return BIOMES.GRASSLAND; }
-
-      return BIOMES.DESERT;
-    }
-    // level 2
-    if (e < 0.10) {
-      if (m > 0.75) { return BIOMES.RAINFOREST; }
-      if (m > 0.38) { return BIOMES.FOREST; }
-      if (m > 0.32) { return BIOMES.GRASSLAND; }
-
-      return BIOMES.DESERT;
-    }
-
-    // level 3
-    if (e < 0.25) {
-      if (m > 0.5) { return BIOMES.MOUNTAIN; }
-      if (m > 0.28) { return BIOMES.TAIGA; }
-
-      return BIOMES.DESERT;
-    }
-
-    // level 4
-    if (e < 0.4) {
-      if (m > 0.65) { return BIOMES.SNOW; }
-      if (m > 0.35) { return BIOMES.TUNDRA; }
-      return BIOMES.MOUNTAIN;
-    }
-
-    return BIOMES.SNOW;
+    return this.biome.getParametersAt(e, m);
   }
 
   /**
-   * Retrieve the biome at the given coordinates
-   * @param {number} x coord component
-   * @param {number} z coord component
-   * @return {IBiome}
-   */
-  getBiomeAt(x: number, z: number): IBiome {
-    return this.getBiome(
-      this.computeElevation(x, z),
-      this.computeMoisture(x, z)
-    );
-  }
-
-  /**
-   * Compute elevation
+   * Compute elevation (0 - 1)
    * @param {number} x coord component
    * @param {number} z coord component
    * @return {number} elevation value
    */
-  computeElevation(x: number, z: number): number {
-    const nx = x / (TERRAIN_MESH_PARAMS.WIDTH * 48) - 0.5;
-    const nz = z / (TERRAIN_MESH_PARAMS.DEPTH * 48) - 0.5;
-
-    let e = 0;
-
-    e += BiomeGenerator.TERRAIN_OCTAVES[0] * this.elevationNoise(nx, nz);
-    e += BiomeGenerator.TERRAIN_OCTAVES[1] * this.elevationNoise(2 * nx, 2 * nz);
-    e += BiomeGenerator.TERRAIN_OCTAVES[2] * this.elevationNoise(4 * nx, 4 * nz);
-    e += BiomeGenerator.TERRAIN_OCTAVES[3] * this.elevationNoise(8 * nx, 8 * nz);
-    e += BiomeGenerator.TERRAIN_OCTAVES[4] * this.elevationNoise(16 * nx, 16 * nz);
-    e += BiomeGenerator.TERRAIN_OCTAVES[5] * this.elevationNoise(32 * nx, 32 * nz);
-
-    e /= BiomeGenerator.TERRAIN_OCTAVES_SUM;
-    e **= 5;
-
-    return Math.round(e * 180) / 180;
-  }
-
-  /**
-   * Compute moisture
-   * @param {number} x coord component
-   * @param {number} z coord component
-   * @return {number} moisture value
-   */
-  computeMoisture(x: number, z: number): number {
-    const nx = x / (TERRAIN_MESH_PARAMS.WIDTH * 256) - 0.5;
-    const nz = z / (TERRAIN_MESH_PARAMS.DEPTH * 256) - 0.5;
-
-    let m = 0;
-
-    m += BiomeGenerator.MOISTURE_OCTAVES[0] * this.moisturenNoise(nx, nz);
-    m += BiomeGenerator.MOISTURE_OCTAVES[1] * this.moisturenNoise(nx * 2, nz * 2);
-    m += BiomeGenerator.MOISTURE_OCTAVES[2] * this.moisturenNoise(nx * 4, nz * 4);
-    m += BiomeGenerator.MOISTURE_OCTAVES[3] * this.moisturenNoise(nx * 8, nz * 8);
-
-    m /= BiomeGenerator.MOISTURE_OCTAVES_SUM;
-
-    return Math.round(m * 180) / 180;
-  }
-
-  // make the range of the simplex noise [-1, 1] => [0, 1]
-  private elevationNoise(nx: number, nz: number): number {
-    return MathUtils.mapInterval(this.simplexTerrain.noise2D(nx, nz), -1, 1, 0, 1);
-  }
-
-  private moisturenNoise(nx: number, nz: number): number {
-    return MathUtils.mapInterval(this.simplexMoisture.noise2D(nx, nz), -1, 1, 0, 1);
+  computeElevationAt(x: number, z: number): number {
+    return this.biome.computeElevationAt(x, z);
   }
 
   /**
@@ -225,35 +118,79 @@ class BiomeGenerator {
    * @param {number} z coord component
    * @return {number}
    */
-  computeHeight(x: number, z: number) {
-    return BiomeGenerator.getHeightAtElevation(this.computeElevation(x, z));
+  computeHeightAt(x: number, z: number) {
+    return this.biome.computeElevationAt(x, z) * Chunk.HEIGHT;
   }
 
   /**
-   * Returns the elevation at the given y world coordinate
-   * @param {number} y coord component
-   * @return {number}
+   * Compute moisture
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number} moisture value
    */
-  static getElevationFromHeight(y: number) {
-    return y / ((TERRAIN_MESH_PARAMS.MAX_CHUNK_HEIGHT - TERRAIN_MESH_PARAMS.MIN_CHUNK_HEIGHT) + TERRAIN_MESH_PARAMS.MIN_CHUNK_HEIGHT);
+  computeMoistureAt(x: number, z: number): number {
+    return this.biome.computeMoistureAt(x, z);
   }
 
   /**
-   * Returns the world coordinate at the given elevation
-   * @param {number} e elevation
-   * @return {number}
+   * Compute water height
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number} water height
    */
-  static getHeightAtElevation(e: number) {
-    return e * ((TERRAIN_MESH_PARAMS.MAX_CHUNK_HEIGHT - TERRAIN_MESH_PARAMS.MIN_CHUNK_HEIGHT) + TERRAIN_MESH_PARAMS.MIN_CHUNK_HEIGHT);
+  computeWaterHeightAt(x, z) {
+    const nx = x / (Chunk.WIDTH * 8);
+    const nz = z / (Chunk.DEPTH * 8);
+
+    let e = this.noise2(nx, nz);
+    e += 0.75 * this.noise(nx * 4, nz * 4);
+
+    return Chunk.SEA_LEVEL + e * 1000;
   }
 
   /**
-   * Returns the world coordinate at the given elevation
-   * @param {number} e elevation
-   * @return {number}
+   * Retrieve water color from current biome
+   * @param {number} m moisture value
+   * @return {THREE.Color}
    */
-  static getHeightAtElevationWithWater(e: number) {
-    return Math.max(this.getHeightAtElevation(e), WATER_CONSTANTS.SEA_LEVEL);
+  getWaterColor(m: number): THREE.Color {
+    return this.biome.getWaterColor(m);
+  }
+
+  noise(x: number, z: number) {
+    return (this.simplex.noise2D(x, z) + 1) / 2;
+  }
+
+  noise2(x: number, z: number) {
+    return (this.simplex2.noise2D(x, z) + 1) / 2;
+  }
+
+  noise3(x: number, z: number) {
+    return (this.simplex3.noise2D(x, z) + 1) / 2;
+  }
+
+  ridgeNoise(x: number, z: number) {
+    return 2 * (0.5 - Math.abs(0.5 - this.noise(x, z)));
+  }
+
+  ridgeNoise2(x: number, z: number) {
+    return 2 * (0.5 - Math.abs(0.5 - this.noise2(x, z)));
+  }
+
+  static islandAddMethod(a, b, c, d, e) {
+    return e + a - b * Math.pow(d, c);
+  }
+
+  static islandMultiplyMethod(a, b, c, d, e) {
+    return (e + a) * (1 - b * Math.pow(d, c));
+  }
+
+  static getEuclideanDistance(x, z) {
+    return Math.sqrt(x * x + z * z);
+  }
+
+  static getManhattanDistance(x, z) {
+    return Math.max(Math.abs(x), Math.abs(z));
   }
 }
 

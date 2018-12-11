@@ -1,4 +1,5 @@
 export enum MESH_TYPES {
   TERRAIN_MESH,
-  WATER_MESH
+  WATER_MESH,
+  CLOUD_MESH
 }
