@@ -39,7 +39,7 @@ class TerrainMesh extends Mesh {
   }
 
   needGenerateWater(): boolean {
-    return this.low <= Chunk.SEA_LEVEL;
+    return this.low <= Chunk.SEA_LEVEL + 1500;
   }
 
   needGenerateCloud(): boolean {
