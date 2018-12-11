@@ -16,7 +16,7 @@ class MountainBiome extends Biome
   private c: number;
 
   constructor(generator: BiomeGenerator) {
-    super('TEST', generator);
+    super('MOUNTAIN', generator);
 
     this.spike = MathUtils.randomFloat(0.025, 0.1);
     this.a = MathUtils.randomFloat(0.85, 0.95);
