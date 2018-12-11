@@ -48,10 +48,10 @@ class HighlandBiome extends Biome
     + 0.025 * this.generator.noise(512 * nx, 512 * nz)
     // second layer
     + (0.50 * this.generator.noise2(1 * nx,  1 * nz)
-    + 1.00 * this.generator.noise2(2 * nx,  2 * nz)
-    + 0.4 * this.generator.ridgeNoise(4 * nx,  4 * nz)
+    + 1.00 * this.generator.noise3(2 * nx,  2 * nz)
+    + 0.4 * this.generator.ridgeNoise2(4 * nx,  4 * nz)
     + 0.13 * this.generator.noise2(8 * nx,  8 * nz)
-    + 0.06 * this.generator.noise2(16 * nx, 16 * nz)
+    + 0.06 * this.generator.noise3(16 * nx, 16 * nz)
     + 0.035 * this.generator.noise2(128 * nx, 128 * nz)
     + 0.025 * this.generator.noise2(512 * nx, 512 * nz));
 

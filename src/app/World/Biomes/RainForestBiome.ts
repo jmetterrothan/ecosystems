@@ -28,7 +28,7 @@ class RainForestBiome extends Biome
     this.amplified = MathUtils.rng() >= 0.25; // magnify everything
     this.spread =  MathUtils.randomFloat(0.95, 2.35); // expand over the map (higher values means more space available for water)
 
-    this.ridges = MathUtils.randomFloat(0.225, 0.375); // makes ridges more prevalent
+    this.ridges = MathUtils.randomFloat(0.225, 0.35); // makes ridges more prevalent
   }
 
   /**
@@ -43,10 +43,10 @@ class RainForestBiome extends Biome
 
     let e = (0.50 * this.generator.noise(1 * nx,  1 * nz)
     + 1.00 * this.generator.noise(2 * nx,  2 * nz)
-    + this.ridges * this.generator.ridgeNoise(4 * nx,  4 * nz)
+    + this.ridges * this.generator.ridgeNoise(3 * nx,  3 * nz)
     + 0.13 * this.generator.noise(8 * nx,  8 * nz)
     + 0.06 * this.generator.noise(16 * nx, 16 * nz)
-    + 0.035 * this.generator.noise(128 * nx, 128 * nz)
+    + 0.035 * this.generator.noise2(128 * nx, 128 * nz)
     + 0.025 * this.generator.noise(512 * nx, 512 * nz));
 
     e /= (1.00 + 0.50 + this.ridges + 0.13 + 0.06 + 0.035 + 0.025);
@@ -54,7 +54,7 @@ class RainForestBiome extends Biome
     const d = this.spread * BiomeGenerator.getEuclideanDistance(nx, nz);
     const ne = BiomeGenerator.islandAddMethod(this.a, this.b, this.c, d, e);
 
-    return this.amplified ? (e + ne) / 2 : ne;
+    return this.amplified ? (e + ne) / 1.5 : ne;
   }
 
   getParametersAt(e: number, m: number) : IBiome {
