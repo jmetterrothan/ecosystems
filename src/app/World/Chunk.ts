@@ -80,7 +80,7 @@ class Chunk {
     (<THREE.Geometry>terrain.terrain.geometry).mergeMesh(terrainMesh);
     (<THREE.Geometry>terrain.terrain.geometry).elementsNeedUpdate = true;
 
-      // TODO optimize this part (mesh could be static objects reused using transformations and data could just be copied to the global geometry)
+    // TODO optimize this part (mesh could be static objects reused using transformations and data could just be copied to the global geometry)
     if (this.terrainBlueprint.needGenerateWater()) {
       const waterMesh = this.waterBlueprint.generate();
 
@@ -184,7 +184,7 @@ class Chunk {
     this.visible = bool;
   }
 
-  isVisible() {  return this.visible; }
+  isVisible() { return this.visible; }
   isDirty() { return this.dirty; }
   isMerged() { return this.merged; }
 

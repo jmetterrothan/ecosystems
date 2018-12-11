@@ -4,14 +4,15 @@ import Chunk from './Chunk';
 import World from './World';
 import BiomeGenerator from './BiomeGenerator';
 import Coord from './Coord';
+import Boids from '../Boids/Boids';
 
 import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 import { WATER_MATERIAL } from '@materials/water.material';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 128;
-  static readonly NCHUNKS_Z: number = 128;
+  static readonly NCHUNKS_X: number = 16;
+  static readonly NCHUNKS_Z: number = 16;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
@@ -36,6 +37,8 @@ class Terrain {
   public clouds: THREE.Mesh;
 
   private layers: THREE.Group;
+
+  private boids: Boids;
 
   constructor(scene: THREE.Scene) {
     this.scene = scene;
@@ -66,6 +69,9 @@ class Terrain {
     // this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
 
     this.scene.add(this.layers);
+
+    this.boids = new Boids(this.scene, Terrain.SIZE_X, Chunk.SEA_LEVEL, Terrain.SIZE_Z);
+    this.boids.generate();
   }
 
   /**
@@ -118,6 +124,8 @@ class Terrain {
     if (this.end.col > Terrain.NCHUNKS_X) { this.end.col = Terrain.NCHUNKS_X; }
     if (this.end.row > Terrain.NCHUNKS_Z) { this.end.row = Terrain.NCHUNKS_Z; }
 
+    this.boids.update();
+
     // reset previously visible chunks
     for (const chunk of this.visibleChunks) {
       chunk.setVisible(false);
@@ -155,7 +163,7 @@ class Terrain {
    * @param {number} z
    * @return {Coord}
    */
-  getChunkCoordAt(out: Coord, x: number, z: number) : Coord {
+  getChunkCoordAt(out: Coord, x: number, z: number): Coord {
     out.row = (z / Chunk.DEPTH) | 0;
     out.col = (x / Chunk.WIDTH) | 0;
 
@@ -168,7 +176,7 @@ class Terrain {
    * @param {number} col
    * @return {Chunk|undefined}
    */
-  getChunk(row: number, col: number): Chunk|undefined {
+  getChunk(row: number, col: number): Chunk | undefined {
     return this.chunks.get(`${row}:${col}`);
   }
 
@@ -197,32 +205,32 @@ class Terrain {
    * Retrieve the region's bounding box
    * @return {THREE.Box3}
    */
-  static createRegionBoundingBox() : THREE.Box3 {
+  static createRegionBoundingBox(): THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
-        new THREE.Vector3(
-          Terrain.SIZE_X / 2,
-          Terrain.SIZE_Y / 2,
-          Terrain.SIZE_Z / 2
-        ),
-        new THREE.Vector3(
-          Terrain.SIZE_X,
-          Terrain.SIZE_Y,
-          Terrain.SIZE_Z
-        ));
+      new THREE.Vector3(
+        Terrain.SIZE_X / 2,
+        Terrain.SIZE_Y / 2,
+        Terrain.SIZE_Z / 2
+      ),
+      new THREE.Vector3(
+        Terrain.SIZE_X,
+        Terrain.SIZE_Y,
+        Terrain.SIZE_Z
+      ));
   }
 
-  static createRegionWaterBoundingBox() : THREE.Box3 {
+  static createRegionWaterBoundingBox(): THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
-        new THREE.Vector3(
-          Terrain.SIZE_X / 2,
-          Chunk.SEA_LEVEL / 2,
-          Terrain.SIZE_Z / 2
-        ),
-        new THREE.Vector3(
-          Terrain.SIZE_X,
-          Chunk.SEA_LEVEL,
-          Terrain.SIZE_Z
-        ));
+      new THREE.Vector3(
+        Terrain.SIZE_X / 2,
+        Chunk.SEA_LEVEL / 2,
+        Terrain.SIZE_Z / 2
+      ),
+      new THREE.Vector3(
+        Terrain.SIZE_X,
+        Chunk.SEA_LEVEL,
+        Terrain.SIZE_Z
+      ));
   }
 
   /**
@@ -230,7 +238,7 @@ class Terrain {
    * @param {THREE.Box3|null} bbox Region's bounding box (if not set it will be created)
    * @return {THREE.Box3Helper}
    */
-  static createRegionBoundingBoxHelper(bbox: THREE.Box3 = null) : THREE.Box3Helper {
+  static createRegionBoundingBoxHelper(bbox: THREE.Box3 = null): THREE.Box3Helper {
     return new THREE.Box3Helper(bbox ? bbox : Terrain.createRegionBoundingBox(), 0xff0000);
   }
 
@@ -239,7 +247,7 @@ class Terrain {
    * @param {THREE.Box3|null} bbox Region's bounding box (if not set it will be created)
    * @return {THREE.Box3Helper}
    */
-  static createRegionWaterBoundingBoxHelper(bbox: THREE.Box3 = null) : THREE.Box3Helper {
+  static createRegionWaterBoundingBoxHelper(bbox: THREE.Box3 = null): THREE.Box3Helper {
     return new THREE.Box3Helper(bbox ? bbox : Terrain.createRegionWaterBoundingBox(), 0x0000ff);
   }
 }
