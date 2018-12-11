@@ -218,7 +218,11 @@ export const BIOMES: IBiomes = {
     ]
   },
   MOUNTAIN: {
-    color: new THREE.Color(0xCEBD64),
+    color: new THREE.Color(0xd2c8a6),
+    organisms: []
+  },
+  CORAL_REEF: {
+    color: new THREE.Color(0xd0b480),
     organisms: []
   },
   RAINFOREST: {
@@ -382,9 +386,9 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.5,
         name: 'lilypad',
-        scarcity: 0.985,
+        scarcity: 0.965,
         e: null,
-        m: { low: 0.75, high: 1.0 },
+        m: { low: 0.65, high: 1.0 },
         scale: { min: 1.0, max: 1.5 },
         float: true,
       },

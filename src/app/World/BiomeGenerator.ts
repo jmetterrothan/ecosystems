@@ -138,9 +138,13 @@ class BiomeGenerator {
    * @return {number} water height
    */
   computeWaterHeightAt(x, z) {
-    const nx = x / (Chunk.WIDTH * 0.5);
-    const nz = z / (Chunk.DEPTH * 0.5);
-    return Chunk.SEA_LEVEL + this.noise2(nx, nz) * 400;
+    const nx = x / (Chunk.WIDTH * 8);
+    const nz = z / (Chunk.DEPTH * 8);
+
+    let e = this.noise2(nx, nz);
+    e += 0.75 * this.noise(nx * 4, nz * 4);
+
+    return Chunk.SEA_LEVEL + e * 1500;
   }
 
   /**

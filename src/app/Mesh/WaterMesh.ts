@@ -11,10 +11,10 @@ import { IChunkParameters } from '@shared/models/chunkParameters.model';
 class WaterMesh extends Mesh {
   constructor(generator: BiomeGenerator, row: number, col: number) {
     super(generator, row, col, MESH_TYPES.WATER_MESH, <IChunkParameters>{
-      nRows: 2,
-      nCols: 2,
-      cellSizeX: Chunk.WIDTH / 2,
-      cellSizeZ: Chunk.WIDTH / 2,
+      nRows: 1,
+      nCols: 1,
+      cellSizeX: Chunk.WIDTH / 1,
+      cellSizeZ: Chunk.WIDTH / 1,
       width: Chunk.WIDTH,
       height: Chunk.HEIGHT,
       depth: Chunk.DEPTH
