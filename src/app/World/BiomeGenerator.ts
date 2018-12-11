@@ -145,7 +145,7 @@ class BiomeGenerator {
     let e = this.noise2(nx, nz);
     e += 0.75 * this.noise(nx * 4, nz * 4);
 
-    return Chunk.SEA_LEVEL + e * 1500;
+    return Chunk.SEA_LEVEL + e * 1000;
   }
 
   /**
