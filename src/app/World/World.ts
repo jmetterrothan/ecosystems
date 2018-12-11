@@ -52,7 +52,7 @@ class World {
     this.initLights();
     await this.initObjects();
 
-    const spawn = new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.HEIGHT, Terrain.SIZE_Z);
+    const spawn = new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.HEIGHT / 2, Terrain.SIZE_Z);
 
     // stuff
     this.terrain = new Terrain(this.scene);

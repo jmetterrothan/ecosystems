@@ -3,10 +3,12 @@ import simplexNoise from 'simplex-noise';
 
 import World from '@world/World';
 import Chunk from '@world/Chunk';
+import MathUtils from '@utils/Math.utils';
+
 import Biome from '@world/Biome';
 import RainForestBiome from '@world/Biomes/RainForestBiome';
 import HighlandBiome from '@world/Biomes/HighlandBiome';
-import MathUtils from '@utils/Math.utils';
+import OceanBiome from '@world/Biomes/OceanBiome';
 
 import { IBiome } from '@shared/models/biome.model';
 import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
@@ -22,7 +24,7 @@ class BiomeGenerator {
     this.simplex = new simplexNoise(MathUtils.rng);
     this.simplex2 = new simplexNoise(MathUtils.rng);
     this.simplex3 = new simplexNoise(MathUtils.rng);
-    this.biome = MathUtils.rng() > 0.5 ? new HighlandBiome(this) : new RainForestBiome(this);
+    this.biome = new OceanBiome(this); // MathUtils.rng() > 0.5 ? new HighlandBiome(this) : new RainForestBiome(this);
 
     console.info(this.biome);
   }
@@ -158,8 +160,16 @@ class BiomeGenerator {
     return (this.simplex2.noise2D(x, z) + 1) / 2;
   }
 
+  noise3(x: number, z: number) {
+    return (this.simplex3.noise2D(x, z) + 1) / 2;
+  }
+
   ridgeNoise(x: number, z: number) {
     return 2 * (0.5 - Math.abs(0.5 - this.noise(x, z)));
+  }
+
+  ridgeNoise2(x: number, z: number) {
+    return 2 * (0.5 - Math.abs(0.5 - this.noise2(x, z)));
   }
 
   static islandAddMethod(a, b, c, d, e) {
