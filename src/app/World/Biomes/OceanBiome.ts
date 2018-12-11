@@ -39,7 +39,7 @@ class OceanBiome extends Biome
     e /= (0.25 + 0.0035 + 0.015 + 0.025 + 0.25) - this.spike;
 
     e **= 2.5;
-    return e - this.depth;
+    return e - this.depth - 0.5;
   }
 
   getParametersAt(e: number, m: number) : IBiome {
