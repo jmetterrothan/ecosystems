@@ -142,10 +142,10 @@ class BiomeGenerator {
     const nx = x / (1024 * 16);
     const nz = z / (1024 * 16);
 
-    let e = this.noise2(nx, nz);
-    e += 0.75 * this.noise(nx * 4, nz * 4);
+    let e = 1 * this.noise2(nx, nz);
+    e += 0.75 * this.noise(nx * 8, nz * 8);
 
-    return Chunk.SEA_LEVEL + e * 1000;
+    return Chunk.SEA_LEVEL + e * 1000 - 500;
   }
 
   /**

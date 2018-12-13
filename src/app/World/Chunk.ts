@@ -16,8 +16,8 @@ class Chunk {
   static readonly NROWS: number = 8;
   static readonly NCOLS: number = 8;
 
-  static readonly CELL_SIZE_X: number = 1024;
-  static readonly CELL_SIZE_Z: number = 1024;
+  static readonly CELL_SIZE_X: number = 2048;
+  static readonly CELL_SIZE_Z: number = 2048;
 
   static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE_X;
   static readonly HEIGHT: number = 56000;
@@ -77,7 +77,7 @@ class Chunk {
     (<THREE.Geometry>terrain.terrain.geometry).mergeMesh(terrainMesh);
     (<THREE.Geometry>terrain.terrain.geometry).elementsNeedUpdate = true;
 
-      // TODO optimize this part (mesh could be static objects reused using transformations and data could just be copied to the global geometry)
+    // TODO optimize this part (mesh could be static objects reused using transformations and data could just be copied to the global geometry)
     if (this.terrainBlueprint.needGenerateWater()) {
       const waterMesh = this.waterBlueprint.generate();
 
@@ -85,6 +85,7 @@ class Chunk {
       (<THREE.Geometry>terrain.water.geometry).elementsNeedUpdate = true;
     }
 
+    // clouds
     if (this.terrainBlueprint.needGenerateCloud()) {
       const cloudTypes = ['cloud1', 'cloud2', 'cloud3', 'cloud4'];
 
