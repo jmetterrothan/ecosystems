@@ -27,8 +27,8 @@ class OceanBiome extends Biome
    * @return {number} elevation value
    */
   computeElevationAt(x: number, z: number): number {
-    const nx = (x - Terrain.SIZE_X / 2) / (2048 * 64);
-    const nz = (z - Terrain.SIZE_Z / 2) / (2048 * 64);
+    const nx = (x - Terrain.SIZE_X / 2) / (1024 * 128);
+    const nz = (z - Terrain.SIZE_Z / 2) / (1024 * 128);
 
     let e = 0.2 * this.generator.noise(1 * nx, 1 * nz);
     e += 0.0035 * this.generator.noise(8 * nx, 8 * nz);

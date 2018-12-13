@@ -25,7 +25,7 @@ class BiomeGenerator {
     this.simplex = new simplexNoise(MathUtils.rng);
     this.simplex2 = new simplexNoise(MathUtils.rng);
     this.simplex3 = new simplexNoise(MathUtils.rng);
-    this.biome = new RainForestBiome(this); // MathUtils.rng() > 0.5 ? new HighlandBiome(this) : new RainForestBiome(this);
+    this.biome = new OceanBiome(this); // MathUtils.rng() > 0.5 ? new HighlandBiome(this) : new RainForestBiome(this);
 
     console.info(this.biome);
   }
@@ -139,8 +139,8 @@ class BiomeGenerator {
    * @return {number} water height
    */
   computeWaterHeightAt(x, z) {
-    const nx = x / (2048 * 8);
-    const nz = z / (2048 * 8);
+    const nx = x / (1024 * 16);
+    const nz = z / (1024 * 16);
 
     let e = this.noise2(nx, nz);
     e += 0.75 * this.noise(nx * 4, nz * 4);

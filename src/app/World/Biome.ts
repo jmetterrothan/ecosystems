@@ -47,8 +47,8 @@ abstract class Biome
    */
 
   computeMoistureAt(x: number, z: number): number {
-    const nx = x / (2048 * 96);
-    const nz = z / (2048 * 96);
+    const nx = x / (1024 * 192);
+    const nz = z / (1024 * 192);
 
     return Math.round(this.generator.noise2(nx, nz) * 100) / 100;
   }
