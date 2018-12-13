@@ -6,7 +6,6 @@ import World from './World';
 import Terrain from './Terrain';
 import TerrainMesh from '@mesh/TerrainMesh';
 import WaterMesh from '@mesh/WaterMesh';
-import CloudMesh from '@mesh/CloudMesh';
 import Stack from '@shared/Stack';
 
 import MathUtils from '@utils/Math.utils';
@@ -21,7 +20,7 @@ class Chunk {
   static readonly CELL_SIZE_Z: number = 1024;
 
   static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE_X;
-  static readonly HEIGHT: number = 48000;
+  static readonly HEIGHT: number = 52000;
   static readonly DEPTH: number = Chunk.NROWS * Chunk.CELL_SIZE_Z;
 
   static readonly SEA_LEVEL: number = Chunk.HEIGHT / 4;
@@ -43,7 +42,6 @@ class Chunk {
 
   private terrainBlueprint: TerrainMesh;
   private waterBlueprint: WaterMesh;
-  private cloudBlueprint: CloudMesh;
 
   private objectsBlueprint: IPick[];
 
@@ -65,7 +63,6 @@ class Chunk {
 
     this.terrainBlueprint = new TerrainMesh(this.generator, this.row, this.col);
     this.waterBlueprint = new WaterMesh(this.generator, this.row, this.col);
-    this.cloudBlueprint = new CloudMesh(this.generator, this.row, this.col);
 
     // compute the bounding box of the chunk for later optimization
     this.bbox = Chunk.createBoundingBox(row, col);
@@ -73,7 +70,7 @@ class Chunk {
     this.objectsBlueprint = [];
   }
 
-  init(terrain: Terrain) {
+  init(terrain: Terrain, scene: THREE.Scene) {
     // merge generated chunk with region geometry
     const terrainMesh = this.terrainBlueprint.generate();
 
@@ -89,9 +86,27 @@ class Chunk {
     }
 
     if (this.terrainBlueprint.needGenerateCloud()) {
-      const cloudMesh = this.cloudBlueprint.generate();
+      const cloudTypes = ['cloud1', 'cloud2', 'cloud3', 'cloud4'];
 
-      (<THREE.Geometry>terrain.clouds.geometry).mergeMesh(cloudMesh);
+      const name = cloudTypes[MathUtils.randomInt(0, cloudTypes.length - 1)];
+      const mesh: THREE.Mesh = (<THREE.Mesh>World.LOADED_MODELS.get(name).clone().children[0]);
+
+      const x = this.col * Chunk.WIDTH + Chunk.WIDTH / 2;
+      const y = Chunk.CLOUD_LEVEL;
+      const z = this.row * Chunk.DEPTH + Chunk.DEPTH / 2;
+
+      const s = World.OBJ_INITIAL_SCALE * MathUtils.randomFloat(0.8, 1.4);
+
+      mesh.geometry = new THREE.Geometry().fromBufferGeometry(<THREE.BufferGeometry>mesh.geometry);
+      mesh.frustumCulled = false;
+      mesh.matrixAutoUpdate = true;
+      mesh.receiveShadow = true;
+      mesh.castShadow = true;
+      mesh.visible = true;
+      mesh.position.set(x, y, z);
+      mesh.scale.set(s, s, s);
+
+      (<THREE.Geometry>terrain.clouds.geometry).mergeMesh(mesh);
       (<THREE.Geometry>terrain.clouds.geometry).elementsNeedUpdate = true;
     }
 

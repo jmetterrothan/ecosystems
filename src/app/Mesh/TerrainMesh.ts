@@ -43,9 +43,9 @@ class TerrainMesh extends Mesh {
   }
 
   needGenerateCloud(): boolean {
-    const t = (this.moistureAverage > 0.66) ? 0.95 : 0.975;
+    const t = (this.moistureAverage > 0.65) ? 0.8 : 0.975;
 
-    return this.moistureAverage > 0.34 && MathUtils.rng() > t;
+    return this.moistureAverage > 0.30 && MathUtils.rng() > t;
   }
 
   buildGeometry(): THREE.Geometry {

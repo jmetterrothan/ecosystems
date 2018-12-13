@@ -2,7 +2,6 @@ import * as THREE from 'three';
 
 import BiomeGenerator from '@world/BiomeGenerator';
 import CommonUtils from '@shared/utils/Common.utils';
-import Chunk from '@world/Chunk';
 
 import { IBiome } from '@shared/models/biome.model';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';

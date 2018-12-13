@@ -396,7 +396,7 @@ export const BIOMES: IBiomes = {
         weight: 0.5,
         name: 'rock1',
         scarcity: 0.995,
-        e: { low: Chunk.SEA_ELEVATION - 0.5, high: 0.50 },
+        e: { low: Chunk.SEA_ELEVATION - 0.75, high: 0.50 },
         m: null,
         scale: { min: 1.5, max: 4 },
         float: false,

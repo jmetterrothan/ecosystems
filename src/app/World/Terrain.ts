@@ -98,7 +98,7 @@ class Terrain {
    */
   loadChunk(row: number, col: number): Chunk {
     const chunk = new Chunk(this.generator, row, col);
-    chunk.init(this);
+    chunk.init(this, this.scene);
 
     // this.scene.add(Chunk.createBoundingBoxHelper(chunk.bbox));
 
