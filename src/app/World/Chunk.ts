@@ -14,21 +14,21 @@ import MathUtils from '@utils/Math.utils';
 import { IPick } from '@shared/models/pick.model';
 
 class Chunk {
-  static readonly WIDTH: number = 2048;
+  static readonly NROWS: number = 16;
+  static readonly NCOLS: number = 16;
+
+  static readonly CELL_SIZE_X: number = 1024;
+  static readonly CELL_SIZE_Z: number = 1024;
+
+  static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE_X;
   static readonly HEIGHT: number = 48000;
-  static readonly DEPTH: number = 2048;
+  static readonly DEPTH: number = Chunk.NROWS * Chunk.CELL_SIZE_Z;
 
   static readonly SEA_LEVEL: number = Chunk.HEIGHT / 4;
   static readonly CLOUD_LEVEL: number = Chunk.HEIGHT - Chunk.HEIGHT / 8;
 
   static readonly SEA_ELEVATION: number = Chunk.SEA_LEVEL / Chunk.HEIGHT;
   static readonly CLOUD_ELEVATION: number = Chunk.CLOUD_LEVEL / Chunk.HEIGHT;
-
-  static readonly NROWS: number = 2;
-  static readonly NCOLS: number = 2;
-
-  static readonly CELL_SIZE_X: number = (Chunk.WIDTH / Chunk.NROWS) | 0;
-  static readonly CELL_SIZE_Z: number = (Chunk.DEPTH / Chunk.NCOLS) | 0;
 
   static readonly CHUNK_OBJECT_STACK = {};
 
@@ -106,7 +106,7 @@ class Chunk {
    */
   loadPopulation() {
     const padding = 2048; // object bounding box size / 2
-    const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding * 2, padding * 2, 30, MathUtils.rng);
+    const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding, padding, 30, MathUtils.rng);
     const points = pds.fill();
 
     points.forEach((point: number[]) => {

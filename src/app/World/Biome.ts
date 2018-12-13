@@ -48,8 +48,8 @@ abstract class Biome
    */
 
   computeMoistureAt(x: number, z: number): number {
-    const nx = x / (Chunk.WIDTH * 96);
-    const nz = z / (Chunk.DEPTH * 96);
+    const nx = x / (2048 * 96);
+    const nz = z / (2048 * 96);
 
     return Math.round(this.generator.noise2(nx, nz) * 100) / 100;
   }
