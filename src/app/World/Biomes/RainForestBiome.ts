@@ -38,8 +38,8 @@ class RainForestBiome extends Biome
    * @return {number} elevation value
    */
   computeElevationAt(x: number, z: number): number {
-    const nx = (x - Terrain.SIZE_X / 2) / (Chunk.WIDTH * 64);
-    const nz = (z - Terrain.SIZE_Z / 2) / (Chunk.DEPTH * 64);
+    const nx = (x - Terrain.SIZE_X / 2) / (2048 * 64);
+    const nz = (z - Terrain.SIZE_Z / 2) / (2048 * 64);
 
     let e = (0.50 * this.generator.noise(1 * nx,  1 * nz)
     + 1.00 * this.generator.noise(2 * nx,  2 * nz)
