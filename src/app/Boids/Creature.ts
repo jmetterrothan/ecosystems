@@ -10,7 +10,7 @@ class Creature {
   cohesionWeighting: number = 2;
   separationWeighting: number = 0.1;
   viewAngle: number = 4;
-  speed: number = 100;
+  speed: number = 1;
 
   avoidTarget: THREE.Vector3 = null;
 

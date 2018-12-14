@@ -12,19 +12,38 @@ class Boids {
 
   scene: THREE.Scene;
 
-  constructor(scene: THREE.Scene, width: number, height: number, depth: number, creaturesCount: number = 20) {
+  constructor(scene: THREE.Scene, width: number, height: number, depth: number, creaturesCount: number = 1) {
     this.scene = scene;
     this.boudingBox = new THREE.Vector3(width, height, depth);
     this.creaturesCount = creaturesCount;
+
+    // const geometry = new THREE.BoxGeometry(width, height, depth);
+    // const material = new THREE.MeshBasicMaterial({ color: 'red', wireframe: true });
+    // const mesh = new THREE.Mesh(geometry, material);
+
+    const mesh = new THREE.Box3().setFromCenterAndSize(
+      new THREE.Vector3(
+        width / 2,
+        height / 2,
+        depth / 2,
+      ),
+      new THREE.Vector3(
+        width, height, depth
+      )
+    );
+
+    const box = new THREE.Box3Helper(mesh, 0xffff00);
+    this.scene.add(box);
+
   }
 
   generate() {
     for (let i = 0; i < this.creaturesCount; i++) {
 
       const position = new THREE.Vector3(
-        Math.random() * this.boudingBox.x - 1000,
-        Math.random() * this.boudingBox.y - 1000,
-        Math.random() * this.boudingBox.z - 1000
+        Math.random() * this.boudingBox.x,
+        Math.random() * this.boudingBox.y,
+        Math.random() * this.boudingBox.z
       );
 
       const velocity = new THREE.Vector3(
