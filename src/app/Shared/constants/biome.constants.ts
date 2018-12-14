@@ -41,7 +41,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.05,
         name: 'diamond',
-        scarcity: 0.9875,
+        scarcity: 0.9975,
         e: null,
         m: null,
         scale: { min: 0.85, max: 1.1 },
@@ -50,7 +50,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.20,
         name: 'birch',
-        scarcity: 0.995,
+        scarcity: 0.9975,
         e: null,
         m: null,
         scale: { min: 0.9, max: 2.0 },
