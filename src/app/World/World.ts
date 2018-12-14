@@ -21,7 +21,7 @@ class World {
   static readonly VIEW_DISTANCE: number = World.MAX_VISIBLE_CHUNKS * Chunk.WIDTH;
 
   static readonly SHOW_FOG: boolean = true;
-  static readonly FOG_COLOR: number = 0xb1d8ff;
+  static readonly FOG_COLOR: number = 0x85c3fc; // 0xb1d8ff
   static readonly FOG_NEAR: number = World.VIEW_DISTANCE / 2;
   static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 

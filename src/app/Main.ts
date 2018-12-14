@@ -72,7 +72,7 @@ class Main {
     this.renderer.domElement.style.width = '100vw';
     this.renderer.domElement.style.height = '100vh';
 
-    this.renderer.setClearColor(new THREE.Color(0xb1d8ff));
+    this.renderer.setClearColor(new THREE.Color(0x85c3fc));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
