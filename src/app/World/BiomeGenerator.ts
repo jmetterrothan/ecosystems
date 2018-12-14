@@ -9,7 +9,7 @@ import Biome from '@world/Biome';
 import RainForestBiome from '@world/Biomes/RainForestBiome';
 import HighlandBiome from '@world/Biomes/HighlandBiome';
 import OceanBiome from '@world/Biomes/OceanBiome';
-import MountainBiome from '@world/Biomes/MountainBiome';
+import SwampBiome from '@world/Biomes/SwampBiome';
 
 import { IBiome } from '@shared/models/biome.model';
 import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
@@ -25,7 +25,7 @@ class BiomeGenerator {
     this.simplex = new simplexNoise(MathUtils.rng);
     this.simplex2 = new simplexNoise(MathUtils.rng);
     this.simplex3 = new simplexNoise(MathUtils.rng);
-    this.biome = new OceanBiome(this); // MathUtils.rng() > 0.5 ? new HighlandBiome(this) : new RainForestBiome(this);
+    this.biome = new SwampBiome(this); // MathUtils.rng() > 0.5 ? new HighlandBiome(this) : new RainForestBiome(this);
 
     console.info(this.biome);
   }

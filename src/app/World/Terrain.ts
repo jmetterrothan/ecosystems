@@ -306,11 +306,8 @@ class Terrain {
         const f1 = new THREE.Face3(a, b, d);
         const f2 = new THREE.Face3(d, c, a);
 
-        const y1 = (geometry.vertices[a].y + geometry.vertices[b].y + geometry.vertices[d].y) / 3;
-        const y2 = (geometry.vertices[d].y + geometry.vertices[c].y + geometry.vertices[a].y) / 3;
-
-        f1.color = this.generator.getBiome(y1 / Chunk.HEIGHT, 0).color;
-        f2.color = this.generator.getBiome(y2 / Chunk.HEIGHT, 0).color;
+        f1.color = this.generator.getBiome(TerrainMesh.LOW / Chunk.HEIGHT, 0).color;
+        f2.color = this.generator.getBiome(TerrainMesh.LOW / Chunk.HEIGHT, 0).color;
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);

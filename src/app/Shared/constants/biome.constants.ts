@@ -4,6 +4,10 @@ import Chunk from '@world/Chunk';
 import { IBiomes } from '@shared/models/biomes.model';
 
 export const BIOMES: IBiomes = {
+  FROZEN_TAIGA: {
+    color: new THREE.Color(0x96c47b),
+    organisms: []
+  },
   FROZEN_GRASSLAND: {
     color: new THREE.Color(0x96c47b),
     organisms: []
@@ -62,17 +66,8 @@ export const BIOMES: IBiomes = {
     color: new THREE.Color(0x298c2d),
     organisms: [
       {
-        weight: 0.6,
+        weight: 0.85,
         name: 'spruce',
-        scarcity: 0.925,
-        e: null,
-        m: null,
-        scale: { min: 0.75, max: 1.25 },
-        float: false,
-      },
-      {
-        weight: 0.05,
-        name: 'red_mushroom',
         scarcity: 0.975,
         e: null,
         m: null,
@@ -80,8 +75,8 @@ export const BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.05,
-        name: 'brown_mushroom',
+        weight: 0.1,
+        name: 'red_mushroom',
         scarcity: 0.995,
         e: null,
         m: null,
@@ -90,20 +85,11 @@ export const BIOMES: IBiomes = {
       },
       {
         weight: 0.05,
-        name: 'blue_mushroom',
-        scarcity: 0,
+        name: 'brown_mushroom',
+        scarcity: 0.9975,
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.25 },
-        float: false,
-      },
-      {
-        weight: 0.25,
-        name: 'birch',
-        scarcity: 0.99,
-        e: null,
-        m: null,
-        scale: { min: 0.9, max: 1.3 },
         float: false,
       },
     ]
@@ -411,18 +397,18 @@ export const BIOMES: IBiomes = {
     color: new THREE.Color(0xbed69e),
     organisms: [
       {
-        weight: 0.20,
+        weight: 0.15,
         name: 'red_mushroom',
-        scarcity: 0.95,
+        scarcity: 0.975,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
         m: null,
         scale: { min: 1.0, max: 1.25 },
         float: false,
       },
       {
-        weight: 0.20,
+        weight: 0.15,
         name: 'brown_mushroom',
-        scarcity: 0.95,
+        scarcity: 0.975,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
         m: null,
         scale: { min: 1.0, max: 1.25 },
@@ -431,8 +417,8 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.20,
         name: 'mangrove',
-        scarcity: 0.995,
-        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
+        scarcity: 0.9975,
+        e: { low: Chunk.SEA_ELEVATION - 0.05, high: Chunk.SEA_ELEVATION + 0.2 },
         m: null,
         scale: { min: 1.0, max: 1.25 },
         float: false,
@@ -440,8 +426,8 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.20,
         name: 'stack',
-        scarcity: 0.995,
-        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
+        scarcity: 0.99875,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 },
         m: null,
         scale: { min: 1.0, max: 1.25 },
         float: false,
@@ -449,8 +435,8 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.10,
         name: 'pink',
-        scarcity: 0.995,
-        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
+        scarcity: 0.99875,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 },
         m: null,
         scale: { min: 1.0, max: 1.25 },
         float: false,
@@ -458,11 +444,20 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.10,
         name: 'blue',
-        scarcity: 0.995,
-        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1 },
+        scarcity: 0.99875,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 },
         m: null,
         scale: { min: 1.0, max: 1.25 },
         float: false,
+      },
+      {
+        weight: 0.10,
+        name: 'lilypad',
+        scarcity: 0.99,
+        e: { low: Chunk.SEA_ELEVATION - 0.1, high: Chunk.SEA_ELEVATION - 0.01 },
+        m: null,
+        scale: { min: 1.0, max: 1.35 },
+        float: true,
       },
     ]
   },
