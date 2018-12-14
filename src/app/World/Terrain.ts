@@ -5,6 +5,7 @@ import World from './World';
 import BiomeGenerator from './BiomeGenerator';
 import Coord from './Coord';
 import TerrainMesh from '@mesh/TerrainMesh';
+import WaterMesh from '@mesh/WaterMesh';
 
 import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 import { WATER_MATERIAL, WATER_SIDE_MATERIAL } from '@materials/water.material';
@@ -89,10 +90,10 @@ class Terrain {
     const bt3 = this.getBorderMesh(1, Terrain.NROWS, (row, col) => Terrain.SIZE_X, (row, col) => col * Chunk.CELL_SIZE_Z);
     const bt4 = this.getBorderMesh(1, Terrain.NROWS, (row, col) => 0, (row, col) => col * Chunk.CELL_SIZE_Z);
 
-    const bw1 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => row === 0 ? Terrain.SIZE_Z : Terrain.SIZE_Z - 1);
-    const bw2 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => row === 0 ? 0 : 1);
-    const bw3 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => row === 0 ? 0 : 1, (row, col) => col * Chunk.WIDTH / 4);
-    const bw4 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => row === 0 ? Terrain.SIZE_X : Terrain.SIZE_X - 1, (row, col) => col * Chunk.DEPTH / 4);
+    const bw1 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => Terrain.SIZE_Z - WaterMesh.SEA_OFFSET);
+    const bw2 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => WaterMesh.SEA_OFFSET);
+    const bw3 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => WaterMesh.SEA_OFFSET, (row, col) => col * Chunk.WIDTH / 4);
+    const bw4 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => Terrain.SIZE_X - WaterMesh.SEA_OFFSET, (row, col) => col * Chunk.DEPTH / 4);
 
     (<THREE.Geometry>this.terrain.geometry).mergeMesh(bt1);
     (<THREE.Geometry>this.terrain.geometry).mergeMesh(bt2);
@@ -233,6 +234,7 @@ class Terrain {
       for (let row = 0; row < nbVerticesY; row++) {
         const x = X(row, col);
         const z = Z(row, col);
+
         const y = row === 0 ? this.generator.computeWaterHeightAt(x, z) : this.generator.computeHeightAt(x, z) - 2500;
 
         geometry.vertices.push(new THREE.Vector3(x, y, z));
