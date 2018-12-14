@@ -57,6 +57,13 @@ class RainForestBiome extends Biome
     return this.amplified ? (e + ne) / 1.5 : ne;
   }
 
+  computeMoistureAt(x: number, z: number): number {
+    const value = super.computeMoistureAt(x, z);
+
+    // bias towards high humidity because it's a rainforest
+    return Math.min(value + 0.25, 1.0);
+  }
+
   getParametersAt(e: number, m: number) : IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.1) {
       return BIOMES.OCEAN;

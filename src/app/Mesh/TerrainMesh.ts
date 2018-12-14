@@ -12,8 +12,8 @@ import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 import { IChunkParameters } from '@shared/models/chunkParameters.model';
 
 class TerrainMesh extends Mesh {
-  static LOW : number = null;
-  static HIGH : number = null;
+  static LOW : number = -15000;
+  static HIGH : number = 0;
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
     super(generator, row, col, MESH_TYPES.TERRAIN_MESH, <IChunkParameters>{
@@ -42,8 +42,8 @@ class TerrainMesh extends Mesh {
         const z = this.row * this.parameters.depth + r * this.parameters.cellSizeZ;
         const y = this.getY(x, z);
 
-        if (TerrainMesh.LOW === null || TerrainMesh.LOW > y) TerrainMesh.LOW = y;
-        if (TerrainMesh.HIGH === null || TerrainMesh.HIGH < y) TerrainMesh.HIGH = y;
+        if (TerrainMesh.LOW > y) TerrainMesh.LOW = y;
+        if (TerrainMesh.HIGH < y) TerrainMesh.HIGH = y;
 
         geometry.vertices.push(new THREE.Vector3(x, y, z));
       }

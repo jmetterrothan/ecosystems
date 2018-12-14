@@ -5,13 +5,15 @@ import World from './World';
 import BiomeGenerator from './BiomeGenerator';
 import Coord from './Coord';
 import TerrainMesh from '@mesh/TerrainMesh';
+import WaterMesh from '@mesh/WaterMesh';
+import Boids from '../Boids/Boids';
 
 import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 import { WATER_MATERIAL, WATER_SIDE_MATERIAL } from '@materials/water.material';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 24;
+  static readonly NCHUNKS_X: number = 16;
   static readonly NCHUNKS_Z: number = 16;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
@@ -38,6 +40,8 @@ class Terrain {
   public clouds: THREE.Mesh;
 
   private layers: THREE.Group;
+
+  private boids: Boids;
 
   constructor(scene: THREE.Scene) {
     this.scene = scene;
@@ -75,6 +79,9 @@ class Terrain {
     // this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
 
     this.scene.add(this.layers);
+
+    this.boids = new Boids(this.scene, Terrain.SIZE_X, Chunk.SEA_LEVEL, Terrain.SIZE_Z, 10);
+    this.boids.generate();
   }
 
   /**
@@ -89,10 +96,10 @@ class Terrain {
     const bt3 = this.getBorderMesh(1, Terrain.NROWS, (row, col) => Terrain.SIZE_X, (row, col) => col * Chunk.CELL_SIZE_Z);
     const bt4 = this.getBorderMesh(1, Terrain.NROWS, (row, col) => 0, (row, col) => col * Chunk.CELL_SIZE_Z);
 
-    const bw1 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => row === 0 ? Terrain.SIZE_Z : Terrain.SIZE_Z - 1);
-    const bw2 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => row === 0 ? 0 : 1);
-    const bw3 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => row === 0 ? 0 : 1, (row, col) => col * Chunk.WIDTH / 4);
-    const bw4 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => row === 0 ? Terrain.SIZE_X : Terrain.SIZE_X - 1, (row, col) => col * Chunk.DEPTH / 4);
+    const bw1 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => Terrain.SIZE_Z - WaterMesh.SEA_OFFSET);
+    const bw2 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => WaterMesh.SEA_OFFSET);
+    const bw3 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => WaterMesh.SEA_OFFSET, (row, col) => col * Chunk.WIDTH / 4);
+    const bw4 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => Terrain.SIZE_X - WaterMesh.SEA_OFFSET, (row, col) => col * Chunk.DEPTH / 4);
 
     (<THREE.Geometry>this.terrain.geometry).mergeMesh(bt1);
     (<THREE.Geometry>this.terrain.geometry).mergeMesh(bt2);
@@ -135,7 +142,7 @@ class Terrain {
     return chunk;
   }
 
-  update(frustum: THREE.Frustum, position: THREE.Vector3) {
+  update(frustum: THREE.Frustum, position: THREE.Vector3, delta: number) {
     this.getChunkCoordAt(this.chunk, position.x, position.z);
 
     this.start.col = this.chunk.col - World.MAX_VISIBLE_CHUNKS;
@@ -176,6 +183,9 @@ class Terrain {
         }
       }
     }
+
+    // entities update
+    this.boids.update(delta);
   }
 
   /**
@@ -185,7 +195,7 @@ class Terrain {
    * @param {number} z
    * @return {Coord}
    */
-  getChunkCoordAt(out: Coord, x: number, z: number) : Coord {
+  getChunkCoordAt(out: Coord, x: number, z: number): Coord {
     out.row = (z / Chunk.DEPTH) | 0;
     out.col = (x / Chunk.WIDTH) | 0;
 
@@ -198,7 +208,7 @@ class Terrain {
    * @param {number} col
    * @return {Chunk|undefined}
    */
-  getChunk(row: number, col: number): Chunk|undefined {
+  getChunk(row: number, col: number): Chunk | undefined {
     return this.chunks.get(`${row}:${col}`);
   }
 
@@ -233,6 +243,7 @@ class Terrain {
       for (let row = 0; row < nbVerticesY; row++) {
         const x = X(row, col);
         const z = Z(row, col);
+
         const y = row === 0 ? this.generator.computeWaterHeightAt(x, z) : this.generator.computeHeightAt(x, z) - 2500;
 
         geometry.vertices.push(new THREE.Vector3(x, y, z));
@@ -304,11 +315,8 @@ class Terrain {
         const f1 = new THREE.Face3(a, b, d);
         const f2 = new THREE.Face3(d, c, a);
 
-        const y1 = (geometry.vertices[a].y + geometry.vertices[b].y + geometry.vertices[d].y) / 3;
-        const y2 = (geometry.vertices[d].y + geometry.vertices[c].y + geometry.vertices[a].y) / 3;
-
-        f1.color = this.generator.getBiome(y1 / Chunk.HEIGHT, 0).color;
-        f2.color = this.generator.getBiome(y2 / Chunk.HEIGHT, 0).color;
+        f1.color = this.generator.getBiome(TerrainMesh.LOW / Chunk.HEIGHT, 0).color;
+        f2.color = this.generator.getBiome(TerrainMesh.LOW / Chunk.HEIGHT, 0).color;
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);
@@ -331,32 +339,32 @@ class Terrain {
    * Retrieve the region's bounding box
    * @return {THREE.Box3}
    */
-  static createRegionBoundingBox() : THREE.Box3 {
+  static createRegionBoundingBox(): THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
-        new THREE.Vector3(
-          Terrain.SIZE_X / 2,
-          Terrain.SIZE_Y / 2,
-          Terrain.SIZE_Z / 2
-        ),
-        new THREE.Vector3(
-          Terrain.SIZE_X,
-          Terrain.SIZE_Y,
-          Terrain.SIZE_Z
-        ));
+      new THREE.Vector3(
+        Terrain.SIZE_X / 2,
+        Terrain.SIZE_Y / 2,
+        Terrain.SIZE_Z / 2
+      ),
+      new THREE.Vector3(
+        Terrain.SIZE_X,
+        Terrain.SIZE_Y,
+        Terrain.SIZE_Z
+      ));
   }
 
-  static createRegionWaterBoundingBox() : THREE.Box3 {
+  static createRegionWaterBoundingBox(): THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
-        new THREE.Vector3(
-          Terrain.SIZE_X / 2,
-          Chunk.SEA_LEVEL / 2,
-          Terrain.SIZE_Z / 2
-        ),
-        new THREE.Vector3(
-          Terrain.SIZE_X,
-          Chunk.SEA_LEVEL,
-          Terrain.SIZE_Z
-        ));
+      new THREE.Vector3(
+        Terrain.SIZE_X / 2,
+        Chunk.SEA_LEVEL / 2,
+        Terrain.SIZE_Z / 2
+      ),
+      new THREE.Vector3(
+        Terrain.SIZE_X,
+        Chunk.SEA_LEVEL,
+        Terrain.SIZE_Z
+      ));
   }
 
   /**
@@ -364,7 +372,7 @@ class Terrain {
    * @param {THREE.Box3|null} bbox Region's bounding box (if not set it will be created)
    * @return {THREE.Box3Helper}
    */
-  static createRegionBoundingBoxHelper(bbox: THREE.Box3 = null) : THREE.Box3Helper {
+  static createRegionBoundingBoxHelper(bbox: THREE.Box3 = null): THREE.Box3Helper {
     return new THREE.Box3Helper(bbox ? bbox : Terrain.createRegionBoundingBox(), 0xff0000);
   }
 
@@ -373,7 +381,7 @@ class Terrain {
    * @param {THREE.Box3|null} bbox Region's bounding box (if not set it will be created)
    * @return {THREE.Box3Helper}
    */
-  static createRegionWaterBoundingBoxHelper(bbox: THREE.Box3 = null) : THREE.Box3Helper {
+  static createRegionWaterBoundingBoxHelper(bbox: THREE.Box3 = null): THREE.Box3Helper {
     return new THREE.Box3Helper(bbox ? bbox : Terrain.createRegionWaterBoundingBox(), 0x0000ff);
   }
 }

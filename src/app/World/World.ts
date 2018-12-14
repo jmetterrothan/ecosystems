@@ -15,9 +15,9 @@ import MathUtils from '@utils/Math.utils';
 class World {
   static SEED: string | null = null; // '789005037'
 
-  static readonly OBJ_INITIAL_SCALE: number = 500;
+  static readonly OBJ_INITIAL_SCALE: number = 1000;
 
-  static readonly MAX_VISIBLE_CHUNKS: number = 24;
+  static readonly MAX_VISIBLE_CHUNKS: number = 20;
   static readonly VIEW_DISTANCE: number = World.MAX_VISIBLE_CHUNKS * Chunk.WIDTH;
 
   static readonly SHOW_FOG: boolean = true;
@@ -131,18 +131,14 @@ class World {
       )
     );
 
-    this.terrain.update(this.frustum, this.controls.getObject().position);
+    this.terrain.update(this.frustum, this.controls.getObject().position, delta);
+    this.player.update(this.terrain, delta);
 
     /*
     if (position.y < Chunk.SEA_LEVEL) {
       // console.log('underwater');
     }
     */
-  }
-
-  public updateMvts(delta) {
-    this.player.updateMvts(delta);
-    this.player.updatePosition(this.terrain);
   }
 
   public handleKeyboard(key: string, active: boolean) {

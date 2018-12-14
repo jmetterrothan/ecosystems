@@ -20,13 +20,13 @@ class Chunk {
   static readonly CELL_SIZE_Z: number = 2048;
 
   static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE_X;
-  static readonly HEIGHT: number = 56000;
+  static readonly HEIGHT: number = 64000;
   static readonly DEPTH: number = Chunk.NROWS * Chunk.CELL_SIZE_Z;
 
   static readonly SEA_LEVEL: number = Chunk.HEIGHT / 4;
   static readonly CLOUD_LEVEL: number = Chunk.HEIGHT - Chunk.HEIGHT / 8;
 
-  static readonly SEA_DEPTH_THICKNESS: number = 5000;
+  static readonly SEA_DEPTH_THICKNESS: number = 10000;
 
   static readonly SEA_ELEVATION: number = Chunk.SEA_LEVEL / Chunk.HEIGHT;
   static readonly CLOUD_ELEVATION: number = Chunk.CLOUD_LEVEL / Chunk.HEIGHT;
@@ -98,7 +98,7 @@ class Chunk {
       const y = Chunk.CLOUD_LEVEL;
       const z = this.row * Chunk.DEPTH + Chunk.DEPTH / 2;
 
-      const s = World.OBJ_INITIAL_SCALE * MathUtils.randomFloat(0.8, 1.75);
+      const s = World.OBJ_INITIAL_SCALE * MathUtils.randomFloat(0.6, 1.0);
 
       mesh.geometry = new THREE.Geometry().fromBufferGeometry(<THREE.BufferGeometry>mesh.geometry);
       mesh.frustumCulled = false;
@@ -123,7 +123,7 @@ class Chunk {
    * Poisson disk sampling
    */
   loadPopulation() {
-    const padding = 1024; // object bounding box size / 2
+    const padding = World.OBJ_INITIAL_SCALE + 256; // object bounding box size / 2
     const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding * 2, padding * 2, 30, MathUtils.rng);
     const points = pds.fill();
 
@@ -202,7 +202,7 @@ class Chunk {
     this.visible = bool;
   }
 
-  isVisible() {  return this.visible; }
+  isVisible() { return this.visible; }
   isDirty() { return this.dirty; }
   isMerged() { return this.merged; }
 

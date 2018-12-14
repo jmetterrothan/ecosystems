@@ -9,7 +9,8 @@ import Biome from '@world/Biome';
 import RainForestBiome from '@world/Biomes/RainForestBiome';
 import HighlandBiome from '@world/Biomes/HighlandBiome';
 import OceanBiome from '@world/Biomes/OceanBiome';
-import MountainBiome from '@world/Biomes/MountainBiome';
+import SwampBiome from '@world/Biomes/SwampBiome';
+import DesertBiome from '@world/Biomes/DesertBiome';
 
 import { IBiome } from '@shared/models/biome.model';
 import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
