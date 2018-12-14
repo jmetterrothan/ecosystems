@@ -36,7 +36,8 @@ class Player {
     this.controls.getObject().translateZ(z);
   }
 
-  updateMvts(delta) {
+  update(terrain: Terrain, delta: number) {
+    // movement
     if (this.moveForward) {
       this.velocity.z = -this.speed.z;
     } else {
@@ -88,9 +89,8 @@ class Player {
     this.controls.getObject().translateX(this.velocity.x * delta);
     this.controls.getObject().translateY(this.velocity.y * delta);
     this.controls.getObject().translateZ(this.velocity.z * delta);
-  }
 
-  updatePosition(terrain) {
+    // collision
     const position = this.controls.getObject().position;
     let y = TerrainMesh.LOW | 0;
 

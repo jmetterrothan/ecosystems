@@ -13,8 +13,8 @@ import { WATER_MATERIAL, WATER_SIDE_MATERIAL } from '@materials/water.material';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 8;
-  static readonly NCHUNKS_Z: number = 8;
+  static readonly NCHUNKS_X: number = 16;
+  static readonly NCHUNKS_Z: number = 16;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
@@ -142,11 +142,7 @@ class Terrain {
     return chunk;
   }
 
-  updateMvt(delta: number) {
-    this.boids.update(delta);
-  }
-
-  update(frustum: THREE.Frustum, position: THREE.Vector3) {
+  update(frustum: THREE.Frustum, position: THREE.Vector3, delta: number) {
     this.getChunkCoordAt(this.chunk, position.x, position.z);
 
     this.start.col = this.chunk.col - World.MAX_VISIBLE_CHUNKS;
@@ -187,6 +183,9 @@ class Terrain {
         }
       }
     }
+
+    // entities update
+    this.boids.update(delta);
   }
 
   /**
