@@ -1,6 +1,9 @@
 import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 
+import TerrainMesh from '@mesh/TerrainMesh';
+import Terrain from '@world/Terrain';
+
 class Player {
   private controls: THREE.PointerLockControls;
   private moveForward: boolean;
@@ -89,7 +92,11 @@ class Player {
 
   updatePosition(terrain) {
     const position = this.controls.getObject().position;
-    const y = terrain.getHeightAt(position.x, position.z) + 1024;
+    let y = TerrainMesh.LOW | 0;
+
+    if (position.x >= 0 && position.x <= Terrain.SIZE_X && position.z >= 0 && position.z <= Terrain.SIZE_Z) {
+      y = terrain.getHeightAt(position.x, position.z) + 1024;
+    }
 
     if (position.y < y) {
       this.controls.getObject().position.y = y;
