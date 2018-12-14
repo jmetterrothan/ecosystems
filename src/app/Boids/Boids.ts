@@ -65,20 +65,18 @@ class Boids {
     }
   }
 
-  update() {
+  update(delta: number) {
     for (let i = 0; i < this.creaturesCount; i++) {
       const creature = this.creatures[i];
       const mesh = this.meshes[i];
 
-      creature.update(this.creatures);
+      creature.update(this.creatures, delta);
       mesh.position.copy(creature.position);
 
       mesh.rotation.y = Math.atan2(-creature.velocity.z, creature.velocity.x);
       mesh.rotation.z = Math.asin(creature.velocity.y / creature.velocity.length());
-
     }
   }
-
 }
 
 export default Boids;

@@ -157,30 +157,33 @@ class Main {
     }
   }
 
-  private render(delta) {
+  private render() {
     this.stats.begin();
 
     const time = window.performance.now();
     const elapsed = time - this.lastTime;
+    const delta = elapsed / 1000;
 
+    /*
     if (time >= this.scheduledTime) {
       this.scheduledTime += 1000;
 
       // console.info(`UPS : ${this.ups}`);
       this.ups = 0;
     }
+    */
 
     this.lastTime = time;
     this.lag += elapsed;
 
     // updated every time
-    this.world.updateMvts(elapsed / 1000);
+    this.world.updateMvts(delta);
 
     // updated every 16ms
     let nbOfSteps = 0;
     while (this.lag >= Main.MS_PER_UPDATE) {
       this.world.update(delta);
-      this.ups++;
+      // this.ups++;
 
       this.lag -= Main.MS_PER_UPDATE;
 

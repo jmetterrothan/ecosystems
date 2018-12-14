@@ -141,6 +141,7 @@ class World {
   }
 
   public updateMvts(delta) {
+    this.terrain.updateMvt(delta);
     this.player.updateMvts(delta);
     this.player.updatePosition(this.terrain);
   }

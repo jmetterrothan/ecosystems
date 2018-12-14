@@ -80,7 +80,7 @@ class Terrain {
 
     this.scene.add(this.layers);
 
-    this.boids = new Boids(this.scene, Terrain.SIZE_X, Chunk.SEA_LEVEL, Terrain.SIZE_Z);
+    this.boids = new Boids(this.scene, Terrain.SIZE_X, Chunk.SEA_LEVEL, Terrain.SIZE_Z, 10);
     this.boids.generate();
   }
 
@@ -142,6 +142,10 @@ class Terrain {
     return chunk;
   }
 
+  updateMvt(delta: number) {
+    this.boids.update(delta);
+  }
+
   update(frustum: THREE.Frustum, position: THREE.Vector3) {
     this.getChunkCoordAt(this.chunk, position.x, position.z);
 
@@ -154,8 +158,6 @@ class Terrain {
     if (this.start.row < 0) { this.start.row = 0; }
     if (this.end.col > Terrain.NCHUNKS_X) { this.end.col = Terrain.NCHUNKS_X; }
     if (this.end.row > Terrain.NCHUNKS_Z) { this.end.row = Terrain.NCHUNKS_Z; }
-
-    this.boids.update();
 
     // reset previously visible chunks
     for (const chunk of this.visibleChunks) {
