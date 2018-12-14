@@ -59,7 +59,7 @@ class SwampBiome extends Biome
   }
 
   getParametersAt(e: number, m: number) : IBiome {
-    if (e < Chunk.SEA_ELEVATION - 0.40 - MathUtils.randomFloat(0.01, 0.025)) {
+    if (e < Chunk.SEA_ELEVATION - 0.10 - MathUtils.randomFloat(0.01, 0.025)) {
       return BIOMES.OCEAN;
     }
 
