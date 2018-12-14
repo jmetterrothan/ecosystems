@@ -98,16 +98,16 @@ export const BIOMES: IBiomes = {
     color: new THREE.Color(0xe6cf87),
     organisms: [
       {
-        weight: 0.3,
+        weight: 0.35,
         name: 'cactus1',
-        scarcity: 0.99,
+        scarcity: 0.998,
         e: null,
         m: null,
         scale: { min: 1.25, max: 2.5 },
         float: false,
       },
       {
-        weight: 0.1,
+        weight: 0.15,
         name: 'cactus2',
         scarcity: 0.999,
         e: null,
@@ -142,15 +142,6 @@ export const BIOMES: IBiomes = {
         scale: { min: 1.0, max: 2.85 },
         float: false,
       },
-      {
-        weight: 0.1,
-        name: 'palm_tree',
-        scarcity: 0.999,
-        e: { low: 0.26, high: 0.5 },
-        m: null,
-        scale: { min: 1.1, max: 1.5 },
-        float: false,
-      }
     ]
   },
   TUNDRA: {
@@ -364,6 +355,29 @@ export const BIOMES: IBiomes = {
         scale: { min: 0.65, max: 0.95 },
         float: false,
       },
+    ]
+  },
+  OASIS: {
+    color: new THREE.Color(0xf0e68c),
+    organisms: [
+      {
+        weight: 0.5,
+        name: 'rock1',
+        scarcity: 0.975,
+        e: null,
+        m: null,
+        scale: { min: 0.65, max: 0.95 },
+        float: false,
+      },
+      {
+        weight: 0.5,
+        name: 'palm_tree',
+        scarcity: 0.995,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: 0.5 },
+        m: null,
+        scale: { min: 1.1, max: 1.5 },
+        float: false,
+      }
     ]
   },
   OCEAN: {

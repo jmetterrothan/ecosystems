@@ -8,10 +8,10 @@ import { IBiome } from '@shared/models/biome.model';
 import { BIOMES } from '@shared/constants/biome.constants';
 import MathUtils from '@shared/utils/Math.utils';
 
-class SwampBiome extends Biome
+class DesertBiome extends Biome
 {
   constructor(generator: BiomeGenerator) {
-    super('SWAMPS', generator);
+    super('DESERT', generator);
   }
 
   /**
@@ -24,23 +24,22 @@ class SwampBiome extends Biome
     const nx = (x - Terrain.SIZE_X / 2) / (1024 * 128);
     const nz = (z - Terrain.SIZE_Z / 2) / (1024 * 128);
 
-    let e = -0.2 * this.generator.noise2(0.35 * nx, 0.35 * nz);
-    e += 0.2 * this.generator.noise3(2 * nx, 2 * nz);
-    e += 0.15 * this.generator.ridgeNoise2(1 * nx, 1 * nz);
-    e += 0.05 * this.generator.ridgeNoise(6 * nx, 6 * nz);
-    e += 0.15 * this.generator.noise(4 * nx, 4 * nz);
-    e += 0.015 * this.generator.noise(16 * nx, 16 * nz);
-    e += 0.0095 * this.generator.noise2(32 * nx, 32 * nz);
-    e += 0.0095 * this.generator.ridgeNoise(64 * nx, 64 * nz);
+    let e = 0.225 * this.generator.noise2(0.75 * nx, 0.75 * nz);
+    e += 0.2 * this.generator.noise3(1 * nx, 1 * nz);
+    e += 0.075 * this.generator.ridgeNoise(1 * nx, 1 * nz);
+    e += 0.0085 * this.generator.ridgeNoise(32 * nx, 32 * nz);
+    e += 0.05 * this.generator.noise(4 * nx, 4 * nz);
 
-    return e;
+    e ** 0.005;
+
+    return e + 0.135;
   }
 
   computeMoistureAt(x: number, z: number): number {
     const value = super.computeMoistureAt(x, z);
 
-    // bias towards high humidity because it's a swamp
-    return Math.min(value + 0.35, 1.0);
+    // bias towards low humidity because it's a desert
+    return Math.max(value - 0.5, 0.0);
   }
 
   getParametersAt(e: number, m: number) : IBiome {
@@ -49,15 +48,11 @@ class SwampBiome extends Biome
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.1) {
-      return BIOMES.GRASSLAND;
+      return BIOMES.DESERT;
     }
 
-    if (m > 0.5 + MathUtils.randomFloat(0.0, 0.05)) {
-      return BIOMES.SWAMP;
-    }
-
-    return BIOMES.BEACH;
+    return BIOMES.OASIS;
   }
 }
 
-export default SwampBiome;
+export default DesertBiome;
