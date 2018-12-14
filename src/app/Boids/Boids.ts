@@ -55,7 +55,7 @@ class Boids {
       const creature: Creature = new Creature(position, velocity);
       creature.setBoidsBoundingBox(this.boudingBox);
 
-      const mesh = new THREE.Mesh(new THREE.BoxGeometry(1000, 1000, 1000), new THREE.MeshLambertMaterial({ color: 'red' }));
+      const mesh = World.LOADED_MODELS.get('fish1').clone(); // new THREE.Mesh(new THREE.BoxGeometry(1000, 1000, 1000), new THREE.MeshLambertMaterial({ color: 'red' }));
 
       this.creatures.push(creature);
       this.meshes.push(mesh);

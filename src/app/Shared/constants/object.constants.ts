@@ -1,5 +1,8 @@
 import { IObject } from '@shared/models/object.model';
 
+import fish1Obj from '@objmodels/fauna/fish1.obj';
+import fish1Mtl from '@objmodels/fauna/fish1.mtl';
+
 import spruceObj from '@objmodels/tree/spruce.obj';
 import spruceMtl from '@objmodels/tree/spruce.mtl';
 
@@ -100,6 +103,12 @@ import cloud4Obj from '@objmodels/cloud/cloud4.obj';
 import cloud4Mtl from '@objmodels/cloud/cloud4.mtl';
 
 export const OBJECTS: IObject[] = [
+  {
+    name: 'fish1',
+    obj: fish1Obj,
+    mtl: fish1Mtl,
+    doubleSide: true
+  },
   {
     name: 'cloud1',
     obj: cloud1Obj,
