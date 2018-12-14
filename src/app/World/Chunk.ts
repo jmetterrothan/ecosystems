@@ -202,7 +202,7 @@ class Chunk {
     this.visible = bool;
   }
 
-  isVisible() {  return this.visible; }
+  isVisible() { return this.visible; }
   isDirty() { return this.dirty; }
   isMerged() { return this.merged; }
 
