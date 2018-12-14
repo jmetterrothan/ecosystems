@@ -83,20 +83,21 @@ class Terrain {
   preload() {
     this.loadChunks(0, 0, Terrain.NCHUNKS_Z, Terrain.NCHUNKS_X);
 
-    const bt1 = new THREE.Mesh(this.getBorderGeometry1(), TERRAIN_MATERIAL);
-    const bt2 = new THREE.Mesh(this.getBorderGeometry2(), TERRAIN_MATERIAL);
-    const bt3 = new THREE.Mesh(this.getBorderGeometry3(), TERRAIN_MATERIAL);
-    const bt4 = new THREE.Mesh(this.getBorderGeometry4(), TERRAIN_MATERIAL);
+    // borders
+    const bt1 = this.getBorderMesh(1, Terrain.NCOLS, (row, col) => col * Chunk.CELL_SIZE_X, (row, col) => 0);
+    const bt2 = this.getBorderMesh(1, Terrain.NCOLS, (row, col) => col * Chunk.CELL_SIZE_X, (row, col) => Terrain.SIZE_Z);
+    const bt3 = this.getBorderMesh(1, Terrain.NROWS, (row, col) => Terrain.SIZE_X, (row, col) => col * Chunk.CELL_SIZE_Z);
+    const bt4 = this.getBorderMesh(1, Terrain.NROWS, (row, col) => 0, (row, col) => col * Chunk.CELL_SIZE_Z);
+
+    const bw1 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => row === 0 ? Terrain.SIZE_Z : Terrain.SIZE_Z - 1);
+    const bw2 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => row === 0 ? 0 : 1);
+    const bw3 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => row === 0 ? 0 : 1, (row, col) => col * Chunk.WIDTH / 4);
+    const bw4 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => row === 0 ? Terrain.SIZE_X : Terrain.SIZE_X - 1, (row, col) => col * Chunk.DEPTH / 4);
 
     (<THREE.Geometry>this.terrain.geometry).mergeMesh(bt1);
     (<THREE.Geometry>this.terrain.geometry).mergeMesh(bt2);
     (<THREE.Geometry>this.terrain.geometry).mergeMesh(bt3);
     (<THREE.Geometry>this.terrain.geometry).mergeMesh(bt4);
-
-    const bw1 = new THREE.Mesh(this.getWaterBorderGeometry1(), WATER_SIDE_MATERIAL);
-    const bw2 = new THREE.Mesh(this.getWaterBorderGeometry2(), WATER_SIDE_MATERIAL);
-    const bw3 = new THREE.Mesh(this.getWaterBorderGeometry3(), WATER_SIDE_MATERIAL);
-    const bw4 = new THREE.Mesh(this.getWaterBorderGeometry4(), WATER_SIDE_MATERIAL);
 
     (<THREE.Geometry>this.waterSide.geometry).mergeMesh(bw1);
     (<THREE.Geometry>this.waterSide.geometry).mergeMesh(bw2);
@@ -222,7 +223,111 @@ class Terrain {
     return this.generator.computeHeightAt(x, z);
   }
 
-  /**
+  getWaterBorderMesh(nbRows: number, nbCols: number, X: Function, Z: Function): THREE.Mesh {
+    const geometry = new THREE.Geometry();
+
+    const nbVerticesZ = nbCols + 1;
+    const nbVerticesY = nbRows + 1;
+
+    for (let col = 0; col < nbVerticesZ; col++) {
+      for (let row = 0; row < nbVerticesY; row++) {
+        const x = X(row, col);
+        const z = Z(row, col);
+        const y = row === 0 ? this.generator.computeWaterHeightAt(x, z) : this.generator.computeHeightAt(x, z) - 2500;
+
+        geometry.vertices.push(new THREE.Vector3(x, y, z));
+      }
+    }
+
+    for (let col = 0; col < nbCols; col++) {
+      for (let row = 0; row < nbRows; row++) {
+        const a = row + nbVerticesY * col;
+        const b = (row + 1) + nbVerticesY * col;
+        const c = row + nbVerticesY * (col + 1);
+        const d = (row + 1) + nbVerticesY * (col + 1);
+
+        const f1 = new THREE.Face3(a, b, d);
+        const f2 = new THREE.Face3(d, c, a);
+
+        const x1 = (geometry.vertices[a].x + geometry.vertices[b].x + geometry.vertices[d].x) / 3;
+        const x2 = (geometry.vertices[d].x + geometry.vertices[c].x + geometry.vertices[a].x) / 3;
+
+        const z1 = (geometry.vertices[a].z + geometry.vertices[b].z + geometry.vertices[d].z) / 3;
+        const z2 = (geometry.vertices[d].z + geometry.vertices[c].z + geometry.vertices[a].z) / 3;
+
+        const m1 = this.generator.computeMoistureAt(x1, z1);
+        const m2 = this.generator.computeMoistureAt(x2, z2);
+
+        f1.color = this.generator.getWaterColor(m1);
+        f2.color = this.generator.getWaterColor(m2);
+
+        geometry.faces.push(f1);
+        geometry.faces.push(f2);
+      }
+    }
+
+    // need to tell the engine we updated the vertices
+    geometry.verticesNeedUpdate = true;
+    geometry.colorsNeedUpdate = true;
+
+    // need to update normals for smooth shading
+    geometry.computeFaceNormals();
+    geometry.computeVertexNormals();
+    geometry.normalsNeedUpdate = true;
+
+    return new THREE.Mesh(geometry, WATER_SIDE_MATERIAL);
+  }
+
+  getBorderMesh(nbRows: number, nbCols: number, X: Function, Z: Function): THREE.Mesh {
+    const geometry = new THREE.Geometry();
+
+    const nbVerticesX = nbCols + 1;
+    const nbVerticesY = nbRows + 1;
+
+    for (let col = 0; col < nbVerticesX; col++) {
+      for (let row = 0; row < nbVerticesY; row++) {
+        const x = X(row, col);
+        const z = Z(row, col);
+        const y = row === 0 ? this.generator.computeHeightAt(x, z) : TerrainMesh.LOW - Chunk.SEA_DEPTH_THICKNESS;
+
+        geometry.vertices.push(new THREE.Vector3(x, y, z));
+      }
+    }
+
+    for (let col = 0; col < nbCols; col++) {
+      for (let row = 0; row < nbRows; row++) {
+        const a = row + nbVerticesY * col;
+        const b = (row + 1) + nbVerticesY * col;
+        const c = row + nbVerticesY * (col + 1);
+        const d = (row + 1) + nbVerticesY * (col + 1);
+
+        const f1 = new THREE.Face3(a, b, d);
+        const f2 = new THREE.Face3(d, c, a);
+
+        const y1 = (geometry.vertices[a].y + geometry.vertices[b].y + geometry.vertices[d].y) / 3;
+        const y2 = (geometry.vertices[d].y + geometry.vertices[c].y + geometry.vertices[a].y) / 3;
+
+        f1.color = this.generator.getBiome(y1 / Chunk.HEIGHT, 0).color;
+        f2.color = this.generator.getBiome(y2 / Chunk.HEIGHT, 0).color;
+
+        geometry.faces.push(f1);
+        geometry.faces.push(f2);
+      }
+    }
+
+    // need to tell the engine we updated the vertices
+    geometry.verticesNeedUpdate = true;
+    geometry.colorsNeedUpdate = true;
+
+    // need to update normals for smooth shading
+    geometry.computeFaceNormals();
+    geometry.computeVertexNormals();
+    geometry.normalsNeedUpdate = true;
+
+    return new THREE.Mesh(geometry, TERRAIN_MATERIAL);
+  }
+
+    /**
    * Retrieve the region's bounding box
    * @return {THREE.Box3}
    */
@@ -270,438 +375,6 @@ class Terrain {
    */
   static createRegionWaterBoundingBoxHelper(bbox: THREE.Box3 = null) : THREE.Box3Helper {
     return new THREE.Box3Helper(bbox ? bbox : Terrain.createRegionWaterBoundingBox(), 0x0000ff);
-  }
-
-  getWaterBorderGeometry1(): THREE.Geometry {
-    const geometry = new THREE.Geometry();
-    const nbCols = Terrain.NCHUNKS_X * 4;
-    const nbRows = 1;
-
-    const nbVerticesX = nbCols + 1;
-    const nbVerticesY = nbRows + 1;
-
-    for (let col = 0; col < nbVerticesX; col++) {
-      for (let row = 0; row < nbVerticesY; row++) {
-        const x = col * Chunk.WIDTH / 4;
-        const z = row === 0 ? Terrain.SIZE_Z : Terrain.SIZE_Z - 10;
-        const y = row === 0 ? this.generator.computeWaterHeightAt(x, z) : this.generator.computeHeightAt(x, z) - 2500;
-
-        geometry.vertices.push(new THREE.Vector3(x, y, z));
-      }
-    }
-
-    for (let col = 0; col < nbCols; col++) {
-      for (let row = 0; row < nbRows; row++) {
-        const a = row + nbVerticesY * col;
-        const b = (row + 1) + nbVerticesY * col;
-        const c = row + nbVerticesY * (col + 1);
-        const d = (row + 1) + nbVerticesY * (col + 1);
-
-        const f1 = new THREE.Face3(a, b, d);
-        const f2 = new THREE.Face3(d, c, a);
-
-        const x1 = (geometry.vertices[a].x + geometry.vertices[b].x + geometry.vertices[d].x) / 3;
-        const x2 = (geometry.vertices[d].x + geometry.vertices[c].x + geometry.vertices[a].x) / 3;
-
-        const z1 = (geometry.vertices[a].z + geometry.vertices[b].z + geometry.vertices[d].z) / 3;
-        const z2 = (geometry.vertices[d].z + geometry.vertices[c].z + geometry.vertices[a].z) / 3;
-
-        const m1 = this.generator.computeMoistureAt(x1, z1);
-        const m2 = this.generator.computeMoistureAt(x2, z2);
-
-        f1.color = this.generator.getWaterColor(m1);
-        f2.color = this.generator.getWaterColor(m2);
-
-        geometry.faces.push(f1);
-        geometry.faces.push(f2);
-      }
-    }
-
-    // need to tell the engine we updated the vertices
-    geometry.verticesNeedUpdate = true;
-    geometry.colorsNeedUpdate = true;
-
-    // need to update normals for smooth shading
-    geometry.computeFaceNormals();
-    geometry.computeVertexNormals();
-    geometry.normalsNeedUpdate = true;
-
-    return geometry;
-  }
-
-  getWaterBorderGeometry2(): THREE.Geometry {
-    const geometry = new THREE.Geometry();
-    const nbCols = Terrain.NCHUNKS_X * 4;
-    const nbRows = 1;
-
-    const nbVerticesX = nbCols + 1;
-    const nbVerticesY = nbRows + 1;
-
-    for (let col = 0; col < nbVerticesX; col++) {
-      for (let row = 0; row < nbVerticesY; row++) {
-        const x = col * Chunk.WIDTH / 4;
-        const z = row === 0 ? 0 : 10;
-        const y = row === 0 ? this.generator.computeWaterHeightAt(x, z) : this.generator.computeHeightAt(x, z) - 2500;
-
-        geometry.vertices.push(new THREE.Vector3(x, y, z));
-      }
-    }
-
-    for (let col = 0; col < nbCols; col++) {
-      for (let row = 0; row < nbRows; row++) {
-        const a = row + nbVerticesY * col;
-        const b = (row + 1) + nbVerticesY * col;
-        const c = row + nbVerticesY * (col + 1);
-        const d = (row + 1) + nbVerticesY * (col + 1);
-
-        const f1 = new THREE.Face3(a, b, d);
-        const f2 = new THREE.Face3(d, c, a);
-
-        const x1 = (geometry.vertices[a].x + geometry.vertices[b].x + geometry.vertices[d].x) / 3;
-        const x2 = (geometry.vertices[d].x + geometry.vertices[c].x + geometry.vertices[a].x) / 3;
-
-        const z1 = (geometry.vertices[a].z + geometry.vertices[b].z + geometry.vertices[d].z) / 3;
-        const z2 = (geometry.vertices[d].z + geometry.vertices[c].z + geometry.vertices[a].z) / 3;
-
-        const m1 = this.generator.computeMoistureAt(x1, z1);
-        const m2 = this.generator.computeMoistureAt(x2, z2);
-
-        f1.color = this.generator.getWaterColor(m1);
-        f2.color = this.generator.getWaterColor(m2);
-
-        geometry.faces.push(f1);
-        geometry.faces.push(f2);
-      }
-    }
-
-    // need to tell the engine we updated the vertices
-    geometry.verticesNeedUpdate = true;
-    geometry.colorsNeedUpdate = true;
-
-    // need to update normals for smooth shading
-    geometry.computeFaceNormals();
-    geometry.computeVertexNormals();
-    geometry.normalsNeedUpdate = true;
-
-    return geometry;
-  }
-
-  getWaterBorderGeometry3(): THREE.Geometry {
-    const geometry = new THREE.Geometry();
-    const nbCols = Terrain.NCHUNKS_Z * 4;
-    const nbRows = 1;
-
-    const nbVerticesZ = nbCols + 1;
-    const nbVerticesY = nbRows + 1;
-
-    for (let col = 0; col < nbVerticesZ; col++) {
-      for (let row = 0; row < nbVerticesY; row++) {
-        const x = row === 0 ? 0 : 10;
-        const z = col * Chunk.DEPTH / 4;
-        const y = row === 0 ? this.generator.computeWaterHeightAt(x, z) : this.generator.computeHeightAt(x, z) - 2500;
-
-        geometry.vertices.push(new THREE.Vector3(x, y, z));
-      }
-    }
-
-    for (let col = 0; col < nbCols; col++) {
-      for (let row = 0; row < nbRows; row++) {
-        const a = row + nbVerticesY * col;
-        const b = (row + 1) + nbVerticesY * col;
-        const c = row + nbVerticesY * (col + 1);
-        const d = (row + 1) + nbVerticesY * (col + 1);
-
-        const f1 = new THREE.Face3(a, b, d);
-        const f2 = new THREE.Face3(d, c, a);
-
-        const x1 = (geometry.vertices[a].x + geometry.vertices[b].x + geometry.vertices[d].x) / 3;
-        const x2 = (geometry.vertices[d].x + geometry.vertices[c].x + geometry.vertices[a].x) / 3;
-
-        const z1 = (geometry.vertices[a].z + geometry.vertices[b].z + geometry.vertices[d].z) / 3;
-        const z2 = (geometry.vertices[d].z + geometry.vertices[c].z + geometry.vertices[a].z) / 3;
-
-        const m1 = this.generator.computeMoistureAt(x1, z1);
-        const m2 = this.generator.computeMoistureAt(x2, z2);
-
-        f1.color = this.generator.getWaterColor(m1);
-        f2.color = this.generator.getWaterColor(m2);
-
-        geometry.faces.push(f1);
-        geometry.faces.push(f2);
-      }
-    }
-
-    // need to tell the engine we updated the vertices
-    geometry.verticesNeedUpdate = true;
-    geometry.colorsNeedUpdate = true;
-
-    // need to update normals for smooth shading
-    geometry.computeFaceNormals();
-    geometry.computeVertexNormals();
-    geometry.normalsNeedUpdate = true;
-
-    return geometry;
-  }
-
-  getWaterBorderGeometry4(): THREE.Geometry {
-    const geometry = new THREE.Geometry();
-    const nbCols = Terrain.NCHUNKS_Z * 4;
-    const nbRows = 1;
-
-    const nbVerticesZ = nbCols + 1;
-    const nbVerticesY = nbRows + 1;
-
-    for (let col = 0; col < nbVerticesZ; col++) {
-      for (let row = 0; row < nbVerticesY; row++) {
-        const x = row === 0 ? Terrain.SIZE_X : Terrain.SIZE_X - 10;
-        const z = col * Chunk.DEPTH / 4;
-        const y = row === 0 ? this.generator.computeWaterHeightAt(x, z) : this.generator.computeHeightAt(x, z) - 2500;
-
-        geometry.vertices.push(new THREE.Vector3(x, y, z));
-      }
-    }
-
-    for (let col = 0; col < nbCols; col++) {
-      for (let row = 0; row < nbRows; row++) {
-        const a = row + nbVerticesY * col;
-        const b = (row + 1) + nbVerticesY * col;
-        const c = row + nbVerticesY * (col + 1);
-        const d = (row + 1) + nbVerticesY * (col + 1);
-
-        const f1 = new THREE.Face3(a, b, d);
-        const f2 = new THREE.Face3(d, c, a);
-
-        const x1 = (geometry.vertices[a].x + geometry.vertices[b].x + geometry.vertices[d].x) / 3;
-        const x2 = (geometry.vertices[d].x + geometry.vertices[c].x + geometry.vertices[a].x) / 3;
-
-        const z1 = (geometry.vertices[a].z + geometry.vertices[b].z + geometry.vertices[d].z) / 3;
-        const z2 = (geometry.vertices[d].z + geometry.vertices[c].z + geometry.vertices[a].z) / 3;
-
-        const m1 = this.generator.computeMoistureAt(x1, z1);
-        const m2 = this.generator.computeMoistureAt(x2, z2);
-
-        f1.color = this.generator.getWaterColor(m1);
-        f2.color = this.generator.getWaterColor(m2);
-
-        geometry.faces.push(f1);
-        geometry.faces.push(f2);
-      }
-    }
-
-    // need to tell the engine we updated the vertices
-    geometry.verticesNeedUpdate = true;
-    geometry.colorsNeedUpdate = true;
-
-    // need to update normals for smooth shading
-    geometry.computeFaceNormals();
-    geometry.computeVertexNormals();
-    geometry.normalsNeedUpdate = true;
-
-    return geometry;
-  }
-
-  getBorderGeometry1(): THREE.Geometry {
-    const geometry = new THREE.Geometry();
-    const nbCols = Terrain.NCOLS;
-    const nbRows = 1;
-
-    const nbVerticesX = nbCols + 1;
-    const nbVerticesY = nbRows + 1;
-
-    for (let col = 0; col < nbVerticesX; col++) {
-      for (let row = 0; row < nbVerticesY; row++) {
-        const x = col * Chunk.CELL_SIZE_X;
-        const z = Terrain.SIZE_Z;
-        const y = row === 0 ? this.generator.computeHeightAt(x, z) : TerrainMesh.LOW - Chunk.SEA_DEPTH_THICKNESS;
-
-        geometry.vertices.push(new THREE.Vector3(x, y, z));
-      }
-    }
-
-    for (let col = 0; col < nbCols; col++) {
-      for (let row = 0; row < nbRows; row++) {
-        const a = row + nbVerticesY * col;
-        const b = (row + 1) + nbVerticesY * col;
-        const c = row + nbVerticesY * (col + 1);
-        const d = (row + 1) + nbVerticesY * (col + 1);
-
-        const f1 = new THREE.Face3(a, b, d);
-        const f2 = new THREE.Face3(d, c, a);
-
-        const y1 = (geometry.vertices[a].y + geometry.vertices[b].y + geometry.vertices[d].y) / 3;
-        const y2 = (geometry.vertices[d].y + geometry.vertices[c].y + geometry.vertices[a].y) / 3;
-
-        f1.color = this.generator.getBiome(y1 / Chunk.HEIGHT, 0).color;
-        f2.color = this.generator.getBiome(y2 / Chunk.HEIGHT, 0).color;
-
-        geometry.faces.push(f1);
-        geometry.faces.push(f2);
-      }
-    }
-
-    // need to tell the engine we updated the vertices
-    geometry.verticesNeedUpdate = true;
-    geometry.colorsNeedUpdate = true;
-
-    // need to update normals for smooth shading
-    geometry.computeFaceNormals();
-    geometry.computeVertexNormals();
-    geometry.normalsNeedUpdate = true;
-
-    return geometry;
-  }
-
-  getBorderGeometry2(): THREE.Geometry {
-    const geometry = new THREE.Geometry();
-    const nbCols = Terrain.NCOLS;
-    const nbRows = 1;
-
-    const nbVerticesX = nbCols + 1;
-    const nbVerticesY = nbRows + 1;
-
-    for (let col = 0; col < nbVerticesX; col++) {
-      for (let row = 0; row < nbVerticesY; row++) {
-        const x = col * Chunk.CELL_SIZE_X;
-        const z = 0;
-        const y = row === 0 ? this.generator.computeHeightAt(x, z) : TerrainMesh.LOW - Chunk.SEA_DEPTH_THICKNESS;
-
-        geometry.vertices.push(new THREE.Vector3(x, y, z));
-      }
-    }
-
-    for (let col = 0; col < nbCols; col++) {
-      for (let row = 0; row < nbRows; row++) {
-        const a = row + nbVerticesY * col;
-        const b = (row + 1) + nbVerticesY * col;
-        const c = row + nbVerticesY * (col + 1);
-        const d = (row + 1) + nbVerticesY * (col + 1);
-
-        const f1 = new THREE.Face3(a, b, d);
-        const f2 = new THREE.Face3(d, c, a);
-
-        const y1 = (geometry.vertices[a].y + geometry.vertices[b].y + geometry.vertices[d].y) / 3;
-        const y2 = (geometry.vertices[d].y + geometry.vertices[c].y + geometry.vertices[a].y) / 3;
-
-        f1.color = this.generator.getBiome(y1 / Chunk.HEIGHT, 0).color;
-        f2.color = this.generator.getBiome(y2 / Chunk.HEIGHT, 0).color;
-
-        geometry.faces.push(f1);
-        geometry.faces.push(f2);
-      }
-    }
-
-    // need to tell the engine we updated the vertices
-    geometry.verticesNeedUpdate = true;
-    geometry.colorsNeedUpdate = true;
-
-    // need to update normals for smooth shading
-    geometry.computeFaceNormals();
-    geometry.computeVertexNormals();
-    geometry.normalsNeedUpdate = true;
-
-    return geometry;
-  }
-
-  getBorderGeometry3(): THREE.Geometry {
-    const geometry = new THREE.Geometry();
-    const nbCols = Terrain.NROWS;
-    const nbRows = 1;
-
-    const nbVerticesZ = nbCols + 1;
-    const nbVerticesY = nbRows + 1;
-
-    for (let col = 0; col < nbVerticesZ; col++) {
-      for (let row = 0; row < nbVerticesY; row++) {
-        const x = 0;
-        const z = col * Chunk.CELL_SIZE_Z;
-        const y = row === 0 ? this.generator.computeHeightAt(x, z) : TerrainMesh.LOW - Chunk.SEA_DEPTH_THICKNESS;
-
-        geometry.vertices.push(new THREE.Vector3(x, y, z));
-      }
-    }
-
-    for (let col = 0; col < nbCols; col++) {
-      for (let row = 0; row < nbRows; row++) {
-        const a = row + nbVerticesY * col;
-        const b = (row + 1) + nbVerticesY * col;
-        const c = row + nbVerticesY * (col + 1);
-        const d = (row + 1) + nbVerticesY * (col + 1);
-
-        const f1 = new THREE.Face3(a, b, d);
-        const f2 = new THREE.Face3(d, c, a);
-
-        const y1 = (geometry.vertices[a].y + geometry.vertices[b].y + geometry.vertices[d].y) / 3;
-        const y2 = (geometry.vertices[d].y + geometry.vertices[c].y + geometry.vertices[a].y) / 3;
-
-        f1.color = this.generator.getBiome(y1 / Chunk.HEIGHT, 0).color;
-        f2.color = this.generator.getBiome(y2 / Chunk.HEIGHT, 0).color;
-
-        geometry.faces.push(f1);
-        geometry.faces.push(f2);
-      }
-    }
-
-    // need to tell the engine we updated the vertices
-    geometry.verticesNeedUpdate = true;
-    geometry.colorsNeedUpdate = true;
-
-    // need to update normals for smooth shading
-    geometry.computeFaceNormals();
-    geometry.computeVertexNormals();
-    geometry.normalsNeedUpdate = true;
-
-    return geometry;
-  }
-
-  getBorderGeometry4(): THREE.Geometry {
-    const geometry = new THREE.Geometry();
-    const nbCols = Terrain.NROWS;
-    const nbRows = 1;
-
-    const nbVerticesZ = nbCols + 1;
-    const nbVerticesY = nbRows + 1;
-    console.log(TerrainMesh.LOW);
-    for (let col = 0; col < nbVerticesZ; col++) {
-      for (let row = 0; row < nbVerticesY; row++) {
-        const x = Terrain.SIZE_X;
-        const z = col * Chunk.CELL_SIZE_Z;
-        const y = row === 0 ? this.generator.computeHeightAt(x, z) : TerrainMesh.LOW - Chunk.SEA_DEPTH_THICKNESS;
-
-        geometry.vertices.push(new THREE.Vector3(x, y, z));
-      }
-    }
-
-    for (let col = 0; col < nbCols; col++) {
-      for (let row = 0; row < nbRows; row++) {
-        const a = row + nbVerticesY * col;
-        const b = (row + 1) + nbVerticesY * col;
-        const c = row + nbVerticesY * (col + 1);
-        const d = (row + 1) + nbVerticesY * (col + 1);
-
-        const f1 = new THREE.Face3(a, b, d);
-        const f2 = new THREE.Face3(d, c, a);
-
-        const y1 = (geometry.vertices[a].y + geometry.vertices[b].y + geometry.vertices[d].y) / 3;
-        const y2 = (geometry.vertices[d].y + geometry.vertices[c].y + geometry.vertices[a].y) / 3;
-
-        f1.color = this.generator.getBiome(y1 / Chunk.HEIGHT, 0).color;
-        f2.color = this.generator.getBiome(y2 / Chunk.HEIGHT, 0).color;
-
-        geometry.faces.push(f1);
-        geometry.faces.push(f2);
-      }
-    }
-
-    // need to tell the engine we updated the vertices
-    geometry.verticesNeedUpdate = true;
-    geometry.colorsNeedUpdate = true;
-
-    // need to update normals for smooth shading
-    geometry.computeFaceNormals();
-    geometry.computeVertexNormals();
-    geometry.normalsNeedUpdate = true;
-
-    return geometry;
   }
 }
 
