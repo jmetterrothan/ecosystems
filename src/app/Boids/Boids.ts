@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+
+import World from '@world/World';
 import Creature from './Creature';
 
 class Boids {
