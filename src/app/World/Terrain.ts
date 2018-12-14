@@ -13,8 +13,8 @@ import { WATER_MATERIAL, WATER_SIDE_MATERIAL } from '@materials/water.material';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 8;
-  static readonly NCHUNKS_Z: number = 8;
+  static readonly NCHUNKS_X: number = 16;
+  static readonly NCHUNKS_Z: number = 16;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
@@ -80,7 +80,7 @@ class Terrain {
 
     this.scene.add(this.layers);
 
-    this.boids = new Boids(this.scene, Terrain.SIZE_X, Chunk.SEA_LEVEL, Terrain.SIZE_Z);
+    this.boids = new Boids(this.scene, Terrain.SIZE_X, Chunk.SEA_LEVEL, Terrain.SIZE_Z, 10);
     this.boids.generate();
   }
 
@@ -142,7 +142,7 @@ class Terrain {
     return chunk;
   }
 
-  update(frustum: THREE.Frustum, position: THREE.Vector3) {
+  update(frustum: THREE.Frustum, position: THREE.Vector3, delta: number) {
     this.getChunkCoordAt(this.chunk, position.x, position.z);
 
     this.start.col = this.chunk.col - World.MAX_VISIBLE_CHUNKS;
@@ -154,8 +154,6 @@ class Terrain {
     if (this.start.row < 0) { this.start.row = 0; }
     if (this.end.col > Terrain.NCHUNKS_X) { this.end.col = Terrain.NCHUNKS_X; }
     if (this.end.row > Terrain.NCHUNKS_Z) { this.end.row = Terrain.NCHUNKS_Z; }
-
-    this.boids.update();
 
     // reset previously visible chunks
     for (const chunk of this.visibleChunks) {
@@ -185,6 +183,9 @@ class Terrain {
         }
       }
     }
+
+    // entities update
+    this.boids.update(delta);
   }
 
   /**

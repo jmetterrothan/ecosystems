@@ -15,8 +15,6 @@ import statsJs from 'stats.js';
 import World from '@world/World';
 
 class Main {
-  public static readonly MS_PER_UPDATE = 1000 / 25;
-
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
   private composer: THREE.EffectComposer;
@@ -26,17 +24,11 @@ class Main {
 
   private world: World;
 
-  private lag: number;
-  private ups: number;
   private lastTime: number;
-  private scheduledTime: number;
 
   private stats: statsJs;
   constructor() {
     this.containerElement = document.body;
-    this.lag = 0;
-    this.ups = 0;
-    this.scheduledTime = window.performance.now();
     this.lastTime = window.performance.now();
 
     this.stats = new statsJs();
@@ -157,37 +149,17 @@ class Main {
     }
   }
 
-  private render(delta) {
+  private render() {
     this.stats.begin();
 
     const time = window.performance.now();
     const elapsed = time - this.lastTime;
-
-    if (time >= this.scheduledTime) {
-      this.scheduledTime += 1000;
-
-      // console.info(`UPS : ${this.ups}`);
-      this.ups = 0;
-    }
-
     this.lastTime = time;
-    this.lag += elapsed;
+
+    const delta = elapsed / 1000;
 
     // updated every time
-    this.world.updateMvts(elapsed / 1000);
-
-    // updated every 16ms
-    let nbOfSteps = 0;
-    while (this.lag >= Main.MS_PER_UPDATE) {
-      this.world.update(delta);
-      this.ups++;
-
-      this.lag -= Main.MS_PER_UPDATE;
-
-      if (++nbOfSteps >= 240) {
-        this.lag = 0;
-      }
-    }
+    this.world.update(delta);
 
     /*
     this.effect.uniforms['time'].value += Math.random();

@@ -21,7 +21,7 @@ class Creature {
     this.velocity = velocity;
   }
 
-  update(creatures: Creature[]) {
+  update(creatures: Creature[], delta: number) {
 
     const interaction = this.calculateInteraction(creatures);
     this.velocity.add(interaction);
@@ -36,7 +36,7 @@ class Creature {
 
     this.velocity.normalize();
     this.velocity.multiplyScalar(this.speed);
-    this.position.add(this.velocity);
+    this.position.add(this.velocity.clone().multiplyScalar(delta));
   }
 
   setBoidsBoundingBox(box: THREE.Vector3) {
