@@ -4,6 +4,8 @@ import Chunk from './Chunk';
 import World from './World';
 import BiomeGenerator from './BiomeGenerator';
 import Coord from './Coord';
+import TerrainMesh from '@mesh/TerrainMesh';
+import WaterMesh from '@mesh/WaterMesh';
 import Boids from '../Boids/Boids';
 
 import { TERRAIN_MATERIAL } from '@materials/terrain.material';
