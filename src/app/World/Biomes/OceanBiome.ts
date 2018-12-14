@@ -27,8 +27,8 @@ class OceanBiome extends Biome
    * @return {number} elevation value
    */
   computeElevationAt(x: number, z: number): number {
-    const nx = (x - Terrain.SIZE_X / 2) / (Chunk.WIDTH * 64);
-    const nz = (z - Terrain.SIZE_Z / 2) / (Chunk.DEPTH * 64);
+    const nx = (x - Terrain.SIZE_X / 2) / (1024 * 128);
+    const nz = (z - Terrain.SIZE_Z / 2) / (1024 * 128);
 
     let e = 0.2 * this.generator.noise(1 * nx, 1 * nz);
     e += 0.0035 * this.generator.noise(8 * nx, 8 * nz);
@@ -39,7 +39,7 @@ class OceanBiome extends Biome
     e /= (0.25 + 0.0035 + 0.015 + 0.025 + 0.25) - this.spike;
 
     e **= 2.5;
-    return e - this.depth;
+    return e - this.depth - 0.5;
   }
 
   getParametersAt(e: number, m: number) : IBiome {

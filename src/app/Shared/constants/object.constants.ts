@@ -87,7 +87,39 @@ import blue_mushroomMtl from '@objmodels/mushroom/blue_mushroom.mtl';
 import pink_mushroomObj from '@objmodels/mushroom/pink_mushroom.obj';
 import pink_mushroomMtl from '@objmodels/mushroom/pink_mushroom.mtl';
 
+import cloud1Obj from '@objmodels/cloud/cloud1.obj';
+import cloud1Mtl from '@objmodels/cloud/cloud1.mtl';
+
+import cloud2Obj from '@objmodels/cloud/cloud2.obj';
+import cloud2Mtl from '@objmodels/cloud/cloud2.mtl';
+
+import cloud3Obj from '@objmodels/cloud/cloud3.obj';
+import cloud3Mtl from '@objmodels/cloud/cloud3.mtl';
+
+import cloud4Obj from '@objmodels/cloud/cloud4.obj';
+import cloud4Mtl from '@objmodels/cloud/cloud4.mtl';
+
 export const OBJECTS: IObject[] = [
+  {
+    name: 'cloud1',
+    obj: cloud1Obj,
+    mtl: cloud1Mtl
+  },
+  {
+    name: 'cloud2',
+    obj: cloud2Obj,
+    mtl: cloud2Mtl
+  },
+  {
+    name: 'cloud3',
+    obj: cloud3Obj,
+    mtl: cloud3Mtl
+  },
+  {
+    name: 'cloud4',
+    obj: cloud4Obj,
+    mtl: cloud4Mtl
+  },
   {
     name: 'pink_mushroom',
     obj: pink_mushroomObj,

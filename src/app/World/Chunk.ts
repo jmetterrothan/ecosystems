@@ -6,7 +6,6 @@ import World from './World';
 import Terrain from './Terrain';
 import TerrainMesh from '@mesh/TerrainMesh';
 import WaterMesh from '@mesh/WaterMesh';
-import CloudMesh from '@mesh/CloudMesh';
 import Stack from '@shared/Stack';
 
 import MathUtils from '@utils/Math.utils';
@@ -14,21 +13,23 @@ import MathUtils from '@utils/Math.utils';
 import { IPick } from '@shared/models/pick.model';
 
 class Chunk {
-  static readonly WIDTH: number = 2048;
-  static readonly HEIGHT: number = 48000;
-  static readonly DEPTH: number = 2048;
+  static readonly NROWS: number = 8;
+  static readonly NCOLS: number = 8;
+
+  static readonly CELL_SIZE_X: number = 2048;
+  static readonly CELL_SIZE_Z: number = 2048;
+
+  static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE_X;
+  static readonly HEIGHT: number = 56000;
+  static readonly DEPTH: number = Chunk.NROWS * Chunk.CELL_SIZE_Z;
 
   static readonly SEA_LEVEL: number = Chunk.HEIGHT / 4;
   static readonly CLOUD_LEVEL: number = Chunk.HEIGHT - Chunk.HEIGHT / 8;
 
+  static readonly SEA_DEPTH_THICKNESS: number = 5000;
+
   static readonly SEA_ELEVATION: number = Chunk.SEA_LEVEL / Chunk.HEIGHT;
   static readonly CLOUD_ELEVATION: number = Chunk.CLOUD_LEVEL / Chunk.HEIGHT;
-
-  static readonly NROWS: number = 2;
-  static readonly NCOLS: number = 2;
-
-  static readonly CELL_SIZE_X: number = (Chunk.WIDTH / Chunk.NROWS) | 0;
-  static readonly CELL_SIZE_Z: number = (Chunk.DEPTH / Chunk.NCOLS) | 0;
 
   static readonly CHUNK_OBJECT_STACK = {};
 
@@ -43,7 +44,6 @@ class Chunk {
 
   private terrainBlueprint: TerrainMesh;
   private waterBlueprint: WaterMesh;
-  private cloudBlueprint: CloudMesh;
 
   private objectsBlueprint: IPick[];
 
@@ -65,7 +65,6 @@ class Chunk {
 
     this.terrainBlueprint = new TerrainMesh(this.generator, this.row, this.col);
     this.waterBlueprint = new WaterMesh(this.generator, this.row, this.col);
-    this.cloudBlueprint = new CloudMesh(this.generator, this.row, this.col);
 
     // compute the bounding box of the chunk for later optimization
     this.bbox = Chunk.createBoundingBox(row, col);
@@ -73,14 +72,14 @@ class Chunk {
     this.objectsBlueprint = [];
   }
 
-  init(terrain: Terrain) {
+  init(terrain: Terrain, scene: THREE.Scene) {
     // merge generated chunk with region geometry
     const terrainMesh = this.terrainBlueprint.generate();
 
     (<THREE.Geometry>terrain.terrain.geometry).mergeMesh(terrainMesh);
     (<THREE.Geometry>terrain.terrain.geometry).elementsNeedUpdate = true;
 
-      // TODO optimize this part (mesh could be static objects reused using transformations and data could just be copied to the global geometry)
+    // TODO optimize this part (mesh could be static objects reused using transformations and data could just be copied to the global geometry)
     if (this.terrainBlueprint.needGenerateWater()) {
       const waterMesh = this.waterBlueprint.generate();
 
@@ -88,10 +87,29 @@ class Chunk {
       (<THREE.Geometry>terrain.water.geometry).elementsNeedUpdate = true;
     }
 
+    // clouds
     if (this.terrainBlueprint.needGenerateCloud()) {
-      const cloudMesh = this.cloudBlueprint.generate();
+      const cloudTypes = ['cloud1', 'cloud2', 'cloud3', 'cloud4'];
 
-      (<THREE.Geometry>terrain.clouds.geometry).mergeMesh(cloudMesh);
+      const name = cloudTypes[MathUtils.randomInt(0, cloudTypes.length - 1)];
+      const mesh: THREE.Mesh = (<THREE.Mesh>World.LOADED_MODELS.get(name).clone().children[0]);
+
+      const x = this.col * Chunk.WIDTH + Chunk.WIDTH / 2;
+      const y = Chunk.CLOUD_LEVEL;
+      const z = this.row * Chunk.DEPTH + Chunk.DEPTH / 2;
+
+      const s = World.OBJ_INITIAL_SCALE * MathUtils.randomFloat(0.8, 1.75);
+
+      mesh.geometry = new THREE.Geometry().fromBufferGeometry(<THREE.BufferGeometry>mesh.geometry);
+      mesh.frustumCulled = false;
+      mesh.matrixAutoUpdate = true;
+      mesh.receiveShadow = true;
+      mesh.castShadow = true;
+      mesh.visible = true;
+      mesh.position.set(x, y, z);
+      mesh.scale.set(s, s, s);
+
+      (<THREE.Geometry>terrain.clouds.geometry).mergeMesh(mesh);
       (<THREE.Geometry>terrain.clouds.geometry).elementsNeedUpdate = true;
     }
 
@@ -105,7 +123,7 @@ class Chunk {
    * Poisson disk sampling
    */
   loadPopulation() {
-    const padding = 2048; // object bounding box size / 2
+    const padding = 1024; // object bounding box size / 2
     const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding * 2, padding * 2, 30, MathUtils.rng);
     const points = pds.fill();
 

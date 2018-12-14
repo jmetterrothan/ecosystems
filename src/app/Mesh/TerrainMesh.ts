@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 import Mesh from '@mesh/Mesh';
 import Chunk from '@world/Chunk';
+import Terrain from '@world/Terrain';
 import BiomeGenerator from '@world/BiomeGenerator';
 import MathUtils from '@shared/utils/Math.utils';
 
@@ -11,6 +12,8 @@ import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 import { IChunkParameters } from '@shared/models/chunkParameters.model';
 
 class TerrainMesh extends Mesh {
+  static LOW : number = null;
+  static HIGH : number = null;
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
     super(generator, row, col, MESH_TYPES.TERRAIN_MESH, <IChunkParameters>{
@@ -26,28 +29,6 @@ class TerrainMesh extends Mesh {
     });
   }
 
-  getY(x: number, z: number): number {
-    return this.generator.computeHeightAt(x, z);
-  }
-
-  getMaterial(): THREE.Material {
-    return TERRAIN_MATERIAL;
-  }
-
-  getLow(): number {
-    return this.low;
-  }
-
-  needGenerateWater(): boolean {
-    return this.low <= Chunk.SEA_LEVEL + 1500;
-  }
-
-  needGenerateCloud(): boolean {
-    const t = (this.moistureAverage > 0.66) ? 0.95 : 0.975;
-
-    return this.moistureAverage > 0.34 && MathUtils.rng() > t;
-  }
-
   buildGeometry(): THREE.Geometry {
     const geometry: THREE.Geometry = new THREE.Geometry();
 
@@ -61,8 +42,8 @@ class TerrainMesh extends Mesh {
         const z = this.row * this.parameters.depth + r * this.parameters.cellSizeZ;
         const y = this.getY(x, z);
 
-        if (this.low === null || this.low > y) this.low = y;
-        if (this.high === null || this.high < y) this.high = y;
+        if (TerrainMesh.LOW === null || TerrainMesh.LOW > y) TerrainMesh.LOW = y;
+        if (TerrainMesh.HIGH === null || TerrainMesh.HIGH < y) TerrainMesh.HIGH = y;
 
         geometry.vertices.push(new THREE.Vector3(x, y, z));
       }
@@ -115,6 +96,28 @@ class TerrainMesh extends Mesh {
     geometry.normalsNeedUpdate = true;
 
     return geometry;
+  }
+
+  getY(x: number, z: number): number {
+    return this.generator.computeHeightAt(x, z);
+  }
+
+  getMaterial(): THREE.Material {
+    return TERRAIN_MATERIAL;
+  }
+
+  getLow(): number {
+    return this.low;
+  }
+
+  needGenerateWater(): boolean {
+    return this.low <= Chunk.SEA_LEVEL + 1500;
+  }
+
+  needGenerateCloud(): boolean {
+    const t = (this.moistureAverage > 0.65) ? 0.85 : 0.975;
+
+    return this.moistureAverage > 0.30 && MathUtils.rng() > t;
   }
 }
 

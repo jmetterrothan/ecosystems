@@ -17,7 +17,7 @@ class World {
 
   static readonly OBJ_INITIAL_SCALE: number = 500;
 
-  static readonly MAX_VISIBLE_CHUNKS: number = 64;
+  static readonly MAX_VISIBLE_CHUNKS: number = 24;
   static readonly VIEW_DISTANCE: number = World.MAX_VISIBLE_CHUNKS * Chunk.WIDTH;
 
   static readonly SHOW_FOG: boolean = true;
@@ -154,10 +154,10 @@ class World {
    * @param name Name of the object
    * @param objSrc obj source file path
    * @param mtlSrc mtl source file path
-   * @return THREE.Object3D
+   * @return Promise<any>
    */
-  static async loadObjModel(element): Promise<THREE.Object3D> {
-    return new Promise<THREE.Object3D>((resolve, reject) => {
+  static async loadObjModel(element): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       if (World.LOADED_MODELS.has(element.name)) {
         resolve(World.LOADED_MODELS.get(element.name));
       }
