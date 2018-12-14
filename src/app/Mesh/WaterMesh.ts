@@ -33,11 +33,13 @@ class WaterMesh extends Mesh {
       const x = this.col * this.parameters.width + c * this.parameters.cellSizeX;
       for (let r = 0; r < nbVerticesZ; r++) {
         const z = this.row * this.parameters.depth + r * this.parameters.cellSizeZ;
-        let y = this.getY(x, z);
+        const y = this.getY(x, z);
 
+        /*
         if ((this.col === 0 && c === 0) || (this.row === 0 && r === 0) || (this.col === Terrain.NCHUNKS_X - 1 && c === nbVerticesX - 1) || (this.row === Terrain.NCHUNKS_Z - 1 && r === nbVerticesZ - 1)) {
           y = Chunk.SEA_LEVEL;
         }
+        */
 
         if (this.low === null || this.low > y) this.low = y;
         if (this.high === null || this.high < y) this.high = y;

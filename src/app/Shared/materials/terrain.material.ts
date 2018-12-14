@@ -8,5 +8,11 @@ export const TERRAIN_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMate
   shininess: 12,
   reflectivity: 0.15,
   flatShading: true,
-  vertexColors: THREE.FaceColors
+  vertexColors: THREE.FaceColors,
+  side: THREE.DoubleSide,
+});
+
+export const TERRAIN_MATERIAL_WIREFRAME: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
+  ...TERRAIN_MATERIAL,
+  wireframe: true,
 });

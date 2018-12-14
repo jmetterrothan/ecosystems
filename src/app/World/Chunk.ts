@@ -26,6 +26,8 @@ class Chunk {
   static readonly SEA_LEVEL: number = Chunk.HEIGHT / 4;
   static readonly CLOUD_LEVEL: number = Chunk.HEIGHT - Chunk.HEIGHT / 8;
 
+  static readonly SEA_DEPTH_THICKNESS: number = 5000;
+
   static readonly SEA_ELEVATION: number = Chunk.SEA_LEVEL / Chunk.HEIGHT;
   static readonly CLOUD_ELEVATION: number = Chunk.CLOUD_LEVEL / Chunk.HEIGHT;
 
@@ -96,7 +98,7 @@ class Chunk {
       const y = Chunk.CLOUD_LEVEL;
       const z = this.row * Chunk.DEPTH + Chunk.DEPTH / 2;
 
-      const s = World.OBJ_INITIAL_SCALE * MathUtils.randomFloat(0.8, 1.4);
+      const s = World.OBJ_INITIAL_SCALE * MathUtils.randomFloat(0.8, 1.75);
 
       mesh.geometry = new THREE.Geometry().fromBufferGeometry(<THREE.BufferGeometry>mesh.geometry);
       mesh.frustumCulled = false;

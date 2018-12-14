@@ -17,7 +17,7 @@ class World {
 
   static readonly OBJ_INITIAL_SCALE: number = 500;
 
-  static readonly MAX_VISIBLE_CHUNKS: number = 16;
+  static readonly MAX_VISIBLE_CHUNKS: number = 24;
   static readonly VIEW_DISTANCE: number = World.MAX_VISIBLE_CHUNKS * Chunk.WIDTH;
 
   static readonly SHOW_FOG: boolean = true;
