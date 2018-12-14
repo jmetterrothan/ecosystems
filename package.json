@@ -1,0 +1,51 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:IMAC3-IA-THREEJS/project.git",
+  "author": "florian <zobeleflorian@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/preset-typescript": "^7.1.0",
+    "autoprefixer": "^9.3.1",
+    "babel-loader": "^8.0.4",
+    "clean-webpack-plugin": "^1.0.0",
+    "css-loader": "^1.0.1",
+    "file-loader": "^2.0.0",
+    "html-webpack-plugin": "^4.0.0-beta.4",
+    "mini-css-extract-plugin": "^0.4.4",
+    "node-sass": "^4.10.0",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^7.1.0",
+    "source-map": "^0.7.3",
+    "style-loader": "^0.23.1",
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "tslint-loader": "^3.5.4",
+    "typescript": "^3.1.6",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10",
+    "webpack-glsl-loader": "^1.0.1",
+    "webpack-merge": "^4.1.4",
+    "webpack-mode": "^1.0.1"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server --progress --inline --mode development --config config/webpack.dev.js",
+    "prod": "webpack --progress --inline --mode production --config config/webpack.prod.js"
+  },
+  "dependencies": {
+    "@tweenjs/tween.js": "^17.2.0",
+    "@types/es6-promise": "^3.3.0",
+    "@types/node": "^10.12.10",
+    "@types/three": "^0.93.10",
+    "poisson-disk-sampling": "^1.0.2",
+    "seedrandom": "^2.4.4",
+    "simplex-noise": "^2.4.0",
+    "stats.js": "^0.17.0",
+    "three": "^0.98.0"
+  }
+}
