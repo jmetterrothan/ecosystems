@@ -80,7 +80,7 @@ class Terrain {
 
     this.scene.add(this.layers);
 
-    this.boids = new Boids(this.scene, Terrain.SIZE_X, Chunk.SEA_LEVEL, Terrain.SIZE_Z, 10);
+    this.boids = new Boids(this.scene, Terrain.SIZE_X, 50000, Terrain.SIZE_Z, 200);
     this.boids.generate();
   }
 
@@ -335,10 +335,10 @@ class Terrain {
     return new THREE.Mesh(geometry, TERRAIN_MATERIAL);
   }
 
-    /**
-   * Retrieve the region's bounding box
-   * @return {THREE.Box3}
-   */
+  /**
+ * Retrieve the region's bounding box
+ * @return {THREE.Box3}
+ */
   static createRegionBoundingBox(): THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
       new THREE.Vector3(
