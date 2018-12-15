@@ -94,7 +94,7 @@ class World {
   }
 
   private initLights() {
-    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.75);
+    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.70);
     light.position.set(0, Chunk.SEA_LEVEL, 0);
     light.castShadow = false;
     this.scene.add(light);
@@ -104,7 +104,7 @@ class World {
     ambient.castShadow = false;
     this.scene.add(ambient);
 
-    const sunlight = new THREE.DirectionalLight(0xffffff, 0.3);
+    const sunlight = new THREE.DirectionalLight(0xffffff, 0.275);
     sunlight.position.set(0, Chunk.HEIGHT, 15000);
     sunlight.castShadow = true;
     this.scene.add(sunlight);
