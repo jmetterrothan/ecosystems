@@ -151,6 +151,12 @@ class Main {
       document.body.addEventListener('click', () => {
         document.body.requestPointerLock = document.body.requestPointerLock || document.body.mozRequestPointerLock || document.body.webkitRequestPointerLock;
         document.body.requestPointerLock();
+
+        if (!this.controls.enabled) { return; }
+
+        // mouse position always in the center of the screen
+        const raw = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
+        this.world.handleClick(raw);
       });
 
       document.body.addEventListener('keydown', e => this.world.handleKeyboard(e.key, true && this.controls.enabled));

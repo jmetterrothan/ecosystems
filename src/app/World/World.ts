@@ -17,7 +17,7 @@ class World {
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
-  static readonly MAX_VISIBLE_CHUNKS: number = 20;
+  static readonly MAX_VISIBLE_CHUNKS: number = 32;
   static readonly VIEW_DISTANCE: number = World.MAX_VISIBLE_CHUNKS * Chunk.WIDTH;
 
   static readonly SHOW_FOG: boolean = true;
@@ -35,6 +35,7 @@ class World {
 
   private terrain: Terrain;
   private frustum: THREE.Frustum;
+  private raycaster: THREE.Raycaster;
   private seed: string;
 
   constructor(scene: THREE.Scene, camera: THREE.PerspectiveCamera, controls: THREE.PointerLockControls) {
@@ -43,6 +44,7 @@ class World {
     this.controls = controls;
 
     this.frustum = new THREE.Frustum();
+    this.raycaster = new THREE.Raycaster();
   }
 
   async init() {
@@ -139,6 +141,16 @@ class World {
       // console.log('underwater');
     }
     */
+  }
+
+  public handleClick(pos: THREE.Vector2) {
+    // use ray tracing to detect clics on the terrain in 3d space
+    const mouse = new THREE.Vector2();
+    mouse.x = (pos.x / window.innerWidth) * 2 - 1;
+    mouse.y = (pos.y / window.innerHeight) * -2 + 1;
+
+    this.raycaster.setFromCamera(mouse, this.camera);
+    this.terrain.handleMouseInteraction(this.raycaster);
   }
 
   public handleKeyboard(key: string, active: boolean) {

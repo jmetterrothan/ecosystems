@@ -7,14 +7,15 @@ import Coord from './Coord';
 import TerrainMesh from '@mesh/TerrainMesh';
 import WaterMesh from '@mesh/WaterMesh';
 import Boids from '../Boids/Boids';
+import MathUtils from '@shared/utils/Math.utils';
 
 import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 import { WATER_MATERIAL, WATER_SIDE_MATERIAL } from '@materials/water.material';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 16;
-  static readonly NCHUNKS_Z: number = 16;
+  static readonly NCHUNKS_X: number = 24;
+  static readonly NCHUNKS_Z: number = 24;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
@@ -60,20 +61,28 @@ class Terrain {
     // main terrain with borders
     this.terrain = new THREE.Mesh(new THREE.Geometry(), TERRAIN_MATERIAL);
     this.terrain.frustumCulled = true;
+    this.terrain.castShadow = true;
+    this.terrain.receiveShadow = true;
     this.layers.add(this.terrain);
 
     // water
     this.water = new THREE.Mesh(new THREE.Geometry(), WATER_MATERIAL);
     this.water.frustumCulled = true;
+    this.water.castShadow = true;
+    this.water.receiveShadow = true;
     this.layers.add(this.water);
 
     this.waterSide = new THREE.Mesh(new THREE.Geometry(), WATER_SIDE_MATERIAL);
     this.waterSide.frustumCulled = true;
+    this.waterSide.castShadow = false;
+    this.waterSide.receiveShadow = false;
     this.layers.add(this.waterSide);
 
     // clouds
     this.clouds = new THREE.Mesh(new THREE.Geometry(), CLOUD_MATERIAL);
     this.clouds.frustumCulled = true;
+    this.clouds.castShadow = true;
+    this.clouds.receiveShadow = true;
     this.layers.add(this.clouds);
 
     // this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
@@ -186,6 +195,23 @@ class Terrain {
 
     // entities update
     this.boids.update(delta);
+  }
+
+  handleMouseInteraction(raycaster: THREE.Raycaster) {
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.terrain, this.water], false);
+
+    // loops through all the objects that intersect
+    for (const intersection of intersections) {
+      const geometry = new THREE.BoxGeometry(2000, 2000, 2000);
+      const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+      const cube = new THREE.Mesh(geometry, material);
+      cube.rotation.y = MathUtils.randomFloat(0, Math.PI * 2);
+      cube.position.set(intersection.point.x, intersection.point.y, intersection.point.z);
+
+      this.scene.add(cube);
+
+      break; // break because we stop at the first element that intersects the ray
+    }
   }
 
   /**
