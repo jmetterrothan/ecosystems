@@ -7,10 +7,10 @@ class Creature {
 
   neighbourRadius: number = 6000;
   alignmentWeighting: number = 0.1;
-  cohesionWeighting: number = 2;
+  cohesionWeighting: number = 0.02;
   separationWeighting: number = 0.1;
   viewAngle: number = 4;
-  speed: number = 1;
+  speed: number = 200;
 
   avoidTarget: THREE.Vector3 = null;
 
@@ -35,12 +35,33 @@ class Creature {
     }
 
     this.velocity.normalize();
-    this.velocity.multiplyScalar(this.speed);
-    this.position.add(this.velocity.clone().multiplyScalar(delta));
+    this.position.add(this.velocity.clone().multiplyScalar(this.speed));
   }
 
   setBoidsBoundingBox(box: THREE.Vector3) {
     this.boidsBoundingBox = box;
+  }
+
+  setAvoidTarget(target: THREE.Vector3) {
+    this.avoidTarget = target;
+  }
+
+  steer(target: THREE.Vector3, wieghting: number = 1) {
+    const v = new THREE.Vector3();
+
+    v.subVectors(target, this.position);
+    v.multiplyScalar(wieghting);
+
+    this.velocity.add(v);
+  }
+
+  repulse(target: THREE.Vector3, weighting: number = 1) {
+    const v = new THREE.Vector3();
+
+    v.subVectors(this.position, target);
+    v.multiplyScalar(weighting);
+
+    this.velocity.add(v);
   }
 
   private calculateInteraction(creatures: Creature[]): THREE.Vector3 {
@@ -96,7 +117,7 @@ class Creature {
     return v;
   }
 
-  private calculateBoundsAvoidance(): THREE.Vector3 {
+  protected calculateBoundsAvoidance(): THREE.Vector3 {
     const v = new THREE.Vector3();
 
     if (this.position.x < -this.boidsBoundingBox.x) v.x = 1;
