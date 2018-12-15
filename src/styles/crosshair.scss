@@ -4,6 +4,7 @@ $crosshairThickness: 2px;
 $crosshairGap: 3px;
 $crosshairDot: hidden;
 $crosshairColor: #1c242c;
+$crosshairOpacity: 0.5;
 
 .crosshair {
   $w : $crosshairSize * 2 + $crosshairThickness + $crosshairGap * 2;
@@ -14,6 +15,7 @@ $crosshairColor: #1c242c;
   top: calc(50vh - #{$w / 2});
   width: $w;
   height: $w;
+  opacity: $crosshairOpacity;
 
   z-index: 100;
 
