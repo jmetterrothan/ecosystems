@@ -38,7 +38,7 @@ class Chunk {
   readonly row: number;
   readonly col: number;
 
-  private objects: THREE.Object3D[];
+  private objects: THREE.Group;
 
   readonly bbox: THREE.Box3;
 
@@ -53,15 +53,17 @@ class Chunk {
 
   public readonly key: string;
 
-  constructor(generator: BiomeGenerator, row: number, col: number) {
+  constructor(scene: THREE.Scene, generator: BiomeGenerator, row: number, col: number) {
     this.generator = generator;
     this.row = row;
     this.col = col;
 
     this.key = `${row}:${col}`;
-    this.objects = [];
     this.dirty = false;
     this.merged = false;
+
+    this.objects = new THREE.Group();
+    scene.add(this.objects);
 
     this.terrainBlueprint = new TerrainMesh(this.generator, this.row, this.col);
     this.waterBlueprint = new WaterMesh(this.generator, this.row, this.col);
@@ -72,7 +74,7 @@ class Chunk {
     this.objectsBlueprint = [];
   }
 
-  init(terrain: Terrain, scene: THREE.Scene) {
+  init(terrain: Terrain) {
     // merge generated chunk with region geometry
     const terrainMesh = this.terrainBlueprint.generate();
 
@@ -119,6 +121,10 @@ class Chunk {
     this.dirty = true;
   }
 
+  addObject(object: THREE.Object3D) {
+    this.objects.add(object);
+  }
+
   /**
    * Poisson disk sampling
    */
@@ -144,7 +150,7 @@ class Chunk {
    * Populate the world with pre-computed object parameters
    * @param scene
    */
-  populate(scene: THREE.Scene) {
+  populate() {
     for (const item of this.objectsBlueprint) {
       let object = null;
 
@@ -166,38 +172,32 @@ class Chunk {
       object.position.set(item.x, item.y, item.z);
       object.stackReference = item.n;
 
-      object.visible = true;
-
-      scene.add(object);
-      this.objects.push(object);
+      this.objects.add(object);
     }
 
     this.dirty = false;
   }
 
   clean(scene: THREE.Scene) {
-    for (let i = this.objects.length - 1; i >= 0; i--) {
+    for (let i = this.objects.children.length - 1; i >= 0; i--) {
       // @ts-ignore
-      const ref = this.objects[i].stackReference;
+      const ref = this.objects.children[i].stackReference;
 
-      if (Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
+      if (ref && Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
         // collect unused objects
-        this.objects[i].visible = false;
-        Chunk.CHUNK_OBJECT_STACK[ref].push(this.objects[i]);
+        Chunk.CHUNK_OBJECT_STACK[ref].push(this.objects.children[i]);
       } else {
-        scene.remove(this.objects[i]);
+        scene.remove(this.objects.children[i]);
       }
     }
 
-    this.objects = [];
+    this.objects.children = [];
     this.dirty = true;
   }
 
   setVisible(bool: boolean) {
     if (this.visible !== bool) {
-      for (let i = this.objects.length - 1; i >= 0; i--) {
-        this.objects[i].visible = bool;
-      }
+      this.objects.visible = bool;
     }
     this.visible = bool;
   }

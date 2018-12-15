@@ -14,8 +14,8 @@ import { WATER_MATERIAL, WATER_SIDE_MATERIAL } from '@materials/water.material';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 24;
-  static readonly NCHUNKS_Z: number = 24;
+  static readonly NCHUNKS_X: number = 16;
+  static readonly NCHUNKS_Z: number = 16;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
@@ -143,8 +143,9 @@ class Terrain {
    * @return {Chunk}
    */
   loadChunk(row: number, col: number): Chunk {
-    const chunk = new Chunk(this.generator, row, col);
-    chunk.init(this, this.scene);
+    const chunk = new Chunk(this.scene, this.generator, row, col);
+    chunk.init(this);
+    chunk.setVisible(false);
 
     // this.scene.add(Chunk.createBoundingBoxHelper(chunk.bbox));
 
@@ -167,7 +168,11 @@ class Terrain {
     // reset previously visible chunks
     for (const chunk of this.visibleChunks) {
       chunk.setVisible(false);
-      if (chunk.col < this.start.col || chunk.row < this.start.row || chunk.col > this.end.col || chunk.row > this.end.row) {
+
+      if (!(chunk.col >= this.start.col &&
+        chunk.col < this.start.col + (this.end.col - this.start.col) &&
+        chunk.row >= this.start.row &&
+        chunk.row < this.start.row + (this.end.row - this.start.row))) {
         chunk.clean(this.scene);
       }
     }
@@ -183,7 +188,7 @@ class Terrain {
         // chunk is visible in frustum
         if (frustum.intersectsBox(chunk.bbox)) {
           if (chunk.isDirty()) {
-            chunk.populate(this.scene);
+            chunk.populate();
           }
 
           // mark this chunk as visible for the next update
@@ -208,8 +213,8 @@ class Terrain {
       cube.rotation.y = MathUtils.randomFloat(0, Math.PI * 2);
       cube.position.set(intersection.point.x, intersection.point.y, intersection.point.z);
 
-      this.scene.add(cube);
-
+      const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
+      chunk.addObject(cube);
       break; // break because we stop at the first element that intersects the ray
     }
   }
