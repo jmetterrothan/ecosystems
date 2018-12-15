@@ -61,6 +61,15 @@ class Main {
 
   private initControls() {
     this.controls = new THREE.PointerLockControls(this.camera);
+
+    // crosshair temp
+    const crosshair = document.createElement('div');
+    crosshair.id = 'crosshair';
+    crosshair.appendChild(document.createElement('span'));
+    crosshair.appendChild(document.createElement('span'));
+    crosshair.appendChild(document.createElement('span'));
+    crosshair.appendChild(document.createElement('span'));
+    document.body.appendChild(crosshair);
   }
 
   private initRenderer() {
