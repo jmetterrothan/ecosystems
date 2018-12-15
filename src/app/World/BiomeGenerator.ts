@@ -49,7 +49,7 @@ class BiomeGenerator {
     const rand = MathUtils.rng(); // random float bewteen 0 - 1 included (sum of weights must be = 1)
 
     for (let i = 0, n = biome.organisms.length; i < n; i++) {
-      let y = e * Chunk.HEIGHT;
+      let y = e * Chunk.MAX_TERRAIN_HEIGHT;
       temp += biome.organisms[i].weight;
 
       if (rand <= temp) {
@@ -110,7 +110,13 @@ class BiomeGenerator {
    * @return {number} elevation value
    */
   computeElevationAt(x: number, z: number): number {
-    return this.biome.computeElevationAt(x, z);
+    let e = this.biome.computeElevationAt(x, z);
+
+    // clamp to a minimum elevation
+    const minElevation = -(Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT + 0.1;
+    if (e < minElevation) { e = minElevation; }
+
+    return e;
   }
 
   /**
@@ -120,7 +126,7 @@ class BiomeGenerator {
    * @return {number}
    */
   computeHeightAt(x: number, z: number) {
-    return this.biome.computeElevationAt(x, z) * Chunk.HEIGHT;
+    return this.computeElevationAt(x, z) * Chunk.MAX_TERRAIN_HEIGHT;
   }
 
   /**

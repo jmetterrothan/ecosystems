@@ -330,7 +330,7 @@ class Terrain {
       for (let row = 0; row < nbVerticesY; row++) {
         const x = X(row, col);
         const z = Z(row, col);
-        const y = row === 0 ? this.generator.computeHeightAt(x, z) : TerrainMesh.LOW - Chunk.SEA_DEPTH_THICKNESS;
+        const y = row === 0 ? this.generator.computeHeightAt(x, z) : -Chunk.HEIGHT / 2;
 
         geometry.vertices.push(new THREE.Vector3(x, y, z));
       }
@@ -346,8 +346,8 @@ class Terrain {
         const f1 = new THREE.Face3(a, b, d);
         const f2 = new THREE.Face3(d, c, a);
 
-        f1.color = this.generator.getBiome(TerrainMesh.LOW / Chunk.HEIGHT, 0).color;
-        f2.color = this.generator.getBiome(TerrainMesh.LOW / Chunk.HEIGHT, 0).color;
+        f1.color = this.generator.getBiome((-Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
+        f2.color = this.generator.getBiome((-Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);

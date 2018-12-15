@@ -33,7 +33,7 @@ class SwampBiome extends Biome
     e += 0.0095 * this.generator.noise2(32 * nx, 32 * nz);
     e += 0.0095 * this.generator.ridgeNoise(64 * nx, 64 * nz);
 
-    return e;
+    return e - 0.25;
   }
 
   computeMoistureAt(x: number, z: number): number {

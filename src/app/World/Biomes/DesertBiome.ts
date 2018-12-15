@@ -32,7 +32,7 @@ class DesertBiome extends Biome
 
     e ** 0.005;
 
-    return e + 0.135;
+    return e - 0.135;
   }
 
   computeMoistureAt(x: number, z: number): number {

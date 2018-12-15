@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 
-import TerrainMesh from '@mesh/TerrainMesh';
+import Chunk from '@world/Chunk';
 import Terrain from '@world/Terrain';
 
 class Player {
@@ -92,7 +92,7 @@ class Player {
 
     // collision
     const position = this.controls.getObject().position;
-    let y = TerrainMesh.LOW | 0;
+    let y = -(Chunk.HEIGHT / 2) | 0;
 
     if (position.x >= 0 && position.x <= Terrain.SIZE_X && position.z >= 0 && position.z <= Terrain.SIZE_Z) {
       y = terrain.getHeightAt(position.x, position.z) + 1024;

@@ -104,11 +104,10 @@ class World {
     ambient.castShadow = false;
     this.scene.add(ambient);
 
-    const sunlight = new THREE.DirectionalLight(0xffffff, 0.325);
+    const sunlight = new THREE.DirectionalLight(0xffffff, 0.3);
     sunlight.position.set(0, Chunk.HEIGHT, 15000);
     sunlight.castShadow = true;
     this.scene.add(sunlight);
-
   }
 
   private async initObjects(): Promise<any> {

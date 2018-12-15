@@ -20,16 +20,15 @@ class Chunk {
   static readonly CELL_SIZE_Z: number = 2048;
 
   static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE_X;
-  static readonly HEIGHT: number = 64000;
+  static readonly HEIGHT: number = 200000;
   static readonly DEPTH: number = Chunk.NROWS * Chunk.CELL_SIZE_Z;
+  static readonly MAX_TERRAIN_HEIGHT: number = 64000;
 
-  static readonly SEA_LEVEL: number = Chunk.HEIGHT / 4;
-  static readonly CLOUD_LEVEL: number = Chunk.HEIGHT - Chunk.HEIGHT / 8;
+  static readonly SEA_LEVEL: number = 0;
+  static readonly CLOUD_LEVEL: number = 48000;
 
-  static readonly SEA_DEPTH_THICKNESS: number = 10000;
-
-  static readonly SEA_ELEVATION: number = Chunk.SEA_LEVEL / Chunk.HEIGHT;
-  static readonly CLOUD_ELEVATION: number = Chunk.CLOUD_LEVEL / Chunk.HEIGHT;
+  static readonly SEA_ELEVATION: number = Chunk.SEA_LEVEL / Chunk.MAX_TERRAIN_HEIGHT;
+  static readonly CLOUD_ELEVATION: number = Chunk.CLOUD_LEVEL / Chunk.MAX_TERRAIN_HEIGHT;
 
   static readonly CHUNK_OBJECT_STACK = {};
 
@@ -210,7 +209,7 @@ class Chunk {
     return new THREE.Box3().setFromCenterAndSize(
       new THREE.Vector3(
         col * Chunk.WIDTH + Chunk.WIDTH / 2,
-        Chunk.HEIGHT / 2,
+        Chunk.SEA_LEVEL,
         row * Chunk.DEPTH + Chunk.DEPTH / 2
       ),
       new THREE.Vector3(
