@@ -98,7 +98,7 @@ export const BIOMES: IBiomes = {
     color: new THREE.Color(0xe6cf87),
     organisms: [
       {
-        weight: 0.35,
+        weight: 0.25,
         name: 'cactus1',
         scarcity: 0.998,
         e: null,
@@ -140,6 +140,15 @@ export const BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 1.0, max: 2.85 },
+        float: false,
+      },
+      {
+        weight: 0.1,
+        name: 'savanna_tree',
+        scarcity: 0.9995,
+        e: null,
+        m: null,
+        scale: { min: 1.25, max: 1.75 },
         float: false,
       },
     ]
