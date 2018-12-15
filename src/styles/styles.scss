@@ -3,3 +3,48 @@
 * {
   box-sizing: border-box;
 }
+
+
+#crosshair {
+  display: block;
+  position: fixed;
+  left:calc(50vw - 18px);
+  top:calc(50vh - 18px);
+  width: 36px;
+  height: 36px;
+  z-index: 100;
+
+  span {
+    display: block;
+    position:absolute;
+    background: #4EE844;
+
+    &:nth-child(1) {
+      top: 16px;
+      left:0;
+      width:14px;
+      height:4px;
+    }
+
+    &:nth-child(2) {
+      top: 16px;
+      right:0;
+      width:14px;
+      height:4px;
+    }
+
+    &:nth-child(3) {
+      top: 0;
+      right:16px;
+      width:4px;
+      height:14px;
+    }
+
+    &:nth-child(4) {
+      bottom: 0;
+      right:16px;
+      width:4px;
+      height:14px;
+    }
+  }
+}

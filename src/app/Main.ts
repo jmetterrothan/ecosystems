@@ -61,6 +61,15 @@ class Main {
 
   private initControls() {
     this.controls = new THREE.PointerLockControls(this.camera);
+
+    // crosshair temp
+    const crosshair = document.createElement('div');
+    crosshair.id = 'crosshair';
+    crosshair.appendChild(document.createElement('span'));
+    crosshair.appendChild(document.createElement('span'));
+    crosshair.appendChild(document.createElement('span'));
+    crosshair.appendChild(document.createElement('span'));
+    document.body.appendChild(crosshair);
   }
 
   private initRenderer() {
@@ -72,7 +81,7 @@ class Main {
     this.renderer.domElement.style.width = '100vw';
     this.renderer.domElement.style.height = '100vh';
 
-    this.renderer.setClearColor(new THREE.Color(0xb1d8ff));
+    this.renderer.setClearColor(new THREE.Color(0x85c3fc));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
