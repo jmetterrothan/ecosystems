@@ -26,7 +26,17 @@ class BiomeGenerator {
     this.simplex = new simplexNoise(MathUtils.rng);
     this.simplex2 = new simplexNoise(MathUtils.rng);
     this.simplex3 = new simplexNoise(MathUtils.rng);
-    this.biome = new DesertBiome(this); // MathUtils.rng() > 0.5 ? new HighlandBiome(this) : new RainForestBiome(this);
+
+    const biomes = [
+      RainForestBiome,
+      HighlandBiome,
+      OceanBiome,
+      SwampBiome,
+      DesertBiome,
+    ];
+
+    const biomeClass = biomes[MathUtils.randomInt(0, biomes.length - 1)];
+    this.biome = new biomeClass(this);
 
     console.info(this.biome);
   }
