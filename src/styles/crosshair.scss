@@ -1,0 +1,61 @@
+// crosshair
+$crosshairSize: 10px;
+$crosshairThickness: 2px;
+$crosshairGap: 3px;
+$crosshairDot: hidden;
+$crosshairColor: #1c242c;
+
+.crosshair {
+  $w : $crosshairSize * 2 + $crosshairThickness + $crosshairGap * 2;
+
+  display: block;
+  position: fixed;
+  left: calc(50vw - #{$w / 2});
+  top: calc(50vh - #{$w / 2});
+  width: $w;
+  height: $w;
+
+  z-index: 100;
+
+  span {
+    display: block;
+    position: absolute;
+    background: $crosshairColor;
+
+    &:nth-child(1) {
+      top: $crosshairSize + $crosshairGap;
+      left: 0;
+      width: $crosshairSize;
+      height: $crosshairThickness;
+    }
+
+    &:nth-child(2) {
+      top: $crosshairSize + $crosshairGap;
+      left: $crosshairSize + $crosshairGap * 2 + $crosshairThickness;
+      width: $crosshairSize;
+      height: $crosshairThickness;
+    }
+
+    &:nth-child(3) {
+      top: 0;
+      left: $crosshairSize + $crosshairGap;
+      width:$crosshairThickness;
+      height:$crosshairSize;
+    }
+
+    &:nth-child(4) {
+      top: $crosshairSize + $crosshairGap * 2 + $crosshairThickness;
+      left: $crosshairSize + $crosshairGap;
+      width:$crosshairThickness;
+      height:$crosshairSize;
+    }
+
+    &:nth-child(5) {
+      top: $crosshairSize + $crosshairGap;
+      left: $crosshairSize + $crosshairGap;
+      width:$crosshairThickness;
+      height:$crosshairThickness;
+      visibility: $crosshairDot;
+    }
+  }
+}

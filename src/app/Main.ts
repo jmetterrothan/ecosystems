@@ -64,7 +64,8 @@ class Main {
 
     // crosshair temp
     const crosshair = document.createElement('div');
-    crosshair.id = 'crosshair';
+    crosshair.classList.add('crosshair');
+    crosshair.appendChild(document.createElement('span'));
     crosshair.appendChild(document.createElement('span'));
     crosshair.appendChild(document.createElement('span'));
     crosshair.appendChild(document.createElement('span'));
