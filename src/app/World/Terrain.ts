@@ -8,7 +8,7 @@ import WaterMesh from '@mesh/WaterMesh';
 import Boids from '../Boids/Boids';
 import MathUtils from '@shared/utils/Math.utils';
 
-import { TERRAIN_MATERIAL } from '@materials/terrain.material';
+import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
 import { WATER_MATERIAL, WATER_SIDE_MATERIAL } from '@materials/water.material';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
@@ -35,6 +35,7 @@ class Terrain {
   private scene: THREE.Scene;
   private generator: BiomeGenerator;
   public terrain: THREE.Mesh;
+  public terrainSide: THREE.Mesh;
   public water: THREE.Mesh;
   public waterSide: THREE.Mesh;
   public clouds: THREE.Mesh;
@@ -75,6 +76,12 @@ class Terrain {
     this.water.receiveShadow = true;
     this.layers.add(this.water);
 
+    this.terrainSide = new THREE.Mesh(new THREE.Geometry(), TERRAIN_SIDE_MATERIAL);
+    this.terrainSide.frustumCulled = true;
+    this.terrainSide.castShadow = false;
+    this.terrainSide.receiveShadow = false;
+    this.layers.add(this.terrainSide);
+
     this.waterSide = new THREE.Mesh(new THREE.Geometry(), WATER_SIDE_MATERIAL);
     this.waterSide.frustumCulled = true;
     this.waterSide.castShadow = false;
@@ -113,10 +120,10 @@ class Terrain {
     const bw3 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => WaterMesh.SEA_OFFSET, (row, col) => col * Chunk.WIDTH / 4);
     const bw4 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => Terrain.SIZE_X - WaterMesh.SEA_OFFSET, (row, col) => col * Chunk.DEPTH / 4);
 
-    (<THREE.Geometry>this.terrain.geometry).mergeMesh(bt1);
-    (<THREE.Geometry>this.terrain.geometry).mergeMesh(bt2);
-    (<THREE.Geometry>this.terrain.geometry).mergeMesh(bt3);
-    (<THREE.Geometry>this.terrain.geometry).mergeMesh(bt4);
+    (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt1);
+    (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt2);
+    (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt3);
+    (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt4);
 
     (<THREE.Geometry>this.waterSide.geometry).mergeMesh(bw1);
     (<THREE.Geometry>this.waterSide.geometry).mergeMesh(bw2);
