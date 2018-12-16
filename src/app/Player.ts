@@ -30,10 +30,10 @@ class Player {
     this.velocity = new THREE.Vector3(0, 0, 0);
   }
 
-  init(x, y, z) {
-    this.controls.getObject().translateX(x);
-    this.controls.getObject().translateY(y);
-    this.controls.getObject().translateZ(z);
+  init(spawn: THREE.Vector3) {
+    this.controls.getObject().translateX(spawn.x);
+    this.controls.getObject().translateY(spawn.y);
+    this.controls.getObject().translateZ(spawn.z);
   }
 
   /**

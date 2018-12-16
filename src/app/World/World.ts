@@ -54,15 +54,13 @@ class World {
     this.initLights();
     await this.initObjects();
 
-    const spawn = new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.HEIGHT / 2, Terrain.SIZE_Z);
-
     // stuff
     this.terrain = new Terrain(this.scene);
     this.terrain.init();
     this.terrain.preload();
 
     this.player = new Player(this.controls);
-    this.player.init(spawn.x, spawn.y, spawn.z);
+    // this.player.init(spawn);
 
     this.scene.add(this.controls.getObject());
 
