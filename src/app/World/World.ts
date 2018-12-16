@@ -13,7 +13,7 @@ import { OBJECTS } from '@shared/constants/object.constants';
 import MathUtils from '@utils/Math.utils';
 
 class World {
-  static SEED: string | null = '1634240394'; // '789005037'
+  static SEED: string | null = null; // '789005037'
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
@@ -51,7 +51,6 @@ class World {
   async init() {
     this.initSeed();
     this.initFog();
-    this.initSkybox();
     this.initLights();
     await this.initObjects();
 
@@ -89,10 +88,6 @@ class World {
     }
   }
 
-  private initSkybox() {
-
-  }
-
   private initLights() {
     const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.70);
     light.position.set(0, Chunk.SEA_LEVEL, 0);
@@ -110,6 +105,10 @@ class World {
     this.scene.add(sunlight);
   }
 
+  /**
+   * Loads all objects
+   * @return {Promise<any>}
+   */
   private async initObjects(): Promise<any> {
     // load all models
     const stack = OBJECTS.map(element => {
@@ -123,6 +122,9 @@ class World {
     await Promise.all(stack);
   }
 
+  /**
+   * @param {number} delta
+   */
   public update(delta) {
     this.camera.updateMatrixWorld(true);
 
@@ -143,7 +145,11 @@ class World {
     */
   }
 
-  public handleClick(pos: THREE.Vector2) {
+  /**
+   * Handle mouse click
+   * @param {THREE.Vector2} pos Raw mouse input
+   */
+  public handleMouseClick(pos: THREE.Vector2) {
     // use ray tracing to detect clics on the terrain in 3d space
     const mouse = new THREE.Vector2();
     mouse.x = (pos.x / window.innerWidth) * 2 - 1;
@@ -153,6 +159,11 @@ class World {
     this.terrain.handleMouseInteraction(this.raycaster);
   }
 
+  /**
+   * Handle keyboard input
+   * @param {string} key
+   * @param {boolean} active
+   */
   public handleKeyboard(key: string, active: boolean) {
     this.player.handleKeyboard(key, active);
   }

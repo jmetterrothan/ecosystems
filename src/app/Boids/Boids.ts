@@ -36,9 +36,7 @@ class Boids {
       )
     );
 
-    const box = new THREE.Box3Helper(mesh, 0xffff00);
-    // this.scene.add(box);
-
+    // this.scene.add(new THREE.Box3Helper(mesh, 0xffff00));
   }
 
   generate() {

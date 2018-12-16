@@ -174,38 +174,94 @@ class BiomeGenerator {
     return this.biome.getWaterColor(m);
   }
 
+  /**
+   * Noise
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number}
+   */
   noise(x: number, z: number) {
     return (this.simplex.noise2D(x, z) + 1) / 2;
   }
 
+  /**
+   * Noise
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number}
+   */
   noise2(x: number, z: number) {
     return (this.simplex2.noise2D(x, z) + 1) / 2;
   }
 
+  /**
+   * Noise
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number}
+   */
   noise3(x: number, z: number) {
     return (this.simplex3.noise2D(x, z) + 1) / 2;
   }
 
+  /**
+   * Noise
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number}
+   */
   ridgeNoise(x: number, z: number) {
     return 2 * (0.5 - Math.abs(0.5 - this.noise(x, z)));
   }
 
+  /**
+   * Noise
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number}
+   */
   ridgeNoise2(x: number, z: number) {
     return 2 * (0.5 - Math.abs(0.5 - this.noise2(x, z)));
   }
 
+  /**
+   * @param {number} a
+   * @param {number} b
+   * @param {number} d
+   * @param {number} e
+   * @return {number}
+   */
   static islandAddMethod(a, b, c, d, e) {
     return e + a - b * Math.pow(d, c);
   }
 
+  /**
+   * @param {number} a
+   * @param {number} b
+   * @param {number} d
+   * @param {number} e
+   * @return {number}
+   */
   static islandMultiplyMethod(a, b, c, d, e) {
     return (e + a) * (1 - b * Math.pow(d, c));
   }
 
+  /**
+   * Calculate euclidean distance
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number}
+   */
   static getEuclideanDistance(x, z) {
     return Math.sqrt(x * x + z * z);
   }
 
+  /**
+   * Calculate manhattan distance
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number}
+   */
   static getManhattanDistance(x, z) {
     return Math.max(Math.abs(x), Math.abs(z));
   }

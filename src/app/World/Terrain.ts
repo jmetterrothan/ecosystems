@@ -4,7 +4,6 @@ import Chunk from './Chunk';
 import World from './World';
 import BiomeGenerator from './BiomeGenerator';
 import Coord from './Coord';
-import TerrainMesh from '@mesh/TerrainMesh';
 import WaterMesh from '@mesh/WaterMesh';
 import Boids from '../Boids/Boids';
 import MathUtils from '@shared/utils/Math.utils';
@@ -44,6 +43,10 @@ class Terrain {
 
   private boids: Boids;
 
+  /**
+   * Terrain constructor
+   * @param {THREE.Scene} scene
+   */
   constructor(scene: THREE.Scene) {
     this.scene = scene;
     this.generator = new BiomeGenerator();
@@ -89,7 +92,7 @@ class Terrain {
 
     this.scene.add(this.layers);
 
-    this.boids = new Boids(this.scene, Terrain.SIZE_X, 50000, Terrain.SIZE_Z, 200);
+    this.boids = new Boids(this.scene, Terrain.SIZE_X, 50000, Terrain.SIZE_Z, 20);
     this.boids.generate();
   }
 
@@ -99,7 +102,7 @@ class Terrain {
   preload() {
     this.loadChunks(0, 0, Terrain.NCHUNKS_Z, Terrain.NCHUNKS_X);
 
-    // borders
+    // borders generation
     const bt1 = this.getBorderMesh(1, Terrain.NCOLS, (row, col) => col * Chunk.CELL_SIZE_X, (row, col) => 0);
     const bt2 = this.getBorderMesh(1, Terrain.NCOLS, (row, col) => col * Chunk.CELL_SIZE_X, (row, col) => Terrain.SIZE_Z);
     const bt3 = this.getBorderMesh(1, Terrain.NROWS, (row, col) => Terrain.SIZE_X, (row, col) => col * Chunk.CELL_SIZE_Z);
@@ -147,8 +150,6 @@ class Terrain {
     chunk.init(this);
     chunk.setVisible(false);
 
-    // this.scene.add(Chunk.createBoundingBoxHelper(chunk.bbox));
-
     return chunk;
   }
 
@@ -186,7 +187,7 @@ class Terrain {
         if (!chunk) { continue; }
 
         // chunk is visible in frustum
-        if (frustum.intersectsBox(chunk.bbox)) {
+        if (frustum.intersectsBox(chunk.getBbox())) {
           if (chunk.isDirty()) {
             chunk.populate();
           }
@@ -202,6 +203,10 @@ class Terrain {
     this.boids.update(delta);
   }
 
+  /**
+   * Handle mouse click in the 3d space
+   * @param {THREE.Raycaster} raycaster
+   */
   handleMouseInteraction(raycaster: THREE.Raycaster) {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.terrain, this.water], false);
 
@@ -264,6 +269,14 @@ class Terrain {
     return this.generator.computeHeightAt(x, z);
   }
 
+  /**
+   * Construct a water border mesh
+   * @param {number} nbRows
+   * @param {number} nbCols
+   * @param {Function} X Callback function returning the x component
+   * @param {Function} Z Callback function returning the z component
+   * @return {THREE.Mesh}
+   */
   getWaterBorderMesh(nbRows: number, nbCols: number, X: Function, Z: Function): THREE.Mesh {
     const geometry = new THREE.Geometry();
 
@@ -320,6 +333,14 @@ class Terrain {
     return new THREE.Mesh(geometry, WATER_SIDE_MATERIAL);
   }
 
+  /**
+   * Construct a water border mesh
+   * @param {number} nbRows
+   * @param {number} nbCols
+   * @param {Function} X Callback function returning the x component
+   * @param {Function} Z Callback function returning the z component
+   * @return {THREE.Mesh}
+   */
   getBorderMesh(nbRows: number, nbCols: number, X: Function, Z: Function): THREE.Mesh {
     const geometry = new THREE.Geometry();
 
@@ -367,9 +388,9 @@ class Terrain {
   }
 
   /**
- * Retrieve the region's bounding box
- * @return {THREE.Box3}
- */
+   * Retrieve the whole region's bounding box
+   * @return {THREE.Box3}
+   */
   static createRegionBoundingBox(): THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
       new THREE.Vector3(
@@ -384,6 +405,10 @@ class Terrain {
       ));
   }
 
+  /**
+   * Retrieve the region's water bounding box
+   * @return {THREE.Box3}
+   */
   static createRegionWaterBoundingBox(): THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
       new THREE.Vector3(

@@ -157,7 +157,7 @@ class Main {
 
         // mouse position always in the center of the screen
         const raw = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
-        this.world.handleClick(raw);
+        this.world.handleMouseClick(raw);
       });
 
       document.body.addEventListener('keydown', e => this.world.handleKeyboard(e.key, true && this.controls.enabled));

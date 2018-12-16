@@ -36,59 +36,54 @@ class Player {
     this.controls.getObject().translateZ(z);
   }
 
-  update(terrain: Terrain, delta: number) {
+  /**
+   * @param {number} delta
+   */
+  move(delta: number) {
     // movement
     if (this.moveForward) {
       this.velocity.z = -this.speed.z;
     } else {
-      if (this.velocity.z < 0) {
-        this.velocity.z = 0;
-      }
+      if (this.velocity.z < 0) { this.velocity.z = 0; }
     }
 
     if (this.moveBackward) {
       this.velocity.z = this.speed.z;
     } else {
-      if (this.velocity.z > 0) {
-        this.velocity.z = 0;
-      }
+      if (this.velocity.z > 0) { this.velocity.z = 0; }
     }
 
     if (this.moveRight) {
       this.velocity.x = this.speed.x;
     } else {
-      if (this.velocity.x > 0) {
-        this.velocity.x = 0;
-      }
+      if (this.velocity.x > 0) { this.velocity.x = 0; }
     }
 
     if (this.moveLeft) {
       this.velocity.x = -this.speed.x;
     } else {
-      if (this.velocity.x < 0) {
-        this.velocity.x = 0;
-      }
+      if (this.velocity.x < 0) { this.velocity.x = 0; }
     }
 
     if (this.moveDown) {
       this.velocity.y = this.speed.y;
     } else {
-      if (this.velocity.y > 0) {
-        this.velocity.y = 0;
-      }
+      if (this.velocity.y > 0) { this.velocity.y = 0; }
     }
 
     if (this.moveUp) {
       this.velocity.y = -this.speed.y;
     } else {
-      if (this.velocity.y < 0) {
-        this.velocity.y = 0;
-      }
+      if (this.velocity.y < 0) { this.velocity.y = 0; }
     }
 
     this.controls.getObject().translateX(this.velocity.x * delta);
     this.controls.getObject().translateY(this.velocity.y * delta);
     this.controls.getObject().translateZ(this.velocity.z * delta);
+  }
+
+  update(terrain: Terrain, delta: number) {
+    this.move(delta);
 
     // collision
     const position = this.controls.getObject().position;
@@ -103,6 +98,11 @@ class Player {
     }
   }
 
+  /**
+   * Handle keyboard input
+   * @param {string} key
+   * @param {boolean} active
+   */
   handleKeyboard(key: string, active: boolean) {
     switch (key) {
       case 'ArrowUp': case 'z': this.moveForward = active; break;

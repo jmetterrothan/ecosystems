@@ -1,7 +1,14 @@
 import * as THREE from 'three';
 
 class PlaneGeometry {
-
+  /**
+   * Creates a new plane geometry
+   * @param {number} nrows
+   * @param {number} ncols
+   * @param {number} cellsizeX
+   * @param {number} cellsizeZ
+   * @return {THREE.Geometry}
+   */
   static create(nrows: number, ncols: number, cellsizeX: number, cellsizeZ: number): THREE.Geometry {
     const geometry: THREE.Geometry = new THREE.Geometry();
 

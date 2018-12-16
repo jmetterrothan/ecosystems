@@ -1,7 +1,15 @@
+import { IMinMax } from './../models/biomeWeightedObject.model';
 class MathUtils {
 
   static rng = null; // current random number generator shared across the app
 
+  /**
+   * Clamp a value
+   * @param {number} x
+   * @param {number} min
+   * @param {number} max
+   * @return {number}
+   */
   static clamp(x: number, min: number, max: number): number {
     return Math.min(Math.max(x, min), max);
   }
@@ -18,18 +26,46 @@ class MathUtils {
     return Math.floor(MathUtils.rng() * Math.pow(2, 32));
   }
 
+  /**
+   * Random integer (inclusive)
+   * @param {number} min
+   * @param {number} max
+   * @return {number}
+   */
   static randomInt = (min: number, max: number): number => {
     return Math.floor(MathUtils.rng() * (max - min + 1)) + min;
   }
 
+  /**
+   * Random float (inclusive)
+   * @param {number} min
+   * @param {number} max
+   * @return {number}
+   */
   static randomFloat = (min: number, max: number): number => {
     return MathUtils.rng() * (max - min) + min;
   }
 
+  /**
+   * Map interval [a, b] => [c, d]
+   * @param {number} t
+   * @param {number} a
+   * @param {number} b
+   * @param {number} c
+   * @param {number} d
+   * @return {number}
+   */
   static mapInterval = (t: number, a: number, b: number, c: number, d: number): number => {
     return c + (d - c) / (b - a) * (t - a);
   }
 
+  /**
+   * Linear interpolation
+   * @param {number} a
+   * @param {number} b
+   * @param {number} t
+   * @return {number}
+   */
   static lerp(a, b, t) {
     return (1 - t) * a + t * b;
   }

@@ -13,6 +13,7 @@ import MathUtils from '@utils/Math.utils';
 import { IPick } from '@shared/models/pick.model';
 
 class Chunk {
+  static readonly SHOW_HELPER: boolean = false;
   static readonly NROWS: number = 8;
   static readonly NCOLS: number = 8;
 
@@ -39,7 +40,8 @@ class Chunk {
 
   private objects: THREE.Group;
 
-  readonly bbox: THREE.Box3;
+  private bbox: THREE.Box3;
+  private bboxHelper: THREE.Box3Helper;
 
   private terrainBlueprint: TerrainMesh;
   private waterBlueprint: WaterMesh;
@@ -52,6 +54,13 @@ class Chunk {
 
   public readonly key: string;
 
+  /**
+   * Chunk constructor
+   * @param {THREE.Scene} scene
+   * @param {BiomeGenerator} generator
+   * @param {number} row
+   * @param {number} col
+   */
   constructor(scene: THREE.Scene, generator: BiomeGenerator, row: number, col: number) {
     this.generator = generator;
     this.row = row;
@@ -70,9 +79,19 @@ class Chunk {
     // compute the bounding box of the chunk for later optimization
     this.bbox = Chunk.createBoundingBox(row, col);
 
+    // bbox helper
+    if (Chunk.SHOW_HELPER) {
+      this.bboxHelper = Chunk.createBoundingBoxHelper(this.bbox);
+      scene.add(<THREE.Object3D>this.bboxHelper);
+    }
+
     this.objectsBlueprint = [];
   }
 
+  /**
+   * Chunk initialization
+   * @param {Terrain} terrain
+   */
   init(terrain: Terrain) {
     // merge generated chunk with region geometry
     const terrainMesh = this.terrainBlueprint.generate();
@@ -80,7 +99,7 @@ class Chunk {
     (<THREE.Geometry>terrain.terrain.geometry).mergeMesh(terrainMesh);
     (<THREE.Geometry>terrain.terrain.geometry).elementsNeedUpdate = true;
 
-    // TODO optimize this part (mesh could be static objects reused using transformations and data could just be copied to the global geometry)
+    // generate water
     if (this.terrainBlueprint.needGenerateWater()) {
       const waterMesh = this.waterBlueprint.generate();
 
@@ -88,7 +107,7 @@ class Chunk {
       (<THREE.Geometry>terrain.water.geometry).elementsNeedUpdate = true;
     }
 
-    // clouds
+    // generate clouds
     if (this.terrainBlueprint.needGenerateCloud()) {
       const cloudTypes = ['cloud1', 'cloud2', 'cloud3', 'cloud4'];
 
@@ -99,8 +118,8 @@ class Chunk {
       const y = Chunk.CLOUD_LEVEL;
       const z = this.row * Chunk.DEPTH + Chunk.DEPTH / 2;
 
+      // prepare object
       const s = World.OBJ_INITIAL_SCALE * MathUtils.randomFloat(0.6, 1.0);
-
       mesh.geometry = new THREE.Geometry().fromBufferGeometry(<THREE.BufferGeometry>mesh.geometry);
       mesh.frustumCulled = false;
       mesh.matrixAutoUpdate = true;
@@ -114,6 +133,7 @@ class Chunk {
 
       // put the cloud in the world only if it doesn't collide with the terrain
       const bbox = mesh.geometry.boundingBox;
+      // update bbox matrix
       bbox.applyMatrix4(mesh.matrixWorld);
 
       const p1 = this.generator.computeHeightAt(bbox.min.x, bbox.min.z);
@@ -133,6 +153,10 @@ class Chunk {
     this.dirty = true;
   }
 
+  /**
+   * Add an object to the object group layer of the chunk
+   * @param {THREE.Object3D} object
+   */
   addObject(object: THREE.Object3D) {
     this.objects.add(object);
   }
@@ -191,6 +215,10 @@ class Chunk {
     this.dirty = false;
   }
 
+  /**
+   * Clean the object layer of the chunk (repurpose objects if needed)
+   * @param {THREE.Scene} scene
+   */
   clean(scene: THREE.Scene) {
     for (let i = this.objects.children.length - 1; i >= 0; i--) {
       // @ts-ignore
@@ -209,17 +237,50 @@ class Chunk {
     this.dirty = true;
   }
 
+  /**
+   * Change chunk objects visibility
+   * @param {boolean} bool
+   */
   setVisible(bool: boolean) {
     if (this.visible !== bool) {
       this.objects.visible = bool;
     }
     this.visible = bool;
+
+    if (this.bboxHelper) {
+      (<THREE.Object3D>this.bboxHelper).visible = bool;
+    }
   }
 
+  /**
+   * Chunk objects are visible in frustum if true
+   * @return {boolean}
+   */
   isVisible() { return this.visible; }
+
+  /**
+   * Chunk population need to be regenerated if true
+   * @return {boolean}
+   */
   isDirty() { return this.dirty; }
+
+  /**
+   * Chunk has been merged to the terrain if true
+   * @return {boolean}
+   */
   isMerged() { return this.merged; }
 
+  /**
+   * @return {THREE.Box3}
+   */
+  getBbox(): THREE.Box3 { return this.bbox; }
+
+  /**
+   * Returns a chunk's bounding box
+   * @param {number} row
+   * @param {number} col
+   * @return {THREE.Box3}
+   */
   static createBoundingBox(row: number, col: number): THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
       new THREE.Vector3(
@@ -234,10 +295,21 @@ class Chunk {
       ));
   }
 
+  /**
+   * Returns a chunk's bounding box helper
+   * @param {bbTHREE.Box3ox} bbox
+   * @return {THREE.Box3Helper}
+   */
   static createBoundingBoxHelper(bbox: THREE.Box3): THREE.Box3Helper {
     return new THREE.Box3Helper(bbox, 0xffff00);
   }
 
+  /**
+   * Returns a chunk's bounding box helper
+   * @param {number} row
+   * @param {number} col
+   * @return {THREE.Box3Helper}
+   */
   static createBoundingBoxHelperFromCoords(row: number, col: number): THREE.Box3Helper {
     return new THREE.Box3Helper(Chunk.createBoundingBox(row, col), 0xffff00);
   }
