@@ -36,9 +36,7 @@ class BiomeGenerator {
     ];
 
     const biomeClass = biomes[MathUtils.randomInt(0, biomes.length - 1)];
-    // this.biome = new biomeClass(this);
-
-    this.biome = new DesertBiome(this);
+    this.biome = new biomeClass(this);
 
     console.info(this.biome);
   }
