@@ -36,7 +36,9 @@ class BiomeGenerator {
     ];
 
     const biomeClass = biomes[MathUtils.randomInt(0, biomes.length - 1)];
-    this.biome = new biomeClass(this);
+    // this.biome = new biomeClass(this);
+
+    this.biome = new DesertBiome(this);
 
     console.info(this.biome);
   }
@@ -50,8 +52,6 @@ class BiomeGenerator {
   pick(x: number, z: number): IPick | null {
     const e = this.computeElevationAt(x, z);
     const m = this.computeMoistureAt(x, z);
-
-    if (e < 0 && e > 1) return;
 
     const biome = this.biome.getParametersAt(e, m);
 
@@ -70,7 +70,7 @@ class BiomeGenerator {
         const lowM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).low : 0;
         const highM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).high : 1;
 
-        const lowE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).low : 0;
+        const lowE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).low : -1;
         const highE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).high : 1;
 
         if (organism.float === true) {
@@ -84,8 +84,10 @@ class BiomeGenerator {
           y = Math.max(y, p);
         }
 
+        const rand = MathUtils.rng();
+
         // test for scarcity and ground elevation criteria
-        if ((organism.scarcity === 0 || MathUtils.rng() >= organism.scarcity) &&
+        if (rand >= organism.scarcity &&
           (e >= lowE && e <= highE) &&
           (m >= lowM && m <= highM)) {
           return (<IPick>{

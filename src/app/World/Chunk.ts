@@ -128,7 +128,7 @@ class Chunk {
    * Poisson disk sampling
    */
   loadPopulation() {
-    const padding = World.OBJ_INITIAL_SCALE + 320; // object bounding box size / 2
+    const padding = World.OBJ_INITIAL_SCALE + 4096; // object bounding box size / 2
     const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding * 2, padding * 2, 30, MathUtils.rng);
     const points = pds.fill();
 
@@ -170,6 +170,7 @@ class Chunk {
       object.scale.set(item.s, item.s, item.s);
       object.position.set(item.x, item.y, item.z);
       object.stackReference = item.n;
+      object.visible = true;
 
       this.objects.add(object);
     }
@@ -184,6 +185,7 @@ class Chunk {
 
       if (ref && Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
         // collect unused objects
+        this.objects.children[i].visible = false;
         Chunk.CHUNK_OBJECT_STACK[ref].push(this.objects.children[i]);
       } else {
         scene.remove(this.objects.children[i]);
