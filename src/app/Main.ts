@@ -42,13 +42,6 @@ class Main {
     this.camera = new THREE.PerspectiveCamera(55, aspect, 0.1, World.VIEW_DISTANCE);
 
     // this.scene.add(new THREE.CameraHelper(this.camera));
-
-    /*
-    const d = 15000;
-    this.camera = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, 0.01, World.VIEW_DISTANCE);
-    this.camera.position.set(0, 15000, 0);
-    this.camera.lookAt(new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2));
-    */
   }
 
   async init() {
@@ -62,15 +55,6 @@ class Main {
 
   private initControls() {
     this.controls = new THREE.PointerLockControls(this.camera);
-
-    const spawn = new THREE.Vector3(-24000, Terrain.SIZE_Y, Terrain.SIZE_Z + 24000);
-    const target = new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
-
-    const angle = -Math.cos(target.dot(spawn) / (target.length() * spawn.length()));
-
-    this.controls.getObject().rotateY(-45 * Math.PI / 180);
-    this.controls.getObject().rotateX(angle);
-    this.controls.getObject().position.set(spawn.x, spawn.y, spawn.z);
 
     // crosshair temp
     const crosshair = document.createElement('div');

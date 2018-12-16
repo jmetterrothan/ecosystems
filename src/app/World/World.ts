@@ -59,12 +59,13 @@ class World {
     this.terrain.init();
     this.terrain.preload();
 
+    const spawn = new THREE.Vector3(-24000, Terrain.SIZE_Y, Terrain.SIZE_Z + 24000);
+    const target = new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
+
     this.player = new Player(this.controls);
-    // this.player.init(spawn);
+    this.player.init(spawn, target);
 
     this.scene.add(this.controls.getObject());
-
-    this.showAxesHelper();
   }
 
   private initSeed() {
