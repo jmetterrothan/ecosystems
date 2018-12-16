@@ -82,7 +82,7 @@ class Main {
     this.renderer.domElement.style.width = '100vw';
     this.renderer.domElement.style.height = '100vh';
 
-    this.renderer.setClearColor(new THREE.Color(0x85c3fc));
+    this.renderer.setClearColor(new THREE.Color(World.FOG_COLOR));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -93,16 +93,16 @@ class Main {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.renderer.setPixelRatio(window.devicePixelRatio);
 
-      const size = this.renderer.getSize();
-      this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
+      // const size = this.renderer.getSize();
+      // this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
     });
 
     this.containerElement.append(this.renderer.domElement);
 
     // composser
-    const size = this.renderer.getSize();
-    this.composer = new THREE.EffectComposer(this.renderer);
-    this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
+    // const size = this.renderer.getSize();
+    // this.composer = new THREE.EffectComposer(this.renderer);
+    // this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
 
     /*
     const pass = new THREE.RenderPass(this.scene, this.camera);

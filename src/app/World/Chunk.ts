@@ -14,11 +14,11 @@ import { IPick } from '@shared/models/pick.model';
 
 class Chunk {
   static readonly SHOW_HELPER: boolean = false;
-  static readonly NROWS: number = 8;
-  static readonly NCOLS: number = 8;
+  static readonly NROWS: number = 6;
+  static readonly NCOLS: number = 6;
 
-  static readonly CELL_SIZE_X: number = 2048;
-  static readonly CELL_SIZE_Z: number = 2048;
+  static readonly CELL_SIZE_X: number = 2048 * 1.5;
+  static readonly CELL_SIZE_Z: number = 2048 * 1.5;
 
   static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE_X;
   static readonly HEIGHT: number = 200000;
