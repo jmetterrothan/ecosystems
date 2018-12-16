@@ -30,10 +30,12 @@ class Player {
     this.velocity = new THREE.Vector3(0, 0, 0);
   }
 
-  init(x, y, z) {
-    this.controls.getObject().translateX(x);
-    this.controls.getObject().translateY(y);
-    this.controls.getObject().translateZ(z);
+  init(spawn: THREE.Vector3, target: THREE.Vector3 = new THREE.Vector3()) {
+    const angle = -Math.cos(target.dot(spawn) / (target.length() * spawn.length()));
+
+    this.controls.getObject().rotateY(-Math.PI / 4);
+    this.controls.getObject().children[0].rotateX(angle);
+    this.controls.getObject().position.set(spawn.x, spawn.y, spawn.z);
   }
 
   /**

@@ -17,12 +17,12 @@ class World {
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
-  static readonly MAX_VISIBLE_CHUNKS: number = 18;
+  static readonly MAX_VISIBLE_CHUNKS: number = 24;
   static readonly MAX_RENDERABLE_CHUNKS: number = 32;
   static readonly VIEW_DISTANCE: number = World.MAX_RENDERABLE_CHUNKS * Chunk.WIDTH;
 
   static readonly SHOW_FOG: boolean = true;
-  static readonly FOG_COLOR: number = 0x85c3fc; // 0xb1d8ff
+  static readonly FOG_COLOR: number = 0xb1d8ff;
   static readonly FOG_NEAR: number = World.VIEW_DISTANCE / 2;
   static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 
@@ -54,19 +54,18 @@ class World {
     this.initLights();
     await this.initObjects();
 
-    const spawn = new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.HEIGHT / 2, Terrain.SIZE_Z);
-
     // stuff
     this.terrain = new Terrain(this.scene);
     this.terrain.init();
     this.terrain.preload();
 
+    const spawn = new THREE.Vector3(-24000, Terrain.SIZE_Y, Terrain.SIZE_Z + 24000);
+    const target = new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
+
     this.player = new Player(this.controls);
-    this.player.init(spawn.x, spawn.y, spawn.z);
+    this.player.init(spawn, target);
 
     this.scene.add(this.controls.getObject());
-
-    this.showAxesHelper();
   }
 
   private initSeed() {

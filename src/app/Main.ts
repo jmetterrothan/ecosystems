@@ -13,6 +13,7 @@ import './vergil_water_shader';
 
 import statsJs from 'stats.js';
 import World from '@world/World';
+import Terrain from '@world/Terrain';
 
 class Main {
   private renderer: THREE.WebGLRenderer;
@@ -41,13 +42,6 @@ class Main {
     this.camera = new THREE.PerspectiveCamera(55, aspect, 0.1, World.VIEW_DISTANCE);
 
     // this.scene.add(new THREE.CameraHelper(this.camera));
-
-    /*
-    const d = 15000;
-    this.camera = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, 0.01, World.VIEW_DISTANCE);
-    this.camera.position.set(0, 15000, 0);
-    this.camera.lookAt(new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2));
-    */
   }
 
   async init() {
@@ -82,7 +76,7 @@ class Main {
     this.renderer.domElement.style.width = '100vw';
     this.renderer.domElement.style.height = '100vh';
 
-    this.renderer.setClearColor(new THREE.Color(0x85c3fc));
+    this.renderer.setClearColor(new THREE.Color(World.FOG_COLOR));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -93,16 +87,16 @@ class Main {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.renderer.setPixelRatio(window.devicePixelRatio);
 
-      const size = this.renderer.getSize();
-      this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
+      // const size = this.renderer.getSize();
+      // this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
     });
 
     this.containerElement.append(this.renderer.domElement);
 
     // composser
-    const size = this.renderer.getSize();
-    this.composer = new THREE.EffectComposer(this.renderer);
-    this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
+    // const size = this.renderer.getSize();
+    // this.composer = new THREE.EffectComposer(this.renderer);
+    // this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
 
     /*
     const pass = new THREE.RenderPass(this.scene, this.camera);
