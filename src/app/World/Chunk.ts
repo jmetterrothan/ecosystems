@@ -109,9 +109,22 @@ class Chunk {
       mesh.visible = true;
       mesh.position.set(x, y, z);
       mesh.scale.set(s, s, s);
+      mesh.updateMatrixWorld(true);
+      mesh.geometry.computeBoundingBox();
 
-      (<THREE.Geometry>terrain.clouds.geometry).mergeMesh(mesh);
-      (<THREE.Geometry>terrain.clouds.geometry).elementsNeedUpdate = true;
+      // put the cloud in the world only if it doesn't collide with the terrain
+      const bbox = mesh.geometry.boundingBox;
+      bbox.applyMatrix4(mesh.matrixWorld);
+
+      const p1 = this.generator.computeHeightAt(bbox.min.x, bbox.min.z);
+      const p2 = this.generator.computeHeightAt(bbox.max.x, bbox.min.z);
+      const p3 = this.generator.computeHeightAt(bbox.min.x, bbox.max.z);
+      const p4 = this.generator.computeHeightAt(bbox.max.x, bbox.max.z);
+
+      if (p1 < Chunk.CLOUD_LEVEL && p2 < Chunk.CLOUD_LEVEL && p3 < Chunk.CLOUD_LEVEL && p4 < Chunk.CLOUD_LEVEL) {
+        (<THREE.Geometry>terrain.clouds.geometry).mergeMesh(mesh);
+        (<THREE.Geometry>terrain.clouds.geometry).elementsNeedUpdate = true;
+      }
     }
 
     this.loadPopulation();

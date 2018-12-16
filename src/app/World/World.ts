@@ -13,7 +13,7 @@ import { OBJECTS } from '@shared/constants/object.constants';
 import MathUtils from '@utils/Math.utils';
 
 class World {
-  static SEED: string | null = null; // '789005037'
+  static SEED: string | null = '1634240394'; // '789005037'
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
