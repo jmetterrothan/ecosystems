@@ -10,6 +10,8 @@ import { WATER_MATERIAL } from '@materials/water.material';
 import { IChunkParameters } from '@shared/models/chunkParameters.model';
 
 class WaterMesh extends Mesh {
+  static SEA_OFFSET: number = 2;
+
   constructor(generator: BiomeGenerator, row: number, col: number) {
     super(generator, row, col, MESH_TYPES.WATER_MESH, <IChunkParameters>{
       nRows: 4,
@@ -30,16 +32,27 @@ class WaterMesh extends Mesh {
 
     // creates all our vertices
     for (let c = 0; c < nbVerticesX; c++) {
-      const x = this.col * this.parameters.width + c * this.parameters.cellSizeX;
+      let x = this.col * this.parameters.width + c * this.parameters.cellSizeX;
       for (let r = 0; r < nbVerticesZ; r++) {
-        const z = this.row * this.parameters.depth + r * this.parameters.cellSizeZ;
-        const y = this.getY(x, z);
+        let z = this.row * this.parameters.depth + r * this.parameters.cellSizeZ;
 
-        /*
-        if ((this.col === 0 && c === 0) || (this.row === 0 && r === 0) || (this.col === Terrain.NCHUNKS_X - 1 && c === nbVerticesX - 1) || (this.row === Terrain.NCHUNKS_Z - 1 && r === nbVerticesZ - 1)) {
-          y = Chunk.SEA_LEVEL;
+        if (this.col === 0 && c === 0) {
+          x = WaterMesh.SEA_OFFSET;
         }
-        */
+
+        if (this.row === 0 && r === 0) {
+          z = WaterMesh.SEA_OFFSET;
+        }
+
+        if (this.col === Terrain.NCHUNKS_X - 1 && c === nbVerticesX - 1) {
+          x = Terrain.SIZE_X - WaterMesh.SEA_OFFSET;
+        }
+
+        if (this.row === Terrain.NCHUNKS_Z - 1 && r === nbVerticesZ - 1) {
+          z = Terrain.SIZE_Z - WaterMesh.SEA_OFFSET;
+        }
+
+        const y = this.getY(x, z);
 
         if (this.low === null || this.low > y) this.low = y;
         if (this.high === null || this.high < y) this.high = y;

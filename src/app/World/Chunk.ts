@@ -13,23 +13,23 @@ import MathUtils from '@utils/Math.utils';
 import { IPick } from '@shared/models/pick.model';
 
 class Chunk {
-  static readonly NROWS: number = 8;
-  static readonly NCOLS: number = 8;
+  static readonly SHOW_HELPER: boolean = false;
+  static readonly NROWS: number = 6;
+  static readonly NCOLS: number = 6;
 
-  static readonly CELL_SIZE_X: number = 2048;
-  static readonly CELL_SIZE_Z: number = 2048;
+  static readonly CELL_SIZE_X: number = 2048 * 1.5;
+  static readonly CELL_SIZE_Z: number = 2048 * 1.5;
 
   static readonly WIDTH: number = Chunk.NCOLS * Chunk.CELL_SIZE_X;
-  static readonly HEIGHT: number = 56000;
+  static readonly HEIGHT: number = 200000;
   static readonly DEPTH: number = Chunk.NROWS * Chunk.CELL_SIZE_Z;
+  static readonly MAX_TERRAIN_HEIGHT: number = 64000;
 
-  static readonly SEA_LEVEL: number = Chunk.HEIGHT / 4;
-  static readonly CLOUD_LEVEL: number = Chunk.HEIGHT - Chunk.HEIGHT / 8;
+  static readonly SEA_LEVEL: number = 0;
+  static readonly CLOUD_LEVEL: number = 48000;
 
-  static readonly SEA_DEPTH_THICKNESS: number = 5000;
-
-  static readonly SEA_ELEVATION: number = Chunk.SEA_LEVEL / Chunk.HEIGHT;
-  static readonly CLOUD_ELEVATION: number = Chunk.CLOUD_LEVEL / Chunk.HEIGHT;
+  static readonly SEA_ELEVATION: number = Chunk.SEA_LEVEL / Chunk.MAX_TERRAIN_HEIGHT;
+  static readonly CLOUD_ELEVATION: number = Chunk.CLOUD_LEVEL / Chunk.MAX_TERRAIN_HEIGHT;
 
   static readonly CHUNK_OBJECT_STACK = {};
 
@@ -38,9 +38,10 @@ class Chunk {
   readonly row: number;
   readonly col: number;
 
-  private objects: THREE.Object3D[];
+  private objects: THREE.Group;
 
-  readonly bbox: THREE.Box3;
+  private bbox: THREE.Box3;
+  private bboxHelper: THREE.Box3Helper;
 
   private terrainBlueprint: TerrainMesh;
   private waterBlueprint: WaterMesh;
@@ -53,15 +54,24 @@ class Chunk {
 
   public readonly key: string;
 
-  constructor(generator: BiomeGenerator, row: number, col: number) {
+  /**
+   * Chunk constructor
+   * @param {THREE.Scene} scene
+   * @param {BiomeGenerator} generator
+   * @param {number} row
+   * @param {number} col
+   */
+  constructor(scene: THREE.Scene, generator: BiomeGenerator, row: number, col: number) {
     this.generator = generator;
     this.row = row;
     this.col = col;
 
     this.key = `${row}:${col}`;
-    this.objects = [];
     this.dirty = false;
     this.merged = false;
+
+    this.objects = new THREE.Group();
+    scene.add(this.objects);
 
     this.terrainBlueprint = new TerrainMesh(this.generator, this.row, this.col);
     this.waterBlueprint = new WaterMesh(this.generator, this.row, this.col);
@@ -69,17 +79,27 @@ class Chunk {
     // compute the bounding box of the chunk for later optimization
     this.bbox = Chunk.createBoundingBox(row, col);
 
+    // bbox helper
+    if (Chunk.SHOW_HELPER) {
+      this.bboxHelper = Chunk.createBoundingBoxHelper(this.bbox);
+      scene.add(<THREE.Object3D>this.bboxHelper);
+    }
+
     this.objectsBlueprint = [];
   }
 
-  init(terrain: Terrain, scene: THREE.Scene) {
+  /**
+   * Chunk initialization
+   * @param {Terrain} terrain
+   */
+  init(terrain: Terrain) {
     // merge generated chunk with region geometry
     const terrainMesh = this.terrainBlueprint.generate();
 
     (<THREE.Geometry>terrain.terrain.geometry).mergeMesh(terrainMesh);
     (<THREE.Geometry>terrain.terrain.geometry).elementsNeedUpdate = true;
 
-    // TODO optimize this part (mesh could be static objects reused using transformations and data could just be copied to the global geometry)
+    // generate water
     if (this.terrainBlueprint.needGenerateWater()) {
       const waterMesh = this.waterBlueprint.generate();
 
@@ -87,7 +107,7 @@ class Chunk {
       (<THREE.Geometry>terrain.water.geometry).elementsNeedUpdate = true;
     }
 
-    // clouds
+    // generate clouds
     if (this.terrainBlueprint.needGenerateCloud()) {
       const cloudTypes = ['cloud1', 'cloud2', 'cloud3', 'cloud4'];
 
@@ -98,8 +118,8 @@ class Chunk {
       const y = Chunk.CLOUD_LEVEL;
       const z = this.row * Chunk.DEPTH + Chunk.DEPTH / 2;
 
-      const s = World.OBJ_INITIAL_SCALE * MathUtils.randomFloat(0.8, 1.75);
-
+      // prepare object
+      const s = World.OBJ_INITIAL_SCALE * MathUtils.randomFloat(0.6, 1.0);
       mesh.geometry = new THREE.Geometry().fromBufferGeometry(<THREE.BufferGeometry>mesh.geometry);
       mesh.frustumCulled = false;
       mesh.matrixAutoUpdate = true;
@@ -108,9 +128,23 @@ class Chunk {
       mesh.visible = true;
       mesh.position.set(x, y, z);
       mesh.scale.set(s, s, s);
+      mesh.updateMatrixWorld(true);
+      mesh.geometry.computeBoundingBox();
 
-      (<THREE.Geometry>terrain.clouds.geometry).mergeMesh(mesh);
-      (<THREE.Geometry>terrain.clouds.geometry).elementsNeedUpdate = true;
+      // put the cloud in the world only if it doesn't collide with the terrain
+      const bbox = mesh.geometry.boundingBox;
+      // update bbox matrix
+      bbox.applyMatrix4(mesh.matrixWorld);
+
+      const p1 = this.generator.computeHeightAt(bbox.min.x, bbox.min.z);
+      const p2 = this.generator.computeHeightAt(bbox.max.x, bbox.min.z);
+      const p3 = this.generator.computeHeightAt(bbox.min.x, bbox.max.z);
+      const p4 = this.generator.computeHeightAt(bbox.max.x, bbox.max.z);
+
+      if (p1 < Chunk.CLOUD_LEVEL && p2 < Chunk.CLOUD_LEVEL && p3 < Chunk.CLOUD_LEVEL && p4 < Chunk.CLOUD_LEVEL) {
+        (<THREE.Geometry>terrain.clouds.geometry).mergeMesh(mesh);
+        (<THREE.Geometry>terrain.clouds.geometry).elementsNeedUpdate = true;
+      }
     }
 
     this.loadPopulation();
@@ -120,10 +154,18 @@ class Chunk {
   }
 
   /**
+   * Add an object to the object group layer of the chunk
+   * @param {THREE.Object3D} object
+   */
+  addObject(object: THREE.Object3D) {
+    this.objects.add(object);
+  }
+
+  /**
    * Poisson disk sampling
    */
   loadPopulation() {
-    const padding = 1024; // object bounding box size / 2
+    const padding = World.OBJ_INITIAL_SCALE + 4096; // object bounding box size / 2
     const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding * 2, padding * 2, 30, MathUtils.rng);
     const points = pds.fill();
 
@@ -144,7 +186,7 @@ class Chunk {
    * Populate the world with pre-computed object parameters
    * @param scene
    */
-  populate(scene: THREE.Scene) {
+  populate() {
     for (const item of this.objectsBlueprint) {
       let object = null;
 
@@ -165,52 +207,85 @@ class Chunk {
       object.scale.set(item.s, item.s, item.s);
       object.position.set(item.x, item.y, item.z);
       object.stackReference = item.n;
-
       object.visible = true;
 
-      scene.add(object);
-      this.objects.push(object);
+      this.objects.add(object);
     }
 
     this.dirty = false;
   }
 
+  /**
+   * Clean the object layer of the chunk (repurpose objects if needed)
+   * @param {THREE.Scene} scene
+   */
   clean(scene: THREE.Scene) {
-    for (let i = this.objects.length - 1; i >= 0; i--) {
+    for (let i = this.objects.children.length - 1; i >= 0; i--) {
       // @ts-ignore
-      const ref = this.objects[i].stackReference;
+      const ref = this.objects.children[i].stackReference;
 
-      if (Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
+      if (ref && Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
         // collect unused objects
-        this.objects[i].visible = false;
-        Chunk.CHUNK_OBJECT_STACK[ref].push(this.objects[i]);
+        this.objects.children[i].visible = false;
+        Chunk.CHUNK_OBJECT_STACK[ref].push(this.objects.children[i]);
       } else {
-        scene.remove(this.objects[i]);
+        scene.remove(this.objects.children[i]);
       }
     }
 
-    this.objects = [];
+    this.objects.children = [];
     this.dirty = true;
   }
 
+  /**
+   * Change chunk objects visibility
+   * @param {boolean} bool
+   */
   setVisible(bool: boolean) {
     if (this.visible !== bool) {
-      for (let i = this.objects.length - 1; i >= 0; i--) {
-        this.objects[i].visible = bool;
-      }
+      this.objects.visible = bool;
     }
     this.visible = bool;
+
+    if (this.bboxHelper) {
+      (<THREE.Object3D>this.bboxHelper).visible = bool;
+    }
   }
 
-  isVisible() {  return this.visible; }
+  /**
+   * Chunk objects are visible in frustum if true
+   * @return {boolean}
+   */
+  isVisible() { return this.visible; }
+
+  /**
+   * Chunk population need to be regenerated if true
+   * @return {boolean}
+   */
   isDirty() { return this.dirty; }
+
+  /**
+   * Chunk has been merged to the terrain if true
+   * @return {boolean}
+   */
   isMerged() { return this.merged; }
 
+  /**
+   * @return {THREE.Box3}
+   */
+  getBbox(): THREE.Box3 { return this.bbox; }
+
+  /**
+   * Returns a chunk's bounding box
+   * @param {number} row
+   * @param {number} col
+   * @return {THREE.Box3}
+   */
   static createBoundingBox(row: number, col: number): THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
       new THREE.Vector3(
         col * Chunk.WIDTH + Chunk.WIDTH / 2,
-        Chunk.HEIGHT / 2,
+        Chunk.SEA_LEVEL,
         row * Chunk.DEPTH + Chunk.DEPTH / 2
       ),
       new THREE.Vector3(
@@ -220,10 +295,21 @@ class Chunk {
       ));
   }
 
+  /**
+   * Returns a chunk's bounding box helper
+   * @param {bbTHREE.Box3ox} bbox
+   * @return {THREE.Box3Helper}
+   */
   static createBoundingBoxHelper(bbox: THREE.Box3): THREE.Box3Helper {
     return new THREE.Box3Helper(bbox, 0xffff00);
   }
 
+  /**
+   * Returns a chunk's bounding box helper
+   * @param {number} row
+   * @param {number} col
+   * @return {THREE.Box3Helper}
+   */
   static createBoundingBoxHelperFromCoords(row: number, col: number): THREE.Box3Helper {
     return new THREE.Box3Helper(Chunk.createBoundingBox(row, col), 0xffff00);
   }

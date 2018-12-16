@@ -14,6 +14,22 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.27 0.27 0.27
 Ns 6.00
+newmtl fish_color3SG
+illum 4
+Kd 0.81 0.44 0.30
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.70 0.70 0.70
+Ns 6.00
+newmtl fish_color4SG
+illum 4
+Kd 1.00 0.86 0.75
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.70 0.70 0.70
+Ns 6.00
 newmtl highland_leavesSG
 illum 4
 Kd 1.00 0.38 0.12
@@ -64,6 +80,14 @@ newmtl pasted__lilypad1SG2
 illum 4
 Kd 0.62 0.70 0.45
 Ka 0.17 0.13 0.08
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
+newmtl pasted__lilypad1SG3
+illum 4
+Kd 0.12 0.51 0.32
+Ka 0.29 0.29 0.29
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
@@ -133,6 +157,14 @@ Ni 1.00
 Ks 0.52 0.52 0.52
 Ns 6.00
 newmtl pasted__pasted__spruce_woodSG1
+illum 4
+Kd 0.66 0.43 0.33
+Ka 0.42 0.42 0.42
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
+newmtl pasted__pasted__spruce_woodSG2
 illum 4
 Kd 0.66 0.43 0.33
 Ka 0.42 0.42 0.42
@@ -222,7 +254,7 @@ Ks 0.50 0.50 0.50
 Ns 6.00
 newmtl phong1SG
 illum 4
-Kd 0.30 0.64 0.20
+Kd 0.41 0.63 0.43
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 1.00
@@ -331,4 +363,12 @@ Ka 0.19 0.79 0.17
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.00 0.00 0.00
+Ns 6.00
+newmtl savannaSG
+illum 4
+Kd 0.89 0.74 0.52
+Ka 0.29 0.29 0.29
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
 Ns 6.00

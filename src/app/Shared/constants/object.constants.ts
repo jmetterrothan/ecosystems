@@ -1,5 +1,11 @@
 import { IObject } from '@shared/models/object.model';
 
+import fish1Obj from '@objmodels/fauna/fish1.obj';
+import fish1Mtl from '@objmodels/fauna/fish1.mtl';
+
+import fish2Obj from '@objmodels/fauna/fish2.obj';
+import fish2Mtl from '@objmodels/fauna/fish2.mtl';
+
 import spruceObj from '@objmodels/tree/spruce.obj';
 import spruceMtl from '@objmodels/tree/spruce.mtl';
 
@@ -72,6 +78,9 @@ import blueMtl from '@objmodels/tree/blue.mtl';
 import diamondObj from '@objmodels/tree/diamond.obj';
 import diamondMtl from '@objmodels/tree/diamond.mtl';
 
+import savanna_treeObj from '@objmodels/tree/savanna_tree.obj';
+import savanna_treeMtl from '@objmodels/tree/savanna_tree.mtl';
+
 import algeaObj from '@objmodels/flower/algea.obj';
 import algeaMtl from '@objmodels/flower/algea.mtl';
 
@@ -100,6 +109,18 @@ import cloud4Obj from '@objmodels/cloud/cloud4.obj';
 import cloud4Mtl from '@objmodels/cloud/cloud4.mtl';
 
 export const OBJECTS: IObject[] = [
+  {
+    name: 'fish2',
+    obj: fish2Obj,
+    mtl: fish2Mtl,
+    doubleSide: true
+  },
+  {
+    name: 'fish1',
+    obj: fish1Obj,
+    mtl: fish1Mtl,
+    doubleSide: true
+  },
   {
     name: 'cloud1',
     obj: cloud1Obj,
@@ -181,7 +202,13 @@ export const OBJECTS: IObject[] = [
   {
     name: 'palm_tree',
     obj: palm_treeObj,
-    mtl: palm_treeMtl
+    mtl: palm_treeMtl,
+    doubleSide: true
+  },
+  {
+    name: 'savanna_tree',
+    obj: savanna_treeObj,
+    mtl: savanna_treeMtl
   },
   {
     name: 'daisy',

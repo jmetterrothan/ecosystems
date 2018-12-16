@@ -15,10 +15,11 @@ import MathUtils from '@utils/Math.utils';
 class World {
   static SEED: string | null = null; // '789005037'
 
-  static readonly OBJ_INITIAL_SCALE: number = 500;
+  static readonly OBJ_INITIAL_SCALE: number = 1000;
 
   static readonly MAX_VISIBLE_CHUNKS: number = 24;
-  static readonly VIEW_DISTANCE: number = World.MAX_VISIBLE_CHUNKS * Chunk.WIDTH;
+  static readonly MAX_RENDERABLE_CHUNKS: number = 32;
+  static readonly VIEW_DISTANCE: number = World.MAX_RENDERABLE_CHUNKS * Chunk.WIDTH;
 
   static readonly SHOW_FOG: boolean = true;
   static readonly FOG_COLOR: number = 0xb1d8ff;
@@ -35,6 +36,7 @@ class World {
 
   private terrain: Terrain;
   private frustum: THREE.Frustum;
+  private raycaster: THREE.Raycaster;
   private seed: string;
 
   constructor(scene: THREE.Scene, camera: THREE.PerspectiveCamera, controls: THREE.PointerLockControls) {
@@ -43,28 +45,27 @@ class World {
     this.controls = controls;
 
     this.frustum = new THREE.Frustum();
+    this.raycaster = new THREE.Raycaster();
   }
 
   async init() {
     this.initSeed();
     this.initFog();
-    this.initSkybox();
     this.initLights();
     await this.initObjects();
-
-    const spawn = new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.HEIGHT / 2, Terrain.SIZE_Z);
 
     // stuff
     this.terrain = new Terrain(this.scene);
     this.terrain.init();
     this.terrain.preload();
 
+    const spawn = new THREE.Vector3(-24000, Terrain.SIZE_Y, Terrain.SIZE_Z + 24000);
+    const target = new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
+
     this.player = new Player(this.controls);
-    this.player.init(spawn.x, spawn.y, spawn.z);
+    this.player.init(spawn, target);
 
     this.scene.add(this.controls.getObject());
-
-    this.showAxesHelper();
   }
 
   private initSeed() {
@@ -86,12 +87,8 @@ class World {
     }
   }
 
-  private initSkybox() {
-
-  }
-
   private initLights() {
-    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.75);
+    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.70);
     light.position.set(0, Chunk.SEA_LEVEL, 0);
     light.castShadow = false;
     this.scene.add(light);
@@ -101,13 +98,16 @@ class World {
     ambient.castShadow = false;
     this.scene.add(ambient);
 
-    const sunlight = new THREE.DirectionalLight(0xffffff, 0.325);
+    const sunlight = new THREE.DirectionalLight(0xffffff, 0.275);
     sunlight.position.set(0, Chunk.HEIGHT, 15000);
     sunlight.castShadow = true;
     this.scene.add(sunlight);
-
   }
 
+  /**
+   * Loads all objects
+   * @return {Promise<any>}
+   */
   private async initObjects(): Promise<any> {
     // load all models
     const stack = OBJECTS.map(element => {
@@ -121,6 +121,9 @@ class World {
     await Promise.all(stack);
   }
 
+  /**
+   * @param {number} delta
+   */
   public update(delta) {
     this.camera.updateMatrixWorld(true);
 
@@ -131,7 +134,8 @@ class World {
       )
     );
 
-    this.terrain.update(this.frustum, this.controls.getObject().position);
+    this.terrain.update(this.frustum, this.controls.getObject().position, delta);
+    this.player.update(this.terrain, delta);
 
     /*
     if (position.y < Chunk.SEA_LEVEL) {
@@ -140,11 +144,25 @@ class World {
     */
   }
 
-  public updateMvts(delta) {
-    this.player.updateMvts(delta);
-    this.player.updatePosition(this.terrain);
+  /**
+   * Handle mouse click
+   * @param {THREE.Vector2} pos Raw mouse input
+   */
+  public handleMouseClick(pos: THREE.Vector2) {
+    // use ray tracing to detect clics on the terrain in 3d space
+    const mouse = new THREE.Vector2();
+    mouse.x = (pos.x / window.innerWidth) * 2 - 1;
+    mouse.y = (pos.y / window.innerHeight) * -2 + 1;
+
+    this.raycaster.setFromCamera(mouse, this.camera);
+    this.terrain.handleMouseInteraction(this.raycaster);
   }
 
+  /**
+   * Handle keyboard input
+   * @param {string} key
+   * @param {boolean} active
+   */
   public handleKeyboard(key: string, active: boolean) {
     this.player.handleKeyboard(key, active);
   }

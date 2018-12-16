@@ -13,10 +13,9 @@ import './vergil_water_shader';
 
 import statsJs from 'stats.js';
 import World from '@world/World';
+import Terrain from '@world/Terrain';
 
 class Main {
-  public static readonly MS_PER_UPDATE = 1000 / 25;
-
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
   private composer: THREE.EffectComposer;
@@ -26,17 +25,11 @@ class Main {
 
   private world: World;
 
-  private lag: number;
-  private ups: number;
   private lastTime: number;
-  private scheduledTime: number;
 
   private stats: statsJs;
   constructor() {
     this.containerElement = document.body;
-    this.lag = 0;
-    this.ups = 0;
-    this.scheduledTime = window.performance.now();
     this.lastTime = window.performance.now();
 
     this.stats = new statsJs();
@@ -49,13 +42,6 @@ class Main {
     this.camera = new THREE.PerspectiveCamera(55, aspect, 0.1, World.VIEW_DISTANCE);
 
     // this.scene.add(new THREE.CameraHelper(this.camera));
-
-    /*
-    const d = 15000;
-    this.camera = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, 0.01, World.VIEW_DISTANCE);
-    this.camera.position.set(0, 15000, 0);
-    this.camera.lookAt(new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2));
-    */
   }
 
   async init() {
@@ -69,6 +55,16 @@ class Main {
 
   private initControls() {
     this.controls = new THREE.PointerLockControls(this.camera);
+
+    // crosshair temp
+    const crosshair = document.createElement('div');
+    crosshair.classList.add('crosshair');
+    crosshair.appendChild(document.createElement('span'));
+    crosshair.appendChild(document.createElement('span'));
+    crosshair.appendChild(document.createElement('span'));
+    crosshair.appendChild(document.createElement('span'));
+    crosshair.appendChild(document.createElement('span'));
+    document.body.appendChild(crosshair);
   }
 
   private initRenderer() {
@@ -80,7 +76,7 @@ class Main {
     this.renderer.domElement.style.width = '100vw';
     this.renderer.domElement.style.height = '100vh';
 
-    this.renderer.setClearColor(new THREE.Color(0xb1d8ff));
+    this.renderer.setClearColor(new THREE.Color(World.FOG_COLOR));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -91,16 +87,16 @@ class Main {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.renderer.setPixelRatio(window.devicePixelRatio);
 
-      const size = this.renderer.getSize();
-      this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
+      // const size = this.renderer.getSize();
+      // this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
     });
 
     this.containerElement.append(this.renderer.domElement);
 
     // composser
-    const size = this.renderer.getSize();
-    this.composer = new THREE.EffectComposer(this.renderer);
-    this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
+    // const size = this.renderer.getSize();
+    // this.composer = new THREE.EffectComposer(this.renderer);
+    // this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
 
     /*
     const pass = new THREE.RenderPass(this.scene, this.camera);
@@ -150,6 +146,12 @@ class Main {
       document.body.addEventListener('click', () => {
         document.body.requestPointerLock = document.body.requestPointerLock || document.body.mozRequestPointerLock || document.body.webkitRequestPointerLock;
         document.body.requestPointerLock();
+
+        if (!this.controls.enabled) { return; }
+
+        // mouse position always in the center of the screen
+        const raw = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
+        this.world.handleMouseClick(raw);
       });
 
       document.body.addEventListener('keydown', e => this.world.handleKeyboard(e.key, true && this.controls.enabled));
@@ -157,37 +159,17 @@ class Main {
     }
   }
 
-  private render(delta) {
+  private render() {
     this.stats.begin();
 
     const time = window.performance.now();
     const elapsed = time - this.lastTime;
-
-    if (time >= this.scheduledTime) {
-      this.scheduledTime += 1000;
-
-      // console.info(`UPS : ${this.ups}`);
-      this.ups = 0;
-    }
-
     this.lastTime = time;
-    this.lag += elapsed;
+
+    const delta = elapsed / 1000;
 
     // updated every time
-    this.world.updateMvts(elapsed / 1000);
-
-    // updated every 16ms
-    let nbOfSteps = 0;
-    while (this.lag >= Main.MS_PER_UPDATE) {
-      this.world.update(delta);
-      this.ups++;
-
-      this.lag -= Main.MS_PER_UPDATE;
-
-      if (++nbOfSteps >= 240) {
-        this.lag = 0;
-      }
-    }
+    this.world.update(delta);
 
     /*
     this.effect.uniforms['time'].value += Math.random();

@@ -2,7 +2,6 @@ import * as THREE from 'three';
 
 import Mesh from '@mesh/Mesh';
 import Chunk from '@world/Chunk';
-import Terrain from '@world/Terrain';
 import BiomeGenerator from '@world/BiomeGenerator';
 import MathUtils from '@shared/utils/Math.utils';
 
@@ -12,9 +11,6 @@ import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 import { IChunkParameters } from '@shared/models/chunkParameters.model';
 
 class TerrainMesh extends Mesh {
-  static LOW : number = null;
-  static HIGH : number = null;
-
   constructor(generator: BiomeGenerator, row: number, col: number) {
     super(generator, row, col, MESH_TYPES.TERRAIN_MESH, <IChunkParameters>{
       maxChunkHeight: Chunk.HEIGHT,
@@ -41,9 +37,6 @@ class TerrainMesh extends Mesh {
       for (let r = 0; r < nbVerticesZ; r++) {
         const z = this.row * this.parameters.depth + r * this.parameters.cellSizeZ;
         const y = this.getY(x, z);
-
-        if (TerrainMesh.LOW === null || TerrainMesh.LOW > y) TerrainMesh.LOW = y;
-        if (TerrainMesh.HIGH === null || TerrainMesh.HIGH < y) TerrainMesh.HIGH = y;
 
         geometry.vertices.push(new THREE.Vector3(x, y, z));
       }
@@ -74,8 +67,8 @@ class TerrainMesh extends Mesh {
         const m1 = this.generator.computeMoistureAt(x1, z1);
         const m2 = this.generator.computeMoistureAt(x2, z2);
 
-        f1.color = this.generator.getBiome(y1 / Chunk.HEIGHT, m1).color;
-        f2.color = this.generator.getBiome(y2 / Chunk.HEIGHT, m2).color;
+        f1.color = this.generator.getBiome(y1 / Chunk.MAX_TERRAIN_HEIGHT, m1).color;
+        f2.color = this.generator.getBiome(y2 / Chunk.MAX_TERRAIN_HEIGHT, m2).color;
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);
