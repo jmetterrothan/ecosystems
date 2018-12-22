@@ -89,7 +89,12 @@ class Terrain {
 
     this.scene.add(this.layers);
 
-    this.boids = new Boids(this.scene, Terrain.SIZE_X, 50000, Terrain.SIZE_Z, 200);
+    this.boids = new Boids(
+      this.scene,
+      new THREE.Vector3(Terrain.SIZE_X, 30000, Terrain.SIZE_Z),
+      new THREE.Vector3(Terrain.SIZE_X / 2, 30000, Terrain.SIZE_Z / 2),
+      100
+    );
     this.boids.generate();
   }
 

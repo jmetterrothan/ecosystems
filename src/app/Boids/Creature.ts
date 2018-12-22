@@ -12,13 +12,16 @@ class Creature {
   viewAngle: number = 4;
   speed: number = 200;
 
+  model: THREE.Object3D;
+
   avoidTarget: THREE.Vector3 = null;
 
   protected boidsBoundingBox: THREE.Vector3;
 
-  constructor(position: THREE.Vector3, velocity: THREE.Vector3) {
+  constructor(position: THREE.Vector3, velocity: THREE.Vector3, model: THREE.Object3D) {
     this.position = position;
     this.velocity = velocity;
+    this.model = model;
   }
 
   update(creatures: Creature[], delta: number) {
@@ -36,6 +39,8 @@ class Creature {
 
     this.velocity.normalize();
     this.position.add(this.velocity.clone().multiplyScalar(this.speed));
+
+    this.updateModel();
   }
 
   setBoidsBoundingBox(box: THREE.Vector3) {
@@ -62,6 +67,12 @@ class Creature {
     v.multiplyScalar(weighting);
 
     this.velocity.add(v);
+  }
+
+  private updateModel() {
+    this.model.position.copy(this.position);
+    this.model.rotation.y = Math.atan2(-this.velocity.z, this.velocity.x);
+    this.model.rotation.z = Math.asin(this.velocity.y / this.velocity.length());
   }
 
   private calculateInteraction(creatures: Creature[]): THREE.Vector3 {
