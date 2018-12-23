@@ -6,8 +6,8 @@ class Predator extends Creature {
 
   minRepulseDistance: number = 20000;
 
-  constructor(position: THREE.Vector3 = new THREE.Vector3(), velocity: THREE.Vector3 = new THREE.Vector3) {
-    super(position, velocity);
+  constructor(position: THREE.Vector3 = new THREE.Vector3(), velocity: THREE.Vector3 = new THREE.Vector3, model: THREE.Object3D) {
+    super(position, velocity, model);
   }
 
   calculateCreatureInteraction(creature: Creature) {

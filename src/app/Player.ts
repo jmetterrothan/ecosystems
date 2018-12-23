@@ -92,7 +92,6 @@ class Player {
 
     // collision
     const position = this.controls.getObject().position;
-    console.log(position);
     let y = TerrainMesh.LOW | 0;
 
     if (position.x >= 0 && position.x <= Terrain.SIZE_X && position.z >= 0 && position.z <= Terrain.SIZE_Z) {

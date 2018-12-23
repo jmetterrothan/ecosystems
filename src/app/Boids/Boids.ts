@@ -2,17 +2,12 @@ import * as THREE from 'three';
 
 import World from '@world/World';
 import Creature from './Creature';
-// import Predator from './Predator';
 
 class Boids {
 
   creaturesCount: number;
 
   creatures: Creature[] = [];
-  // meshes: THREE.Object3D[] = [];
-
-  // predator: Predator;
-  // predatorMesh: THREE.Object3D;
 
   boudingBox: THREE.Vector3;
   origin: THREE.Vector3;
@@ -25,13 +20,9 @@ class Boids {
     this.creaturesCount = creaturesCount;
     this.origin = origin;
 
-    // const geometry = new THREE.BoxGeometry(width, height, depth);
-    // const material = new THREE.MeshBasicMaterial({ color: 'red', wireframe: true });
-    // const mesh = new THREE.Mesh(geometry, material);
-
     const mesh = new THREE.Box3().setFromCenterAndSize(
       new THREE.Vector3(
-        0, 0, 0
+        this.origin.x, 0, this.origin.z
       ),
       new THREE.Vector3(
         this.boudingBox.x, this.boudingBox.y, this.boudingBox.z
@@ -60,7 +51,9 @@ class Boids {
 
       const model = World.LOADED_MODELS.get('fish1').clone();
       const creature: Creature = new Creature(position, velocity, model);
+
       creature.setBoidsBoundingBox(this.boudingBox);
+      creature.setOriginPoint(this.origin);
 
       this.creatures.push(creature);
 

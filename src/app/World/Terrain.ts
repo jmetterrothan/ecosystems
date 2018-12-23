@@ -92,8 +92,8 @@ class Terrain {
     this.boids = new Boids(
       this.scene,
       new THREE.Vector3(Terrain.SIZE_X, 30000, Terrain.SIZE_Z),
-      new THREE.Vector3(Terrain.SIZE_X / 2, 30000, Terrain.SIZE_Z / 2),
-      100
+      new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2),
+      50
     );
     this.boids.generate();
   }

@@ -17,6 +17,7 @@ class Creature {
   avoidTarget: THREE.Vector3 = null;
 
   protected boidsBoundingBox: THREE.Vector3;
+  protected boidsOrigin: THREE.Vector3;
 
   constructor(position: THREE.Vector3, velocity: THREE.Vector3, model: THREE.Object3D) {
     this.position = position;
@@ -47,6 +48,10 @@ class Creature {
     this.boidsBoundingBox = box;
   }
 
+  setOriginPoint(origin: THREE.Vector3) {
+    this.boidsOrigin = origin;
+  }
+
   setAvoidTarget(target: THREE.Vector3) {
     this.avoidTarget = target;
   }
@@ -70,7 +75,9 @@ class Creature {
   }
 
   private updateModel() {
-    this.model.position.copy(this.position);
+    const v = this.position.clone().add(this.boidsOrigin);
+    // console.log(this.position.add(this.boidsOrigin));
+    this.model.position.copy(v);
     this.model.rotation.y = Math.atan2(-this.velocity.z, this.velocity.x);
     this.model.rotation.z = Math.asin(this.velocity.y / this.velocity.length());
   }
