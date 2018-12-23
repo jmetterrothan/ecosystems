@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import * as TWEEN from '@tweenjs/tween.js';
 
 import 'three/examples/js/postprocessing/EffectComposer';
 import 'three/examples/js/controls/PointerLockControls';
@@ -13,7 +14,6 @@ import './vergil_water_shader';
 
 import statsJs from 'stats.js';
 import World from '@world/World';
-import Terrain from '@world/Terrain';
 
 class Main {
   private renderer: THREE.WebGLRenderer;
@@ -179,13 +179,14 @@ class Main {
     */
 
     this.renderer.render(this.scene, this.getActiveCamera());
+    TWEEN.update();
     // this.composer.render(delta);
     this.stats.end();
 
     window.requestAnimationFrame(this.render.bind(this));
   }
 
-  getActiveCamera()  {
+  getActiveCamera() {
     return this.camera;
   }
 
