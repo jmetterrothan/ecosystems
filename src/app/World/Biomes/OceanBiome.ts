@@ -8,8 +8,7 @@ import { IBiome } from '@shared/models/biome.model';
 import { BIOMES } from '@shared/constants/biome.constants';
 import MathUtils from '@shared/utils/Math.utils';
 
-class OceanBiome extends Biome
-{
+class OceanBiome extends Biome {
   private spike: number;
   private depth: number;
 
@@ -42,7 +41,7 @@ class OceanBiome extends Biome
     return e - this.depth - 0.5;
   }
 
-  getParametersAt(e: number, m: number) : IBiome {
+  getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.40 - MathUtils.randomFloat(0.01, 0.025)) {
       return BIOMES.OCEAN;
     }

@@ -8,6 +8,8 @@ import WaterMesh from '@mesh/WaterMesh';
 import Boids from '../Boids/Boids';
 import MathUtils from '@shared/utils/Math.utils';
 
+import OceanBiome from '@world/Biomes/OceanBiome';
+
 import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
 import { WATER_MATERIAL, WATER_SIDE_MATERIAL } from '@materials/water.material';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
@@ -42,6 +44,7 @@ class Terrain {
 
   private layers: THREE.Group;
 
+  private boidsAllowed: boolean;
   private boids: Boids;
 
   /**
@@ -50,7 +53,10 @@ class Terrain {
    */
   constructor(scene: THREE.Scene) {
     this.scene = scene;
+
     this.generator = new BiomeGenerator();
+    this.boidsAllowed = this.generator.getBiome() instanceof OceanBiome;
+
     this.chunks = new Map<string, Chunk>();
     this.visibleChunks = [];
 
@@ -99,13 +105,16 @@ class Terrain {
 
     this.scene.add(this.layers);
 
-    this.boids = new Boids(
-      this.scene,
-      new THREE.Vector3(Terrain.SIZE_X, 30000, Terrain.SIZE_Z),
-      new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2),
-      50
-    );
-    this.boids.generate();
+    if (this.boidsAllowed) {
+      this.boids = new Boids(
+        this.scene,
+        new THREE.Vector3(Terrain.SIZE_X, 30000, Terrain.SIZE_Z),
+        new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2),
+        50
+      );
+      this.boids.generate();
+    }
+
   }
 
   /**
@@ -212,7 +221,7 @@ class Terrain {
     }
 
     // entities update
-    this.boids.update(delta);
+    if (this.boidsAllowed) this.boids.update(delta);
   }
 
   /**
@@ -379,8 +388,8 @@ class Terrain {
         const f1 = new THREE.Face3(a, b, d);
         const f2 = new THREE.Face3(d, c, a);
 
-        f1.color = this.generator.getBiome((-Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
-        f2.color = this.generator.getBiome((-Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
+        f1.color = this.generator.getBiomeInformations((-Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
+        f2.color = this.generator.getBiomeInformations((-Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);

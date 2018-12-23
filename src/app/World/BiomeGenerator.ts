@@ -12,9 +12,10 @@ import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
 import { IPick } from '@shared/models/pick.model';
 
 import { BIOMES } from '@shared/constants/biomes.constants';
+import OceanBiome from './Biomes/OceanBiome';
 
 class BiomeGenerator {
-  public static readonly BIOME: Biome|null = null; // lock a specific biome here, if null a biome is selected randomly
+  public static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
 
   private simplex: simplexNoise;
   private simplex2: simplexNoise;
@@ -105,8 +106,16 @@ class BiomeGenerator {
    * @param {number} m moisture value
    * @return {IBiome} Biome informations
    */
-  getBiome(e: number, m: number): IBiome {
+  getBiomeInformations(e: number, m: number): IBiome {
     return this.biome.getParametersAt(e, m);
+  }
+
+  /**
+   * Return the current biome
+   * @return {Biome} Biome
+   */
+  getBiome(): Biome {
+    return this.biome;
   }
 
   /**
