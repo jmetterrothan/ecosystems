@@ -137,6 +137,10 @@ class World {
     this.terrain.update(this.frustum, this.controls.getObject().position, delta);
     this.player.update(this.terrain, delta);
 
+    this.player.underwaterObservable$.subscribe(
+      underwater => console.log(underwater)
+    );
+
     /*
     if (position.y < Chunk.SEA_LEVEL) {
       // console.log('underwater');
@@ -213,7 +217,7 @@ class World {
 
           World.LOADED_MODELS.set(element.name, object);
           // const box = new THREE.Box3().setFromObject(object);
-         // const size = box.getSize(new THREE.Vector3(0, 0, 0));
+          // const size = box.getSize(new THREE.Vector3(0, 0, 0));
 
           resolve(object);
         }, null, () => reject());
