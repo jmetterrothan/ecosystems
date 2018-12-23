@@ -159,10 +159,13 @@ class Chunk {
    * @param {THREE.Object3D} object
    */
   addObject(object: THREE.Object3D) {
+    const scaleSaved = object.scale.clone();
+
     object.scale.set(0, 0, 0);
     this.objects.add(object);
-    const animation = new TWEEN.Tween(object.scale)
-      .to({ x: 1, y: 1, z: 1 }, 600)
+
+    new TWEEN.Tween(object.scale)
+      .to(scaleSaved, 500)
       .easing(TWEEN.Easing.Bounce.Out)
       .start();
   }
