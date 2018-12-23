@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 
-import TerrainMesh from '@mesh/TerrainMesh';
+import Chunk from '@world/Chunk';
 import Terrain from '@world/Terrain';
 
 class Player {
@@ -30,69 +30,66 @@ class Player {
     this.velocity = new THREE.Vector3(0, 0, 0);
   }
 
-  init(x, y, z) {
-    this.controls.getObject().translateX(x);
-    this.controls.getObject().translateY(y);
-    this.controls.getObject().translateZ(z);
+  init(spawn: THREE.Vector3, target: THREE.Vector3 = new THREE.Vector3()) {
+    const angle = -Math.cos(target.dot(spawn) / (target.length() * spawn.length()));
+
+    this.controls.getObject().rotateY(-Math.PI / 4);
+    this.controls.getObject().children[0].rotateX(angle);
+    this.controls.getObject().position.set(spawn.x, spawn.y, spawn.z);
   }
 
-  update(terrain: Terrain, delta: number) {
+  /**
+   * @param {number} delta
+   */
+  move(delta: number) {
     // movement
     if (this.moveForward) {
       this.velocity.z = -this.speed.z;
     } else {
-      if (this.velocity.z < 0) {
-        this.velocity.z = 0;
-      }
+      if (this.velocity.z < 0) { this.velocity.z = 0; }
     }
 
     if (this.moveBackward) {
       this.velocity.z = this.speed.z;
     } else {
-      if (this.velocity.z > 0) {
-        this.velocity.z = 0;
-      }
+      if (this.velocity.z > 0) { this.velocity.z = 0; }
     }
 
     if (this.moveRight) {
       this.velocity.x = this.speed.x;
     } else {
-      if (this.velocity.x > 0) {
-        this.velocity.x = 0;
-      }
+      if (this.velocity.x > 0) { this.velocity.x = 0; }
     }
 
     if (this.moveLeft) {
       this.velocity.x = -this.speed.x;
     } else {
-      if (this.velocity.x < 0) {
-        this.velocity.x = 0;
-      }
+      if (this.velocity.x < 0) { this.velocity.x = 0; }
     }
 
     if (this.moveDown) {
       this.velocity.y = this.speed.y;
     } else {
-      if (this.velocity.y > 0) {
-        this.velocity.y = 0;
-      }
+      if (this.velocity.y > 0) { this.velocity.y = 0; }
     }
 
     if (this.moveUp) {
       this.velocity.y = -this.speed.y;
     } else {
-      if (this.velocity.y < 0) {
-        this.velocity.y = 0;
-      }
+      if (this.velocity.y < 0) { this.velocity.y = 0; }
     }
 
     this.controls.getObject().translateX(this.velocity.x * delta);
     this.controls.getObject().translateY(this.velocity.y * delta);
     this.controls.getObject().translateZ(this.velocity.z * delta);
+  }
+
+  update(terrain: Terrain, delta: number) {
+    this.move(delta);
 
     // collision
     const position = this.controls.getObject().position;
-    let y = TerrainMesh.LOW | 0;
+    let y = -(Chunk.HEIGHT / 2) | 0;
 
     if (position.x >= 0 && position.x <= Terrain.SIZE_X && position.z >= 0 && position.z <= Terrain.SIZE_Z) {
       y = terrain.getHeightAt(position.x, position.z) + 1024;
@@ -103,6 +100,11 @@ class Player {
     }
   }
 
+  /**
+   * Handle keyboard input
+   * @param {string} key
+   * @param {boolean} active
+   */
   handleKeyboard(key: string, active: boolean) {
     switch (key) {
       case 'ArrowUp': case 'z': this.moveForward = active; break;

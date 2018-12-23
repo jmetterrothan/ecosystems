@@ -6,17 +6,16 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@utils/Math.utils';
 
 import Biome from '@world/Biome';
-import RainForestBiome from '@world/Biomes/RainForestBiome';
-import HighlandBiome from '@world/Biomes/HighlandBiome';
-import OceanBiome from '@world/Biomes/OceanBiome';
-import SwampBiome from '@world/Biomes/SwampBiome';
-import DesertBiome from '@world/Biomes/DesertBiome';
 
 import { IBiome } from '@shared/models/biome.model';
 import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
 import { IPick } from '@shared/models/pick.model';
 
+import { BIOMES } from '@shared/constants/biomes.constants';
+
 class BiomeGenerator {
+  public static readonly BIOME: Biome|null = null; // lock a specific biome here, if null a biome is selected randomly
+
   private simplex: simplexNoise;
   private simplex2: simplexNoise;
   private simplex3: simplexNoise;
@@ -26,7 +25,14 @@ class BiomeGenerator {
     this.simplex = new simplexNoise(MathUtils.rng);
     this.simplex2 = new simplexNoise(MathUtils.rng);
     this.simplex3 = new simplexNoise(MathUtils.rng);
-    this.biome = new OceanBiome(this); // MathUtils.rng() > 0.5 ? new HighlandBiome(this) : new RainForestBiome(this);
+
+    if (!(BiomeGenerator.BIOME instanceof Biome)) {
+      const biomeClass = BIOMES[MathUtils.randomInt(0, BIOMES.length - 1)];
+      this.biome = new biomeClass(this);
+    } else {
+      // @ts-ignore
+      this.biome = new BiomeGenerator.BIOME(this);
+    }
 
     console.info(this.biome);
   }
@@ -41,15 +47,13 @@ class BiomeGenerator {
     const e = this.computeElevationAt(x, z);
     const m = this.computeMoistureAt(x, z);
 
-    if (e < 0 && e > 1) return;
-
     const biome = this.biome.getParametersAt(e, m);
 
     let temp = 0;
     const rand = MathUtils.rng(); // random float bewteen 0 - 1 included (sum of weights must be = 1)
 
     for (let i = 0, n = biome.organisms.length; i < n; i++) {
-      let y = e * Chunk.HEIGHT;
+      let y = e * Chunk.MAX_TERRAIN_HEIGHT;
       temp += biome.organisms[i].weight;
 
       if (rand <= temp) {
@@ -60,7 +64,7 @@ class BiomeGenerator {
         const lowM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).low : 0;
         const highM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).high : 1;
 
-        const lowE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).low : 0;
+        const lowE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).low : -1;
         const highE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).high : 1;
 
         if (organism.float === true) {
@@ -74,8 +78,10 @@ class BiomeGenerator {
           y = Math.max(y, p);
         }
 
+        const rand = MathUtils.rng();
+
         // test for scarcity and ground elevation criteria
-        if ((organism.scarcity === 0 || MathUtils.rng() >= organism.scarcity) &&
+        if (rand >= organism.scarcity &&
           (e >= lowE && e <= highE) &&
           (m >= lowM && m <= highM)) {
           return (<IPick>{
@@ -110,7 +116,13 @@ class BiomeGenerator {
    * @return {number} elevation value
    */
   computeElevationAt(x: number, z: number): number {
-    return this.biome.computeElevationAt(x, z);
+    let e = this.biome.computeElevationAt(x, z);
+
+    // clamp to a minimum elevation
+    const minElevation = -(Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT + 0.1;
+    if (e < minElevation) { e = minElevation; }
+
+    return e;
   }
 
   /**
@@ -120,7 +132,7 @@ class BiomeGenerator {
    * @return {number}
    */
   computeHeightAt(x: number, z: number) {
-    return this.biome.computeElevationAt(x, z) * Chunk.HEIGHT;
+    return this.computeElevationAt(x, z) * Chunk.MAX_TERRAIN_HEIGHT;
   }
 
   /**
@@ -158,38 +170,94 @@ class BiomeGenerator {
     return this.biome.getWaterColor(m);
   }
 
+  /**
+   * Noise
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number}
+   */
   noise(x: number, z: number) {
     return (this.simplex.noise2D(x, z) + 1) / 2;
   }
 
+  /**
+   * Noise
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number}
+   */
   noise2(x: number, z: number) {
     return (this.simplex2.noise2D(x, z) + 1) / 2;
   }
 
+  /**
+   * Noise
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number}
+   */
   noise3(x: number, z: number) {
     return (this.simplex3.noise2D(x, z) + 1) / 2;
   }
 
+  /**
+   * Noise
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number}
+   */
   ridgeNoise(x: number, z: number) {
     return 2 * (0.5 - Math.abs(0.5 - this.noise(x, z)));
   }
 
+  /**
+   * Noise
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number}
+   */
   ridgeNoise2(x: number, z: number) {
     return 2 * (0.5 - Math.abs(0.5 - this.noise2(x, z)));
   }
 
+  /**
+   * @param {number} a
+   * @param {number} b
+   * @param {number} d
+   * @param {number} e
+   * @return {number}
+   */
   static islandAddMethod(a, b, c, d, e) {
     return e + a - b * Math.pow(d, c);
   }
 
+  /**
+   * @param {number} a
+   * @param {number} b
+   * @param {number} d
+   * @param {number} e
+   * @return {number}
+   */
   static islandMultiplyMethod(a, b, c, d, e) {
     return (e + a) * (1 - b * Math.pow(d, c));
   }
 
+  /**
+   * Calculate euclidean distance
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number}
+   */
   static getEuclideanDistance(x, z) {
     return Math.sqrt(x * x + z * z);
   }
 
+  /**
+   * Calculate manhattan distance
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number}
+   */
   static getManhattanDistance(x, z) {
     return Math.max(Math.abs(x), Math.abs(z));
   }

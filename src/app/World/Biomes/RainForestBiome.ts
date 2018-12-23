@@ -26,7 +26,7 @@ class RainForestBiome extends Biome
     this.c = MathUtils.randomFloat(0.85, 1.5); // best around 0.85;
 
     this.amplified = MathUtils.rng() >= 0.25; // magnify everything
-    this.spread =  MathUtils.randomFloat(0.95, 2.35); // expand over the map (higher values means more space available for water)
+    this.spread =  MathUtils.randomFloat(1.15, 2.00); // expand over the map (higher values means more space available for water)
 
     this.ridges = MathUtils.randomFloat(0.225, 0.35); // makes ridges more prevalent
   }

@@ -21,6 +21,14 @@ abstract class Mesh {
   protected readonly parameters: IChunkParameters;
   protected generator: BiomeGenerator;
 
+  /**
+   * Mesh constructor
+   * @param {BiomeGenerator} generator
+   * @param {number} row
+   * @param {number} col
+   * @param {MESH_TYPES} type
+   * @param {IChunkParameters} parameters
+   */
   constructor(generator: BiomeGenerator, row: number, col: number, type: MESH_TYPES, parameters: IChunkParameters) {
     this.generator = generator;
     this.row = row;
@@ -32,10 +40,29 @@ abstract class Mesh {
     this.high = null;
   }
 
+  /**
+   * Return height at (x, z) coordinates
+   * @param {number} x
+   * @param {number} z
+   * @return {number}
+   */
   abstract getY(x?: number, z?: number): number;
+
+  /**
+   * Returns mesh material
+   * @return {THREE.Material}
+   */
   abstract getMaterial(): THREE.Material;
+
+  /**
+   * Returns mesh geometry
+   * @return {THREE.Geometry}
+   */
   abstract buildGeometry(): THREE.Geometry;
 
+  /**
+   * @return {THREE.Mesh}
+   */
   generate(): THREE.Mesh {
     const mesh = new THREE.Mesh(this.buildGeometry(), this.getMaterial());
 

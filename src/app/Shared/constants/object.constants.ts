@@ -78,6 +78,9 @@ import blueMtl from '@objmodels/tree/blue.mtl';
 import diamondObj from '@objmodels/tree/diamond.obj';
 import diamondMtl from '@objmodels/tree/diamond.mtl';
 
+import savanna_treeObj from '@objmodels/tree/savanna_tree.obj';
+import savanna_treeMtl from '@objmodels/tree/savanna_tree.mtl';
+
 import algeaObj from '@objmodels/flower/algea.obj';
 import algeaMtl from '@objmodels/flower/algea.mtl';
 
@@ -201,6 +204,11 @@ export const OBJECTS: IObject[] = [
     obj: palm_treeObj,
     mtl: palm_treeMtl,
     doubleSide: true
+  },
+  {
+    name: 'savanna_tree',
+    obj: savanna_treeObj,
+    mtl: savanna_treeMtl
   },
   {
     name: 'daisy',

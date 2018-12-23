@@ -27,12 +27,13 @@ class DesertBiome extends Biome
     let e = 0.225 * this.generator.noise2(0.75 * nx, 0.75 * nz);
     e += 0.2 * this.generator.noise3(1 * nx, 1 * nz);
     e += 0.075 * this.generator.ridgeNoise(1 * nx, 1 * nz);
-    e += 0.0085 * this.generator.ridgeNoise(32 * nx, 32 * nz);
-    e += 0.05 * this.generator.noise(4 * nx, 4 * nz);
+    e += 0.0095 * this.generator.ridgeNoise(32 * nx, 32 * nz);
+    e += 0.005 * this.generator.noise2(64 * nx, 64 * nz);
+    e += 0.075 * this.generator.noise(4 * nx, 4 * nz);
 
     e ** 0.005;
 
-    return e + 0.135;
+    return e - 0.135;
   }
 
   computeMoistureAt(x: number, z: number): number {
