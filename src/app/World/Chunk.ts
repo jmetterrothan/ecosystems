@@ -155,22 +155,6 @@ class Chunk {
   }
 
   /**
-   * Add an object to the object group layer of the chunk
-   * @param {THREE.Object3D} object
-   */
-  addObject(object: THREE.Object3D) {
-    const scaleSaved = object.scale.clone();
-
-    object.scale.set(0, 0, 0);
-    this.objects.add(object);
-
-    new TWEEN.Tween(object.scale)
-      .to(scaleSaved, 500)
-      .easing(TWEEN.Easing.Bounce.Out)
-      .start();
-  }
-
-  /**
    * Poisson disk sampling
    */
   loadPopulation() {
@@ -197,31 +181,76 @@ class Chunk {
    */
   populate() {
     for (const item of this.objectsBlueprint) {
-      let object = null;
-
-      // if object stack doesn't exist yet we create one
-      if (!Chunk.CHUNK_OBJECT_STACK[item.n]) {
-        Chunk.CHUNK_OBJECT_STACK[item.n] = new Stack<THREE.Object3D>();
-      }
-
-      // if the stack is empty, create a new object else pop an object from the stack
-      if (Chunk.CHUNK_OBJECT_STACK[item.n].empty) {
-        object = World.LOADED_MODELS.get(item.n).clone();
-      } else {
-        object = Chunk.CHUNK_OBJECT_STACK[item.n].pop();
-      }
-
-      // restore transforms
-      object.rotation.y = item.r;
-      object.scale.set(item.s, item.s, item.s);
-      object.position.set(item.x, item.y, item.z);
-      object.stackReference = item.n;
-      object.visible = true;
-
-      this.objects.add(object);
+      this.placeObject(item);
     }
 
     this.dirty = false;
+  }
+
+  /**
+  * Places a picke object
+  * @param {Pick} item
+  * @param {boolean} animate
+  */
+  placeObject(item: IPick, animate: boolean = false) {
+    let object = null;
+
+    // if object stack doesn't exist yet we create one
+    if (!Chunk.CHUNK_OBJECT_STACK[item.n]) {
+      Chunk.CHUNK_OBJECT_STACK[item.n] = new Stack<THREE.Object3D>();
+    }
+
+    // if the stack is empty, create a new object else pop an object from the stack
+    if (Chunk.CHUNK_OBJECT_STACK[item.n].empty) {
+      object = World.LOADED_MODELS.get(item.n).clone();
+    } else {
+      object = Chunk.CHUNK_OBJECT_STACK[item.n].pop();
+    }
+
+    // restore transforms
+    object.rotation.y = item.r;
+    object.scale.set(item.s, item.s, item.s);
+    object.position.set(item.x, item.y, item.z);
+    object.stackReference = item.n;
+    object.visible = true;
+
+    if(!this.canPlaceObject(object)) {
+      this.repurposeObject(object);
+      return;
+    }
+
+    if (animate)  {
+      // play bounce animation
+      const scaleSaved = object.scale.clone();
+      object.scale.set(0, 0, 0);
+      this.objects.add(object);
+
+      const animation = new TWEEN.Tween(object.scale)
+        .to(scaleSaved, 500)
+        .easing(TWEEN.Easing.Bounce.Out)
+        .start();
+    } else {
+      this.objects.add(object);
+    }
+  }
+
+  /**
+   * Check if an object can be put at it's current location
+   * @param {THREE.Object3D} object
+   * @return {boolean}
+   */
+  canPlaceObject(object: THREE.Object3D) {
+    const bbox = new THREE.Box3().setFromObject(object);
+    
+    for (let i = 0; i < this.objects.children.length; i++) {
+      const bbox2 = new THREE.Box3().setFromObject(this.objects.children[i]);
+
+      if (bbox.intersectsBox(bbox2)) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   /**
@@ -230,20 +259,28 @@ class Chunk {
    */
   clean(scene: THREE.Scene) {
     for (let i = this.objects.children.length - 1; i >= 0; i--) {
-      // @ts-ignore
-      const ref = this.objects.children[i].stackReference;
-
-      if (ref && Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
-        // collect unused objects
-        this.objects.children[i].visible = false;
-        Chunk.CHUNK_OBJECT_STACK[ref].push(this.objects.children[i]);
-      } else {
-        scene.remove(this.objects.children[i]);
-      }
+      this.repurposeObject(this.objects.children[i]);
     }
 
     this.objects.children = [];
     this.dirty = true;
+  }
+
+  /**
+  * Reuses objects if the pool is not full or simply deletes it
+  * @param {THREE.Object3D} object
+  */
+  repurposeObject(object: THREE.Object3D) {
+    // @ts-ignore
+    const ref = object.stackReference;
+
+    if (ref && Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
+      // collect unused objects
+      object.visible = false;
+      Chunk.CHUNK_OBJECT_STACK[ref].push(object);
+    } else {
+      scene.remove(object);
+    }
   }
 
   /**
@@ -259,6 +296,10 @@ class Chunk {
     if (this.bboxHelper) {
       (<THREE.Object3D>this.bboxHelper).visible = bool;
     }
+  }
+
+  pick(x: number, z: number, force: boolean = false): IPick | null {
+    return this.generator.pick(x, z, force);
   }
 
   /**

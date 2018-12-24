@@ -114,7 +114,6 @@ class Terrain {
       );
       this.boids.generate();
     }
-
   }
 
   /**
@@ -233,24 +232,11 @@ class Terrain {
 
     // loops through all the objects that intersect
     for (const intersection of intersections) {
-      // const geometry = new THREE.BoxGeometry(2000, 2000, 2000);
-      // const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-      // const cube = new THREE.Mesh(geometry, material);
-      // cube.rotation.y = MathUtils.randomFloat(0, Math.PI * 2);
-      // cube.position.set(intersection.point.x, intersection.point.y, intersection.point.z);
-
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
-      const biome = this.generator.getBiomeInformations(
-        intersection.point.y,
-        this.generator.computeMoistureAt(intersection.point.x, intersection.point.z)
-      );
+      const item = chunk.pick(intersection.point.x, intersection.point.z, true);
 
-      if (!biome.organisms.length) break;
+      if (item) chunk.placeObject(item, true);
 
-      const objectName = biome.organisms[Math.floor(Math.random() * biome.organisms.length)].name;
-      const object = World.LOADED_MODELS.get(objectName).clone();
-      object.position.set(intersection.point.x, intersection.point.y, intersection.point.z);
-      chunk.addObject(object);
       break; // break because we stop at the first element that intersects the ray
     }
   }

@@ -12,11 +12,10 @@ import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
 import { IPick } from '@shared/models/pick.model';
 
 import { BIOMES } from '@shared/constants/biomes.constants';
-import OceanBiome from './Biomes/OceanBiome';
 
 class BiomeGenerator {
   // @ts-ignore
-  public static readonly BIOME: Biome | null = OceanBiome; // lock a specific biome here, if null a biome is selected randomly
+  public static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
 
   private simplex: simplexNoise;
   private simplex2: simplexNoise;
@@ -45,7 +44,7 @@ class BiomeGenerator {
    * @param {number} z
    * @return {IPick|null}
    */
-  pick(x: number, z: number): IPick | null {
+  pick(x: number, z: number, force: boolean = false): IPick | null {
     const e = this.computeElevationAt(x, z);
     const m = this.computeMoistureAt(x, z);
 
@@ -83,9 +82,9 @@ class BiomeGenerator {
         const rand = MathUtils.rng();
 
         // test for scarcity and ground elevation criteria
-        if (rand >= organism.scarcity &&
+        if (force || (rand >= organism.scarcity &&
           (e >= lowE && e <= highE) &&
-          (m >= lowM && m <= highM)) {
+          (m >= lowM && m <= highM))) {
           return (<IPick>{
             x,
             z,
