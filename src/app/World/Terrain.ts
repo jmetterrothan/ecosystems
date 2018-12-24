@@ -108,8 +108,8 @@ class Terrain {
     if (this.boidsAllowed) {
       this.boids = new Boids(
         this.scene,
-        new THREE.Vector3(Terrain.SIZE_X, 30000, Terrain.SIZE_Z),
-        new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2),
+        new THREE.Vector3(Terrain.SIZE_X, 20000, Terrain.SIZE_Z),
+        new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - 25000, Terrain.SIZE_Z / 2),
         50
       );
       this.boids.generate();

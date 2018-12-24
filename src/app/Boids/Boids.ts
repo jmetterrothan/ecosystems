@@ -22,16 +22,14 @@ class Boids {
 
     const mesh = new THREE.Box3().setFromCenterAndSize(
       new THREE.Vector3(
-        this.origin.x, 0, this.origin.z
+        this.origin.x, this.origin.y, this.origin.z
       ),
       new THREE.Vector3(
         this.boudingBox.x, this.boudingBox.y, this.boudingBox.z
       )
     );
 
-    const box = new THREE.Box3Helper(mesh, 0xffff00);
-    this.scene.add(box);
-
+    // this.scene.add(new THREE.Box3Helper(mesh, 0xffff00));
   }
 
   generate() {
