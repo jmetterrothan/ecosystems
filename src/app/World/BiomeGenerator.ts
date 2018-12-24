@@ -15,7 +15,8 @@ import { BIOMES } from '@shared/constants/biomes.constants';
 import OceanBiome from './Biomes/OceanBiome';
 
 class BiomeGenerator {
-  public static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
+  // @ts-ignore
+  public static readonly BIOME: Biome | null = OceanBiome; // lock a specific biome here, if null a biome is selected randomly
 
   private simplex: simplexNoise;
   private simplex2: simplexNoise;
@@ -27,7 +28,7 @@ class BiomeGenerator {
     this.simplex2 = new simplexNoise(MathUtils.rng);
     this.simplex3 = new simplexNoise(MathUtils.rng);
 
-    if (!(BiomeGenerator.BIOME instanceof Biome)) {
+    if (BiomeGenerator.BIOME === null) {
       const biomeClass = BIOMES[MathUtils.randomInt(0, BIOMES.length - 1)];
       this.biome = new biomeClass(this);
     } else {
