@@ -14,6 +14,7 @@ import './vergil_water_shader';
 
 import statsJs from 'stats.js';
 import World from '@world/World';
+import Crosshair from './UI/Crosshair';
 
 class Main {
   private renderer: THREE.WebGLRenderer;
@@ -28,6 +29,9 @@ class Main {
   private lastTime: number;
 
   private stats: statsJs;
+
+  private crosshair: Crosshair;
+
   constructor() {
     this.containerElement = document.body;
     this.lastTime = window.performance.now();
@@ -56,15 +60,7 @@ class Main {
   private initControls() {
     this.controls = new THREE.PointerLockControls(this.camera);
 
-    // crosshair temp
-    const crosshair = document.createElement('div');
-    crosshair.classList.add('crosshair');
-    crosshair.appendChild(document.createElement('span'));
-    crosshair.appendChild(document.createElement('span'));
-    crosshair.appendChild(document.createElement('span'));
-    crosshair.appendChild(document.createElement('span'));
-    crosshair.appendChild(document.createElement('span'));
-    document.body.appendChild(crosshair);
+    this.crosshair = new Crosshair();
   }
 
   private initRenderer() {

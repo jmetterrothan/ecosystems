@@ -11,6 +11,7 @@ import Player from '../Player';
 import { OBJECTS } from '@shared/constants/object.constants';
 
 import MathUtils from '@utils/Math.utils';
+import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 class World {
   static SEED: string | null = null; // '789005037'
@@ -135,6 +136,7 @@ class World {
     );
 
     this.terrain.update(this.frustum, this.controls.getObject().position, delta);
+    this.handleMouseMove();
     this.player.update(this.terrain, delta);
 
     /*
@@ -155,7 +157,18 @@ class World {
     mouse.y = (pos.y / window.innerHeight) * -2 + 1;
 
     this.raycaster.setFromCamera(mouse, this.camera);
-    this.terrain.handleMouseInteraction(this.raycaster);
+    this.terrain.handleMouseInteraction(this.raycaster, MOUSE_TYPES.CLICK);
+  }
+
+  public handleMouseMove() {
+    const pos = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
+    const mouse = new THREE.Vector2(
+      (pos.x / window.innerWidth) * 2 - 1,
+      (pos.y / window.innerHeight) * -2 + 1
+    );
+
+    this.raycaster.setFromCamera(mouse, this.camera);
+    this.terrain.handleMouseInteraction(this.raycaster, MOUSE_TYPES.MOVE);
   }
 
   /**
@@ -213,7 +226,7 @@ class World {
 
           World.LOADED_MODELS.set(element.name, object);
           // const box = new THREE.Box3().setFromObject(object);
-         // const size = box.getSize(new THREE.Vector3(0, 0, 0));
+          // const size = box.getSize(new THREE.Vector3(0, 0, 0));
 
           resolve(object);
         }, null, () => reject());

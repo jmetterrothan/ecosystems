@@ -7,6 +7,7 @@ import Coord from './Coord';
 import WaterMesh from '@mesh/WaterMesh';
 import Boids from '../Boids/Boids';
 import MathUtils from '@shared/utils/Math.utils';
+import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 import OceanBiome from '@world/Biomes/OceanBiome';
 
@@ -227,15 +228,19 @@ class Terrain {
    * Handle mouse click in the 3d space
    * @param {THREE.Raycaster} raycaster
    */
-  handleMouseInteraction(raycaster: THREE.Raycaster) {
+  handleMouseInteraction(raycaster: THREE.Raycaster, interactionType: MOUSE_TYPES) {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.terrain, this.water], false);
 
     // loops through all the objects that intersect
     for (const intersection of intersections) {
-      const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
-      const item = chunk.pick(intersection.point.x, intersection.point.z, true);
+      if (interactionType === MOUSE_TYPES.CLICK) {
+        const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
+        const item = chunk.pick(intersection.point.x, intersection.point.z, true);
 
-      if (item) chunk.placeObject(item, true);
+        if (item) chunk.placeObject(item, true);
+      } else if (interactionType === MOUSE_TYPES.MOVE) {
+
+      }
 
       break; // break because we stop at the first element that intersects the ray
     }

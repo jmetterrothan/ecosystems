@@ -53,6 +53,8 @@ class Chunk {
   private merged: boolean;
   private visible: boolean;
 
+  private scene: THREE.Scene;
+
   public readonly key: string;
 
   /**
@@ -70,6 +72,8 @@ class Chunk {
     this.key = `${row}:${col}`;
     this.dirty = false;
     this.merged = false;
+
+    this.scene = scene;
 
     this.objects = new THREE.Group();
     scene.add(this.objects);
@@ -214,12 +218,12 @@ class Chunk {
     object.stackReference = item.n;
     object.visible = true;
 
-    if(!this.canPlaceObject(object)) {
+    if (!this.canPlaceObject(object)) {
       this.repurposeObject(object);
       return;
     }
 
-    if (animate)  {
+    if (animate) {
       // play bounce animation
       const scaleSaved = object.scale.clone();
       object.scale.set(0, 0, 0);
@@ -239,9 +243,9 @@ class Chunk {
    * @param {THREE.Object3D} object
    * @return {boolean}
    */
-  canPlaceObject(object: THREE.Object3D) {
+  canPlaceObject(object: THREE.Object3D): boolean {
     const bbox = new THREE.Box3().setFromObject(object);
-    
+
     for (let i = 0; i < this.objects.children.length; i++) {
       const bbox2 = new THREE.Box3().setFromObject(this.objects.children[i]);
 
@@ -279,7 +283,7 @@ class Chunk {
       object.visible = false;
       Chunk.CHUNK_OBJECT_STACK[ref].push(object);
     } else {
-      scene.remove(object);
+      this.scene.remove(object);
     }
   }
 
