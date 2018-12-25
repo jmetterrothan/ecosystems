@@ -240,7 +240,10 @@ class Terrain {
 
         if (item) chunk.placeObject(item, true);
       } else if (interactionType === MOUSE_TYPES.MOVE) {
-        Crosshair.switch(chunk.canPlanceObjectMove(intersection.point));
+        Crosshair.switch(
+          intersection.distance < 60000 &&
+          chunk.canPlanceObjectMove(intersection.point)
+        );
       }
 
       break; // break because we stop at the first element that intersects the ray
