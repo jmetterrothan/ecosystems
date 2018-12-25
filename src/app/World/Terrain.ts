@@ -14,6 +14,7 @@ import OceanBiome from '@world/Biomes/OceanBiome';
 import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
 import { WATER_MATERIAL, WATER_SIDE_MATERIAL } from '@materials/water.material';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
+import Crosshair from '../UI/Crosshair';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 16;
@@ -233,13 +234,13 @@ class Terrain {
 
     // loops through all the objects that intersect
     for (const intersection of intersections) {
+      const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
       if (interactionType === MOUSE_TYPES.CLICK) {
-        const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
         const item = chunk.pick(intersection.point.x, intersection.point.z, true);
 
         if (item) chunk.placeObject(item, true);
       } else if (interactionType === MOUSE_TYPES.MOVE) {
-
+        Crosshair.switch(chunk.canPlanceObjectMove(intersection.point));
       }
 
       break; // break because we stop at the first element that intersects the ray

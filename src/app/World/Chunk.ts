@@ -238,6 +238,16 @@ class Chunk {
     }
   }
 
+  canPlanceObjectMove(point: THREE.Vector3) {
+    for (let i = 0; i < this.objects.children.length; i++) {
+      const bbox = new THREE.Box3().setFromObject(this.objects.children[i]);
+
+      if (bbox.containsPoint(point)) return false;
+    }
+
+    return true;
+  }
+
   /**
    * Check if an object can be put at it's current location
    * @param {THREE.Object3D} object

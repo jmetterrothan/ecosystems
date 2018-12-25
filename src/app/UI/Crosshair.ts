@@ -1,20 +1,31 @@
 class Crosshair {
 
-  className: string = 'crosshair';
+  static htmlElement: HTMLElement;
+
+  static readonly defaultClassName: string = 'crosshair';
+
+  static readonly validClassName: string = 'valid';
+  static readonly invalidClassName: string = 'invalid';
 
   constructor() {
     this.generate();
   }
 
+  static switch(valid: boolean) {
+    Crosshair.htmlElement.className = valid
+      ? `${Crosshair.defaultClassName} ${Crosshair.validClassName}`
+      : `${Crosshair.defaultClassName} ${Crosshair.invalidClassName}`;
+  }
+
   private generate() {
-    const div = document.createElement('div');
-    div.classList.add(this.className);
+    Crosshair.htmlElement = document.createElement('div');
+    Crosshair.htmlElement.classList.add(Crosshair.defaultClassName);
 
     for (let i = 0; i < 4; i++) {
-      div.appendChild(document.createElement('span'));
+      Crosshair.htmlElement.appendChild(document.createElement('span'));
     }
 
-    document.body.appendChild(div);
+    document.body.appendChild(Crosshair.htmlElement);
   }
 
 }

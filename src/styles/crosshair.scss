@@ -4,7 +4,10 @@ $crosshairThickness: 3px;
 $crosshairGap: 3px;
 $crosshairDot: hidden;
 $crosshairColor: #1c242c;
-$crosshairOpacity: 0.25;
+$crosshairOpacity: 1;
+
+$validColor: green;
+$invalidColor: red;
 
 .crosshair {
   $w : $crosshairSize * 2 + $crosshairThickness + $crosshairGap * 2;
@@ -18,6 +21,18 @@ $crosshairOpacity: 0.25;
   opacity: $crosshairOpacity;
 
   z-index: 100;
+
+  &.valid {
+    span {
+      background: $validColor;
+    }
+  }
+
+  &.invalid {
+    span {
+      background: $invalidColor;
+    }
+  }
 
   span {
     display: block;
