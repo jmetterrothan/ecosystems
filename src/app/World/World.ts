@@ -65,6 +65,10 @@ class World {
     this.player = new Player(this.controls);
     this.player.init(spawn, target);
 
+    this.player.underwaterObservable$.subscribe(
+      underwater => console.log(underwater)
+    );
+
     this.scene.add(this.controls.getObject());
   }
 
@@ -136,10 +140,6 @@ class World {
 
     this.terrain.update(this.frustum, this.controls.getObject().position, delta);
     this.player.update(this.terrain, delta);
-
-    this.player.underwaterObservable$.subscribe(
-      underwater => console.log(underwater)
-    );
 
     /*
     if (position.y < Chunk.SEA_LEVEL) {

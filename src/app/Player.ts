@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import 'three/examples/js/controls/PointerLockControls';
 
@@ -19,7 +19,7 @@ class Player {
   private velocity: THREE.Vector3;
 
   private underwater: boolean = false;
-  underwaterObservable$: Subject<boolean>;
+  underwaterObservable$: BehaviorSubject<boolean>;
 
   constructor(controls) {
     this.controls = controls;
@@ -34,7 +34,11 @@ class Player {
     this.speed = new THREE.Vector3(40000, 40000, 40000);
     this.velocity = new THREE.Vector3(0, 0, 0);
 
-    this.underwaterObservable$ = new Subject();
+    this.underwaterObservable$ = new BehaviorSubject(this.underwater);
+  }
+
+  get isUnderwater(): boolean {
+    return this.underwater;
   }
 
   init(spawn: THREE.Vector3, target: THREE.Vector3 = new THREE.Vector3()) {
