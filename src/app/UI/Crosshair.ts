@@ -11,8 +11,8 @@ class Crosshair {
     this.generate();
   }
 
-  static switch(valid: boolean) {
-    Crosshair.htmlElement.className = valid
+  static switch(predicat: boolean) {
+    Crosshair.htmlElement.className = predicat
       ? `${Crosshair.defaultClassName} ${Crosshair.validClassName}`
       : `${Crosshair.defaultClassName} ${Crosshair.invalidClassName}`;
   }

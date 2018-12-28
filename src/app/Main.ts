@@ -146,8 +146,7 @@ class Main {
         if (!this.controls.enabled) { return; }
 
         // mouse position always in the center of the screen
-        const raw = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
-        this.world.handleMouseClick(raw);
+        this.world.handleMouseClick();
       });
 
       document.body.addEventListener('keydown', e => this.world.handleKeyboard(e.key, true && this.controls.enabled));

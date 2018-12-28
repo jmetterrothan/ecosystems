@@ -34,6 +34,8 @@ class Chunk {
 
   static readonly CHUNK_OBJECT_STACK = {};
 
+  static readonly INTERACTION_DISTANCE: number = 60000;
+
   private generator: BiomeGenerator;
 
   readonly row: number;
@@ -191,14 +193,8 @@ class Chunk {
     this.dirty = false;
   }
 
-  /**
-  * Places a picke object
-  * @param {Pick} item
-  * @param {boolean} animate
-  */
-  placeObject(item: IPick, animate: boolean = false) {
+  getObject(item: IPick): THREE.Object3D {
     let object = null;
-
     // if object stack doesn't exist yet we create one
     if (!Chunk.CHUNK_OBJECT_STACK[item.n]) {
       Chunk.CHUNK_OBJECT_STACK[item.n] = new Stack<THREE.Object3D>();
@@ -211,14 +207,33 @@ class Chunk {
       object = Chunk.CHUNK_OBJECT_STACK[item.n].pop();
     }
 
+    object.rotation.y = item.r;
+    object.scale.set(item.s, item.s, item.s);
+    object.position.set(item.x, item.y, item.z);
+    // @ts-ignore
+    object.stackReference = item.n;
+    object.visible = true;
+
+    return object;
+  }
+
+  /**
+  * Places a picke object
+  * @param {Pick} item
+  * @param {boolean} animate
+  */
+  placeObject(item: IPick, animate: boolean = false) {
+    const object = this.getObject(item);
+
     // restore transforms
     object.rotation.y = item.r;
     object.scale.set(item.s, item.s, item.s);
     object.position.set(item.x, item.y, item.z);
+    // @ts-ignore
     object.stackReference = item.n;
     object.visible = true;
 
-    if (!this.canPlaceObject(object)) {
+    if (!this.canPlaceObjectTemp(object)) {
       this.repurposeObject(object);
       return;
     }
@@ -229,7 +244,7 @@ class Chunk {
       object.scale.set(0, 0, 0);
       this.objects.add(object);
 
-      const animation = new TWEEN.Tween(object.scale)
+      new TWEEN.Tween(object.scale)
         .to(scaleSaved, 500)
         .easing(TWEEN.Easing.Bounce.Out)
         .start();
@@ -238,7 +253,7 @@ class Chunk {
     }
   }
 
-  canPlanceObjectMove(point: THREE.Vector3) {
+  canPlaceObjectMove(point: THREE.Vector3): boolean {
     for (let i = 0; i < this.objects.children.length; i++) {
       const bbox = new THREE.Box3().setFromObject(this.objects.children[i]);
 
@@ -248,18 +263,24 @@ class Chunk {
     return true;
   }
 
+  canPlaceObjectAt(intersection: THREE.Intersection): boolean {
+    return this.checkInteractionDistance(intersection.distance) &&
+      this.canPlaceObjectMove(intersection.point);
+  }
+
   /**
    * Check if an object can be put at it's current location
    * @param {THREE.Object3D} object
    * @return {boolean}
    */
-  canPlaceObject(object: THREE.Object3D): boolean {
+  canPlaceObjectTemp(object: THREE.Object3D): boolean {
     const bbox = new THREE.Box3().setFromObject(object);
 
     for (let i = 0; i < this.objects.children.length; i++) {
       const bbox2 = new THREE.Box3().setFromObject(this.objects.children[i]);
 
       if (bbox.intersectsBox(bbox2)) {
+        console.log('intersect');
         return false;
       }
     }
@@ -320,19 +341,28 @@ class Chunk {
    * Chunk objects are visible in frustum if true
    * @return {boolean}
    */
-  isVisible() { return this.visible; }
+  isVisible(): boolean { return this.visible; }
 
   /**
    * Chunk population need to be regenerated if true
    * @return {boolean}
    */
-  isDirty() { return this.dirty; }
+  isDirty(): boolean { return this.dirty; }
 
   /**
    * Chunk has been merged to the terrain if true
    * @return {boolean}
    */
-  isMerged() { return this.merged; }
+  isMerged(): boolean { return this.merged; }
+
+  /**
+   * User distance valid to place an objecct if true
+   * @param {number} distance
+   * @return {boolean}
+   */
+  checkInteractionDistance(distance: number): boolean {
+    return distance <= Chunk.INTERACTION_DISTANCE;
+  }
 
   /**
    * @return {THREE.Box3}
