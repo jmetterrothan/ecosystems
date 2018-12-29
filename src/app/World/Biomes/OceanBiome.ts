@@ -16,7 +16,7 @@ class OceanBiome extends Biome {
     super('OCEAN', generator);
 
     this.spike = MathUtils.randomFloat(0.025, 0.125);
-    this.depth = MathUtils.randomFloat(0.2, 0.3);
+    this.depth = 1.425;
   }
 
   /**
@@ -37,8 +37,8 @@ class OceanBiome extends Biome {
 
     e /= (0.25 + 0.0035 + 0.015 + 0.025 + 0.25) - this.spike;
 
-    e **= 2.5;
-    return e - this.depth - 0.5;
+    e **= 2.25;
+    return e - this.depth;
   }
 
   getParametersAt(e: number, m: number): IBiome {

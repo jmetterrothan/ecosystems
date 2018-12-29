@@ -7,10 +7,10 @@ class Creature {
 
   neighbourRadius: number = 6000;
   alignmentWeighting: number = 0.1;
-  cohesionWeighting: number = 0.02;
-  separationWeighting: number = 0.1;
+  cohesionWeighting: number = 0.0065;
+  separationWeighting: number = 0.05;
   viewAngle: number = 4;
-  speed: number = 200;
+  speed: number = 100;
 
   model: THREE.Object3D;
 
