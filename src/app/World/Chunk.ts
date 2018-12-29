@@ -12,6 +12,7 @@ import Stack from '@shared/Stack';
 import MathUtils from '@utils/Math.utils';
 
 import { IPick } from '@shared/models/pick.model';
+import { IPlaceObject, IPickObject } from '@shared/models/objectParameters.model';
 
 class Chunk {
   static readonly SHOW_HELPER: boolean = false;
@@ -220,9 +221,9 @@ class Chunk {
   /**
   * Places a picke object
   * @param {Pick} item
-  * @param {boolean} animate
+  * @param {IPlaceObject} parameters
   */
-  placeObject(item: IPick, animate: boolean = false) {
+  placeObject(item: IPick, parameters: IPlaceObject = {}) {
     const object = this.getObject(item);
 
     // restore transforms
@@ -238,7 +239,7 @@ class Chunk {
       return;
     }
 
-    if (animate) {
+    if (parameters.animate) {
       // play bounce animation
       const scaleSaved = object.scale.clone();
       object.scale.set(0, 0, 0);
@@ -332,8 +333,14 @@ class Chunk {
     }
   }
 
-  pick(x: number, z: number, force: boolean = false): IPick | null {
-    return this.generator.pick(x, z, force);
+  /**
+   * pick an object
+   * @param {number} x
+   * @param {number} z
+   * @param {IPickObject} parameters
+   */
+  pick(x: number, z: number, parameters: IPickObject = {}): IPick | null {
+    return this.generator.pick(x, z, parameters);
   }
 
   /**

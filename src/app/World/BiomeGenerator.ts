@@ -12,6 +12,7 @@ import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
 import { IPick } from '@shared/models/pick.model';
 
 import { BIOMES } from '@shared/constants/biomes.constants';
+import { IPickObject } from '@shared/models/objectParameters.model';
 
 class BiomeGenerator {
   // @ts-ignore
@@ -44,7 +45,7 @@ class BiomeGenerator {
    * @param {number} z
    * @return {IPick|null}
    */
-  pick(x: number, z: number, force: boolean = false): IPick | null {
+  pick(x: number, z: number, parameters: IPickObject = {}): IPick | null {
     const e = this.computeElevationAt(x, z);
     const m = this.computeMoistureAt(x, z);
 
@@ -82,7 +83,7 @@ class BiomeGenerator {
         const rand = MathUtils.rng();
 
         // test for scarcity and ground elevation criteria
-        if (force || (rand >= organism.scarcity &&
+        if (parameters.force || (rand >= organism.scarcity &&
           (e >= lowE && e <= highE) &&
           (m >= lowM && m <= highM))) {
           return (<IPick>{

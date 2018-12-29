@@ -255,7 +255,7 @@ class Terrain {
     const intersection = intersections[0];
 
     const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
-    chunk.placeObject(this.previewItem, true);
+    chunk.placeObject(this.previewItem, { animate: true });
 
     this.previewItem = null;
     this.previewObject = null;
@@ -302,7 +302,7 @@ class Terrain {
       this.previewItem = null;
       this.previewObject = null;
 
-      const item = chunk.pick(intersection.point.x, intersection.point.z, true);
+      const item = chunk.pick(intersection.point.x, intersection.point.z, { force: true });
       if (!item) return;
 
       this.previewItem = item;
