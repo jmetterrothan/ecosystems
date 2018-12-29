@@ -8,8 +8,7 @@ import { IBiome } from '@shared/models/biome.model';
 import { BIOMES } from '@shared/constants/biome.constants';
 import MathUtils from '@shared/utils/Math.utils';
 
-class SwampBiome extends Biome
-{
+class SwampBiome extends Biome {
   constructor(generator: BiomeGenerator) {
     super('SWAMPS', generator);
   }
@@ -43,8 +42,8 @@ class SwampBiome extends Biome
     return Math.min(value + 0.35, 1.0);
   }
 
-  getParametersAt(e: number, m: number) : IBiome {
-    if (e < Chunk.SEA_ELEVATION - 0.10 - MathUtils.randomFloat(0.01, 0.025)) {
+  getParametersAt(e: number, m: number): IBiome {
+    if (e < Chunk.SEA_ELEVATION - 0.10 - 0.016) {
       return BIOMES.OCEAN;
     }
 
@@ -52,7 +51,7 @@ class SwampBiome extends Biome
       return BIOMES.GRASSLAND;
     }
 
-    if (m > 0.5 + MathUtils.randomFloat(0.0, 0.05)) {
+    if (m > 0.5 + 0.025) {
       return BIOMES.SWAMP;
     }
 

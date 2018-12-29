@@ -107,7 +107,7 @@ class BiomeGenerator {
    * @param {number} m moisture value
    * @return {IBiome} Biome informations
    */
-  getBiomeInformations(e: number, m: number): IBiome {
+  getSubBiome(e: number, m: number): IBiome {
     return this.biome.getParametersAt(e, m);
   }
 

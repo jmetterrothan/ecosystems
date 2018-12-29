@@ -42,11 +42,11 @@ class OceanBiome extends Biome {
   }
 
   getParametersAt(e: number, m: number): IBiome {
-    if (e < Chunk.SEA_ELEVATION - 0.40 - MathUtils.randomFloat(0.01, 0.025)) {
+    if (e < Chunk.SEA_ELEVATION - 0.40 - 0.018) {
       return BIOMES.OCEAN;
     }
 
-    if (e > Chunk.SEA_ELEVATION - 0.1 - MathUtils.randomFloat(-0.01, 0.025)) {
+    if (e > Chunk.SEA_ELEVATION - 0.1 - 0.0168) {
       return BIOMES.MOUNTAIN;
     }
 

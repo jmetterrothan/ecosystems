@@ -35,7 +35,7 @@ class Chunk {
 
   static readonly CHUNK_OBJECT_STACK = {};
 
-  static readonly INTERACTION_DISTANCE: number = 60000;
+  static readonly INTERACTION_DISTANCE: number = 600000;
 
   private generator: BiomeGenerator;
 

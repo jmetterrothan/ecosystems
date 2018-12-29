@@ -292,13 +292,14 @@ class Terrain {
         return;
       }
 
-      const biome = this.generator.getBiomeInformations(
-        intersection.point.y,
+      const biome = this.generator.getSubBiome(
+        this.generator.computeElevationAt(intersection.point.x, intersection.point.z),
         this.generator.computeMoistureAt(intersection.point.x, intersection.point.z)
       );
 
       // if user fly over another biome or if preview item does not exist
       if (this.lastBiome !== biome || !this.previewItem) {
+        console.log(this.lastBiome, biome);
         this.scene.remove(this.previewObject);
         this.resetPreview();
 
@@ -474,8 +475,8 @@ class Terrain {
         const f1 = new THREE.Face3(a, b, d);
         const f2 = new THREE.Face3(d, c, a);
 
-        f1.color = this.generator.getBiomeInformations((-Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
-        f2.color = this.generator.getBiomeInformations((-Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
+        f1.color = this.generator.getSubBiome((-Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
+        f2.color = this.generator.getSubBiome((-Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);

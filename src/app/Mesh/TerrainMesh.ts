@@ -67,8 +67,8 @@ class TerrainMesh extends Mesh {
         const m1 = this.generator.computeMoistureAt(x1, z1);
         const m2 = this.generator.computeMoistureAt(x2, z2);
 
-        f1.color = this.generator.getBiomeInformations(y1 / Chunk.MAX_TERRAIN_HEIGHT, m1).color;
-        f2.color = this.generator.getBiomeInformations(y2 / Chunk.MAX_TERRAIN_HEIGHT, m2).color;
+        f1.color = this.generator.getSubBiome(y1 / Chunk.MAX_TERRAIN_HEIGHT, m1).color;
+        f2.color = this.generator.getSubBiome(y2 / Chunk.MAX_TERRAIN_HEIGHT, m2).color;
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);
