@@ -55,6 +55,7 @@ class Terrain {
   private previewObject: THREE.Object3D;
   private previewActive: boolean;
   private lastBiome: IBiome;
+  private objectAnimated: boolean;
 
   /**
    * Terrain constructor
@@ -118,8 +119,8 @@ class Terrain {
     if (this.boidsAllowed) {
       this.boids = new Boids(
         this.scene,
-        new THREE.Vector3(Terrain.SIZE_X, 20000, Terrain.SIZE_Z),
-        new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - 25000, Terrain.SIZE_Z / 2),
+        new THREE.Vector3(Terrain.SIZE_X - 35000, 27500, Terrain.SIZE_Z - 35000),
+        new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2),
         50
       );
       this.boids.generate();
@@ -264,6 +265,9 @@ class Terrain {
 
       chunk.placeObject(this.previewObject, { animate: true });
 
+      this.objectAnimated = true;
+      setTimeout(() => this.objectAnimated = false, Chunk.ANIMATION_DELAY + 200);
+
       this.resetPreview();
 
       break;
@@ -276,6 +280,7 @@ class Terrain {
    * @param {THREE.Raycaster} raycaster
    */
   manageObjectPreview(raycaster: THREE.Raycaster) {
+    if (this.objectAnimated) return;
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
 
     for (const intersection of intersections) {

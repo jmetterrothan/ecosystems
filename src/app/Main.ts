@@ -10,8 +10,6 @@ import 'three/examples/js/postprocessing/ShaderPass';
 
 import 'seedrandom';
 
-import './vergil_water_shader';
-
 import statsJs from 'stats.js';
 import World from '@world/World';
 import Crosshair from './UI/Crosshair';

@@ -35,7 +35,8 @@ class Chunk {
 
   static readonly CHUNK_OBJECT_STACK = {};
 
-  static readonly INTERACTION_DISTANCE: number = 600000;
+  static readonly INTERACTION_DISTANCE: number = 60000;
+  static readonly ANIMATION_DELAY: number = 200;
 
   private generator: BiomeGenerator;
 
@@ -346,6 +347,7 @@ class Chunk {
     // animation
     new TWEEN.Tween(object.scale)
       .to(scaleSaved, 500)
+      .delay(Chunk.ANIMATION_DELAY)
       .easing(TWEEN.Easing.Bounce.Out)
       .start();
   }
