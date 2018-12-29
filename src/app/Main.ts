@@ -52,10 +52,12 @@ class Main {
 
   async init() {
     this.initControls();
+
+    this.world = new World(this.scene, this.camera, this.controls);
+
     this.initRenderer();
     this.initPointerLock();
 
-    this.world = new World(this.scene, this.camera, this.controls);
     await this.world.init();
   }
 

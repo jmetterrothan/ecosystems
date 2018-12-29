@@ -188,7 +188,12 @@ class Chunk {
    */
   populate() {
     for (const item of this.objectsBlueprint) {
-      this.placeObject(item);
+      const object = this.getObject(item);
+      if (!this.canPlaceObjectTemp(object)) {
+        this.repurposeObject(object);
+      } else {
+        this.placeObject(object);
+      }
     }
 
     this.dirty = false;
@@ -196,6 +201,7 @@ class Chunk {
 
   getObject(item: IPick): THREE.Object3D {
     let object = null;
+
     // if object stack doesn't exist yet we create one
     if (!Chunk.CHUNK_OBJECT_STACK[item.n]) {
       Chunk.CHUNK_OBJECT_STACK[item.n] = new Stack<THREE.Object3D>();
@@ -208,6 +214,7 @@ class Chunk {
       object = Chunk.CHUNK_OBJECT_STACK[item.n].pop();
     }
 
+    // set transformations
     object.rotation.y = item.r;
     object.scale.set(item.s, item.s, item.s);
     object.position.set(item.x, item.y, item.z);
@@ -218,41 +225,43 @@ class Chunk {
     return object;
   }
 
+  placeObject(object: THREE.Object3D, parameters: IPlaceObject = {}) {
+    if (parameters.animate) {
+
+    } else {
+      this.objects.add(object);
+    }
+  }
+
   /**
   * Places a picke object
   * @param {Pick} item
   * @param {IPlaceObject} parameters
   */
-  placeObject(item: IPick, parameters: IPlaceObject = {}) {
-    const object = this.getObject(item);
+  // placeObject(item: IPick, parameters: IPlaceObject = {}) {
+  //   const object = this.getObject(item);
 
-    // restore transforms
-    object.rotation.y = item.r;
-    object.scale.set(item.s, item.s, item.s);
-    object.position.set(item.x, item.y, item.z);
-    // @ts-ignore
-    object.stackReference = item.n;
-    object.visible = true;
+  //   // restore transforms
 
-    if (!this.canPlaceObjectTemp(object)) {
-      this.repurposeObject(object);
-      return;
-    }
+  //   if (!this.canPlaceObjectTemp(object)) {
+  //     this.repurposeObject(object);
+  //     return;
+  //   }
 
-    if (parameters.animate) {
-      // play bounce animation
-      const scaleSaved = object.scale.clone();
-      object.scale.set(0, 0, 0);
-      this.objects.add(object);
+  //   if (parameters.animate) {
+  //     // play bounce animation
+  //     const scaleSaved = object.scale.clone();
+  //     object.scale.set(0, 0, 0);
+  //     this.objects.add(object);
 
-      new TWEEN.Tween(object.scale)
-        .to(scaleSaved, 500)
-        .easing(TWEEN.Easing.Bounce.Out)
-        .start();
-    } else {
-      this.objects.add(object);
-    }
-  }
+  //     new TWEEN.Tween(object.scale)
+  //       .to(scaleSaved, 500)
+  //       .easing(TWEEN.Easing.Bounce.Out)
+  //       .start();
+  //   } else {
+  //     this.objects.add(object);
+  //   }
+  // }
 
   canPlaceObjectMove(point: THREE.Vector3): boolean {
     for (let i = 0; i < this.objects.children.length; i++) {
@@ -290,9 +299,8 @@ class Chunk {
 
   /**
    * Clean the object layer of the chunk (repurpose objects if needed)
-   * @param {THREE.Scene} scene
    */
-  clean(scene: THREE.Scene) {
+  clean() {
     for (let i = this.objects.children.length - 1; i >= 0; i--) {
       this.repurposeObject(this.objects.children[i]);
     }
