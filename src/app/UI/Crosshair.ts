@@ -13,8 +13,14 @@ class Crosshair {
 
   static switch(predicat: boolean) {
     Crosshair.htmlElement.className = predicat
-      ? `${Crosshair.defaultClassName} ${Crosshair.validClassName}`
-      : `${Crosshair.defaultClassName} ${Crosshair.invalidClassName}`;
+      ? `${Crosshair.htmlElement.classList} ${Crosshair.validClassName}`
+      : `${Crosshair.htmlElement.classList} ${Crosshair.invalidClassName}`;
+  }
+
+  static shake() {
+    Crosshair.switch(false);
+    Crosshair.htmlElement.classList.add('shake');
+    setTimeout(() => Crosshair.htmlElement.classList.remove('shake'), 1000);
   }
 
   private generate() {
