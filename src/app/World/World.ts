@@ -122,10 +122,14 @@ class World {
     await Promise.all(stack);
   }
 
+  getTerrain(): Terrain {
+    return this.terrain;
+  }
+
   /**
    * @param {number} delta
    */
-  public update(delta) {
+  update(delta) {
     this.camera.updateMatrixWorld(true);
 
     this.frustum.setFromMatrix(

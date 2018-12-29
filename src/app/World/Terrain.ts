@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import 'three/examples/js/postprocessing/OutlinePass';
 
 import Chunk from './Chunk';
 import World from './World';
@@ -73,6 +74,7 @@ class Terrain {
     this.chunk = new Coord();
     this.start = new Coord();
     this.end = new Coord();
+
   }
 
   init() {
@@ -239,6 +241,7 @@ class Terrain {
 
       case MOUSE_TYPES.CLICK:
         this.placeObject(raycaster);
+        break;
 
       default:
         break;
@@ -253,7 +256,7 @@ class Terrain {
 
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
 
-      if (!chunk.canPlaceObjectTemp(this.previewObject)) {
+      if (!chunk.canPlaceObject(this.previewObject) || !chunk.checkInteractionDistance(intersection.distance)) {
         chunk.repurposeObject(this.previewObject);
         Crosshair.shake();
         return;
@@ -278,6 +281,8 @@ class Terrain {
     for (const intersection of intersections) {
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
       const validDistance = chunk.checkInteractionDistance(intersection.distance);
+
+      Crosshair.switch(validDistance);
 
       if (!validDistance) {
         if (this.previewObject) {
@@ -309,7 +314,15 @@ class Terrain {
         this.previewActive = true;
       }
 
+      const canPlaceObject = chunk.canPlaceObject(this.previewObject);
+      Crosshair.switch(canPlaceObject);
+
       if (!this.previewActive) this.scene.add(this.previewObject);
+      if (!canPlaceObject) {
+        this.scene.remove(this.previewObject);
+        this.previewActive = false;
+        return;
+      }
 
       this.previewObject.position.set(intersection.point.x, intersection.point.y, intersection.point.z);
 

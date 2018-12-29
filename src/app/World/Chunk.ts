@@ -189,7 +189,7 @@ class Chunk {
   populate() {
     for (const item of this.objectsBlueprint) {
       const object = this.getObject(item);
-      if (!this.canPlaceObjectTemp(object)) {
+      if (!this.canPlaceObject(object)) {
         this.repurposeObject(object);
         continue;
       }
@@ -234,56 +234,11 @@ class Chunk {
   }
 
   /**
-  * Places a picke object
-  * @param {Pick} item
-  * @param {IPlaceObject} parameters
-  */
-  // placeObject(item: IPick, parameters: IPlaceObject = {}) {
-  //   const object = this.getObject(item);
-
-  //   // restore transforms
-
-  //   if (!this.canPlaceObjectTemp(object)) {
-  //     this.repurposeObject(object);
-  //     return;
-  //   }
-
-  //   if (parameters.animate) {
-  //     // play bounce animation
-  //     const scaleSaved = object.scale.clone();
-  //     object.scale.set(0, 0, 0);
-  //     this.objects.add(object);
-
-  //     new TWEEN.Tween(object.scale)
-  //       .to(scaleSaved, 500)
-  //       .easing(TWEEN.Easing.Bounce.Out)
-  //       .start();
-  //   } else {
-  //     this.objects.add(object);
-  //   }
-  // }
-
-  canPlaceObjectMove(point: THREE.Vector3): boolean {
-    for (let i = 0; i < this.objects.children.length; i++) {
-      const bbox = new THREE.Box3().setFromObject(this.objects.children[i]);
-
-      if (bbox.containsPoint(point)) return false;
-    }
-
-    return true;
-  }
-
-  canPlaceObjectAt(intersection: THREE.Intersection): boolean {
-    return this.checkInteractionDistance(intersection.distance) &&
-      this.canPlaceObjectMove(intersection.point);
-  }
-
-  /**
    * Check if an object can be put at it's current location
    * @param {THREE.Object3D} object
    * @return {boolean}
    */
-  canPlaceObjectTemp(object: THREE.Object3D): boolean {
+  canPlaceObject(object: THREE.Object3D): boolean {
     const bbox = new THREE.Box3().setFromObject(object);
 
     for (let i = 0; i < this.objects.children.length; i++) {

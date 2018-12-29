@@ -22,6 +22,7 @@ class Main {
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
   private composer: THREE.EffectComposer;
+  private renderPass: THREE.RenderPass;
   private camera: THREE.PerspectiveCamera;
   private controls: THREE.PointerLockControls;
   private containerElement: HTMLElement;
@@ -54,11 +55,11 @@ class Main {
     this.initControls();
 
     this.world = new World(this.scene, this.camera, this.controls);
-
-    this.initRenderer();
-    this.initPointerLock();
-
     await this.world.init();
+
+    this.initPointerLock();
+    this.initRenderer();
+    this.initPostProcessing();
   }
 
   private initControls() {
@@ -69,7 +70,7 @@ class Main {
 
   private initRenderer() {
     // renderer setup
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
+    this.renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true, alpha: true });
     this.renderer.domElement.style.position = 'fixed';
     this.renderer.domElement.style.top = '0';
     this.renderer.domElement.style.left = '0';
@@ -87,16 +88,11 @@ class Main {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.renderer.setPixelRatio(window.devicePixelRatio);
 
-      // const size = this.renderer.getSize();
-      // this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
+      const size = this.renderer.getSize();
+      this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
     });
 
     this.containerElement.append(this.renderer.domElement);
-
-    // composser
-    // const size = this.renderer.getSize();
-    // this.composer = new THREE.EffectComposer(this.renderer);
-    // this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
 
     /*
     const pass = new THREE.RenderPass(this.scene, this.camera);
@@ -124,6 +120,16 @@ class Main {
     this.effect4.renderToScreen = true;
     this.composer.addPass(this.effect4);
     */
+  }
+
+  private initPostProcessing() {
+    this.composer = new THREE.EffectComposer(this.renderer);
+    const size = this.renderer.getSize();
+    this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
+
+    this.renderPass = new THREE.RenderPass(this.scene, this.camera);
+    this.composer.addPass(this.renderPass);
+
   }
 
   private initPointerLock() {
