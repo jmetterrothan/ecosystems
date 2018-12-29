@@ -6,7 +6,6 @@ import BiomeGenerator from './BiomeGenerator';
 import Coord from './Coord';
 import WaterMesh from '@mesh/WaterMesh';
 import Boids from '../Boids/Boids';
-import MathUtils from '@shared/utils/Math.utils';
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 import OceanBiome from '@world/Biomes/OceanBiome';
@@ -51,9 +50,9 @@ class Terrain {
   private boidsAllowed: boolean;
   private boids: Boids;
 
-  private placeObjectAllowed: boolean;
   private previewItem: IPick;
   private previewObject: THREE.Object3D;
+  private previewActive: boolean;
   private lastBiome: IBiome;
 
   /**
@@ -232,11 +231,41 @@ class Terrain {
     if (this.boidsAllowed) this.boids.update(delta);
   }
 
+  handleMouseInteraction(raycaster: THREE.Raycaster, interactionType: MOUSE_TYPES) {
+    switch (interactionType) {
+      case MOUSE_TYPES.MOVE:
+        this.manageObjectPreview(raycaster);
+        break;
+
+      case MOUSE_TYPES.CLICK:
+        this.placeObject(raycaster);
+
+      default:
+        break;
+    }
+  }
+
+  placeObject(raycaster: THREE.Raycaster) {
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
+
+    if (!intersections[0] || !this.previewItem) return;
+
+    this.scene.remove(this.previewObject);
+
+    const intersection = intersections[0];
+
+    const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
+    chunk.placeObject(this.previewItem, true);
+
+    this.previewItem = null;
+    this.previewObject = null;
+  }
+
   /**
    * Handle mouse click in the 3d space
    * @param {THREE.Raycaster} raycaster
    */
-  handleMouseInteraction(raycaster: THREE.Raycaster, interactionType: MOUSE_TYPES) {
+  manageObjectPreview(raycaster: THREE.Raycaster) {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
 
     if (!intersections[0]) {
@@ -253,7 +282,10 @@ class Terrain {
 
     // if distance is too long, remove object from the scene;
     if (!validDistance) {
-
+      if (this.previewObject) {
+        this.previewActive = false;
+        this.scene.remove(this.previewObject);
+      }
       return;
     }
 
@@ -262,11 +294,15 @@ class Terrain {
       this.generator.computeMoistureAt(intersection.point.x, intersection.point.z)
     );
 
-    if (this.lastBiome !== biome) {
+    if (this.lastBiome !== biome || !this.previewItem) {
       this.lastBiome = biome;
+
       this.scene.remove(this.previewObject);
 
-      const item = chunk.pick(intersection.point.x, intersection.point.z);
+      this.previewItem = null;
+      this.previewObject = null;
+
+      const item = chunk.pick(intersection.point.x, intersection.point.z, true);
       if (!item) return;
 
       this.previewItem = item;
@@ -275,55 +311,9 @@ class Terrain {
       this.scene.add(this.previewObject);
     }
 
-    if (!this.previewObject) return;
+    if (!this.previewActive) this.scene.add(this.previewObject);
 
     this.previewObject.position.set(intersection.point.x, intersection.point.y, intersection.point.z);
-
-    /*
-    1) prendre le point
-    2) regarder si on est à bonne distance
-    3) regarder si one à changer de biome
-    4) Si oui, on enlève l'objet de la scène
-            Puis on en reprend un
-            On l'ajoute à la scène
-            On set la position
-            On save tout
-    */
-
-    // loops through all the objects that intersect
-    // for (const intersection of intersections) {
-    //   const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
-    //   const validDistance = chunk.checkInteractionDistance(intersection.distance);
-
-    //   if (validDistance) {
-    //     const biome = this.generator.getBiomeInformations(
-    //       intersection.point.y,
-    //       this.generator.computeMoistureAt(intersection.point.x, intersection.point.z)
-    //     );
-
-    //     if (this.lastBiome !== biome) {
-    //       this.lastBiome = biome;
-    //       const item: IPick = chunk.pick(intersection.point.x, intersection.point.z, true);
-    //       if (item && this.previewItem !== item) {
-    //         this.previewItem = item;
-    //         this.previewObject = chunk.getObject(item);
-    //       }
-    //     }
-
-    //     this.previewObject = chunk.getObject(this.previewItem);
-    //     const placeObjectAllowed = chunk.canPlaceObjectMove(intersection.point);
-    //     console.log(placeObjectAllowed);
-    //     Crosshair.switch(placeObjectAllowed);
-    //   }
-
-    // if (interactionType === MOUSE_TYPES.CLICK) {
-    //   if (item && placeObjectAllowed) chunk.placeObject(item, true);
-    // }
-
-    // if (interactionType === MOUSE_TYPES.MOVE) {
-    //   Crosshair.switch(validDistance);
-    // }
-
   }
 
   /**

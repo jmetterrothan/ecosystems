@@ -280,7 +280,6 @@ class Chunk {
       const bbox2 = new THREE.Box3().setFromObject(this.objects.children[i]);
 
       if (bbox.intersectsBox(bbox2)) {
-        console.log('intersect');
         return false;
       }
     }

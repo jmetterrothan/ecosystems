@@ -16,6 +16,8 @@ import statsJs from 'stats.js';
 import World from '@world/World';
 import Crosshair from './UI/Crosshair';
 
+import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+
 class Main {
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
@@ -146,7 +148,7 @@ class Main {
         if (!this.controls.enabled) { return; }
 
         // mouse position always in the center of the screen
-        this.world.handleMouseClick();
+        this.world.handleMouseInteraction(MOUSE_TYPES.CLICK);
       });
 
       document.body.addEventListener('keydown', e => this.world.handleKeyboard(e.key, true && this.controls.enabled));

@@ -137,7 +137,7 @@ class World {
 
     this.terrain.update(this.frustum, this.controls.getObject().position, delta);
     this.player.update(this.terrain, delta);
-    this.handleMouseMove();
+    this.handleMouseInteraction(MOUSE_TYPES.MOVE);
 
     /*
     if (position.y < Chunk.SEA_LEVEL) {
@@ -146,12 +146,7 @@ class World {
     */
   }
 
-  /**
-   * Handle mouse click
-   * @param {THREE.Vector2} pos Raw mouse input
-   */
-  public handleMouseClick() {
-    // use ray tracing to detect clics on the terrain in 3d space
+  handleMouseInteraction(interactionType: MOUSE_TYPES) {
     const pos = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
     const mouse = new THREE.Vector2(
       (pos.x / window.innerWidth) * 2 - 1,
@@ -159,18 +154,7 @@ class World {
     );
 
     this.raycaster.setFromCamera(mouse, this.camera);
-    this.terrain.handleMouseInteraction(this.raycaster, MOUSE_TYPES.CLICK);
-  }
-
-  public handleMouseMove() {
-    const pos = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
-    const mouse = new THREE.Vector2(
-      (pos.x / window.innerWidth) * 2 - 1,
-      (pos.y / window.innerHeight) * -2 + 1
-    );
-
-    this.raycaster.setFromCamera(mouse, this.camera);
-    this.terrain.handleMouseInteraction(this.raycaster, MOUSE_TYPES.MOVE);
+    this.terrain.handleMouseInteraction(this.raycaster, interactionType);
   }
 
   /**
