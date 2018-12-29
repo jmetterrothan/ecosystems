@@ -191,9 +191,9 @@ class Chunk {
       const object = this.getObject(item);
       if (!this.canPlaceObjectTemp(object)) {
         this.repurposeObject(object);
-      } else {
-        this.placeObject(object);
+        continue;
       }
+      this.placeObject(object);
     }
 
     this.dirty = false;
@@ -214,7 +214,7 @@ class Chunk {
       object = Chunk.CHUNK_OBJECT_STACK[item.n].pop();
     }
 
-    // set transformations
+    // restore transformations
     object.rotation.y = item.r;
     object.scale.set(item.s, item.s, item.s);
     object.position.set(item.x, item.y, item.z);
@@ -227,7 +227,7 @@ class Chunk {
 
   placeObject(object: THREE.Object3D, parameters: IPlaceObject = {}) {
     if (parameters.animate) {
-
+      this.placeObjectWithAnimation(object);
     } else {
       this.objects.add(object);
     }
@@ -382,6 +382,18 @@ class Chunk {
    * @return {THREE.Box3}
    */
   getBbox(): THREE.Box3 { return this.bbox; }
+
+  private placeObjectWithAnimation(object: THREE.Object3D) {
+    const scaleSaved = object.scale.clone();
+    object.scale.set(0, 0, 0);
+    this.objects.add(object);
+
+    // animation
+    new TWEEN.Tween(object.scale)
+      .to(scaleSaved, 500)
+      .easing(TWEEN.Easing.Bounce.Out)
+      .start();
+  }
 
   /**
    * Returns a chunk's bounding box

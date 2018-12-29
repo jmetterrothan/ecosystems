@@ -202,7 +202,7 @@ class Terrain {
         chunk.col < this.start.col + (this.end.col - this.start.col) &&
         chunk.row >= this.start.row &&
         chunk.row < this.start.row + (this.end.row - this.start.row))) {
-        chunk.clean(this.scene);
+        chunk.clean();
       }
     }
 
@@ -248,17 +248,24 @@ class Terrain {
   placeObject(raycaster: THREE.Raycaster) {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
 
-    if (!intersections[0] || !this.previewItem) return;
+    for (const intersection of intersections) {
+      if (!this.previewObject) return;
 
-    this.scene.remove(this.previewObject);
+      const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
 
-    const intersection = intersections[0];
+      if (!chunk.canPlaceObjectTemp(this.previewObject)) {
+        chunk.repurposeObject(this.previewObject);
+        Crosshair.shake();
+        return;
+      }
 
-    const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
-    chunk.placeObject(this.previewItem, { animate: true });
+      chunk.placeObject(this.previewObject, { animate: true });
 
-    this.previewItem = null;
-    this.previewObject = null;
+      this.resetPreview();
+
+      break;
+    }
+
   }
 
   /**
@@ -268,52 +275,47 @@ class Terrain {
   manageObjectPreview(raycaster: THREE.Raycaster) {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
 
-    if (!intersections[0]) {
-      Crosshair.switch(false);
-      return;
-    }
+    for (const intersection of intersections) {
+      const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
+      const validDistance = chunk.checkInteractionDistance(intersection.distance);
 
-    const intersection: THREE.Intersection = intersections[0];
-
-    const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
-    const validDistance: boolean = chunk.checkInteractionDistance(intersection.distance);
-
-    Crosshair.switch(validDistance);
-
-    // if distance is too long, remove object from the scene;
-    if (!validDistance) {
-      if (this.previewObject) {
-        this.previewActive = false;
-        this.scene.remove(this.previewObject);
+      if (!validDistance) {
+        if (this.previewObject) {
+          this.scene.remove(this.previewObject);
+          this.previewActive = false;
+        }
+        return;
       }
-      return;
+
+      const biome = this.generator.getBiomeInformations(
+        intersection.point.y,
+        this.generator.computeMoistureAt(intersection.point.x, intersection.point.z)
+      );
+
+      // if user fly over another biome or if preview item does not exist
+      if (this.lastBiome !== biome || !this.previewItem) {
+        this.scene.remove(this.previewObject);
+        this.resetPreview();
+
+        this.lastBiome = biome;
+
+        const item = chunk.pick(intersection.point.x, intersection.point.z, { force: true });
+        if (!item) return;
+
+        this.previewItem = item;
+        this.previewObject = chunk.getObject(this.previewItem);
+
+        this.scene.add(this.previewObject);
+        this.previewActive = true;
+      }
+
+      if (!this.previewActive) this.scene.add(this.previewObject);
+
+      this.previewObject.position.set(intersection.point.x, intersection.point.y, intersection.point.z);
+
+      break;
     }
 
-    const biome = this.generator.getBiomeInformations(
-      intersection.point.y,
-      this.generator.computeMoistureAt(intersection.point.x, intersection.point.z)
-    );
-
-    if (this.lastBiome !== biome || !this.previewItem) {
-      this.lastBiome = biome;
-
-      this.scene.remove(this.previewObject);
-
-      this.previewItem = null;
-      this.previewObject = null;
-
-      const item = chunk.pick(intersection.point.x, intersection.point.z, { force: true });
-      if (!item) return;
-
-      this.previewItem = item;
-      this.previewObject = chunk.getObject(this.previewItem);
-
-      this.scene.add(this.previewObject);
-    }
-
-    if (!this.previewActive) this.scene.add(this.previewObject);
-
-    this.previewObject.position.set(intersection.point.x, intersection.point.y, intersection.point.z);
   }
 
   /**
@@ -477,6 +479,12 @@ class Terrain {
     geometry.normalsNeedUpdate = true;
 
     return new THREE.Mesh(geometry, TERRAIN_MATERIAL);
+  }
+
+  private resetPreview() {
+    this.previewItem = null;
+    this.previewObject = null;
+    this.lastBiome = null;
   }
 
   /**
