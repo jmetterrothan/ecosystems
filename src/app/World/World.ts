@@ -140,7 +140,7 @@ class World {
     this.clouds.receiveShadow = true;
     this.scene.add(this.clouds);
 
-    this.wind = new THREE.Vector3(0, 0, -1024);
+    this.wind = new THREE.Vector3(0, 0, 1024 * Math.sign(Math.random() - 0.5));
 
     // wind direction helper
     if (Main.DEBUG) {
