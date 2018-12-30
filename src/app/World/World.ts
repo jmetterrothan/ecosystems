@@ -33,8 +33,8 @@ class World {
   static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 
   static readonly RAIN_PROBABILITY: number = 1;
-  static readonly RAIN_PARTICLES_COUNT: number = 500; // 200;
-  static readonly RAIN_VELOCITY: number = 300; // 100;
+  static readonly RAIN_PARTICLES_COUNT: number = 200;
+  static readonly RAIN_VELOCITY: number = 200;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
   static LOADED_TEXTURES = new Map<string, THREE.Texture>();
@@ -170,7 +170,7 @@ class World {
     this.clouds.receiveShadow = true;
     this.scene.add(this.clouds);
 
-    this.wind = new THREE.Vector3(0, 0, 10 * 1024 * Math.sign(Math.random() - 0.5));
+    this.wind = new THREE.Vector3(0, 0, 1024 * Math.sign(Math.random() - 0.5));
 
     // wind direction helper
     if (Main.DEBUG) {
@@ -194,7 +194,7 @@ class World {
 
       // material
       const material = new THREE.PointsMaterial({
-        size: 1000, // 200,
+        size: 200,
         map: World.LOADED_TEXTURES.get('raindrop'),
         blending: THREE.AdditiveBlending,
         transparent: true,
