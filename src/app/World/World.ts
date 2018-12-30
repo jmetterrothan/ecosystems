@@ -370,13 +370,13 @@ class World {
 
         objLoader.load(element.obj, (object) => {
           object.castShadow = true;
-          object.receiveShadow = true;
+          object.receiveShadow = false;
           object.frustumCulled = false;
 
           object.traverse((child) => {
             if (child instanceof THREE.Mesh) {
               child.castShadow = true;
-              child.receiveShadow = true;
+              child.receiveShadow = false;
               child.frustumCulled = false;
 
               if (!(child.material instanceof THREE.Material)) {
