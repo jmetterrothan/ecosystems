@@ -66,6 +66,10 @@ class World {
     this.player = new Player(this.controls);
     this.player.init(spawn, target);
 
+    this.player.underwaterObservable$.subscribe(
+      underwater => console.log(underwater)
+    );
+
     this.scene.add(this.controls.getObject());
   }
 
