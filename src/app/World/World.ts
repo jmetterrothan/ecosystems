@@ -24,7 +24,7 @@ class World {
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
   static readonly MAX_VISIBLE_CHUNKS: number = 24;
-  static readonly MAX_RENDERABLE_CHUNKS: number = 32;
+  static readonly MAX_RENDERABLE_CHUNKS: number = 30;
   static readonly VIEW_DISTANCE: number = World.MAX_RENDERABLE_CHUNKS * Chunk.WIDTH;
 
   static readonly SHOW_FOG: boolean = true;
@@ -123,10 +123,27 @@ class World {
     ambient.castShadow = false;
     this.scene.add(ambient);
 
-    const sunlight = new THREE.DirectionalLight(0xffffff, 0.275);
-    sunlight.position.set(0, Chunk.HEIGHT, 15000);
+    const sunlight = new THREE.DirectionalLight(0xffffff, 0.2);
+    sunlight.position.set(0, Chunk.HEIGHT, 0);
     sunlight.castShadow = true;
+    sunlight.shadow.mapSize.width = 4096;  // default
+    sunlight.shadow.mapSize.height = 4096; // default
+    sunlight.shadow.camera.near = 1;    // default
+    sunlight.shadow.camera.far = Terrain.SIZE_X * 2;     // default
+
     this.scene.add(sunlight);
+
+    {
+      const sunlight = new THREE.SpotLight(0xffffff, 0.2);
+      sunlight.position.set(0, Chunk.HEIGHT, 0);
+      sunlight.castShadow = true;
+      sunlight.shadow.mapSize.width = 4096;  // default
+      sunlight.shadow.mapSize.height = 4096; // default
+      sunlight.shadow.camera.near = 1;    // default
+      sunlight.shadow.camera.far = Terrain.SIZE_X * 2;     // default
+
+      this.scene.add(sunlight);
+    }
   }
 
   /**
@@ -254,7 +271,7 @@ class World {
 
       cloud.updateMatrixWorld(true);
 
-      // reset position if the cloud goes off the edges of the world
+     // reset position if the cloud goes off the edges of the world
       const bbox: THREE.Box3 = new THREE.Box3().setFromObject(cloud);
       const size: THREE.Vector3 = bbox.getSize(new THREE.Vector3());
 
