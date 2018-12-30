@@ -31,6 +31,8 @@ class Main {
 
   private lastTime: number;
 
+  private focused: boolean;
+
   private stats: statsJs;
 
   private crosshair: Crosshair;
@@ -47,6 +49,8 @@ class Main {
 
     const aspect = window.innerWidth / window.innerHeight;
     this.camera = new THREE.PerspectiveCamera(55, aspect, 0.1, World.VIEW_DISTANCE);
+
+    this.focused = true;
 
     // this.scene.add(new THREE.CameraHelper(this.camera));
   }
@@ -129,7 +133,6 @@ class Main {
 
     this.renderPass = new THREE.RenderPass(this.scene, this.camera);
     this.composer.addPass(this.renderPass);
-
   }
 
   private initPointerLock() {
@@ -161,6 +164,9 @@ class Main {
 
       document.body.addEventListener('keydown', e => this.world.handleKeyboard(e.key, true && this.controls.enabled));
       document.body.addEventListener('keyup', e => this.world.handleKeyboard(e.key, false));
+
+      window.addEventListener('blur', () => { this.focused = false; });
+      window.addEventListener('focus', () => { this.focused = true; });
     }
   }
 
@@ -173,18 +179,21 @@ class Main {
 
     const delta = elapsed / 1000;
 
-    // updated every time
-    this.world.update(delta, time / 1000);
+    if (this.focused) {
+      // updated every time
+      this.world.update(delta, time / 1000);
 
-    /*
-    this.effect.uniforms['time'].value += Math.random();
-    this.effect2.uniforms['time'].value += Math.random();
-    this.effect3.uniforms['time'].value += Math.random();
-    this.effect4.uniforms['time'].value += Math.random();
-    */
+      /*
+      this.effect.uniforms['time'].value += Math.random();
+      this.effect2.uniforms['time'].value += Math.random();
+      this.effect3.uniforms['time'].value += Math.random();
+      this.effect4.uniforms['time'].value += Math.random();
+      */
 
-    this.renderer.render(this.scene, this.getActiveCamera());
-    TWEEN.update();
+      this.renderer.render(this.scene, this.getActiveCamera());
+      TWEEN.update();
+    }
+
     // this.composer.render(delta);
     this.stats.end();
 

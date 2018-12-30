@@ -187,7 +187,7 @@ class World {
 
       // reset position if the cloud goes off the edges of the world
       const bbox: THREE.Box3 = new THREE.Box3().setFromObject(cloud);
-      const size = bbox.getSize(new THREE.Vector3());
+      const size: THREE.Vector3 = bbox.getSize(new THREE.Vector3());
 
       if (bbox.max.x < 0) {
         cloud.position.x = Terrain.SIZE_X - size.z / 2;
