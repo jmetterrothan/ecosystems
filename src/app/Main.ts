@@ -17,6 +17,8 @@ import Crosshair from './UI/Crosshair';
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 class Main {
+  public static readonly DEBUG: boolean = true;
+
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
   private composer: THREE.EffectComposer;

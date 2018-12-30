@@ -4,6 +4,7 @@ import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
+import Main from '../Main';
 import Terrain from './Terrain';
 import Chunk from './Chunk';
 import Player from '../Player';
@@ -40,6 +41,8 @@ class World {
   private raycaster: THREE.Raycaster;
   private seed: string;
 
+  private wind: THREE.Vector3;
+
   constructor(scene: THREE.Scene, camera: THREE.PerspectiveCamera, controls: THREE.PointerLockControls) {
     this.scene = scene;
     this.camera = camera;
@@ -47,6 +50,13 @@ class World {
 
     this.frustum = new THREE.Frustum();
     this.raycaster = new THREE.Raycaster();
+
+    this.wind = new THREE.Vector3(0, 0, -2048);
+
+    if (Main.DEBUG) {
+      const arrowHelper = new THREE.ArrowHelper(this.wind, new THREE.Vector3(Terrain.SIZE_X / 2, Terrain.SIZE_Y / 2, Terrain.SIZE_Z / 2), 10000, 0xff0000);
+      this.scene.add(arrowHelper);
+    }
   }
 
   async init() {
