@@ -32,8 +32,8 @@ class World {
   static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 
   static readonly RAIN_PROBABILITY: number = 1;
-  static readonly RAIN_PARTICLES_COUNT: number = 1000;
-  static readonly RAIN_VELOCITY: number = 200;
+  static readonly RAIN_PARTICLES_COUNT: number = 200;
+  static readonly RAIN_VELOCITY: number = 100;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
   static LOADED_TEXTURES = new Map<string, THREE.Texture>();
