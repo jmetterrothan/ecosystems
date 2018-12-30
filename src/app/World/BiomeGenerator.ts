@@ -1,4 +1,3 @@
-import HighlandBiome from '@world/Biomes/HighlandBiome';
 import * as THREE from 'three';
 import simplexNoise from 'simplex-noise';
 
@@ -14,11 +13,10 @@ import { IPick } from '@shared/models/pick.model';
 
 import { BIOMES } from '@shared/constants/biomes.constants';
 import { IPickObject } from '@shared/models/objectParameters.model';
-import OceanBiome from './Biomes/OceanBiome';
 
 class BiomeGenerator {
   // @ts-ignore
-  public static readonly BIOME: Biome | null = OceanBiome; // lock a specific biome here, if null a biome is selected randomly
+  public static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
 
   private simplex: simplexNoise;
   private simplex2: simplexNoise;
