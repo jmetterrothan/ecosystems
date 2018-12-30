@@ -46,6 +46,10 @@ class MathUtils {
     return MathUtils.rng() * (max - min) + min;
   }
 
+  static between = (x: number, min: number, max: number): boolean => {
+    return x >= min && x <= max;
+  }
+
   /**
    * Map interval [a, b] => [c, d]
    * @param {number} t

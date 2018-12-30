@@ -17,6 +17,7 @@ import { IBiome } from '@shared/models/biome.model';
 import { IPick } from '@shared/models/pick.model';
 import Crosshair from '../UI/Crosshair';
 import underwaterService from '@shared/services/underwater.service';
+import MathUtils from '@shared/utils/Math.utils';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 16;
@@ -237,7 +238,6 @@ class Terrain {
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
 
       if (!chunk.canPlaceObject(this.previewObject) || !chunk.checkInteractionDistance(intersection.distance)) {
-        chunk.repurposeObject(this.previewObject);
         Crosshair.shake();
         return;
       }
@@ -272,7 +272,7 @@ class Terrain {
 
       Crosshair.switch(validDistance && this.previewActive);
 
-      if (!validDistance) {
+      if (!validDistance || this.intersectBorder(intersection.point)) {
         if (this.previewObject) {
           this.scene.remove(this.previewObject);
           this.previewActive = false;
@@ -552,6 +552,12 @@ class Terrain {
     this.previewObject = null;
     this.currentSubBiome = null;
     this.intersectionSurface = null;
+  }
+
+  private intersectBorder(intersection: THREE.Vector3): boolean {
+    const offset = 200;
+    return MathUtils.between(intersection.x, -offset, offset) || MathUtils.between(intersection.x, Terrain.SIZE_X - offset, Terrain.SIZE_X + offset) ||
+      MathUtils.between(intersection.z, -offset, offset) || MathUtils.between(intersection.z, Terrain.SIZE_Z - offset, Terrain.SIZE_Z + offset);
   }
 
   /**
