@@ -11,14 +11,24 @@ class Crosshair {
     this.generate();
   }
 
-  static switch(predicat: boolean) {
-    Crosshair.htmlElement.className = predicat
-      ? `${Crosshair.defaultClassName} ${Crosshair.validClassName}`
-      : `${Crosshair.defaultClassName} ${Crosshair.invalidClassName}`;
+  static switch(valid: boolean) {
+    if (valid && Crosshair.htmlElement.classList.contains(Crosshair.invalidClassName)) {
+      Crosshair.htmlElement.classList.remove(Crosshair.invalidClassName);
+      Crosshair.htmlElement.classList.add(Crosshair.validClassName);
+    }
+
+    if (!valid && Crosshair.htmlElement.classList.contains(Crosshair.validClassName)) {
+      Crosshair.htmlElement.classList.remove(Crosshair.validClassName);
+      Crosshair.htmlElement.classList.add(Crosshair.invalidClassName);
+    }
+
+    if (Crosshair.htmlElement.classList.value === Crosshair.defaultClassName) {
+      Crosshair.htmlElement.classList.add(Crosshair.invalidClassName);
+    }
   }
 
   static shake() {
-    Crosshair.switch(false);
+    // Crosshair.switch(false);
     Crosshair.htmlElement.classList.add('shake');
     setTimeout(() => Crosshair.htmlElement.classList.remove('shake'), 1000);
   }
