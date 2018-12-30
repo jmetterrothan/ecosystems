@@ -496,13 +496,6 @@ class Terrain {
     this.waterSide.receiveShadow = false;
     this.layers.add(this.waterSide);
 
-    // clouds
-    this.clouds = new THREE.Mesh(new THREE.Geometry(), CLOUD_MATERIAL);
-    this.clouds.frustumCulled = true;
-    this.clouds.castShadow = true;
-    this.clouds.receiveShadow = true;
-    this.layers.add(this.clouds);
-
     // this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
 
     this.scene.add(this.layers);
