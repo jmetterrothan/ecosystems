@@ -1,4 +1,3 @@
-import HighlandBiome from '@world/Biomes/HighlandBiome';
 import * as THREE from 'three';
 import simplexNoise from 'simplex-noise';
 

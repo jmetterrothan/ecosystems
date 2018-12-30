@@ -15,9 +15,10 @@ import World from '@world/World';
 import Crosshair from './UI/Crosshair';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+import CommonUtils from '@shared/utils/Common.utils';
 
 class Main {
-  public static readonly DEBUG: boolean = true;
+  public static readonly DEBUG: boolean = CommonUtils.isDev();
 
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
@@ -34,8 +35,6 @@ class Main {
   private focused: boolean;
 
   private stats: statsJs;
-
-  private crosshair: Crosshair;
 
   constructor() {
     this.containerElement = document.body;
@@ -69,7 +68,7 @@ class Main {
   private initControls() {
     this.controls = new THREE.PointerLockControls(this.camera);
 
-    this.crosshair = new Crosshair();
+    new Crosshair();
   }
 
   private initRenderer() {
