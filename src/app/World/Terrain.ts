@@ -292,6 +292,11 @@ class Terrain {
     if (this.objectAnimated) return;
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
 
+    if (!intersections.length && this.previewObject) {
+      this.scene.remove(this.previewObject);
+      this.previewActive = false;
+    }
+
     for (const intersection of intersections) {
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
       const validDistance = chunk.checkInteractionDistance(intersection.distance);
