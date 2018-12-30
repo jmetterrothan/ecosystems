@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import * as TWEEN from '@tweenjs/tween.js';
 import poissonDiskSampling from 'poisson-disk-sampling';
 import BiomeGenerator from './BiomeGenerator';
 
@@ -11,6 +12,7 @@ import Stack from '@shared/Stack';
 import MathUtils from '@utils/Math.utils';
 
 import { IPick } from '@shared/models/pick.model';
+import { IPlaceObject, IPickObject } from '@shared/models/objectParameters.model';
 
 class Chunk {
   static readonly SHOW_HELPER: boolean = false;
@@ -33,6 +35,9 @@ class Chunk {
 
   static readonly CHUNK_OBJECT_STACK = {};
 
+  static readonly INTERACTION_DISTANCE: number = 60000;
+  static readonly ANIMATION_DELAY: number = 200;
+
   private generator: BiomeGenerator;
 
   readonly row: number;
@@ -52,6 +57,8 @@ class Chunk {
   private merged: boolean;
   private visible: boolean;
 
+  private scene: THREE.Scene;
+
   public readonly key: string;
 
   /**
@@ -69,6 +76,8 @@ class Chunk {
     this.key = `${row}:${col}`;
     this.dirty = false;
     this.merged = false;
+
+    this.scene = scene;
 
     this.objects = new THREE.Group();
     scene.add(this.objects);
@@ -154,14 +163,6 @@ class Chunk {
   }
 
   /**
-   * Add an object to the object group layer of the chunk
-   * @param {THREE.Object3D} object
-   */
-  addObject(object: THREE.Object3D) {
-    this.objects.add(object);
-  }
-
-  /**
    * Poisson disk sampling
    */
   loadPopulation() {
@@ -188,53 +189,97 @@ class Chunk {
    */
   populate() {
     for (const item of this.objectsBlueprint) {
-      let object = null;
-
-      // if object stack doesn't exist yet we create one
-      if (!Chunk.CHUNK_OBJECT_STACK[item.n]) {
-        Chunk.CHUNK_OBJECT_STACK[item.n] = new Stack<THREE.Object3D>();
+      const object = this.getObject(item);
+      if (!this.canPlaceObject(object)) {
+        this.repurposeObject(object);
+        continue;
       }
-
-      // if the stack is empty, create a new object else pop an object from the stack
-      if (Chunk.CHUNK_OBJECT_STACK[item.n].empty) {
-        object = World.LOADED_MODELS.get(item.n).clone();
-      } else {
-        object = Chunk.CHUNK_OBJECT_STACK[item.n].pop();
-      }
-
-      // restore transforms
-      object.rotation.y = item.r;
-      object.scale.set(item.s, item.s, item.s);
-      object.position.set(item.x, item.y, item.z);
-      object.stackReference = item.n;
-      object.visible = true;
-
-      this.objects.add(object);
+      this.placeObject(object);
     }
 
     this.dirty = false;
   }
 
+  getObject(item: IPick): THREE.Object3D {
+    let object = null;
+
+    // if object stack doesn't exist yet we create one
+    if (!Chunk.CHUNK_OBJECT_STACK[item.n]) {
+      Chunk.CHUNK_OBJECT_STACK[item.n] = new Stack<THREE.Object3D>();
+    }
+
+    // if the stack is empty, create a new object else pop an object from the stack
+    if (Chunk.CHUNK_OBJECT_STACK[item.n].empty) {
+      object = World.LOADED_MODELS.get(item.n).clone();
+    } else {
+      object = Chunk.CHUNK_OBJECT_STACK[item.n].pop();
+    }
+
+    // restore transformations
+    object.rotation.y = item.r;
+    object.scale.set(item.s, item.s, item.s);
+    object.position.set(item.x, item.y, item.z);
+    // @ts-ignore
+    object.stackReference = item.n;
+    object.visible = true;
+
+    return object;
+  }
+
+  placeObject(object: THREE.Object3D, parameters: IPlaceObject = {}) {
+    if (parameters.animate) {
+      this.placeObjectWithAnimation(object);
+    } else {
+      this.objects.add(object);
+    }
+  }
+
+  /**
+   * Check if an object can be put at it's current location
+   * @param {THREE.Object3D} object
+   * @return {boolean}
+   */
+  canPlaceObject(object: THREE.Object3D): boolean {
+    const bbox = new THREE.Box3().setFromObject(object);
+
+    for (let i = 0; i < this.objects.children.length; i++) {
+      const bbox2 = new THREE.Box3().setFromObject(this.objects.children[i]);
+
+      if (bbox.intersectsBox(bbox2)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   /**
    * Clean the object layer of the chunk (repurpose objects if needed)
-   * @param {THREE.Scene} scene
    */
-  clean(scene: THREE.Scene) {
+  clean() {
     for (let i = this.objects.children.length - 1; i >= 0; i--) {
-      // @ts-ignore
-      const ref = this.objects.children[i].stackReference;
-
-      if (ref && Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
-        // collect unused objects
-        this.objects.children[i].visible = false;
-        Chunk.CHUNK_OBJECT_STACK[ref].push(this.objects.children[i]);
-      } else {
-        scene.remove(this.objects.children[i]);
-      }
+      this.repurposeObject(this.objects.children[i]);
     }
 
     this.objects.children = [];
     this.dirty = true;
+  }
+
+  /**
+  * Reuses objects if the pool is not full or simply deletes it
+  * @param {THREE.Object3D} object
+  */
+  repurposeObject(object: THREE.Object3D) {
+    // @ts-ignore
+    const ref = object.stackReference;
+
+    if (ref && Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
+      // collect unused objects
+      object.visible = false;
+      Chunk.CHUNK_OBJECT_STACK[ref].push(object);
+    } else {
+      this.scene.remove(object);
+    }
   }
 
   /**
@@ -253,27 +298,59 @@ class Chunk {
   }
 
   /**
+   * pick an object
+   * @param {number} x
+   * @param {number} z
+   * @param {IPickObject} parameters
+   */
+  pick(x: number, z: number, parameters: IPickObject = {}): IPick | null {
+    return this.generator.pick(x, z, parameters);
+  }
+
+  /**
    * Chunk objects are visible in frustum if true
    * @return {boolean}
    */
-  isVisible() { return this.visible; }
+  isVisible(): boolean { return this.visible; }
 
   /**
    * Chunk population need to be regenerated if true
    * @return {boolean}
    */
-  isDirty() { return this.dirty; }
+  isDirty(): boolean { return this.dirty; }
 
   /**
    * Chunk has been merged to the terrain if true
    * @return {boolean}
    */
-  isMerged() { return this.merged; }
+  isMerged(): boolean { return this.merged; }
+
+  /**
+   * User distance valid to place an objecct if true
+   * @param {number} distance
+   * @return {boolean}
+   */
+  checkInteractionDistance(distance: number): boolean {
+    return distance <= Chunk.INTERACTION_DISTANCE;
+  }
 
   /**
    * @return {THREE.Box3}
    */
   getBbox(): THREE.Box3 { return this.bbox; }
+
+  private placeObjectWithAnimation(object: THREE.Object3D) {
+    const scaleSaved = object.scale.clone();
+    object.scale.set(0, 0, 0);
+    this.objects.add(object);
+
+    // animation
+    new TWEEN.Tween(object.scale)
+      .to(scaleSaved, 500)
+      .delay(Chunk.ANIMATION_DELAY)
+      .easing(TWEEN.Easing.Bounce.Out)
+      .start();
+  }
 
   /**
    * Returns a chunk's bounding box

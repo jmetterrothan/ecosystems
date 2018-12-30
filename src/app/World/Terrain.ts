@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import 'three/examples/js/postprocessing/OutlinePass';
 
 import Chunk from './Chunk';
 import World from './World';
@@ -6,11 +7,16 @@ import BiomeGenerator from './BiomeGenerator';
 import Coord from './Coord';
 import WaterMesh from '@mesh/WaterMesh';
 import Boids from '../Boids/Boids';
-import MathUtils from '@shared/utils/Math.utils';
+import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+
+import OceanBiome from '@world/Biomes/OceanBiome';
 
 import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
 import { WATER_MATERIAL, WATER_SIDE_MATERIAL } from '@materials/water.material';
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
+import { IBiome } from '@shared/models/biome.model';
+import { IPick } from '@shared/models/pick.model';
+import Crosshair from '../UI/Crosshair';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 16;
@@ -42,7 +48,14 @@ class Terrain {
 
   private layers: THREE.Group;
 
+  private boidsAllowed: boolean;
   private boids: Boids;
+
+  private previewItem: IPick;
+  private previewObject: THREE.Object3D;
+  private previewActive: boolean;
+  private lastBiome: IBiome;
+  private objectAnimated: boolean;
 
   /**
    * Terrain constructor
@@ -50,7 +63,10 @@ class Terrain {
    */
   constructor(scene: THREE.Scene) {
     this.scene = scene;
+
     this.generator = new BiomeGenerator();
+    this.boidsAllowed = this.generator.getBiome() instanceof OceanBiome;
+
     this.chunks = new Map<string, Chunk>();
     this.visibleChunks = [];
 
@@ -59,6 +75,7 @@ class Terrain {
     this.chunk = new Coord();
     this.start = new Coord();
     this.end = new Coord();
+
   }
 
   init() {
@@ -99,8 +116,15 @@ class Terrain {
 
     this.scene.add(this.layers);
 
-    this.boids = new Boids(this.scene, Terrain.SIZE_X, 50000, Terrain.SIZE_Z, 20);
-    this.boids.generate();
+    if (this.boidsAllowed) {
+      this.boids = new Boids(
+        this.scene,
+        new THREE.Vector3(Terrain.SIZE_X - 35000, 27500, Terrain.SIZE_Z - 35000),
+        new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2),
+        50
+      );
+      this.boids.generate();
+    }
   }
 
   /**
@@ -181,7 +205,7 @@ class Terrain {
         chunk.col < this.start.col + (this.end.col - this.start.col) &&
         chunk.row >= this.start.row &&
         chunk.row < this.start.row + (this.end.row - this.start.row))) {
-        chunk.clean(this.scene);
+        chunk.clean();
       }
     }
 
@@ -207,28 +231,110 @@ class Terrain {
     }
 
     // entities update
-    this.boids.update(delta);
+    if (this.boidsAllowed) this.boids.update(delta);
+  }
+
+  handleMouseInteraction(raycaster: THREE.Raycaster, interactionType: MOUSE_TYPES) {
+    switch (interactionType) {
+      case MOUSE_TYPES.MOVE:
+        this.manageObjectPreview(raycaster);
+        break;
+
+      case MOUSE_TYPES.CLICK:
+        this.placeObject(raycaster);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  placeObject(raycaster: THREE.Raycaster) {
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
+
+    for (const intersection of intersections) {
+      if (!this.previewObject) return;
+
+      const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
+
+      if (!chunk.canPlaceObject(this.previewObject) || !chunk.checkInteractionDistance(intersection.distance)) {
+        chunk.repurposeObject(this.previewObject);
+        Crosshair.shake();
+        return;
+      }
+
+      chunk.placeObject(this.previewObject, { animate: true });
+
+      this.objectAnimated = true;
+      setTimeout(() => this.objectAnimated = false, Chunk.ANIMATION_DELAY + 200);
+
+      this.resetPreview();
+
+      break;
+    }
+
   }
 
   /**
    * Handle mouse click in the 3d space
    * @param {THREE.Raycaster} raycaster
    */
-  handleMouseInteraction(raycaster: THREE.Raycaster) {
-    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.terrain, this.water], false);
+  manageObjectPreview(raycaster: THREE.Raycaster) {
+    if (this.objectAnimated) return;
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
 
-    // loops through all the objects that intersect
     for (const intersection of intersections) {
-      const geometry = new THREE.BoxGeometry(2000, 2000, 2000);
-      const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-      const cube = new THREE.Mesh(geometry, material);
-      cube.rotation.y = MathUtils.randomFloat(0, Math.PI * 2);
-      cube.position.set(intersection.point.x, intersection.point.y, intersection.point.z);
-
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
-      chunk.addObject(cube);
-      break; // break because we stop at the first element that intersects the ray
+      const validDistance = chunk.checkInteractionDistance(intersection.distance);
+
+      Crosshair.switch(validDistance);
+
+      if (!validDistance) {
+        if (this.previewObject) {
+          this.scene.remove(this.previewObject);
+          this.previewActive = false;
+        }
+        return;
+      }
+
+      const biome = this.generator.getSubBiome(
+        this.generator.computeElevationAt(intersection.point.x, intersection.point.z),
+        this.generator.computeMoistureAt(intersection.point.x, intersection.point.z)
+      );
+
+      // if user fly over another biome or if preview item does not exist
+      if (this.lastBiome !== biome || !this.previewItem) {
+        console.log(this.lastBiome, biome);
+        this.scene.remove(this.previewObject);
+        this.resetPreview();
+
+        this.lastBiome = biome;
+
+        const item = chunk.pick(intersection.point.x, intersection.point.z, { force: true });
+        if (!item) return;
+
+        this.previewItem = item;
+        this.previewObject = chunk.getObject(this.previewItem);
+
+        this.scene.add(this.previewObject);
+        this.previewActive = true;
+      }
+
+      const canPlaceObject = chunk.canPlaceObject(this.previewObject);
+      Crosshair.switch(canPlaceObject);
+
+      if (!this.previewActive) this.scene.add(this.previewObject);
+      if (!canPlaceObject) {
+        this.scene.remove(this.previewObject);
+        this.previewActive = false;
+        return;
+      }
+
+      this.previewObject.position.set(intersection.point.x, intersection.point.y, intersection.point.z);
+
+      break;
     }
+
   }
 
   /**
@@ -374,8 +480,8 @@ class Terrain {
         const f1 = new THREE.Face3(a, b, d);
         const f2 = new THREE.Face3(d, c, a);
 
-        f1.color = this.generator.getBiome((-Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
-        f2.color = this.generator.getBiome((-Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
+        f1.color = this.generator.getSubBiome((-Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
+        f2.color = this.generator.getSubBiome((-Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);
@@ -392,6 +498,12 @@ class Terrain {
     geometry.normalsNeedUpdate = true;
 
     return new THREE.Mesh(geometry, TERRAIN_MATERIAL);
+  }
+
+  private resetPreview() {
+    this.previewItem = null;
+    this.previewObject = null;
+    this.lastBiome = null;
   }
 
   /**

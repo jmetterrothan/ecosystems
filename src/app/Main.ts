@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import * as TWEEN from '@tweenjs/tween.js';
 
 import 'three/examples/js/postprocessing/EffectComposer';
 import 'three/examples/js/controls/PointerLockControls';
@@ -9,16 +10,17 @@ import 'three/examples/js/postprocessing/ShaderPass';
 
 import 'seedrandom';
 
-import './vergil_water_shader';
-
 import statsJs from 'stats.js';
 import World from '@world/World';
-import Terrain from '@world/Terrain';
+import Crosshair from './UI/Crosshair';
+
+import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 class Main {
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
   private composer: THREE.EffectComposer;
+  private renderPass: THREE.RenderPass;
   private camera: THREE.PerspectiveCamera;
   private controls: THREE.PointerLockControls;
   private containerElement: HTMLElement;
@@ -28,6 +30,9 @@ class Main {
   private lastTime: number;
 
   private stats: statsJs;
+
+  private crosshair: Crosshair;
+
   constructor() {
     this.containerElement = document.body;
     this.lastTime = window.performance.now();
@@ -46,30 +51,24 @@ class Main {
 
   async init() {
     this.initControls();
-    this.initRenderer();
-    this.initPointerLock();
 
     this.world = new World(this.scene, this.camera, this.controls);
     await this.world.init();
+
+    this.initPointerLock();
+    this.initRenderer();
+    this.initPostProcessing();
   }
 
   private initControls() {
     this.controls = new THREE.PointerLockControls(this.camera);
 
-    // crosshair temp
-    const crosshair = document.createElement('div');
-    crosshair.classList.add('crosshair');
-    crosshair.appendChild(document.createElement('span'));
-    crosshair.appendChild(document.createElement('span'));
-    crosshair.appendChild(document.createElement('span'));
-    crosshair.appendChild(document.createElement('span'));
-    crosshair.appendChild(document.createElement('span'));
-    document.body.appendChild(crosshair);
+    this.crosshair = new Crosshair();
   }
 
   private initRenderer() {
     // renderer setup
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
+    this.renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true, alpha: true });
     this.renderer.domElement.style.position = 'fixed';
     this.renderer.domElement.style.top = '0';
     this.renderer.domElement.style.left = '0';
@@ -87,16 +86,11 @@ class Main {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.renderer.setPixelRatio(window.devicePixelRatio);
 
-      // const size = this.renderer.getSize();
-      // this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
+      const size = this.renderer.getSize();
+      this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
     });
 
     this.containerElement.append(this.renderer.domElement);
-
-    // composser
-    // const size = this.renderer.getSize();
-    // this.composer = new THREE.EffectComposer(this.renderer);
-    // this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
 
     /*
     const pass = new THREE.RenderPass(this.scene, this.camera);
@@ -126,6 +120,16 @@ class Main {
     */
   }
 
+  private initPostProcessing() {
+    this.composer = new THREE.EffectComposer(this.renderer);
+    const size = this.renderer.getSize();
+    this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
+
+    this.renderPass = new THREE.RenderPass(this.scene, this.camera);
+    this.composer.addPass(this.renderPass);
+
+  }
+
   private initPointerLock() {
     // handle pointer lock authorization
     if ('pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document) {
@@ -150,8 +154,7 @@ class Main {
         if (!this.controls.enabled) { return; }
 
         // mouse position always in the center of the screen
-        const raw = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
-        this.world.handleMouseClick(raw);
+        this.world.handleMouseInteraction(MOUSE_TYPES.CLICK);
       });
 
       document.body.addEventListener('keydown', e => this.world.handleKeyboard(e.key, true && this.controls.enabled));
@@ -179,13 +182,14 @@ class Main {
     */
 
     this.renderer.render(this.scene, this.getActiveCamera());
+    TWEEN.update();
     // this.composer.render(delta);
     this.stats.end();
 
     window.requestAnimationFrame(this.render.bind(this));
   }
 
-  getActiveCamera()  {
+  getActiveCamera() {
     return this.camera;
   }
 

@@ -8,8 +8,7 @@ import { IBiome } from '@shared/models/biome.model';
 import { BIOMES } from '@shared/constants/biome.constants';
 import MathUtils from '@shared/utils/Math.utils';
 
-class OceanBiome extends Biome
-{
+class OceanBiome extends Biome {
   private spike: number;
   private depth: number;
 
@@ -17,7 +16,7 @@ class OceanBiome extends Biome
     super('OCEAN', generator);
 
     this.spike = MathUtils.randomFloat(0.025, 0.125);
-    this.depth = MathUtils.randomFloat(0.2, 0.3);
+    this.depth = 1.425;
   }
 
   /**
@@ -38,16 +37,16 @@ class OceanBiome extends Biome
 
     e /= (0.25 + 0.0035 + 0.015 + 0.025 + 0.25) - this.spike;
 
-    e **= 2.5;
-    return e - this.depth - 0.5;
+    e **= 2.25;
+    return e - this.depth;
   }
 
-  getParametersAt(e: number, m: number) : IBiome {
-    if (e < Chunk.SEA_ELEVATION - 0.40 - MathUtils.randomFloat(0.01, 0.025)) {
+  getParametersAt(e: number, m: number): IBiome {
+    if (e < Chunk.SEA_ELEVATION - 0.40 - 0.018) {
       return BIOMES.OCEAN;
     }
 
-    if (e > Chunk.SEA_ELEVATION - 0.1 - MathUtils.randomFloat(-0.01, 0.025)) {
+    if (e > Chunk.SEA_ELEVATION - 0.1 - 0.0168) {
       return BIOMES.MOUNTAIN;
     }
 

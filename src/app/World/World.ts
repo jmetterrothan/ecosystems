@@ -11,6 +11,7 @@ import Player from '../Player';
 import { OBJECTS } from '@shared/constants/object.constants';
 
 import MathUtils from '@utils/Math.utils';
+import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 class World {
   static SEED: string | null = null; // '789005037'
@@ -64,6 +65,10 @@ class World {
 
     this.player = new Player(this.controls);
     this.player.init(spawn, target);
+
+    this.player.underwaterObservable$.subscribe(
+      underwater => console.log(underwater)
+    );
 
     this.scene.add(this.controls.getObject());
   }
@@ -121,10 +126,14 @@ class World {
     await Promise.all(stack);
   }
 
+  getTerrain(): Terrain {
+    return this.terrain;
+  }
+
   /**
    * @param {number} delta
    */
-  public update(delta) {
+  update(delta) {
     this.camera.updateMatrixWorld(true);
 
     this.frustum.setFromMatrix(
@@ -136,6 +145,7 @@ class World {
 
     this.terrain.update(this.frustum, this.controls.getObject().position, delta);
     this.player.update(this.terrain, delta);
+    this.handleMouseInteraction(MOUSE_TYPES.MOVE);
 
     /*
     if (position.y < Chunk.SEA_LEVEL) {
@@ -144,18 +154,15 @@ class World {
     */
   }
 
-  /**
-   * Handle mouse click
-   * @param {THREE.Vector2} pos Raw mouse input
-   */
-  public handleMouseClick(pos: THREE.Vector2) {
-    // use ray tracing to detect clics on the terrain in 3d space
-    const mouse = new THREE.Vector2();
-    mouse.x = (pos.x / window.innerWidth) * 2 - 1;
-    mouse.y = (pos.y / window.innerHeight) * -2 + 1;
+  handleMouseInteraction(interactionType: MOUSE_TYPES) {
+    const pos = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
+    const mouse = new THREE.Vector2(
+      (pos.x / window.innerWidth) * 2 - 1,
+      (pos.y / window.innerHeight) * -2 + 1
+    );
 
     this.raycaster.setFromCamera(mouse, this.camera);
-    this.terrain.handleMouseInteraction(this.raycaster);
+    this.terrain.handleMouseInteraction(this.raycaster, interactionType);
   }
 
   /**
@@ -213,7 +220,7 @@ class World {
 
           World.LOADED_MODELS.set(element.name, object);
           // const box = new THREE.Box3().setFromObject(object);
-         // const size = box.getSize(new THREE.Vector3(0, 0, 0));
+          // const size = box.getSize(new THREE.Vector3(0, 0, 0));
 
           resolve(object);
         }, null, () => reject());

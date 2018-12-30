@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import { BehaviorSubject } from 'rxjs';
+
 import 'three/examples/js/controls/PointerLockControls';
 
 import Chunk from '@world/Chunk';
@@ -16,6 +18,9 @@ class Player {
   private speed: THREE.Vector3;
   private velocity: THREE.Vector3;
 
+  private underwater: boolean = false;
+  underwaterObservable$: BehaviorSubject<boolean>;
+
   constructor(controls) {
     this.controls = controls;
 
@@ -28,6 +33,12 @@ class Player {
 
     this.speed = new THREE.Vector3(40000, 40000, 40000);
     this.velocity = new THREE.Vector3(0, 0, 0);
+
+    this.underwaterObservable$ = new BehaviorSubject(this.underwater);
+  }
+
+  get isUnderwater(): boolean {
+    return this.underwater;
   }
 
   init(spawn: THREE.Vector3, target: THREE.Vector3 = new THREE.Vector3()) {
@@ -92,11 +103,21 @@ class Player {
     let y = -(Chunk.HEIGHT / 2) | 0;
 
     if (position.x >= 0 && position.x <= Terrain.SIZE_X && position.z >= 0 && position.z <= Terrain.SIZE_Z) {
-      y = terrain.getHeightAt(position.x, position.z) + 1024;
+      y = terrain.getHeightAt(position.x, position.z) + 5000;
     }
 
     if (position.y < y) {
       this.controls.getObject().position.y = y;
+    }
+
+    if (!this.underwater && position.y <= Chunk.SEA_LEVEL) {
+      this.underwater = true;
+      this.underwaterObservable$.next(true);
+    }
+
+    if (this.underwater && position.y > Chunk.SEA_LEVEL) {
+      this.underwater = false;
+      this.underwaterObservable$.next(false);
     }
   }
 

@@ -1,3 +1,4 @@
+import OceanBiome from '@world/Biomes/OceanBiome';
 import * as THREE from 'three';
 import simplexNoise from 'simplex-noise';
 
@@ -12,9 +13,11 @@ import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
 import { IPick } from '@shared/models/pick.model';
 
 import { BIOMES } from '@shared/constants/biomes.constants';
+import { IPickObject } from '@shared/models/objectParameters.model';
 
 class BiomeGenerator {
-  public static readonly BIOME: Biome|null = null; // lock a specific biome here, if null a biome is selected randomly
+  // @ts-ignore
+  public static readonly BIOME: Biome | null = OceanBiome; // lock a specific biome here, if null a biome is selected randomly
 
   private simplex: simplexNoise;
   private simplex2: simplexNoise;
@@ -26,7 +29,7 @@ class BiomeGenerator {
     this.simplex2 = new simplexNoise(MathUtils.rng);
     this.simplex3 = new simplexNoise(MathUtils.rng);
 
-    if (!(BiomeGenerator.BIOME instanceof Biome)) {
+    if (BiomeGenerator.BIOME === null) {
       const biomeClass = BIOMES[MathUtils.randomInt(0, BIOMES.length - 1)];
       this.biome = new biomeClass(this);
     } else {
@@ -43,7 +46,7 @@ class BiomeGenerator {
    * @param {number} z
    * @return {IPick|null}
    */
-  pick(x: number, z: number): IPick | null {
+  pick(x: number, z: number, parameters: IPickObject = {}): IPick | null {
     const e = this.computeElevationAt(x, z);
     const m = this.computeMoistureAt(x, z);
 
@@ -81,9 +84,9 @@ class BiomeGenerator {
         const rand = MathUtils.rng();
 
         // test for scarcity and ground elevation criteria
-        if (rand >= organism.scarcity &&
+        if (parameters.force || (rand >= organism.scarcity &&
           (e >= lowE && e <= highE) &&
-          (m >= lowM && m <= highM)) {
+          (m >= lowM && m <= highM))) {
           return (<IPick>{
             x,
             z,
@@ -105,8 +108,16 @@ class BiomeGenerator {
    * @param {number} m moisture value
    * @return {IBiome} Biome informations
    */
-  getBiome(e: number, m: number): IBiome {
+  getSubBiome(e: number, m: number): IBiome {
     return this.biome.getParametersAt(e, m);
+  }
+
+  /**
+   * Return the current biome
+   * @return {Biome} Biome
+   */
+  getBiome(): Biome {
+    return this.biome;
   }
 
   /**
