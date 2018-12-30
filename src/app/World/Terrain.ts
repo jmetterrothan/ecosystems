@@ -6,10 +6,10 @@ import World from './World';
 import BiomeGenerator from './BiomeGenerator';
 import Coord from './Coord';
 import Boids from '../Boids/Boids';
-import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
-
+import Biome from './Biome';
 import OceanBiome from '@world/Biomes/OceanBiome';
 
+import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
 import { WATER_MATERIAL } from '@materials/water.material';
 
@@ -122,7 +122,13 @@ class Terrain {
     this.water.position.z += offset / 2;
 
     this.water.material.uniforms.size.value = new THREE.Vector3(Terrain.SIZE_X, Terrain.SIZE_Y, Terrain.SIZE_Z);
-    this.water.material.uniforms.size.needsUpdate = true;
+
+    const biome: Biome = this.generator.getBiome();
+    this.water.material.uniforms.water_distortion.value = biome.getWaterDistortion();
+    this.water.material.uniforms.water_distortion_freq.value = biome.getWaterDistortionFreq();
+    this.water.material.uniforms.water_distortion_amp.value = biome.getWaterDistortionAmp();
+
+    this.water.material.uniforms.needsUpdate = true;
   }
 
   /**
