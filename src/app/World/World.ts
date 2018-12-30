@@ -10,10 +10,11 @@ import Chunk from './Chunk';
 import Player from '../Player';
 
 import { OBJECTS } from '@shared/constants/object.constants';
+import { TEXTURES } from '@shared/constants/texture.constants';
 
 import MathUtils from '@utils/Math.utils';
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
-import underwaterService from '@shared/services/underwater.service';
+import { ITexture } from '@shared/models/texture.model';
 
 class World {
   static SEED: string | null = '2915501844';
@@ -29,7 +30,10 @@ class World {
   static readonly FOG_NEAR: number = World.VIEW_DISTANCE / 2;
   static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 
+  static readonly RAIN_PROBABILITY: number = 1;
+
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
+  static LOADED_TEXTURES = new Map<string, THREE.Texture>();
 
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
@@ -45,6 +49,9 @@ class World {
   private clouds: THREE.Group;
   private wind: THREE.Vector3;
 
+  private particleSystem: THREE.Points;
+  private rainParticles: THREE.Geometry;
+
   constructor(scene: THREE.Scene, camera: THREE.PerspectiveCamera, controls: THREE.PointerLockControls) {
     this.scene = scene;
     this.camera = camera;
@@ -59,6 +66,7 @@ class World {
     this.initFog();
     this.initLights();
     await this.initObjects();
+    await this.initTextures();
     this.initClouds();
 
     // stuff
@@ -132,6 +140,21 @@ class World {
     await Promise.all(stack);
   }
 
+  private initTextures(): Promise<any> {
+    const loader = new THREE.TextureLoader();
+
+    return new Promise(resolve => {
+      TEXTURES.forEach((texture: ITexture) => {
+        if (!World.LOADED_TEXTURES.has(texture.name)) {
+          const img = loader.load(texture.img);
+          World.LOADED_TEXTURES.set(texture.name, img);
+        }
+      });
+      resolve();
+    });
+
+  }
+
   private initClouds() {
     // clouds
     this.clouds = new THREE.Group(); // new THREE.Mesh(new THREE.Geometry(), CLOUD_MATERIAL);
@@ -147,6 +170,31 @@ class World {
       const arrowHelper = new THREE.ArrowHelper(this.wind, new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.CLOUD_LEVEL, Terrain.SIZE_Z / 2), 10000, 0xff0000);
       this.scene.add(arrowHelper);
     }
+
+    // // RAIN
+    // const particlesCount = 1000;
+    // this.rainParticles = new THREE.Geometry();
+    // const pMaterial = new THREE.PointsMaterial({
+    //   color: 'black',
+    //   size: 200,
+    //   // map: World.LOADED_TEXTURES.get('raindrop'),
+    //   // blending: THREE.AdditiveBlending,
+    //   // transparent: true
+    // });
+
+    // for (let i = 0; i < particlesCount; i++) {
+    //   const particle = new THREE.Vector3(
+    //     Math.random() * 1000 - 500,
+    //     Math.random() * 1000 - 500,
+    //     Math.random() * 1000 - 500
+    //   );
+
+    //   this.rainParticles.vertices.push(particle);
+    // }
+
+    // this.particleSystem = new THREE.Points(this.rainParticles, pMaterial);
+    // this.particleSystem.position.set(Terrain.SIZE_X / 2, Chunk.CLOUD_LEVEL, Terrain.SIZE_Z / 2);
+    // this.scene.add(this.particleSystem);
   }
 
   getTerrain(): Terrain {
@@ -179,7 +227,7 @@ class World {
     this.updateClouds(delta);
   }
 
-  updateClouds(delta) {
+  updateClouds(delta: number) {
     for (const cloud of this.clouds.children) {
       // move cloud
       cloud.position.add(this.wind.clone().multiplyScalar(delta));
