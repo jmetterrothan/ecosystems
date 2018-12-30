@@ -25,7 +25,6 @@ class Crosshair {
     if (Crosshair.htmlElement.classList.value === Crosshair.defaultClassName) {
       Crosshair.htmlElement.classList.add(Crosshair.invalidClassName);
     }
-
   }
 
   static shake() {

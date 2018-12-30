@@ -56,6 +56,7 @@ class Terrain {
   private previewObject: THREE.Object3D;
   private previewActive: boolean;
   private currentSubBiome: IBiome;
+  private intersectionSurface: THREE.Object3D;
   private objectAnimated: boolean;
 
   /**
@@ -311,15 +312,16 @@ class Terrain {
       );
 
       // if user fly over another biome or if preview item does not exist
-      if (this.currentSubBiome !== biome || !this.previewItem) {
+      if (this.currentSubBiome !== biome || !this.previewItem || this.intersectionSurface !== intersection.object) {
         this.scene.remove(this.previewObject);
         this.resetPreview();
 
         this.currentSubBiome = biome;
+        this.intersectionSurface = intersection.object;
 
         const item = chunk.pick(intersection.point.x, intersection.point.z, {
           force: true,
-          float: intersection.object === this.water
+          float: this.intersectionSurface === this.water
         });
         if (!item) return;
 
@@ -514,6 +516,7 @@ class Terrain {
     this.previewItem = null;
     this.previewObject = null;
     this.currentSubBiome = null;
+    this.intersectionSurface = null;
   }
 
   /**
