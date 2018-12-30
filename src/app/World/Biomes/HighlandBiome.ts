@@ -74,14 +74,14 @@ class HighlandBiome extends Biome {
       return BIOMES.FROZEN_GRASSLAND;
     }
 
-    if (e > Chunk.SEA_ELEVATION + 0.05) {
-      if (m < 0.35 + 0.03) {
+    if (e > Chunk.SEA_ELEVATION + 0.075) {
+      if (m < 0.375) {
         return BIOMES.TUNDRA;
       }
       return BIOMES.GRASSLAND;
     }
 
-    if (m > 0.5 + 0.028) {
+    if (m > 0.78) {
       return BIOMES.SWAMP;
     }
     return BIOMES.BEACH;

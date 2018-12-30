@@ -183,7 +183,7 @@ class World {
       // particles
       const size = new THREE.Box3().setFromObject(cloud).getSize(new THREE.Vector3());
       const particles = new THREE.Geometry();
-      const particleCount = (size.x * size.y * size.z) / 2000000000;
+      const particleCount = (size.x * size.y * size.z) / 20000000000;
 
       for (let i = 0; i < particleCount; i++) {
         particles.vertices.push(new THREE.Vector3(
