@@ -10,8 +10,6 @@ import { WATER_MATERIAL } from '@materials/water.material';
 import { IChunkParameters } from '@shared/models/chunkParameters.model';
 
 class WaterMesh extends Mesh {
-  static SEA_OFFSET: number = 2;
-
   constructor(generator: BiomeGenerator, row: number, col: number) {
     super(generator, row, col, MESH_TYPES.WATER_MESH, <IChunkParameters>{
       nRows: 4,
@@ -37,19 +35,19 @@ class WaterMesh extends Mesh {
         let z = this.row * this.parameters.depth + r * this.parameters.cellSizeZ;
 
         if (this.col === 0 && c === 0) {
-          x = WaterMesh.SEA_OFFSET;
+          x = 0;
         }
 
         if (this.row === 0 && r === 0) {
-          z = WaterMesh.SEA_OFFSET;
+          z = 0;
         }
 
         if (this.col === Terrain.NCHUNKS_X - 1 && c === nbVerticesX - 1) {
-          x = Terrain.SIZE_X - WaterMesh.SEA_OFFSET;
+          x = Terrain.SIZE_X;
         }
 
         if (this.row === Terrain.NCHUNKS_Z - 1 && r === nbVerticesZ - 1) {
-          z = Terrain.SIZE_Z - WaterMesh.SEA_OFFSET;
+          z = Terrain.SIZE_Z;
         }
 
         const y = this.getY(x, z);

@@ -16,7 +16,7 @@ import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import underwaterService from '@shared/services/underwater.service';
 
 class World {
-  static SEED: string | null = '2915501844';
+  static SEED: string | null = null;
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
@@ -156,7 +156,7 @@ class World {
   /**
    * @param {number} delta
    */
-  update(delta) {
+  update(delta, tick) {
     this.camera.updateMatrixWorld(true);
 
     this.frustum.setFromMatrix(
@@ -166,7 +166,7 @@ class World {
       )
     );
 
-    this.terrain.update(this.frustum, this.controls.getObject().position, delta);
+    this.terrain.update(this.frustum, this.controls.getObject().position, delta, tick);
     this.player.update(this.terrain, delta);
     this.handleMouseInteraction(MOUSE_TYPES.MOVE);
 

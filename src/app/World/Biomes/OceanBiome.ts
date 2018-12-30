@@ -17,6 +17,10 @@ class OceanBiome extends Biome {
 
     this.spike = MathUtils.randomFloat(0.025, 0.125);
     this.depth = 1.425;
+
+    this.waterDistortion = true;
+    this.waterDistortionFreq = 3.0;
+    this.waterDistortionAmp = 512.0;
   }
 
   /**

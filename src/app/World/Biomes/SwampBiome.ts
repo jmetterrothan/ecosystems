@@ -11,6 +11,10 @@ import MathUtils from '@shared/utils/Math.utils';
 class SwampBiome extends Biome {
   constructor(generator: BiomeGenerator) {
     super('SWAMPS', generator);
+
+    this.waterDistortion = true;
+    this.waterDistortionFreq = 0.5;
+    this.waterDistortionAmp = 512.0;
   }
 
   /**
