@@ -15,9 +15,10 @@ import World from '@world/World';
 import Crosshair from './UI/Crosshair';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+import CommonUtils from '@shared/utils/Common.utils';
 
 class Main {
-  public static readonly DEBUG: boolean = process.env.NODE_ENV === 'development';
+  public static readonly DEBUG: boolean = CommonUtils.isDev();
 
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;

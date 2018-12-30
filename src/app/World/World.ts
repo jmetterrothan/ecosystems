@@ -15,6 +15,7 @@ import { TEXTURES } from '@shared/constants/texture.constants';
 import MathUtils from '@utils/Math.utils';
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { ITexture } from '@shared/models/texture.model';
+import { ICloudData } from '@shared/models/cloudData.model';
 
 class World {
   static SEED: string | null = '2915501844';
@@ -31,6 +32,7 @@ class World {
   static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 
   static readonly RAIN_PROBABILITY: number = 1;
+  static readonly RAIN_PARTICLES_COUNT: number = 500;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
   static LOADED_TEXTURES = new Map<string, THREE.Texture>();
@@ -74,15 +76,13 @@ class World {
     this.terrain.init();
     this.terrain.preload();
 
+    this.initRain();
+
     const spawn = new THREE.Vector3(-24000, Terrain.SIZE_Y, Terrain.SIZE_Z + 24000);
     const target = new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
 
     this.player = new Player(this.controls);
     this.player.init(spawn, target);
-
-    // underwaterService.observable$.subscribe(
-    //   underwater => console.log(underwater)
-    // );
 
     this.scene.add(this.controls.getObject());
   }
@@ -91,6 +91,11 @@ class World {
     this.seed = World.SEED ? World.SEED : MathUtils.randomUint32().toString();
     MathUtils.rng = new Math.seedrandom(this.seed);
     console.info(`SEED : ${this.seed}`);
+
+    const span = document.createElement('span');
+    span.className = 'seed';
+    span.textContent = `Seed: ${this.seed}`;
+    document.body.appendChild(span);
   }
 
   private showAxesHelper() {
@@ -170,31 +175,42 @@ class World {
       const arrowHelper = new THREE.ArrowHelper(this.wind, new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.CLOUD_LEVEL, Terrain.SIZE_Z / 2), 10000, 0xff0000);
       this.scene.add(arrowHelper);
     }
+  }
 
-    // // RAIN
-    // const particlesCount = 1000;
-    // this.rainParticles = new THREE.Geometry();
-    // const pMaterial = new THREE.PointsMaterial({
-    //   color: 'black',
-    //   size: 200,
-    //   // map: World.LOADED_TEXTURES.get('raindrop'),
-    //   // blending: THREE.AdditiveBlending,
-    //   // transparent: true
-    // });
+  private initRain() {
+    if (Math.random() > World.RAIN_PROBABILITY) return;
+    this.clouds.children.forEach((cloud: THREE.Mesh) => {
+      // particles
+      const size = new THREE.Box3().setFromObject(cloud).getSize(new THREE.Vector3());
+      const particles = new THREE.Geometry();
+      for (let i = 0; i < World.RAIN_PARTICLES_COUNT; i++) {
+        particles.vertices.push(new THREE.Vector3(
+          MathUtils.randomInt(-size.x / 3, size.x / 3),
+          MathUtils.randomInt(-size.y / 3, size.y / 3),
+          MathUtils.randomInt(-size.z / 3, size.z / 3)
+        ));
+      }
 
-    // for (let i = 0; i < particlesCount; i++) {
-    //   const particle = new THREE.Vector3(
-    //     Math.random() * 1000 - 500,
-    //     Math.random() * 1000 - 500,
-    //     Math.random() * 1000 - 500
-    //   );
+      // material
+      const material = new THREE.PointsMaterial({
+        color: 'black',
+        size: 100
+      });
 
-    //   this.rainParticles.vertices.push(particle);
-    // }
+      const data: ICloudData = {
+        particles,
+        particleMaterial: material,
+        particleSystem: new THREE.Points(particles, material)
+      };
 
-    // this.particleSystem = new THREE.Points(this.rainParticles, pMaterial);
-    // this.particleSystem.position.set(Terrain.SIZE_X / 2, Chunk.CLOUD_LEVEL, Terrain.SIZE_Z / 2);
-    // this.scene.add(this.particleSystem);
+      particles.verticesNeedUpdate = true;
+      data.particleSystem.position.set(cloud.position.x, cloud.position.y, cloud.position.z);
+
+      this.scene.add(data.particleSystem);
+
+      cloud.userData = data;
+
+    });
   }
 
   getTerrain(): Terrain {
@@ -231,6 +247,9 @@ class World {
     for (const cloud of this.clouds.children) {
       // move cloud
       cloud.position.add(this.wind.clone().multiplyScalar(delta));
+      (<ICloudData>cloud.userData).particleSystem.position.set(
+        cloud.position.x, cloud.position.y, cloud.position.z
+      );
       cloud.updateMatrixWorld(true);
 
       // reset position if the cloud goes off the edges of the world

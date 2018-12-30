@@ -217,7 +217,6 @@ class Terrain {
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
 
       if (!chunk.canPlaceObject(this.previewObject) || !chunk.checkInteractionDistance(intersection.distance)) {
-        chunk.repurposeObject(this.previewObject);
         Crosshair.shake();
         return;
       }
