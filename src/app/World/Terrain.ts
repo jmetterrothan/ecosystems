@@ -235,26 +235,26 @@ class Terrain {
   }
 
   updateClouds(delta, wind) {
-    for (let i = 0; i < this.clouds.children.length; i++) {
-      const cloud: THREE.Mesh = <THREE.Mesh>this.clouds.children[i];
+    for (const cloud of this.clouds.children) {
+      // move cloud
       cloud.position.add(wind.clone().multiplyScalar(delta));
       cloud.updateMatrixWorld(true);
 
+      // reset position if the cloud goes off the edges of the world
       const bbox: THREE.Box3 = new THREE.Box3().setFromObject(cloud);
       const size = bbox.getSize(new THREE.Vector3());
 
       if (bbox.max.x < 0) {
-        cloud.position.x = Terrain.SIZE_X;
+        cloud.position.x = Terrain.SIZE_X - size.z / 2;
       }
       if (bbox.max.z < 0) {
-        cloud.position.z = Terrain.SIZE_Z - size.z;
+        cloud.position.z = Terrain.SIZE_Z - size.z / 2;
       }
-
       if (bbox.min.x > Terrain.SIZE_X) {
-        cloud.position.x = 0;
+        cloud.position.x = size.x / 2;
       }
       if (bbox.min.z > Terrain.SIZE_Z) {
-        cloud.position.z = size.z;
+        cloud.position.z = size.z / 2;
       }
     }
   }

@@ -51,7 +51,7 @@ class World {
     this.frustum = new THREE.Frustum();
     this.raycaster = new THREE.Raycaster();
 
-    this.wind = new THREE.Vector3(0, 0, -4096);
+    this.wind = new THREE.Vector3(0, 0, -1024);
 
     // wind direction helper
     if (Main.DEBUG) {
