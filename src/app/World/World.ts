@@ -12,6 +12,7 @@ import { OBJECTS } from '@shared/constants/object.constants';
 
 import MathUtils from '@utils/Math.utils';
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+import underwaterService from '@shared/services/underwater.service';
 
 class World {
   static SEED: string | null = null; // '789005037'
@@ -66,9 +67,9 @@ class World {
     this.player = new Player(this.controls);
     this.player.init(spawn, target);
 
-    this.player.underwaterObservable$.subscribe(
-      underwater => console.log(underwater)
-    );
+    // underwaterService.observable$.subscribe(
+    //   underwater => console.log(underwater)
+    // );
 
     this.scene.add(this.controls.getObject());
   }

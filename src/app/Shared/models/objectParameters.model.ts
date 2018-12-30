@@ -4,4 +4,5 @@ export interface IPlaceObject {
 
 export interface IPickObject {
   force?: boolean;
+  float?: boolean;
 }

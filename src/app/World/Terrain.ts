@@ -17,6 +17,7 @@ import { CLOUD_MATERIAL } from '@materials/cloud.material';
 import { IBiome } from '@shared/models/biome.model';
 import { IPick } from '@shared/models/pick.model';
 import Crosshair from '../UI/Crosshair';
+import underwaterService from '@shared/services/underwater.service';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 16;
@@ -54,7 +55,7 @@ class Terrain {
   private previewItem: IPick;
   private previewObject: THREE.Object3D;
   private previewActive: boolean;
-  private lastBiome: IBiome;
+  private currentSubBiome: IBiome;
   private objectAnimated: boolean;
 
   /**
@@ -75,7 +76,6 @@ class Terrain {
     this.chunk = new Coord();
     this.start = new Coord();
     this.end = new Coord();
-
   }
 
   init() {
@@ -125,6 +125,15 @@ class Terrain {
       );
       this.boids.generate();
     }
+
+    underwaterService.observable$.subscribe(
+      () => {
+        if (this.previewObject) {
+          this.scene.remove(this.previewObject);
+          this.resetPreview();
+        }
+      }
+    );
   }
 
   /**
@@ -266,9 +275,8 @@ class Terrain {
       chunk.placeObject(this.previewObject, { animate: true });
 
       this.objectAnimated = true;
-      setTimeout(() => this.objectAnimated = false, Chunk.ANIMATION_DELAY + 200);
-
       this.resetPreview();
+      setTimeout(() => this.objectAnimated = false, Chunk.ANIMATION_DELAY + 200);
 
       break;
     }
@@ -303,14 +311,16 @@ class Terrain {
       );
 
       // if user fly over another biome or if preview item does not exist
-      if (this.lastBiome !== biome || !this.previewItem) {
-        console.log(this.lastBiome, biome);
+      if (this.currentSubBiome !== biome || !this.previewItem) {
         this.scene.remove(this.previewObject);
         this.resetPreview();
 
-        this.lastBiome = biome;
+        this.currentSubBiome = biome;
 
-        const item = chunk.pick(intersection.point.x, intersection.point.z, { force: true });
+        const item = chunk.pick(intersection.point.x, intersection.point.z, {
+          force: true,
+          float: intersection.object === this.water
+        });
         if (!item) return;
 
         this.previewItem = item;
@@ -503,7 +513,7 @@ class Terrain {
   private resetPreview() {
     this.previewItem = null;
     this.previewObject = null;
-    this.lastBiome = null;
+    this.currentSubBiome = null;
   }
 
   /**

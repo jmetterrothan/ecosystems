@@ -36,8 +36,6 @@ class BiomeGenerator {
       // @ts-ignore
       this.biome = new BiomeGenerator.BIOME(this);
     }
-
-    console.info(this.biome);
   }
 
   /**
@@ -55,12 +53,16 @@ class BiomeGenerator {
     let temp = 0;
     const rand = MathUtils.rng(); // random float bewteen 0 - 1 included (sum of weights must be = 1)
 
-    for (let i = 0, n = biome.organisms.length; i < n; i++) {
+    const organisms = (<Object>parameters).hasOwnProperty('float')
+      ? biome.organisms.filter(object => object.float === parameters.float)
+      : biome.organisms;
+
+    for (let i = 0, n = organisms.length; i < n; i++) {
       let y = e * Chunk.MAX_TERRAIN_HEIGHT;
       temp += biome.organisms[i].weight;
 
       if (rand <= temp) {
-        const organism = biome.organisms[i];
+        const organism = organisms[i];
 
         const scale = organism.scale ? MathUtils.randomFloat(organism.scale.min, organism.scale.max) : 1;
 
