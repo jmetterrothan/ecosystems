@@ -13,7 +13,7 @@ import OceanBiome from '@world/Biomes/OceanBiome';
 
 import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
 import { WATER_MATERIAL, WATER_SIDE_MATERIAL } from '@materials/water.material';
-import { CLOUD_MATERIAL } from '@materials/cloud.material';
+
 import { IBiome } from '@shared/models/biome.model';
 import { IPick } from '@shared/models/pick.model';
 import Crosshair from '../UI/Crosshair';
@@ -61,8 +61,9 @@ class Terrain {
    * Terrain constructor
    * @param {THREE.Scene} scene
    */
-  constructor(scene: THREE.Scene) {
+  constructor(scene: THREE.Scene, clouds: THREE.Group) {
     this.scene = scene;
+    this.clouds = clouds;
 
     this.generator = new BiomeGenerator();
     this.boidsAllowed = this.generator.getBiome() instanceof OceanBiome;
@@ -104,13 +105,6 @@ class Terrain {
     this.waterSide.castShadow = false;
     this.waterSide.receiveShadow = false;
     this.layers.add(this.waterSide);
-
-    // clouds
-    this.clouds = new THREE.Group(); // new THREE.Mesh(new THREE.Geometry(), CLOUD_MATERIAL);
-    this.clouds.frustumCulled = true;
-    this.clouds.castShadow = true;
-    this.clouds.receiveShadow = true;
-    this.layers.add(this.clouds);
 
     // this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
 
@@ -232,31 +226,6 @@ class Terrain {
 
     // entities update
     if (this.boidsAllowed) this.boids.update(delta);
-  }
-
-  updateClouds(delta, wind) {
-    for (const cloud of this.clouds.children) {
-      // move cloud
-      cloud.position.add(wind.clone().multiplyScalar(delta));
-      cloud.updateMatrixWorld(true);
-
-      // reset position if the cloud goes off the edges of the world
-      const bbox: THREE.Box3 = new THREE.Box3().setFromObject(cloud);
-      const size = bbox.getSize(new THREE.Vector3());
-
-      if (bbox.max.x < 0) {
-        cloud.position.x = Terrain.SIZE_X - size.z / 2;
-      }
-      if (bbox.max.z < 0) {
-        cloud.position.z = Terrain.SIZE_Z - size.z / 2;
-      }
-      if (bbox.min.x > Terrain.SIZE_X) {
-        cloud.position.x = size.x / 2;
-      }
-      if (bbox.min.z > Terrain.SIZE_Z) {
-        cloud.position.z = size.z / 2;
-      }
-    }
   }
 
   handleMouseInteraction(raycaster: THREE.Raycaster, interactionType: MOUSE_TYPES) {
