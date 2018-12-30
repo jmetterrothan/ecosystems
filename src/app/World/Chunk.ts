@@ -348,7 +348,7 @@ class Chunk {
 
     // animation
     new TWEEN.Tween(object.scale)
-      .to(scaleSaved, 500)
+      .to(scaleSaved, 750)
       .delay(Chunk.ANIMATION_DELAY)
       .easing(TWEEN.Easing.Bounce.Out)
       .start();
