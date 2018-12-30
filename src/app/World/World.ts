@@ -32,7 +32,7 @@ class World {
   static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 
   static readonly RAIN_PROBABILITY: number = 1;
-  static readonly RAIN_PARTICLES_COUNT: number = 500;
+  static readonly RAIN_PARTICLES_COUNT: number = 2000;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
   static LOADED_TEXTURES = new Map<string, THREE.Texture>();
@@ -203,9 +203,7 @@ class World {
         particleSystem: new THREE.Points(particles, material)
       };
 
-      particles.verticesNeedUpdate = true;
       data.particleSystem.position.set(cloud.position.x, cloud.position.y, cloud.position.z);
-
       this.scene.add(data.particleSystem);
 
       cloud.userData = data;
@@ -247,9 +245,7 @@ class World {
     for (const cloud of this.clouds.children) {
       // move cloud
       cloud.position.add(this.wind.clone().multiplyScalar(delta));
-      (<ICloudData>cloud.userData).particleSystem.position.set(
-        cloud.position.x, cloud.position.y, cloud.position.z
-      );
+
       cloud.updateMatrixWorld(true);
 
       // reset position if the cloud goes off the edges of the world
@@ -268,6 +264,22 @@ class World {
       if (bbox.min.z > Terrain.SIZE_Z) {
         cloud.position.z = size.z / 2;
       }
+
+      // rain
+      const rainData = cloud.userData as ICloudData;
+
+      // set particle system position
+      rainData.particleSystem.position.set(
+        cloud.position.x, cloud.position.y, cloud.position.z
+      );
+
+      rainData.particles.vertices.forEach(position => {
+        if (position.y <= Chunk.SEA_ELEVATION) position.y = Chunk.CLOUD_LEVEL;
+        position.y -= 100;
+      });
+
+      rainData.particles.verticesNeedUpdate = true;
+
     }
   }
 
