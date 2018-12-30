@@ -13,7 +13,7 @@ import OceanBiome from '@world/Biomes/OceanBiome';
 
 import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
 import { WATER_MATERIAL, WATER_SIDE_MATERIAL } from '@materials/water.material';
-import { CLOUD_MATERIAL } from '@materials/cloud.material';
+
 import { IBiome } from '@shared/models/biome.model';
 import { IPick } from '@shared/models/pick.model';
 import Crosshair from '../UI/Crosshair';
@@ -44,7 +44,7 @@ class Terrain {
   public terrainSide: THREE.Mesh;
   public water: THREE.Mesh;
   public waterSide: THREE.Mesh;
-  public clouds: THREE.Mesh;
+  public clouds: THREE.Group;
 
   private layers: THREE.Group;
 
@@ -61,8 +61,9 @@ class Terrain {
    * Terrain constructor
    * @param {THREE.Scene} scene
    */
-  constructor(scene: THREE.Scene) {
+  constructor(scene: THREE.Scene, clouds: THREE.Group) {
     this.scene = scene;
+    this.clouds = clouds;
 
     this.generator = new BiomeGenerator();
     this.boidsAllowed = this.generator.getBiome() instanceof OceanBiome;
@@ -104,13 +105,6 @@ class Terrain {
     this.waterSide.castShadow = false;
     this.waterSide.receiveShadow = false;
     this.layers.add(this.waterSide);
-
-    // clouds
-    this.clouds = new THREE.Mesh(new THREE.Geometry(), CLOUD_MATERIAL);
-    this.clouds.frustumCulled = true;
-    this.clouds.castShadow = true;
-    this.clouds.receiveShadow = true;
-    this.layers.add(this.clouds);
 
     // this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
 

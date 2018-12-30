@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 import World from '@world/World';
 import Creature from './Creature';
+import Main from '../Main';
 
 class Boids {
 
@@ -29,7 +30,9 @@ class Boids {
       )
     );
 
-    // this.scene.add(new THREE.Box3Helper(mesh, 0xffff00));
+    if (Main.DEBUG) {
+      this.scene.add(<THREE.Object3D>new THREE.Box3Helper(mesh, 0xffff00));
+    }
   }
 
   generate() {
