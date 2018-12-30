@@ -373,7 +373,7 @@ class Terrain {
         const x = X(row, col);
         const z = Z(row, col);
 
-        const y = row === 0 ? this.generator.computeWaterHeightAt(x, z) : this.generator.computeHeightAt(x, z) - 2048;
+        const y = row === 0 ? this.generator.computeWaterHeightAt(x, z) : Math.min(this.generator.computeHeightAt(x, z) - 2048, Chunk.SEA_LEVEL);
 
         geometry.vertices.push(new THREE.Vector3(x, y, z));
       }
