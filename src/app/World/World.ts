@@ -33,8 +33,7 @@ class World {
   static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 
   static readonly RAIN_PROBABILITY: number = 1;
-  static readonly RAIN_PARTICLES_COUNT: number = 200;
-  static readonly RAIN_VELOCITY: number = 200;
+  static readonly RAIN_VELOCITY: number = 150;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
   static LOADED_TEXTURES = new Map<string, THREE.Texture>();
@@ -184,7 +183,9 @@ class World {
       // particles
       const size = new THREE.Box3().setFromObject(cloud).getSize(new THREE.Vector3());
       const particles = new THREE.Geometry();
-      for (let i = 0; i < World.RAIN_PARTICLES_COUNT; i++) {
+      const particleCount = (size.x * size.y * size.z) / 2000000000;
+
+      for (let i = 0; i < particleCount; i++) {
         particles.vertices.push(new THREE.Vector3(
           MathUtils.randomInt(-size.x / 3, size.x / 3),
           MathUtils.randomInt(Chunk.SEA_LEVEL, Chunk.CLOUD_LEVEL),
