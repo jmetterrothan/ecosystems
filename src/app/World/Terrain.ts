@@ -80,61 +80,9 @@ class Terrain {
   }
 
   init() {
-    // main terrain with borders
-    this.terrain = new THREE.Mesh(new THREE.Geometry(), TERRAIN_MATERIAL);
-    this.terrain.frustumCulled = true;
-    this.terrain.castShadow = true;
-    this.terrain.receiveShadow = true;
-    this.layers.add(this.terrain);
-
-    // water
-    this.water = new THREE.Mesh(new THREE.Geometry(), WATER_MATERIAL);
-    this.water.frustumCulled = true;
-    this.water.castShadow = true;
-    this.water.receiveShadow = true;
-    this.layers.add(this.water);
-
-    this.terrainSide = new THREE.Mesh(new THREE.Geometry(), TERRAIN_SIDE_MATERIAL);
-    this.terrainSide.frustumCulled = true;
-    this.terrainSide.castShadow = false;
-    this.terrainSide.receiveShadow = false;
-    this.layers.add(this.terrainSide);
-
-    this.waterSide = new THREE.Mesh(new THREE.Geometry(), WATER_SIDE_MATERIAL);
-    this.waterSide.frustumCulled = true;
-    this.waterSide.castShadow = false;
-    this.waterSide.receiveShadow = false;
-    this.layers.add(this.waterSide);
-
-    // clouds
-    this.clouds = new THREE.Mesh(new THREE.Geometry(), CLOUD_MATERIAL);
-    this.clouds.frustumCulled = true;
-    this.clouds.castShadow = true;
-    this.clouds.receiveShadow = true;
-    this.layers.add(this.clouds);
-
-    // this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
-
-    this.scene.add(this.layers);
-
-    if (this.boidsAllowed) {
-      this.boids = new Boids(
-        this.scene,
-        new THREE.Vector3(Terrain.SIZE_X - 35000, 27500, Terrain.SIZE_Z - 35000),
-        new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2),
-        50
-      );
-      this.boids.generate();
-    }
-
-    underwaterService.observable$.subscribe(
-      () => {
-        if (this.previewObject) {
-          this.scene.remove(this.previewObject);
-          this.resetPreview();
-        }
-      }
-    );
+    this.initMeshes();
+    this.initBoids();
+    this.initUnderwater();
   }
 
   /**
@@ -301,7 +249,7 @@ class Terrain {
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
       const validDistance = chunk.checkInteractionDistance(intersection.distance);
 
-      Crosshair.switch(validDistance);
+      Crosshair.switch(validDistance && this.previewActive);
 
       if (!validDistance) {
         if (this.previewObject) {
@@ -328,7 +276,10 @@ class Terrain {
           force: true,
           float: this.intersectionSurface === this.water
         });
-        if (!item) return;
+        if (!item) {
+          this.previewActive = false;
+          return;
+        }
 
         this.previewItem = item;
         this.previewObject = chunk.getObject(this.previewItem);
@@ -515,6 +466,68 @@ class Terrain {
     geometry.normalsNeedUpdate = true;
 
     return new THREE.Mesh(geometry, TERRAIN_MATERIAL);
+  }
+
+  private initMeshes() {
+    // main terrain with borders
+    this.terrain = new THREE.Mesh(new THREE.Geometry(), TERRAIN_MATERIAL);
+    this.terrain.frustumCulled = true;
+    this.terrain.castShadow = true;
+    this.terrain.receiveShadow = true;
+    this.layers.add(this.terrain);
+
+    // water
+    this.water = new THREE.Mesh(new THREE.Geometry(), WATER_MATERIAL);
+    this.water.frustumCulled = true;
+    this.water.castShadow = true;
+    this.water.receiveShadow = true;
+    this.layers.add(this.water);
+
+    this.terrainSide = new THREE.Mesh(new THREE.Geometry(), TERRAIN_SIDE_MATERIAL);
+    this.terrainSide.frustumCulled = true;
+    this.terrainSide.castShadow = false;
+    this.terrainSide.receiveShadow = false;
+    this.layers.add(this.terrainSide);
+
+    this.waterSide = new THREE.Mesh(new THREE.Geometry(), WATER_SIDE_MATERIAL);
+    this.waterSide.frustumCulled = true;
+    this.waterSide.castShadow = false;
+    this.waterSide.receiveShadow = false;
+    this.layers.add(this.waterSide);
+
+    // clouds
+    this.clouds = new THREE.Mesh(new THREE.Geometry(), CLOUD_MATERIAL);
+    this.clouds.frustumCulled = true;
+    this.clouds.castShadow = true;
+    this.clouds.receiveShadow = true;
+    this.layers.add(this.clouds);
+
+    // this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
+
+    this.scene.add(this.layers);
+  }
+
+  private initBoids() {
+    if (this.boidsAllowed) {
+      this.boids = new Boids(
+        this.scene,
+        new THREE.Vector3(Terrain.SIZE_X - 35000, 27500, Terrain.SIZE_Z - 35000),
+        new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2),
+        50
+      );
+      this.boids.generate();
+    }
+  }
+
+  private initUnderwater() {
+    underwaterService.observable$.subscribe(
+      () => {
+        if (this.previewObject) {
+          this.scene.remove(this.previewObject);
+          this.resetPreview();
+        }
+      }
+    );
   }
 
   private resetPreview() {
