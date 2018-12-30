@@ -467,7 +467,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.10,
         name: 'lilypad',
-        scarcity: 0.65,
+        scarcity: 0.85,
         e: { low: Chunk.SEA_ELEVATION - 0.1, high: Chunk.SEA_ELEVATION - 0.01 },
         m: null,
         scale: { min: 1.0, max: 1.35 },

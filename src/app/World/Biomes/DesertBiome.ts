@@ -8,8 +8,7 @@ import { IBiome } from '@shared/models/biome.model';
 import { BIOMES } from '@shared/constants/biome.constants';
 import MathUtils from '@shared/utils/Math.utils';
 
-class DesertBiome extends Biome
-{
+class DesertBiome extends Biome {
   constructor(generator: BiomeGenerator) {
     super('DESERT', generator);
   }
@@ -43,8 +42,8 @@ class DesertBiome extends Biome
     return Math.max(value - 0.5, 0.0);
   }
 
-  getParametersAt(e: number, m: number) : IBiome {
-    if (e < Chunk.SEA_ELEVATION - 0.10 - MathUtils.randomFloat(0.01, 0.025)) {
+  getParametersAt(e: number, m: number): IBiome {
+    if (e < Chunk.SEA_ELEVATION - 0.115) {
       return BIOMES.OCEAN;
     }
 

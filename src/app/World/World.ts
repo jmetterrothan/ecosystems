@@ -4,6 +4,7 @@ import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
+import Main from '../Main';
 import Terrain from './Terrain';
 import Chunk from './Chunk';
 import Player from '../Player';
@@ -11,9 +12,10 @@ import Player from '../Player';
 import { OBJECTS } from '@shared/constants/object.constants';
 
 import MathUtils from '@utils/Math.utils';
+import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 class World {
-  static SEED: string | null = null; // '789005037'
+  static SEED: string | null = '2915501844';
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
@@ -39,6 +41,9 @@ class World {
   private raycaster: THREE.Raycaster;
   private seed: string;
 
+  private clouds: THREE.Group;
+  private wind: THREE.Vector3;
+
   constructor(scene: THREE.Scene, camera: THREE.PerspectiveCamera, controls: THREE.PointerLockControls) {
     this.scene = scene;
     this.camera = camera;
@@ -53,9 +58,10 @@ class World {
     this.initFog();
     this.initLights();
     await this.initObjects();
+    this.initClouds();
 
     // stuff
-    this.terrain = new Terrain(this.scene);
+    this.terrain = new Terrain(this.scene, this.clouds);
     this.terrain.init();
     this.terrain.preload();
 
@@ -64,6 +70,10 @@ class World {
 
     this.player = new Player(this.controls);
     this.player.init(spawn, target);
+
+    this.player.underwaterObservable$.subscribe(
+      underwater => console.log(underwater)
+    );
 
     this.scene.add(this.controls.getObject());
   }
@@ -121,10 +131,31 @@ class World {
     await Promise.all(stack);
   }
 
+  private initClouds() {
+    // clouds
+    this.clouds = new THREE.Group(); // new THREE.Mesh(new THREE.Geometry(), CLOUD_MATERIAL);
+    this.clouds.frustumCulled = true;
+    this.clouds.castShadow = true;
+    this.clouds.receiveShadow = true;
+    this.scene.add(this.clouds);
+
+    this.wind = new THREE.Vector3(0, 0, -1024);
+
+    // wind direction helper
+    if (Main.DEBUG) {
+      const arrowHelper = new THREE.ArrowHelper(this.wind, new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.CLOUD_LEVEL, Terrain.SIZE_Z / 2), 10000, 0xff0000);
+      this.scene.add(arrowHelper);
+    }
+  }
+
+  getTerrain(): Terrain {
+    return this.terrain;
+  }
+
   /**
    * @param {number} delta
    */
-  public update(delta) {
+  update(delta) {
     this.camera.updateMatrixWorld(true);
 
     this.frustum.setFromMatrix(
@@ -136,26 +167,51 @@ class World {
 
     this.terrain.update(this.frustum, this.controls.getObject().position, delta);
     this.player.update(this.terrain, delta);
+    this.handleMouseInteraction(MOUSE_TYPES.MOVE);
 
     /*
     if (position.y < Chunk.SEA_LEVEL) {
       // console.log('underwater');
     }
     */
+
+    this.updateClouds(delta);
   }
 
-  /**
-   * Handle mouse click
-   * @param {THREE.Vector2} pos Raw mouse input
-   */
-  public handleMouseClick(pos: THREE.Vector2) {
-    // use ray tracing to detect clics on the terrain in 3d space
-    const mouse = new THREE.Vector2();
-    mouse.x = (pos.x / window.innerWidth) * 2 - 1;
-    mouse.y = (pos.y / window.innerHeight) * -2 + 1;
+  updateClouds(delta) {
+    for (const cloud of this.clouds.children) {
+      // move cloud
+      cloud.position.add(this.wind.clone().multiplyScalar(delta));
+      cloud.updateMatrixWorld(true);
+
+      // reset position if the cloud goes off the edges of the world
+      const bbox: THREE.Box3 = new THREE.Box3().setFromObject(cloud);
+      const size = bbox.getSize(new THREE.Vector3());
+
+      if (bbox.max.x < 0) {
+        cloud.position.x = Terrain.SIZE_X - size.z / 2;
+      }
+      if (bbox.max.z < 0) {
+        cloud.position.z = Terrain.SIZE_Z - size.z / 2;
+      }
+      if (bbox.min.x > Terrain.SIZE_X) {
+        cloud.position.x = size.x / 2;
+      }
+      if (bbox.min.z > Terrain.SIZE_Z) {
+        cloud.position.z = size.z / 2;
+      }
+    }
+  }
+
+  handleMouseInteraction(interactionType: MOUSE_TYPES) {
+    const pos = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
+    const mouse = new THREE.Vector2(
+      (pos.x / window.innerWidth) * 2 - 1,
+      (pos.y / window.innerHeight) * -2 + 1
+    );
 
     this.raycaster.setFromCamera(mouse, this.camera);
-    this.terrain.handleMouseInteraction(this.raycaster);
+    this.terrain.handleMouseInteraction(this.raycaster, interactionType);
   }
 
   /**
@@ -213,7 +269,7 @@ class World {
 
           World.LOADED_MODELS.set(element.name, object);
           // const box = new THREE.Box3().setFromObject(object);
-         // const size = box.getSize(new THREE.Vector3(0, 0, 0));
+          // const size = box.getSize(new THREE.Vector3(0, 0, 0));
 
           resolve(object);
         }, null, () => reject());

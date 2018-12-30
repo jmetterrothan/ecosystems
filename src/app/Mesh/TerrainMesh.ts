@@ -67,8 +67,8 @@ class TerrainMesh extends Mesh {
         const m1 = this.generator.computeMoistureAt(x1, z1);
         const m2 = this.generator.computeMoistureAt(x2, z2);
 
-        f1.color = this.generator.getBiome(y1 / Chunk.MAX_TERRAIN_HEIGHT, m1).color;
-        f2.color = this.generator.getBiome(y2 / Chunk.MAX_TERRAIN_HEIGHT, m2).color;
+        f1.color = this.generator.getSubBiome(y1 / Chunk.MAX_TERRAIN_HEIGHT, m1).color;
+        f2.color = this.generator.getSubBiome(y2 / Chunk.MAX_TERRAIN_HEIGHT, m2).color;
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);
@@ -110,7 +110,7 @@ class TerrainMesh extends Mesh {
   needGenerateCloud(): boolean {
     const t = (this.moistureAverage > 0.65) ? 0.85 : 0.975;
 
-    return this.moistureAverage > 0.30 && MathUtils.rng() > t;
+    return this.moistureAverage > 0.25 && MathUtils.rng() > t;
   }
 }
 
