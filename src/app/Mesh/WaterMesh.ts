@@ -10,7 +10,7 @@ import { WATER_MATERIAL } from '@materials/water.material';
 import { IChunkParameters } from '@shared/models/chunkParameters.model';
 
 class WaterMesh extends Mesh {
-  static SEA_OFFSET: number = 2;
+  static SEA_OFFSET: number = 0;
 
   constructor(generator: BiomeGenerator, row: number, col: number) {
     super(generator, row, col, MESH_TYPES.WATER_MESH, <IChunkParameters>{

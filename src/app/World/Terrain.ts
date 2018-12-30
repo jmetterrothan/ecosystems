@@ -12,7 +12,7 @@ import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import OceanBiome from '@world/Biomes/OceanBiome';
 
 import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
-import { WATER_MATERIAL, WATER_SIDE_MATERIAL } from '@materials/water.material';
+import { WATER_MATERIAL } from '@materials/water.material';
 
 import { IBiome } from '@shared/models/biome.model';
 import { IPick } from '@shared/models/pick.model';
@@ -143,7 +143,7 @@ class Terrain {
     return chunk;
   }
 
-  update(frustum: THREE.Frustum, position: THREE.Vector3, delta: number) {
+  update(frustum: THREE.Frustum, position: THREE.Vector3, delta: number, tick: number) {
     this.getChunkCoordAt(this.chunk, position.x, position.z);
 
     this.start.col = this.chunk.col - World.MAX_VISIBLE_CHUNKS;
@@ -191,6 +191,9 @@ class Terrain {
 
     // entities update
     if (this.boidsAllowed) this.boids.update(delta);
+
+    this.water.material.uniforms.time.value = tick;
+    this.water.material.uniforms.time.needsUpdate = true;
   }
 
   handleMouseInteraction(raycaster: THREE.Raycaster, interactionType: MOUSE_TYPES) {
@@ -275,7 +278,7 @@ class Terrain {
 
         const item = chunk.pick(intersection.point.x, intersection.point.z, {
           force: true,
-          float: this.intersectionSurface === this.water
+          float: (this.intersectionSurface === this.water)
         });
         if (!item) {
           this.previewActive = false;
@@ -370,7 +373,7 @@ class Terrain {
         const x = X(row, col);
         const z = Z(row, col);
 
-        const y = row === 0 ? this.generator.computeWaterHeightAt(x, z) : this.generator.computeHeightAt(x, z) - 2500;
+        const y = row === 0 ? this.generator.computeWaterHeightAt(x, z) : this.generator.computeHeightAt(x, z) - 2048;
 
         geometry.vertices.push(new THREE.Vector3(x, y, z));
       }
@@ -412,7 +415,7 @@ class Terrain {
     geometry.computeVertexNormals();
     geometry.normalsNeedUpdate = true;
 
-    return new THREE.Mesh(geometry, WATER_SIDE_MATERIAL);
+    return new THREE.Mesh(geometry, WATER_MATERIAL);
   }
 
   /**
@@ -490,7 +493,7 @@ class Terrain {
     this.terrainSide.receiveShadow = false;
     this.layers.add(this.terrainSide);
 
-    this.waterSide = new THREE.Mesh(new THREE.Geometry(), WATER_SIDE_MATERIAL);
+    this.waterSide = new THREE.Mesh(new THREE.Geometry(), WATER_MATERIAL);
     this.waterSide.frustumCulled = true;
     this.waterSide.castShadow = false;
     this.waterSide.receiveShadow = false;

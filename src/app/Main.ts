@@ -174,7 +174,7 @@ class Main {
     const delta = elapsed / 1000;
 
     // updated every time
-    this.world.update(delta);
+    this.world.update(delta, time / 1000);
 
     /*
     this.effect.uniforms['time'].value += Math.random();
