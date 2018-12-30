@@ -99,7 +99,7 @@ class Player {
     let y = -(Chunk.HEIGHT / 2) | 0;
 
     if (position.x >= 0 && position.x <= Terrain.SIZE_X && position.z >= 0 && position.z <= Terrain.SIZE_Z) {
-      y = terrain.getHeightAt(position.x, position.z) + 1024;
+      y = terrain.getHeightAt(position.x, position.z) + 5000;
     }
 
     if (position.y < y) {
