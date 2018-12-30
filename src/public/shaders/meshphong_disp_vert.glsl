@@ -1,8 +1,10 @@
 #define PHONG
 
 varying vec3 vViewPosition;
+varying vec3 vPosition;
 
 uniform float time;
+uniform vec3 size;
 uniform bool water_distortion;
 uniform float water_distortion_freq;
 uniform float water_distortion_amp;
@@ -59,12 +61,13 @@ void main() {
 	#include <shadowmap_vertex>
 	#include <fog_vertex>
 
-  if (water_distortion) {
+  vPosition = position;
+
+  if (water_distortion && position.x > 0.0 && position.z > 0.0 && position.x < size.x && position.z < size.z) {
     float ax = (time + position.x) * water_distortion_freq;
     float az = (time + position.z) * water_distortion_freq;
 
     float dy = cos(ax) * water_distortion_amp + sin(az) * water_distortion_amp;
-
     gl_Position.y += dy;
   }
 }

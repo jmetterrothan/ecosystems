@@ -1,17 +1,19 @@
 import * as THREE from 'three';
 
 import meshphong_disp_vertGlsl from '@shaders/meshphong_disp_vert.glsl';
+import meshphong_disp_fragGlsl from '@shaders/meshphong_disp_frag.glsl';
 
 const customUniforms = THREE.UniformsUtils.merge([
   THREE.ShaderLib.phong.uniforms,
   {
     time: { value: 0.0 },
+    size: { value: new THREE.Vector3(0, 0, 0) },
     water_distortion: { value: true },
-    water_distortion_freq: { value: 2.0 },
-    water_distortion_amp: { value: 1000.0 },
-    shininess: { value: 35 },
+    water_distortion_freq: { value: 4.0 },
+    water_distortion_amp: { value: 512.0 },
+    shininess: { value: 30 },
     opacity: { value: 0.65 },
-    reflectivity: { value: 0.75 },
+    reflectivity: { value: 1.0 },
     specular: { value: new THREE.Color(0x505050) }
   }
 ]);
@@ -19,7 +21,7 @@ const customUniforms = THREE.UniformsUtils.merge([
 export const WATER_MATERIAL = new THREE.ShaderMaterial({
   uniforms: customUniforms,
   vertexShader: meshphong_disp_vertGlsl,
-  fragmentShader: THREE.ShaderLib.phong.fragmentShader,
+  fragmentShader: meshphong_disp_fragGlsl,
   lights: true,
   name: 'custom-material',
   wireframe: false,
