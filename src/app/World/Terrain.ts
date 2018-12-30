@@ -80,6 +80,10 @@ class Terrain {
     this.end = new Coord();
   }
 
+  getGenerator(): BiomeGenerator {
+    return this.generator;
+  }
+
   init() {
     this.initMeshes();
     this.initBoids();
