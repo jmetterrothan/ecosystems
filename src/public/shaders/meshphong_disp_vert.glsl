@@ -60,7 +60,11 @@ void main() {
 	#include <fog_vertex>
 
   if (water_distortion) {
-    float dy = (cos((time + position.x) * water_distortion_freq) + sin((time + position.z) * water_distortion_freq)) * water_distortion_amp;
+    float ax = (time + position.x) * water_distortion_freq;
+    float az = (time + position.z) * water_distortion_freq;
+
+    float dy = cos(ax) * water_distortion_amp + sin(az) * water_distortion_amp;
+
     gl_Position.y += dy;
   }
 }
