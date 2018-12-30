@@ -44,7 +44,7 @@ class Terrain {
   public terrainSide: THREE.Mesh;
   public water: THREE.Mesh;
   public waterSide: THREE.Mesh;
-  public clouds: THREE.Mesh;
+  public clouds: THREE.Group;
 
   private layers: THREE.Group;
 
@@ -106,7 +106,7 @@ class Terrain {
     this.layers.add(this.waterSide);
 
     // clouds
-    this.clouds = new THREE.Mesh(new THREE.Geometry(), CLOUD_MATERIAL);
+    this.clouds = new THREE.Group(); // new THREE.Mesh(new THREE.Geometry(), CLOUD_MATERIAL);
     this.clouds.frustumCulled = true;
     this.clouds.castShadow = true;
     this.clouds.receiveShadow = true;
@@ -232,6 +232,31 @@ class Terrain {
 
     // entities update
     if (this.boidsAllowed) this.boids.update(delta);
+  }
+
+  updateClouds(delta, wind) {
+    for (let i = 0; i < this.clouds.children.length; i++) {
+      const cloud: THREE.Mesh = <THREE.Mesh>this.clouds.children[i];
+      cloud.position.add(wind.clone().multiplyScalar(delta));
+      cloud.updateMatrixWorld(true);
+
+      const bbox: THREE.Box3 = new THREE.Box3().setFromObject(cloud);
+      const size = bbox.getSize(new THREE.Vector3());
+
+      if (bbox.max.x < 0) {
+        cloud.position.x = Terrain.SIZE_X;
+      }
+      if (bbox.max.z < 0) {
+        cloud.position.z = Terrain.SIZE_Z - size.z;
+      }
+
+      if (bbox.min.x > Terrain.SIZE_X) {
+        cloud.position.x = 0;
+      }
+      if (bbox.min.z > Terrain.SIZE_Z) {
+        cloud.position.z = size.z;
+      }
+    }
   }
 
   handleMouseInteraction(raycaster: THREE.Raycaster, interactionType: MOUSE_TYPES) {

@@ -13,6 +13,7 @@ import MathUtils from '@utils/Math.utils';
 
 import { IPick } from '@shared/models/pick.model';
 import { IPlaceObject, IPickObject } from '@shared/models/objectParameters.model';
+import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
 class Chunk {
   static readonly SHOW_HELPER: boolean = false;
@@ -138,12 +139,10 @@ class Chunk {
       mesh.position.set(x, y, z);
       mesh.scale.set(s, s, s);
       mesh.updateMatrixWorld(true);
-      mesh.geometry.computeBoundingBox();
+      mesh.material = CLOUD_MATERIAL;
 
       // put the cloud in the world only if it doesn't collide with the terrain
-      const bbox = mesh.geometry.boundingBox;
-      // update bbox matrix
-      bbox.applyMatrix4(mesh.matrixWorld);
+      const bbox = new THREE.Box3().setFromObject(mesh);
 
       const p1 = this.generator.computeHeightAt(bbox.min.x, bbox.min.z);
       const p2 = this.generator.computeHeightAt(bbox.max.x, bbox.min.z);
@@ -151,8 +150,11 @@ class Chunk {
       const p4 = this.generator.computeHeightAt(bbox.max.x, bbox.max.z);
 
       if (p1 < Chunk.CLOUD_LEVEL && p2 < Chunk.CLOUD_LEVEL && p3 < Chunk.CLOUD_LEVEL && p4 < Chunk.CLOUD_LEVEL) {
+        /*
         (<THREE.Geometry>terrain.clouds.geometry).mergeMesh(mesh);
         (<THREE.Geometry>terrain.clouds.geometry).elementsNeedUpdate = true;
+        */
+        terrain.clouds.add(mesh);
       }
     }
 

@@ -15,7 +15,7 @@ import MathUtils from '@utils/Math.utils';
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 class World {
-  static SEED: string | null = null; // '789005037'
+  static SEED: string | null = '2915501844';
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
@@ -51,10 +51,11 @@ class World {
     this.frustum = new THREE.Frustum();
     this.raycaster = new THREE.Raycaster();
 
-    this.wind = new THREE.Vector3(0, 0, -2048);
+    this.wind = new THREE.Vector3(0, 0, -4096);
 
+    // wind direction helper
     if (Main.DEBUG) {
-      const arrowHelper = new THREE.ArrowHelper(this.wind, new THREE.Vector3(Terrain.SIZE_X / 2, Terrain.SIZE_Y / 2, Terrain.SIZE_Z / 2), 10000, 0xff0000);
+      const arrowHelper = new THREE.ArrowHelper(this.wind, new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.CLOUD_LEVEL, Terrain.SIZE_Z / 2), 10000, 0xff0000);
       this.scene.add(arrowHelper);
     }
   }
@@ -162,6 +163,8 @@ class World {
       // console.log('underwater');
     }
     */
+
+    this.terrain.updateClouds(delta, this.wind);
   }
 
   handleMouseInteraction(interactionType: MOUSE_TYPES) {
