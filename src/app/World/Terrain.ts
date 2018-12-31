@@ -274,6 +274,7 @@ class Terrain {
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
       const validDistance = chunk.checkInteractionDistance(intersection.distance);
 
+      Crosshair.show(validDistance);
       Crosshair.switch(validDistance && this.previewActive);
 
       if (!validDistance || this.intersectBorder(intersection.point)) {

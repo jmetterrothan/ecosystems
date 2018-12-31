@@ -11,6 +11,10 @@ class Crosshair {
     this.generate();
   }
 
+  static show(bool: boolean) {
+    Crosshair.htmlElement.style.visibility = bool ? 'visible' : 'hidden';
+  }
+
   static switch(valid: boolean) {
     if (valid && Crosshair.htmlElement.classList.contains(Crosshair.invalidClassName)) {
       Crosshair.htmlElement.classList.remove(Crosshair.invalidClassName);
