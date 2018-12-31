@@ -33,7 +33,7 @@ class World {
   static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 
   static readonly RAIN_PROBABILITY: number = 1;
-  static readonly RAIN_VELOCITY: number = 125;
+  static readonly RAIN_SPEED: number = 125;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
   static LOADED_TEXTURES = new Map<string, THREE.Texture>();
@@ -118,7 +118,7 @@ class World {
     light.castShadow = false;
     this.scene.add(light);
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.275);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.295);
     ambient.position.set(0, Chunk.HEIGHT, 15000);
     ambient.castShadow = false;
     this.scene.add(ambient);
@@ -186,7 +186,7 @@ class World {
     this.clouds.receiveShadow = true;
     this.scene.add(this.clouds);
 
-    this.wind = new THREE.Vector3(0, 0, 1024 * Math.sign(Math.random() - 0.5));
+    this.wind = new THREE.Vector3(0, 0, 768 * Math.sign(Math.random() - 0.5));
 
     // wind direction helper
     if (Main.DEBUG) {
@@ -311,11 +311,11 @@ class World {
         if (position.y <= Chunk.SEA_ELEVATION) position.y = Chunk.CLOUD_LEVEL - size.y / 2;
         if (rainData.isRaininig) {
           rainData.particleMaterial.visible = true;
-          position.y -= World.RAIN_VELOCITY;
+          position.y -= World.RAIN_SPEED;
         } else {
           // rain stop
           if (position.y < Chunk.CLOUD_LEVEL - 1000) {
-            position.y -= World.RAIN_VELOCITY;
+            position.y -= World.RAIN_SPEED;
           } else {
             position.set(cloud.position.x, Chunk.CLOUD_LEVEL - size.y / 2, cloud.position.z);
           }
