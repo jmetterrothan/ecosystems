@@ -131,6 +131,10 @@ class World {
     sunlight.shadow.camera.near = 0.5;
     sunlight.shadow.camera.far = Terrain.SIZE_X * 2;
 
+    if (Main.DEBUG) {
+      this.scene.add(new THREE.DirectionalLightHelper(sunlight, 5));
+    }
+
     this.scene.add(sunlight);
   }
 
