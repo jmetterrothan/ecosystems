@@ -20,8 +20,8 @@ import underwaterService from '@shared/services/underwater.service';
 import MathUtils from '@shared/utils/Math.utils';
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 12;
-  static readonly NCHUNKS_Z: number = 12;
+  static readonly NCHUNKS_X: number = 16;
+  static readonly NCHUNKS_Z: number = 16;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 

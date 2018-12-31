@@ -1,7 +1,6 @@
 # This file uses centimeters as units for non-parametric coordinates.
 
 mtllib jungle_tree.mtl
-g default
 v 0.190427 -1.558634 -0.371285
 v -0.190426 -1.558634 -0.371285
 v -0.363875 -1.525204 0.006516
@@ -1020,7 +1019,6 @@ vn 0.043081 0.753186 0.656396
 vn -0.263323 0.634881 0.726352
 vn -0.263323 0.634881 0.726352
 vn -0.263323 0.634881 0.726352
-g pCylinder12 jungle_tree
 usemtl pasted__spruce_woodSG
 f 15/30/1 16/31/2 160/186/3 159/185/4
 f 16/31/5 17/32/6 161/187/7 160/186/8
