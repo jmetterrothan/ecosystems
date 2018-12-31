@@ -209,7 +209,17 @@ export const BIOMES: IBiomes = {
   },
   CORAL_REEF: {
     color: new THREE.Color(0xd0b480),
-    organisms: []
+    organisms: [
+      {
+        weight: 1,
+        name: 'rock2',
+        scarcity: 0.95,
+        e: null,
+        m: null,
+        scale: { min: 1.0, max: 2.0 },
+        float: false,
+      },
+    ]
   },
   RAINFOREST: {
     color: new THREE.Color(0x3ead68),
@@ -350,7 +360,7 @@ export const BIOMES: IBiomes = {
         weight: 0.5,
         name: 'rock1',
         scarcity: 0.965,
-        e: { low: 0.0175, high: 0.5 },
+        e: { low: -1, high: 0.5 },
         m: null,
         scale: { min: 0.65, max: 0.95 },
         float: false,
@@ -364,7 +374,7 @@ export const BIOMES: IBiomes = {
         weight: 0.5,
         name: 'rock2',
         scarcity: 0.965,
-        e: { low: 0.0175, high: 0.5 },
+        e: { low: -1, high: 0.5 },
         m: null,
         scale: { min: 0.65, max: 0.95 },
         float: false,
@@ -401,7 +411,7 @@ export const BIOMES: IBiomes = {
         weight: 0.50,
         name: 'lilypad',
         scarcity: 0.8,
-        e: null,
+        e: { low: -1, high: Chunk.SEA_ELEVATION },
         m: { low: 0.65, high: 1.0 },
         scale: { min: 1.0, max: 1.5 },
         float: true,
@@ -496,7 +506,7 @@ export const BIOMES: IBiomes = {
         weight: 0.10,
         name: 'lilypad',
         scarcity: 0.85,
-        e: { low: Chunk.SEA_ELEVATION - 0.1, high: Chunk.SEA_ELEVATION - 0.01 },
+        e: { low: -1, high: Chunk.SEA_ELEVATION },
         m: null,
         scale: { min: 1.0, max: 1.35 },
         float: true,

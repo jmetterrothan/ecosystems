@@ -113,7 +113,7 @@ class World {
   }
 
   private initLights() {
-    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.70);
+    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.75);
     light.position.set(0, Chunk.SEA_LEVEL, 0);
     light.castShadow = false;
     this.scene.add(light);
@@ -123,18 +123,26 @@ class World {
     ambient.castShadow = false;
     this.scene.add(ambient);
 
-    const sunlight = new THREE.DirectionalLight(0xffffff, 0.275);
-    sunlight.position.set(0, Chunk.HEIGHT, 0).normalize();
+    const d = 500000;
+    const sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
+    sunlight.position.set(Terrain.SIZE_X, Chunk.HEIGHT, Terrain.SIZE_Z);
     sunlight.castShadow = true;
-    sunlight.shadow.mapSize.width = 4096;
-    sunlight.shadow.mapSize.height = 4096;
-    sunlight.shadow.camera.near = 0.5;
-    sunlight.shadow.camera.far = Terrain.SIZE_X * 2;
+    sunlight.shadow.mapSize.width = 2048;
+    sunlight.shadow.mapSize.height = 2048;
+    sunlight.shadow.camera.castShadow = true;
+    sunlight.shadow.camera.left = -d;
+    sunlight.shadow.camera.right = d;
+    sunlight.shadow.camera.top = d;
+    sunlight.shadow.camera.bottom = -d;
+    sunlight.shadow.camera.near = 100;
+    sunlight.shadow.camera.far = 1000000;
+    sunlight.target.updateMatrixWorld(true);
 
     if (Main.DEBUG) {
-      this.scene.add(new THREE.DirectionalLightHelper(sunlight, 5));
+      this.scene.add(new THREE.DirectionalLightHelper(sunlight, 1024));
     }
 
+    this.scene.add(sunlight.target);
     this.scene.add(sunlight);
   }
 
