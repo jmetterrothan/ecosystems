@@ -29,15 +29,15 @@ class SnowBiome extends Biome {
     const nz = (z - Terrain.SIZE_Z / 2) / (1024 * 128);
 
     let e = 0.2 * this.generator.noise(1 * nx, 1 * nz);
+    e += 0.25 * this.generator.noise3(4 * nx, 4 * nz) * this.generator.ridgeNoise2(nx, nz);
     e += 0.0035 * this.generator.noise(8 * nx, 8 * nz);
     e += 0.015 * this.generator.noise(32 * nx, 32 * nz);
-    e += 0.025 * this.generator.ridgeNoise2(8 * nx, 8 * nz);
-    e += 0.25 * this.generator.noise(4 * nx, 4 * nz) * this.generator.noise3(nx, nz);
+    e += 0.035 * this.generator.ridgeNoise2(8 * nx, 8 * nz);
 
     e /= (0.25 + 0.0035 + 0.015 + 0.025 + 0.25);
 
-    const d = 2.0 * BiomeGenerator.getEuclideanDistance(nx, nz);
-    const ne = BiomeGenerator.islandAddMethod(0.5, 0.5, 1.20, d, e);
+    const d = 1.80 * BiomeGenerator.getEuclideanDistance(nx, nz);
+    const ne = BiomeGenerator.islandAddMethod(0.05, 0.5, 1.00, d, e);
 
     return ne;
   }
