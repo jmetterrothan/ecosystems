@@ -33,7 +33,7 @@ class World {
   static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 
   static readonly RAIN_PROBABILITY: number = 1;
-  static readonly RAIN_VELOCITY: number = 150;
+  static readonly RAIN_VELOCITY: number = 125;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
   static LOADED_TEXTURES = new Map<string, THREE.Texture>();
@@ -136,7 +136,7 @@ class World {
     sunlight.shadow.camera.right = d;
     sunlight.shadow.camera.top = d;
     sunlight.shadow.camera.bottom = -d;
-    sunlight.shadow.camera.near = 100;
+    sunlight.shadow.camera.near = 150;
     sunlight.shadow.camera.far = 1000000;
 
     if (Main.DEBUG) {
@@ -200,7 +200,7 @@ class World {
       // particles
       const size = new THREE.Box3().setFromObject(cloud).getSize(new THREE.Vector3());
       const particles = new THREE.Geometry();
-      const particleCount = (size.x * size.y * size.z) / 20000000000;
+      const particleCount = (size.x * size.y * size.z) / 50000000000;
 
       for (let i = 0; i < particleCount; i++) {
         particles.vertices.push(new THREE.Vector3(
@@ -212,11 +212,12 @@ class World {
 
       // material
       const material = new THREE.PointsMaterial({
-        size: 200,
+        size: 1024,
         map: World.LOADED_TEXTURES.get('raindrop'),
         blending: THREE.AdditiveBlending,
+        depthTest: true,
         transparent: true,
-        opacity: 0.8
+        opacity: 0.50
       });
 
       const data: ICloudData = {
@@ -307,7 +308,7 @@ class World {
       rainData.particleSystem.position.setZ(cloud.position.z);
 
       rainData.particles.vertices.forEach(position => {
-        if (position.y <= Chunk.SEA_ELEVATION) position.y = Chunk.CLOUD_LEVEL;
+        if (position.y <= Chunk.SEA_ELEVATION) position.y = Chunk.CLOUD_LEVEL - size.y / 2;
         if (rainData.isRaininig) {
           rainData.particleMaterial.visible = true;
           position.y -= World.RAIN_VELOCITY;
@@ -316,7 +317,7 @@ class World {
           if (position.y < Chunk.CLOUD_LEVEL - 1000) {
             position.y -= World.RAIN_VELOCITY;
           } else {
-            position.set(cloud.position.x, Chunk.CLOUD_LEVEL, cloud.position.z);
+            position.set(cloud.position.x, Chunk.CLOUD_LEVEL - size.y / 2, cloud.position.z);
           }
 
         }
