@@ -123,7 +123,7 @@ class World {
     ambient.castShadow = false;
     this.scene.add(ambient);
 
-    const d = 500000;
+    const d = 100000;
     const sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
     sunlight.position.set(Terrain.SIZE_X, Chunk.HEIGHT, Terrain.SIZE_Z);
     sunlight.castShadow = true;
@@ -136,13 +136,11 @@ class World {
     sunlight.shadow.camera.bottom = -d;
     sunlight.shadow.camera.near = 100;
     sunlight.shadow.camera.far = 1000000;
-    sunlight.target.updateMatrixWorld(true);
 
     if (Main.DEBUG) {
       this.scene.add(new THREE.DirectionalLightHelper(sunlight, 1024));
     }
 
-    this.scene.add(sunlight.target);
     this.scene.add(sunlight);
   }
 
