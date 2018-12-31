@@ -12,12 +12,20 @@ abstract class Biome
 
   private name: string;
   protected generator: BiomeGenerator;
+
+  protected waterDistortion: boolean;
+  protected waterDistortionFreq: number;
+  protected waterDistortionAmp: number;
   protected waterColor1: THREE.Color;
   protected waterColor2: THREE.Color;
 
   constructor(name: string, generator: BiomeGenerator) {
     this.name = name;
     this.generator = generator;
+
+    this.waterDistortion = true;
+    this.waterDistortionFreq = 1.0;
+    this.waterDistortionAmp = 1024.0;
 
     this.waterColor1 = WATER_CONSTANTS.WATER_COLOR_A;
     this.waterColor2 = WATER_CONSTANTS.WATER_COLOR_B;
@@ -73,6 +81,10 @@ abstract class Biome
    * @return string
    */
   getName(): string { return this.name; }
+
+  getWaterDistortion(): boolean { return this.waterDistortion; }
+  getWaterDistortionFreq(): number { return this.waterDistortionFreq; }
+  getWaterDistortionAmp(): number { return this.waterDistortionAmp; }
 }
 
 export default Biome;

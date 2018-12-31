@@ -21,6 +21,9 @@
       "@objmodels/*": [
         "src/public/assets/obj/*"
       ],
+      "@images/*": [
+        "src/public/assets/images/*"
+      ],
       "@mesh/*": [
         "src/app/Mesh/*"
       ],

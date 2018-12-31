@@ -11,6 +11,8 @@ import MathUtils from '@shared/utils/Math.utils';
 class DesertBiome extends Biome {
   constructor(generator: BiomeGenerator) {
     super('DESERT', generator);
+
+    this.waterDistortion = false;
   }
 
   /**

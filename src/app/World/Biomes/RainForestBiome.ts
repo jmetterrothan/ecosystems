@@ -68,14 +68,14 @@ class RainForestBiome extends Biome {
       return BIOMES.OCEAN;
     }
 
-    if (e > Chunk.SEA_ELEVATION + 0.135) {
-      if (m > 0.65 + 0.045) {
+    if (e > Chunk.SEA_ELEVATION + 0.2) {
+      if (m > 0.695) {
         return BIOMES.RAINFOREST;
       }
       return BIOMES.RAINFOREST_HILLS;
     }
 
-    if (m > 0.6 + 0.025) {
+    if (m > 0.625) {
       return BIOMES.RAINFOREST_SWAMPS;
     }
     return BIOMES.BEACH;

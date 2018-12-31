@@ -133,7 +133,7 @@ class Chunk {
       mesh.geometry = new THREE.Geometry().fromBufferGeometry(<THREE.BufferGeometry>mesh.geometry);
       mesh.frustumCulled = false;
       mesh.matrixAutoUpdate = true;
-      mesh.receiveShadow = true;
+      mesh.receiveShadow = false;
       mesh.castShadow = true;
       mesh.visible = true;
       mesh.position.set(x, y, z);
@@ -348,7 +348,7 @@ class Chunk {
 
     // animation
     new TWEEN.Tween(object.scale)
-      .to(scaleSaved, 500)
+      .to(scaleSaved, 750)
       .delay(Chunk.ANIMATION_DELAY)
       .easing(TWEEN.Easing.Bounce.Out)
       .start();
