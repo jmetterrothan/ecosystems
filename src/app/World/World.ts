@@ -127,10 +127,11 @@ class World {
     const sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
     sunlight.position.set(Terrain.SIZE_X, Chunk.HEIGHT, Terrain.SIZE_Z);
     sunlight.castShadow = true;
-    sunlight.shadow.mapSize.width = 2048;
-    sunlight.shadow.mapSize.height = 2048;
+    sunlight.shadow.mapSize.width = 4096;
+    sunlight.shadow.mapSize.height = 4096;
     sunlight.shadow.camera.visible = true;
     sunlight.shadow.camera.castShadow = true;
+    sunlight.shadow.bias = 0.0001;
     sunlight.shadow.camera.left = -d;
     sunlight.shadow.camera.right = d;
     sunlight.shadow.camera.top = d;
