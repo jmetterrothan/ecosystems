@@ -46,15 +46,11 @@ class OceanBiome extends Biome {
   }
 
   getParametersAt(e: number, m: number): IBiome {
-    if (e < Chunk.SEA_ELEVATION - 0.40 - 0.018) {
-      return BIOMES.OCEAN;
+    if (m < 0.3) {
+      return BIOMES.CORAL_REEF;
     }
 
-    if (e > Chunk.SEA_ELEVATION - 0.1 - 0.0168) {
-      return BIOMES.MOUNTAIN;
-    }
-
-    return BIOMES.CORAL_REEF;
+    return BIOMES.OCEAN;
   }
 }
 
