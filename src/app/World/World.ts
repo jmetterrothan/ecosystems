@@ -92,11 +92,12 @@ class World {
     this.seed = World.SEED ? World.SEED : MathUtils.randomUint32().toString();
     MathUtils.rng = new Math.seedrandom(this.seed);
     console.info(`SEED : ${this.seed}`);
-
+    /*
     const span = document.createElement('span');
     span.className = 'seed';
     span.textContent = `Seed: ${this.seed}`;
     document.body.appendChild(span);
+    */
   }
 
   private showAxesHelper() {
@@ -200,7 +201,7 @@ class World {
       // particles
       const size = new THREE.Box3().setFromObject(cloud).getSize(new THREE.Vector3());
       const particles = new THREE.Geometry();
-      const particleCount = (size.x * size.y * size.z) / 50000000000;
+      const particleCount = (size.x * size.y * size.z) / 250000000000;
 
       for (let i = 0; i < particleCount; i++) {
         particles.vertices.push(new THREE.Vector3(
