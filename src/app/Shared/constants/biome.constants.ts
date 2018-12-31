@@ -18,7 +18,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.25,
         name: 'tulip',
-        scarcity: 0.8,
+        scarcity: 0.85,
         e: null,
         m: null,
         scale: { min: 1.5, max: 2 },
@@ -27,7 +27,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.25,
         name: 'daisy',
-        scarcity: 0.8,
+        scarcity: 0.85,
         e: null,
         m: null,
         scale: { min: 1.5, max: 2 },
@@ -36,7 +36,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.25,
         name: 'bush',
-        scarcity: 0.8,
+        scarcity: 0.85,
         e: null,
         m: null,
         scale: { min: 1.25, max: 1.75 },
@@ -100,7 +100,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.25,
         name: 'cactus1',
-        scarcity: 0.925,
+        scarcity: 0.95,
         e: null,
         m: null,
         scale: { min: 1.25, max: 2.5 },
@@ -109,7 +109,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.15,
         name: 'cactus2',
-        scarcity: 0.925,
+        scarcity: 0.95,
         e: null,
         m: null,
         scale: { min: 1.25, max: 2.5 },
@@ -127,7 +127,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.2,
         name: 'cactus4',
-        scarcity: 0.975,
+        scarcity: 0.995,
         e: null,
         m: null,
         scale: { min: 1, max: 1.2 },
@@ -145,7 +145,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.1,
         name: 'savanna_tree',
-        scarcity: 0.975,
+        scarcity: 0.985,
         e: null,
         m: null,
         scale: { min: 1.25, max: 1.75 },
@@ -177,7 +177,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.1,
         name: 'highlands_tree',
-        scarcity: 0.925,
+        scarcity: 0.95,
         e: null,
         m: null,
         scale: { min: 1.0, max: 1.5 },
@@ -227,7 +227,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.45,
         name: 'jungle_tree',
-        scarcity: 0.65,
+        scarcity: 0.7,
         e: null,
         m: null,
         scale: { min: 1.0, max: 1.25 },
@@ -236,7 +236,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.40,
         name: 'jungle_tree2',
-        scarcity: 0.75,
+        scarcity: 0.8,
         e: null,
         m: null,
         scale: { min: 1.0, max: 1.25 },
@@ -245,7 +245,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.05,
         name: 'tulip',
-        scarcity: 0.8,
+        scarcity: 0.9,
         e: null,
         m: null,
         scale: { min: 1.5, max: 2 },
@@ -254,7 +254,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.05,
         name: 'pink_mushroom',
-        scarcity: 0.8,
+        scarcity: 0.9,
         e: null,
         m: null,
         scale: { min: 0.85, max: 1.25 },
@@ -277,7 +277,7 @@ export const BIOMES: IBiomes = {
       {
         weight: 0.35,
         name: 'jungle_tree',
-        scarcity: 0.5,
+        scarcity: 0.6,
         e: null,
         m: null,
         scale: { min: 1, max: 1.25 },
