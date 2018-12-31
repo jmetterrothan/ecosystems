@@ -24,7 +24,7 @@ class World {
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
   static readonly MAX_VISIBLE_CHUNKS: number = 24;
-  static readonly MAX_RENDERABLE_CHUNKS: number = 32;
+  static readonly MAX_RENDERABLE_CHUNKS: number = 30;
   static readonly VIEW_DISTANCE: number = World.MAX_RENDERABLE_CHUNKS * Chunk.WIDTH;
 
   static readonly SHOW_FOG: boolean = true;
@@ -113,7 +113,7 @@ class World {
   }
 
   private initLights() {
-    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.70);
+    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.75);
     light.position.set(0, Chunk.SEA_LEVEL, 0);
     light.castShadow = false;
     this.scene.add(light);
@@ -123,9 +123,26 @@ class World {
     ambient.castShadow = false;
     this.scene.add(ambient);
 
-    const sunlight = new THREE.DirectionalLight(0xffffff, 0.275);
-    sunlight.position.set(0, Chunk.HEIGHT, 15000);
+    const d = 500000;
+    const sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
+    sunlight.position.set(Terrain.SIZE_X, Chunk.HEIGHT, Terrain.SIZE_Z);
     sunlight.castShadow = true;
+    sunlight.shadow.mapSize.width = 2048;
+    sunlight.shadow.mapSize.height = 2048;
+    sunlight.shadow.camera.castShadow = true;
+    sunlight.shadow.camera.left = -d;
+    sunlight.shadow.camera.right = d;
+    sunlight.shadow.camera.top = d;
+    sunlight.shadow.camera.bottom = -d;
+    sunlight.shadow.camera.near = 100;
+    sunlight.shadow.camera.far = 1000000;
+    sunlight.target.updateMatrixWorld(true);
+
+    if (Main.DEBUG) {
+      this.scene.add(new THREE.DirectionalLightHelper(sunlight, 1024));
+    }
+
+    this.scene.add(sunlight.target);
     this.scene.add(sunlight);
   }
 
@@ -183,7 +200,7 @@ class World {
       // particles
       const size = new THREE.Box3().setFromObject(cloud).getSize(new THREE.Vector3());
       const particles = new THREE.Geometry();
-      const particleCount = (size.x * size.y * size.z) / 2000000000;
+      const particleCount = (size.x * size.y * size.z) / 20000000000;
 
       for (let i = 0; i < particleCount; i++) {
         particles.vertices.push(new THREE.Vector3(
@@ -254,7 +271,7 @@ class World {
 
       cloud.updateMatrixWorld(true);
 
-      // reset position if the cloud goes off the edges of the world
+     // reset position if the cloud goes off the edges of the world
       const bbox: THREE.Box3 = new THREE.Box3().setFromObject(cloud);
       const size: THREE.Vector3 = bbox.getSize(new THREE.Vector3());
 
@@ -353,13 +370,13 @@ class World {
 
         objLoader.load(element.obj, (object) => {
           object.castShadow = true;
-          object.receiveShadow = true;
+          object.receiveShadow = false;
           object.frustumCulled = false;
 
           object.traverse((child) => {
             if (child instanceof THREE.Mesh) {
               child.castShadow = true;
-              child.receiveShadow = true;
+              child.receiveShadow = false;
               child.frustumCulled = false;
 
               if (!(child.material instanceof THREE.Material)) {

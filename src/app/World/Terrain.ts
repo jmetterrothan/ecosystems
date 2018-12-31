@@ -498,7 +498,7 @@ class Terrain {
     // main terrain with borders
     this.terrain = new THREE.Mesh(new THREE.Geometry(), TERRAIN_MATERIAL);
     this.terrain.frustumCulled = true;
-    this.terrain.castShadow = true;
+    this.terrain.castShadow = false;
     this.terrain.receiveShadow = true;
     this.layers.add(this.terrain);
 
@@ -511,7 +511,7 @@ class Terrain {
     // water
     this.water = new THREE.Mesh(new THREE.Geometry(), WATER_MATERIAL);
     this.water.frustumCulled = true;
-    this.water.castShadow = true;
+    this.water.castShadow = false;
     this.water.receiveShadow = true;
     this.layers.add(this.water);
 

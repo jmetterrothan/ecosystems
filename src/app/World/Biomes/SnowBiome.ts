@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
@@ -6,21 +7,15 @@ import Chunk from '@world/Chunk';
 
 import { IBiome } from '@shared/models/biome.model';
 import { BIOMES } from '@shared/constants/biome.constants';
-import MathUtils from '@shared/utils/Math.utils';
 
-class OceanBiome extends Biome {
-  private spike: number;
-  private depth: number;
-
+class SnowBiome extends Biome {
   constructor(generator: BiomeGenerator) {
-    super('OCEAN', generator);
+    super('SNOW', generator);
 
-    this.spike = MathUtils.randomFloat(0.025, 0.125);
-    this.depth = 1.425;
+    this.waterDistortion = false;
 
-    this.waterDistortion = true;
-    this.waterDistortionFreq = 3.0;
-    this.waterDistortionAmp = 512.0;
+    this.waterColor1 = new THREE.Color(0xc0dade);
+    this.waterColor2 = new THREE.Color(0xacd2e5);
   }
 
   /**
@@ -34,24 +29,29 @@ class OceanBiome extends Biome {
     const nz = (z - Terrain.SIZE_Z / 2) / (1024 * 128);
 
     let e = 0.2 * this.generator.noise(1 * nx, 1 * nz);
+    e += 0.25 * this.generator.noise3(4 * nx, 4 * nz) * this.generator.ridgeNoise2(nx, nz);
     e += 0.0035 * this.generator.noise(8 * nx, 8 * nz);
     e += 0.015 * this.generator.noise(32 * nx, 32 * nz);
-    e += 0.025 * this.generator.ridgeNoise2(8 * nx, 8 * nz);
-    e += 0.25 * this.generator.noise(4 * nx, 4 * nz) * this.generator.noise3(nx, nz);
+    e += 0.035 * this.generator.ridgeNoise2(8 * nx, 8 * nz);
 
-    e /= (0.25 + 0.0035 + 0.015 + 0.025 + 0.25) - this.spike;
+    e /= (0.25 + 0.0035 + 0.015 + 0.025 + 0.25);
 
-    e **= 2.25;
-    return e - this.depth;
+    const d = 1.80 * BiomeGenerator.getEuclideanDistance(nx, nz);
+    const ne = BiomeGenerator.islandAddMethod(0.05, 0.5, 1.00, d, e);
+
+    return ne;
   }
 
   getParametersAt(e: number, m: number): IBiome {
-    if (m < 0.3) {
-      return BIOMES.CORAL_REEF;
+    if (e < Chunk.SEA_ELEVATION - 0.15) {
+      return BIOMES.FROZEN_OCEAN;
+    }
+    if (e < Chunk.SEA_ELEVATION + 0.15) {
+      return BIOMES.FROZEN_BEACH;
     }
 
-    return BIOMES.OCEAN;
+    return BIOMES.SNOW;
   }
 }
 
-export default OceanBiome;
+export default SnowBiome;
