@@ -78,6 +78,10 @@ module.exports = {
       {
         test: /\.(obj|mtl)$/,
         loader: 'file-loader'
+      },
+      {
+        test: /\.mp3$/,
+        loader: 'file-loader'
       }
     ]
   },

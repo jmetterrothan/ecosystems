@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
+import { Howl, Howler } from 'howler';
 
 import Main from '../Main';
 import Terrain from './Terrain';
@@ -17,6 +18,8 @@ import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { ITexture } from '@shared/models/texture.model';
 import { ICloudData } from '@shared/models/cloudData.model';
 import BiomeGenerator from './BiomeGenerator';
+
+import { ForestSFXMp3 } from '@sounds/ForestSFX';
 
 class World {
   static SEED: string | null = null;
@@ -53,6 +56,8 @@ class World {
   private clouds: THREE.Group;
   private wind: THREE.Vector3;
 
+  private windSound: Howl;
+
   constructor(scene: THREE.Scene, camera: THREE.PerspectiveCamera, controls: THREE.PointerLockControls) {
     this.scene = scene;
     this.camera = camera;
@@ -60,6 +65,11 @@ class World {
 
     this.frustum = new THREE.Frustum();
     this.raycaster = new THREE.Raycaster();
+    this.windSound = new Howl({
+      src: [ForestSFXMp3],
+      autoplay: true,
+      volume: 1
+    });
   }
 
   async init() {
@@ -262,6 +272,7 @@ class World {
       // console.log('underwater');
     }
     */
+    console.log(this.getSoundPosition());
 
     this.updateClouds(delta);
   }
@@ -273,7 +284,7 @@ class World {
 
       cloud.updateMatrixWorld(true);
 
-     // reset position if the cloud goes off the edges of the world
+      // reset position if the cloud goes off the edges of the world
       const bbox: THREE.Box3 = new THREE.Box3().setFromObject(cloud);
       const size: THREE.Vector3 = bbox.getSize(new THREE.Vector3());
 
@@ -401,6 +412,17 @@ class World {
         }, null, () => reject());
       }, null, () => reject());
     });
+  }
+
+  private getSoundPosition() {
+    const playerPosition = this.player.getControls();
+    const centerPosition = { x: Terrain.SIZE_X / 2, y: Terrain.SIZE_Y / 2, z: Terrain.SIZE_Z / 2 };
+
+    const x = Math.abs(centerPosition.x - playerPosition.getObject().position.x);
+    const y = Math.abs(centerPosition.y - playerPosition.getObject().position.y);
+    const z = Math.abs(centerPosition.z - playerPosition.getObject().position.z);
+    const relativePosition = { x, y, z };
+    return relativePosition;
   }
 }
 

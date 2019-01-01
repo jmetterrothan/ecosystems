@@ -113,6 +113,7 @@ class Player {
     if (underwaterService.isUnderwater && position.y > Chunk.SEA_LEVEL) {
       underwaterService.set(false);
     }
+
   }
 
   /**
@@ -129,6 +130,10 @@ class Player {
       case '+': case 'a': this.moveUp = active; break;
       case '-': case 'e': this.moveDown = active; break;
     }
+  }
+
+  getControls() {
+    return this.controls;
   }
 }
 

@@ -44,6 +44,7 @@
     "@types/node": "^10.12.10",
     "@types/three": "^0.93.10",
     "@types/tween.js": "^16.9.0",
+    "howler": "^2.1.1",
     "poisson-disk-sampling": "^1.0.2",
     "rxjs": "^6.3.3",
     "seedrandom": "^2.4.4",
