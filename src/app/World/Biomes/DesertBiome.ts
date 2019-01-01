@@ -5,7 +5,7 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 
 import { IBiome } from '@shared/models/biome.model';
-import { BIOMES } from '@shared/constants/biome.constants';
+import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import MathUtils from '@shared/utils/Math.utils';
 
 class DesertBiome extends Biome {
@@ -46,14 +46,14 @@ class DesertBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.115) {
-      return BIOMES.OCEAN;
+      return SUB_BIOMES.OCEAN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.1) {
-      return BIOMES.DESERT;
+      return SUB_BIOMES.DESERT;
     }
 
-    return BIOMES.OASIS;
+    return SUB_BIOMES.OASIS;
   }
 }
 

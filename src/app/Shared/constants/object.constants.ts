@@ -296,5 +296,5 @@ export const OBJECTS: IObject[] = [
     obj: lilypadObj,
     mtl: lilypadMtl,
     doubleSide: true
-  },
+  }
 ];

@@ -8,6 +8,7 @@ import Coord from './Coord';
 import Boids from '../Boids/Boids';
 import Biome from './Biome';
 import OceanBiome from '@world/Biomes/OceanBiome';
+import DesertBiome from '@world/Biomes/DesertBiome';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
@@ -49,15 +50,17 @@ class Terrain {
 
   private layers: THREE.Group;
 
-  private boidsAllowed: boolean;
-  private boids: Boids;
-
+  // preview
   private previewItem: IPick;
   private previewObject: THREE.Object3D;
   private previewActive: boolean;
   private currentSubBiome: IBiome;
   private intersectionSurface: THREE.Object3D;
   private objectAnimated: boolean;
+
+  // extras
+  private boids: Boids;
+  private vulture: THREE.Object3D;
 
   /**
    * Terrain constructor
@@ -68,7 +71,6 @@ class Terrain {
     this.clouds = clouds;
 
     this.generator = new BiomeGenerator();
-    this.boidsAllowed = this.generator.getBiome() instanceof OceanBiome;
 
     this.chunks = new Map<string, Chunk>();
     this.visibleChunks = [];
@@ -86,8 +88,14 @@ class Terrain {
 
   init() {
     this.initMeshes();
-    this.initBoids();
     this.initUnderwater();
+  }
+
+  initExtras() {
+    const biome = this.generator.getBiome();
+
+    if (biome instanceof OceanBiome) this.initBoids();
+    if (biome instanceof DesertBiome) this.initVulture();
   }
 
   /**
@@ -212,7 +220,7 @@ class Terrain {
     }
 
     // entities update
-    if (this.boidsAllowed) this.boids.update(delta);
+    this.updateExtras(delta);
 
     this.water.material.uniforms.time.value = tick;
     this.water.material.uniforms.time.needsUpdate = true;
@@ -529,15 +537,48 @@ class Terrain {
   }
 
   private initBoids() {
-    if (this.boidsAllowed) {
-      this.boids = new Boids(
-        this.scene,
-        new THREE.Vector3(Terrain.SIZE_X - 35000, 27500, Terrain.SIZE_Z - 35000),
-        new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2),
-        50
-      );
-      this.boids.generate();
-    }
+    this.boids = new Boids(
+      this.scene,
+      new THREE.Vector3(Terrain.SIZE_X - 35000, 27500, Terrain.SIZE_Z - 35000),
+      new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2),
+      50
+    );
+    this.boids.generate();
+  }
+
+  private initVulture() {
+    // corpse
+    let chunk: Chunk;
+    let corpseItem: IPick;
+    let corpseObject: THREE.Object3D;
+
+    do {
+      const x = Terrain.SIZE_X / 4 + Math.floor(Math.random() * Terrain.SIZE_X / 2);
+      const z = Terrain.SIZE_Z / 4 + Math.floor(Math.random() * Terrain.SIZE_Z / 2);
+
+      chunk = this.getChunkAt(x, z);
+
+      const y = this.getHeightAt(x, z);
+      corpseItem = {
+        x, y, z, s: World.OBJ_INITIAL_SCALE, n: 'tulip', r: 0
+      };
+
+      corpseObject = chunk.getObject(corpseItem);
+
+    } while (!chunk.canPlaceObject(corpseObject));
+
+    chunk.placeObject(corpseObject);
+
+    // vulture
+    this.vulture = chunk.getObject({ ...corpseItem, n: 'bush' });
+    this.vulture.position.setY(Chunk.CLOUD_LEVEL);
+    this.vulture.children.forEach((obj: THREE.Mesh) => obj.translateX(20));
+    chunk.placeObject(this.vulture);
+
+  }
+
+  updateVulture() {
+    this.vulture.rotateOnAxis(new THREE.Vector3(0, 1, 0), THREE.Math.degToRad(0.4));
   }
 
   private initUnderwater() {
@@ -549,6 +590,12 @@ class Terrain {
         }
       }
     );
+  }
+
+  private updateExtras(delta: number) {
+    const biome = this.generator.getBiome();
+    if (biome instanceof OceanBiome) this.boids.update(delta);
+    if (biome instanceof DesertBiome) this.updateVulture();
   }
 
   private resetPreview() {

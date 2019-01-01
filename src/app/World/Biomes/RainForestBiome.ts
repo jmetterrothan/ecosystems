@@ -6,7 +6,7 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
-import { BIOMES } from '@shared/constants/biome.constants';
+import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
 class RainForestBiome extends Biome {
   private a: number;
@@ -65,20 +65,20 @@ class RainForestBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.1) {
-      return BIOMES.OCEAN;
+      return SUB_BIOMES.OCEAN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.135) {
       if (m > 0.65 + 0.045) {
-        return BIOMES.RAINFOREST;
+        return SUB_BIOMES.RAINFOREST;
       }
-      return BIOMES.RAINFOREST_HILLS;
+      return SUB_BIOMES.RAINFOREST_HILLS;
     }
 
     if (m > 0.6 + 0.025) {
-      return BIOMES.RAINFOREST_SWAMPS;
+      return SUB_BIOMES.RAINFOREST_SWAMPS;
     }
-    return BIOMES.BEACH;
+    return SUB_BIOMES.BEACH;
   }
 }
 

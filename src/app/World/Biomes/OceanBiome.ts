@@ -5,7 +5,7 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 
 import { IBiome } from '@shared/models/biome.model';
-import { BIOMES } from '@shared/constants/biome.constants';
+import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import MathUtils from '@shared/utils/Math.utils';
 
 class OceanBiome extends Biome {
@@ -47,14 +47,14 @@ class OceanBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.40 - 0.018) {
-      return BIOMES.OCEAN;
+      return SUB_BIOMES.OCEAN;
     }
 
     if (e > Chunk.SEA_ELEVATION - 0.1 - 0.0168) {
-      return BIOMES.MOUNTAIN;
+      return SUB_BIOMES.MOUNTAIN;
     }
 
-    return BIOMES.CORAL_REEF;
+    return SUB_BIOMES.CORAL_REEF;
   }
 }
 
