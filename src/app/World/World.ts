@@ -19,7 +19,7 @@ import { ITexture } from '@shared/models/texture.model';
 import { ICloudData } from '@shared/models/cloudData.model';
 import BiomeGenerator from './BiomeGenerator';
 
-import { ForestSFXMp3 } from '@sounds/ForestSFX';
+import ForestSFXMp3 from '@sounds/ForestSFX.mp3';
 
 class World {
   static SEED: string | null = null;
@@ -68,7 +68,8 @@ class World {
     this.windSound = new Howl({
       src: [ForestSFXMp3],
       autoplay: true,
-      volume: 1
+      volume: 0.5,
+      loop: true
     });
   }
 
@@ -272,7 +273,8 @@ class World {
       // console.log('underwater');
     }
     */
-    console.log(this.getSoundPosition());
+    this.windSound.position = this.getSoundPosition();
+    console.log(this.windSound.position);
 
     this.updateClouds(delta);
   }
@@ -418,9 +420,9 @@ class World {
     const playerPosition = this.player.getControls();
     const centerPosition = { x: Terrain.SIZE_X / 2, y: Terrain.SIZE_Y / 2, z: Terrain.SIZE_Z / 2 };
 
-    const x = Math.abs(centerPosition.x - playerPosition.getObject().position.x);
-    const y = Math.abs(centerPosition.y - playerPosition.getObject().position.y);
-    const z = Math.abs(centerPosition.z - playerPosition.getObject().position.z);
+    const x = centerPosition.x - playerPosition.getObject().position.x;
+    const y = centerPosition.y - playerPosition.getObject().position.y;
+    const z = centerPosition.z - playerPosition.getObject().position.z;
     const relativePosition = { x, y, z };
     return relativePosition;
   }
