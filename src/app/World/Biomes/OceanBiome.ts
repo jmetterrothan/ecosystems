@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 
+import World from '@world/World';
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
@@ -28,6 +29,7 @@ class OceanBiome extends Biome {
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {
+    // fish
     this.boids = new Boids(
       scene,
       new THREE.Vector3(Terrain.SIZE_X - 35000, 27500, Terrain.SIZE_Z - 35000),
@@ -35,6 +37,17 @@ class OceanBiome extends Biome {
       25
     );
     this.boids.generate();
+
+    // chest
+    const x = Terrain.SIZE_X / 4 + Math.floor(Math.random() * Terrain.SIZE_X / 2);
+    const z = Terrain.SIZE_Z / 4 + Math.floor(Math.random() * Terrain.SIZE_Z / 2);
+    const y = terrain.getHeightAt(x, z);
+    const chunk = terrain.getChunkAt(x, z);
+    const r = MathUtils.randomFloat(0, Math.PI * 2);
+    const params = { x, y, z, r, s: World.OBJ_INITIAL_SCALE, n: 'chest' };
+
+    const obj = chunk.getObject(params);
+    chunk.placeObject(obj);
   }
 
   update(delta: number) {

@@ -18,7 +18,7 @@ import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { ITexture } from '@shared/models/texture.model';
 
 class World {
-  static SEED: string | null = null;
+  static SEED: string | null = '3780882106';
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 

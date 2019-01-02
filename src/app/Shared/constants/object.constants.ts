@@ -1,5 +1,8 @@
 import { IObject } from '@shared/models/object.model';
 
+import chestObj from '@objmodels/misc/chest.obj';
+import chestMtl from '@objmodels/misc/chest.mtl';
+
 import dead_treeObj from '@objmodels/tree/dead_tree.obj';
 import dead_treeMtl from '@objmodels/tree/dead_tree.mtl';
 
@@ -124,6 +127,11 @@ import cloud4Obj from '@objmodels/cloud/cloud4.obj';
 import cloud4Mtl from '@objmodels/cloud/cloud4.mtl';
 
 export const OBJECTS: IObject[] = [
+  {
+    name: 'chest',
+    obj: chestObj,
+    mtl: chestMtl
+  },
   {
     name: 'dead_tree',
     obj: dead_treeObj,

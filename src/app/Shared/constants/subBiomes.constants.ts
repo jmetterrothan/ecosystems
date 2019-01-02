@@ -408,7 +408,7 @@ export const SUB_BIOMES: IBiomes = {
     color: new THREE.Color(0xedc375),
     organisms: [
       {
-        weight: 0.50,
+        weight: 0.5,
         name: 'lilypad',
         scarcity: 0.8,
         e: { low: -1, high: Chunk.SEA_ELEVATION },
