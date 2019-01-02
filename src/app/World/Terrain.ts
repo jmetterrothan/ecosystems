@@ -538,15 +538,13 @@ class Terrain {
   }
 
   private initBoids() {
-    if (this.boidsAllowed) {
-      this.boids = new Boids(
-        this.scene,
-        new THREE.Vector3(Terrain.SIZE_X - 35000, 27500, Terrain.SIZE_Z - 35000),
-        new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2),
-        25
-      );
-      this.boids.generate();
-    }
+    this.boids = new Boids(
+      this.scene,
+      new THREE.Vector3(Terrain.SIZE_X - 35000, 27500, Terrain.SIZE_Z - 35000),
+      new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2),
+      25
+    );
+    this.boids.generate();
   }
 
   private initVulture() {
@@ -597,6 +595,8 @@ class Terrain {
 
   private updateExtras(delta: number) {
     const biome = this.generator.getBiome();
+
+    console.log(biome);
     if (biome instanceof OceanBiome) this.boids.update(delta);
     if (biome instanceof DesertBiome) this.updateVulture();
   }
