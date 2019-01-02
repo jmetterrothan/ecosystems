@@ -14,6 +14,30 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.27 0.27 0.27
 Ns 6.00
+newmtl bones_hornSG
+illum 4
+Kd 0.25 0.17 0.11
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.26 0.26 0.26
+Ns 6.00
+newmtl fish_color3SG
+illum 4
+Kd 0.81 0.44 0.30
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.70 0.70 0.70
+Ns 6.00
+newmtl fish_color4SG
+illum 4
+Kd 1.00 0.86 0.75
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.70 0.70 0.70
+Ns 6.00
 newmtl highland_leavesSG
 illum 4
 Kd 1.00 0.38 0.12
@@ -46,7 +70,7 @@ Ks 0.50 0.50 0.50
 Ns 6.00
 newmtl pasted__lilypad1SG
 illum 4
-Kd 0.24 0.55 0.18
+Kd 0.37 0.55 0.18
 Ka 0.29 0.29 0.29
 Tf 1.00 1.00 1.00
 Ni 1.00
@@ -222,7 +246,7 @@ Ks 0.50 0.50 0.50
 Ns 6.00
 newmtl phong1SG
 illum 4
-Kd 0.67 0.87 0.22
+Kd 0.30 0.64 0.20
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 1.00
@@ -316,6 +340,14 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
 Ns 0.00
+newmtl phong22SG
+illum 4
+Kd 0.91 0.89 0.78
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
 newmtl pink_mushroom_capSG
 illum 4
 Kd 0.98 0.44 0.46
