@@ -16,7 +16,7 @@ import { WATER_MATERIAL } from '@materials/water.material';
 import { IBiome } from '@shared/models/biome.model';
 import { IPick } from '@shared/models/pick.model';
 import Crosshair from '../UI/Crosshair';
-import underwaterService from '@shared/services/underwater.service';
+import { underwaterSvc } from '@shared/services/underwater.service';
 import MathUtils from '@shared/utils/Math.utils';
 
 class Terrain {
@@ -208,8 +208,8 @@ class Terrain {
     // entities update
     // this.updateExtras(delta);
 
-    this.water.material.uniforms.time.value = tick;
-    this.water.material.uniforms.time.needsUpdate = true;
+    (<THREE.ShaderMaterial>this.water.material).uniforms.time.value = tick;
+    (<THREE.ShaderMaterial>this.water.material).needsUpdate = true;
   }
 
   handleMouseInteraction(raycaster: THREE.Raycaster, interactionType: MOUSE_TYPES) {
@@ -524,7 +524,7 @@ class Terrain {
   }
 
   private initUnderwater() {
-    underwaterService.observable$.subscribe(
+    underwaterSvc.observable$.subscribe(
       () => {
         if (this.previewObject) {
           this.scene.remove(this.previewObject);

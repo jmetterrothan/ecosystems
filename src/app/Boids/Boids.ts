@@ -15,7 +15,7 @@ class Boids {
 
   scene: THREE.Scene;
 
-  constructor(scene: THREE.Scene, boudingBox: THREE.Vector3, origin: THREE.Vector3 = new THREE.Vector3(), creaturesCount: number = 20) {
+  constructor(scene: THREE.Scene, boudingBox: THREE.Vector3, origin: THREE.Vector3 = new THREE.Vector3(), creaturesCount: number = 100) {
     this.scene = scene;
     this.boudingBox = boudingBox;
     this.creaturesCount = creaturesCount;
