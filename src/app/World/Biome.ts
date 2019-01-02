@@ -6,8 +6,7 @@ import CommonUtils from '@shared/utils/Common.utils';
 import { IBiome } from '@shared/models/biome.model';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 
-abstract class Biome
-{
+abstract class Biome {
   private static WATER_COLORS = new Map<number, THREE.Color>();
 
   private name: string;
@@ -37,7 +36,7 @@ abstract class Biome
    * @param {number} m moisture (0 - 1)
    * @return {IBiome}
    */
-  abstract getParametersAt(e: number, m: number) : IBiome;
+  abstract getParametersAt(e: number, m: number): IBiome;
 
   /**
    * Retrieve elevation value (0 - 1)

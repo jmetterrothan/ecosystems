@@ -538,15 +538,13 @@ class Terrain {
   }
 
   private initBoids() {
-    if (this.boidsAllowed) {
-      this.boids = new Boids(
-        this.scene,
-        new THREE.Vector3(Terrain.SIZE_X - 35000, 27500, Terrain.SIZE_Z - 35000),
-        new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2),
-        25
-      );
-      this.boids.generate();
-    }
+    this.boids = new Boids(
+      this.scene,
+      new THREE.Vector3(Terrain.SIZE_X - 35000, 27500, Terrain.SIZE_Z - 35000),
+      new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2),
+      25
+    );
+    this.boids.generate();
   }
 
   private initVulture() {
@@ -563,7 +561,7 @@ class Terrain {
 
       const y = this.getHeightAt(x, z);
       corpseItem = {
-        x, y, z, s: World.OBJ_INITIAL_SCALE, n: 'skull', r: 0
+        x, y, z, s: World.OBJ_INITIAL_SCALE, n: 'skull', r: MathUtils.randomFloat(0, Math.PI * 2)
       };
 
       corpseObject = chunk.getObject(corpseItem);
@@ -573,9 +571,9 @@ class Terrain {
     chunk.placeObject(corpseObject);
 
     // vulture
-    this.vulture = chunk.getObject({ ...corpseItem, n: 'bush' });
+    this.vulture = chunk.getObject({ ...corpseItem });
     this.vulture.position.setY(Chunk.CLOUD_LEVEL);
-    this.vulture.children.forEach((obj: THREE.Mesh) => obj.translateX(20));
+    this.vulture.children.forEach((obj: THREE.Mesh) => obj.translateX(-20));
     chunk.placeObject(this.vulture);
 
   }

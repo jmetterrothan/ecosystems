@@ -1,3 +1,4 @@
+import { IStackReference } from './../Shared/models/objectParameters.model';
 import * as THREE from 'three';
 import * as TWEEN from '@tweenjs/tween.js';
 import poissonDiskSampling from 'poisson-disk-sampling';
@@ -221,8 +222,9 @@ class Chunk {
     object.rotation.y = item.r;
     object.scale.set(item.s, item.s, item.s);
     object.position.set(item.x, item.y, item.z);
-    // @ts-ignore
-    object.stackReference = item.n;
+    object.userData = <IStackReference>{
+      stackReference: item.n
+    };
     object.visible = true;
 
     return object;
@@ -272,8 +274,7 @@ class Chunk {
   * @param {THREE.Object3D} object
   */
   repurposeObject(object: THREE.Object3D) {
-    // @ts-ignore
-    const ref = object.stackReference;
+    const ref = (<IStackReference>object.userData).stackReference;
 
     if (ref && Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
       // collect unused objects

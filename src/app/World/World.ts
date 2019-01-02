@@ -72,6 +72,8 @@ class World {
 
     // stuff
     this.terrain = new Terrain(this.scene, this.clouds);
+    this.generator = this.terrain.getGenerator();
+
     this.terrain.init();
     this.terrain.preload();
     this.terrain.initExtras();
@@ -83,8 +85,6 @@ class World {
 
     this.player = new Player(this.controls);
     this.player.init(spawn, target);
-
-    this.generator = this.terrain.getGenerator();
 
     this.scene.add(this.controls.getObject());
   }
@@ -274,7 +274,7 @@ class World {
 
       cloud.updateMatrixWorld(true);
 
-     // reset position if the cloud goes off the edges of the world
+      // reset position if the cloud goes off the edges of the world
       const bbox: THREE.Box3 = new THREE.Box3().setFromObject(cloud);
       const size: THREE.Vector3 = bbox.getSize(new THREE.Vector3());
 
