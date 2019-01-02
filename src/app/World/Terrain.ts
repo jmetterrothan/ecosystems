@@ -40,7 +40,9 @@ class Terrain {
   private chunk: Coord;
 
   private scene: THREE.Scene;
+  private world: World;
   private generator: BiomeGenerator;
+
   public terrain: THREE.Mesh;
   public terrainSide: THREE.Mesh;
   public water: THREE.Mesh;
@@ -59,9 +61,12 @@ class Terrain {
   /**
    * Terrain constructor
    * @param {THREE.Scene} scene
+   * @param {World} world
+   * @param {BiomeGenerator} generator
    */
-  constructor(scene: THREE.Scene, generator: BiomeGenerator) {
+  constructor(scene: THREE.Scene, world: World, generator: BiomeGenerator) {
     this.scene = scene;
+    this.world = world;
     this.generator = generator;
 
     this.chunks = new Map<string, Chunk>();
@@ -115,14 +120,14 @@ class Terrain {
     this.water.position.x += offset / 2;
     this.water.position.z += offset / 2;
 
-    this.water.material.uniforms.size.value = new THREE.Vector3(Terrain.SIZE_X, Terrain.SIZE_Y, Terrain.SIZE_Z);
+    (<THREE.ShaderMaterial>this.water.material).uniforms.size.value = new THREE.Vector3(Terrain.SIZE_X, Terrain.SIZE_Y, Terrain.SIZE_Z);
 
     const biome: Biome = this.generator.getBiome();
-    this.water.material.uniforms.water_distortion.value = biome.getWaterDistortion();
-    this.water.material.uniforms.water_distortion_freq.value = biome.getWaterDistortionFreq();
-    this.water.material.uniforms.water_distortion_amp.value = biome.getWaterDistortionAmp();
+    (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion.value = biome.getWaterDistortion();
+    (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion_freq.value = biome.getWaterDistortionFreq();
+    (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion_amp.value = biome.getWaterDistortionAmp();
 
-    this.water.material.uniforms.needsUpdate = true;
+    // (<THREE.ShaderMaterial>this.water.material).needsUpdate = true;
   }
 
   /**
@@ -540,6 +545,10 @@ class Terrain {
     const offset = 200;
     return MathUtils.between(intersection.x, -offset, offset) || MathUtils.between(intersection.x, Terrain.SIZE_X - offset, Terrain.SIZE_X + offset) ||
       MathUtils.between(intersection.z, -offset, offset) || MathUtils.between(intersection.z, Terrain.SIZE_Z - offset, Terrain.SIZE_Z + offset);
+  }
+
+  public getWorld(): World {
+    return this.world;
   }
 
   /**

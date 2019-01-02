@@ -152,10 +152,10 @@ class Chunk {
 
       if (p1 < Chunk.CLOUD_LEVEL && p2 < Chunk.CLOUD_LEVEL && p3 < Chunk.CLOUD_LEVEL && p4 < Chunk.CLOUD_LEVEL) {
         /*
-        (<THREE.Geometry>terrain.clouds.geometry).mergeMesh(mesh);
-        (<THREE.Geometry>terrain.clouds.geometry).elementsNeedUpdate = true;
+        (<THREE.Geometry>terrain.world.clouds.geometry).mergeMesh(mesh);
+        (<THREE.Geometry>terrain.world.clouds.geometry).elementsNeedUpdate = true;
         */
-        terrain.clouds.add(mesh);
+        terrain.getWorld().getWeather().getClouds().add(mesh);
       }
     }
 

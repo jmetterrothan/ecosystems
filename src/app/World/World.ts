@@ -8,18 +8,17 @@ import Main from '../Main';
 import Terrain from './Terrain';
 import Chunk from './Chunk';
 import Player from '../Player';
+import BiomeGenerator from './BiomeGenerator';
+import Weather from './Weather';
+import MathUtils from '@utils/Math.utils';
 
 import { OBJECTS } from '@shared/constants/object.constants';
 import { TEXTURES } from '@shared/constants/texture.constants';
-
-import MathUtils from '@utils/Math.utils';
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { ITexture } from '@shared/models/texture.model';
-import { ICloudData } from '@shared/models/cloudData.model';
-import BiomeGenerator from './BiomeGenerator';
 
 class World {
-  static SEED: string | null = '1156702945';
+  static SEED: string | null = null;
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
@@ -45,13 +44,11 @@ class World {
   private player: Player;
 
   private terrain: Terrain;
+  private weather: Weather;
   private generator: BiomeGenerator;
   private frustum: THREE.Frustum;
   private raycaster: THREE.Raycaster;
   private seed: string;
-
-  private clouds: THREE.Group;
-  private wind: THREE.Vector3;
 
   constructor(scene: THREE.Scene, camera: THREE.PerspectiveCamera, controls: THREE.PointerLockControls) {
     this.scene = scene;
@@ -69,18 +66,20 @@ class World {
     await this.initObjects();
     await this.initTextures();
 
-    this.initClouds();
-
     // stuff
     this.generator = new BiomeGenerator();
 
-    this.terrain = new Terrain(this.scene, this.generator);
+    this.terrain = new Terrain(this.scene, this, this.generator);
+
+    this.weather = new Weather(this.scene, this.generator);
+    this.weather.initClouds();
+
     this.terrain.init();
     this.terrain.preload();
 
-    this.generator.getBiome().init(this.scene, this.terrain);
+    this.weather.initRain();
 
-    this.initRain();
+    this.generator.getBiome().init(this.scene, this.terrain);
 
     const spawn = new THREE.Vector3(-24000, Terrain.SIZE_Y, Terrain.SIZE_Z + 24000);
     const target = new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
@@ -89,6 +88,10 @@ class World {
     this.player.init(spawn, target);
 
     this.scene.add(this.controls.getObject());
+
+    if (Main.DEBUG) {
+      this.showAxesHelper();
+    }
   }
 
   private initSeed() {
@@ -106,7 +109,7 @@ class World {
   private showAxesHelper() {
     const gizmo = new THREE.AxesHelper();
     gizmo.position.set(0, 0, 0);
-    gizmo.scale.set(250, 250, 250);
+    gizmo.scale.set(1024, 1024, 1024);
     this.scene.add(gizmo);
   }
 
@@ -182,71 +185,6 @@ class World {
 
   }
 
-  private initClouds() {
-    // clouds
-    this.clouds = new THREE.Group(); // new THREE.Mesh(new THREE.Geometry(), CLOUD_MATERIAL);
-    this.clouds.frustumCulled = true;
-    this.clouds.castShadow = true;
-    this.clouds.receiveShadow = true;
-    this.scene.add(this.clouds);
-
-    this.wind = new THREE.Vector3(0, 0, 768 * Math.sign(Math.random() - 0.5));
-
-    // wind direction helper
-    if (Main.DEBUG) {
-      const arrowHelper = new THREE.ArrowHelper(this.wind, new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.CLOUD_LEVEL, Terrain.SIZE_Z / 2), 10000, 0xff0000);
-      this.scene.add(arrowHelper);
-    }
-  }
-
-  private initRain() {
-    this.clouds.children.forEach((cloud: THREE.Mesh) => {
-      // particles
-      const size = new THREE.Box3().setFromObject(cloud).getSize(new THREE.Vector3());
-      const particles = new THREE.Geometry();
-      const particleCount = (size.x * size.y * size.z) / 250000000000;
-
-      for (let i = 0; i < particleCount; i++) {
-        particles.vertices.push(new THREE.Vector3(
-          MathUtils.randomInt(-size.x / 3, size.x / 3),
-          MathUtils.randomInt(Chunk.SEA_LEVEL, Chunk.CLOUD_LEVEL),
-          MathUtils.randomInt(-size.z / 3, size.z / 3)
-        ));
-      }
-
-      // material
-      const material = new THREE.PointsMaterial({
-        size: 1024,
-        map: World.LOADED_TEXTURES.get('raindrop'),
-        blending: THREE.AdditiveBlending,
-        depthTest: true,
-        transparent: true,
-        opacity: 0.50
-      });
-
-      const data: ICloudData = {
-        particles,
-        particleMaterial: material,
-        particleSystem: new THREE.Points(particles, material),
-        isRaininig: false,
-        allParticlesDropped: false
-      };
-
-      this.scene.add(data.particleSystem);
-
-      cloud.userData = data;
-
-    });
-  }
-
-  getTerrain(): Terrain {
-    return this.terrain;
-  }
-
-  getGenerator(): BiomeGenerator {
-    return this.generator;
-  }
-
   /**
    * @param {number} delta
    */
@@ -263,72 +201,8 @@ class World {
 
     this.terrain.update(this.frustum, this.controls.getObject().position, delta, tick);
     this.player.update(this.terrain, delta);
+    this.weather.update(delta);
     this.generator.getBiome().update(delta);
-
-    this.updateClouds(delta);
-  }
-
-  updateClouds(delta: number) {
-    for (const cloud of this.clouds.children) {
-      // move cloud
-      cloud.position.add(this.wind.clone().multiplyScalar(delta));
-
-      cloud.updateMatrixWorld(true);
-
-      // reset position if the cloud goes off the edges of the world
-      const bbox: THREE.Box3 = new THREE.Box3().setFromObject(cloud);
-      const size: THREE.Vector3 = bbox.getSize(new THREE.Vector3());
-
-      if (bbox.max.x < 0) {
-        cloud.position.x = Terrain.SIZE_X - size.z / 2;
-      }
-      if (bbox.max.z < 0) {
-        cloud.position.z = Terrain.SIZE_Z - size.z / 2;
-      }
-      if (bbox.min.x > Terrain.SIZE_X) {
-        cloud.position.x = size.x / 2;
-      }
-      if (bbox.min.z > Terrain.SIZE_Z) {
-        cloud.position.z = size.z / 2;
-      }
-
-      // rain
-      const rainData = cloud.userData as ICloudData;
-
-      rainData.isRaininig = this.generator.computeMoistureAt(cloud.position.x, cloud.position.z) >= 0.65;
-      if (!rainData.isRaininig) rainData.allParticlesDropped = rainData.particles.vertices.every(position => position.y === Chunk.CLOUD_LEVEL);
-      if (rainData.allParticlesDropped) {
-        rainData.particleMaterial.visible = false;
-        rainData.particles.vertices.forEach(position => position.set(
-          MathUtils.randomInt(-size.x / 3, size.x / 3),
-          MathUtils.randomInt(Chunk.SEA_LEVEL, Chunk.CLOUD_LEVEL),
-          MathUtils.randomInt(-size.z / 3, size.z / 3)
-        ));
-      }
-
-      // set particle system position
-      rainData.particleSystem.position.setX(cloud.position.x);
-      rainData.particleSystem.position.setZ(cloud.position.z);
-
-      rainData.particles.vertices.forEach(position => {
-        if (position.y <= Chunk.SEA_ELEVATION) position.y = Chunk.CLOUD_LEVEL - size.y / 2;
-        if (rainData.isRaininig) {
-          rainData.particleMaterial.visible = true;
-          position.y -= World.RAIN_SPEED;
-        } else {
-          // rain stop
-          if (position.y < Chunk.CLOUD_LEVEL - 1000) {
-            position.y -= World.RAIN_SPEED;
-          } else {
-            position.set(cloud.position.x, Chunk.CLOUD_LEVEL - size.y / 2, cloud.position.z);
-          }
-
-        }
-      });
-
-      rainData.particles.verticesNeedUpdate = true;
-
-    }
   }
 
   handleMouseInteraction(interactionType: MOUSE_TYPES) {
@@ -349,6 +223,18 @@ class World {
    */
   public handleKeyboard(key: string, active: boolean) {
     this.player.handleKeyboard(key, active);
+  }
+
+  getWeather(): Weather {
+    return this.weather;
+  }
+
+  getTerrain(): Terrain {
+    return this.terrain;
+  }
+
+  getGenerator(): BiomeGenerator {
+    return this.generator;
   }
 
   /**
