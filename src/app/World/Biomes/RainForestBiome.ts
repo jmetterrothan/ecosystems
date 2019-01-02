@@ -70,13 +70,13 @@ class RainForestBiome extends Biome {
 
     if (e > Chunk.SEA_ELEVATION + 0.2) {
       if (m > 0.695) {
-        return BIOMES.RAINFOREST;
+        return SUB_BIOMES.RAINFOREST;
       }
       return SUB_BIOMES.RAINFOREST_HILLS;
     }
 
     if (m > 0.625) {
-      return BIOMES.RAINFOREST_SWAMPS;
+      return SUB_BIOMES.RAINFOREST_SWAMPS;
     }
     return SUB_BIOMES.BEACH;
   }

@@ -47,10 +47,10 @@ class OceanBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (m < 0.3) {
-      return BIOMES.CORAL_REEF;
+      return SUB_BIOMES.CORAL_REEF;
     }
 
-    return BIOMES.OCEAN;
+    return SUB_BIOMES.OCEAN;
   }
 }
 

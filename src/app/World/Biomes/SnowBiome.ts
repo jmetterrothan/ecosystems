@@ -6,7 +6,7 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 
 import { IBiome } from '@shared/models/biome.model';
-import { BIOMES } from '@shared/constants/biome.constants';
+import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
 class SnowBiome extends Biome {
   constructor(generator: BiomeGenerator) {
@@ -44,13 +44,13 @@ class SnowBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.15) {
-      return BIOMES.FROZEN_OCEAN;
+      return SUB_BIOMES.FROZEN_OCEAN;
     }
     if (e < Chunk.SEA_ELEVATION + 0.15) {
-      return BIOMES.FROZEN_BEACH;
+      return SUB_BIOMES.FROZEN_BEACH;
     }
 
-    return BIOMES.SNOW;
+    return SUB_BIOMES.SNOW;
   }
 }
 

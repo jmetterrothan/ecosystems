@@ -75,14 +75,14 @@ class HighlandBiome extends Biome {
     }
 
     if (e > Chunk.CLOUD_ELEVATION + 0.1) {
-      return BIOMES.MOUNTAIN;
+      return SUB_BIOMES.MOUNTAIN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.175) {
-      return BIOMES.TUNDRA;
+      return SUB_BIOMES.TUNDRA;
     }
 
-    return BIOMES.SWAMP;
+    return SUB_BIOMES.SWAMP;
   }
 }
 
