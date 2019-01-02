@@ -472,7 +472,16 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.6,
+        weight: 0.3,
+        name: 'spruce',
+        scarcity: 0.8,
+        e: null,
+        m: null,
+        scale: { min: 0.9, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.3,
         name: 'rock5',
         scarcity: 0.825,
         e: null,
