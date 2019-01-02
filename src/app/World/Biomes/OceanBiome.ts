@@ -24,7 +24,7 @@ class OceanBiome extends Biome {
 
     this.waterDistortion = true;
     this.waterDistortionFreq = 3.0;
-    this.waterDistortionAmp = 512.0;
+    this.waterDistortionAmp = 720.0;
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {

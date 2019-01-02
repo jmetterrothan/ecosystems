@@ -13,7 +13,7 @@ class SwampBiome extends Biome {
     super('SWAMPS', generator);
 
     this.waterDistortion = true;
-    this.waterDistortionFreq = 0.5;
+    this.waterDistortionFreq = 1.25;
     this.waterDistortionAmp = 512.0;
   }
 

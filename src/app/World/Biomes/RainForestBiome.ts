@@ -20,6 +20,10 @@ class RainForestBiome extends Biome {
   constructor(generator: BiomeGenerator) {
     super('RAINFOREST', generator);
 
+    this.waterDistortion = true;
+    this.waterDistortionFreq = 2.5;
+    this.waterDistortionAmp = 1024.0;
+
     this.a = MathUtils.randomFloat(0, 0.85); // best around 0.65, size of the island
     this.b = MathUtils.randomFloat(0.7, 1.5); // best around 0.80, makes multiple hills even when low
     this.c = MathUtils.randomFloat(0.85, 1.5); // best around 0.85;

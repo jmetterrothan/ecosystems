@@ -20,7 +20,7 @@ class GreenlandBiome extends Biome {
     super('GREENLANDS', generator);
 
     this.waterDistortion = true;
-    this.waterDistortionFreq = 2.0;
+    this.waterDistortionFreq = 2.25;
     this.waterDistortionAmp = 1024.0;
 
     this.a = MathUtils.randomFloat(0.075, 0.85); // best around 0.65, size of the island
