@@ -560,7 +560,7 @@ class Terrain {
 
       const y = this.getHeightAt(x, z);
       corpseItem = {
-        x, y, z, s: World.OBJ_INITIAL_SCALE, n: 'tulip', r: 0
+        x, y, z, s: World.OBJ_INITIAL_SCALE, n: 'skull', r: 0
       };
 
       corpseObject = chunk.getObject(corpseItem);
