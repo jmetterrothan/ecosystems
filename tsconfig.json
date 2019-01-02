@@ -29,6 +29,9 @@
       ],
       "@materials/*": [
         "src/app/Shared/materials/*"
+      ],
+      "@boids/*": [
+        "src/app/Boids/*"
       ]
     },
     "typeRoots": [

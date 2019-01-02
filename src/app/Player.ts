@@ -1,12 +1,12 @@
 import * as THREE from 'three';
-import { BehaviorSubject } from 'rxjs';
 
 import 'three/examples/js/controls/PointerLockControls';
 
 import Chunk from '@world/Chunk';
 import Terrain from '@world/Terrain';
 
-import underwaterService from '@shared/services/underwater.service';
+import { underwaterSvc } from '@shared/services/underwater.service';
+import { playerSvc } from '@shared/services/player.service';
 
 class Player {
   private controls: THREE.PointerLockControls;
@@ -96,6 +96,7 @@ class Player {
 
     // collision
     const position = this.controls.getObject().position;
+    playerSvc.setPosition(position);
     let y = -(Chunk.HEIGHT / 2) | 0;
 
     if (position.x >= 0 && position.x <= Terrain.SIZE_X && position.z >= 0 && position.z <= Terrain.SIZE_Z) {
@@ -106,12 +107,12 @@ class Player {
       this.controls.getObject().position.y = y;
     }
 
-    if (!underwaterService.isUnderwater && position.y <= Chunk.SEA_LEVEL) {
-      underwaterService.set(true);
+    if (!underwaterSvc.isUnderwater && position.y <= Chunk.SEA_LEVEL) {
+      underwaterSvc.set(true);
     }
 
-    if (underwaterService.isUnderwater && position.y > Chunk.SEA_LEVEL) {
-      underwaterService.set(false);
+    if (underwaterSvc.isUnderwater && position.y > Chunk.SEA_LEVEL) {
+      underwaterSvc.set(false);
     }
   }
 
