@@ -50,6 +50,9 @@ class World {
   private raycaster: THREE.Raycaster;
   private seed: string;
 
+  private sunlight: THREE.DirectionalLight;
+  private sunlightTarget: THREE.Object3D;
+
   /**
    * World constructor
    * @param {THREE.Scene} scene
@@ -63,6 +66,8 @@ class World {
 
     this.frustum = new THREE.Frustum();
     this.raycaster = new THREE.Raycaster();
+
+    this.sunlightTarget = new THREE.Object3D();
   }
 
   async init() {
@@ -140,26 +145,31 @@ class World {
     this.scene.add(ambient);
 
     const d = 1000000;
-    const sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
-    sunlight.position.set(Terrain.SIZE_X, Chunk.HEIGHT, Terrain.SIZE_Z);
-    sunlight.castShadow = true;
-    sunlight.shadow.mapSize.width = configSvc.config.SHADOW_MAP_SIZE;
-    sunlight.shadow.mapSize.height = configSvc.config.SHADOW_MAP_SIZE;
-    sunlight.shadow.camera.visible = true;
-    sunlight.shadow.camera.castShadow = true;
-    sunlight.shadow.bias = 0.0001;
-    sunlight.shadow.camera.left = -d;
-    sunlight.shadow.camera.right = d;
-    sunlight.shadow.camera.top = d;
-    sunlight.shadow.camera.bottom = -d;
-    sunlight.shadow.camera.near = 150;
-    sunlight.shadow.camera.far = 1000000;
+    this.sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
+    this.sunlight.position.set(Terrain.SIZE_X / 2, Chunk.HEIGHT, Terrain.SIZE_Z / 2);
+    this.sunlightTarget.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
+    this.sunlight.target = this.sunlightTarget;
+    this.sunlight.castShadow = true;
+    this.sunlight.shadow.mapSize.width = 4096;
+    this.sunlight.shadow.mapSize.height = 4096;
+    this.sunlight.shadow.camera.visible = true;
+    this.sunlight.shadow.camera.castShadow = true;
+    this.sunlight.shadow.bias = 0.0001;
+    this.sunlight.shadow.camera.left = -d;
+    this.sunlight.shadow.camera.right = d;
+    this.sunlight.shadow.camera.top = d;
+    this.sunlight.shadow.camera.bottom = -d;
+    this.sunlight.shadow.camera.near = 150;
+    this.sunlight.shadow.camera.far = 1000000;
 
     if (configSvc.config.DEBUG) {
       this.scene.add(new THREE.DirectionalLightHelper(sunlight, 1024));
     }
 
-    this.scene.add(sunlight);
+    console.log(this.sunlight.target, this.sunlightTarget);
+
+    this.scene.add(this.sunlightTarget);
+    this.scene.add(this.sunlight);
   }
 
   /**
@@ -217,6 +227,7 @@ class World {
     this.player.update(this.terrain, delta);
     this.weather.update(delta);
     this.generator.getBiome().update(delta);
+    this.updateSunlight(tick);
   }
 
   /**
@@ -239,7 +250,7 @@ class World {
    * @param {string} key
    * @param {boolean} active
    */
-  public handleKeyboard(key: string, active: boolean) {
+  handleKeyboard(key: string, active: boolean) {
     this.player.handleKeyboard(key, active);
   }
 
@@ -308,6 +319,13 @@ class World {
       }, null, () => reject());
     });
   }
+
+  private updateSunlight(tick: number) {
+    // change position here
+
+    this.sunlight.shadow.camera.updateProjectionMatrix();
+  }
+
 }
 
 export default World;
