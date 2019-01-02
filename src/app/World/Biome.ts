@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import BiomeGenerator from '@world/BiomeGenerator';
+import Terrain from './Terrain';
 import CommonUtils from '@shared/utils/Common.utils';
 
 import { IBiome } from '@shared/models/biome.model';
@@ -29,6 +30,10 @@ abstract class Biome {
     this.waterColor1 = WATER_CONSTANTS.WATER_COLOR_A;
     this.waterColor2 = WATER_CONSTANTS.WATER_COLOR_B;
   }
+
+  abstract init(scene: THREE.Scene, terrain: Terrain);
+
+  abstract update(delta: number);
 
   /**
    * Retrieve biome object (color and organisms) at the given position

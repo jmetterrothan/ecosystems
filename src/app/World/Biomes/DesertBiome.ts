@@ -1,18 +1,57 @@
+import * as THREE from 'three';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
+import World from '@world/World';
 
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
+import { IPick } from '@shared/models/pick.model';
 import MathUtils from '@shared/utils/Math.utils';
 
 class DesertBiome extends Biome {
+  private vulture: THREE.Object3D;
+
   constructor(generator: BiomeGenerator) {
     super('DESERT', generator);
 
     this.waterDistortion = false;
+  }
+
+  init(scene: THREE.Scene, terrain: Terrain) {
+    // corpse
+    let chunk: Chunk;
+    let corpseItem: IPick;
+    let corpseObject: THREE.Object3D;
+
+    do {
+      const x = Terrain.SIZE_X / 4 + Math.floor(Math.random() * Terrain.SIZE_X / 2);
+      const z = Terrain.SIZE_Z / 4 + Math.floor(Math.random() * Terrain.SIZE_Z / 2);
+
+      chunk = terrain.getChunkAt(x, z);
+
+      const y = terrain.getHeightAt(x, z);
+      corpseItem = {
+        x, y, z, s: World.OBJ_INITIAL_SCALE, n: 'skull', r: MathUtils.randomFloat(0, Math.PI * 2)
+      };
+
+      corpseObject = chunk.getObject(corpseItem);
+
+    } while (!chunk.canPlaceObject(corpseObject));
+
+    chunk.placeObject(corpseObject);
+
+    // vulture
+    this.vulture = chunk.getObject({ ...corpseItem });
+    this.vulture.position.setY(Chunk.CLOUD_LEVEL);
+    this.vulture.children.forEach((obj: THREE.Mesh) => obj.translateX(-20));
+    chunk.placeObject(this.vulture);
+  }
+
+  update(delta: number) {
+    this.vulture.rotateOnAxis(new THREE.Vector3(0, 1, 0), THREE.Math.degToRad(0.4));
   }
 
   /**

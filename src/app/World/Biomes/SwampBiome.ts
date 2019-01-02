@@ -17,6 +17,10 @@ class SwampBiome extends Biome {
     this.waterDistortionAmp = 512.0;
   }
 
+  init(scene: THREE.Scene, terrain: Terrain) { }
+
+  update(delta: number) { }
+
   /**
    * Compute elevation
    * @param {number} x coord component

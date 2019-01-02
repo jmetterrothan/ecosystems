@@ -1,8 +1,10 @@
+import * as THREE from 'three';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
+import Boids from '../../Boids/Boids';
 
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
@@ -11,6 +13,8 @@ import MathUtils from '@shared/utils/Math.utils';
 class OceanBiome extends Biome {
   private spike: number;
   private depth: number;
+
+  private boids: Boids;
 
   constructor(generator: BiomeGenerator) {
     super('OCEAN', generator);
@@ -21,6 +25,20 @@ class OceanBiome extends Biome {
     this.waterDistortion = true;
     this.waterDistortionFreq = 3.0;
     this.waterDistortionAmp = 512.0;
+  }
+
+  init(scene: THREE.Scene, terrain: Terrain) {
+    this.boids = new Boids(
+      scene,
+      new THREE.Vector3(Terrain.SIZE_X - 35000, 27500, Terrain.SIZE_Z - 35000),
+      new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2),
+      25
+    );
+    this.boids.generate();
+  }
+
+  update(delta: number) {
+    this.boids.update(delta);
   }
 
   /**

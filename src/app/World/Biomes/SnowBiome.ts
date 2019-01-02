@@ -18,6 +18,10 @@ class SnowBiome extends Biome {
     this.waterColor2 = new THREE.Color(0xacd2e5);
   }
 
+  init(scene: THREE.Scene, terrain: Terrain) { }
+
+  update(delta: number) { }
+
   /**
    * Compute elevation
    * @param {number} x coord component

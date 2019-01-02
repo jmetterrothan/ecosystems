@@ -33,7 +33,7 @@ class World {
   static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 
   static readonly RAIN_PROBABILITY: number = 1;
-  static readonly RAIN_SPEED: number = 125;
+  static readonly RAIN_SPEED: number = 320;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
   static LOADED_TEXTURES = new Map<string, THREE.Texture>();
@@ -68,15 +68,17 @@ class World {
     this.initLights();
     await this.initObjects();
     await this.initTextures();
+
     this.initClouds();
 
     // stuff
-    this.terrain = new Terrain(this.scene, this.clouds);
-    this.generator = this.terrain.getGenerator();
+    this.generator = new BiomeGenerator();
 
+    this.terrain = new Terrain(this.scene, this.generator);
     this.terrain.init();
     this.terrain.preload();
-    this.terrain.initExtras();
+
+    this.generator.getBiome().init(this.scene, this.terrain);
 
     this.initRain();
 
@@ -241,10 +243,15 @@ class World {
     return this.terrain;
   }
 
+  getGenerator(): BiomeGenerator {
+    return this.generator;
+  }
+
   /**
    * @param {number} delta
    */
   update(delta: number, tick: number) {
+    this.handleMouseInteraction(MOUSE_TYPES.MOVE);
     this.camera.updateMatrixWorld(true);
 
     this.frustum.setFromMatrix(
@@ -256,13 +263,7 @@ class World {
 
     this.terrain.update(this.frustum, this.controls.getObject().position, delta, tick);
     this.player.update(this.terrain, delta);
-    this.handleMouseInteraction(MOUSE_TYPES.MOVE);
-
-    /*
-    if (position.y < Chunk.SEA_LEVEL) {
-      // console.log('underwater');
-    }
-    */
+    this.generator.getBiome().update(delta);
 
     this.updateClouds(delta);
   }
