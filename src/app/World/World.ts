@@ -68,8 +68,8 @@ class World {
     this.windSound = new Howl({
       src: [ForestSFXMp3],
       autoplay: true,
-      volume: 0.5,
-      loop: true
+      volume: 0.1,
+      loop: true,
     });
   }
 
@@ -273,8 +273,10 @@ class World {
       // console.log('underwater');
     }
     */
-    this.windSound.position = this.getSoundPosition();
-    console.log(this.windSound.position);
+    const soundPos = this.getSoundPosition();
+    this.windSound.pos(soundPos.x, 0, 0);
+    this.windSound.pos(-0.00004, 0, 0);
+    console.log(this.windSound._pos);
 
     this.updateClouds(delta);
   }
@@ -416,13 +418,23 @@ class World {
     });
   }
 
+  private convertToLittleScale(size, globalSize) {
+    const result = 1 * size / globalSize;
+    return result;
+  }
+
   private getSoundPosition() {
     const playerPosition = this.player.getControls();
     const centerPosition = { x: Terrain.SIZE_X / 2, y: Terrain.SIZE_Y / 2, z: Terrain.SIZE_Z / 2 };
 
-    const x = centerPosition.x - playerPosition.getObject().position.x;
-    const y = centerPosition.y - playerPosition.getObject().position.y;
-    const z = centerPosition.z - playerPosition.getObject().position.z;
+    let x = centerPosition.x - playerPosition.getObject().position.x;
+    let y = centerPosition.y - playerPosition.getObject().position.y;
+    let z = centerPosition.z - playerPosition.getObject().position.z;
+
+    x = this.convertToLittleScale(x, Terrain.SIZE_X);
+    y = this.convertToLittleScale(y, Terrain.SIZE_Y);
+    z = this.convertToLittleScale(z, Terrain.SIZE_Z);
+
     const relativePosition = { x, y, z };
     return relativePosition;
   }
