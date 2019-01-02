@@ -30,6 +30,10 @@ class RainForestBiome extends Biome {
     this.ridges = MathUtils.randomFloat(0.225, 0.35); // makes ridges more prevalent
   }
 
+  init(scene: THREE.Scene, terrain: Terrain) { }
+
+  update(delta: number) { }
+
   /**
    * Compute elevation
    * @param {number} x coord component

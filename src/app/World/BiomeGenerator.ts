@@ -14,8 +14,6 @@ import { IPick } from '@shared/models/pick.model';
 import { BIOMES } from '@shared/constants/biomes.constants';
 import { IPickObject } from '@shared/models/objectParameters.model';
 
-import DesertBiome from '@world/Biomes/DesertBiome';
-
 class BiomeGenerator {
   // @ts-ignore
   public static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly

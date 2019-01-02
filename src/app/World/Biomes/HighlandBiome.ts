@@ -27,6 +27,10 @@ class HighlandBiome extends Biome {
     this.f = MathUtils.randomFloat(0.85, 3);
   }
 
+  init(scene: THREE.Scene, terrain: Terrain) { }
+
+  update(delta: number) { }
+
   /**
    * Compute elevation
    * @param {number} x coord component

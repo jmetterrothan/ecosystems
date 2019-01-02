@@ -1,13 +1,13 @@
 import * as THREE from 'three';
 
 import BiomeGenerator from '@world/BiomeGenerator';
+import Terrain from './Terrain';
 import CommonUtils from '@shared/utils/Common.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 
-abstract class Biome
-{
+abstract class Biome {
   private static WATER_COLORS = new Map<number, THREE.Color>();
 
   private name: string;
@@ -31,13 +31,17 @@ abstract class Biome
     this.waterColor2 = WATER_CONSTANTS.WATER_COLOR_B;
   }
 
+  abstract init(scene: THREE.Scene, terrain: Terrain);
+
+  abstract update(delta: number);
+
   /**
    * Retrieve biome object (color and organisms) at the given position
    * @param {number} e elevation (0 - 1)
    * @param {number} m moisture (0 - 1)
    * @return {IBiome}
    */
-  abstract getParametersAt(e: number, m: number) : IBiome;
+  abstract getParametersAt(e: number, m: number): IBiome;
 
   /**
    * Retrieve elevation value (0 - 1)
