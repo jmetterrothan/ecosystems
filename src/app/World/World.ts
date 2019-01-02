@@ -19,7 +19,7 @@ import { ICloudData } from '@shared/models/cloudData.model';
 import BiomeGenerator from './BiomeGenerator';
 
 class World {
-  static SEED: string | null = null;
+  static SEED: string | null = '1156702945';
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
@@ -74,6 +74,7 @@ class World {
     this.terrain = new Terrain(this.scene, this.clouds);
     this.terrain.init();
     this.terrain.preload();
+    this.terrain.initExtras();
 
     this.initRain();
 
@@ -243,7 +244,7 @@ class World {
   /**
    * @param {number} delta
    */
-  update(delta, tick) {
+  update(delta: number, tick: number) {
     this.camera.updateMatrixWorld(true);
 
     this.frustum.setFromMatrix(

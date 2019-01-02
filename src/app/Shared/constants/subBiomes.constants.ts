@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import Chunk from '@world/Chunk';
 import { IBiomes } from '@shared/models/biomes.model';
 
-export const BIOMES: IBiomes = {
+export const SUB_BIOMES: IBiomes = {
   FROZEN_TAIGA: {
     color: new THREE.Color(0x96c47b),
     organisms: []
