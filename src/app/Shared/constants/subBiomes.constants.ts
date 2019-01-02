@@ -439,11 +439,48 @@ export const SUB_BIOMES: IBiomes = {
         scale: { min: 1.25, max: 3 },
         float: false,
       },
+      {
+        weight: 0.25,
+        name: 'iceberg1',
+        scarcity: 0.95,
+        e: { low: -1, high: Chunk.SEA_ELEVATION - 0.05 },
+        m: { low: 0.35, high: 1.0 },
+        scale: { min: 0.9, max: 1.1 },
+        float: true,
+      },
+      {
+        weight: 0.25,
+        name: 'iceberg2',
+        scarcity: 0.95,
+        e: { low: -1, high: Chunk.SEA_ELEVATION - 0.05 },
+        m: { low: 0.35, high: 1.0 },
+        scale: { min: 0.9, max: 1.1 },
+        float: true,
+      },
     ]
   },
   SNOW: {
     color: new THREE.Color(0xf1f1f1),
-    organisms: []
+    organisms: [
+      {
+        weight: 0.4,
+        name: 'dead_tree',
+        scarcity: 0.9,
+        e: null,
+        m: null,
+        scale: { min: 0.9, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.6,
+        name: 'rock5',
+        scarcity: 0.825,
+        e: null,
+        m: null,
+        scale: { min: 0.5, max: 1.25 },
+        float: false,
+      },
+    ]
   },
   SWAMP: {
     color: new THREE.Color(0xbed69e),

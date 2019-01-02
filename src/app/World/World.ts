@@ -19,7 +19,7 @@ import { ICloudData } from '@shared/models/cloudData.model';
 import BiomeGenerator from './BiomeGenerator';
 
 class World {
-  static SEED: string | null = '1156702945';
+  static SEED: string | null = null;
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 

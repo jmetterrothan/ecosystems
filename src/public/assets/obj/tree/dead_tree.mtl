@@ -236,14 +236,6 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 1.00 0.77 0.05
 Ns 0.00
-newmtl pasted__phong25SG
-illum 4
-Kd 0.98 0.98 0.98
-Ka 0.00 0.55 1.00
-Tf 0.66 0.66 0.66
-Ni 1.00
-Ks 0.17 0.39 0.58
-Ns 6.00
 newmtl pasted__plain_foliageSG1
 illum 4
 Kd 0.17 0.70 0.15
@@ -363,30 +355,6 @@ Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
-Ns 6.00
-newmtl phong23SG
-illum 4
-Kd 0.65 0.64 0.50
-Ka 0.00 0.00 0.00
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.50 0.50 0.50
-Ns 6.00
-newmtl phong24SG
-illum 4
-Kd 1.00 1.00 1.00
-Ka 0.00 0.00 0.00
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.50 0.50 0.50
-Ns 6.00
-newmtl phong25SG
-illum 4
-Kd 0.98 0.98 0.98
-Ka 0.00 0.55 1.00
-Tf 0.66 0.66 0.66
-Ni 1.00
-Ks 0.17 0.39 0.58
 Ns 6.00
 newmtl pink_mushroom_capSG
 illum 4
