@@ -13,7 +13,7 @@ import CommonUtils from '@shared/utils/Common.utils';
 
 import { underwaterSvc } from '@services/underwater.service';
 import { storageSvc } from '@services/storage.service';
-import AchievementService, { achievementSvc } from '@services/achievement.service';
+import ProgressionService, { progressionSvc } from './Shared/services/progression.service';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
@@ -34,7 +34,7 @@ class Main {
   private focused: boolean;
   private stats: statsJs;
 
-  private achievementSvc: AchievementService;
+  private progressionSvc: ProgressionService;
 
   constructor() {
     this.containerElement = document.body;
@@ -62,7 +62,8 @@ class Main {
 
     this.focused = true;
 
-    this.achievementSvc = achievementSvc;
+    this.progressionSvc = progressionSvc;
+    this.progressionSvc.init();
   }
 
   async init() {
@@ -73,8 +74,6 @@ class Main {
 
     this.initPointerLock();
     this.initRenderer();
-
-    this.achievementSvc.init();
 
     this.postProcess = new PostProcess(this.scene, this.renderer, this.camera);
     this.postProcess.init();

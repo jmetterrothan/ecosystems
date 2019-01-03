@@ -1,4 +1,4 @@
-import { IProgressionStorageKey } from './../models/progressionStorageKey.model';
+import { IProgressionStorageKey } from '@achievements/models/progressionStorageKey.model';
 
 export const PROGRESSION_STORAGE_KEYS: IProgressionStorageKey = {
   game_played_count: 'game_played_count',
