@@ -95,6 +95,7 @@ class Terrain {
     const bt2 = this.getBorderMesh(1, Terrain.NCOLS, (row, col) => col * Chunk.CELL_SIZE_X, (row, col) => Terrain.SIZE_Z);
     const bt3 = this.getBorderMesh(1, Terrain.NROWS, (row, col) => Terrain.SIZE_X, (row, col) => col * Chunk.CELL_SIZE_Z);
     const bt4 = this.getBorderMesh(1, Terrain.NROWS, (row, col) => 0, (row, col) => col * Chunk.CELL_SIZE_Z);
+    const bt5 = this.getBottomMesh();
 
     const bw1 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => Terrain.SIZE_Z, false);
     const bw2 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => 0, true);
@@ -105,6 +106,7 @@ class Terrain {
     (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt2);
     (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt3);
     (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt4);
+    (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt5);
 
     (<THREE.Geometry>this.water.geometry).mergeMesh(bw1);
     (<THREE.Geometry>this.water.geometry).mergeMesh(bw2);
@@ -494,6 +496,24 @@ class Terrain {
     geometry.computeFaceNormals();
     geometry.computeVertexNormals();
     geometry.normalsNeedUpdate = true;
+
+    return new THREE.Mesh(geometry, TERRAIN_MATERIAL);
+  }
+
+  private getBottomMesh(): THREE.Mesh {
+    const geometry = new THREE.Geometry();
+
+    geometry.vertices.push(new THREE.Vector3(0, -Terrain.SIZE_Y / 2, 0));
+    geometry.vertices.push(new THREE.Vector3(Terrain.SIZE_X, -Terrain.SIZE_Y / 2, 0));
+    geometry.vertices.push(new THREE.Vector3(Terrain.SIZE_X, -Terrain.SIZE_Y / 2, Terrain.SIZE_Z));
+    geometry.vertices.push(new THREE.Vector3(0, -Terrain.SIZE_Y / 2, Terrain.SIZE_Z));
+
+    const f1 = new THREE.Face3(0, 1, 2);
+    const f2 = new THREE.Face3(2, 0, 3);
+    f1.color = this.generator.getSubBiome((-Terrain.SIZE_Y / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
+    f2.color = this.generator.getSubBiome((-Terrain.SIZE_Y / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
+    geometry.faces.push(f1);
+    geometry.faces.push(f2);
 
     return new THREE.Mesh(geometry, TERRAIN_MATERIAL);
   }
