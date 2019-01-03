@@ -5,11 +5,12 @@ import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
 import Main from '../Main';
-import Terrain from './Terrain';
-import Chunk from './Chunk';
+import Terrain from '@world/Terrain';
+import Biome from '@world/Biome';
+import Chunk from '@world/Chunk';
 import Player from '../Player';
-import BiomeGenerator from './BiomeGenerator';
-import Weather from './Weather';
+import BiomeGenerator from '@world/BiomeGenerator';
+import Weather from '@world/Weather';
 import MathUtils from '@utils/Math.utils';
 
 import { OBJECTS } from '@shared/constants/object.constants';
@@ -18,7 +19,8 @@ import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { ITexture } from '@shared/models/texture.model';
 
 class World {
-  static SEED: string | null = '3780882106';
+  static readonly SEED: string | null = null;
+  static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
