@@ -96,10 +96,10 @@ class Terrain {
     const bt3 = this.getBorderMesh(1, Terrain.NROWS, (row, col) => Terrain.SIZE_X, (row, col) => col * Chunk.CELL_SIZE_Z);
     const bt4 = this.getBorderMesh(1, Terrain.NROWS, (row, col) => 0, (row, col) => col * Chunk.CELL_SIZE_Z);
 
-    const bw1 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => Terrain.SIZE_Z);
-    const bw2 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => 0);
-    const bw3 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => 0, (row, col) => col * Chunk.WIDTH / 4);
-    const bw4 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => Terrain.SIZE_X, (row, col) => col * Chunk.DEPTH / 4);
+    const bw1 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => Terrain.SIZE_Z, false);
+    const bw2 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => 0, true);
+    const bw3 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => 0, (row, col) => col * Chunk.WIDTH / 4, false);
+    const bw4 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => Terrain.SIZE_X, (row, col) => col * Chunk.DEPTH / 4, true);
 
     (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt1);
     (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt2);
@@ -378,7 +378,7 @@ class Terrain {
    * @param {Function} Z Callback function returning the z component
    * @return {THREE.Mesh}
    */
-  getWaterBorderMesh(nbRows: number, nbCols: number, X: Function, Z: Function): THREE.Mesh {
+  getWaterBorderMesh(nbRows: number, nbCols: number, X: Function, Z: Function, flipIndexes: boolean = false): THREE.Mesh {
     const geometry = new THREE.Geometry();
 
     const nbVerticesZ = nbCols + 1;
@@ -420,6 +420,15 @@ class Terrain {
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);
+      }
+    }
+
+    if (flipIndexes) {
+      let tmp;
+      for (let f = 0; f < geometry.faces.length; f++) {
+        tmp = geometry.faces[f].clone();
+        geometry.faces[f].a = tmp.c;
+        geometry.faces[f].c = tmp.a;
       }
     }
 
