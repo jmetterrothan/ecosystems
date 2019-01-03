@@ -62,11 +62,11 @@ class BiomeGenerator {
 
         const scale = organism.scale ? MathUtils.randomFloat(organism.scale.min, organism.scale.max) : 1;
 
-        const lowM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).low : 0;
-        const highM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).high : 1;
+        const lowM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).low : null;
+        const highM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).high : null;
 
-        const lowE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).low : -1;
-        const highE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).high : 1;
+        const lowE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).low : null;
+        const highE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).high : null;
 
         if (organism.float === true) {
           // sample 4 points and take the highest one to prevent (as much as possible) clipping into the water
@@ -83,12 +83,12 @@ class BiomeGenerator {
 
         // test for scarcity and ground elevation criteria
         if (parameters.force || (rand >= organism.scarcity &&
-          (e >= lowE && e <= highE) &&
-          (m >= lowM && m <= highM))) {
+          (lowE === null || e >= lowE) &&
+          (highE === null || e <= highE) &&
+          (lowM === null || m >= lowM) &&
+          (highM === null ||  m <= highM))) {
           return (<IPick>{
-            x,
-            z,
-            y,
+            x, y, z,
             n: organism.name,
             r: MathUtils.randomFloat(0, Math.PI * 2),
             s: scale * World.OBJ_INITIAL_SCALE
