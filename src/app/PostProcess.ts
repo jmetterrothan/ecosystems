@@ -10,8 +10,8 @@ import 'three/examples/js/shaders/ColorCorrectionShader';
 
 import { Effect } from '@shared/models/effect.model';
 
-import waterVertexGlsl from '@shaders/water.vertex.glsl';
-import waterFragmentGlsl from '@shaders/water.fragment.glsl';
+import vergilwaterVertexGlsl from '@shaders/vergilwater.vertex.glsl';
+import vergilwaterFragmentGlsl from '@shaders/vergilwater.fragment.glsl';
 
 THREE.VergilWaterShader = {
   uniforms: {
@@ -22,8 +22,8 @@ THREE.VergilWaterShader = {
     centerX: { type: 'f', value: 0.5 },
     centerY: { type: 'f', value: 0.5 },
   },
-  vertexShader: waterVertexGlsl,
-  fragmentShader: waterFragmentGlsl
+  vertexShader: vergilwaterVertexGlsl,
+  fragmentShader: vergilwaterFragmentGlsl
 };
 
 class PostProcess
@@ -34,6 +34,12 @@ class PostProcess
 
   private effects: Effect[];
 
+  /**
+   * PostProcess constructor
+   * @param {THREE.Scene} scene
+   * @param {THREE.WebGLRenderer} renderer
+   * @param {THREE.Camera} camera
+   */
   constructor(scene: THREE.Scene, renderer: THREE.WebGLRenderer, camera: THREE.Camera) {
     this.scene = scene;
 
@@ -92,16 +98,26 @@ class PostProcess
     this.effects.push({ effect: pass6, update: () => { pass6.uniforms['time'].value += Math.random(); } });
   }
 
+  /**
+   * @param {number} tick
+   */
   update(tick: number) {
     for (const effect of this.effects) {
       if (effect.update) effect.update(tick);
     }
   }
 
+  /**
+   * @param {number} delta
+   */
   render(delta: number) {
     this.composer.render(delta);
   }
 
+  /**
+   * @param {number} w
+   * @param {number} h
+   */
   resize(w: number, h: number) {
     this.composer.setSize(w * window.devicePixelRatio, h * window.devicePixelRatio);
   }
