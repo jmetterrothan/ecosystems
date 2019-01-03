@@ -159,7 +159,9 @@ class Chunk {
       }
     }
 
-    this.loadPopulation();
+    if (!World.EMPTY) {
+      this.loadPopulation();
+    }
 
     this.merged = true;
     this.dirty = true;
