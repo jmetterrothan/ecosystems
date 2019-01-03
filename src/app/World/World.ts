@@ -127,7 +127,7 @@ class World {
     light.castShadow = false;
     this.scene.add(light);
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.295);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.275);
     ambient.position.set(0, Chunk.HEIGHT, 15000);
     ambient.castShadow = false;
     this.scene.add(ambient);
