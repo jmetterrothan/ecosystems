@@ -135,7 +135,7 @@ class Player {
 
   isWithinWorldBorders(): boolean {
     const position = this.position;
-    return !(position.x < 0 || position.x > Terrain.SIZE_X || position.z < 0 || position.z > Terrain.SIZE_Z);
+    return !(position.x < 0 || position.x > Terrain.SIZE_X || position.z < 0 || position.z > Terrain.SIZE_Z || position.y < -Terrain.SIZE_Y / 2);
   }
 
   get position(): THREE.Vector3 {
