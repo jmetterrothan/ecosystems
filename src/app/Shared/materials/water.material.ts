@@ -27,7 +27,7 @@ export const WATER_MATERIAL = new THREE.ShaderMaterial({
   wireframe: false,
   transparent: true,
   flatShading: true,
-  side: THREE.DoubleSide,
+  side: THREE.FrontSide,
   vertexColors: THREE.FaceColors,
   fog: true
 });

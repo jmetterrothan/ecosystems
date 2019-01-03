@@ -7,6 +7,8 @@ import 'three/examples/js/shaders/CopyShader';
 import 'three/examples/js/postprocessing/RenderPass';
 import 'three/examples/js/postprocessing/MaskPass';
 import 'three/examples/js/postprocessing/ShaderPass';
+import 'three/examples/js/shaders/VignetteShader';
+import 'three/examples/js/shaders/ColorCorrectionShader';
 
 import 'seedrandom';
 
@@ -14,8 +16,13 @@ import statsJs from 'stats.js';
 import World from '@world/World';
 import Crosshair from './UI/Crosshair';
 
+import { underwaterSvc } from '@services/underwater.service';
+
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import CommonUtils from '@shared/utils/Common.utils';
+
+import waterVertexGlsl from '@shaders/water.vertex.glsl';
+import waterFragmentGlsl from '@shaders/water.fragment.glsl';
 
 class Main {
   public static readonly DEBUG: boolean = CommonUtils.isDev();
@@ -94,21 +101,51 @@ class Main {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.renderer.setPixelRatio(window.devicePixelRatio);
 
-      const size = this.renderer.getSize();
-      this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
+      this.composer.setSize(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio);
     });
 
     this.containerElement.append(this.renderer.domElement);
+  }
 
-    /*
+  private initPostProcessing() {
+    this.composer = new THREE.EffectComposer(this.renderer);
+    this.composer.setSize(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio);
+
+    this.renderPass = new THREE.RenderPass(this.scene, this.camera);
+    this.composer.addPass(this.renderPass);
+
+    THREE.VergilWaterShader = {
+      uniforms: {
+        tDiffuse: { type: 't', value: null },
+        time:     { type: 'f', value: 0.0 },
+        distort_speed: { type: 'f', value: 0.0004 },
+        distortion:   { type: 'f', value: 0.075 },
+        centerX: { type: 'f', value: 0.5 },
+        centerY: { type: 'f', value: 0.5 },
+      },
+      vertexShader: waterVertexGlsl,
+      fragmentShader: waterFragmentGlsl
+    };
+
     const pass = new THREE.RenderPass(this.scene, this.camera);
     // pass.renderToScreen = true;
     this.composer.addPass(pass);
 
-    this.effect = new THREE.ShaderPass(THREE.VergilWaterShader);
-    this.effect.uniforms['centerX'].value = 0.8;
-    this.effect.uniforms['centerY'].value = 0.8;
+    this.effect = new THREE.ShaderPass(THREE.VignetteShader);
+    this.effect.uniforms.darkness.value = 2.25;
     this.composer.addPass(this.effect);
+
+    this.effect5 = new THREE.ShaderPass(THREE.ColorCorrectionShader);
+    this.effect5.uniforms.addRGB.value.y = 0.025;
+    this.effect5.uniforms.addRGB.value.z = 0.10;
+    this.effect5.uniforms.powRGB.value.y = 1.5;
+    this.effect5.uniforms.powRGB.value.z = 0.80;
+    this.composer.addPass(this.effect5);
+
+    this.effect1 = new THREE.ShaderPass(THREE.VergilWaterShader);
+    this.effect1.uniforms['centerX'].value = 0.8;
+    this.effect1.uniforms['centerY'].value = 0.8;
+    this.composer.addPass(this.effect1);
 
     this.effect2 = new THREE.ShaderPass(THREE.VergilWaterShader);
     this.effect2.uniforms['centerX'].value = 0.2;
@@ -125,16 +162,6 @@ class Main {
     this.effect4.uniforms['centerY'].value = 0.2;
     this.effect4.renderToScreen = true;
     this.composer.addPass(this.effect4);
-    */
-  }
-
-  private initPostProcessing() {
-    this.composer = new THREE.EffectComposer(this.renderer);
-    const size = this.renderer.getSize();
-    this.composer.setSize(size.width * 2 * window.devicePixelRatio, size.height * 2 * window.devicePixelRatio);
-
-    this.renderPass = new THREE.RenderPass(this.scene, this.camera);
-    this.composer.addPass(this.renderPass);
   }
 
   private initPointerLock() {
@@ -186,17 +213,28 @@ class Main {
       this.world.update(delta, time / 1000);
 
       /*
-      this.effect.uniforms['time'].value += Math.random();
-      this.effect2.uniforms['time'].value += Math.random();
-      this.effect3.uniforms['time'].value += Math.random();
-      this.effect4.uniforms['time'].value += Math.random();
+      this.effect.enabled = underwaterSvc.isUnderwater;
+
+      this.effect1.uniforms['enabled'].value = underwaterSvc.isUnderwater;
+      this.effect2.uniforms['enabled'].value = underwaterSvc.isUnderwater;
+      this.effect3.uniforms['enabled'].value = underwaterSvc.isUnderwater;
+      this.effect4.uniforms['enabled'].value = underwaterSvc.isUnderwater;
       */
 
-      this.renderer.render(this.scene, this.getActiveCamera());
+      if (underwaterSvc.isUnderwater) {
+        this.effect1.uniforms['time'].value += Math.random();
+        this.effect2.uniforms['time'].value += Math.random();
+        this.effect3.uniforms['time'].value += Math.random();
+        this.effect4.uniforms['time'].value += Math.random();
+
+        this.composer.render(delta);
+      } else {
+        this.renderer.render(this.scene, this.getActiveCamera());
+      }
+
       TWEEN.update();
     }
 
-    // this.composer.render(delta);
     this.stats.end();
 
     window.requestAnimationFrame(this.render.bind(this));
