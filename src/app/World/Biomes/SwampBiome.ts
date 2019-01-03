@@ -5,7 +5,7 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 
 import { IBiome } from '@shared/models/biome.model';
-import { BIOMES } from '@shared/constants/biome.constants';
+import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import MathUtils from '@shared/utils/Math.utils';
 
 class SwampBiome extends Biome {
@@ -13,9 +13,13 @@ class SwampBiome extends Biome {
     super('SWAMPS', generator);
 
     this.waterDistortion = true;
-    this.waterDistortionFreq = 0.5;
+    this.waterDistortionFreq = 1.25;
     this.waterDistortionAmp = 512.0;
   }
+
+  init(scene: THREE.Scene, terrain: Terrain) { }
+
+  update(delta: number) { }
 
   /**
    * Compute elevation
@@ -48,18 +52,18 @@ class SwampBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.10 - 0.016) {
-      return BIOMES.OCEAN;
+      return SUB_BIOMES.OCEAN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.1) {
-      return BIOMES.GRASSLAND;
+      return SUB_BIOMES.GRASSLAND;
     }
 
     if (m > 0.5 + 0.025) {
-      return BIOMES.SWAMP;
+      return SUB_BIOMES.SWAMP;
     }
 
-    return BIOMES.BEACH;
+    return SUB_BIOMES.BEACH;
   }
 }
 

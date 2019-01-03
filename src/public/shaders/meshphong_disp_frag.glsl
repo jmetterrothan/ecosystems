@@ -1,7 +1,5 @@
 #define PHONG
 
-varying vec3 vPosition;
-
 uniform vec3 diffuse;
 uniform vec3 emissive;
 uniform vec3 specular;

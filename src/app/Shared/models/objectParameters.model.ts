@@ -3,6 +3,10 @@ export interface IPlaceObject {
 }
 
 export interface IPickObject {
-  force?: boolean;
+  force?: boolean; // bypass scarcity test
   float?: boolean;
+}
+
+export interface IStackReference {
+  stackReference: string;
 }

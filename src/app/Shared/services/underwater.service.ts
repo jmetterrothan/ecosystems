@@ -24,4 +24,4 @@ class UnderwaterService {
 
 }
 
-export default new UnderwaterService();
+export const underwaterSvc = new UnderwaterService();

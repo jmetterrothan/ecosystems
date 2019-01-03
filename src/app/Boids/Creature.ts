@@ -1,16 +1,21 @@
 import * as THREE from 'three';
+import { playerSvc } from '@shared/services/player.service';
 
 class Creature {
+
+  static SPEED: number = 100;
 
   position: THREE.Vector3;
   velocity: THREE.Vector3;
 
   neighbourRadius: number = 6000;
-  alignmentWeighting: number = 0.1;
-  cohesionWeighting: number = 0.0065;
+  alignmentWeighting: number = 0.0065;
+  cohesionWeighting: number = 0.01;
   separationWeighting: number = 0.05;
   viewAngle: number = 4;
-  speed: number = 100;
+  speed: number = Creature.SPEED;
+
+  minRepulseDistance: number = 20000;
 
   model: THREE.Object3D;
 
@@ -33,10 +38,8 @@ class Creature {
     const avoidance = this.calculateBoundsAvoidance();
     this.velocity.add(avoidance);
 
-    if (this.avoidTarget !== null) {
-      const repulse = this.calculateRepel(this.avoidTarget);
-      this.velocity.add(repulse);
-    }
+    const repulse = this.calculateRepel(playerSvc.getPosition());
+    this.velocity.add(repulse);
 
     this.velocity.normalize();
     this.position.add(this.velocity.clone().multiplyScalar(this.speed));
@@ -150,15 +153,20 @@ class Creature {
     return v;
   }
 
-  private calculateRepel(target: THREE.Vector3, maxDistance: number = 100): THREE.Vector3 {
+  private calculateRepel(target: THREE.Vector3): THREE.Vector3 {
     const v = new THREE.Vector3();
 
-    const distance = this.position.distanceTo(target);
+    const distance = this.position.clone().add(this.boidsOrigin).distanceTo(target);
 
-    if (distance < maxDistance) {
+    if (distance < this.minRepulseDistance) {
       const forceWeighting = 5 / distance;
-      v.subVectors(this.position, target);
+      v.subVectors(this.position.clone().add(this.boidsOrigin), target);
       v.multiplyScalar(forceWeighting);
+      this.speed += 40;
+    } else if (this.speed > Creature.SPEED) {
+      this.speed -= 40;
+    } else {
+      this.speed = Creature.SPEED;
     }
 
     return v;

@@ -1,3 +1,4 @@
+import { IStackReference } from './../Shared/models/objectParameters.model';
 import * as THREE from 'three';
 import * as TWEEN from '@tweenjs/tween.js';
 import poissonDiskSampling from 'poisson-disk-sampling';
@@ -151,10 +152,10 @@ class Chunk {
 
       if (p1 < Chunk.CLOUD_LEVEL && p2 < Chunk.CLOUD_LEVEL && p3 < Chunk.CLOUD_LEVEL && p4 < Chunk.CLOUD_LEVEL) {
         /*
-        (<THREE.Geometry>terrain.clouds.geometry).mergeMesh(mesh);
-        (<THREE.Geometry>terrain.clouds.geometry).elementsNeedUpdate = true;
+        (<THREE.Geometry>terrain.world.clouds.geometry).mergeMesh(mesh);
+        (<THREE.Geometry>terrain.world.clouds.geometry).elementsNeedUpdate = true;
         */
-        terrain.clouds.add(mesh);
+        terrain.getWorld().getWeather().getClouds().add(mesh);
       }
     }
 
@@ -202,6 +203,11 @@ class Chunk {
     this.dirty = false;
   }
 
+  /**
+   * Recovers an object from the pool and prepares the Object3D
+   * @param {IPick} item
+   * @return {THREE.Object3D}
+   */
   getObject(item: IPick): THREE.Object3D {
     let object = null;
 
@@ -221,8 +227,9 @@ class Chunk {
     object.rotation.y = item.r;
     object.scale.set(item.s, item.s, item.s);
     object.position.set(item.x, item.y, item.z);
-    // @ts-ignore
-    object.stackReference = item.n;
+    object.userData = <IStackReference>{
+      stackReference: item.n
+    };
     object.visible = true;
 
     return object;
@@ -272,8 +279,7 @@ class Chunk {
   * @param {THREE.Object3D} object
   */
   repurposeObject(object: THREE.Object3D) {
-    // @ts-ignore
-    const ref = object.stackReference;
+    const ref = (<IStackReference>object.userData).stackReference;
 
     if (ref && Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
       // collect unused objects

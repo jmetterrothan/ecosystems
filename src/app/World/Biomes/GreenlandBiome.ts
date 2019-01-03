@@ -6,7 +6,7 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
-import { BIOMES } from '@shared/constants/biome.constants';
+import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
 class GreenlandBiome extends Biome {
   private a: number;
@@ -20,7 +20,7 @@ class GreenlandBiome extends Biome {
     super('GREENLANDS', generator);
 
     this.waterDistortion = true;
-    this.waterDistortionFreq = 2.0;
+    this.waterDistortionFreq = 2.25;
     this.waterDistortionAmp = 1024.0;
 
     this.a = MathUtils.randomFloat(0.075, 0.85); // best around 0.65, size of the island
@@ -30,6 +30,10 @@ class GreenlandBiome extends Biome {
     this.spread = MathUtils.randomFloat(1.35, 1.90); // expand over the map (higher values means more space available for water)
     this.f = MathUtils.randomFloat(0.85, 3);
   }
+
+  init(scene: THREE.Scene, terrain: Terrain) { }
+
+  update(delta: number) { }
 
   /**
    * Compute elevation
@@ -68,17 +72,17 @@ class GreenlandBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.05) {
-      return BIOMES.OCEAN;
+      return SUB_BIOMES.OCEAN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.175) {
-      return BIOMES.GRASSLAND;
+      return SUB_BIOMES.GRASSLAND;
     }
 
     if (m > 0.725) {
-      return BIOMES.SWAMP;
+      return SUB_BIOMES.SWAMP;
     }
-    return BIOMES.BEACH;
+    return SUB_BIOMES.BEACH;
   }
 }
 

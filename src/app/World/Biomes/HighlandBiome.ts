@@ -6,7 +6,7 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
-import { BIOMES } from '@shared/constants/biome.constants';
+import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
 class HighlandBiome extends Biome {
   private a: number;
@@ -19,6 +19,10 @@ class HighlandBiome extends Biome {
   constructor(generator: BiomeGenerator) {
     super('HIGHLANDS', generator);
 
+    this.waterDistortion = true;
+    this.waterDistortionFreq = 2.25;
+    this.waterDistortionAmp = 1024.0;
+
     this.a = MathUtils.randomFloat(0.075, 0.65); // best around 0.65, size of the island
     this.b = MathUtils.randomFloat(0.5, 0.750); // best around 0.80, makes multiple hills even when low
     this.c = MathUtils.randomFloat(0.85, 1.00); // best around 0.85;
@@ -26,6 +30,10 @@ class HighlandBiome extends Biome {
     this.spread = MathUtils.randomFloat(1.35, 1.75); // expand over the map (higher values means more space available for water)
     this.f = MathUtils.randomFloat(0.85, 3);
   }
+
+  init(scene: THREE.Scene, terrain: Terrain) { }
+
+  update(delta: number) { }
 
   /**
    * Compute elevation
@@ -71,18 +79,18 @@ class HighlandBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.05) {
-      return BIOMES.OCEAN;
+      return SUB_BIOMES.OCEAN;
     }
 
     if (e > Chunk.CLOUD_ELEVATION + 0.1) {
-      return BIOMES.MOUNTAIN;
+      return SUB_BIOMES.MOUNTAIN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.175) {
-      return BIOMES.TUNDRA;
+      return SUB_BIOMES.TUNDRA;
     }
 
-    return BIOMES.SWAMP;
+    return SUB_BIOMES.SWAMP;
   }
 }
 

@@ -1,12 +1,12 @@
 import * as THREE from 'three';
-import { BehaviorSubject } from 'rxjs';
 
 import 'three/examples/js/controls/PointerLockControls';
 
 import Chunk from '@world/Chunk';
 import Terrain from '@world/Terrain';
 
-import underwaterService from '@shared/services/underwater.service';
+import { underwaterSvc } from '@shared/services/underwater.service';
+import { playerSvc } from '@shared/services/player.service';
 
 class Player {
   private controls: THREE.PointerLockControls;
@@ -20,9 +20,10 @@ class Player {
   private speed: THREE.Vector3;
   private velocity: THREE.Vector3;
 
-  // private underwater: boolean = false;
-  // underwaterObservable$: BehaviorSubject<boolean>;
-
+  /**
+   * Player constructor
+   * @param {THREE.PointerLockControls} controls
+   */
   constructor(controls) {
     this.controls = controls;
 
@@ -37,18 +38,23 @@ class Player {
     this.velocity = new THREE.Vector3(0, 0, 0);
   }
 
+  /**
+   * Player init
+   * @param {THREE.Vector3} spawn Spawn location
+   * @param {THREE.Vector3} target Target used to calculate player orientation
+   */
   init(spawn: THREE.Vector3, target: THREE.Vector3 = new THREE.Vector3()) {
     const angle = -Math.cos(target.dot(spawn) / (target.length() * spawn.length()));
 
     this.controls.getObject().rotateY(-Math.PI / 4);
     this.controls.getObject().children[0].rotateX(angle);
-    this.controls.getObject().position.set(spawn.x, spawn.y, spawn.z);
+    this.position = spawn;
   }
 
   /**
    * @param {number} delta
    */
-  move(delta: number) {
+  move(delta: number): THREE.Vector3 {
     // movement
     if (this.moveForward) {
       this.velocity.z = -this.speed.z;
@@ -86,32 +92,39 @@ class Player {
       if (this.velocity.y < 0) { this.velocity.y = 0; }
     }
 
-    this.controls.getObject().translateX(this.velocity.x * delta);
-    this.controls.getObject().translateY(this.velocity.y * delta);
-    this.controls.getObject().translateZ(this.velocity.z * delta);
+    this.translateX(this.velocity.x * delta);
+    this.translateY(this.velocity.y * delta);
+    this.translateZ(this.velocity.z * delta);
+
+    return this.position;
   }
 
+  /**
+   * Update player movements
+   * @param {Terrain} terrain
+   * @param {number} delta
+   */
   update(terrain: Terrain, delta: number) {
-    this.move(delta);
+    const position = this.move(delta);
 
-    // collision
-    const position = this.controls.getObject().position;
-    let y = -(Chunk.HEIGHT / 2) | 0;
+    const yMin = terrain.getHeightAt(position.x, position.z) + 5000;
+    const isWithinWorldBorders = this.isWithinWorldBorders();
 
-    if (position.x >= 0 && position.x <= Terrain.SIZE_X && position.z >= 0 && position.z <= Terrain.SIZE_Z) {
-      y = terrain.getHeightAt(position.x, position.z) + 5000;
+    // update player pos service
+    playerSvc.setPosition(position);
+
+    if (isWithinWorldBorders && position.y < yMin) {
+      // collision with min ground dist
+      this.positionY = yMin;
     }
 
-    if (position.y < y) {
-      this.controls.getObject().position.y = y;
+    // update underwater service
+    if (!underwaterSvc.isUnderwater && position.y <= Chunk.SEA_LEVEL && isWithinWorldBorders) {
+      underwaterSvc.set(true);
     }
 
-    if (!underwaterService.isUnderwater && position.y <= Chunk.SEA_LEVEL) {
-      underwaterService.set(true);
-    }
-
-    if (underwaterService.isUnderwater && position.y > Chunk.SEA_LEVEL) {
-      underwaterService.set(false);
+    if (underwaterSvc.isUnderwater && (position.y > Chunk.SEA_LEVEL || !isWithinWorldBorders)) {
+      underwaterSvc.set(false);
     }
   }
 
@@ -129,6 +142,43 @@ class Player {
       case '+': case 'a': this.moveUp = active; break;
       case '-': case 'e': this.moveDown = active; break;
     }
+  }
+
+  isWithinWorldBorders(): boolean {
+    const position = this.position;
+    return !(position.x < 0 || position.x > Terrain.SIZE_X || position.z < 0 || position.z > Terrain.SIZE_Z || position.y < -Terrain.SIZE_Y / 2);
+  }
+
+  get position(): THREE.Vector3 {
+    return this.controls.getObject().position;
+  }
+
+  set position(v: THREE.Vector3) {
+    this.controls.getObject().position.x = v.x;
+    this.controls.getObject().position.y = v.y;
+    this.controls.getObject().position.z = v.z;
+  }
+
+  set positionX(x) {
+    this.controls.getObject().position.x = x;
+  }
+
+  set positionY(y) {
+    this.controls.getObject().position.y = y;
+  }
+
+  set positionZ(z) {
+    this.controls.getObject().position.z = z;
+  }
+
+  translateX(tx) {
+    this.controls.getObject().translateX(tx);
+  }
+  translateY(ty) {
+    this.controls.getObject().translateY(ty);
+  }
+  translateZ(tz) {
+    this.controls.getObject().translateZ(tz);
   }
 }
 

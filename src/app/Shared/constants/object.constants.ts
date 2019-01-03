@@ -1,5 +1,14 @@
 import { IObject } from '@shared/models/object.model';
 
+import chestObj from '@objmodels/misc/chest.obj';
+import chestMtl from '@objmodels/misc/chest.mtl';
+
+import dead_treeObj from '@objmodels/tree/dead_tree.obj';
+import dead_treeMtl from '@objmodels/tree/dead_tree.mtl';
+
+import skullObj from '@objmodels/fauna/skull.obj';
+import skullMtl from '@objmodels/fauna/skull.mtl';
+
 import fish1Obj from '@objmodels/fauna/fish1.obj';
 import fish1Mtl from '@objmodels/fauna/fish1.mtl';
 
@@ -38,6 +47,15 @@ import rock3Mtl from '@objmodels/rock/rock3.mtl';
 
 import rock4Obj from '@objmodels/rock/rock4.obj';
 import rock4Mtl from '@objmodels/rock/rock4.mtl';
+
+import rock5Obj from '@objmodels/rock/rock5.obj';
+import rock5Mtl from '@objmodels/rock/rock5.mtl';
+
+import iceberg1Obj from '@objmodels/rock/iceberg1.obj';
+import iceberg1Mtl from '@objmodels/rock/iceberg1.mtl';
+
+import iceberg2Obj from '@objmodels/rock/iceberg2.obj';
+import iceberg2Mtl from '@objmodels/rock/iceberg2.mtl';
 
 import lilypadObj from '@objmodels/flower/lilypad.obj';
 import lilypadMtl from '@objmodels/flower/lilypad.mtl';
@@ -109,6 +127,21 @@ import cloud4Obj from '@objmodels/cloud/cloud4.obj';
 import cloud4Mtl from '@objmodels/cloud/cloud4.mtl';
 
 export const OBJECTS: IObject[] = [
+  {
+    name: 'chest',
+    obj: chestObj,
+    mtl: chestMtl
+  },
+  {
+    name: 'dead_tree',
+    obj: dead_treeObj,
+    mtl: dead_treeMtl
+  },
+  {
+    name: 'skull',
+    obj: skullObj,
+    mtl: skullMtl
+  },
   {
     name: 'fish2',
     obj: fish2Obj,
@@ -282,6 +315,11 @@ export const OBJECTS: IObject[] = [
     mtl: rock4Mtl
   },
   {
+    name: 'rock5',
+    obj: rock5Obj,
+    mtl: rock5Mtl
+  },
+  {
     name: 'rock2',
     obj: rock2Obj,
     mtl: rock2Mtl
@@ -292,9 +330,19 @@ export const OBJECTS: IObject[] = [
     mtl: rock3Mtl
   },
   {
+    name: 'iceberg1',
+    obj: iceberg1Obj,
+    mtl: iceberg1Mtl
+  },
+  {
+    name: 'iceberg2',
+    obj: iceberg2Obj,
+    mtl: iceberg2Mtl
+  },
+  {
     name: 'lilypad',
     obj: lilypadObj,
     mtl: lilypadMtl,
     doubleSide: true
-  },
+  }
 ];

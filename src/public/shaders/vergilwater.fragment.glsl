@@ -17,6 +17,7 @@ varying vec2 vUv;
 
 void main() {
   vec2 p = vUv;
+
   vec2 center_coord;
   float distance_to_center;
   float projected_distance_to_center;
@@ -29,8 +30,8 @@ void main() {
   distort_degree = abs( mod(distort_speed* time, distortion) - (distortion / 2.0)) + 1.0;
   projected_distance_to_center = pow(1.0, distort_degree - 1.0) * pow(distance_to_center/1.0, distort_degree);
 
-  p.x = projected_distance_to_center * center_coord.x/ distance_to_center + centerX;
-  p.y = projected_distance_to_center * center_coord.y/ distance_to_center + centerY;
+  p.x = projected_distance_to_center * center_coord.x / distance_to_center + centerX;
+  p.y = projected_distance_to_center * center_coord.y / distance_to_center + centerY;
 
   vec4 color = texture2D(tDiffuse, p);
   gl_FragColor = color;

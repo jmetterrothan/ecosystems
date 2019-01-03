@@ -15,9 +15,6 @@ import { BIOMES } from '@shared/constants/biomes.constants';
 import { IPickObject } from '@shared/models/objectParameters.model';
 
 class BiomeGenerator {
-  // @ts-ignore
-  public static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
-
   private simplex: simplexNoise;
   private simplex2: simplexNoise;
   private simplex3: simplexNoise;
@@ -28,12 +25,12 @@ class BiomeGenerator {
     this.simplex2 = new simplexNoise(MathUtils.rng);
     this.simplex3 = new simplexNoise(MathUtils.rng);
 
-    if (BiomeGenerator.BIOME === null) {
+    if (World.BIOME === null) {
       const biomeClass = BIOMES[MathUtils.randomInt(0, BIOMES.length - 1)];
       this.biome = new biomeClass(this);
     } else {
       // @ts-ignore
-      this.biome = new BiomeGenerator.BIOME(this);
+      this.biome = new World.BIOME(this);
     }
   }
 
@@ -65,11 +62,11 @@ class BiomeGenerator {
 
         const scale = organism.scale ? MathUtils.randomFloat(organism.scale.min, organism.scale.max) : 1;
 
-        const lowM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).low : 0;
-        const highM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).high : 1;
+        const lowM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).low : null;
+        const highM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).high : null;
 
-        const lowE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).low : -1;
-        const highE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).high : 1;
+        const lowE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).low : null;
+        const highE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).high : null;
 
         if (organism.float === true) {
           // sample 4 points and take the highest one to prevent (as much as possible) clipping into the water
@@ -85,13 +82,13 @@ class BiomeGenerator {
         const rand = MathUtils.rng();
 
         // test for scarcity and ground elevation criteria
-        if (parameters.force || (rand >= organism.scarcity &&
-          (e >= lowE && e <= highE) &&
-          (m >= lowM && m <= highM))) {
+        if ((parameters.force || rand >= organism.scarcity) &&
+          (lowE === null || e >= lowE) &&
+          (highE === null || e <= highE) &&
+          (lowM === null || m >= lowM) &&
+          (highM === null ||  m <= highM)) {
           return (<IPick>{
-            x,
-            z,
-            y,
+            x, y, z,
             n: organism.name,
             r: MathUtils.randomFloat(0, Math.PI * 2),
             s: scale * World.OBJ_INITIAL_SCALE

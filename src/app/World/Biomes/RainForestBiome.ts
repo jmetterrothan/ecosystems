@@ -6,7 +6,7 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
-import { BIOMES } from '@shared/constants/biome.constants';
+import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
 class RainForestBiome extends Biome {
   private a: number;
@@ -20,6 +20,10 @@ class RainForestBiome extends Biome {
   constructor(generator: BiomeGenerator) {
     super('RAINFOREST', generator);
 
+    this.waterDistortion = true;
+    this.waterDistortionFreq = 2.5;
+    this.waterDistortionAmp = 1024.0;
+
     this.a = MathUtils.randomFloat(0, 0.85); // best around 0.65, size of the island
     this.b = MathUtils.randomFloat(0.7, 1.5); // best around 0.80, makes multiple hills even when low
     this.c = MathUtils.randomFloat(0.85, 1.5); // best around 0.85;
@@ -29,6 +33,10 @@ class RainForestBiome extends Biome {
 
     this.ridges = MathUtils.randomFloat(0.225, 0.35); // makes ridges more prevalent
   }
+
+  init(scene: THREE.Scene, terrain: Terrain) { }
+
+  update(delta: number) { }
 
   /**
    * Compute elevation
@@ -65,20 +73,20 @@ class RainForestBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.1) {
-      return BIOMES.OCEAN;
+      return SUB_BIOMES.OCEAN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.2) {
       if (m > 0.695) {
-        return BIOMES.RAINFOREST;
+        return SUB_BIOMES.RAINFOREST;
       }
-      return BIOMES.RAINFOREST_HILLS;
+      return SUB_BIOMES.RAINFOREST_HILLS;
     }
 
     if (m > 0.625) {
-      return BIOMES.RAINFOREST_SWAMPS;
+      return SUB_BIOMES.RAINFOREST_SWAMPS;
     }
-    return BIOMES.BEACH;
+    return SUB_BIOMES.BEACH;
   }
 }
 
