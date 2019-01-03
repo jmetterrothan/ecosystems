@@ -7,6 +7,8 @@ import CommonUtils from '@shared/utils/Common.utils';
 import { IBiome } from '@shared/models/biome.model';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 
+import ProgressionService, { progressionSvc } from '@services/progression.service';
+
 abstract class Biome {
   private static WATER_COLORS = new Map<number, THREE.Color>();
 
@@ -19,9 +21,13 @@ abstract class Biome {
   protected waterColor1: THREE.Color;
   protected waterColor2: THREE.Color;
 
+  protected progressionSvc: ProgressionService;
+
   constructor(name: string, generator: BiomeGenerator) {
     this.name = name;
     this.generator = generator;
+
+    this.progressionSvc = progressionSvc;
 
     this.waterDistortion = true;
     this.waterDistortionFreq = 1.0;

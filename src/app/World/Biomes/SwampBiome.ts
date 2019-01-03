@@ -8,6 +8,8 @@ import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import MathUtils from '@shared/utils/Math.utils';
 
+import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progression.constants';
+
 class SwampBiome extends Biome {
   constructor(generator: BiomeGenerator) {
     super('SWAMPS', generator);
@@ -15,6 +17,8 @@ class SwampBiome extends Biome {
     this.waterDistortion = true;
     this.waterDistortionFreq = 1.25;
     this.waterDistortionAmp = 512.0;
+
+    this.progressionSvc.increment(PROGRESSION_STORAGE_KEYS.swamp_visited_count);
   }
 
   init(scene: THREE.Scene, terrain: Terrain) { }

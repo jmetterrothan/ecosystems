@@ -8,6 +8,8 @@ import MathUtils from '@shared/utils/Math.utils';
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
+import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progression.constants';
+
 class GreenlandBiome extends Biome {
   private a: number;
   private b: number;
@@ -29,6 +31,8 @@ class GreenlandBiome extends Biome {
 
     this.spread = MathUtils.randomFloat(1.35, 1.90); // expand over the map (higher values means more space available for water)
     this.f = MathUtils.randomFloat(0.85, 3);
+
+    this.progressionSvc.increment(PROGRESSION_STORAGE_KEYS.greenland_visited_count);
   }
 
   init(scene: THREE.Scene, terrain: Terrain) { }

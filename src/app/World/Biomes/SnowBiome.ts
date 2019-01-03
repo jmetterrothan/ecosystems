@@ -8,6 +8,8 @@ import Chunk from '@world/Chunk';
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
+import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progression.constants';
+
 class SnowBiome extends Biome {
   constructor(generator: BiomeGenerator) {
     super('SNOW', generator);
@@ -16,6 +18,8 @@ class SnowBiome extends Biome {
 
     this.waterColor1 = new THREE.Color(0xc0dade);
     this.waterColor2 = new THREE.Color(0xacd2e5);
+
+    this.progressionSvc.increment(PROGRESSION_STORAGE_KEYS.snow_visited_count);
   }
 
   init(scene: THREE.Scene, terrain: Terrain) { }
