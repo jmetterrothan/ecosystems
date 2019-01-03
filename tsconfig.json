@@ -8,9 +8,13 @@
     "sourceMap": true,
     "baseUrl": ".",
     "allowJs": true,
+    "forceConsistentCasingInFileNames": false,
     "paths": {
       "@shared/*": [
         "src/app/Shared/*"
+      ],
+      "@services/*": [
+        "src/app/Shared/services/*"
       ],
       "@utils/*": [
         "src/app/Shared/utils/*"
@@ -32,6 +36,12 @@
       ],
       "@boids/*": [
         "src/app/Boids/*"
+      ],
+      "@public/*": [
+        "src/public/*"
+      ],
+      "@achievements/*": [
+        "src/app/Achievements/*"
       ]
     },
     "typeRoots": [

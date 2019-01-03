@@ -27,6 +27,19 @@ class CommonUtils {
 
     /* tslint:disable */ return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1); /* tslint:enable */
   }
+
+  /**
+   * Convert array of string to object and init all keys with value
+   * @param {string[]} array
+   * @param {any} default value
+   * @returns {Object}
+   */
+  static arrayToObject(array: string[], value: any): Object {
+    return array.reduce((obj, item) => {
+      obj[item] = value;
+      return obj;
+    }, {});
+  }
 }
 
 export default CommonUtils;

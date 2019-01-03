@@ -3,6 +3,7 @@ import * as TWEEN from '@tweenjs/tween.js';
 
 import 'three/examples/js/controls/PointerLockControls';
 
+import store from 'store';
 import 'seedrandom';
 
 import statsJs from 'stats.js';
@@ -12,6 +13,7 @@ import PostProcess from './PostProcess';
 import CommonUtils from '@shared/utils/Common.utils';
 
 import { underwaterSvc } from '@services/underwater.service';
+import AchievementService, { achievementSvc } from '@services/achievement.service';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
@@ -32,6 +34,8 @@ class Main {
   private focused: boolean;
   private stats: statsJs;
 
+  private achievementSvc: AchievementService;
+
   constructor() {
     this.containerElement = document.body;
     this.lastTime = window.performance.now();
@@ -40,6 +44,15 @@ class Main {
       this.stats = new statsJs();
       this.stats.showPanel(1);
       document.body.appendChild(this.stats.dom);
+
+      const resetStrorage = document.createElement('button');
+      resetStrorage.textContent = 'reset';
+      resetStrorage.classList.add('button', 'reset');
+      resetStrorage.addEventListener('click', () => {
+        store.clearAll();
+        console.log(localStorage);
+      }, false);
+      document.body.appendChild(resetStrorage);
     }
 
     this.scene = new THREE.Scene();
@@ -48,6 +61,8 @@ class Main {
     this.camera = new THREE.PerspectiveCamera(55, aspect, 0.1, World.VIEW_DISTANCE);
 
     this.focused = true;
+
+    this.achievementSvc = achievementSvc;
   }
 
   async init() {
@@ -58,6 +73,8 @@ class Main {
 
     this.initPointerLock();
     this.initRenderer();
+
+    this.achievementSvc.init();
 
     this.postProcess = new PostProcess(this.scene, this.renderer, this.camera);
     this.postProcess.init();

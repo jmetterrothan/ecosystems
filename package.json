@@ -10,6 +10,7 @@
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-typescript": "^7.1.0",
+    "@types/storejs": "^2.0.3",
     "autoprefixer": "^9.3.1",
     "babel-loader": "^8.0.4",
     "clean-webpack-plugin": "^1.0.0",
@@ -44,11 +45,13 @@
     "@types/node": "^10.12.10",
     "@types/three": "^0.93.10",
     "@types/tween.js": "^16.9.0",
+    "js-yaml-loader": "^1.0.1",
     "poisson-disk-sampling": "^1.0.2",
     "rxjs": "^6.3.3",
     "seedrandom": "^2.4.4",
     "simplex-noise": "^2.4.0",
     "stats.js": "^0.17.0",
+    "store": "^2.0.12",
     "three": "^0.98.0"
   }
 }
