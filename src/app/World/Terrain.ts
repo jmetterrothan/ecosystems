@@ -1,13 +1,10 @@
 import * as THREE from 'three';
-import 'three/examples/js/postprocessing/OutlinePass';
 
 import Chunk from './Chunk';
 import World from './World';
 import BiomeGenerator from './BiomeGenerator';
 import Coord from './Coord';
 import Biome from './Biome';
-import OceanBiome from '@world/Biomes/OceanBiome';
-import DesertBiome from '@world/Biomes/DesertBiome';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
