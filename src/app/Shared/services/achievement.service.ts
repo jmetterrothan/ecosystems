@@ -43,7 +43,7 @@ class AchievementService {
 
       this.storageSvc.set(STORAGES_KEY.trophies, this.storage);
 
-      this.checkTrophyCompleted(trophy, [...set]);
+      if (this.checkTrophyCompleted(trophy, [...set])) this.unlockTrophy(trophy);
     }
   }
 
@@ -52,14 +52,15 @@ class AchievementService {
     this.storageSvc.set(STORAGES_KEY.trophies, this.storage);
   }
 
-  private checkTrophyCompleted(trophy: ITrophy, list: string[]) {
-    console.log(list);
-    if (trophy.checklist.length === list.length) {
-      // trophy completed
-      const completedArray = this.storageSvc.get(STORAGES_KEY.completed);
-      (<string[]>completedArray).push(snakeCase(trophy.name));
-      this.storageSvc.set(STORAGES_KEY.completed, completedArray);
-    }
+  private checkTrophyCompleted(trophy: ITrophy, list: string[]): boolean {
+    return trophy.checklist.length === list.length;
+  }
+
+  private unlockTrophy(trophy: ITrophy) {
+    // trophy completed
+    const completedArray = this.storageSvc.get(STORAGES_KEY.completed);
+    (<string[]>completedArray).push(snakeCase(trophy.name));
+    this.storageSvc.set(STORAGES_KEY.completed, completedArray);
   }
 
 }
