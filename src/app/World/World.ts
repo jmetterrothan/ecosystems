@@ -18,6 +18,8 @@ import { TEXTURES } from '@shared/constants/texture.constants';
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { ITexture } from '@shared/models/texture.model';
 
+import { CONFIG } from '@shared/constants/config.constants';
+
 class World {
   static readonly SEED: string | null = null;
   static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
@@ -25,9 +27,7 @@ class World {
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
-  static readonly MAX_VISIBLE_CHUNKS: number = 24;
-  static readonly MAX_RENDERABLE_CHUNKS: number = 30;
-  static readonly VIEW_DISTANCE: number = World.MAX_RENDERABLE_CHUNKS * Chunk.WIDTH;
+  static readonly VIEW_DISTANCE: number = CONFIG.MAX_RENDERABLE_CHUNKS * Chunk.WIDTH;
 
   static readonly SHOW_FOG: boolean = true;
   static readonly FOG_COLOR: number = 0xb1d8ff;
@@ -98,7 +98,7 @@ class World {
 
     this.scene.add(this.controls.getObject());
 
-    if (Main.DEBUG) {
+    if (CONFIG.DEBUG) {
       this.showAxesHelper();
     }
   }
@@ -143,8 +143,8 @@ class World {
     const sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
     sunlight.position.set(Terrain.SIZE_X, Chunk.HEIGHT, Terrain.SIZE_Z);
     sunlight.castShadow = true;
-    sunlight.shadow.mapSize.width = 4096;
-    sunlight.shadow.mapSize.height = 4096;
+    sunlight.shadow.mapSize.width = CONFIG.SHADOW_MAP_SIZE;
+    sunlight.shadow.mapSize.height = CONFIG.SHADOW_MAP_SIZE;
     sunlight.shadow.camera.visible = true;
     sunlight.shadow.camera.castShadow = true;
     sunlight.shadow.bias = 0.0001;
@@ -155,7 +155,7 @@ class World {
     sunlight.shadow.camera.near = 150;
     sunlight.shadow.camera.far = 1000000;
 
-    if (Main.DEBUG) {
+    if (CONFIG.DEBUG) {
       this.scene.add(new THREE.DirectionalLightHelper(sunlight, 1024));
     }
 

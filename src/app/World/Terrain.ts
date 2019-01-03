@@ -5,16 +5,19 @@ import World from './World';
 import BiomeGenerator from './BiomeGenerator';
 import Coord from './Coord';
 import Biome from './Biome';
+import Main from '../Main';
+import MathUtils from '@shared/utils/Math.utils';
+import Crosshair from '../UI/Crosshair';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
 import { WATER_MATERIAL } from '@materials/water.material';
 
+import { CONFIG } from '@shared/constants/config.constants';
+
 import { IBiome } from '@shared/models/biome.model';
 import { IPick } from '@shared/models/pick.model';
-import Crosshair from '../UI/Crosshair';
 import { underwaterSvc } from '@shared/services/underwater.service';
-import MathUtils from '@shared/utils/Math.utils';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 16;
@@ -121,11 +124,9 @@ class Terrain {
     (<THREE.ShaderMaterial>this.water.material).uniforms.size.value = new THREE.Vector3(Terrain.SIZE_X, Terrain.SIZE_Y, Terrain.SIZE_Z);
 
     const biome: Biome = this.generator.getBiome();
-    (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion.value = biome.getWaterDistortion();
+    (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion.value = CONFIG.ENABLE_WATER_EFFECTS && biome.getWaterDistortion();
     (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion_freq.value = biome.getWaterDistortionFreq();
     (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion_amp.value = biome.getWaterDistortionAmp();
-
-    // (<THREE.ShaderMaterial>this.water.material).needsUpdate = true;
   }
 
   /**
@@ -167,10 +168,10 @@ class Terrain {
   update(frustum: THREE.Frustum, position: THREE.Vector3, delta: number, tick: number) {
     this.getChunkCoordAt(this.chunk, position.x, position.z);
 
-    this.start.col = this.chunk.col - World.MAX_VISIBLE_CHUNKS;
-    this.start.row = this.chunk.row - World.MAX_VISIBLE_CHUNKS;
-    this.end.col = this.chunk.col + World.MAX_VISIBLE_CHUNKS;
-    this.end.row = this.chunk.row + World.MAX_VISIBLE_CHUNKS;
+    this.start.col = this.chunk.col - CONFIG.MAX_VISIBLE_CHUNKS;
+    this.start.row = this.chunk.row - CONFIG.MAX_VISIBLE_CHUNKS;
+    this.end.col = this.chunk.col + CONFIG.MAX_VISIBLE_CHUNKS;
+    this.end.row = this.chunk.row + CONFIG.MAX_VISIBLE_CHUNKS;
 
     if (this.start.col < 0) { this.start.col = 0; }
     if (this.start.row < 0) { this.start.row = 0; }
@@ -551,15 +552,7 @@ class Terrain {
     this.water.receiveShadow = true;
     this.layers.add(this.water);
 
-    /*
-    this.waterSide = new THREE.Mesh(new THREE.Geometry(), WATER_MATERIAL);
-    this.waterSide.frustumCulled = true;
-    this.waterSide.castShadow = false;
-    this.waterSide.receiveShadow = false;
-    this.layers.add(this.waterSide);
-    */
-
-    // this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
+    if (CONFIG.DEBUG) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
 
     this.scene.add(this.layers);
   }
@@ -618,12 +611,12 @@ class Terrain {
     return new THREE.Box3().setFromCenterAndSize(
       new THREE.Vector3(
         Terrain.SIZE_X / 2,
-        Chunk.SEA_LEVEL / 2,
+        Chunk.SEA_LEVEL - Terrain.SIZE_Y / 4,
         Terrain.SIZE_Z / 2
       ),
       new THREE.Vector3(
         Terrain.SIZE_X,
-        Chunk.SEA_LEVEL,
+        Terrain.SIZE_Y / 2,
         Terrain.SIZE_Z
       ));
   }

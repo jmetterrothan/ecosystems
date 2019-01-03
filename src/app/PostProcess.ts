@@ -13,6 +13,8 @@ import { Effect } from '@shared/models/effect.model';
 import vergilwaterVertexGlsl from '@shaders/vergilwater.vertex.glsl';
 import vergilwaterFragmentGlsl from '@shaders/vergilwater.fragment.glsl';
 
+import { CONFIG } from '@shared/constants/config.constants';
+
 THREE.VergilWaterShader = {
   uniforms: {
     tDiffuse: { type: 't', value: null },
@@ -71,31 +73,34 @@ class PostProcess
     this.composer.addPass(pass2);
     this.effects.push({ effect: pass2, update: null });
 
-    // distortion
-    const pass3 = new THREE.ShaderPass(THREE.VergilWaterShader);
-    pass3.uniforms['centerX'].value = 0.8;
-    pass3.uniforms['centerY'].value = 0.8;
-    this.composer.addPass(pass3);
-    this.effects.push({ effect: pass3, update: () => { pass3.uniforms['time'].value += Math.random(); } });
+    if (CONFIG.ENABLE_WATER_EFFECTS) {
+      // distortion
+      const pass3 = new THREE.ShaderPass(THREE.VergilWaterShader);
+      pass3.uniforms['centerX'].value = 0.8;
+      pass3.uniforms['centerY'].value = 0.8;
+      this.composer.addPass(pass3);
+      this.effects.push({ effect: pass3, update: () => { pass3.uniforms['time'].value += Math.random(); } });
 
-    const pass4 = new THREE.ShaderPass(THREE.VergilWaterShader);
-    pass4.uniforms['centerX'].value = 0.2;
-    pass4.uniforms['centerY'].value = 0.2;
-    this.composer.addPass(pass4);
-    this.effects.push({ effect: pass4, update: () => { pass4.uniforms['time'].value += Math.random(); } });
+      const pass4 = new THREE.ShaderPass(THREE.VergilWaterShader);
+      pass4.uniforms['centerX'].value = 0.2;
+      pass4.uniforms['centerY'].value = 0.2;
+      this.composer.addPass(pass4);
+      this.effects.push({ effect: pass4, update: () => { pass4.uniforms['time'].value += Math.random(); } });
 
-    const pass5 = new THREE.ShaderPass(THREE.VergilWaterShader);
-    pass5.uniforms['centerX'].value = 0.2;
-    pass5.uniforms['centerY'].value = 0.8;
-    this.composer.addPass(pass5);
-    this.effects.push({ effect: pass5, update: () => { pass5.uniforms['time'].value += Math.random(); } });
+      const pass5 = new THREE.ShaderPass(THREE.VergilWaterShader);
+      pass5.uniforms['centerX'].value = 0.2;
+      pass5.uniforms['centerY'].value = 0.8;
+      this.composer.addPass(pass5);
+      this.effects.push({ effect: pass5, update: () => { pass5.uniforms['time'].value += Math.random(); } });
 
-    const pass6 = new THREE.ShaderPass(THREE.VergilWaterShader);
-    pass6.uniforms['centerX'].value = 0.8;
-    pass6.uniforms['centerY'].value = 0.2;
-    pass6.renderToScreen = true;
-    this.composer.addPass(pass6);
-    this.effects.push({ effect: pass6, update: () => { pass6.uniforms['time'].value += Math.random(); } });
+      const pass6 = new THREE.ShaderPass(THREE.VergilWaterShader);
+      pass6.uniforms['centerX'].value = 0.8;
+      pass6.uniforms['centerY'].value = 0.2;
+      this.composer.addPass(pass6);
+      this.effects.push({ effect: pass6, update: () => { pass6.uniforms['time'].value += Math.random(); } });
+    }
+
+    this.effects[this.effects.length - 1].effect.renderToScreen = true;
   }
 
   /**

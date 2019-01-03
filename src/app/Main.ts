@@ -9,15 +9,14 @@ import statsJs from 'stats.js';
 import World from '@world/World';
 import Crosshair from './UI/Crosshair';
 import PostProcess from './PostProcess';
-import CommonUtils from '@shared/utils/Common.utils';
 
 import { underwaterSvc } from '@services/underwater.service';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
-class Main {
-  public static readonly DEBUG: boolean = CommonUtils.isDev();
+import { CONFIG } from '@shared/constants/config.constants';
 
+class Main {
   private renderer: THREE.WebGLRenderer;
   private postProcess: PostProcess;
   private scene: THREE.Scene;
@@ -36,7 +35,7 @@ class Main {
     this.containerElement = document.body;
     this.lastTime = window.performance.now();
 
-    if (Main.DEBUG) {
+    if (CONFIG.DEBUG) {
       this.stats = new statsJs();
       this.stats.showPanel(1);
       document.body.appendChild(this.stats.dom);
@@ -71,15 +70,15 @@ class Main {
 
   private initRenderer() {
     // renderer setup
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true, alpha: true });
+    this.renderer = new THREE.WebGLRenderer({ antialias: CONFIG.ENABLE_AA, logarithmicDepthBuffer: true, alpha: true });
     this.renderer.domElement.style.position = 'fixed';
     this.renderer.domElement.style.top = '0';
     this.renderer.domElement.style.left = '0';
     this.renderer.domElement.style.width = '100vw';
     this.renderer.domElement.style.height = '100vh';
 
-    this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.shadowMap.enabled = CONFIG.ENABLE_SHADOWS;
+    this.renderer.shadowMap.type = CONFIG.SHADOW_MAP_TYPE;
 
     this.renderer.setClearColor(new THREE.Color(World.FOG_COLOR));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -137,7 +136,7 @@ class Main {
   }
 
   private render() {
-    if (Main.DEBUG) this.stats.begin();
+    if (CONFIG.DEBUG) this.stats.begin();
 
     const time = window.performance.now();
     const elapsed = time - this.lastTime;
@@ -163,7 +162,7 @@ class Main {
       this.renderer.render(this.scene, this.camera);
     }
 
-    if (Main.DEBUG) this.stats.end();
+    if (CONFIG.DEBUG) this.stats.end();
 
     window.requestAnimationFrame(this.render.bind(this));
   }
