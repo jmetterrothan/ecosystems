@@ -201,7 +201,7 @@ class World {
       )
     );
 
-    this.terrain.update(this.frustum, this.controls.getObject().position, delta, tick);
+    this.terrain.update(this.frustum, this.player.position, delta, tick);
     this.player.update(this.terrain, delta);
     this.weather.update(delta);
     this.generator.getBiome().update(delta);
