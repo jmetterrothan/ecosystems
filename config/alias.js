@@ -4,6 +4,7 @@ const PATHS = require('./paths');
 module.exports = {
   "@images": path.resolve(PATHS.IMAGES),
   "@shared": path.resolve(PATHS.APP, 'Shared'),
+  "@services": path.resolve(PATHS.APP, 'Shared', 'services'),
   "@assets": path.resolve(PATHS.PUBLIC, 'assets'),
   "@shaders": path.resolve(PATHS.PUBLIC, 'shaders'),
   "@objmodels": path.resolve(PATHS.PUBLIC, 'assets', 'obj'),

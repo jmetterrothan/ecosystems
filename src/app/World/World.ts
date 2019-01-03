@@ -5,11 +5,12 @@ import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
 import Main from '../Main';
-import Terrain from './Terrain';
-import Chunk from './Chunk';
+import Terrain from '@world/Terrain';
+import Biome from '@world/Biome';
+import Chunk from '@world/Chunk';
 import Player from '../Player';
-import BiomeGenerator from './BiomeGenerator';
-import Weather from './Weather';
+import BiomeGenerator from '@world/BiomeGenerator';
+import Weather from '@world/Weather';
 import MathUtils from '@utils/Math.utils';
 
 import { OBJECTS } from '@shared/constants/object.constants';
@@ -18,7 +19,8 @@ import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { ITexture } from '@shared/models/texture.model';
 
 class World {
-  static SEED: string | null = '3780882106';
+  static readonly SEED: string | null = null;
+  static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
@@ -125,7 +127,7 @@ class World {
     light.castShadow = false;
     this.scene.add(light);
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.295);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.275);
     ambient.position.set(0, Chunk.HEIGHT, 15000);
     ambient.castShadow = false;
     this.scene.add(ambient);
@@ -199,7 +201,7 @@ class World {
       )
     );
 
-    this.terrain.update(this.frustum, this.controls.getObject().position, delta, tick);
+    this.terrain.update(this.frustum, this.player.position, delta, tick);
     this.player.update(this.terrain, delta);
     this.weather.update(delta);
     this.generator.getBiome().update(delta);

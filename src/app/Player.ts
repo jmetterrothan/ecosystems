@@ -42,13 +42,13 @@ class Player {
 
     this.controls.getObject().rotateY(-Math.PI / 4);
     this.controls.getObject().children[0].rotateX(angle);
-    this.controls.getObject().position.set(spawn.x, spawn.y, spawn.z);
+    this.position = spawn;
   }
 
   /**
    * @param {number} delta
    */
-  move(delta: number) {
+  move(delta: number): THREE.Vector3 {
     // movement
     if (this.moveForward) {
       this.velocity.z = -this.speed.z;
@@ -86,32 +86,33 @@ class Player {
       if (this.velocity.y < 0) { this.velocity.y = 0; }
     }
 
-    this.controls.getObject().translateX(this.velocity.x * delta);
-    this.controls.getObject().translateY(this.velocity.y * delta);
-    this.controls.getObject().translateZ(this.velocity.z * delta);
+    this.translateX(this.velocity.x * delta);
+    this.translateY(this.velocity.y * delta);
+    this.translateZ(this.velocity.z * delta);
+
+    return this.position;
   }
 
   update(terrain: Terrain, delta: number) {
-    this.move(delta);
+    const position = this.move(delta);
 
-    // collision
-    const position = this.controls.getObject().position;
+    const yMin = terrain.getHeightAt(position.x, position.z) + 5000;
+    const isWithinWorldBorders = this.isWithinWorldBorders();
+
+    // update player pos service
     playerSvc.setPosition(position);
-    let y = -(Chunk.HEIGHT / 2) | 0;
 
-    if (position.x >= 0 && position.x <= Terrain.SIZE_X && position.z >= 0 && position.z <= Terrain.SIZE_Z) {
-      y = terrain.getHeightAt(position.x, position.z) + 5000;
+    if (isWithinWorldBorders && position.y < yMin) {
+      // collision with min ground dist
+      this.positionY = yMin;
     }
 
-    if (position.y < y) {
-      this.controls.getObject().position.y = y;
-    }
-
-    if (!underwaterSvc.isUnderwater && position.y <= Chunk.SEA_LEVEL) {
+    // update underwater service
+    if (!underwaterSvc.isUnderwater && position.y <= Chunk.SEA_LEVEL && isWithinWorldBorders) {
       underwaterSvc.set(true);
     }
 
-    if (underwaterSvc.isUnderwater && position.y > Chunk.SEA_LEVEL) {
+    if (underwaterSvc.isUnderwater && (position.y > Chunk.SEA_LEVEL || !isWithinWorldBorders)) {
       underwaterSvc.set(false);
     }
   }
@@ -130,6 +131,43 @@ class Player {
       case '+': case 'a': this.moveUp = active; break;
       case '-': case 'e': this.moveDown = active; break;
     }
+  }
+
+  isWithinWorldBorders(): boolean {
+    const position = this.position;
+    return !(position.x < 0 || position.x > Terrain.SIZE_X || position.z < 0 || position.z > Terrain.SIZE_Z || position.y < -Terrain.SIZE_Y / 2);
+  }
+
+  get position(): THREE.Vector3 {
+    return this.controls.getObject().position;
+  }
+
+  set position(v: THREE.Vector3) {
+    this.controls.getObject().position.x = v.x;
+    this.controls.getObject().position.y = v.y;
+    this.controls.getObject().position.z = v.z;
+  }
+
+  set positionX(x) {
+    this.controls.getObject().position.x = x;
+  }
+
+  set positionY(y) {
+    this.controls.getObject().position.y = y;
+  }
+
+  set positionZ(z) {
+    this.controls.getObject().position.z = z;
+  }
+
+  translateX(tx) {
+    this.controls.getObject().translateX(tx);
+  }
+  translateY(ty) {
+    this.controls.getObject().translateY(ty);
+  }
+  translateZ(tz) {
+    this.controls.getObject().translateZ(tz);
   }
 }
 
