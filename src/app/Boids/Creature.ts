@@ -160,7 +160,7 @@ class Creature {
 
     if (distance < this.minRepulseDistance) {
       const forceWeighting = 5 / distance;
-      v.subVectors(this.position, target);
+      v.subVectors(this.position.clone().add(this.boidsOrigin), target);
       v.multiplyScalar(forceWeighting);
       this.speed += 40;
     } else if (this.speed > Creature.SPEED) {

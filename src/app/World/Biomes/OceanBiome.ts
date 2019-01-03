@@ -5,7 +5,7 @@ import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
-import Boids from '../../Boids/Boids';
+import Boids from '@boids/Boids';
 
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
