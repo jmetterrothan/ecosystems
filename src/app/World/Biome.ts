@@ -31,8 +31,17 @@ abstract class Biome {
     this.waterColor2 = WATER_CONSTANTS.WATER_COLOR_B;
   }
 
+  /**
+   * Biome init
+   * @param {THREE.Scene} scene
+   * @param {Terrain} terrain
+   */
   abstract init(scene: THREE.Scene, terrain: Terrain);
 
+  /**
+   * Biome update
+   * @param {number} delta
+   */
   abstract update(delta: number);
 
   /**

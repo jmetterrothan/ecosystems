@@ -20,9 +20,10 @@ class Player {
   private speed: THREE.Vector3;
   private velocity: THREE.Vector3;
 
-  // private underwater: boolean = false;
-  // underwaterObservable$: BehaviorSubject<boolean>;
-
+  /**
+   * Player constructor
+   * @param {THREE.PointerLockControls} controls
+   */
   constructor(controls) {
     this.controls = controls;
 
@@ -37,6 +38,11 @@ class Player {
     this.velocity = new THREE.Vector3(0, 0, 0);
   }
 
+  /**
+   * Player init
+   * @param {THREE.Vector3} spawn Spawn location
+   * @param {THREE.Vector3} target Target used to calculate player orientation
+   */
   init(spawn: THREE.Vector3, target: THREE.Vector3 = new THREE.Vector3()) {
     const angle = -Math.cos(target.dot(spawn) / (target.length() * spawn.length()));
 
@@ -93,6 +99,11 @@ class Player {
     return this.position;
   }
 
+  /**
+   * Update player movements
+   * @param {Terrain} terrain
+   * @param {number} delta
+   */
   update(terrain: Terrain, delta: number) {
     const position = this.move(delta);
 

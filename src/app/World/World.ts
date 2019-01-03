@@ -52,6 +52,12 @@ class World {
   private raycaster: THREE.Raycaster;
   private seed: string;
 
+  /**
+   * World constructor
+   * @param {THREE.Scene} scene
+   * @param {THREE.Camera} camera
+   * @param {THREE.PointerLockControls}  controls
+   */
   constructor(scene: THREE.Scene, camera: THREE.PerspectiveCamera, controls: THREE.PointerLockControls) {
     this.scene = scene;
     this.camera = camera;
@@ -68,9 +74,8 @@ class World {
     await this.initObjects();
     await this.initTextures();
 
-    // stuff
+    // terrain
     this.generator = new BiomeGenerator();
-
     this.terrain = new Terrain(this.scene, this, this.generator);
 
     this.weather = new Weather(this.scene, this.generator);
@@ -83,6 +88,7 @@ class World {
 
     this.generator.getBiome().init(this.scene, this.terrain);
 
+    // entities
     const spawn = new THREE.Vector3(-24000, Terrain.SIZE_Y, Terrain.SIZE_Z + 24000);
     const target = new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
 
@@ -172,6 +178,10 @@ class World {
     await Promise.all(stack);
   }
 
+  /**
+   * Loads all textures
+   * @return {Promise<any>}
+   */
   private initTextures(): Promise<any> {
     const loader = new THREE.TextureLoader();
 
@@ -189,6 +199,7 @@ class World {
 
   /**
    * @param {number} delta
+   * @param {number} tick
    */
   update(delta: number, tick: number) {
     this.handleMouseInteraction(MOUSE_TYPES.MOVE);
@@ -207,6 +218,10 @@ class World {
     this.generator.getBiome().update(delta);
   }
 
+  /**
+   * Called each time the user has an interaction with his mouse
+   * @param {MOUSE_TYPES} interactionType
+   */
   handleMouseInteraction(interactionType: MOUSE_TYPES) {
     const pos = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
     const mouse = new THREE.Vector2(

@@ -43,7 +43,6 @@ class Terrain {
   public terrain: THREE.Mesh;
   public terrainSide: THREE.Mesh;
   public water: THREE.Mesh;
-  // public waterSide: THREE.Mesh;
 
   private layers: THREE.Group;
 
@@ -158,6 +157,13 @@ class Terrain {
     return chunk;
   }
 
+  /**
+   * Update terrain
+   * @param {THREE.Frustum} frustum
+   * @param {THREE.Vector3} position
+   * @param {number} delta
+   * @param {number} tick
+   */
   update(frustum: THREE.Frustum, position: THREE.Vector3, delta: number, tick: number) {
     this.getChunkCoordAt(this.chunk, position.x, position.z);
 
@@ -204,13 +210,16 @@ class Terrain {
       }
     }
 
-    // entities update
-    // this.updateExtras(delta);
-
+    // update water distorsion effect
     (<THREE.ShaderMaterial>this.water.material).uniforms.time.value = tick;
     (<THREE.ShaderMaterial>this.water.material).needsUpdate = true;
   }
 
+  /**
+   * Handle user interaction between the terrain and mouse
+   * @param {THREE.Raycaster} raycaster
+   * @param {MOUSE_TYPES} interactionType
+   */
   handleMouseInteraction(raycaster: THREE.Raycaster, interactionType: MOUSE_TYPES) {
     switch (interactionType) {
       case MOUSE_TYPES.MOVE:
@@ -218,7 +227,7 @@ class Terrain {
         break;
 
       case MOUSE_TYPES.CLICK:
-        this.placeObject(raycaster);
+        this.placeObjectWithMouseClick(raycaster);
         break;
 
       default:
@@ -226,7 +235,11 @@ class Terrain {
     }
   }
 
-  placeObject(raycaster: THREE.Raycaster) {
+  /**
+   * Place an object at the target location
+   * @param {THREE.Raycaster} raycaster
+   */
+  placeObjectWithMouseClick(raycaster: THREE.Raycaster) {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
 
     for (const intersection of intersections) {
@@ -271,6 +284,7 @@ class Terrain {
       Crosshair.switch(validDistance && this.previewActive);
 
       if (!validDistance || this.intersectBorder(intersection.point)) {
+        // bail out if the target is ouside the valid range
         if (this.previewObject) {
           this.scene.remove(this.previewObject);
           this.previewActive = false;
@@ -296,6 +310,7 @@ class Terrain {
           float: (this.intersectionSurface === this.water)
         });
         if (!item) {
+          // bail out if no item gets picked
           this.previewActive = false;
           return;
         }
@@ -312,13 +327,13 @@ class Terrain {
 
       if (!this.previewActive) this.scene.add(this.previewObject);
       if (!canPlaceObject) {
+        // bail out if the item cannot be placed at the current location
         this.scene.remove(this.previewObject);
         this.previewActive = false;
         return;
       }
 
       this.previewObject.position.set(intersection.point.x, intersection.point.y, intersection.point.z);
-
       break;
     }
 

@@ -203,6 +203,11 @@ class Chunk {
     this.dirty = false;
   }
 
+  /**
+   * Recovers an object from the pool and prepares the Object3D
+   * @param {IPick} item
+   * @return {THREE.Object3D}
+   */
   getObject(item: IPick): THREE.Object3D {
     let object = null;
 

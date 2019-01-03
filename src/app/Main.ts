@@ -19,28 +19,28 @@ class Main {
   public static readonly DEBUG: boolean = CommonUtils.isDev();
 
   private renderer: THREE.WebGLRenderer;
+  private postProcess: PostProcess;
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
   private controls: THREE.PointerLockControls;
-  private containerElement: HTMLElement;
 
-  private postProcess: PostProcess;
+  private containerElement: HTMLElement;
 
   private world: World;
 
   private lastTime: number;
-
   private focused: boolean;
-
   private stats: statsJs;
 
   constructor() {
     this.containerElement = document.body;
     this.lastTime = window.performance.now();
 
-    this.stats = new statsJs();
-    this.stats.showPanel(1);
-    document.body.appendChild(this.stats.dom);
+    if (Main.DEBUG) {
+      this.stats = new statsJs();
+      this.stats.showPanel(1);
+      document.body.appendChild(this.stats.dom);
+    }
 
     this.scene = new THREE.Scene();
 
@@ -48,8 +48,6 @@ class Main {
     this.camera = new THREE.PerspectiveCamera(55, aspect, 0.1, World.VIEW_DISTANCE);
 
     this.focused = true;
-
-    // this.scene.add(new THREE.CameraHelper(this.camera));
   }
 
   async init() {
@@ -139,17 +137,16 @@ class Main {
   }
 
   private render() {
-    this.stats.begin();
+    if (Main.DEBUG) this.stats.begin();
 
     const time = window.performance.now();
     const elapsed = time - this.lastTime;
-    this.lastTime = time;
-
     const delta = elapsed / 1000;
     const tick = time / 1000;
+    this.lastTime = time;
 
+    // update
     if (this.focused) {
-      // updated every time
       this.world.update(delta, tick);
 
       if (underwaterSvc.isUnderwater) {
@@ -159,13 +156,14 @@ class Main {
       TWEEN.update();
     }
 
+    // switch render func if underwater
     if (underwaterSvc.isUnderwater) {
       this.postProcess.render(delta);
     } else {
       this.renderer.render(this.scene, this.camera);
     }
 
-    this.stats.end();
+    if (Main.DEBUG) this.stats.end();
 
     window.requestAnimationFrame(this.render.bind(this));
   }

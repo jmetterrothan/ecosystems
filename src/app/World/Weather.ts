@@ -16,18 +16,26 @@ class Weather {
   private clouds: THREE.Group;
   private wind: THREE.Vector3;
 
+  /**
+   * Weather constructor
+   * @param {THREE.Scene} scene
+   * @param {BiomeGenerator} generator
+   */
   constructor(scene: THREE.Scene, generator: BiomeGenerator) {
     this.scene = scene;
     this.generator = generator;
   }
 
+  /**
+   * @param {number} delta
+   */
   update(delta: number) {
     this.updateClouds(delta);
   }
 
   initClouds() {
     // clouds
-    this.clouds = new THREE.Group(); // new THREE.Mesh(new THREE.Geometry(), CLOUD_MATERIAL);
+    this.clouds = new THREE.Group();
     this.clouds.frustumCulled = true;
     this.clouds.castShadow = true;
     this.clouds.receiveShadow = true;
@@ -47,7 +55,7 @@ class Weather {
       // particles
       const size = new THREE.Box3().setFromObject(cloud).getSize(new THREE.Vector3());
       const particles = new THREE.Geometry();
-      const particleCount = (size.x * size.y * size.z) / 250000000000;
+      const particleCount = (size.x * size.y * size.z) / 250000000000; // calculate the amount of rain drops from cloud volume
 
       for (let i = 0; i < particleCount; i++) {
         particles.vertices.push(new THREE.Vector3(
@@ -82,6 +90,10 @@ class Weather {
     });
   }
 
+  /**
+   * Update cloud movements an weather particles
+   * @param {number} delta
+   */
   private updateClouds(delta: number) {
     for (const cloud of this.clouds.children) {
       // move cloud
