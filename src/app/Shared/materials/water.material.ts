@@ -12,9 +12,9 @@ const customUniforms = THREE.UniformsUtils.merge([
     water_distortion_freq: { value: 4.0 },
     water_distortion_amp: { value: 512.0 },
     shininess: { value: 30 },
-    opacity: { value: 0.65 },
-    reflectivity: { value: 4.0 },
-    specular: { value: new THREE.Color(0x757575) }
+    opacity: { value: 0.675 },
+    reflectivity: { value: 2.0 },
+    emissive: { value: new THREE.Color(0x101010) },
   }
 ]);
 
@@ -29,7 +29,7 @@ export const WATER_MATERIAL = new THREE.ShaderMaterial({
   flatShading: true,
   side: THREE.FrontSide,
   vertexColors: THREE.FaceColors,
-  fog: true
+  fog: true,
 });
 
 /*
