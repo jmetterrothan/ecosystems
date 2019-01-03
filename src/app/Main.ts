@@ -3,7 +3,6 @@ import * as TWEEN from '@tweenjs/tween.js';
 
 import 'three/examples/js/controls/PointerLockControls';
 
-import store from 'store';
 import 'seedrandom';
 
 import statsJs from 'stats.js';
@@ -13,6 +12,7 @@ import PostProcess from './PostProcess';
 import CommonUtils from '@shared/utils/Common.utils';
 
 import { underwaterSvc } from '@services/underwater.service';
+import { storageSvc } from '@services/storage.service';
 import AchievementService, { achievementSvc } from '@services/achievement.service';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
@@ -49,7 +49,7 @@ class Main {
       resetStrorage.textContent = 'reset';
       resetStrorage.classList.add('button', 'reset');
       resetStrorage.addEventListener('click', () => {
-        store.clearAll();
+        storageSvc.clearAll();
         console.log(localStorage);
       }, false);
       document.body.appendChild(resetStrorage);
