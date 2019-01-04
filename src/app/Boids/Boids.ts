@@ -2,7 +2,8 @@ import * as THREE from 'three';
 
 import World from '@world/World';
 import Creature from './Creature';
-import Main from '../Main';
+
+import { configSvc } from '@shared/services/graphicsConfig.service';
 
 class Boids {
 
@@ -30,7 +31,7 @@ class Boids {
       )
     );
 
-    if (Main.DEBUG) {
+    if (configSvc.config.DEBUG) {
       this.scene.add(<THREE.Object3D>new THREE.Box3Helper(mesh, 0xffff00));
     }
   }
