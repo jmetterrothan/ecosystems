@@ -284,6 +284,8 @@ class Chunk {
    * @return {boolean}
    */
   canPlaceObject(object: THREE.Object3D): boolean {
+    if (!(object instanceof THREE.Object3D)) { return false; }
+
     const bbox = new THREE.Box3().setFromObject(object);
 
     for (let i = 0; i < this.objects.children.length; i++) {
