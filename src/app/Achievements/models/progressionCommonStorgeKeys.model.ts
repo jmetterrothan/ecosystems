@@ -7,5 +7,6 @@ export interface IProgressionCommonStorageKeys {
   rainforest_visited: string;
   snow_visited: string;
   swamp_visited: string;
+  distance_travelled: string;
   objects_placed: string;
 }

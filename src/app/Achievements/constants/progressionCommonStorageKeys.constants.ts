@@ -9,5 +9,6 @@ export const PROGRESSION_COMMON_STORAGE_KEYS: IProgressionCommonStorageKeys = {
   rainforest_visited: 'rainforest_visited',
   snow_visited: 'snow_visited',
   swamp_visited: 'swamp_visited',
+  distance_travelled: 'distance_travelled',
   objects_placed: 'objects_placed',
 };

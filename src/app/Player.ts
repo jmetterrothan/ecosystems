@@ -106,12 +106,10 @@ class Player {
    */
   update(terrain: Terrain, delta: number) {
     const position = this.move(delta);
+    playerSvc.setPosition(position);
 
     const yMin = terrain.getHeightAt(position.x, position.z) + 5000;
     const isWithinWorldBorders = this.isWithinWorldBorders();
-
-    // update player pos service
-    playerSvc.setPosition(position);
 
     if (isWithinWorldBorders && position.y < yMin) {
       // collision with min ground dist

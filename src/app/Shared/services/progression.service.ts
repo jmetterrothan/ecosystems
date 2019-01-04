@@ -36,9 +36,17 @@ class ProgressionService {
     }
   }
 
-  increment(key: string) {
+  setStorage(key: string, value: number) {
     if (!this.storage.hasOwnProperty(key)) return;
-    this.storage[key]++;
+    this.storage[key] = value;
+    this.storageSvc.set(this.key, this.storage);
+
+    this.achievementSvc.check(key);
+  }
+
+  increment(key: string, value?: number) {
+    if (!this.storage.hasOwnProperty(key)) return;
+    value ? this.storage[key] = value : this.storage[key]++;
     this.storageSvc.set(this.key, this.storage);
 
     this.achievementSvc.check(key);
