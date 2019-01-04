@@ -1,33 +1,31 @@
 import * as THREE from 'three';
 import { playerSvc } from '@shared/services/player.service';
+import { BoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
 
 class Creature {
-
   static SPEED: number = 100;
 
   position: THREE.Vector3;
   velocity: THREE.Vector3;
-
-  neighbourRadius: number = 6000;
-  alignmentWeighting: number = 0.0065;
-  cohesionWeighting: number = 0.01;
-  separationWeighting: number = 0.05;
-  viewAngle: number = 4;
-  speed: number = Creature.SPEED;
+  speed: number;
 
   minRepulseDistance: number = 20000;
 
   model: THREE.Object3D;
+  parameters: BoidCreatureParameters;
 
   avoidTarget: THREE.Vector3 = null;
 
   protected boidsBoundingBox: THREE.Vector3;
   protected boidsOrigin: THREE.Vector3;
 
-  constructor(position: THREE.Vector3, velocity: THREE.Vector3, model: THREE.Object3D) {
+  constructor(position: THREE.Vector3, velocity: THREE.Vector3, model: THREE.Object3D, parameters: BoidCreatureParameters) {
     this.position = position;
     this.velocity = velocity;
     this.model = model;
+    this.parameters = parameters;
+
+    this.speed = this.parameters.speed; // 100
   }
 
   update(creatures: Creature[], delta: number) {
@@ -102,7 +100,7 @@ class Creature {
       const product = neighbour.velocity.clone().dot(this.velocity);
       const angleBetween = Math.acos(product);
 
-      if ((distance > 0 && distance < this.neighbourRadius) && angleBetween < this.viewAngle) {
+      if ((distance > 0 && distance < this.parameters.neighbourRadius) && angleBetween < this.parameters.viewAngle) {
         // calc difference between position and neighbours to get a vector pointing
 
         repulse.subVectors(neighbour.position, this.position);
@@ -131,9 +129,9 @@ class Creature {
     separation.negate();
     separation.normalize();
 
-    v.add(aligment.multiplyScalar(this.alignmentWeighting));
-    v.add(cohesion.multiplyScalar(this.cohesionWeighting));
-    v.add(separation.multiplyScalar(this.separationWeighting));
+    v.add(aligment.multiplyScalar(this.parameters.alignmentWeighting));
+    v.add(cohesion.multiplyScalar(this.parameters.cohesionWeighting));
+    v.add(separation.multiplyScalar(this.parameters.separationWeighting));
 
     return v;
   }
@@ -163,10 +161,10 @@ class Creature {
       v.subVectors(this.position.clone().add(this.boidsOrigin), target);
       v.multiplyScalar(forceWeighting);
       this.speed += 40;
-    } else if (this.speed > Creature.SPEED) {
+    } else if (this.speed > this.parameters.speed) {
       this.speed -= 40;
     } else {
-      this.speed = Creature.SPEED;
+      this.speed = this.parameters.speed;
     }
 
     return v;

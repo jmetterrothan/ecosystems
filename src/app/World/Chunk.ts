@@ -260,9 +260,7 @@ class Chunk {
     object.rotation.y = item.r;
     object.scale.set(item.s, item.s, item.s);
     object.position.set(item.x, item.y, item.z);
-    object.userData = <IStackReference>{
-      stackReference: item.n
-    };
+    object.userData = <IStackReference>{ stackReference: item.n };
     object.visible = true;
 
     return object;
