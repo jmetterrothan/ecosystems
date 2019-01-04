@@ -41,13 +41,13 @@ class DesertBiome extends Biome {
 
     } while (!chunk.canPlaceObject(corpseObject));
 
-    chunk.placeObject(corpseObject);
+    chunk.placeObject(corpseObject, { save: true });
 
     // vulture
     this.vulture = chunk.getObject({ ...corpseItem });
     this.vulture.position.setY(Chunk.CLOUD_LEVEL);
     this.vulture.children.forEach((obj: THREE.Mesh) => obj.translateX(-20));
-    chunk.placeObject(this.vulture);
+    chunk.placeObject(this.vulture, { save: true });
   }
 
   update(delta: number) {

@@ -182,9 +182,41 @@ class Chunk {
       const item = this.generator.pick(x, z);
 
       if (item !== null) {
-        this.objectsBlueprint.push(item);
+        this.savePick(item);
       }
     });
+  }
+
+  /**
+   * Save an object to the chunk blueprint
+   * @param {THREE.Object3D} object
+   */
+  saveObject(object: THREE.Object3D) {
+    const translation = new THREE.Vector3();
+    const rotationQ = new THREE.Quaternion();
+    const scale = new THREE.Vector3();
+
+    object.matrixWorld.decompose(translation, rotationQ, scale);
+
+    // convert object to pick
+    const item : IPick = {
+      x: translation.x,
+      y: translation.y,
+      z: translation.z,
+      n: object.userData.stackReference,
+      r: object.rotation.y,
+      s: scale.x
+    };
+
+    this.savePick(item);
+  }
+
+  /**
+   * Save an object pick to the chunk blueprint
+   * @param {Pick} pick
+   */
+  savePick(pick: IPick) {
+    this.objectsBlueprint.push(pick);
   }
 
   /**
@@ -237,10 +269,14 @@ class Chunk {
   }
 
   placeObject(object: THREE.Object3D, parameters: IPlaceObject = {}) {
-    if (parameters.animate) {
+    if (parameters.animate === true) {
       this.placeObjectWithAnimation(object);
     } else {
       this.objects.add(object);
+    }
+
+    if (parameters.save === true) {
+      this.saveObject(object);
     }
   }
 

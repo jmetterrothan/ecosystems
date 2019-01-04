@@ -47,7 +47,7 @@ class OceanBiome extends Biome {
     const params = { x, y, z, r, s: World.OBJ_INITIAL_SCALE, n: 'chest' };
 
     const obj = chunk.getObject(params);
-    chunk.placeObject(obj);
+    chunk.placeObject(obj, { save: true });
   }
 
   update(delta: number) {

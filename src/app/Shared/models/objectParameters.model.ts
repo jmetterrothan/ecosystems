@@ -1,5 +1,6 @@
 export interface IPlaceObject {
   animate?: boolean;
+  save?: boolean;
 }
 
 export interface IPickObject {
