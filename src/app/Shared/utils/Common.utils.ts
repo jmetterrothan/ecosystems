@@ -40,6 +40,10 @@ class CommonUtils {
       return obj;
     }, {});
   }
+
+  static getObjectPlacedNameForAchievement(objectName: string): string {
+    return `object_${objectName}_placed_count`;
+  }
 }
 
 export default CommonUtils;

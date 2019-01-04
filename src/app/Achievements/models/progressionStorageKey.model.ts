@@ -8,4 +8,5 @@ export interface IProgressionStorageKey {
   snow_visited_count: string;
   swamp_visited_count: string;
   objects_placed_count: string;
+  [objectPlaced: string]: string;
 }

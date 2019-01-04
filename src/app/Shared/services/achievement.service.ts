@@ -1,3 +1,4 @@
+import { PROGRESSION_OBJECTS_STORAGE_KEYS } from './../../Achievements/constants/progressionObjectsStorageKey.constants';
 import snakeCase from 'snake-case';
 
 import StorageService, { storageSvc } from './storage.service';
@@ -5,6 +6,7 @@ import StorageService, { storageSvc } from './storage.service';
 import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
 
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
+import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progression.constants';
 import { TROPHIES } from '@achievements/constants/trophies.constants';
 
 class AchievementService {
@@ -20,6 +22,7 @@ class AchievementService {
     this.trophies = TROPHIES;
 
     this.storage = this.storageSvc.get(STORAGES_KEY.trophies) || {};
+
   }
 
   check(key: string) {
@@ -27,9 +30,11 @@ class AchievementService {
       (trophy: ITrophy) => trophy.checklist.some((option: IChecklistOption) => option.value === key)
     );
 
+    console.log(key, trophiesConcerned);
+
     for (const trophy of trophiesConcerned) {
       const trophyName = snakeCase(trophy.name);
-      // if ((<string[]>this.storageSvc.get(STORAGES_KEY.completed)).includes(trophyName)) continue;
+      if ((<string[]>this.storageSvc.get(STORAGES_KEY.completed)).includes(trophyName)) continue;
 
       let checklist: string[] = this.storageSvc.get(STORAGES_KEY.trophies)[trophyName];
       if (!checklist) {
@@ -40,7 +45,6 @@ class AchievementService {
       if (trophy.checklist.some((option: IChecklistOption) => option.limit !== undefined)) {
         const count = this.storageSvc.get(STORAGES_KEY.progression)[key];
         const checklistItem = trophy.checklist.find((option: IChecklistOption) => option.limit === count);
-        console.log(checklistItem);
         if (!checklistItem) continue;
       }
 

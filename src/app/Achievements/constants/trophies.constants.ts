@@ -1,7 +1,8 @@
-import { ITrophy } from '@achievements/models/trophy.model';
+import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
 
 import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progression.constants';
 import { TROPHY_DIFFICULTY } from '@shared/enums/trophyDIfficulty.enum';
+import { PROGRESSION_OBJECTS_STORAGE_KEYS } from './progressionObjectsStorageKey.constants';
 
 export const TROPHIES: ITrophy[] = [
   {
@@ -26,6 +27,15 @@ export const TROPHIES: ITrophy[] = [
     completed: false,
     checklist: [
       { name: 'jouer 10 fois', value: PROGRESSION_STORAGE_KEYS.game_played_count, limit: 10 }
+    ]
+  },
+  {
+    name: 'Placer tous les objets',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.DIAMOND,
+    completed: false,
+    checklist: [
+      ...Object.values(PROGRESSION_OBJECTS_STORAGE_KEYS).reduce((acc, name) => acc.concat(<IChecklistOption>{ name, value: name }), [])
     ]
   }
 ];

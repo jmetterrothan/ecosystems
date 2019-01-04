@@ -18,6 +18,8 @@ import MathUtils from '@shared/utils/Math.utils';
 import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
 import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progression.constants';
 
+import CommonUtils from '@shared/utils/Common.utils';
+
 class Terrain {
   static readonly NCHUNKS_X: number = 16;
   static readonly NCHUNKS_Z: number = 16;
@@ -260,9 +262,10 @@ class Terrain {
 
       chunk.placeObject(this.previewObject, { animate: true });
       this.progressionSvc.increment(PROGRESSION_STORAGE_KEYS.objects_placed_count);
+      this.progressionSvc.increment(CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n));
 
       this.objectAnimated = true;
-      this.resetPreview();
+      // this.resetPreview();
       setTimeout(() => this.objectAnimated = false, Chunk.ANIMATION_DELAY + 200);
 
       break;
