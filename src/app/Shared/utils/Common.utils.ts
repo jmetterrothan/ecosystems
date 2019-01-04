@@ -42,7 +42,7 @@ class CommonUtils {
   }
 
   static getObjectPlacedNameForAchievement(objectName: string): string {
-    return `object_${objectName}_placed_count`;
+    return `object_${objectName}_placed`;
   }
 }
 

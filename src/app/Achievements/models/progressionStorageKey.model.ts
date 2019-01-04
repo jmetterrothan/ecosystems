@@ -1,12 +1,12 @@
 export interface IProgressionStorageKey {
-  game_played_count: string;
-  desert_visited_count: string;
-  greenland_visited_count: string;
-  highland_visited_count: string;
-  ocean_visited_count: string;
-  rainforest_visited_count: string;
-  snow_visited_count: string;
-  swamp_visited_count: string;
-  objects_placed_count: string;
+  game_played: string;
+  desert_visited: string;
+  greenland_visited: string;
+  highland_visited: string;
+  ocean_visited: string;
+  rainforest_visited: string;
+  snow_visited: string;
+  swamp_visited: string;
+  objects_placed: string;
   [objectPlaced: string]: string;
 }
