@@ -1,4 +1,3 @@
-import { PROGRESSION_OBJECTS_STORAGE_KEYS } from '@achievements/constants/progressionObjectsStorageKey.constants';
 import snakeCase from 'snake-case';
 
 import StorageService, { storageSvc } from './storage.service';
@@ -6,7 +5,6 @@ import StorageService, { storageSvc } from './storage.service';
 import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
 
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
-import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progressionStorageKeys.constants';
 import { TROPHIES } from '@achievements/constants/trophies.constants';
 
 class AchievementService {
@@ -22,7 +20,6 @@ class AchievementService {
     this.trophies = TROPHIES;
 
     this.storage = this.storageSvc.get(STORAGES_KEY.trophies) || {};
-
   }
 
   check(key: string) {
@@ -30,10 +27,10 @@ class AchievementService {
       (trophy: ITrophy) => trophy.checklist.some((option: IChecklistOption) => option.value === key)
     );
 
-    console.log(key, trophiesConcerned);
+    // console.log('key', key, trophiesConcerned);
 
     for (const trophy of trophiesConcerned) {
-      const trophyName = snakeCase(trophy.name);
+      const trophyName = snakeCase(trophy.value);
       if ((<string[]>this.storageSvc.get(STORAGES_KEY.completed)).includes(trophyName)) continue;
 
       let checklist: string[] = this.storageSvc.get(STORAGES_KEY.trophies)[trophyName];
@@ -70,8 +67,10 @@ class AchievementService {
   private unlockTrophy(trophy: ITrophy) {
     // trophy completed
     const completedArray = this.storageSvc.get(STORAGES_KEY.completed);
-    (<string[]>completedArray).push(snakeCase(trophy.name));
+    (<string[]>completedArray).push(snakeCase(trophy.value));
     this.storageSvc.set(STORAGES_KEY.completed, completedArray);
+
+    console.log('TROPHY COMPLETED');
   }
 
 }

@@ -1,6 +1,5 @@
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
-import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progressionStorageKeys.constants';
-import CommonUtils from '@shared/utils/Common.utils';
+import { PROGRESSION_STORAGE, PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progressionStorageKeys.constants';
 
 import StorageService, { storageSvc } from './storage.service';
 import AchievementService, { achievementSvc } from './achievement.service';
@@ -18,15 +17,13 @@ class ProgressionService {
     this.achievementSvc = achievementSvc;
 
     this.key = STORAGES_KEY.progression;
-    this.storage = this.storageSvc.get(STORAGES_KEY.progression) || {};
+    this.storage = this.storageSvc.get(STORAGES_KEY.progression) || PROGRESSION_STORAGE;
   }
 
   getProgressionStorage() { return this.storage; }
 
   init() {
-    console.log();
     if (!this.storageSvc.get(STORAGES_KEY.progression)) {
-      this.storage = CommonUtils.arrayToObject(CommonUtils.flattenToArray(PROGRESSION_STORAGE_KEYS), 0);
       this.storageSvc.set(STORAGES_KEY.progression, this.storage);
     }
 

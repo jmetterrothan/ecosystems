@@ -11,7 +11,7 @@ import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { IPick } from '@shared/models/pick.model';
 import MathUtils from '@shared/utils/Math.utils';
 
-import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progressionStorageKeys.constants';
+import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 
 class DesertBiome extends Biome {
   private vulture: THREE.Object3D;
@@ -21,7 +21,7 @@ class DesertBiome extends Biome {
 
     this.waterDistortion = false;
 
-    this.progressionSvc.increment(PROGRESSION_STORAGE_KEYS.desert_visited_count);
+    this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.desert_visited);
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {

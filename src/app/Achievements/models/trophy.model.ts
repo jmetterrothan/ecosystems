@@ -3,6 +3,7 @@ import { IProgressionStorageKeys } from '@achievements/models/progressionStorage
 
 export interface ITrophy {
   name: string;
+  value: string;
   img: string;
   completed: boolean;
   difficulty: TROPHY_DIFFICULTY;

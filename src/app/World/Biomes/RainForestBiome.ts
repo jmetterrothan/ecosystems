@@ -8,7 +8,7 @@ import MathUtils from '@shared/utils/Math.utils';
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
-import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progressionStorageKeys.constants';
+import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 
 class RainForestBiome extends Biome {
   private a: number;
@@ -35,7 +35,7 @@ class RainForestBiome extends Biome {
 
     this.ridges = MathUtils.randomFloat(0.225, 0.35); // makes ridges more prevalent
 
-    this.progressionSvc.increment(PROGRESSION_STORAGE_KEYS.rainforest_visited_count);
+    this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.rainforest_visited);
   }
 
   init(scene: THREE.Scene, terrain: Terrain) { }
