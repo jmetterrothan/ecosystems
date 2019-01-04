@@ -56,7 +56,9 @@ class World {
   private clouds: THREE.Group;
   private wind: THREE.Vector3;
 
-  private windSound: Howl;
+  private listener: THREE.AudioListener;
+  private zSound: THREE.PositionalAudio;
+  private audioLoader: THREE.AudioLoader;
 
   constructor(scene: THREE.Scene, camera: THREE.PerspectiveCamera, controls: THREE.PointerLockControls) {
     this.scene = scene;
@@ -65,12 +67,12 @@ class World {
 
     this.frustum = new THREE.Frustum();
     this.raycaster = new THREE.Raycaster();
-    this.windSound = new Howl({
-      src: [ForestSFXMp3],
-      autoplay: true,
-      volume: 0.1,
-      loop: true,
-    });
+
+    this.listener = new THREE.AudioListener();
+    this.camera.add(this.listener);
+    this.zSound = new THREE.PositionalAudio(this.listener);
+    this.audioLoader = new THREE.AudioLoader();
+
   }
 
   async init() {
@@ -97,6 +99,9 @@ class World {
     this.generator = this.terrain.getGenerator();
 
     this.scene.add(this.controls.getObject());
+
+    this.initAudio();
+
   }
 
   private initSeed() {
@@ -247,6 +252,28 @@ class World {
     });
   }
 
+  private initAudio() {
+    this.audioLoader.load(ForestSFXMp3, (buffer) => {
+      this.zSound.setBuffer(buffer);
+      this.zSound.setRefDistance(2500);
+      this.zSound.setLoop(true);
+      this.zSound.setVolume(1);
+      this.zSound.play();
+    }, () => { }, () => { });
+
+    // create an object for the sound to play from
+    const sphere = new THREE.SphereGeometry(500, 32, 16);
+    const material = new THREE.MeshPhongMaterial({ color: 0xff2200 });
+    const mesh = new THREE.Mesh(sphere, material);
+    this.scene.add(mesh);
+
+    // finally add the sound to the mesh
+    mesh.add(this.zSound);
+    mesh.position.set(0, Terrain.SIZE_Y / 2, Terrain.SIZE_Z / 2);
+
+    console.log(this.zSound);
+  }
+
   getTerrain(): Terrain {
     return this.terrain;
   }
@@ -273,10 +300,6 @@ class World {
       // console.log('underwater');
     }
     */
-    const soundPos = this.getSoundPosition();
-    this.windSound.pos(soundPos.x, 0, 0);
-    this.windSound.pos(-0.00004, 0, 0);
-    console.log(this.windSound._pos);
 
     this.updateClouds(delta);
   }
@@ -421,22 +444,6 @@ class World {
   private convertToLittleScale(size, globalSize) {
     const result = 1 * size / globalSize;
     return result;
-  }
-
-  private getSoundPosition() {
-    const playerPosition = this.player.getControls();
-    const centerPosition = { x: Terrain.SIZE_X / 2, y: Terrain.SIZE_Y / 2, z: Terrain.SIZE_Z / 2 };
-
-    let x = centerPosition.x - playerPosition.getObject().position.x;
-    let y = centerPosition.y - playerPosition.getObject().position.y;
-    let z = centerPosition.z - playerPosition.getObject().position.z;
-
-    x = this.convertToLittleScale(x, Terrain.SIZE_X);
-    y = this.convertToLittleScale(y, Terrain.SIZE_Y);
-    z = this.convertToLittleScale(z, Terrain.SIZE_Z);
-
-    const relativePosition = { x, y, z };
-    return relativePosition;
   }
 }
 

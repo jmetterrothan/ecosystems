@@ -43,6 +43,7 @@ class Player {
     this.controls.getObject().rotateY(-Math.PI / 4);
     this.controls.getObject().children[0].rotateX(angle);
     this.controls.getObject().position.set(spawn.x, spawn.y, spawn.z);
+    this.controls.getObject().position.set(Terrain.SIZE_X / 2, Terrain.SIZE_Y / 2, Terrain.SIZE_Z / 2);
   }
 
   /**
