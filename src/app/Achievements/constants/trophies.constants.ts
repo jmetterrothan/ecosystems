@@ -1,6 +1,6 @@
 import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
 
-import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progression.constants';
+import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progressionStorageKeys.constants';
 import { TROPHY_DIFFICULTY } from '@shared/enums/trophyDIfficulty.enum';
 import { PROGRESSION_OBJECTS_STORAGE_KEYS } from './progressionObjectsStorageKey.constants';
 

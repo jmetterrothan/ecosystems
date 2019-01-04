@@ -1,7 +1,6 @@
-import { IProgressionStorageKey } from '@achievements/models/progressionStorageKey.model';
-import { PROGRESSION_OBJECTS_STORAGE_KEYS } from './progressionObjectsStorageKey.constants';
+import { IProgressionCommonStorageKeys } from '@achievements/models/progressionCommonStorgeKeys.model';
 
-export const PROGRESSION_STORAGE_KEYS: IProgressionStorageKey = {
+export const PROGRESSION_COMMON_STORAGE_KEYS: IProgressionCommonStorageKeys = {
   game_played: 'game_played',
   desert_visited: 'desert_visited',
   greenland_visited: 'greenland_visited',
@@ -11,5 +10,4 @@ export const PROGRESSION_STORAGE_KEYS: IProgressionStorageKey = {
   snow_visited: 'snow_visited',
   swamp_visited: 'swamp_visited',
   objects_placed: 'objects_placed',
-  ...PROGRESSION_OBJECTS_STORAGE_KEYS
 };

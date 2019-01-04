@@ -1,4 +1,4 @@
-import { PROGRESSION_OBJECTS_STORAGE_KEYS } from './../../Achievements/constants/progressionObjectsStorageKey.constants';
+import { PROGRESSION_OBJECTS_STORAGE_KEYS } from '@achievements/constants/progressionObjectsStorageKey.constants';
 import snakeCase from 'snake-case';
 
 import StorageService, { storageSvc } from './storage.service';
@@ -6,7 +6,7 @@ import StorageService, { storageSvc } from './storage.service';
 import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
 
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
-import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progression.constants';
+import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progressionStorageKeys.constants';
 import { TROPHIES } from '@achievements/constants/trophies.constants';
 
 class AchievementService {

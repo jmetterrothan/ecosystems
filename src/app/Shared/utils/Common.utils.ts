@@ -41,6 +41,14 @@ class CommonUtils {
     }, {});
   }
 
+  static flattenToArray(obj: Object): any[] {
+    const res = [];
+    Object.values(obj).forEach(nested => {
+      Object.values(nested).forEach((a: string) => res.push(a));
+    });
+    return res;
+  }
+
   static getObjectPlacedNameForAchievement(objectName: string): string {
     return `object_${objectName}_placed`;
   }

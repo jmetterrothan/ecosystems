@@ -1,5 +1,5 @@
 import { TROPHY_DIFFICULTY } from '@shared/enums/trophyDIfficulty.enum';
-import { IProgressionStorageKey } from '@achievements/models/progressionStorageKey.model';
+import { IProgressionStorageKeys } from '@achievements/models/progressionStorageKeys.model';
 
 export interface ITrophy {
   name: string;

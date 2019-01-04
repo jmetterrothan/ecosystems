@@ -16,7 +16,7 @@ import Crosshair from '../UI/Crosshair';
 import { underwaterSvc } from '@shared/services/underwater.service';
 import MathUtils from '@shared/utils/Math.utils';
 import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
-import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progression.constants';
+import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progressionStorageKeys.constants';
 
 import CommonUtils from '@shared/utils/Common.utils';
 

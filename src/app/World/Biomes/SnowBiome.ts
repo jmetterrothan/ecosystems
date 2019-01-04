@@ -8,7 +8,7 @@ import Chunk from '@world/Chunk';
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
-import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progression.constants';
+import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progressionStorageKeys.constants';
 
 class SnowBiome extends Biome {
   constructor(generator: BiomeGenerator) {

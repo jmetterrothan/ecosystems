@@ -11,7 +11,7 @@ import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { IPick } from '@shared/models/pick.model';
 import MathUtils from '@shared/utils/Math.utils';
 
-import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progression.constants';
+import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progressionStorageKeys.constants';
 
 class DesertBiome extends Biome {
   private vulture: THREE.Object3D;

@@ -1,4 +1,4 @@
-export interface IProgressionStorageKey {
+export interface IProgressionCommonStorageKeys {
   game_played: string;
   desert_visited: string;
   greenland_visited: string;
@@ -8,5 +8,4 @@ export interface IProgressionStorageKey {
   snow_visited: string;
   swamp_visited: string;
   objects_placed: string;
-  [objectPlaced: string]: string;
 }

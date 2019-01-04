@@ -8,7 +8,7 @@ import { IBiome } from '@shared/models/biome.model';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 
 import ProgressionService, { progressionSvc } from '@services/progression.service';
-import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progression.constants';
+import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progressionStorageKeys.constants';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
 
 abstract class Biome {
@@ -41,7 +41,7 @@ abstract class Biome {
     this.waterColor2 = WATER_CONSTANTS.WATER_COLOR_B;
 
     this.progressionSvc.increment(PROGRESSION_STORAGE_KEYS.game_played_count);
-    this.monitoringSvc.sendEvent(this.monitoringSvc.categories.game, this.monitoringSvc.actions.played, PROGRESSION_STORAGE_KEYS.game_played_count);
+    this.monitoringSvc.sendEvent(this.monitoringSvc.categories.game, this.monitoringSvc.actions.played);
   }
 
   /**
