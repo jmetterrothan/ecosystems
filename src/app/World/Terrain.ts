@@ -1,11 +1,10 @@
 import * as THREE from 'three';
 
-import Chunk from './Chunk';
-import World from './World';
-import BiomeGenerator from './BiomeGenerator';
-import Coord from './Coord';
-import Biome from './Biome';
-import Main from '../Main';
+import World from '@world/World';
+import Chunk from '@world/Chunk';
+import BiomeGenerator from '@world/BiomeGenerator';
+import Coord from '@world/Coord';
+import Biome from '@world/Biome';
 import MathUtils from '@shared/utils/Math.utils';
 import Crosshair from '../UI/Crosshair';
 
@@ -13,11 +12,11 @@ import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
 import { WATER_MATERIAL } from '@materials/water.material';
 
-import { CONFIG } from '@shared/constants/config.constants';
-
 import { IBiome } from '@shared/models/biome.model';
 import { IPick } from '@shared/models/pick.model';
 import { underwaterSvc } from '@shared/services/underwater.service';
+
+import { configSvc } from '@shared/services/graphicsConfig.service';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 16;
@@ -124,7 +123,7 @@ class Terrain {
     (<THREE.ShaderMaterial>this.water.material).uniforms.size.value = new THREE.Vector3(Terrain.SIZE_X, Terrain.SIZE_Y, Terrain.SIZE_Z);
 
     const biome: Biome = this.generator.getBiome();
-    (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion.value = CONFIG.ENABLE_WATER_EFFECTS && biome.getWaterDistortion();
+    (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion.value = configSvc.config.ENABLE_WATER_EFFECTS && biome.getWaterDistortion();
     (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion_freq.value = biome.getWaterDistortionFreq();
     (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion_amp.value = biome.getWaterDistortionAmp();
   }
@@ -168,10 +167,10 @@ class Terrain {
   update(frustum: THREE.Frustum, position: THREE.Vector3, delta: number, tick: number) {
     this.getChunkCoordAt(this.chunk, position.x, position.z);
 
-    this.start.col = this.chunk.col - CONFIG.MAX_VISIBLE_CHUNKS;
-    this.start.row = this.chunk.row - CONFIG.MAX_VISIBLE_CHUNKS;
-    this.end.col = this.chunk.col + CONFIG.MAX_VISIBLE_CHUNKS;
-    this.end.row = this.chunk.row + CONFIG.MAX_VISIBLE_CHUNKS;
+    this.start.col = this.chunk.col - configSvc.config.MAX_VISIBLE_CHUNKS;
+    this.start.row = this.chunk.row - configSvc.config.MAX_VISIBLE_CHUNKS;
+    this.end.col = this.chunk.col + configSvc.config.MAX_VISIBLE_CHUNKS;
+    this.end.row = this.chunk.row + configSvc.config.MAX_VISIBLE_CHUNKS;
 
     if (this.start.col < 0) { this.start.col = 0; }
     if (this.start.row < 0) { this.start.row = 0; }
@@ -552,7 +551,7 @@ class Terrain {
     this.water.receiveShadow = true;
     this.layers.add(this.water);
 
-    if (CONFIG.DEBUG) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
+    if (configSvc.config.DEBUG) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
 
     this.scene.add(this.layers);
   }

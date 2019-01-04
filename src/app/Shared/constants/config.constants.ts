@@ -55,10 +55,8 @@ export const HIGH_CONFIG : IConfig = {
   SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap
 };
 
-export const LIST = {
+export const CONFIGS = {
   [GRAPHICS_QUALITY.LOW]: LOW_CONFIG,
   [GRAPHICS_QUALITY.MEDIUM]: MEDIUM_CONFIG,
   [GRAPHICS_QUALITY.HIGH]: HIGH_CONFIG,
 };
-
-export const CONFIG = HIGH_CONFIG;

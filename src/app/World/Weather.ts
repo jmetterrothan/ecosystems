@@ -8,7 +8,7 @@ import MathUtils from '@shared/utils/Math.utils';
 
 import { ICloudData } from '@shared/models/cloudData.model';
 
-import { CONFIG } from '@shared/constants/config.constants';
+import { configSvc } from '@shared/services/graphicsConfig.service';
 
 class Weather {
   private scene: THREE.Scene;
@@ -45,14 +45,14 @@ class Weather {
     this.wind = new THREE.Vector3(0, 0, 768 * Math.sign(Math.random() - 0.5));
 
     // wind direction helper
-    if (CONFIG.DEBUG) {
+    if (configSvc.config.DEBUG) {
       const arrowHelper = new THREE.ArrowHelper(this.wind, new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.CLOUD_LEVEL, Terrain.SIZE_Z / 2), 10000, 0xff0000);
       this.scene.add(arrowHelper);
     }
   }
 
   initRain() {
-    if (!CONFIG.ENABLE_WEATHER_EFFECTS) { return; }
+    if (!configSvc.config.ENABLE_WEATHER_EFFECTS) { return; }
 
     this.clouds.children.forEach((cloud: THREE.Mesh) => {
       // particles
@@ -121,7 +121,7 @@ class Weather {
         cloud.position.z = size.z / 2;
       }
 
-      if (!CONFIG.ENABLE_WEATHER_EFFECTS) { continue; }
+      if (!configSvc.config.ENABLE_WEATHER_EFFECTS) { continue; }
 
       // rain
       const rainData = cloud.userData as ICloudData;

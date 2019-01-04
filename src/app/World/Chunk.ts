@@ -1,19 +1,18 @@
-import { IStackReference } from './../Shared/models/objectParameters.model';
 import * as THREE from 'three';
 import * as TWEEN from '@tweenjs/tween.js';
 import poissonDiskSampling from 'poisson-disk-sampling';
-import BiomeGenerator from './BiomeGenerator';
 
-import World from './World';
-import Terrain from './Terrain';
+import BiomeGenerator from '@world/BiomeGenerator';
+import World from '@world/World';
+import Terrain from '@world/Terrain';
 import TerrainMesh from '@mesh/TerrainMesh';
 import WaterMesh from '@mesh/WaterMesh';
 import Stack from '@shared/Stack';
-
 import MathUtils from '@utils/Math.utils';
 
 import { IPick } from '@shared/models/pick.model';
-import { IPlaceObject, IPickObject } from '@shared/models/objectParameters.model';
+import { IPlaceObject, IPickObject, IStackReference } from '@shared/models/objectParameters.model';
+
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
 class Chunk {

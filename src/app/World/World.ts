@@ -4,7 +4,6 @@ import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
-import Main from '../Main';
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import Chunk from '@world/Chunk';
@@ -18,7 +17,7 @@ import { TEXTURES } from '@shared/constants/texture.constants';
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { ITexture } from '@shared/models/texture.model';
 
-import { CONFIG } from '@shared/constants/config.constants';
+import { configSvc } from '@shared/services/graphicsConfig.service';
 
 class World {
   static readonly SEED: string | null = null;
@@ -27,12 +26,8 @@ class World {
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
-  static readonly VIEW_DISTANCE: number = CONFIG.MAX_RENDERABLE_CHUNKS * Chunk.WIDTH;
-
   static readonly SHOW_FOG: boolean = true;
   static readonly FOG_COLOR: number = 0xb1d8ff;
-  static readonly FOG_NEAR: number = World.VIEW_DISTANCE / 2;
-  static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 
   static readonly RAIN_PROBABILITY: number = 1;
   static readonly RAIN_SPEED: number = 320;
@@ -98,7 +93,7 @@ class World {
 
     this.scene.add(this.controls.getObject());
 
-    if (CONFIG.DEBUG) {
+    if (configSvc.config.DEBUG) {
       this.showAxesHelper();
     }
   }
@@ -124,7 +119,10 @@ class World {
 
   private initFog() {
     if (World.SHOW_FOG) {
-      this.scene.fog = new THREE.Fog(World.FOG_COLOR, World.FOG_NEAR, World.FOG_FAR);
+      const near = configSvc.config.MAX_RENDERABLE_CHUNKS * ((Chunk.WIDTH + Chunk.DEPTH) / 2);
+      const far = configSvc.config.MAX_RENDERABLE_CHUNKS * ((Chunk.WIDTH + Chunk.DEPTH) / 2);
+
+      this.scene.fog = new THREE.Fog(World.FOG_COLOR, near, far);
     }
   }
 
@@ -143,8 +141,8 @@ class World {
     const sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
     sunlight.position.set(Terrain.SIZE_X, Chunk.HEIGHT, Terrain.SIZE_Z);
     sunlight.castShadow = true;
-    sunlight.shadow.mapSize.width = CONFIG.SHADOW_MAP_SIZE;
-    sunlight.shadow.mapSize.height = CONFIG.SHADOW_MAP_SIZE;
+    sunlight.shadow.mapSize.width = configSvc.config.SHADOW_MAP_SIZE;
+    sunlight.shadow.mapSize.height = configSvc.config.SHADOW_MAP_SIZE;
     sunlight.shadow.camera.visible = true;
     sunlight.shadow.camera.castShadow = true;
     sunlight.shadow.bias = 0.0001;
@@ -155,7 +153,7 @@ class World {
     sunlight.shadow.camera.near = 150;
     sunlight.shadow.camera.far = 1000000;
 
-    if (CONFIG.DEBUG) {
+    if (configSvc.config.DEBUG) {
       this.scene.add(new THREE.DirectionalLightHelper(sunlight, 1024));
     }
 

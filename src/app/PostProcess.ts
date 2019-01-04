@@ -13,7 +13,7 @@ import { Effect } from '@shared/models/effect.model';
 import vergilwaterVertexGlsl from '@shaders/vergilwater.vertex.glsl';
 import vergilwaterFragmentGlsl from '@shaders/vergilwater.fragment.glsl';
 
-import { CONFIG } from '@shared/constants/config.constants';
+import { configSvc } from '@shared/services/graphicsConfig.service';
 
 THREE.VergilWaterShader = {
   uniforms: {
@@ -73,7 +73,7 @@ class PostProcess
     this.composer.addPass(pass2);
     this.effects.push({ effect: pass2, update: null });
 
-    if (CONFIG.ENABLE_WATER_EFFECTS) {
+    if (configSvc.config.ENABLE_WATER_EFFECTS) {
       // distortion
       const pass3 = new THREE.ShaderPass(THREE.VergilWaterShader);
       pass3.uniforms['centerX'].value = 0.8;
