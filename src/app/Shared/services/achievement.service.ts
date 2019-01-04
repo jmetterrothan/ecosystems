@@ -29,12 +29,19 @@ class AchievementService {
 
     for (const trophy of trophiesConcerned) {
       const trophyName = snakeCase(trophy.name);
-      if ((<string[]>this.storageSvc.get(STORAGES_KEY.completed)).includes(trophyName)) continue;
+      // if ((<string[]>this.storageSvc.get(STORAGES_KEY.completed)).includes(trophyName)) continue;
 
-      let checklist = this.storageSvc.get(STORAGES_KEY.trophies)[trophyName];
+      let checklist: string[] = this.storageSvc.get(STORAGES_KEY.trophies)[trophyName];
       if (!checklist) {
         this.initTrophyInStorage(trophyName);
         checklist = [];
+      }
+
+      if (trophy.checklist.some((option: IChecklistOption) => option.limit !== undefined)) {
+        const count = this.storageSvc.get(STORAGES_KEY.progression)[key];
+        const checklistItem = trophy.checklist.find((option: IChecklistOption) => option.limit === count);
+        console.log(checklistItem);
+        if (!checklistItem) continue;
       }
 
       checklist.push(key);

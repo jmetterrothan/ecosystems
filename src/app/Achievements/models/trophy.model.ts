@@ -12,4 +12,5 @@ export interface ITrophy {
 export interface IChecklistOption {
   name: string;
   value: string;
+  limit?: number | number[];
 }

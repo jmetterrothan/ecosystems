@@ -43,7 +43,7 @@ class ProgressionService {
     this.storage[key]++;
     this.storageSvc.set(this.key, this.storage);
 
-    // this.achievementSvc.check(key);
+    this.achievementSvc.check(key);
   }
 
   decrement(key: string) {

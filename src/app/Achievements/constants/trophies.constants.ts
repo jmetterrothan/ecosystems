@@ -18,5 +18,14 @@ export const TROPHIES: ITrophy[] = [
       { name: 'snow', value: PROGRESSION_STORAGE_KEYS.snow_visited_count },
       { name: 'swamp', value: PROGRESSION_STORAGE_KEYS.swamp_visited_count },
     ]
+  },
+  {
+    name: 'Jouer 10 parties',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    completed: false,
+    checklist: [
+      { name: 'jouer 10 fois', value: PROGRESSION_STORAGE_KEYS.game_played_count, limit: 10 }
+    ]
   }
 ];
