@@ -5,11 +5,11 @@ import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 import World from '@world/World';
+import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { IPick } from '@shared/models/pick.model';
-import MathUtils from '@shared/utils/Math.utils';
 
 class DesertBiome extends Biome {
   // private vulture: THREE.Object3D;

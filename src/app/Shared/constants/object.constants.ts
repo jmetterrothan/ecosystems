@@ -1,5 +1,11 @@
 import { IObject } from '@shared/models/object.model';
 
+import snowy_bushObj from '@objmodels/tree/snowy_bush.obj';
+import snowy_bushMtl from '@objmodels/tree/snowy_bush.mtl';
+
+import snowmanObj from '@objmodels/misc/snowman.obj';
+import snowmanMtl from '@objmodels/misc/snowman.mtl';
+
 import chestObj from '@objmodels/misc/chest.obj';
 import chestMtl from '@objmodels/misc/chest.mtl';
 
@@ -127,6 +133,16 @@ import cloud4Obj from '@objmodels/cloud/cloud4.obj';
 import cloud4Mtl from '@objmodels/cloud/cloud4.mtl';
 
 export const OBJECTS: IObject[] = [
+  {
+    name: 'snowy_bush',
+    obj: snowy_bushObj,
+    mtl: snowy_bushMtl
+  },
+  {
+    name: 'snowman',
+    obj: snowmanObj,
+    mtl: snowmanMtl
+  },
   {
     name: 'chest',
     obj: chestObj,
