@@ -1,19 +1,18 @@
-import { IStackReference } from './../Shared/models/objectParameters.model';
 import * as THREE from 'three';
 import * as TWEEN from '@tweenjs/tween.js';
 import poissonDiskSampling from 'poisson-disk-sampling';
-import BiomeGenerator from './BiomeGenerator';
 
-import World from './World';
-import Terrain from './Terrain';
+import BiomeGenerator from '@world/BiomeGenerator';
+import World from '@world/World';
+import Terrain from '@world/Terrain';
 import TerrainMesh from '@mesh/TerrainMesh';
 import WaterMesh from '@mesh/WaterMesh';
 import Stack from '@shared/Stack';
-
 import MathUtils from '@utils/Math.utils';
 
 import { IPick } from '@shared/models/pick.model';
-import { IPlaceObject, IPickObject } from '@shared/models/objectParameters.model';
+import { IPlaceObject, IPickObject, IStackReference } from '@shared/models/objectParameters.model';
+
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
 class Chunk {
@@ -111,7 +110,7 @@ class Chunk {
     (<THREE.Geometry>terrain.terrain.geometry).elementsNeedUpdate = true;
 
     // generate water
-    if (this.terrainBlueprint.needGenerateWater()) {
+    if (terrain.getBiome().hasWater() && this.terrainBlueprint.needGenerateWater()) {
       const waterMesh = this.waterBlueprint.generate();
 
       (<THREE.Geometry>terrain.water.geometry).mergeMesh(waterMesh);
@@ -159,7 +158,9 @@ class Chunk {
       }
     }
 
-    this.loadPopulation();
+    if (!World.EMPTY) {
+      this.loadPopulation();
+    }
 
     this.merged = true;
     this.dirty = true;
@@ -181,9 +182,41 @@ class Chunk {
       const item = this.generator.pick(x, z);
 
       if (item !== null) {
-        this.objectsBlueprint.push(item);
+        this.savePick(item);
       }
     });
+  }
+
+  /**
+   * Save an object to the chunk blueprint
+   * @param {THREE.Object3D} object
+   */
+  saveObject(object: THREE.Object3D) {
+    const translation = new THREE.Vector3();
+    const rotationQ = new THREE.Quaternion();
+    const scale = new THREE.Vector3();
+
+    object.matrixWorld.decompose(translation, rotationQ, scale);
+
+    // convert object to pick
+    const item : IPick = {
+      x: translation.x,
+      y: translation.y,
+      z: translation.z,
+      n: object.userData.stackReference,
+      r: object.rotation.y,
+      s: scale.x
+    };
+
+    this.savePick(item);
+  }
+
+  /**
+   * Save an object pick to the chunk blueprint
+   * @param {Pick} pick
+   */
+  savePick(pick: IPick) {
+    this.objectsBlueprint.push(pick);
   }
 
   /**
@@ -227,19 +260,21 @@ class Chunk {
     object.rotation.y = item.r;
     object.scale.set(item.s, item.s, item.s);
     object.position.set(item.x, item.y, item.z);
-    object.userData = <IStackReference>{
-      stackReference: item.n
-    };
+    object.userData = <IStackReference>{ stackReference: item.n };
     object.visible = true;
 
     return object;
   }
 
   placeObject(object: THREE.Object3D, parameters: IPlaceObject = {}) {
-    if (parameters.animate) {
+    if (parameters.animate === true) {
       this.placeObjectWithAnimation(object);
     } else {
       this.objects.add(object);
+    }
+
+    if (parameters.save === true) {
+      this.saveObject(object);
     }
   }
 
@@ -249,6 +284,8 @@ class Chunk {
    * @return {boolean}
    */
   canPlaceObject(object: THREE.Object3D): boolean {
+    if (!(object instanceof THREE.Object3D)) { return false; }
+
     const bbox = new THREE.Box3().setFromObject(object);
 
     for (let i = 0; i < this.objects.children.length; i++) {

@@ -6,7 +6,6 @@ import Chunk from '@world/Chunk';
 
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
-import MathUtils from '@shared/utils/Math.utils';
 
 class SwampBiome extends Biome {
   constructor(generator: BiomeGenerator) {

@@ -1,12 +1,15 @@
 import * as THREE from 'three';
 
+import World from '@world/World';
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
+import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
+import { IPick } from '@shared/models/pick.model';
 
 class SnowBiome extends Biome {
   constructor(generator: BiomeGenerator) {
@@ -18,7 +21,33 @@ class SnowBiome extends Biome {
     this.waterColor2 = new THREE.Color(0xacd2e5);
   }
 
-  init(scene: THREE.Scene, terrain: Terrain) { }
+  init(scene: THREE.Scene, terrain: Terrain) {
+     // corpse
+    let chunk: Chunk;
+    let corpseItem: IPick;
+    let corpseObject: THREE.Object3D;
+
+    do {
+      const x = Terrain.SIZE_X / 4 + Math.floor(Math.random() * Terrain.SIZE_X / 2);
+      const z = Terrain.SIZE_Z / 4 + Math.floor(Math.random() * Terrain.SIZE_Z / 2);
+
+      chunk = terrain.getChunkAt(x, z);
+
+      const y = terrain.getHeightAt(x, z);
+      if (y <= 0) { continue; }
+
+      corpseItem = {
+        x, y, z,
+        s: World.OBJ_INITIAL_SCALE,
+        n: 'snowman',
+        r: MathUtils.randomFloat(0, Math.PI * 2)
+      };
+
+      corpseObject = chunk.getObject(corpseItem);
+    } while (!chunk.canPlaceObject(corpseObject));
+
+    chunk.placeObject(corpseObject, { save: true });
+  }
 
   update(delta: number) { }
 

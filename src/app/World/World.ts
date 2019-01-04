@@ -4,7 +4,6 @@ import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
-import Main from '../Main';
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import Chunk from '@world/Chunk';
@@ -12,26 +11,24 @@ import Player from '../Player';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Weather from '@world/Weather';
 import MathUtils from '@utils/Math.utils';
+import TestBiome from './Biomes/TestBiome';
 
 import { OBJECTS } from '@shared/constants/object.constants';
 import { TEXTURES } from '@shared/constants/texture.constants';
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { ITexture } from '@shared/models/texture.model';
 
+import { configSvc } from '@shared/services/graphicsConfig.service';
+
 class World {
-  static readonly SEED: string | null = '2357061653';
+  static readonly SEED: string | null = null;
   static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
+  static readonly EMPTY: boolean = false;
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
-  static readonly MAX_VISIBLE_CHUNKS: number = 24;
-  static readonly MAX_RENDERABLE_CHUNKS: number = 30;
-  static readonly VIEW_DISTANCE: number = World.MAX_RENDERABLE_CHUNKS * Chunk.WIDTH;
-
   static readonly SHOW_FOG: boolean = true;
   static readonly FOG_COLOR: number = 0xb1d8ff;
-  static readonly FOG_NEAR: number = World.VIEW_DISTANCE / 2;
-  static readonly FOG_FAR: number = World.VIEW_DISTANCE;
 
   static readonly RAIN_PROBABILITY: number = 1;
   static readonly RAIN_SPEED: number = 320;
@@ -97,7 +94,7 @@ class World {
 
     this.scene.add(this.controls.getObject());
 
-    if (Main.DEBUG) {
+    if (configSvc.config.DEBUG) {
       this.showAxesHelper();
     }
   }
@@ -117,13 +114,16 @@ class World {
   private showAxesHelper() {
     const gizmo = new THREE.AxesHelper();
     gizmo.position.set(0, 0, 0);
-    gizmo.scale.set(1024, 1024, 1024);
+    gizmo.scale.set(2048, 2048, 2048);
     this.scene.add(gizmo);
   }
 
   private initFog() {
     if (World.SHOW_FOG) {
-      this.scene.fog = new THREE.Fog(World.FOG_COLOR, World.FOG_NEAR, World.FOG_FAR);
+      const near = configSvc.config.MAX_RENDERABLE_CHUNKS * ((Chunk.WIDTH + Chunk.DEPTH) / 2);
+      const far = configSvc.config.MAX_RENDERABLE_CHUNKS * ((Chunk.WIDTH + Chunk.DEPTH) / 2);
+
+      this.scene.fog = new THREE.Fog(World.FOG_COLOR, near, far);
     }
   }
 
@@ -142,8 +142,8 @@ class World {
     const sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
     sunlight.position.set(Terrain.SIZE_X, Chunk.HEIGHT, Terrain.SIZE_Z);
     sunlight.castShadow = true;
-    sunlight.shadow.mapSize.width = 4096;
-    sunlight.shadow.mapSize.height = 4096;
+    sunlight.shadow.mapSize.width = configSvc.config.SHADOW_MAP_SIZE;
+    sunlight.shadow.mapSize.height = configSvc.config.SHADOW_MAP_SIZE;
     sunlight.shadow.camera.visible = true;
     sunlight.shadow.camera.castShadow = true;
     sunlight.shadow.bias = 0.0001;
@@ -154,7 +154,7 @@ class World {
     sunlight.shadow.camera.near = 150;
     sunlight.shadow.camera.far = 1000000;
 
-    if (Main.DEBUG) {
+    if (configSvc.config.DEBUG) {
       this.scene.add(new THREE.DirectionalLightHelper(sunlight, 1024));
     }
 

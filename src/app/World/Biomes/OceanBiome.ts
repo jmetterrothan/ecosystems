@@ -16,6 +16,7 @@ class OceanBiome extends Biome {
   private depth: number;
 
   private boids: Boids;
+  private boids2: Boids;
 
   constructor(generator: BiomeGenerator) {
     super('OCEAN', generator);
@@ -34,9 +35,33 @@ class OceanBiome extends Biome {
       scene,
       new THREE.Vector3(Terrain.SIZE_X - 35000, 27500, Terrain.SIZE_Z - 35000),
       new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2),
-      32
+      'fish1',
+      32,
+      {
+        speed: 100,
+        neighbourRadius: 6000,
+        alignmentWeighting: 0.0065,
+        cohesionWeighting: 0.01,
+        separationWeighting: 0.05,
+        viewAngle: 4
+      }
     );
-    this.boids.generate();
+
+    this.boids2 = new Boids(
+      scene,
+      new THREE.Vector3(100000, 27500, 100000),
+      new THREE.Vector3(Terrain.SIZE_X / 2 - 50000, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2 - 50000),
+      'fish2',
+      2,
+      {
+        speed: 75,
+        neighbourRadius: 10000,
+        alignmentWeighting: 0.0065,
+        cohesionWeighting: 0.01,
+        separationWeighting: 0.2,
+        viewAngle: 6
+      }
+    );
 
     // chest
     const x = Terrain.SIZE_X / 4 + Math.floor(Math.random() * Terrain.SIZE_X / 2);
@@ -47,11 +72,12 @@ class OceanBiome extends Biome {
     const params = { x, y, z, r, s: World.OBJ_INITIAL_SCALE, n: 'chest' };
 
     const obj = chunk.getObject(params);
-    chunk.placeObject(obj);
+    chunk.placeObject(obj, { save: true });
   }
 
   update(delta: number) {
     this.boids.update(delta);
+    this.boids2.update(delta);
   }
 
   /**

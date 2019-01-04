@@ -5,14 +5,14 @@ import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 import World from '@world/World';
+import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { IPick } from '@shared/models/pick.model';
-import MathUtils from '@shared/utils/Math.utils';
 
 class DesertBiome extends Biome {
-  private vulture: THREE.Object3D;
+  // private vulture: THREE.Object3D;
 
   constructor(generator: BiomeGenerator) {
     super('DESERT', generator);
@@ -41,17 +41,19 @@ class DesertBiome extends Biome {
 
     } while (!chunk.canPlaceObject(corpseObject));
 
-    chunk.placeObject(corpseObject);
+    chunk.placeObject(corpseObject, { save: true });
 
+    /*
     // vulture
     this.vulture = chunk.getObject({ ...corpseItem });
     this.vulture.position.setY(Chunk.CLOUD_LEVEL);
     this.vulture.children.forEach((obj: THREE.Mesh) => obj.translateX(-20));
-    chunk.placeObject(this.vulture);
+    chunk.placeObject(this.vulture, { save: true });
+    */
   }
 
   update(delta: number) {
-    this.vulture.rotateOnAxis(new THREE.Vector3(0, 1, 0), THREE.Math.degToRad(0.4));
+    // this.vulture.rotateOnAxis(new THREE.Vector3(0, 1, 0), THREE.Math.degToRad(0.4));
   }
 
   /**

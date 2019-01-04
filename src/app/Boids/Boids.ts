@@ -2,10 +2,12 @@ import * as THREE from 'three';
 
 import World from '@world/World';
 import Creature from './Creature';
-import Main from '../Main';
+
+import { configSvc } from '@shared/services/graphicsConfig.service';
+import { BoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
 
 class Boids {
-
+  modelName: string;
   creaturesCount: number;
 
   creatures: Creature[] = [];
@@ -15,9 +17,19 @@ class Boids {
 
   scene: THREE.Scene;
 
-  constructor(scene: THREE.Scene, boudingBox: THREE.Vector3, origin: THREE.Vector3 = new THREE.Vector3(), creaturesCount: number = 100) {
+  /**
+   * Boids constructor
+   * @param {THREE.Scene} scene
+   * @param {THREE.Vector3} boudingBox
+   * @param {THREE.Vector3} origin
+   * @param {string} modelName
+   * @param {number} creaturesCount
+   * @param {BoidCreatureParameters} creaturesParameters
+   */
+  constructor(scene: THREE.Scene, boudingBox: THREE.Vector3, origin: THREE.Vector3 = new THREE.Vector3(), modelName: string, creaturesCount: number, creaturesParameters: BoidCreatureParameters) {
     this.scene = scene;
     this.boudingBox = boudingBox;
+    this.modelName = modelName;
     this.creaturesCount = creaturesCount;
     this.origin = origin;
 
@@ -30,12 +42,18 @@ class Boids {
       )
     );
 
-    if (Main.DEBUG) {
+    if (configSvc.config.DEBUG) {
       this.scene.add(<THREE.Object3D>new THREE.Box3Helper(mesh, 0xffff00));
     }
+
+    this.generate(creaturesParameters);
   }
 
-  generate() {
+  /**
+   * Creates boids creatures and places them in the world
+   * @param {BoidCreatureParameters} parameters
+   */
+  generate(parameters: BoidCreatureParameters) {
     for (let i = 0; i < this.creaturesCount; i++) {
 
       const position = new THREE.Vector3(
@@ -50,8 +68,8 @@ class Boids {
         Math.random() * 2 - 1,
       );
 
-      const model = World.LOADED_MODELS.get('fish1').clone();
-      const creature: Creature = new Creature(position, velocity, model);
+      const model = World.LOADED_MODELS.get(this.modelName).clone();
+      const creature: Creature = new Creature(position, velocity, model, parameters);
 
       creature.setBoidsBoundingBox(this.boudingBox);
       creature.setOriginPoint(this.origin);

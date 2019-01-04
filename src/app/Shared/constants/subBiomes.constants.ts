@@ -463,18 +463,27 @@ export const SUB_BIOMES: IBiomes = {
     color: new THREE.Color(0xf1f1f1),
     organisms: [
       {
-        weight: 0.4,
+        weight: 0.35,
         name: 'dead_tree',
-        scarcity: 0.9,
+        scarcity: 0.85,
         e: null,
         m: null,
         scale: { min: 0.9, max: 1.25 },
         float: false,
       },
       {
-        weight: 0.3,
+        weight: 0.25,
         name: 'spruce',
         scarcity: 0.8,
+        e: null,
+        m: null,
+        scale: { min: 0.9, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.1,
+        name: 'snowy_bush',
+        scarcity: 0.825,
         e: null,
         m: null,
         scale: { min: 0.9, max: 1.25 },
@@ -560,7 +569,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   TEST: {
-    color: new THREE.Color('purple'),
+    color: new THREE.Color('gray'),
     organisms: []
   }
 };
