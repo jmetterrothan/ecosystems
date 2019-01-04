@@ -560,7 +560,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   TEST: {
-    color: new THREE.Color('purple'),
+    color: new THREE.Color('gray'),
     organisms: []
   }
 };

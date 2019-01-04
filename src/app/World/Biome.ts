@@ -13,6 +13,7 @@ abstract class Biome {
   private name: string;
   protected generator: BiomeGenerator;
 
+  protected water: boolean;
   protected waterDistortion: boolean;
   protected waterDistortionFreq: number;
   protected waterDistortionAmp: number;
@@ -23,6 +24,7 @@ abstract class Biome {
     this.name = name;
     this.generator = generator;
 
+    this.water = true;
     this.waterDistortion = true;
     this.waterDistortionFreq = 1.0;
     this.waterDistortionAmp = 1024.0;
@@ -36,13 +38,13 @@ abstract class Biome {
    * @param {THREE.Scene} scene
    * @param {Terrain} terrain
    */
-  abstract init(scene: THREE.Scene, terrain: Terrain);
+  init(scene: THREE.Scene, terrain: Terrain) { }
 
   /**
    * Biome update
    * @param {number} delta
    */
-  abstract update(delta: number);
+  update(delta: number) { }
 
   /**
    * Retrieve biome object (color and organisms) at the given position
@@ -95,6 +97,7 @@ abstract class Biome {
    */
   getName(): string { return this.name; }
 
+  hasWater(): boolean { return this.water; }
   getWaterDistortion(): boolean { return this.waterDistortion; }
   getWaterDistortionFreq(): number { return this.waterDistortionFreq; }
   getWaterDistortionAmp(): number { return this.waterDistortionAmp; }

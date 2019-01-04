@@ -29,7 +29,6 @@ class Creature {
   }
 
   update(creatures: Creature[], delta: number) {
-
     const interaction = this.calculateInteraction(creatures);
     this.velocity.add(interaction);
 

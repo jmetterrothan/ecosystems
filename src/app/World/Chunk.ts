@@ -110,7 +110,7 @@ class Chunk {
     (<THREE.Geometry>terrain.terrain.geometry).elementsNeedUpdate = true;
 
     // generate water
-    if (this.terrainBlueprint.needGenerateWater()) {
+    if (terrain.getBiome().hasWater() && this.terrainBlueprint.needGenerateWater()) {
       const waterMesh = this.waterBlueprint.generate();
 
       (<THREE.Geometry>terrain.water.geometry).mergeMesh(waterMesh);

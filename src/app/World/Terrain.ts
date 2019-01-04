@@ -106,26 +106,30 @@ class Terrain {
     (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt4);
     (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt5);
 
-    (<THREE.Geometry>this.water.geometry).mergeMesh(bw1);
-    (<THREE.Geometry>this.water.geometry).mergeMesh(bw2);
-    (<THREE.Geometry>this.water.geometry).mergeMesh(bw3);
-    (<THREE.Geometry>this.water.geometry).mergeMesh(bw4);
-
-    // water mesh offset
-    const offset = 8;
-    const sx = 1 - (offset / Terrain.SIZE_X);
-    const sz = 1 - (offset / Terrain.SIZE_Z);
-
-    this.water.scale.set(sx, 1, sz);
-    this.water.position.x += offset / 2;
-    this.water.position.z += offset / 2;
-
-    (<THREE.ShaderMaterial>this.water.material).uniforms.size.value = new THREE.Vector3(Terrain.SIZE_X, Terrain.SIZE_Y, Terrain.SIZE_Z);
-
+    // water
     const biome: Biome = this.generator.getBiome();
-    (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion.value = configSvc.config.ENABLE_WATER_EFFECTS && biome.getWaterDistortion();
-    (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion_freq.value = biome.getWaterDistortionFreq();
-    (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion_amp.value = biome.getWaterDistortionAmp();
+    if (biome.hasWater()) {
+      (<THREE.Geometry>this.water.geometry).mergeMesh(bw1);
+      (<THREE.Geometry>this.water.geometry).mergeMesh(bw2);
+      (<THREE.Geometry>this.water.geometry).mergeMesh(bw3);
+      (<THREE.Geometry>this.water.geometry).mergeMesh(bw4);
+
+      // water mesh offset
+      const offset = 8;
+      const sx = 1 - (offset / Terrain.SIZE_X);
+      const sz = 1 - (offset / Terrain.SIZE_Z);
+
+      this.water.scale.set(sx, 1, sz);
+      this.water.position.x += offset / 2;
+      this.water.position.z += offset / 2;
+
+      (<THREE.ShaderMaterial>this.water.material).uniforms.size.value = new THREE.Vector3(Terrain.SIZE_X, Terrain.SIZE_Y, Terrain.SIZE_Z);
+
+      // water distorsion
+      (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion.value = configSvc.config.ENABLE_WATER_EFFECTS && biome.getWaterDistortion();
+      (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion_freq.value = biome.getWaterDistortionFreq();
+      (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion_amp.value = biome.getWaterDistortionAmp();
+    }
   }
 
   /**
@@ -210,9 +214,12 @@ class Terrain {
       }
     }
 
-    // update water distorsion effect
-    (<THREE.ShaderMaterial>this.water.material).uniforms.time.value = tick;
-    (<THREE.ShaderMaterial>this.water.material).needsUpdate = true;
+    const biome = this.generator.getBiome();
+    if (biome.hasWater()) {
+      // update water distorsion effect
+      (<THREE.ShaderMaterial>this.water.material).uniforms.time.value = tick;
+      (<THREE.ShaderMaterial>this.water.material).needsUpdate = true;
+    }
   }
 
   /**
@@ -240,10 +247,12 @@ class Terrain {
    * @param {THREE.Raycaster} raycaster
    */
   placeObjectWithMouseClick(raycaster: THREE.Raycaster) {
+    const biome = this.generator.getBiome();
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
 
     for (const intersection of intersections) {
-      if (!this.previewObject) return;
+      if (!biome.hasWater() && intersection.object === this.water) { continue; } // if water is disabled
+      if (!this.previewObject) return; // no preview
 
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
 
@@ -582,6 +591,10 @@ class Terrain {
 
   public getWorld(): World {
     return this.world;
+  }
+
+  public getBiome(): Biome {
+    return this.generator.getBiome();
   }
 
   /**

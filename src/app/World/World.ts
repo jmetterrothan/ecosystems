@@ -11,6 +11,7 @@ import Player from '../Player';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Weather from '@world/Weather';
 import MathUtils from '@utils/Math.utils';
+import TestBiome from './Biomes/TestBiome';
 
 import { OBJECTS } from '@shared/constants/object.constants';
 import { TEXTURES } from '@shared/constants/texture.constants';
@@ -20,7 +21,7 @@ import { ITexture } from '@shared/models/texture.model';
 import { configSvc } from '@shared/services/graphicsConfig.service';
 
 class World {
-  static readonly SEED: string | null = '3746875630';
+  static readonly SEED: string | null = null;
   static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
   static readonly EMPTY: boolean = false;
 
@@ -113,7 +114,7 @@ class World {
   private showAxesHelper() {
     const gizmo = new THREE.AxesHelper();
     gizmo.position.set(0, 0, 0);
-    gizmo.scale.set(1024, 1024, 1024);
+    gizmo.scale.set(2048, 2048, 2048);
     this.scene.add(gizmo);
   }
 

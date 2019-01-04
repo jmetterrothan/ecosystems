@@ -60,6 +60,8 @@ class BiomeGenerator {
       if (rand <= temp) {
         const organism = organisms[i];
 
+        if (organism.float && !this.biome.hasWater()) { return null; } // prevent placing objects on water if it's disabled
+
         const scale = organism.scale ? MathUtils.randomFloat(organism.scale.min, organism.scale.max) : 1;
 
         const lowM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).low : null;
