@@ -15,6 +15,8 @@ import { IPick } from '@shared/models/pick.model';
 import Crosshair from '../UI/Crosshair';
 import { underwaterSvc } from '@shared/services/underwater.service';
 import MathUtils from '@shared/utils/Math.utils';
+import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
+import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progression.constants';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 16;
@@ -46,6 +48,8 @@ class Terrain {
 
   private layers: THREE.Group;
 
+  private progressionSvc: ProgressionService;
+
   // preview
   private previewItem: IPick;
   private previewObject: THREE.Object3D;
@@ -69,6 +73,8 @@ class Terrain {
     this.visibleChunks = [];
 
     this.layers = new THREE.Group();
+
+    this.progressionSvc = progressionSvc;
 
     this.chunk = new Coord();
     this.start = new Coord();
@@ -253,6 +259,7 @@ class Terrain {
       }
 
       chunk.placeObject(this.previewObject, { animate: true });
+      this.progressionSvc.increment(PROGRESSION_STORAGE_KEYS.objects_placed_count);
 
       this.objectAnimated = true;
       this.resetPreview();

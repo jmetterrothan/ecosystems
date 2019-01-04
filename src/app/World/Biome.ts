@@ -8,6 +8,7 @@ import { IBiome } from '@shared/models/biome.model';
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 
 import ProgressionService, { progressionSvc } from '@services/progression.service';
+import { PROGRESSION_STORAGE_KEYS } from '@achievements/constants/progression.constants';
 
 abstract class Biome {
   private static WATER_COLORS = new Map<number, THREE.Color>();
@@ -35,6 +36,8 @@ abstract class Biome {
 
     this.waterColor1 = WATER_CONSTANTS.WATER_COLOR_A;
     this.waterColor2 = WATER_CONSTANTS.WATER_COLOR_B;
+
+    this.progressionSvc.increment(PROGRESSION_STORAGE_KEYS.game_played_count);
   }
 
   /**
