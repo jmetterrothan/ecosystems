@@ -8,6 +8,6 @@ export const EVENT_CATEGORY: IEventCategory = {
 
 export const EVENT_ACTION: IEventAction = {
   placed: 'placed',
-  played: 'playerd',
+  played: 'played',
   visited: 'visited'
 };
