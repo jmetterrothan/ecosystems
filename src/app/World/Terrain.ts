@@ -252,7 +252,7 @@ class Terrain {
         return;
       }
 
-      chunk.placeObject(this.previewObject, { animate: true });
+      chunk.placeObject(this.previewObject, { animate: true, save: true });
 
       this.objectAnimated = true;
       this.resetPreview();
