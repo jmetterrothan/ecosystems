@@ -1,10 +1,11 @@
 import * as THREE from 'three';
 
 import BiomeGenerator from '@world/BiomeGenerator';
+import Chunk from '@world/Chunk';
+import MathUtils from '@utils/Math.utils';
 
 import { playerSvc } from '@shared/services/player.service';
 import { BoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
-import Chunk from '@world/Chunk';
 
 class Creature {
   static SPEED: number = 100;
@@ -29,7 +30,7 @@ class Creature {
     this.model = model;
     this.parameters = parameters;
 
-    this.speed = this.parameters.speed; // 100
+    this.speed = this.parameters.speed + MathUtils.randomInt(-10, 10); // TODO: improve the random factor (put it higher)
   }
 
   update(creatures: Creature[], generator: BiomeGenerator, delta: number) {

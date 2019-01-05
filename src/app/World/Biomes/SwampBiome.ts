@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
@@ -11,10 +12,12 @@ import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
 class SwampBiome extends Biome {
-  private boids: Boids;
+  private boids: Boids[];
 
   constructor(generator: BiomeGenerator) {
     super('SWAMPS', generator);
+
+    this.boids = [];
 
     this.waterDistortion = true;
     this.waterDistortionFreq = 1.25;
@@ -23,31 +26,40 @@ class SwampBiome extends Biome {
 
   init(scene: THREE.Scene, terrain: Terrain) {
     const sx = 100000;
-    const sy = MathUtils.randomFloat(Chunk.HEIGHT / 4, Chunk.HEIGHT / 3);
     const sz = 100000;
-    const px = MathUtils.randomFloat(sx / 2, Terrain.SIZE_X - sx / 2);
-    const pz = MathUtils.randomFloat(sz / 2, Terrain.SIZE_Z - sz / 2);
 
-    // butterflies
-    this.boids = new Boids(
-      scene,
-      new THREE.Vector3(sx, sy, sz),
-      new THREE.Vector3(px, Chunk.SEA_LEVEL + sy / 2, pz),
-      'butterfly',
-      MathUtils.randomInt(2, 8),
-      {
-        speed: 75,
-        neighbourRadius: 6000,
-        alignmentWeighting: 0.005,
-        cohesionWeighting: 0.075,
-        separationWeighting: 0.1,
-        viewAngle: 12
-      }
-    );
+    const pds = new poissonDiskSampling([Terrain.SIZE_X - sx, Terrain.SIZE_Z - sz], sx, sz, 30, MathUtils.rng);
+    const points = pds.fill();
+
+    points.forEach((point: number[]) => {
+      const px = sx / 2 + point.shift();
+      const pz = sz / 2 + point.shift();
+
+      const sy = MathUtils.randomFloat(Chunk.HEIGHT / 6, Chunk.HEIGHT / 4);
+
+      // butterflies
+      const boids = new Boids(
+        scene,
+        new THREE.Vector3(sx, sy, sz),
+        new THREE.Vector3(px, Chunk.SEA_LEVEL + sy / 2, pz),
+        'butterfly',
+        MathUtils.randomInt(1, 6),
+        {
+          speed: 75,
+          neighbourRadius: 6000,
+          alignmentWeighting: 0.005,
+          cohesionWeighting: 0.075,
+          separationWeighting: 0.1,
+          viewAngle: 12
+        }
+      );
+
+      this.boids.push(boids);
+    });
   }
 
   update(delta: number) {
-    this.boids.update(this.generator, delta);
+    this.boids.forEach(boids => boids.update(this.generator, delta));
   }
 
   /**

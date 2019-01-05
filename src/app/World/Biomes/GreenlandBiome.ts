@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
@@ -18,10 +19,12 @@ class GreenlandBiome extends Biome {
   private f: number;
   private spread: number;
 
-  private boids: Boids;
+  private boids: Boids[];
 
   constructor(generator: BiomeGenerator) {
     super('GREENLANDS', generator);
+
+    this.boids = [];
 
     this.waterDistortion = true;
     this.waterDistortionFreq = 2.25;
@@ -36,32 +39,42 @@ class GreenlandBiome extends Biome {
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {
-    const sx = 100000;
-    const sy = MathUtils.randomFloat(Chunk.HEIGHT / 4, Chunk.HEIGHT / 3);
-    const sz = 100000;
-    const px = MathUtils.randomFloat(sx / 2, Terrain.SIZE_X - sx / 2);
-    const pz = MathUtils.randomFloat(sz / 2, Terrain.SIZE_Z - sz / 2);
+    if (MathUtils.rng() > 0.35) {
+      const s = MathUtils.randomInt(90000, 120000);
 
-    // butterflies
-    this.boids = new Boids(
-      scene,
-      new THREE.Vector3(sx, sy, sz),
-      new THREE.Vector3(px, Chunk.SEA_LEVEL + sy / 2, pz),
-      'butterfly',
-      MathUtils.randomInt(2, 8),
-      {
-        speed: 75,
-        neighbourRadius: 6000,
-        alignmentWeighting: 0.005,
-        cohesionWeighting: 0.075,
-        separationWeighting: 0.1,
-        viewAngle: 12
-      }
-    );
+      const pds = new poissonDiskSampling([Terrain.SIZE_X - s, Terrain.SIZE_Z - s], s, s, 30, MathUtils.rng);
+      const points = pds.fill();
+
+      points.forEach((point: number[]) => {
+        const px = s / 2 + point.shift();
+        const pz = s / 2 + point.shift();
+
+        const sy = MathUtils.randomFloat(Chunk.HEIGHT / 5, Chunk.HEIGHT / 3);
+
+        // butterflies
+        const boids = new Boids(
+          scene,
+          new THREE.Vector3(s, sy, s),
+          new THREE.Vector3(px, Chunk.SEA_LEVEL + sy / 2, pz),
+          'butterfly',
+          MathUtils.randomInt(1, 4),
+          {
+            speed: 75,
+            neighbourRadius: 6000,
+            alignmentWeighting: 0.005,
+            cohesionWeighting: 0.075,
+            separationWeighting: 0.1,
+            viewAngle: 12
+          }
+        );
+
+        this.boids.push(boids);
+      });
+    }
   }
 
   update(delta: number) {
-    this.boids.update(this.generator, delta);
+    this.boids.forEach(boids => boids.update(this.generator, delta));
   }
 
   /**
