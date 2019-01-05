@@ -65,7 +65,7 @@ class MathUtils {
   }
 
   static percent(a: any[], b: any[]): number {
-    return Math.round((a.length / b.length) * 100);
+    return Math.ceil((a.length / b.length) * 100);
   }
 
   /**
