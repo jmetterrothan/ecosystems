@@ -37,7 +37,7 @@ class GreenlandBiome extends Biome {
 
   init(scene: THREE.Scene, terrain: Terrain) {
     const sx = 100000;
-    const sy = Chunk.HEIGHT / 3;
+    const sy = MathUtils.randomFloat(Chunk.HEIGHT / 4, Chunk.HEIGHT / 3);
     const sz = 100000;
     const px = MathUtils.randomFloat(sx / 2, Terrain.SIZE_X - sx / 2);
     const pz = MathUtils.randomFloat(sz / 2, Terrain.SIZE_Z - sz / 2);
