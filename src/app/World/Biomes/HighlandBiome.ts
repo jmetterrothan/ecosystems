@@ -23,7 +23,7 @@ class HighlandBiome extends Biome {
     this.waterDistortionFreq = 2.25;
     this.waterDistortionAmp = 1024.0;
 
-    this.a = MathUtils.randomFloat(0.075, 0.4); // best around 0.65, size of the island
+    this.a = MathUtils.randomFloat(0.075, 0.3); // best around 0.65, size of the island
     this.b = MathUtils.randomFloat(0.5, 0.750); // best around 0.80, makes multiple hills even when low
     this.c = MathUtils.randomFloat(0.85, 1.00); // best around 0.85;
 
