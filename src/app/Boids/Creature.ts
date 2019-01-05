@@ -30,6 +30,10 @@ class Creature {
     this.model = model;
   }
 
+  getMinRepulseDistance(): number {
+    return this.minRepulseDistance;
+  }
+
   update(creatures: Creature[], delta: number) {
 
     const interaction = this.calculateInteraction(creatures);
