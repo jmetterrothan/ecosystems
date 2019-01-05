@@ -1,8 +1,10 @@
+import * as THREE from 'three';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
+import Boids from '@boids/Boids';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
@@ -16,6 +18,8 @@ class HighlandBiome extends Biome {
   private f: number;
   private spread: number;
 
+  private boids: Boids;
+
   constructor(generator: BiomeGenerator) {
     super('HIGHLANDS', generator);
 
@@ -27,13 +31,33 @@ class HighlandBiome extends Biome {
     this.b = MathUtils.randomFloat(0.5, 0.750); // best around 0.80, makes multiple hills even when low
     this.c = MathUtils.randomFloat(0.85, 1.00); // best around 0.85;
 
-    this.spread = MathUtils.randomFloat(1.35, 1.75); // expand over the map (higher values means more space available for water)
-    this.f = MathUtils.randomFloat(0.85, 3);
+    this.spread = MathUtils.randomFloat(1.1, 1.5); // expand over the map (higher values means more space available for water)
+    this.f = MathUtils.randomFloat(0.95, 3);
   }
 
-  init(scene: THREE.Scene, terrain: Terrain) { }
+  init(scene: THREE.Scene, terrain: Terrain) {
+    // butterflies
+    this.boids = new Boids(
+      scene,
+      new THREE.Vector3(100000, 25000, 100000),
+      new THREE.Vector3(Terrain.SIZE_X / 2 + 5000, Chunk.CLOUD_LEVEL - 25000 / 2, Terrain.SIZE_Z / 2 + 5000),
+      'butterfly',
+      6,
+      {
+        speed: 150,
+        neighbourRadius: 6000,
+        alignmentWeighting: 0.0065,
+        cohesionWeighting: 0.01,
+        separationWeighting: 0.1,
+        viewAngle: 20
+      }
+    );
 
-  update(delta: number) { }
+  }
+
+  update(delta: number) {
+    this.boids.update(delta);
+  }
 
   /**
    * Compute elevation
@@ -56,13 +80,13 @@ class HighlandBiome extends Biome {
       // second layer
       + (0.50 * this.generator.noise2(1 * nx, 1 * nz)
         + 1.00 * this.generator.noise3(2 * nx, 2 * nz)
-        + 0.4 * this.generator.ridgeNoise2(4 * nx, 4 * nz)
+        + 0.2 * this.generator.ridgeNoise2(4 * nx, 4 * nz)
         + 0.13 * this.generator.noise2(8 * nx, 8 * nz)
         + 0.06 * this.generator.noise3(16 * nx, 16 * nz)
         + 0.035 * this.generator.noise2(128 * nx, 128 * nz)
         + 0.025 * this.generator.noise2(512 * nx, 512 * nz));
 
-    e /= 0.5 + 1.0 + 0.35 + 0.13 + 0.06 + 0.035 * 2 + 0.025 + 1.00 + 0.50 + 0.4 + 0.13 + 0.06 + 0.035 + 0.025;
+    e /= 0.5 + 1.0 + 0.35 + 0.13 + 0.06 + 0.035 * 2 + 0.025 + 1.00 + 0.50 + 0.2 + 0.13 + 0.06 + 0.035 + 0.025;
     e **= this.f;
     const d = this.spread * BiomeGenerator.getEuclideanDistance(nx, nz);
     e = BiomeGenerator.islandAddMethod(this.a, this.b, this.c, d, e);

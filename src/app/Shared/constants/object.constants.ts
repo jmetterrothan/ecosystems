@@ -1,5 +1,8 @@
 import { IObject } from '@shared/models/object.model';
 
+import butterflyObj from '@objmodels/fauna/butterfly.obj';
+import butterflyMtl from '@objmodels/fauna/butterfly.mtl';
+
 import snowy_bushObj from '@objmodels/tree/snowy_bush.obj';
 import snowy_bushMtl from '@objmodels/tree/snowy_bush.mtl';
 
@@ -142,6 +145,12 @@ import cloud4Obj from '@objmodels/cloud/cloud4.obj';
 import cloud4Mtl from '@objmodels/cloud/cloud4.mtl';
 
 export const OBJECTS: IObject[] = [
+  {
+    name: 'butterfly',
+    obj: butterflyObj,
+    mtl: butterflyMtl,
+    doubleSide: true
+  },
   {
     name: 'snowy_bush',
     obj: snowy_bushObj,
