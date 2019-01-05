@@ -1,4 +1,5 @@
 import { TROPHY_DIFFICULTY } from '@shared/enums/trophyDIfficulty.enum';
+import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
 import { IProgressionStorageKeys } from '@achievements/models/progressionStorageKeys.model';
 
 export interface ITrophy {
@@ -14,4 +15,5 @@ export interface IChecklistOption {
   name: string;
   value: string;
   limit?: number | number[];
+  comparison?: COMPARISON_TYPE;
 }

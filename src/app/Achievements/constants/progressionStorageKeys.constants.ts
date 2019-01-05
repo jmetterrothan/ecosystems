@@ -11,7 +11,6 @@ export const PROGRESSION_STORAGE_KEYS: IProgressionStorageKeys = {
 
 export const PROGRESSION_STORAGE = {
   ...CommonUtils.arrayToObject([
-    ...CommonUtils.objectToArray(PROGRESSION_COMMON_STORAGE_KEYS),
-    ...CommonUtils.objectToArray(PROGRESSION_OBJECTS_STORAGE_KEYS)
+    ...Object.values(PROGRESSION_STORAGE_KEYS).reduce((acc, item) => acc.concat(CommonUtils.objectToArray(item)), [])
   ], 0)
 };

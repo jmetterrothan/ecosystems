@@ -6,6 +6,7 @@ import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
 
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
 import { TROPHIES } from '@achievements/constants/trophies.constants';
+import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
 
 class AchievementService {
 
@@ -41,7 +42,10 @@ class AchievementService {
 
       if (trophy.checklist.some((option: IChecklistOption) => option.limit !== undefined)) {
         const count = this.storageSvc.get(STORAGES_KEY.progression)[key];
-        const checklistItem = trophy.checklist.find((option: IChecklistOption) => option.limit === count);
+        const checklistItem = trophy.checklist.find((option: IChecklistOption) => {
+          if (option.comparison && option.comparison === COMPARISON_TYPE.SUPERIOR) return count >= option.limit;
+          return option.limit === count;
+        });
         if (!checklistItem) continue;
       }
 
@@ -70,7 +74,7 @@ class AchievementService {
     (<string[]>completedArray).push(snakeCase(trophy.value));
     this.storageSvc.set(STORAGES_KEY.completed, completedArray);
 
-    console.log('TROPHY COMPLETED');
+    console.log('TROPHY COMPLETED', trophy);
   }
 
 }
