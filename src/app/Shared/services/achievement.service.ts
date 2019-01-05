@@ -1,6 +1,7 @@
 import snakeCase from 'snake-case';
 
 import StorageService, { storageSvc } from './storage.service';
+import MonitoringService, { monitoringSvc } from './monitoring.service';
 
 import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
 
@@ -11,6 +12,7 @@ import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
 class AchievementService {
 
   private storageSvc: StorageService;
+  private monitoringSvc: MonitoringService;
 
   private storage: Object;
 
@@ -18,6 +20,8 @@ class AchievementService {
 
   constructor() {
     this.storageSvc = storageSvc;
+    this.monitoringSvc = monitoringSvc;
+
     this.trophies = TROPHIES;
 
     this.storage = this.storageSvc.get(STORAGES_KEY.trophies) || {};
@@ -27,8 +31,6 @@ class AchievementService {
     const trophiesConcerned = this.trophies.filter(
       (trophy: ITrophy) => trophy.checklist.some((option: IChecklistOption) => option.value === key)
     );
-
-    // console.log('key', key, trophiesConcerned);
 
     for (const trophy of trophiesConcerned) {
       const trophyName = snakeCase(trophy.value);
@@ -73,6 +75,8 @@ class AchievementService {
     const completedArray = this.storageSvc.get(STORAGES_KEY.completed);
     (<string[]>completedArray).push(snakeCase(trophy.value));
     this.storageSvc.set(STORAGES_KEY.completed, completedArray);
+
+    this.monitoringSvc.sendEvent(this.monitoringSvc.categories.trophy, this.monitoringSvc.actions.completed, snakeCase(trophy.value));
 
     console.log('TROPHY COMPLETED', trophy);
   }
