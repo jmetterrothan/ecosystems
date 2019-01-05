@@ -14,6 +14,7 @@ import CommonUtils from '@shared/utils/Common.utils';
 import { underwaterSvc } from '@services/underwater.service';
 import { storageSvc } from '@services/storage.service';
 import ProgressionService, { progressionSvc } from './Shared/services/progression.service';
+import TranslationService, { translationSvc } from '@shared/services/translation.service';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
@@ -35,10 +36,14 @@ class Main {
   private stats: statsJs;
 
   private progressionSvc: ProgressionService;
+  private translationSvc: TranslationService;
 
   constructor() {
     this.containerElement = document.body;
     this.lastTime = window.performance.now();
+
+    this.progressionSvc = progressionSvc;
+    this.translationSvc = translationSvc;
 
     if (Main.DEBUG) {
       this.stats = new statsJs();
@@ -62,12 +67,15 @@ class Main {
 
     this.focused = true;
 
-    this.progressionSvc = progressionSvc;
-    this.progressionSvc.init();
   }
 
   async init() {
     this.initControls();
+
+    this.progressionSvc.init();
+    await this.translationSvc.init();
+
+    console.log(this.translationSvc.translate('play_games'));
 
     this.world = new World(this.scene, this.camera, this.controls);
     await this.world.init();
