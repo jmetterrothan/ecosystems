@@ -62,6 +62,16 @@ export const TROPHIES: ITrophy[] = [
       ...Object.values(PROGRESSION_OBJECTS_STORAGE_KEYS).reduce((acc, name) => acc.concat(<IChecklistOption>{ name, value: name }), [])
     ]
   },
+  {
+    name: 'Placer 1 objet',
+    value: 'place 1 object',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    completed: false,
+    checklist: [
+      { name: 'place 1 object', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed }
+    ]
+  },
   // DISTANCE
   {
     name: 'Parcourir 1 000 000 unités',
