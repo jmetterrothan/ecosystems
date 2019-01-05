@@ -11,7 +11,7 @@ import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import MathUtils from '@shared/utils/Math.utils';
 
-import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
+import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
 class OceanBiome extends Biome {
   private spike: number;
@@ -29,7 +29,7 @@ class OceanBiome extends Biome {
     this.waterDistortionFreq = 3.0;
     this.waterDistortionAmp = 720.0;
 
-    this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.ocean_visited);
+    this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.ocean_visited);
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {

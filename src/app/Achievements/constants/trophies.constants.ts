@@ -49,6 +49,24 @@ export const TROPHIES: ITrophy[] = [
       { name: 'swamp', value: PROGRESSION_BIOME_STORAGE_KEYS.swamp_visited, limit: 5 },
     ]
   },
+  {
+    name: 'Aller sous l\'eau',
+    value: 'going underwater',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    checklist: [
+      { name: 'underwater', value: PROGRESSION_COMMON_STORAGE_KEYS.going_underwater }
+    ]
+  },
+  {
+    name: 'Aller sous l\'eau 20 fois',
+    value: 'going underwater twenty times',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.GOLD,
+    checklist: [
+      { name: 'underwater', value: PROGRESSION_COMMON_STORAGE_KEYS.going_underwater, limit: 20 }
+    ]
+  },
   // OBJECTS
   {
     name: 'Placer tous les objets',
@@ -94,6 +112,24 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     checklist: [
       { name: 'parcourir 1000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled, limit: 1000000, comparison: COMPARISON_TYPE.SUPERIOR }
+    ]
+  },
+  {
+    name: 'Parcourir 10 000 000 unités',
+    value: 'travelled_1000000',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    checklist: [
+      { name: 'parcourir 10000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled, limit: 10000000, comparison: COMPARISON_TYPE.SUPERIOR }
+    ]
+  },
+  {
+    name: 'Parcourir 100 000 000 unités',
+    value: 'travelled_1000000',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    checklist: [
+      { name: 'parcourir 100000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled, limit: 100000000, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   }
 ];

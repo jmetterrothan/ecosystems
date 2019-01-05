@@ -1,3 +1,4 @@
+import { PROGRESSION_COMMON_STORAGE_KEYS } from './Achievements/constants/progressionCommonStorageKeys.constants';
 import * as THREE from 'three';
 
 import 'three/examples/js/controls/PointerLockControls';
@@ -131,7 +132,8 @@ class Player {
     // update underwater service
     if (!this.underwaterSvc.isUnderwater && position.y <= Chunk.SEA_LEVEL && isWithinWorldBorders) {
       this.underwaterSvc.set(true);
-      // this.progressionSvc
+      this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
+      this.monitoringSvc.sendEvent(this.monitoringSvc.categories.biome, this.monitoringSvc.actions.visited, PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
     }
 
     if (this.underwaterSvc.isUnderwater && (position.y > Chunk.SEA_LEVEL || !isWithinWorldBorders)) {

@@ -5,9 +5,8 @@ import Chunk from '@world/Chunk';
 
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
-import MathUtils from '@shared/utils/Math.utils';
 
-import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
+import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
 class SwampBiome extends Biome {
   constructor(generator: BiomeGenerator) {
@@ -17,7 +16,7 @@ class SwampBiome extends Biome {
     this.waterDistortionFreq = 1.25;
     this.waterDistortionAmp = 512.0;
 
-    this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.swamp_visited);
+    this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.swamp_visited);
   }
 
   init(scene: THREE.Scene, terrain: Terrain) { }
