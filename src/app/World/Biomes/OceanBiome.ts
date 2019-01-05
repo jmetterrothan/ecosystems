@@ -31,13 +31,19 @@ class OceanBiome extends Biome {
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {
+    const sx = 100000;
+    const sy = Chunk.HEIGHT / 3;
+    const sz = 100000;
+    const px = MathUtils.randomFloat(sx / 2, Terrain.SIZE_X - sx / 2);
+    const pz = MathUtils.randomFloat(sz / 2, Terrain.SIZE_Z - sz / 2);
+
     // fish
     this.boids = new Boids(
       scene,
-      new THREE.Vector3(Terrain.SIZE_X - 35000, 27500, Terrain.SIZE_Z - 35000),
-      new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2),
+      new THREE.Vector3(Terrain.SIZE_X - 35000, sy, Terrain.SIZE_Z - 35000),
+      new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - sy / 2, Terrain.SIZE_Z / 2),
       'fish1',
-      32,
+      MathUtils.randomInt(8, 36),
       {
         speed: 100,
         neighbourRadius: 6000,
@@ -50,10 +56,10 @@ class OceanBiome extends Biome {
 
     this.boids2 = new Boids(
       scene,
-      new THREE.Vector3(100000, 27500, 100000),
-      new THREE.Vector3(Terrain.SIZE_X / 2 - 50000, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2 - 50000),
+      new THREE.Vector3(sx, sy, sz),
+      new THREE.Vector3(px, Chunk.SEA_LEVEL - sy / 2, px),
       'fish2',
-      2,
+      MathUtils.randomInt(1, 3),
       {
         speed: 75,
         neighbourRadius: 10000,
@@ -92,8 +98,8 @@ class OceanBiome extends Biome {
   }
 
   update(delta: number) {
-    this.boids.update(delta);
-    this.boids2.update(delta);
+    this.boids.update(this.generator, delta);
+    this.boids2.update(this.generator, delta);
   }
 
   /**

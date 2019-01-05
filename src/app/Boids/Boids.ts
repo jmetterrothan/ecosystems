@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 import World from '@world/World';
 import Creature from './Creature';
+import BiomeGenerator from '@world/BiomeGenerator';
 
 import { configSvc } from '@shared/services/graphicsConfig.service';
 import { BoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
@@ -81,9 +82,9 @@ class Boids {
     }
   }
 
-  update(delta: number) {
+  update(generator: BiomeGenerator, delta: number) {
     this.creatures.forEach((creature: Creature) => {
-      creature.update(this.creatures, delta);
+      creature.update(this.creatures, generator, delta);
     });
   }
 }

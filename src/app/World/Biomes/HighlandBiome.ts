@@ -36,27 +36,32 @@ class HighlandBiome extends Biome {
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {
+    const sx = 100000;
+    const sy = Chunk.HEIGHT / 3;
+    const sz = 100000;
+    const px = MathUtils.randomFloat(sx / 2, Terrain.SIZE_X - sx / 2);
+    const pz = MathUtils.randomFloat(sz / 2, Terrain.SIZE_Z - sz / 2);
+
     // butterflies
     this.boids = new Boids(
       scene,
-      new THREE.Vector3(100000, 25000, 100000),
-      new THREE.Vector3(Terrain.SIZE_X / 2 + 5000, Chunk.CLOUD_LEVEL - 25000 / 2, Terrain.SIZE_Z / 2 + 5000),
+      new THREE.Vector3(sx, sy, sz),
+      new THREE.Vector3(px, Chunk.SEA_LEVEL + sy / 2, pz),
       'butterfly',
-      6,
+      MathUtils.randomInt(2, 8),
       {
-        speed: 150,
+        speed: 75,
         neighbourRadius: 6000,
-        alignmentWeighting: 0.0065,
-        cohesionWeighting: 0.01,
+        alignmentWeighting: 0.005,
+        cohesionWeighting: 0.075,
         separationWeighting: 0.1,
-        viewAngle: 20
+        viewAngle: 12
       }
     );
-
   }
 
   update(delta: number) {
-    this.boids.update(delta);
+    this.boids.update(this.generator, delta);
   }
 
   /**

@@ -1,8 +1,10 @@
+import * as THREE from 'three';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
+import Boids from '@boids/Boids';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
@@ -15,6 +17,8 @@ class GreenlandBiome extends Biome {
 
   private f: number;
   private spread: number;
+
+  private boids: Boids;
 
   constructor(generator: BiomeGenerator) {
     super('GREENLANDS', generator);
@@ -31,9 +35,34 @@ class GreenlandBiome extends Biome {
     this.f = MathUtils.randomFloat(0.85, 3);
   }
 
-  init(scene: THREE.Scene, terrain: Terrain) { }
+  init(scene: THREE.Scene, terrain: Terrain) {
+    const sx = 100000;
+    const sy = Chunk.HEIGHT / 3;
+    const sz = 100000;
+    const px = MathUtils.randomFloat(sx / 2, Terrain.SIZE_X - sx / 2);
+    const pz = MathUtils.randomFloat(sz / 2, Terrain.SIZE_Z - sz / 2);
 
-  update(delta: number) { }
+    // butterflies
+    this.boids = new Boids(
+      scene,
+      new THREE.Vector3(sx, sy, sz),
+      new THREE.Vector3(px, Chunk.SEA_LEVEL + sy / 2, pz),
+      'butterfly',
+      MathUtils.randomInt(2, 8),
+      {
+        speed: 75,
+        neighbourRadius: 6000,
+        alignmentWeighting: 0.005,
+        cohesionWeighting: 0.075,
+        separationWeighting: 0.1,
+        viewAngle: 12
+      }
+    );
+  }
+
+  update(delta: number) {
+    this.boids.update(this.generator, delta);
+  }
 
   /**
    * Compute elevation
