@@ -21,6 +21,9 @@ import fish1Mtl from '@objmodels/fauna/fish1.mtl';
 import fish2Obj from '@objmodels/fauna/fish2.obj';
 import fish2Mtl from '@objmodels/fauna/fish2.mtl';
 
+import snowy_spruceObj from '@objmodels/tree/snowy_spruce.obj';
+import snowy_spruceMtl from '@objmodels/tree/snowy_spruce.mtl';
+
 import spruceObj from '@objmodels/tree/spruce.obj';
 import spruceMtl from '@objmodels/tree/spruce.mtl';
 
@@ -273,6 +276,11 @@ export const OBJECTS: IObject[] = [
     name: 'spruce',
     obj: spruceObj,
     mtl: spruceMtl
+  },
+  {
+    name: 'snowy_spruce',
+    obj: snowy_spruceObj,
+    mtl: snowy_spruceMtl
   },
   {
     name: 'jungle_tree',

@@ -82,6 +82,9 @@ class SnowBiome extends Biome {
     if (e < Chunk.SEA_ELEVATION + 0.15) {
       return SUB_BIOMES.FROZEN_BEACH;
     }
+    if (e < Chunk.SEA_ELEVATION + 0.225) {
+      return SUB_BIOMES.FROZEN_GRASSLAND;
+    }
 
     return SUB_BIOMES.SNOW;
   }
