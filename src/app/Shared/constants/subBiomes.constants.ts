@@ -137,7 +137,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.25,
         name: 'cactus1',
-        scarcity: 0.95,
+        scarcity: 0.965,
         e: null,
         m: null,
         scale: { min: 1.25, max: 2.5 },
@@ -146,7 +146,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.15,
         name: 'cactus2',
-        scarcity: 0.95,
+        scarcity: 0.965,
         e: null,
         m: null,
         scale: { min: 1.25, max: 2.5 },
@@ -155,7 +155,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.2,
         name: 'cactus3',
-        scarcity: 0.975,
+        scarcity: 0.985,
         e: null,
         m: null,
         scale: { min: 1.25, max: 2.5 },
@@ -164,7 +164,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.2,
         name: 'cactus4',
-        scarcity: 0.995,
+        scarcity: 0.9975,
         e: null,
         m: null,
         scale: { min: 1, max: 1.2 },
@@ -182,7 +182,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.1,
         name: 'savanna_tree',
-        scarcity: 0.985,
+        scarcity: 0.9875,
         e: null,
         m: null,
         scale: { min: 1.25, max: 1.75 },

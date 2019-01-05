@@ -22,6 +22,14 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.26 0.26 0.26
 Ns 6.00
+newmtl carrotSG
+illum 4
+Kd 0.91 0.19 0.01
+Ka 0.46 0.46 0.46
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.33 0.33 0.33
+Ns 18.00
 newmtl fish_color3SG
 illum 4
 Kd 0.81 0.44 0.30
@@ -156,6 +164,14 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
 Ns 6.00
+newmtl pasted__pasted__phong3SG2
+illum 4
+Kd 1.00 0.00 0.12
+Ka 0.26 0.26 0.26
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
 newmtl pasted__pasted__phong4SG
 illum 4
 Kd 0.59 0.55 0.43
@@ -236,6 +252,22 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 1.00 0.77 0.05
 Ns 0.00
+newmtl pasted__phong18SG
+illum 4
+Kd 0.03 0.03 0.03
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
+newmtl pasted__phong20SG
+illum 4
+Kd 0.27 0.63 0.29
+Ka 0.70 0.70 0.70
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.61 0.61 0.61
+Ns 6.00
 newmtl pasted__phong25SG
 illum 4
 Kd 0.98 0.98 0.98
@@ -262,12 +294,20 @@ Ks 0.50 0.50 0.50
 Ns 6.00
 newmtl phong1SG
 illum 4
-Kd 0.30 0.64 0.20
+Kd 0.35 0.58 0.44
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.58 0.58 0.58
 Ns 6.00
+newmtl phong2SG
+illum 4
+Kd 0.76 0.37 0.12
+Ka 0.46 0.46 0.46
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.33 0.33 0.33
+Ns 18.00
 newmtl phong3SG
 illum 4
 Kd 0.25 0.17 0.11
@@ -332,6 +372,14 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.70 0.70 0.70
 Ns 6.00
+newmtl phong18SG
+illum 4
+Kd 0.03 0.03 0.03
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
 newmtl phong19SG
 illum 4
 Kd 1.00 0.73 0.00
@@ -388,6 +436,21 @@ Tf 0.66 0.66 0.66
 Ni 1.00
 Ks 0.17 0.39 0.58
 Ns 6.00
+newmtl phong26SG
+illum 4
+Kd 0.85 0.75 0.65
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.30 0.30 0.30
+newmtl phong27SG
+illum 4
+Kd 0.60 0.44 0.30
+Ka 0.08 0.06 0.04
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 1.00 1.00 1.00
+Ns 8.00
 newmtl pink_mushroom_capSG
 illum 4
 Kd 0.98 0.44 0.46
