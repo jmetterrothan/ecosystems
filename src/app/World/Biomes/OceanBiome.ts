@@ -6,10 +6,11 @@ import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 import Boids from '@boids/Boids';
+import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
-import MathUtils from '@shared/utils/Math.utils';
+import { IPick } from '@shared/models/pick.model';
 
 class OceanBiome extends Biome {
   private spike: number;
@@ -64,15 +65,30 @@ class OceanBiome extends Biome {
     );
 
     // chest
-    const x = Terrain.SIZE_X / 4 + Math.floor(Math.random() * Terrain.SIZE_X / 2);
-    const z = Terrain.SIZE_Z / 4 + Math.floor(Math.random() * Terrain.SIZE_Z / 2);
-    const y = terrain.getHeightAt(x, z);
-    const chunk = terrain.getChunkAt(x, z);
-    const r = MathUtils.randomFloat(0, Math.PI * 2);
-    const params = { x, y, z, r, s: World.OBJ_INITIAL_SCALE, n: 'chest' };
+    let chunk: Chunk;
+    let corpseItem: IPick;
+    let corpseObject: THREE.Object3D;
 
-    const obj = chunk.getObject(params);
-    chunk.placeObject(obj, { save: true });
+    do {
+      const x = Terrain.SIZE_X / 4 + Math.floor(Math.random() * Terrain.SIZE_X / 2);
+      const z = Terrain.SIZE_Z / 4 + Math.floor(Math.random() * Terrain.SIZE_Z / 2);
+
+      chunk = terrain.getChunkAt(x, z);
+
+      const y = terrain.getHeightAt(x, z);
+
+      corpseItem = {
+        x, y, z,
+        s: World.OBJ_INITIAL_SCALE,
+        n: 'chest',
+        r: MathUtils.randomFloat(0, Math.PI * 2)
+      };
+
+      corpseObject = chunk.getObject(corpseItem);
+
+    } while (!chunk.canPlaceObject(corpseObject));
+
+    chunk.placeObject(corpseObject, { save: true });
   }
 
   update(delta: number) {
