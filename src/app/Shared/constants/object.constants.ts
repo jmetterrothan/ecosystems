@@ -111,6 +111,12 @@ import savanna_treeMtl from '@objmodels/tree/savanna_tree.mtl';
 import algeaObj from '@objmodels/flower/algea.obj';
 import algeaMtl from '@objmodels/flower/algea.mtl';
 
+import algea2Obj from '@objmodels/flower/algea2.obj';
+import algea2Mtl from '@objmodels/flower/algea2.mtl';
+
+import algea3Obj from '@objmodels/flower/algea3.obj';
+import algea3Mtl from '@objmodels/flower/algea3.mtl';
+
 import highlands_treeObj from '@objmodels/tree/highlands_tree.obj';
 import highlands_treeMtl from '@objmodels/tree/highlands_tree.mtl';
 
@@ -218,7 +224,16 @@ export const OBJECTS: IObject[] = [
     name: 'algea',
     obj: algeaObj,
     mtl: algeaMtl,
-    doubleSide: true
+  },
+  {
+    name: 'algea2',
+    obj: algea2Obj,
+    mtl: algea2Mtl,
+  },
+  {
+    name: 'algea3',
+    obj: algea3Obj,
+    mtl: algea3Mtl,
   },
   {
     name: 'diamond',

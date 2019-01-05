@@ -51,7 +51,7 @@ export const HIGH_CONFIG : IConfig = {
   ENABLE_AA: true,
   ENABLE_SHADOWS: true,
 
-  SHADOW_MAP_SIZE: 8192,
+  SHADOW_MAP_SIZE: 4096,
   SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap
 };
 
