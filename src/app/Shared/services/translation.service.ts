@@ -14,7 +14,7 @@ class TranslationService {
         .use(LanguageDetector)
         .init({
           debug: Main.DEBUG,
-          fallbackLng: 'en',
+          fallbackLng: ['en', 'fr'],
           resources: {
             en: {
               translation: {
@@ -33,12 +33,14 @@ class TranslationService {
     });
   }
 
-  translate(key: string): string {
-    return i18next.t(key);
+  translate(key: string, variables?: Object): string | null {
+    if (i18next.exists(key)) return i18next.t(key, variables);
+    console.error(`${key} does not exist`);
+    return null;
   }
 
-  switchlanguage() {
-    // i18next.changeLanguage()
+  switchLanguage(language: string) {
+    i18next.changeLanguage(language);
   }
 
 }

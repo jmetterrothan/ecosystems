@@ -42,8 +42,8 @@ class Main {
     this.containerElement = document.body;
     this.lastTime = window.performance.now();
 
-    this.progressionSvc = progressionSvc;
     this.translationSvc = translationSvc;
+    this.progressionSvc = progressionSvc;
 
     if (Main.DEBUG) {
       this.stats = new statsJs();
@@ -74,8 +74,6 @@ class Main {
 
     this.progressionSvc.init();
     await this.translationSvc.init();
-
-    console.log(this.translationSvc.translate('play_games'));
 
     this.world = new World(this.scene, this.camera, this.controls);
     await this.world.init();

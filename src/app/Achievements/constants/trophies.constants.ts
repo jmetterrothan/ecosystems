@@ -8,10 +8,12 @@ import { PROGRESSION_OBJECTS_STORAGE_KEYS } from '@achievements/constants/progre
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
+import { TRANSLATION_KEYS } from '@shared/constants/translationKeys.constants';
+
 export const TROPHIES: ITrophy[] = [
   // GAME
   {
-    name: 'Jouer 10 parties',
+    name: { key: TRANSLATION_KEYS.play_games_counter, options: { counter: 10 } },
     value: 'play ten games',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -21,7 +23,7 @@ export const TROPHIES: ITrophy[] = [
   },
   // BIOMES
   {
-    name: 'Visiter tous les biomes',
+    name: { key: TRANSLATION_KEYS.visit_all_biomes },
     value: 'visit all biomes',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -36,7 +38,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: 'Visiter 5 fois tous les biomes',
+    name: { key: TRANSLATION_KEYS.visit_all_biomes, options: { counter: 10 } },
     value: 'visit all biomes five times',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -51,7 +53,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: 'Aller sous l\'eau',
+    name: { key: TRANSLATION_KEYS.going_underwater },
     value: 'going underwater',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -60,7 +62,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: 'Aller sous l\'eau 20 fois',
+    name: { key: TRANSLATION_KEYS.going_underwater_counter, options: { counter: 20 } },
     value: 'going underwater twenty times',
     img: '',
     difficulty: TROPHY_DIFFICULTY.GOLD,
@@ -70,7 +72,7 @@ export const TROPHIES: ITrophy[] = [
   },
   // OBJECTS
   {
-    name: 'Placer tous les objets',
+    name: { key: TRANSLATION_KEYS.place_all_objects },
     value: 'place all objects',
     img: '',
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
@@ -79,7 +81,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: 'Placer 1 objet',
+    name: { key: TRANSLATION_KEYS.place_object },
     value: 'place 1 object',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -88,7 +90,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: 'Placer 10 objets',
+    name: { key: TRANSLATION_KEYS.place_objects_counter, options: { counter: 10 } },
     value: 'place 10 objects',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -97,8 +99,8 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: 'Placer 10s objets',
-    value: 'place 100 objects',
+    name: { key: TRANSLATION_KEYS.place_objects_counter, options: { counter: 50 } },
+    value: 'place 50 objects',
     img: '',
     difficulty: TROPHY_DIFFICULTY.GOLD,
     checklist: [
@@ -107,7 +109,7 @@ export const TROPHIES: ITrophy[] = [
   },
   // DISTANCE
   {
-    name: 'Parcourir 1 000 000 unités',
+    name: { key: TRANSLATION_KEYS.travelled_distance_counter, options: { counter: 1000000 } },
     value: 'travelled_1000000',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -116,8 +118,8 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: 'Parcourir 10 000 000 unités',
-    value: 'travelled_1000000',
+    name: { key: TRANSLATION_KEYS.travelled_distance_counter, options: { counter: 10000000 } },
+    value: 'travelled_10000000',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     checklist: [
@@ -125,8 +127,8 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: 'Parcourir 100 000 000 unités',
-    value: 'travelled_1000000',
+    name: { key: TRANSLATION_KEYS.travelled_distance_counter, options: { counter: 100000000 } },
+    value: 'travelled_100000000',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     checklist: [
@@ -135,7 +137,7 @@ export const TROPHIES: ITrophy[] = [
   },
   // EXTRAS
   {
-    name: 'Faire peur aux poissons',
+    name: { key: TRANSLATION_KEYS.repulse_fishes },
     value: 'repulse fishes',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
