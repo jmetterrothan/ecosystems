@@ -1,8 +1,14 @@
+import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
+
 class StorageService {
 
   get(key: string): string | Object {
     const value: any = localStorage.getItem(key);
     return typeof value === 'string' ? JSON.parse(value) : value;
+  }
+
+  getTrophiesCompleted(): string[] {
+    return this.get(STORAGES_KEY.completed) as string[];
   }
 
   set(key: string, item: string | Object) {
@@ -15,6 +21,10 @@ class StorageService {
 
   clearAll() {
     localStorage.clear();
+  }
+
+  isInStorage(storageKey: string, value: string): boolean {
+    return (<string[]>this.get(storageKey)).includes(value);
   }
 
 }

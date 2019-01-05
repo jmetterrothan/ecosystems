@@ -7,6 +7,7 @@ import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progres
 import { PROGRESSION_OBJECTS_STORAGE_KEYS } from '@achievements/constants/progressionObjectsStorageKeys.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
+import { PROGRESSION_TROPHIES_STORAG_KEYS } from '@achievements/constants/progressionTrophiesStorageKeys.constants';
 
 import { TRANSLATION_KEYS } from '@shared/constants/translationKeys.constants';
 
@@ -143,6 +144,16 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     checklist: [
       { name: 'repulse fishes', value: PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_fishes }
+    ]
+  },
+  // TROPHIES
+  {
+    name: { key: TRANSLATION_KEYS.unlock_trophy_percentage, options: { counter: 10 } },
+    value: 'unlock 50 percent trophies',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.GOLD,
+    checklist: [
+      { name: 'unlock 50 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage, limit: 10, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   }
 ];

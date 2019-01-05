@@ -9,4 +9,5 @@ export interface ITranslationKeys {
   place_objects_counter: string;
   travelled_distance_counter: string;
   repulse_fishes: string;
+  unlock_trophy_percentage: string;
 }

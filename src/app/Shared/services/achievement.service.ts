@@ -4,12 +4,14 @@ import StorageService, { storageSvc } from './storage.service';
 import MonitoringService, { monitoringSvc } from './monitoring.service';
 
 import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
+import MathUtils from '@shared/utils/Math.utils';
 
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
 import { TROPHIES } from '@achievements/constants/trophies.constants';
 import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
-import { translationSvc } from './translation.service';
-import { TRANSLATION_KEYS } from '@shared/constants/translationKeys.constants';
+
+import { PROGRESSION_TROPHIES_STORAG_KEYS } from '@achievements/constants/progressionTrophiesStorageKeys.constants';
+import { progressionSvc } from './progression.service';
 
 class AchievementService {
 
@@ -36,7 +38,7 @@ class AchievementService {
 
     for (const trophy of trophiesConcerned) {
       const trophyName = snakeCase(trophy.value);
-      if ((<string[]>this.storageSvc.get(STORAGES_KEY.completed)).includes(trophyName)) continue;
+      if (this.storageSvc.isInStorage(STORAGES_KEY.completed, trophyName)) continue;
 
       let checklist: string[] = this.storageSvc.get(STORAGES_KEY.trophies)[trophyName];
       if (!checklist) {
@@ -80,7 +82,7 @@ class AchievementService {
 
     this.monitoringSvc.sendEvent(this.monitoringSvc.categories.trophy, this.monitoringSvc.actions.completed, snakeCase(trophy.value));
 
-    console.log('TROPHY COMPLETED', trophy);
+    progressionSvc.setValue(PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage, MathUtils.percent(this.storageSvc.getTrophiesCompleted(), this.trophies));
   }
 
 }

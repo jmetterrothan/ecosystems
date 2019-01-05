@@ -10,5 +10,6 @@ export const TRANSLATION_KEYS: ITranslationKeys = {
   place_all_objects: 'place_all_objects',
   place_objects_counter: 'place_objects_counter',
   travelled_distance_counter: 'travelled_distance_counter',
-  repulse_fishes: 'repulse_fishes'
+  repulse_fishes: 'repulse_fishes',
+  unlock_trophy_percentage: 'unlock_trophy_percentage'
 };

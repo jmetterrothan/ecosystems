@@ -1,4 +1,5 @@
-import { IMinMax } from './../models/biomeWeightedObject.model';
+import { IMinMax } from '@shared/models/biomeWeightedObject.model';
+
 class MathUtils {
 
   static rng = null; // current random number generator shared across the app
@@ -63,6 +64,10 @@ class MathUtils {
     return c + (d - c) / (b - a) * (t - a);
   }
 
+  static percent(a: any[], b: any[]): number {
+    return Math.round((a.length / b.length) * 100);
+  }
+
   /**
    * Linear interpolation
    * @param {number} a
@@ -73,6 +78,7 @@ class MathUtils {
   static lerp(a, b, t) {
     return (1 - t) * a + t * b;
   }
+
 }
 
 export default MathUtils;

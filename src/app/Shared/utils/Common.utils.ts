@@ -45,9 +45,14 @@ class CommonUtils {
     return Object.values(obj);
   }
 
+  static valueIsInObject(obj: Object, value: string | number): boolean {
+    return Object.values(obj).includes(value);
+  }
+
   static getObjectPlacedNameForAchievement(objectName: string): string {
     return `object_${objectName}_placed`;
   }
+
 }
 
 export default CommonUtils;
