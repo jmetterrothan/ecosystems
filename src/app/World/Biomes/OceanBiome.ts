@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import poissonDiskSampling from 'poisson-disk-sampling';
 
 import World from '@world/World';
 import Terrain from '@world/Terrain';
@@ -16,11 +17,12 @@ class OceanBiome extends Biome {
   private spike: number;
   private depth: number;
 
-  private boids: Boids;
-  private boids2: Boids;
+  private boids: Boids[];
 
   constructor(generator: BiomeGenerator) {
     super('OCEAN', generator);
+
+    this.boids = [];
 
     this.spike = MathUtils.randomFloat(0.025, 0.125);
     this.depth = 1.425;
@@ -31,36 +33,28 @@ class OceanBiome extends Biome {
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {
-    const sx = 100000;
-    const sy = Chunk.HEIGHT / 3;
-    const sz = 100000;
-    const px = MathUtils.randomFloat(sx / 2, Terrain.SIZE_X - sx / 2);
-    const pz = MathUtils.randomFloat(sz / 2, Terrain.SIZE_Z - sz / 2);
+    const smin = 80000;
+    const smax = 160000;
+    const s = MathUtils.randomFloat(smin, smax);
 
-    // fish
-    this.boids = new Boids(
-      scene,
-      new THREE.Vector3(Terrain.SIZE_X - 35000, sy, Terrain.SIZE_Z - 35000),
-      new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - sy / 2, Terrain.SIZE_Z / 2),
-      'fish1',
-      MathUtils.randomInt(8, 36),
-      {
-        speed: 100,
+    const pds = new poissonDiskSampling([Terrain.SIZE_X - s, Terrain.SIZE_Z - s], s, s, 30, MathUtils.rng);
+    const points = pds.fill();
+
+    const T1 = {
+      model: 'fish1',
+      config: {
+        speed: 75,
         neighbourRadius: 6000,
         alignmentWeighting: 0.0065,
         cohesionWeighting: 0.01,
         separationWeighting: 0.05,
-        viewAngle: 4
+        viewAngle: 12
       }
-    );
+    };
 
-    this.boids2 = new Boids(
-      scene,
-      new THREE.Vector3(sx, sy, sz),
-      new THREE.Vector3(px, Chunk.SEA_LEVEL - sy / 2, px),
-      'fish2',
-      MathUtils.randomInt(1, 3),
-      {
+    const T2 = {
+      model: 'fish2',
+      config: {
         speed: 75,
         neighbourRadius: 10000,
         alignmentWeighting: 0.0065,
@@ -68,7 +62,30 @@ class OceanBiome extends Biome {
         separationWeighting: 0.2,
         viewAngle: 6
       }
-    );
+    };
+
+    points.forEach((point: number[]) => {
+      const nbMax = (s * 18 / smax) || 0; // maximum nb based on boids size
+      const nb = MathUtils.randomInt(1, nbMax);
+      const type = nb > 3 ? T1 : T2;
+      const px = s / 2 + point.shift();
+      const pz = s / 2 + point.shift();
+
+      const sy = MathUtils.randomFloat(Chunk.HEIGHT / 3, Chunk.HEIGHT / 2);
+      const py = -Chunk.HEIGHT / 2 + sy / 2;
+
+      // fishs
+      const boids = new Boids(
+        scene,
+        new THREE.Vector3(s, sy, s),
+        new THREE.Vector3(px, py, pz),
+        type.model,
+        nb,
+        type.config
+      );
+
+      this.boids.push(boids);
+    });
 
     // chest
     let chunk: Chunk;
@@ -98,8 +115,7 @@ class OceanBiome extends Biome {
   }
 
   update(delta: number) {
-    this.boids.update(this.generator, delta);
-    this.boids2.update(this.generator, delta);
+    this.boids.forEach(boids => boids.update(this.generator, delta));
   }
 
   /**
