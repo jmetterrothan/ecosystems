@@ -8,6 +8,8 @@ import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
 import { TROPHIES } from '@achievements/constants/trophies.constants';
 import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
+import { translationSvc } from './translation.service';
+import { TRANSLATION_KEYS } from '@shared/constants/translationKeys.constants';
 
 class AchievementService {
 

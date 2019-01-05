@@ -3,7 +3,7 @@ import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
 import { IProgressionStorageKeys } from '@achievements/models/progressionStorageKeys.model';
 
 export interface ITrophy {
-  name: string;
+  name: { key: string, options?: { [key: string]: number | string } };
   value: string;
   img: string;
   difficulty: TROPHY_DIFFICULTY;
