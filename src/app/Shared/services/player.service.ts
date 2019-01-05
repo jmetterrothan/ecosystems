@@ -36,3 +36,4 @@ class PlayerService {
 }
 
 export const playerSvc = new PlayerService();
+export default PlayerService;
