@@ -76,6 +76,10 @@ abstract class Biome {
     return Math.round(this.generator.noise2(nx, nz) * 100) / 100;
   }
 
+  computeWaterMoistureAt(x: number, z: number): number {
+    return this.computeMoistureAt(x, z);
+  }
+
   /**
    * Retrieve water color
    * @param {number} m Moisture

@@ -126,7 +126,7 @@ class Weather {
       // rain
       const rainData = cloud.userData as ICloudData;
 
-      rainData.isRaininig = this.generator.computeMoistureAt(cloud.position.x, cloud.position.z) >= 0.65;
+      rainData.isRaininig = this.generator.computeWaterMoistureAt(cloud.position.x, cloud.position.z) >= 0.65;
       if (!rainData.isRaininig) rainData.allParticlesDropped = rainData.particles.vertices.every(position => position.y === Chunk.CLOUD_LEVEL);
       if (rainData.allParticlesDropped) {
         rainData.particleMaterial.visible = false;

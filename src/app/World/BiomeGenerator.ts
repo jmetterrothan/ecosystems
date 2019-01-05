@@ -157,6 +157,16 @@ class BiomeGenerator {
   }
 
   /**
+   * Compute water moisture
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number} moisture value
+   */
+  computeWaterMoistureAt(x: number, z: number): number {
+    return this.biome.computeWaterMoistureAt(x, z);
+  }
+
+  /**
    * Compute water height
    * @param {number} x coord component
    * @param {number} z coord component

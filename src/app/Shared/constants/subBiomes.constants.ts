@@ -250,7 +250,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.45,
         name: 'rock2',
-        scarcity: 0.95,
+        scarcity: 0.975,
         e: null,
         m: null,
         scale: { min: 1.0, max: 2.0 },
@@ -483,7 +483,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.5,
         name: 'rock1',
-        scarcity: 0.9,
+        scarcity: 0.95,
         e: null,
         m: null,
         scale: { min: 0.5, max: 2 },

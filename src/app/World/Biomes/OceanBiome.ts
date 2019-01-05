@@ -102,8 +102,29 @@ class OceanBiome extends Biome {
     return e - this.depth;
   }
 
+  computeMoistureAt(x: number, z: number): number {
+    const nx = x / (1024 * 192);
+    const nz = z / (1024 * 192);
+
+    let e = 0.2 * this.generator.noise(1 * nx, 1 * nz);
+    e += 0.25 * this.generator.noise(4 * nx, 4 * nz);
+    e += 0.0035 * this.generator.noise2(8 * nx, 8 * nz);
+    e += 0.05 * this.generator.noise3(16 * nx, 16 * nz);
+
+    e /= 0.2 + 0.25 + 0.0035 + 0.05;
+
+    return Math.round(e * 100) / 100;
+  }
+
+  computeWaterMoistureAt(x: number, z: number): number {
+    const nx = x / (1024 * 192);
+    const nz = z / (1024 * 192);
+
+    return Math.round(this.generator.noise2(nx, nz) * 100) / 100;
+  }
+
   getParametersAt(e: number, m: number): IBiome {
-    if (m < 0.3) {
+    if (m < 0.4) {
       return SUB_BIOMES.CORAL_REEF;
     }
 
