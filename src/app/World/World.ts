@@ -19,7 +19,6 @@ import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { ITexture } from '@shared/models/texture.model';
 
 import { configSvc } from '@shared/services/graphicsConfig.service';
-import OceanBiome from './Biomes/OceanBiome';
 
 class World {
   static readonly SEED: string | null = null;
@@ -53,6 +52,11 @@ class World {
   private sunlight: THREE.DirectionalLight;
   private sunlightTarget: THREE.Object3D;
 
+  // light helper
+  private lightHelper: THREE.ArrowHelper;
+
+  private timerStart: number;
+
   /**
    * World constructor
    * @param {THREE.Scene} scene
@@ -68,6 +72,8 @@ class World {
     this.raycaster = new THREE.Raycaster();
 
     this.sunlightTarget = new THREE.Object3D();
+
+    this.timerStart = window.performance.now();
   }
 
   async init() {
@@ -146,7 +152,11 @@ class World {
 
     const d = 1000000;
     this.sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
-    this.sunlight.position.set(Terrain.SIZE_X / 2, Chunk.HEIGHT, Terrain.SIZE_Z / 2);
+    // this.sunlight.position.set(0, Chunk.HEIGHT, 0);
+    this.sunlight.translateX(Terrain.SIZE_X / 2);
+    this.sunlight.translateZ(Terrain.SIZE_Z / 2);
+    this.sunlight.translateY(Chunk.HEIGHT);
+
     this.sunlightTarget.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.sunlight.target = this.sunlightTarget;
     this.sunlight.castShadow = true;
@@ -163,10 +173,10 @@ class World {
     this.sunlight.shadow.camera.far = 1000000;
 
     if (configSvc.config.DEBUG) {
-      this.scene.add(new THREE.DirectionalLightHelper(sunlight, 1024));
+      const dirHelper = new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize();
+      this.lightHelper = new THREE.ArrowHelper(dirHelper, this.sunlight.position.clone(), Chunk.HEIGHT, 0xff0000, 2000);
+      this.scene.add(this.lightHelper);
     }
-
-    console.log(this.sunlight.target, this.sunlightTarget);
 
     this.scene.add(this.sunlightTarget);
     this.scene.add(this.sunlight);
@@ -227,7 +237,7 @@ class World {
     this.player.update(this.terrain, delta);
     this.weather.update(delta);
     this.generator.getBiome().update(delta);
-    this.updateSunlight(tick);
+    this.updateSunlight();
   }
 
   /**
@@ -320,8 +330,20 @@ class World {
     });
   }
 
-  private updateSunlight(tick: number) {
+  private updateSunlight() {
     // change position here
+    const elapsedTime = (window.performance.now() - this.timerStart) / 1000;
+    this.sunlight.position.x = Chunk.HEIGHT * Math.cos(elapsedTime);
+    this.sunlight.position.y = Chunk.HEIGHT * Math.sin(elapsedTime);
+
+    // this.sunlight.rotateOnAxis(new THREE.Vector3(1, 0, 0), 0.01);
+    // console.log(this.sunlight.position);
+
+    // console.log(this.sunlight.position);
+
+    if (configSvc.config.DEBUG) {
+      this.lightHelper.setDirection(new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize());
+    }
 
     this.sunlight.shadow.camera.updateProjectionMatrix();
   }

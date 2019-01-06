@@ -32,9 +32,6 @@ class Terrain {
   static readonly SIZE_Y: number = Chunk.HEIGHT;
   static readonly SIZE_Z: number = Terrain.NROWS * Chunk.CELL_SIZE_Z;
 
-  static readonly CENTER: THREE.Vector2 = new THREE.Vector2(Terrain.SIZE_X / 2, Terrain.SIZE_Z / 2);
-  static readonly MIDDLE: THREE.Vector3 = new THREE.Vector3(Terrain.SIZE_X / 2, Terrain.SIZE_Y / 2, Terrain.SIZE_Z / 2);
-
   static readonly OFFSET_X: number = Terrain.SIZE_X / 2;
   static readonly OFFSET_Z: number = Terrain.SIZE_Z / 2;
 
