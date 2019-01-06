@@ -1,4 +1,5 @@
 import { TROPHY_DIFFICULTY } from '@shared/enums/trophyDIfficulty.enum';
+import { TROPHY_TYPE } from '@shared/enums/trophyType.enum';
 import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
 
 export interface ITrophy {
@@ -6,6 +7,7 @@ export interface ITrophy {
   value: string;
   img: string;
   difficulty: TROPHY_DIFFICULTY;
+  type?: TROPHY_TYPE;
   checklist: IChecklistOption[];
 }
 
