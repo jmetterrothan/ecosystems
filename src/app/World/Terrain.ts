@@ -270,11 +270,12 @@ class Terrain {
       }
 
       chunk.placeObject(this.previewObject, { animate: true, save: true });
+
       this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed);
       this.progressionSvc.increment(CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n));
 
       this.objectAnimated = true;
-      // this.resetPreview();
+      this.resetPreview();
       setTimeout(() => this.objectAnimated = false, Chunk.ANIMATION_DELAY + 200);
 
       break;
