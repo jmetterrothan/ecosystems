@@ -4875,10 +4875,6 @@ trim-right@^1.0.1:
   dependencies:
     glob "^7.1.2"
 
-ts-transformer-keys@^0.3.4:
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/ts-transformer-keys/-/ts-transformer-keys-0.3.4.tgz#b54051ba9e6d5f2320b3c41ad861dbe27d38a4b4"
-
 tslib@1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.0.tgz#e37a86fda8cbbaf23a057f473c9f4dc64e5fc2e8"
