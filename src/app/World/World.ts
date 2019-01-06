@@ -260,6 +260,11 @@ class World {
     return this.generator;
   }
 
+  static pointInWorld(point: THREE.Vector3): boolean {
+    const margin: number = 1000;
+    return MathUtils.between(point.x, 0 + margin, Terrain.SIZE_X - margin) && MathUtils.between(point.z, 0 + margin, Terrain.SIZE_Z - margin);
+  }
+
   /**
    * Load an obj file
    * @param name Name of the object

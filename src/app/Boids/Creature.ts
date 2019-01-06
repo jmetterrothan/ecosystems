@@ -1,11 +1,14 @@
 import * as THREE from 'three';
 
+import World from '@world/World';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
-import MathUtils from '@utils/Math.utils';
 
 import PlayerService, { playerSvc } from '@shared/services/player.service';
+
 import { BoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
+
+import MathUtils from '@utils/Math.utils';
 
 class Creature {
   static SPEED: number = 100;
@@ -34,6 +37,7 @@ class Creature {
 
     this.speed = this.parameters.speed + MathUtils.randomInt(-10, 10); // TODO: improve the random factor (put it higher)
   }
+
   getMinRepulseDistance(): number {
     return this.minRepulseDistance;
   }
@@ -63,6 +67,12 @@ class Creature {
       const repulse2 = this.repulse(ground, 1);
 
       this.velocity.add(repulse2);
+    }
+
+    // world edge repel
+    if (this.parameters.underwater && !World.pointInWorld(this.position.clone().add(this.boidsOrigin))) {
+      this.velocity.x = -this.velocity.x;
+      this.velocity.z = -this.velocity.z;
     }
 
     // apply transformation
