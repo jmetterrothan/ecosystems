@@ -11,6 +11,8 @@ import MathUtils from '@shared/utils/Math.utils';
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
+import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
+
 class HighlandBiome extends Biome {
   private a: number;
   private b: number;
@@ -36,6 +38,8 @@ class HighlandBiome extends Biome {
 
     this.spread = MathUtils.randomFloat(1.1, 1.5); // expand over the map (higher values means more space available for water)
     this.f = MathUtils.randomFloat(0.95, 3);
+
+    this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.highland_visited);
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {

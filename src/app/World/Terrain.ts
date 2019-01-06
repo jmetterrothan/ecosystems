@@ -17,6 +17,10 @@ import { IPick } from '@shared/models/pick.model';
 import { underwaterSvc } from '@shared/services/underwater.service';
 
 import { configSvc } from '@shared/services/graphicsConfig.service';
+import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
+import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
+
+import CommonUtils from '@shared/utils/Common.utils';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 16;
@@ -48,6 +52,8 @@ class Terrain {
 
   private layers: THREE.Group;
 
+  private progressionSvc: ProgressionService;
+
   // preview
   private previewItem: IPick;
   private previewObject: THREE.Object3D;
@@ -71,6 +77,8 @@ class Terrain {
     this.visibleChunks = [];
 
     this.layers = new THREE.Group();
+
+    this.progressionSvc = progressionSvc;
 
     this.chunk = new Coord();
     this.start = new Coord();
@@ -262,9 +270,11 @@ class Terrain {
       }
 
       chunk.placeObject(this.previewObject, { animate: true, save: true });
+      this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed);
+      this.progressionSvc.increment(CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n));
 
       this.objectAnimated = true;
-      this.resetPreview();
+      // this.resetPreview();
       setTimeout(() => this.objectAnimated = false, Chunk.ANIMATION_DELAY + 200);
 
       break;

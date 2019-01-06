@@ -11,6 +11,8 @@ import MathUtils from '@shared/utils/Math.utils';
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
+import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
+
 class SwampBiome extends Biome {
   private boids: Boids[];
 
@@ -22,6 +24,8 @@ class SwampBiome extends Biome {
     this.waterDistortion = true;
     this.waterDistortionFreq = 1.25;
     this.waterDistortionAmp = 512.0;
+
+    this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.swamp_visited);
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {

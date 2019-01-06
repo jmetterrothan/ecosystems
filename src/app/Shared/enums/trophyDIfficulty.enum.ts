@@ -1,0 +1,5 @@
+export enum TROPHY_DIFFICULTY {
+  BRONZE,
+  GOLD,
+  DIAMOND
+}

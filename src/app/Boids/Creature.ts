@@ -32,6 +32,9 @@ class Creature {
 
     this.speed = this.parameters.speed + MathUtils.randomInt(-10, 10); // TODO: improve the random factor (put it higher)
   }
+  getMinRepulseDistance(): number {
+    return this.minRepulseDistance;
+  }
 
   update(creatures: Creature[], generator: BiomeGenerator, delta: number) {
     const interaction = this.calculateInteraction(creatures);

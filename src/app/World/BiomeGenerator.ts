@@ -88,7 +88,7 @@ class BiomeGenerator {
           (lowE === null || e >= lowE) &&
           (highE === null || e <= highE) &&
           (lowM === null || m >= lowM) &&
-          (highM === null ||  m <= highM)) {
+          (highM === null || m <= highM)) {
           return (<IPick>{
             x, y, z,
             n: organism.name,

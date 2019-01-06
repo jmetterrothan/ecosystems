@@ -6,6 +6,10 @@ import BiomeGenerator from '@world/BiomeGenerator';
 
 import { configSvc } from '@shared/services/graphicsConfig.service';
 import { BoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
+import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
+import PlayerService, { playerSvc } from '@shared/services/player.service';
+
+import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
 class Boids {
   modelName: string;
@@ -18,6 +22,9 @@ class Boids {
 
   scene: THREE.Scene;
 
+  private playerSvc: PlayerService;
+  private progressionSvc: ProgressionService;
+
   /**
    * Boids constructor
    * @param {THREE.Scene} scene
@@ -28,11 +35,15 @@ class Boids {
    * @param {BoidCreatureParameters} creaturesParameters
    */
   constructor(scene: THREE.Scene, boudingBox: THREE.Vector3, origin: THREE.Vector3 = new THREE.Vector3(), modelName: string, creaturesCount: number, creaturesParameters: BoidCreatureParameters) {
+
     this.scene = scene;
     this.boudingBox = boudingBox;
     this.modelName = modelName;
     this.creaturesCount = creaturesCount;
     this.origin = origin;
+
+    this.playerSvc = playerSvc;
+    this.progressionSvc = progressionSvc;
 
     const mesh = new THREE.Box3().setFromCenterAndSize(
       new THREE.Vector3(
@@ -86,6 +97,10 @@ class Boids {
     this.creatures.forEach((creature: Creature) => {
       creature.update(this.creatures, generator, delta);
     });
+    const someFishesRepulsed = this.creatures.some((creature: Creature) => creature.position.clone().add(this.origin).distanceTo(this.playerSvc.getPosition()) < creature.getMinRepulseDistance());
+    if (someFishesRepulsed) {
+      this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_fishes);
+    }
   }
 }
 

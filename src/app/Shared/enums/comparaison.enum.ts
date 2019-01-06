@@ -1,0 +1,5 @@
+export enum COMPARISON_TYPE {
+  EQUALITY,
+  SUPERIOR,
+  INFERIOR
+}
