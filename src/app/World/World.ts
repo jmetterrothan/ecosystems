@@ -153,11 +153,11 @@ class World {
     const d = 1000000;
     this.sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
     // this.sunlight.position.set(0, Chunk.HEIGHT, 0);
+    this.sunlightTarget.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.sunlight.translateX(Terrain.SIZE_X / 2);
     this.sunlight.translateZ(Terrain.SIZE_Z / 2);
     this.sunlight.translateY(Chunk.HEIGHT);
 
-    this.sunlightTarget.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.sunlight.target = this.sunlightTarget;
     this.sunlight.castShadow = true;
     this.sunlight.shadow.mapSize.width = 4096;
@@ -174,11 +174,11 @@ class World {
 
     if (configSvc.config.DEBUG) {
       const dirHelper = new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize();
-      this.lightHelper = new THREE.ArrowHelper(dirHelper, this.sunlight.position.clone(), Chunk.HEIGHT, 0xff0000, 2000);
+      this.lightHelper = new THREE.ArrowHelper(dirHelper, this.sunlight.position.clone(), Chunk.HEIGHT, 0xff0000, 10000);
       this.scene.add(this.lightHelper);
     }
 
-    this.scene.add(sunlight);
+    this.scene.add(this.sunlight);
   }
 
   /**
@@ -331,14 +331,11 @@ class World {
 
   private updateSunlight() {
     // change position here
-    const elapsedTime = (window.performance.now() - this.timerStart) / 1000;
+    const elapsedTime = (window.performance.now() - this.timerStart) / 10000;
     this.sunlight.position.x = Chunk.HEIGHT * Math.cos(elapsedTime);
     this.sunlight.position.y = Chunk.HEIGHT * Math.sin(elapsedTime);
-
-    // this.sunlight.rotateOnAxis(new THREE.Vector3(1, 0, 0), 0.01);
-    // console.log(this.sunlight.position);
-
-    // console.log(this.sunlight.position);
+    // this.sunlight.translateX(Chunk.HEIGHT * Math.cos(elapsedTime));
+    // this.sunlight.translateY(Chunk.HEIGHT * Math.sin(elapsedTime));
 
     if (configSvc.config.DEBUG) {
       this.lightHelper.setDirection(new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize());

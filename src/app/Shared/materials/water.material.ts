@@ -24,7 +24,7 @@ export const WATER_MATERIAL = new THREE.ShaderMaterial({
   fragmentShader: meshphong_disp_fragGlsl,
   lights: true,
   name: 'custom-material',
-  wireframe: true,
+  wireframe: false,
   transparent: true,
   flatShading: true,
   side: THREE.FrontSide,
