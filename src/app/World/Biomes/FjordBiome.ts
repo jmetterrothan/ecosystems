@@ -13,6 +13,10 @@ class FjordBiome extends Biome {
   constructor(generator: BiomeGenerator) {
     super('FJORD', generator);
 
+    this.waterDistortion = true;
+    this.waterDistortionFreq = 2.25;
+    this.waterDistortionAmp = 1024.0;
+
     this.e = MathUtils.randomFloat(2, 3);
   }
 
