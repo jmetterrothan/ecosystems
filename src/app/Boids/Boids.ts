@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import World from '@world/World';
+import Chunk from '@world/Chunk';
 import Creature from './Creature';
 import BiomeGenerator from '@world/BiomeGenerator';
 
@@ -67,10 +68,11 @@ class Boids {
    */
   generate(parameters: BoidCreatureParameters) {
     for (let i = 0; i < this.creaturesCount; i++) {
-
+      const py = Math.random() * this.boudingBox.y - this.boudingBox.y / 2;
+      console.log(py, parameters.underwater ? py : Math.max(py, Chunk.SEA_LEVEL - this.boudingBox.y + 2048));
       const position = new THREE.Vector3(
         Math.random() * this.boudingBox.x - this.boudingBox.x / 2,
-        Math.random() * this.boudingBox.y - this.boudingBox.y / 2,
+        parameters.underwater ? py : Math.max(py, Chunk.SEA_LEVEL - this.boudingBox.y + 2048),
         Math.random() * this.boudingBox.z - this.boudingBox.z / 2
       );
 

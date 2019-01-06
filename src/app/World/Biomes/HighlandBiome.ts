@@ -68,7 +68,8 @@ class HighlandBiome extends Biome {
             alignmentWeighting: 0.005,
             cohesionWeighting: 0.075,
             separationWeighting: 0.1,
-            viewAngle: 12
+            viewAngle: 12,
+            underwater: false
           }
         );
 

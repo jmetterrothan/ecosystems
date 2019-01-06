@@ -52,7 +52,8 @@ class OceanBiome extends Biome {
         alignmentWeighting: 0.0065,
         cohesionWeighting: 0.01,
         separationWeighting: 0.05,
-        viewAngle: 8
+        viewAngle: 8,
+        underwater: true
       }
     };
 
@@ -64,7 +65,8 @@ class OceanBiome extends Biome {
         alignmentWeighting: 0.0065,
         cohesionWeighting: 0.01,
         separationWeighting: 0.35,
-        viewAngle: 12
+        viewAngle: 12,
+        underwater: true
       }
     };
 

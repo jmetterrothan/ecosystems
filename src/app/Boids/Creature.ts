@@ -45,22 +45,25 @@ class Creature {
     const avoidance = this.calculateBoundsAvoidance();
     this.velocity.add(avoidance);
 
+    // player repel
     const repulse = this.calculateRepel(playerSvc.getPosition());
     this.velocity.add(repulse);
 
-    const wp = this.position.clone().add(this.velocity).add(this.boidsOrigin);
+    // terrain repel
+    const wp = this.position.clone().add(this.velocity.clone().normalize().multiplyScalar(this.speed)).add(this.boidsOrigin);
     const y = generator.computeHeightAt(wp.x, wp.z);
-    const by = y - this.boidsOrigin.y;
+    const by = (this.parameters.underwater ? y : Math.max(y, Chunk.SEA_LEVEL)) - this.boidsOrigin.y;
     const d = Math.sqrt((by - this.position.y) * (by - this.position.y)) / Chunk.HEIGHT;
-    const td = 4096 / Chunk.HEIGHT;
+    const td = 8192 / Chunk.HEIGHT;
 
-    if (d < td) {
+    if (d <= td) {
       const ground = new THREE.Vector3(this.position.x, by, this.position.z);
-      const repulse2 = this.repulse(ground, 1);
+      const repulse2 = this.repulse(ground, 1); // this.repulse(ground, 1);
 
       this.velocity.add(repulse2);
     }
 
+    // apply transformation
     this.velocity.normalize();
     this.position.add(this.velocity.clone().multiplyScalar(this.speed));
 

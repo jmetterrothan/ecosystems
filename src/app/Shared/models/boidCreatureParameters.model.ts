@@ -6,4 +6,5 @@ export interface BoidCreatureParameters
   separationWeighting: number;
   viewAngle: number;
   speed: number;
+  underwater: boolean;
 }
