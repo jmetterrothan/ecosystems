@@ -103,12 +103,9 @@ class PostProcess
     this.effects[this.effects.length - 1].effect.renderToScreen = true;
   }
 
-  /**
-   * @param {number} tick
-   */
-  update(tick: number) {
+  update() {
     for (const effect of this.effects) {
-      if (effect.update) effect.update(tick);
+      if (effect.update) effect.update();
     }
   }
 

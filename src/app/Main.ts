@@ -168,15 +168,14 @@ class Main {
     const time = window.performance.now();
     const elapsed = time - this.lastTime;
     const delta = elapsed / 1000;
-    const tick = time / 1000;
     this.lastTime = time;
 
     // update
     if (this.focused) {
-      this.world.update(delta, tick);
+      this.world.update(delta);
 
       if (underwaterSvc.isUnderwater) {
-        this.postProcess.update(tick);
+        this.postProcess.update();
       }
 
       TWEEN.update();

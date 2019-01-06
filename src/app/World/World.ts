@@ -200,9 +200,8 @@ class World {
 
   /**
    * @param {number} delta
-   * @param {number} tick
    */
-  update(delta: number, tick: number) {
+  update(delta: number) {
     this.handleMouseInteraction(MOUSE_TYPES.MOVE);
     this.camera.updateMatrixWorld(true);
 
@@ -213,7 +212,7 @@ class World {
       )
     );
 
-    this.terrain.update(this.frustum, this.player.position, delta, tick);
+    this.terrain.update(this.frustum, this.player.position, delta);
     this.player.update(this.terrain, delta);
     this.weather.update(delta);
     this.generator.getBiome().update(delta);

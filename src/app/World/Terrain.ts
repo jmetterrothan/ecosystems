@@ -174,9 +174,8 @@ class Terrain {
    * @param {THREE.Frustum} frustum
    * @param {THREE.Vector3} position
    * @param {number} delta
-   * @param {number} tick
    */
-  update(frustum: THREE.Frustum, position: THREE.Vector3, delta: number, tick: number) {
+  update(frustum: THREE.Frustum, position: THREE.Vector3, delta: number) {
     this.getChunkCoordAt(this.chunk, position.x, position.z);
 
     this.start.col = this.chunk.col - configSvc.config.MAX_VISIBLE_CHUNKS;
@@ -225,7 +224,7 @@ class Terrain {
     const biome = this.generator.getBiome();
     if (biome.hasWater()) {
       // update water distorsion effect
-      (<THREE.ShaderMaterial>this.water.material).uniforms.time.value = tick;
+      (<THREE.ShaderMaterial>this.water.material).uniforms.time.value = window.performance.now() / 1000;
       (<THREE.ShaderMaterial>this.water.material).needsUpdate = true;
     }
   }
