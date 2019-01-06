@@ -1,12 +1,17 @@
+import * as THREE from 'three';
+import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
+import Boids from '@boids/Boids';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
+
+import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
 class HighlandBiome extends Biome {
   private a: number;
@@ -16,24 +21,65 @@ class HighlandBiome extends Biome {
   private f: number;
   private spread: number;
 
+  private boids: Boids[];
+
   constructor(generator: BiomeGenerator) {
     super('HIGHLANDS', generator);
+
+    this.boids = [];
 
     this.waterDistortion = true;
     this.waterDistortionFreq = 2.25;
     this.waterDistortionAmp = 1024.0;
 
-    this.a = MathUtils.randomFloat(0.075, 0.65); // best around 0.65, size of the island
+    this.a = MathUtils.randomFloat(0.075, 0.3); // best around 0.65, size of the island
     this.b = MathUtils.randomFloat(0.5, 0.750); // best around 0.80, makes multiple hills even when low
     this.c = MathUtils.randomFloat(0.85, 1.00); // best around 0.85;
 
-    this.spread = MathUtils.randomFloat(1.35, 1.75); // expand over the map (higher values means more space available for water)
-    this.f = MathUtils.randomFloat(0.85, 3);
+    this.spread = MathUtils.randomFloat(1.1, 1.5); // expand over the map (higher values means more space available for water)
+    this.f = MathUtils.randomFloat(0.95, 3);
+
+    this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.highland_visited);
   }
 
-  init(scene: THREE.Scene, terrain: Terrain) { }
+  init(scene: THREE.Scene, terrain: Terrain) {
+    if (MathUtils.rng() > 0.35) {
+      const s = MathUtils.randomInt(100000, 140000);
 
-  update(delta: number) { }
+      const pds = new poissonDiskSampling([Terrain.SIZE_X - s, Terrain.SIZE_Z - s], s, s, 30, MathUtils.rng);
+      const points = pds.fill();
+
+      points.forEach((point: number[]) => {
+        const px = s / 2 + point.shift();
+        const pz = s / 2 + point.shift();
+
+        const sy = MathUtils.randomFloat(Chunk.HEIGHT / 5, Chunk.HEIGHT / 3);
+
+        // butterflies
+        const boids = new Boids(
+          scene,
+          new THREE.Vector3(s, sy, s),
+          new THREE.Vector3(px, Chunk.SEA_LEVEL + sy / 2, pz),
+          'butterfly',
+          MathUtils.randomInt(1, 4),
+          {
+            speed: 75,
+            neighbourRadius: 6000,
+            alignmentWeighting: 0.005,
+            cohesionWeighting: 0.075,
+            separationWeighting: 0.1,
+            viewAngle: 12
+          }
+        );
+
+        this.boids.push(boids);
+      });
+    }
+  }
+
+  update(delta: number) {
+    this.boids.forEach(boids => boids.update(this.generator, delta));
+  }
 
   /**
    * Compute elevation
@@ -56,13 +102,13 @@ class HighlandBiome extends Biome {
       // second layer
       + (0.50 * this.generator.noise2(1 * nx, 1 * nz)
         + 1.00 * this.generator.noise3(2 * nx, 2 * nz)
-        + 0.4 * this.generator.ridgeNoise2(4 * nx, 4 * nz)
+        + 0.2 * this.generator.ridgeNoise2(4 * nx, 4 * nz)
         + 0.13 * this.generator.noise2(8 * nx, 8 * nz)
         + 0.06 * this.generator.noise3(16 * nx, 16 * nz)
         + 0.035 * this.generator.noise2(128 * nx, 128 * nz)
         + 0.025 * this.generator.noise2(512 * nx, 512 * nz));
 
-    e /= 0.5 + 1.0 + 0.35 + 0.13 + 0.06 + 0.035 * 2 + 0.025 + 1.00 + 0.50 + 0.4 + 0.13 + 0.06 + 0.035 + 0.025;
+    e /= 0.5 + 1.0 + 0.35 + 0.13 + 0.06 + 0.035 * 2 + 0.025 + 1.00 + 0.50 + 0.2 + 0.13 + 0.06 + 0.035 + 0.025;
     e **= this.f;
     const d = this.spread * BiomeGenerator.getEuclideanDistance(nx, nz);
     e = BiomeGenerator.islandAddMethod(this.a, this.b, this.c, d, e);

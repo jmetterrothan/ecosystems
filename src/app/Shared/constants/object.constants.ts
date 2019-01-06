@@ -1,5 +1,8 @@
 import { IObject } from '@shared/models/object.model';
 
+import butterflyObj from '@objmodels/fauna/butterfly.obj';
+import butterflyMtl from '@objmodels/fauna/butterfly.mtl';
+
 import snowy_bushObj from '@objmodels/tree/snowy_bush.obj';
 import snowy_bushMtl from '@objmodels/tree/snowy_bush.mtl';
 
@@ -20,6 +23,9 @@ import fish1Mtl from '@objmodels/fauna/fish1.mtl';
 
 import fish2Obj from '@objmodels/fauna/fish2.obj';
 import fish2Mtl from '@objmodels/fauna/fish2.mtl';
+
+import snowy_spruceObj from '@objmodels/tree/snowy_spruce.obj';
+import snowy_spruceMtl from '@objmodels/tree/snowy_spruce.mtl';
 
 import spruceObj from '@objmodels/tree/spruce.obj';
 import spruceMtl from '@objmodels/tree/spruce.mtl';
@@ -108,6 +114,12 @@ import savanna_treeMtl from '@objmodels/tree/savanna_tree.mtl';
 import algeaObj from '@objmodels/flower/algea.obj';
 import algeaMtl from '@objmodels/flower/algea.mtl';
 
+import algea2Obj from '@objmodels/flower/algea2.obj';
+import algea2Mtl from '@objmodels/flower/algea2.mtl';
+
+import algea3Obj from '@objmodels/flower/algea3.obj';
+import algea3Mtl from '@objmodels/flower/algea3.mtl';
+
 import highlands_treeObj from '@objmodels/tree/highlands_tree.obj';
 import highlands_treeMtl from '@objmodels/tree/highlands_tree.mtl';
 
@@ -133,6 +145,12 @@ import cloud4Obj from '@objmodels/cloud/cloud4.obj';
 import cloud4Mtl from '@objmodels/cloud/cloud4.mtl';
 
 export const OBJECTS: IObject[] = [
+  {
+    name: 'butterfly',
+    obj: butterflyObj,
+    mtl: butterflyMtl,
+    doubleSide: true
+  },
   {
     name: 'snowy_bush',
     obj: snowy_bushObj,
@@ -215,7 +233,16 @@ export const OBJECTS: IObject[] = [
     name: 'algea',
     obj: algeaObj,
     mtl: algeaMtl,
-    doubleSide: true
+  },
+  {
+    name: 'algea2',
+    obj: algea2Obj,
+    mtl: algea2Mtl,
+  },
+  {
+    name: 'algea3',
+    obj: algea3Obj,
+    mtl: algea3Mtl,
   },
   {
     name: 'diamond',
@@ -273,6 +300,11 @@ export const OBJECTS: IObject[] = [
     name: 'spruce',
     obj: spruceObj,
     mtl: spruceMtl
+  },
+  {
+    name: 'snowy_spruce',
+    obj: snowy_spruceObj,
+    mtl: snowy_spruceMtl
   },
   {
     name: 'jungle_tree',

@@ -11,6 +11,8 @@ import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { IPick } from '@shared/models/pick.model';
 
+import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
+
 class SnowBiome extends Biome {
   constructor(generator: BiomeGenerator) {
     super('SNOW', generator);
@@ -19,6 +21,8 @@ class SnowBiome extends Biome {
 
     this.waterColor1 = new THREE.Color(0xc0dade);
     this.waterColor2 = new THREE.Color(0xacd2e5);
+
+    this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.snow_visited);
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {
@@ -81,6 +85,9 @@ class SnowBiome extends Biome {
     }
     if (e < Chunk.SEA_ELEVATION + 0.15) {
       return SUB_BIOMES.FROZEN_BEACH;
+    }
+    if (e < Chunk.SEA_ELEVATION + 0.225) {
+      return SUB_BIOMES.FROZEN_GRASSLAND;
     }
 
     return SUB_BIOMES.SNOW;

@@ -13,5 +13,7 @@ module.exports = {
   "@world": path.resolve(PATHS.APP, 'World'),
   "@mesh": path.resolve(PATHS.APP, 'Mesh'),
   "@materials": path.resolve(PATHS.APP, 'Shared', 'materials'),
-  "@boids": path.resolve(PATHS.APP, 'Boids')
+  "@boids": path.resolve(PATHS.APP, 'Boids'),
+  "@public": path.resolve(PATHS.PUBLIC),
+  "@achievements": path.resolve(PATHS.APP, 'Achievements')
 };

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import poissonDiskSampling from 'poisson-disk-sampling';
 
 import World from '@world/World';
 import Terrain from '@world/Terrain';
@@ -6,20 +7,24 @@ import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 import Boids from '@boids/Boids';
+import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
-import MathUtils from '@shared/utils/Math.utils';
+import { IPick } from '@shared/models/pick.model';
+
+import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
 class OceanBiome extends Biome {
   private spike: number;
   private depth: number;
 
-  private boids: Boids;
-  private boids2: Boids;
+  private boids: Boids[];
 
   constructor(generator: BiomeGenerator) {
     super('OCEAN', generator);
+
+    this.boids = [];
 
     this.spike = MathUtils.randomFloat(0.025, 0.125);
     this.depth = 1.425;
@@ -27,33 +32,33 @@ class OceanBiome extends Biome {
     this.waterDistortion = true;
     this.waterDistortionFreq = 3.0;
     this.waterDistortionAmp = 720.0;
+
+    this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.ocean_visited);
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {
-    // fish
-    this.boids = new Boids(
-      scene,
-      new THREE.Vector3(Terrain.SIZE_X - 35000, 27500, Terrain.SIZE_Z - 35000),
-      new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2),
-      'fish1',
-      32,
-      {
-        speed: 100,
+    const smin = 80000;
+    const smax = 160000;
+    const s = MathUtils.randomFloat(smin, smax);
+
+    const pds = new poissonDiskSampling([Terrain.SIZE_X - s, Terrain.SIZE_Z - s], s, s, 30, MathUtils.rng);
+    const points = pds.fill();
+
+    const T1 = {
+      model: 'fish1',
+      config: {
+        speed: 75,
         neighbourRadius: 6000,
         alignmentWeighting: 0.0065,
         cohesionWeighting: 0.01,
         separationWeighting: 0.05,
-        viewAngle: 4
+        viewAngle: 12
       }
-    );
+    };
 
-    this.boids2 = new Boids(
-      scene,
-      new THREE.Vector3(100000, 27500, 100000),
-      new THREE.Vector3(Terrain.SIZE_X / 2 - 50000, Chunk.SEA_LEVEL - 32500, Terrain.SIZE_Z / 2 - 50000),
-      'fish2',
-      2,
-      {
+    const T2 = {
+      model: 'fish2',
+      config: {
         speed: 75,
         neighbourRadius: 10000,
         alignmentWeighting: 0.0065,
@@ -61,23 +66,60 @@ class OceanBiome extends Biome {
         separationWeighting: 0.2,
         viewAngle: 6
       }
-    );
+    };
+
+    points.forEach((point: number[]) => {
+      const nbMax = (s * 18 / smax) || 0; // maximum nb based on boids size
+      const nb = MathUtils.randomInt(1, nbMax);
+      const type = nb > 3 ? T1 : T2;
+      const px = s / 2 + point.shift();
+      const pz = s / 2 + point.shift();
+
+      const sy = MathUtils.randomFloat(Chunk.HEIGHT / 3, Chunk.HEIGHT / 2);
+      const py = -Chunk.HEIGHT / 2 + sy / 2;
+
+      // fishs
+      const boids = new Boids(
+        scene,
+        new THREE.Vector3(s, sy, s),
+        new THREE.Vector3(px, py, pz),
+        type.model,
+        nb,
+        type.config
+      );
+
+      this.boids.push(boids);
+    });
 
     // chest
-    const x = Terrain.SIZE_X / 4 + Math.floor(Math.random() * Terrain.SIZE_X / 2);
-    const z = Terrain.SIZE_Z / 4 + Math.floor(Math.random() * Terrain.SIZE_Z / 2);
-    const y = terrain.getHeightAt(x, z);
-    const chunk = terrain.getChunkAt(x, z);
-    const r = MathUtils.randomFloat(0, Math.PI * 2);
-    const params = { x, y, z, r, s: World.OBJ_INITIAL_SCALE, n: 'chest' };
+    let chunk: Chunk;
+    let corpseItem: IPick;
+    let corpseObject: THREE.Object3D;
 
-    const obj = chunk.getObject(params);
-    chunk.placeObject(obj, { save: true });
+    do {
+      const x = Terrain.SIZE_X / 4 + Math.floor(Math.random() * Terrain.SIZE_X / 2);
+      const z = Terrain.SIZE_Z / 4 + Math.floor(Math.random() * Terrain.SIZE_Z / 2);
+
+      chunk = terrain.getChunkAt(x, z);
+
+      const y = terrain.getHeightAt(x, z);
+
+      corpseItem = {
+        x, y, z,
+        s: World.OBJ_INITIAL_SCALE,
+        n: 'chest',
+        r: MathUtils.randomFloat(0, Math.PI * 2)
+      };
+
+      corpseObject = chunk.getObject(corpseItem);
+
+    } while (!chunk.canPlaceObject(corpseObject));
+
+    chunk.placeObject(corpseObject, { save: true });
   }
 
   update(delta: number) {
-    this.boids.update(delta);
-    this.boids2.update(delta);
+    this.boids.forEach(boids => boids.update(this.generator, delta));
   }
 
   /**
@@ -102,8 +144,29 @@ class OceanBiome extends Biome {
     return e - this.depth;
   }
 
+  computeMoistureAt(x: number, z: number): number {
+    const nx = x / (1024 * 192);
+    const nz = z / (1024 * 192);
+
+    let e = 0.2 * this.generator.noise(1 * nx, 1 * nz);
+    e += 0.25 * this.generator.noise(4 * nx, 4 * nz);
+    e += 0.0035 * this.generator.noise2(8 * nx, 8 * nz);
+    e += 0.05 * this.generator.noise3(16 * nx, 16 * nz);
+
+    e /= 0.2 + 0.25 + 0.0035 + 0.05;
+
+    return Math.round(e * 100) / 100;
+  }
+
+  computeWaterMoistureAt(x: number, z: number): number {
+    const nx = x / (1024 * 192);
+    const nz = z / (1024 * 192);
+
+    return Math.round(this.generator.noise2(nx, nz) * 100) / 100;
+  }
+
   getParametersAt(e: number, m: number): IBiome {
-    if (m < 0.3) {
+    if (m < 0.4) {
       return SUB_BIOMES.CORAL_REEF;
     }
 

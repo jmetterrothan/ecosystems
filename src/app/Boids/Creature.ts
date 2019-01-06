@@ -1,4 +1,9 @@
 import * as THREE from 'three';
+
+import BiomeGenerator from '@world/BiomeGenerator';
+import Chunk from '@world/Chunk';
+import MathUtils from '@utils/Math.utils';
+
 import { playerSvc } from '@shared/services/player.service';
 import { BoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
 
@@ -25,18 +30,36 @@ class Creature {
     this.model = model;
     this.parameters = parameters;
 
-    this.speed = this.parameters.speed; // 100
+    this.speed = this.parameters.speed + MathUtils.randomInt(-10, 10); // TODO: improve the random factor (put it higher)
+  }
+  getMinRepulseDistance(): number {
+    return this.minRepulseDistance;
   }
 
-  update(creatures: Creature[], delta: number) {
-    const interaction = this.calculateInteraction(creatures);
-    this.velocity.add(interaction);
+  update(creatures: Creature[], generator: BiomeGenerator, delta: number) {
+    if (creatures.length > 0) {
+      const interaction = this.calculateInteraction(creatures);
+      this.velocity.add(interaction);
+    }
 
     const avoidance = this.calculateBoundsAvoidance();
     this.velocity.add(avoidance);
 
     const repulse = this.calculateRepel(playerSvc.getPosition());
     this.velocity.add(repulse);
+
+    const wp = this.position.clone().add(this.velocity).add(this.boidsOrigin);
+    const y = generator.computeHeightAt(wp.x, wp.z);
+    const by = y - this.boidsOrigin.y;
+    const d = Math.sqrt((by - this.position.y) * (by - this.position.y)) / Chunk.HEIGHT;
+    const td = 4096 / Chunk.HEIGHT;
+
+    if (d < td) {
+      const ground = new THREE.Vector3(this.position.x, by, this.position.z);
+      const repulse2 = this.repulse(ground, 1);
+
+      this.velocity.add(repulse2);
+    }
 
     this.velocity.normalize();
     this.position.add(this.velocity.clone().multiplyScalar(this.speed));
@@ -56,22 +79,22 @@ class Creature {
     this.avoidTarget = target;
   }
 
-  steer(target: THREE.Vector3, wieghting: number = 1) {
+  steer(target: THREE.Vector3, wieghting: number = 1): THREE.Vector3 {
     const v = new THREE.Vector3();
 
     v.subVectors(target, this.position);
     v.multiplyScalar(wieghting);
 
-    this.velocity.add(v);
+    return v;
   }
 
-  repulse(target: THREE.Vector3, weighting: number = 1) {
+  repulse(target: THREE.Vector3, weighting: number = 1): THREE.Vector3 {
     const v = new THREE.Vector3();
 
     v.subVectors(this.position, target);
     v.multiplyScalar(weighting);
 
-    this.velocity.add(v);
+    return v;
   }
 
   private updateModel() {
@@ -168,7 +191,6 @@ class Creature {
 
     return v;
   }
-
 }
 
 export default Creature;

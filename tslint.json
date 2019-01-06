@@ -7,6 +7,7 @@
     "no-increment-decrement": false,
     "align": false,
     "ter-arrow-parens": false,
-    "no-parameter-reassignment": false
+    "no-parameter-reassignment": false,
+    "import-name": false
   }
 }

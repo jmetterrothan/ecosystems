@@ -88,7 +88,7 @@ class BiomeGenerator {
           (lowE === null || e >= lowE) &&
           (highE === null || e <= highE) &&
           (lowM === null || m >= lowM) &&
-          (highM === null ||  m <= highM)) {
+          (highM === null || m <= highM)) {
           return (<IPick>{
             x, y, z,
             n: organism.name,
@@ -154,6 +154,16 @@ class BiomeGenerator {
    */
   computeMoistureAt(x: number, z: number): number {
     return this.biome.computeMoistureAt(x, z);
+  }
+
+  /**
+   * Compute water moisture
+   * @param {number} x coord component
+   * @param {number} z coord component
+   * @return {number} moisture value
+   */
+  computeWaterMoistureAt(x: number, z: number): number {
+    return this.biome.computeWaterMoistureAt(x, z);
   }
 
   /**

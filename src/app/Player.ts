@@ -1,3 +1,4 @@
+import { PROGRESSION_COMMON_STORAGE_KEYS } from './Achievements/constants/progressionCommonStorageKeys.constants';
 import * as THREE from 'three';
 
 import 'three/examples/js/controls/PointerLockControls';
@@ -5,8 +6,10 @@ import 'three/examples/js/controls/PointerLockControls';
 import Chunk from '@world/Chunk';
 import Terrain from '@world/Terrain';
 
-import { underwaterSvc } from '@shared/services/underwater.service';
-import { playerSvc } from '@shared/services/player.service';
+import UnderwaterService, { underwaterSvc } from './Shared/services/underwater.service';
+import PlayerService, { playerSvc } from '@shared/services/player.service';
+import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
+import ProgressionService, { progressionSvc } from '@services/progression.service';
 
 class Player {
   private controls: THREE.PointerLockControls;
@@ -20,11 +23,16 @@ class Player {
   private speed: THREE.Vector3;
   private velocity: THREE.Vector3;
 
+  private progressionSvc: ProgressionService;
+  private monitoringSvc: MonitoringService;
+  private playerSvc: PlayerService;
+  private underwaterSvc: UnderwaterService;
+
   /**
    * Player constructor
    * @param {THREE.PointerLockControls} controls
    */
-  constructor(controls) {
+  constructor(controls: THREE.PointerLockControls) {
     this.controls = controls;
 
     this.moveForward = false;
@@ -36,6 +44,11 @@ class Player {
 
     this.speed = new THREE.Vector3(40000, 40000, 40000);
     this.velocity = new THREE.Vector3(0, 0, 0);
+
+    this.progressionSvc = progressionSvc;
+    this.monitoringSvc = monitoringSvc;
+    this.playerSvc = playerSvc;
+    this.underwaterSvc = underwaterSvc;
   }
 
   /**
@@ -106,12 +119,10 @@ class Player {
    */
   update(terrain: Terrain, delta: number) {
     const position = this.move(delta);
+    this.playerSvc.setPosition(position);
 
     const yMin = terrain.getHeightAt(position.x, position.z) + 5000;
     const isWithinWorldBorders = this.isWithinWorldBorders();
-
-    // update player pos service
-    playerSvc.setPosition(position);
 
     if (isWithinWorldBorders && position.y < yMin) {
       // collision with min ground dist
@@ -119,12 +130,14 @@ class Player {
     }
 
     // update underwater service
-    if (!underwaterSvc.isUnderwater && position.y <= Chunk.SEA_LEVEL && isWithinWorldBorders) {
-      underwaterSvc.set(true);
+    if (!this.underwaterSvc.isUnderwater && position.y <= Chunk.SEA_LEVEL && isWithinWorldBorders) {
+      this.underwaterSvc.set(true);
+      this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
+      this.monitoringSvc.sendEvent(this.monitoringSvc.categories.biome, this.monitoringSvc.actions.visited, PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
     }
 
-    if (underwaterSvc.isUnderwater && (position.y > Chunk.SEA_LEVEL || !isWithinWorldBorders)) {
-      underwaterSvc.set(false);
+    if (this.underwaterSvc.isUnderwater && (position.y > Chunk.SEA_LEVEL || !isWithinWorldBorders)) {
+      this.underwaterSvc.set(false);
     }
   }
 

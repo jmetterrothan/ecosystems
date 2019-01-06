@@ -10,8 +10,11 @@ import World from '@world/World';
 import Crosshair from './UI/Crosshair';
 import PostProcess from './PostProcess';
 
-import { underwaterSvc } from '@shared/services/underwater.service';
 import { configSvc } from '@shared/services/graphicsConfig.service';
+import { underwaterSvc } from '@services/underwater.service';
+import { storageSvc } from '@services/storage.service';
+import ProgressionService, { progressionSvc } from './Shared/services/progression.service';
+import TranslationService, { translationSvc } from '@shared/services/translation.service';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
@@ -30,9 +33,15 @@ class Main {
   private focused: boolean;
   private stats: statsJs;
 
+  private progressionSvc: ProgressionService;
+  private translationSvc: TranslationService;
+
   constructor() {
     this.containerElement = document.body;
     this.lastTime = window.performance.now();
+
+    this.translationSvc = translationSvc;
+    this.progressionSvc = progressionSvc;
 
     // TODO: Change quality based on user input / hardware detection / live frame render time ?
     configSvc.quality = GRAPHICS_QUALITY.HIGH;
@@ -41,6 +50,15 @@ class Main {
       this.stats = new statsJs();
       this.stats.showPanel(1);
       document.body.appendChild(this.stats.dom);
+
+      const resetStrorage = document.createElement('button');
+      resetStrorage.textContent = 'reset';
+      resetStrorage.classList.add('button', 'reset');
+      resetStrorage.addEventListener('click', () => {
+        storageSvc.clearAll();
+        console.log(localStorage);
+      }, false);
+      document.body.appendChild(resetStrorage);
     }
 
     this.scene = new THREE.Scene();
@@ -52,10 +70,14 @@ class Main {
     this.camera = new THREE.PerspectiveCamera(55, aspect, near, far);
 
     this.focused = true;
+
   }
 
   async init() {
     this.initControls();
+
+    this.progressionSvc.init();
+    await this.translationSvc.init();
 
     this.world = new World(this.scene, this.camera, this.controls);
     await this.world.init();

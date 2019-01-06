@@ -19,6 +19,7 @@ import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { ITexture } from '@shared/models/texture.model';
 
 import { configSvc } from '@shared/services/graphicsConfig.service';
+import OceanBiome from './Biomes/OceanBiome';
 
 class World {
   static readonly SEED: string | null = null;

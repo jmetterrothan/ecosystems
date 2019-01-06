@@ -27,6 +27,32 @@ class CommonUtils {
 
     /* tslint:disable */ return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1); /* tslint:enable */
   }
+
+  /**
+   * Convert array of string to object and init all keys with value
+   * @param {string[]} array
+   * @param {any} default value
+   * @returns {Object}
+   */
+  static arrayToObject(array: string[], value: any): Object {
+    return array.reduce((obj, item) => {
+      obj[item] = value;
+      return obj;
+    }, {});
+  }
+
+  static objectToArray(obj: Object): any[] {
+    return Object.values(obj);
+  }
+
+  static valueIsInObject(obj: Object, value: string | number): boolean {
+    return Object.values(obj).includes(value);
+  }
+
+  static getObjectPlacedNameForAchievement(objectName: string): string {
+    return `object_${objectName}_placed`;
+  }
+
 }
 
 export default CommonUtils;

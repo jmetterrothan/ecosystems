@@ -17,7 +17,7 @@ module.exports = {
   },
   resolve: {
     modules: ['node_modules', PATHS.SRC],
-    extensions: ['.ts', '.js', '.json', '.scss', '.css'],
+    extensions: ['.ts', '.js', '.json', '.scss', '.css', '.yml'],
     alias: {
       ...alias,
       three$: 'three/build/three.min.js',
@@ -78,6 +78,10 @@ module.exports = {
       {
         test: /\.(obj|mtl)$/,
         loader: 'file-loader'
+      },
+      {
+        test: /\.ya?ml$/,
+        use: 'js-yaml-loader',
       }
     ]
   },

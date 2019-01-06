@@ -8,6 +8,8 @@ import MathUtils from '@shared/utils/Math.utils';
 import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
+import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
+
 class RainForestBiome extends Biome {
   private a: number;
   private b: number;
@@ -24,7 +26,7 @@ class RainForestBiome extends Biome {
     this.waterDistortionFreq = 2.5;
     this.waterDistortionAmp = 1024.0;
 
-    this.a = MathUtils.randomFloat(0, 0.85); // best around 0.65, size of the island
+    this.a = MathUtils.randomFloat(0, 0.65); // best around 0.65, size of the island
     this.b = MathUtils.randomFloat(0.7, 1.5); // best around 0.80, makes multiple hills even when low
     this.c = MathUtils.randomFloat(0.85, 1.5); // best around 0.85;
 
@@ -32,6 +34,8 @@ class RainForestBiome extends Biome {
     this.spread = MathUtils.randomFloat(1.15, 2.00); // expand over the map (higher values means more space available for water)
 
     this.ridges = MathUtils.randomFloat(0.225, 0.35); // makes ridges more prevalent
+
+    this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.rainforest_visited);
   }
 
   init(scene: THREE.Scene, terrain: Terrain) { }

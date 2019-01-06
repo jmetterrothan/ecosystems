@@ -78,8 +78,8 @@ class WaterMesh extends Mesh {
         const z1 = (geometry.vertices[a].z + geometry.vertices[b].z + geometry.vertices[d].z) / 3;
         const z2 = (geometry.vertices[d].z + geometry.vertices[c].z + geometry.vertices[a].z) / 3;
 
-        const m1 = this.generator.computeMoistureAt(x1, z1);
-        const m2 = this.generator.computeMoistureAt(x2, z2);
+        const m1 = this.generator.computeWaterMoistureAt(x1, z1);
+        const m2 = this.generator.computeWaterMoistureAt(x2, z2);
 
         f1.color = this.generator.getWaterColor(m1);
         f2.color = this.generator.getWaterColor(m2);
