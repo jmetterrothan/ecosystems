@@ -178,8 +178,7 @@ class World {
       this.scene.add(this.lightHelper);
     }
 
-    this.scene.add(this.sunlightTarget);
-    this.scene.add(this.sunlight);
+    this.scene.add(sunlight);
   }
 
   /**
