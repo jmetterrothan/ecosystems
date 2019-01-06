@@ -245,11 +245,11 @@ export const SUB_BIOMES: IBiomes = {
     organisms: []
   },
   CORAL_REEF: {
-    color: new THREE.Color(0xf0e68c),
+    color: new THREE.Color(0xeacd73),
     organisms: [
       {
         weight: 0.45,
-        name: 'rock2',
+        name: 'rock1',
         scarcity: 0.975,
         e: null,
         m: null,

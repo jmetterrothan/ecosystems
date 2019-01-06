@@ -52,7 +52,7 @@ class OceanBiome extends Biome {
         alignmentWeighting: 0.0065,
         cohesionWeighting: 0.01,
         separationWeighting: 0.05,
-        viewAngle: 12
+        viewAngle: 8
       }
     };
 
@@ -63,8 +63,8 @@ class OceanBiome extends Biome {
         neighbourRadius: 10000,
         alignmentWeighting: 0.0065,
         cohesionWeighting: 0.01,
-        separationWeighting: 0.2,
-        viewAngle: 6
+        separationWeighting: 0.35,
+        viewAngle: 12
       }
     };
 
