@@ -21,20 +21,15 @@ import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 import MathUtils from '@utils/Math.utils';
 
-import OceanBiome from '@world/Biomes/OceanBiome';
-
 class World {
   static readonly SEED: string | null = null;
-  static readonly BIOME: Biome | null = OceanBiome; // lock a specific biome here, if null a biome is selected randomly
+  static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
   static readonly EMPTY: boolean = false;
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
 
   static readonly SHOW_FOG: boolean = true;
   static readonly FOG_COLOR: number = 0xb1d8ff;
-
-  static readonly RAIN_PROBABILITY: number = 1;
-  static readonly RAIN_SPEED: number = 320;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
   static LOADED_TEXTURES = new Map<string, THREE.Texture>();

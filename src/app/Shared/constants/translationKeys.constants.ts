@@ -11,5 +11,6 @@ export const TRANSLATION_KEYS: ITranslationKeys = {
   place_objects_counter: 'place_objects_counter',
   travelled_distance_counter: 'travelled_distance_counter',
   repulse_fishes: 'repulse_fishes',
+  repulse_butterflies: 'repulse_butterflies',
   unlock_trophy_percentage: 'unlock_trophy_percentage'
 };

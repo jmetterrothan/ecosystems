@@ -6,7 +6,7 @@ import Chunk from '@world/Chunk';
 
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 
-import { BoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
+import { IBoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
 
 import MathUtils from '@utils/Math.utils';
 
@@ -20,14 +20,14 @@ class Creature {
   private minRepulseDistance: number = 30000;
 
   private model: THREE.Object3D;
-  private parameters: BoidCreatureParameters;
+  private parameters: IBoidCreatureParameters;
 
   private boidsBoundingBox: THREE.Vector3;
   private boidsOrigin: THREE.Vector3;
 
   private playerSvc: PlayerService;
 
-  constructor(position: THREE.Vector3, velocity: THREE.Vector3, model: THREE.Object3D, parameters: BoidCreatureParameters) {
+  constructor(position: THREE.Vector3, velocity: THREE.Vector3, model: THREE.Object3D, parameters: IBoidCreatureParameters) {
     this.position = position;
     this.velocity = velocity;
     this.model = model;
@@ -36,10 +36,6 @@ class Creature {
     this.playerSvc = playerSvc;
 
     this.speed = this.parameters.speed + MathUtils.randomInt(-10, 10); // TODO: improve the random factor (put it higher)
-  }
-
-  getMinRepulseDistance(): number {
-    return this.minRepulseDistance;
   }
 
   update(creatures: Creature[], generator: BiomeGenerator, delta: number) {
@@ -84,6 +80,18 @@ class Creature {
 
   getPosition(): THREE.Vector3 {
     return this.position;
+  }
+
+  getModelPosition(): THREE.Vector3 {
+    return this.position.clone().add(this.boidsOrigin);
+  }
+
+  getMinRepulseDistance(): number {
+    return this.minRepulseDistance;
+  }
+
+  getParameters(): IBoidCreatureParameters {
+    return this.parameters;
   }
 
   setBoidsBoundingBox(box: THREE.Vector3) {
