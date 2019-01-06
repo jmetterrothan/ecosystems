@@ -30,21 +30,22 @@ class FjordBiome extends Biome {
     const nx = (x - Terrain.SIZE_X / 2) / (2048 * 64);
     const nz = (z - Terrain.SIZE_Z / 2) / (2048 * 64);
 
-    let e = 1.1 * this.generator.noise(0.85 * nx, 0.85 * nz);
+    let e = 1.0 * this.generator.noise(0.85 * nx, 0.85 * nz);
     e += 0.1 * this.generator.noise2(nx * 4, nz * 4);
     e += 0.035 * this.generator.ridgeNoise(nx * 8, nz * 8);
     e += 0.01 * this.generator.noise2(nx * 16, nz * 16);
     e += 0.01 * this.generator.ridgeNoise2(nx * 32, nz * 32);
     e += 0.05 * this.generator.noise(nx * 8, nz * 8);
 
-    e /= 0.95 + 0.1 + 0.05 + 0.01 + 0.01 + 0.05;
+    e /= 0.935 + 0.1 + 0.05 + 0.01 + 0.01 + 0.05;
 
     return e ** this.e - 0.1;
   }
 
   getParametersAt(e: number, m: number) : IBiome {
-    if (e > Chunk.CLOUD_ELEVATION + 0.015 && m > 0.35) {
-      return SUB_BIOMES.FJORD_SNOW_CAP;
+    if (e > Chunk.CLOUD_ELEVATION + 0.02) {
+      if (m > 0.5) return SUB_BIOMES.FJORD_SNOW_CAP;
+      return SUB_BIOMES.MOUNTAIN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.05) {
