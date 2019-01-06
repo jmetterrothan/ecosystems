@@ -102,7 +102,7 @@ class Creature {
 
   private updateModel() {
     const v = this.position.clone().add(this.boidsOrigin);
-    // console.log(this.position.add(this.boidsOrigin));
+
     this.model.position.copy(v);
     this.model.rotation.y = Math.atan2(-this.velocity.z, this.velocity.x);
     this.model.rotation.z = Math.asin(this.velocity.y / this.velocity.length());

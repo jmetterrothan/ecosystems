@@ -19,11 +19,11 @@ import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { ITexture } from '@shared/models/texture.model';
 
 import { configSvc } from '@shared/services/graphicsConfig.service';
-import OceanBiome from './Biomes/OceanBiome';
+import FjordBiome from './Biomes/FjordBiome';
 
 class World {
   static readonly SEED: string | null = null;
-  static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
+  static readonly BIOME: Biome | null = FjordBiome; // lock a specific biome here, if null a biome is selected randomly
   static readonly EMPTY: boolean = false;
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;

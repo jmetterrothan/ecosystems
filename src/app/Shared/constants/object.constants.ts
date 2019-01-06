@@ -12,6 +12,12 @@ import snowmanMtl from '@objmodels/misc/snowman.mtl';
 import chestObj from '@objmodels/misc/chest.obj';
 import chestMtl from '@objmodels/misc/chest.mtl';
 
+import round_treeObj from '@objmodels/tree/round_tree.obj';
+import round_treeMtl from '@objmodels/tree/round_tree.mtl';
+
+import bush2Obj from '@objmodels/tree/bush2.obj';
+import bush2Mtl from '@objmodels/tree/bush2.mtl';
+
 import dead_treeObj from '@objmodels/tree/dead_tree.obj';
 import dead_treeMtl from '@objmodels/tree/dead_tree.mtl';
 
@@ -62,6 +68,9 @@ import rock4Mtl from '@objmodels/rock/rock4.mtl';
 
 import rock5Obj from '@objmodels/rock/rock5.obj';
 import rock5Mtl from '@objmodels/rock/rock5.mtl';
+
+import rock6Obj from '@objmodels/rock/rock6.obj';
+import rock6Mtl from '@objmodels/rock/rock6.mtl';
 
 import iceberg1Obj from '@objmodels/rock/iceberg1.obj';
 import iceberg1Mtl from '@objmodels/rock/iceberg1.mtl';
@@ -167,9 +176,19 @@ export const OBJECTS: IObject[] = [
     mtl: chestMtl
   },
   {
+    name: 'bush2',
+    obj: bush2Obj,
+    mtl: bush2Mtl
+  },
+  {
     name: 'dead_tree',
     obj: dead_treeObj,
     mtl: dead_treeMtl
+  },
+  {
+    name: 'round_tree',
+    obj: round_treeObj,
+    mtl: round_treeMtl
   },
   {
     name: 'skull',
@@ -376,6 +395,11 @@ export const OBJECTS: IObject[] = [
     name: 'rock3',
     obj: rock3Obj,
     mtl: rock3Mtl
+  },
+  {
+    name: 'rock6',
+    obj: rock6Obj,
+    mtl: rock6Mtl
   },
   {
     name: 'iceberg1',

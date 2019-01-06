@@ -49,6 +49,65 @@ export const SUB_BIOMES: IBiomes = {
       },
     ]
   },
+  FJORD: {
+    color: new THREE.Color(0x546c63),
+    organisms: [
+      {
+        weight: 0.1,
+        name: 'birch',
+        scarcity: 0.5,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 },
+        m: null,
+        scale: { min: 0.8, max: 1.6 },
+        float: false,
+      },
+      {
+        weight: 0.15,
+        name: 'rock6',
+        scarcity: 0.5,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 },
+        m: null,
+        scale: { min: 0.5, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.75,
+        name: 'bush2',
+        scarcity: 0.6,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 },
+        m: null,
+        scale: { min: 0.65, max: 1.65 },
+        float: false,
+      },
+    ]
+  },
+  FJORD_SNOW_CAP: {
+    color: new THREE.Color(0xffffff),
+    organisms: []
+  },
+  FJORD_BEACH: {
+    color: new THREE.Color(0x87a194),
+    organisms: [
+      {
+        weight: 0.5,
+        name: 'pink_mushroom',
+        scarcity: 0.9,
+        e: { low: Chunk.SEA_ELEVATION + 0.025, high: 1.0 },
+        m: null,
+        scale: { min: 0.85, max: 1.35 },
+        float: false,
+      },
+      {
+        weight: 0.5,
+        name: 'blue_mushroom',
+        scarcity: 0.9,
+        e: { low: Chunk.SEA_ELEVATION + 0.025, high: 1.0 },
+        m: null,
+        scale: { min: 0.85, max: 1.25 },
+        float: false,
+      },
+    ]
+  },
   GRASSLAND: {
     color: new THREE.Color(0x93c54b),
     organisms: [
@@ -469,7 +528,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   OCEAN: {
-    color: new THREE.Color(0xeacd73),
+    color: new THREE.Color(0xf1c176),
     organisms: [
       {
         weight: 0.5,
