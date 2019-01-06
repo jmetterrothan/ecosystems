@@ -37,8 +37,10 @@ class Creature {
   }
 
   update(creatures: Creature[], generator: BiomeGenerator, delta: number) {
-    const interaction = this.calculateInteraction(creatures);
-    this.velocity.add(interaction);
+    if (creatures.length > 0) {
+      const interaction = this.calculateInteraction(creatures);
+      this.velocity.add(interaction);
+    }
 
     const avoidance = this.calculateBoundsAvoidance();
     this.velocity.add(avoidance);
