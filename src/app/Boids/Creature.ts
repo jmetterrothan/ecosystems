@@ -14,7 +14,7 @@ class Creature {
   velocity: THREE.Vector3;
   speed: number;
 
-  minRepulseDistance: number = 40000;
+  minRepulseDistance: number = 30000;
 
   model: THREE.Object3D;
   parameters: BoidCreatureParameters;
@@ -50,7 +50,7 @@ class Creature {
     this.velocity.add(repulse);
 
     // terrain repel
-    const wp = this.position.clone().add(this.velocity.clone().normalize().multiplyScalar(this.speed)).add(this.boidsOrigin);
+    const wp = this.position.clone().add(this.velocity.clone().normalize().multiplyScalar(this.speed * delta)).add(this.boidsOrigin);
     const y = generator.computeHeightAt(wp.x, wp.z);
     const by = (this.parameters.underwater ? y : Math.max(y, Chunk.SEA_LEVEL)) - this.boidsOrigin.y;
     const d = Math.sqrt((by - this.position.y) * (by - this.position.y)) / Chunk.HEIGHT;
@@ -58,14 +58,14 @@ class Creature {
 
     if (d <= td) {
       const ground = new THREE.Vector3(this.position.x, by, this.position.z);
-      const repulse2 = this.repulse(ground, 1); // this.repulse(ground, 1);
+      const repulse2 = this.repulse(ground, 1);
 
       this.velocity.add(repulse2);
     }
 
     // apply transformation
     this.velocity.normalize();
-    this.position.add(this.velocity.clone().multiplyScalar(this.speed));
+    this.position.add(this.velocity.clone().multiplyScalar(this.speed * delta));
 
     this.updateModel();
   }
@@ -185,9 +185,9 @@ class Creature {
       const forceWeighting = 5 / distance;
       v.subVectors(this.position.clone().add(this.boidsOrigin), target);
       v.multiplyScalar(forceWeighting);
-      this.speed += 20;
+      this.speed += 750;
     } else if (this.speed > this.parameters.speed) {
-      this.speed -= 20;
+      this.speed -= 750;
     } else {
       this.speed = this.parameters.speed;
     }

@@ -47,7 +47,7 @@ class OceanBiome extends Biome {
     const T1 = {
       model: 'fish1',
       config: {
-        speed: 75,
+        speed: 7500,
         neighbourRadius: 6000,
         alignmentWeighting: 0.0065,
         cohesionWeighting: 0.01,
@@ -60,7 +60,7 @@ class OceanBiome extends Biome {
     const T2 = {
       model: 'fish2',
       config: {
-        speed: 75,
+        speed: 7500,
         neighbourRadius: 10000,
         alignmentWeighting: 0.0065,
         cohesionWeighting: 0.01,

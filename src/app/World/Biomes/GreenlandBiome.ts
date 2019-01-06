@@ -66,7 +66,7 @@ class GreenlandBiome extends Biome {
         );
 
         boids.generate(this.generator, {
-          speed: 75,
+          speed: 7500,
           neighbourRadius: 6000,
           alignmentWeighting: 0.005,
           cohesionWeighting: 0.075,
