@@ -14,7 +14,7 @@ class Creature {
   velocity: THREE.Vector3;
   speed: number;
 
-  minRepulseDistance: number = 20000;
+  minRepulseDistance: number = 40000;
 
   model: THREE.Object3D;
   parameters: BoidCreatureParameters;
@@ -185,9 +185,9 @@ class Creature {
       const forceWeighting = 5 / distance;
       v.subVectors(this.position.clone().add(this.boidsOrigin), target);
       v.multiplyScalar(forceWeighting);
-      this.speed += 40;
+      this.speed += 20;
     } else if (this.speed > this.parameters.speed) {
-      this.speed -= 40;
+      this.speed -= 20;
     } else {
       this.speed = this.parameters.speed;
     }

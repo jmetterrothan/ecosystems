@@ -1,4 +1,3 @@
-import { GRAPHICS_QUALITY } from './Shared/enums/graphicsQuality.enum';
 import * as THREE from 'three';
 import * as TWEEN from '@tweenjs/tween.js';
 import 'three/examples/js/controls/PointerLockControls';
@@ -17,6 +16,7 @@ import ProgressionService, { progressionSvc } from './Shared/services/progressio
 import TranslationService, { translationSvc } from '@shared/services/translation.service';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+import { GRAPHICS_QUALITY } from './Shared/enums/graphicsQuality.enum';
 
 class Main {
   private renderer: THREE.WebGLRenderer;

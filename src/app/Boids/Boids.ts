@@ -33,9 +33,8 @@ class Boids {
    * @param {THREE.Vector3} origin
    * @param {string} modelName
    * @param {number} creaturesCount
-   * @param {BoidCreatureParameters} creaturesParameters
    */
-  constructor(scene: THREE.Scene, boudingBox: THREE.Vector3, origin: THREE.Vector3 = new THREE.Vector3(), modelName: string, creaturesCount: number, creaturesParameters: BoidCreatureParameters) {
+  constructor(scene: THREE.Scene, boudingBox: THREE.Vector3, origin: THREE.Vector3 = new THREE.Vector3(), modelName: string, creaturesCount: number) {
 
     this.scene = scene;
     this.boudingBox = boudingBox;
@@ -58,18 +57,17 @@ class Boids {
     if (configSvc.config.DEBUG) {
       this.scene.add(<THREE.Object3D>new THREE.Box3Helper(mesh, 0xffff00));
     }
-
-    this.generate(creaturesParameters);
   }
 
   /**
    * Creates boids creatures and places them in the world
+   * @param {BiomeGenerator} generator
    * @param {BoidCreatureParameters} parameters
    */
-  generate(parameters: BoidCreatureParameters) {
+  generate(generator: BiomeGenerator, parameters: BoidCreatureParameters) {
     for (let i = 0; i < this.creaturesCount; i++) {
       const py = Math.random() * this.boudingBox.y - this.boudingBox.y / 2;
-      console.log(py, parameters.underwater ? py : Math.max(py, Chunk.SEA_LEVEL - this.boudingBox.y + 2048));
+
       const position = new THREE.Vector3(
         Math.random() * this.boudingBox.x - this.boudingBox.x / 2,
         parameters.underwater ? py : Math.max(py, Chunk.SEA_LEVEL - this.boudingBox.y + 2048),

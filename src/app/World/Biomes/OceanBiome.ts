@@ -87,8 +87,9 @@ class OceanBiome extends Biome {
         new THREE.Vector3(px, py, pz),
         type.model,
         nb,
-        type.config
       );
+
+      boids.generate(this.generator, type.config);
 
       this.boids.push(boids);
     });

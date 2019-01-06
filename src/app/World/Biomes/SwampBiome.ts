@@ -40,24 +40,26 @@ class SwampBiome extends Biome {
       const pz = sz / 2 + point.shift();
 
       const sy = MathUtils.randomFloat(Chunk.HEIGHT / 6, Chunk.HEIGHT / 4);
+      const py = Math.max(Chunk.SEA_LEVEL + sy / 2, this.generator.computeHeightAt(px, pz) + sy / 3);
 
       // butterflies
       const boids = new Boids(
         scene,
         new THREE.Vector3(sx, sy, sz),
-        new THREE.Vector3(px, Chunk.SEA_LEVEL + sy / 2, pz),
+        new THREE.Vector3(px, py, pz),
         'butterfly',
-        MathUtils.randomInt(1, 6),
-        {
-          speed: 75,
-          neighbourRadius: 6000,
-          alignmentWeighting: 0.005,
-          cohesionWeighting: 0.075,
-          separationWeighting: 0.1,
-          viewAngle: 12,
-          underwater: false
-        }
+        MathUtils.randomInt(1, 6)
       );
+
+      boids.generate(this.generator, {
+        speed: 75,
+        neighbourRadius: 6000,
+        alignmentWeighting: 0.005,
+        cohesionWeighting: 0.075,
+        separationWeighting: 0.1,
+        viewAngle: 12,
+        underwater: false
+      });
 
       this.boids.push(boids);
     });
