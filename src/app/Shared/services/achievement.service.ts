@@ -9,6 +9,7 @@ import MathUtils from '@shared/utils/Math.utils';
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
 import { TROPHIES } from '@achievements/constants/trophies.constants';
 import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
+import { TROPHY_TYPE } from '@shared/enums/trophyType.enum';
 
 import { PROGRESSION_TROPHIES_STORAG_KEYS } from '@achievements/constants/progressionTrophiesStorageKeys.constants';
 import { progressionSvc } from './progression.service';
@@ -82,7 +83,10 @@ class AchievementService {
 
     this.monitoringSvc.sendEvent(this.monitoringSvc.categories.trophy, this.monitoringSvc.actions.completed, snakeCase(trophy.value));
 
-    progressionSvc.setValue(PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage, MathUtils.percent(this.storageSvc.getTrophiesCompleted(), this.trophies));
+    progressionSvc.setValue(
+      PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage,
+      MathUtils.percent(this.storageSvc.getTrophiesCompleted(), this.trophies.filter((trophy: ITrophy) => trophy.type !== TROPHY_TYPE.TROPHY))
+    );
   }
 
 }
