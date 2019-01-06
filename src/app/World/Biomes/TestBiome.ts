@@ -2,6 +2,7 @@ import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 
 import { IBiome } from '@shared/models/biome.model';
+
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
 class TestBiome extends Biome {

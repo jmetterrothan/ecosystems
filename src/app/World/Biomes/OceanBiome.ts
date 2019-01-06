@@ -6,14 +6,15 @@ import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
-import Boids from '@boids/Boids';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
-import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { IPick } from '@shared/models/pick.model';
 
+import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
+
+import Boids from '@boids/Boids';
 
 class OceanBiome extends Biome {
   private spike: number;
@@ -89,7 +90,7 @@ class OceanBiome extends Biome {
         nb,
       );
 
-      boids.generate(this.generator, type.config);
+      boids.generate(type.config);
 
       this.boids.push(boids);
     });

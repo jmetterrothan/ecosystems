@@ -1,9 +1,10 @@
 import * as THREE from 'three';
 
-import CommonUtils from '@shared/utils/Common.utils';
-
 import { IConfig } from '@shared/models/graphicsConfig.model';
+
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
+
+import CommonUtils from '@shared/utils/Common.utils';
 
 const GLOBAL_CONFIG = {
   DEBUG: CommonUtils.isDev(),

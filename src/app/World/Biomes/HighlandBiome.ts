@@ -65,7 +65,7 @@ class HighlandBiome extends Biome {
           MathUtils.randomInt(1, 4)
         );
 
-        boids.generate(this.generator, {
+        boids.generate({
           speed: 7500,
           neighbourRadius: 6000,
           alignmentWeighting: 0.005,

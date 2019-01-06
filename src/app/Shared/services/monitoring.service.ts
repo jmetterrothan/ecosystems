@@ -1,6 +1,7 @@
 import { configSvc } from './graphicsConfig.service';
 
 import { IEventAction, IEventCategory } from '@shared/models/monitoring.model';
+
 import { EVENT_CATEGORY, EVENT_ACTION } from '@shared/constants/monitoring.constants';
 
 class MonitoringService {

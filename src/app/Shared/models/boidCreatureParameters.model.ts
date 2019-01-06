@@ -1,5 +1,4 @@
-export interface BoidCreatureParameters
-{
+export interface BoidCreatureParameters {
   neighbourRadius: number;
   alignmentWeighting: number;
   cohesionWeighting: number;

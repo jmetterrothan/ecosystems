@@ -1,28 +1,31 @@
 import * as THREE from 'three';
-
 import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
+import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
+
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import Chunk from '@world/Chunk';
-import Player from '../Player';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Weather from '@world/Weather';
-import MathUtils from '@utils/Math.utils';
-import TestBiome from './Biomes/TestBiome';
+import Player from '@app/Player';
+
+import { ITexture } from '@shared/models/texture.model';
 
 import { OBJECTS } from '@shared/constants/object.constants';
 import { TEXTURES } from '@shared/constants/texture.constants';
-import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
-import { ITexture } from '@shared/models/texture.model';
 
-import { configSvc } from '@shared/services/graphicsConfig.service';
+import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+
+import MathUtils from '@utils/Math.utils';
+
+import OceanBiome from '@world/Biomes/OceanBiome';
 
 class World {
   static readonly SEED: string | null = null;
-  static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
+  static readonly BIOME: Biome | null = OceanBiome; // lock a specific biome here, if null a biome is selected randomly
   static readonly EMPTY: boolean = false;
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
@@ -49,6 +52,8 @@ class World {
   private raycaster: THREE.Raycaster;
   private seed: string;
 
+  private configScv: GraphicsConfigService;
+
   /**
    * World constructor
    * @param {THREE.Scene} scene
@@ -62,6 +67,8 @@ class World {
 
     this.frustum = new THREE.Frustum();
     this.raycaster = new THREE.Raycaster();
+
+    this.configScv = configSvc;
   }
 
   async init() {

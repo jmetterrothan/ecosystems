@@ -6,19 +6,21 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import Coord from '@world/Coord';
 import Biome from '@world/Biome';
 import MathUtils from '@shared/utils/Math.utils';
-import Crosshair from '../UI/Crosshair';
+import Crosshair from '@ui/Crosshair';
 
-import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
-import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
+import UnderwaterService, { underwaterSvc } from '@shared/services/underwater.service';
+import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
+import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
+
 import { WATER_MATERIAL } from '@materials/water.material';
+import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
 
 import { IBiome } from '@shared/models/biome.model';
 import { IPick } from '@shared/models/pick.model';
-import { underwaterSvc } from '@shared/services/underwater.service';
 
-import { configSvc } from '@shared/services/graphicsConfig.service';
-import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
+
+import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 import CommonUtils from '@shared/utils/Common.utils';
 
@@ -53,6 +55,8 @@ class Terrain {
   private layers: THREE.Group;
 
   private progressionSvc: ProgressionService;
+  private underwaterSvc: UnderwaterService;
+  private configSvc: GraphicsConfigService;
 
   // preview
   private previewItem: IPick;
@@ -79,6 +83,8 @@ class Terrain {
     this.layers = new THREE.Group();
 
     this.progressionSvc = progressionSvc;
+    this.underwaterSvc = underwaterSvc;
+    this.configSvc = configSvc;
 
     this.chunk = new Coord();
     this.start = new Coord();
@@ -570,13 +576,13 @@ class Terrain {
     this.water.receiveShadow = true;
     this.layers.add(this.water);
 
-    if (configSvc.config.DEBUG) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
+    if (this.configSvc.config.DEBUG) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
 
     this.scene.add(this.layers);
   }
 
   private initUnderwater() {
-    underwaterSvc.observable$.subscribe(
+    this.underwaterSvc.observable$.subscribe(
       () => {
         if (this.previewObject) {
           this.scene.remove(this.previewObject);

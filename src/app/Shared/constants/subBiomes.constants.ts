@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import Chunk from '@world/Chunk';
+
 import { IBiomes } from '@shared/models/biomes.model';
 
 export const SUB_BIOMES: IBiomes = {

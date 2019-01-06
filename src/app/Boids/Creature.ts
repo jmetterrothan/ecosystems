@@ -4,31 +4,33 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 import MathUtils from '@utils/Math.utils';
 
-import { playerSvc } from '@shared/services/player.service';
+import PlayerService, { playerSvc } from '@shared/services/player.service';
 import { BoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
 
 class Creature {
   static SPEED: number = 100;
 
-  position: THREE.Vector3;
-  velocity: THREE.Vector3;
-  speed: number;
+  private position: THREE.Vector3;
+  private velocity: THREE.Vector3;
+  private speed: number;
 
-  minRepulseDistance: number = 30000;
+  private minRepulseDistance: number = 30000;
 
-  model: THREE.Object3D;
-  parameters: BoidCreatureParameters;
+  private model: THREE.Object3D;
+  private parameters: BoidCreatureParameters;
 
-  avoidTarget: THREE.Vector3 = null;
+  private boidsBoundingBox: THREE.Vector3;
+  private boidsOrigin: THREE.Vector3;
 
-  protected boidsBoundingBox: THREE.Vector3;
-  protected boidsOrigin: THREE.Vector3;
+  private playerSvc: PlayerService;
 
   constructor(position: THREE.Vector3, velocity: THREE.Vector3, model: THREE.Object3D, parameters: BoidCreatureParameters) {
     this.position = position;
     this.velocity = velocity;
     this.model = model;
     this.parameters = parameters;
+
+    this.playerSvc = playerSvc;
 
     this.speed = this.parameters.speed + MathUtils.randomInt(-10, 10); // TODO: improve the random factor (put it higher)
   }
@@ -46,7 +48,7 @@ class Creature {
     this.velocity.add(avoidance);
 
     // player repel
-    const repulse = this.calculateRepel(playerSvc.getPosition());
+    const repulse = this.calculateRepel(this.playerSvc.getPosition());
     this.velocity.add(repulse);
 
     // terrain repel
@@ -70,16 +72,16 @@ class Creature {
     this.updateModel();
   }
 
+  getPosition(): THREE.Vector3 {
+    return this.position;
+  }
+
   setBoidsBoundingBox(box: THREE.Vector3) {
     this.boidsBoundingBox = box;
   }
 
   setOriginPoint(origin: THREE.Vector3) {
     this.boidsOrigin = origin;
-  }
-
-  setAvoidTarget(target: THREE.Vector3) {
-    this.avoidTarget = target;
   }
 
   steer(target: THREE.Vector3, wieghting: number = 1): THREE.Vector3 {

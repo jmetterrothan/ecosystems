@@ -1,5 +1,3 @@
-import { IMinMax } from '@shared/models/biomeWeightedObject.model';
-
 class MathUtils {
 
   static rng = null; // current random number generator shared across the app

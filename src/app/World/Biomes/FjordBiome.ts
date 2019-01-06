@@ -2,10 +2,12 @@ import Biome from '@world/Biome';
 import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
-import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
+
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
+
+import MathUtils from '@shared/utils/Math.utils';
 
 class FjordBiome extends Biome {
   private e: number;
@@ -42,7 +44,7 @@ class FjordBiome extends Biome {
     return e ** this.e - 0.1;
   }
 
-  getParametersAt(e: number, m: number) : IBiome {
+  getParametersAt(e: number, m: number): IBiome {
     if (e > Chunk.CLOUD_ELEVATION + 0.02) {
       if (m > 0.5) return SUB_BIOMES.FJORD_SNOW_CAP;
       return SUB_BIOMES.MOUNTAIN;

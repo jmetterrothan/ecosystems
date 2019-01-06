@@ -1,18 +1,19 @@
 import snakeCase from 'snake-case';
 
-import StorageService, { storageSvc } from './storage.service';
-import MonitoringService, { monitoringSvc } from './monitoring.service';
+import StorageService, { storageSvc } from '@services/storage.service';
+import MonitoringService, { monitoringSvc } from '@services/monitoring.service';
+import { progressionSvc } from './progression.service';
 
 import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
-import MathUtils from '@shared/utils/Math.utils';
 
+import { PROGRESSION_TROPHIES_STORAG_KEYS } from '@achievements/constants/progressionTrophiesStorageKeys.constants';
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
+
 import { TROPHIES } from '@achievements/constants/trophies.constants';
 import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
 import { TROPHY_TYPE } from '@shared/enums/trophyType.enum';
 
-import { PROGRESSION_TROPHIES_STORAG_KEYS } from '@achievements/constants/progressionTrophiesStorageKeys.constants';
-import { progressionSvc } from './progression.service';
+import MathUtils from '@shared/utils/Math.utils';
 
 class AchievementService {
 
