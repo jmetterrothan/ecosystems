@@ -39,7 +39,7 @@ class OceanBiome extends Biome {
 
   init(scene: THREE.Scene, terrain: Terrain) {
     const smin = 80000;
-    const smax = 160000;
+    const smax = 140000;
     const s = MathUtils.randomFloat(smin, smax);
 
     const pds = new poissonDiskSampling([Terrain.SIZE_X - s, Terrain.SIZE_Z - s], s, s, 30, MathUtils.rng);
@@ -78,8 +78,8 @@ class OceanBiome extends Biome {
       const px = s / 2 + point.shift();
       const pz = s / 2 + point.shift();
 
-      const sy = MathUtils.randomFloat(Chunk.HEIGHT / 3, Chunk.HEIGHT / 2);
-      const py = -Chunk.HEIGHT / 2 + sy / 2;
+      const sy = MathUtils.randomFloat(Chunk.HEIGHT / 3.75, Chunk.HEIGHT / 3);
+      const py = Chunk.SEA_LEVEL - sy / 2;
 
       // fishs
       const boids = new Boids(
