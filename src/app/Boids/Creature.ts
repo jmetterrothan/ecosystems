@@ -89,7 +89,7 @@ class Creature {
       if (this.position.z + this.boidsOrigin.z > Terrain.SIZE_Z) { this.position.z = Terrain.SIZE_Z - this.boidsOrigin.z; }
     }
 
-    this.updateModel();
+    this.updateModel(delta);
   }
 
   getPosition(): THREE.Vector3 {
@@ -122,12 +122,14 @@ class Creature {
     return v;
   }
 
-  private updateModel() {
-    const v = this.position.clone().add(this.boidsOrigin);
+  private updateModel(delta: number) {
+    const v1 = this.position.clone().add(this.boidsOrigin);
 
-    this.model.position.copy(v);
-    this.model.rotation.y = Math.atan2(-this.velocity.z, this.velocity.x);
-    this.model.rotation.z = Math.asin(this.velocity.y / this.velocity.length());
+    this.model.position.copy(v1);
+
+    const v2 = this.velocity.clone().multiplyScalar(delta);
+    this.model.rotation.y = Math.atan2(-v2.z, v2.x);
+    this.model.rotation.z = Math.asin(v2.y / v2.length());
   }
 
   private calculateInteraction(creatures: Creature[]): THREE.Vector3 {
