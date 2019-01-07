@@ -9,6 +9,7 @@ import PlayerService, { playerSvc } from '@shared/services/player.service';
 import { BoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
 
 import MathUtils from '@utils/Math.utils';
+import Terrain from '@app/World/Terrain';
 
 class Creature {
   static SPEED: number = 100;
@@ -51,33 +52,42 @@ class Creature {
     const avoidance = this.calculateBoundsAvoidance();
     this.velocity.add(avoidance);
 
-    // player repel
-    const repulse = this.calculateRepel(this.playerSvc.getPosition());
-    this.velocity.add(repulse);
-
     // terrain repel
     const wp = this.position.clone().add(this.velocity.clone().normalize().multiplyScalar(this.speed * delta)).add(this.boidsOrigin);
     const y = generator.computeHeightAt(wp.x, wp.z);
     const by = (this.parameters.underwater ? y : Math.max(y, Chunk.SEA_LEVEL)) - this.boidsOrigin.y;
     const d = Math.sqrt((by - this.position.y) * (by - this.position.y)) / Chunk.HEIGHT;
-    const td = 8192 / Chunk.HEIGHT;
+    const td = 4096 / Chunk.HEIGHT;
 
     if (d <= td) {
       const ground = new THREE.Vector3(this.position.x, by, this.position.z);
-      const repulse2 = this.repulse(ground, 1);
+      const repulse2 = this.repulse(ground, 1 / d);
 
       this.velocity.add(repulse2);
-    }
-
-    // world edge repel
-    if (this.parameters.underwater && !World.pointInWorld(this.position.clone().add(this.boidsOrigin))) {
-      this.velocity.x = -this.velocity.x;
-      this.velocity.z = -this.velocity.z;
+    } else {
+      // only apply if creature is not repelled by the ground
+      if (
+        this.position.x > -this.boidsBoundingBox.x &&
+        this.position.z > -this.boidsBoundingBox.x &&
+        this.position.x < this.boidsBoundingBox.x &&
+        this.position.z < this.boidsBoundingBox.z) {
+        // player repel
+        const repulse = this.calculateRepel(this.playerSvc.getPosition());
+        this.velocity.add(repulse);
+      }
     }
 
     // apply transformation
     this.velocity.normalize();
     this.position.add(this.velocity.clone().multiplyScalar(this.speed * delta));
+
+    if (this.parameters.underwater) {
+      if (this.position.y + this.boidsOrigin.y > 0) { this.position.y = -this.boidsOrigin.y; }
+      if (this.position.x + this.boidsOrigin.x < 0) { this.position.x = -this.boidsOrigin.x; }
+      if (this.position.z + this.boidsOrigin.z < 0) { this.position.z = -this.boidsOrigin.z; }
+      if (this.position.x + this.boidsOrigin.x > Terrain.SIZE_X) { this.position.x = Terrain.SIZE_X - this.boidsOrigin.x; }
+      if (this.position.z + this.boidsOrigin.z > Terrain.SIZE_Z) { this.position.z = Terrain.SIZE_Z - this.boidsOrigin.z; }
+    }
 
     this.updateModel();
   }
@@ -194,12 +204,12 @@ class Creature {
     const distance = this.position.clone().add(this.boidsOrigin).distanceTo(target);
 
     if (distance < this.minRepulseDistance) {
-      const forceWeighting = 5 / distance;
+      const forceWeighting = 1 / distance;
       v.subVectors(this.position.clone().add(this.boidsOrigin), target);
       v.multiplyScalar(forceWeighting);
-      this.speed += 750;
+      this.speed += 350;
     } else if (this.speed > this.parameters.speed) {
-      this.speed -= 750;
+      this.speed -= 350;
     } else {
       this.speed = this.parameters.speed;
     }
