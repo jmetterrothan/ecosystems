@@ -10,5 +10,6 @@ export interface ITranslationKeys {
   travelled_distance_counter: string;
   repulse_fishes: string;
   repulse_butterflies: string;
+  find_captain_treasure: string;
   unlock_trophy_percentage: string;
 }

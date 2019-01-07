@@ -155,6 +155,15 @@ export const TROPHIES: ITrophy[] = [
       { name: 'repulse butterflies', value: PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_butterflies }
     ]
   },
+  {
+    name: { key: TRANSLATION_KEYS.find_captain_treasure },
+    value: 'find captain treasure',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    checklist: [
+      { name: 'find captain treasure', value: PROGRESSION_EXTRAS_STORAGE_KEYS.find_captain_treasure }
+    ]
+  },
   // TROPHIES
   {
     name: { key: TRANSLATION_KEYS.unlock_trophy_percentage, options: { counter: 25 } },

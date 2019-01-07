@@ -100,7 +100,6 @@ class Boids {
 
     const someCreaturesRepulsed = this.creatures.some((creature: Creature) => creature.getModelPosition().distanceTo(this.playerSvc.getPosition()) < creature.getMinRepulseDistance());
     if (someCreaturesRepulsed) {
-      console.log('ok');
       this.progressionSvc.increment(this.creatures[0].getParameters().underwater
         ? PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_fishes
         : PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_butterflies);

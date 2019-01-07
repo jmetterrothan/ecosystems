@@ -12,5 +12,6 @@ export const TRANSLATION_KEYS: ITranslationKeys = {
   travelled_distance_counter: 'travelled_distance_counter',
   repulse_fishes: 'repulse_fishes',
   repulse_butterflies: 'repulse_butterflies',
+  find_captain_treasure: 'find_captain_treasure',
   unlock_trophy_percentage: 'unlock_trophy_percentage'
 };
