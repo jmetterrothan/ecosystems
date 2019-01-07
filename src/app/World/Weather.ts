@@ -17,6 +17,16 @@ class Weather {
   private clouds: THREE.Group;
   private wind: THREE.Vector3;
 
+  private startTime: number;
+
+  // lights
+  private sunlight: THREE.DirectionalLight;
+  private lightHelper: THREE.ArrowHelper;
+
+  // sun objects
+  private sun: THREE.Mesh;
+  private target: THREE.Mesh;
+
   /**
    * Weather constructor
    * @param {THREE.Scene} scene
@@ -25,6 +35,8 @@ class Weather {
   constructor(scene: THREE.Scene, generator: BiomeGenerator) {
     this.scene = scene;
     this.generator = generator;
+
+    this.startTime = window.performance.now();
   }
 
   /**
@@ -32,6 +44,7 @@ class Weather {
    */
   update(delta: number) {
     this.updateClouds(delta);
+    this.updateSun();
   }
 
   initClouds() {
@@ -91,6 +104,55 @@ class Weather {
       cloud.userData = data;
 
     });
+  }
+
+  initLights() {
+    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.75);
+    light.position.set(0, Chunk.SEA_LEVEL, 0);
+    light.castShadow = false;
+    this.scene.add(light);
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.275);
+    ambient.position.set(0, Chunk.HEIGHT, 15000);
+    ambient.castShadow = false;
+    this.scene.add(ambient);
+
+    const d = 1000000;
+    this.sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
+
+    this.sunlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
+    this.sunlight.target.updateMatrixWorld(true);
+
+    this.sunlight.position.set(Terrain.SIZE_X / 2, Chunk.HEIGHT, Terrain.SIZE_Z / 2);
+
+    this.sunlight.castShadow = true;
+    this.sunlight.shadow.mapSize.width = 4096;
+    this.sunlight.shadow.mapSize.height = 4096;
+    this.sunlight.shadow.camera.visible = true;
+    this.sunlight.shadow.camera.castShadow = true;
+    this.sunlight.shadow.bias = 0.0001;
+    this.sunlight.shadow.camera.left = -d;
+    this.sunlight.shadow.camera.right = d;
+    this.sunlight.shadow.camera.top = d;
+    this.sunlight.shadow.camera.bottom = -d;
+    this.sunlight.shadow.camera.near = 150;
+    this.sunlight.shadow.camera.far = 1000000;
+
+    this.sun = new THREE.Mesh(new THREE.SphereGeometry(5000, 24, 24), new THREE.MeshBasicMaterial({ color: 'red' }));
+    this.sun.position.copy(this.sunlight.position);
+
+    this.target = new THREE.Mesh(new THREE.SphereGeometry(5000, 24, 24), new THREE.MeshBasicMaterial({ color: 'green' }));
+    this.target.position.copy(this.sunlight.target.position);
+
+    this.scene.add(this.sun, this.target);
+
+    if (configSvc.config.DEBUG) {
+      const dirHelper = new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize();
+      this.lightHelper = new THREE.ArrowHelper(dirHelper, this.sunlight.position.clone(), Chunk.HEIGHT, 0xff0000, 10000);
+      this.scene.add(this.lightHelper);
+    }
+
+    this.scene.add(this.sunlight);
   }
 
   /**
@@ -160,6 +222,21 @@ class Weather {
       rainData.particles.verticesNeedUpdate = true;
 
     }
+  }
+
+  private updateSun() {
+    const elapsedTime = (window.performance.now() - this.startTime) / 5000;
+
+    this.sunlight.position.x = Terrain.SIZE_X / 2 + Chunk.HEIGHT * Math.cos(elapsedTime);
+    this.sunlight.position.y = Chunk.HEIGHT * Math.sin(elapsedTime);
+
+    this.sun.position.copy(this.sunlight.position);
+    this.target.position.copy(this.sunlight.target.position);
+
+    this.lightHelper.position.copy(this.sunlight.position);
+    this.lightHelper.setDirection(new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize());
+
+    this.sunlight.shadow.camera.updateProjectionMatrix();
   }
 
   getClouds(): THREE.Group {

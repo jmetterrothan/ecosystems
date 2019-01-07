@@ -79,7 +79,7 @@ class World {
   async init() {
     this.initSeed();
     this.initFog();
-    this.initLights();
+    // this.initLights();
     await this.initObjects();
     await this.initTextures();
 
@@ -89,6 +89,7 @@ class World {
 
     this.weather = new Weather(this.scene, this.generator);
     this.weather.initClouds();
+    this.weather.initLights();
 
     this.terrain.init();
     this.terrain.preload();
@@ -137,48 +138,6 @@ class World {
 
       this.scene.fog = new THREE.Fog(World.FOG_COLOR, near, far);
     }
-  }
-
-  private initLights() {
-    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.75);
-    light.position.set(0, Chunk.SEA_LEVEL, 0);
-    light.castShadow = false;
-    this.scene.add(light);
-
-    const ambient = new THREE.AmbientLight(0xffffff, 0.275);
-    ambient.position.set(0, Chunk.HEIGHT, 15000);
-    ambient.castShadow = false;
-    this.scene.add(ambient);
-
-    const d = 1000000;
-    this.sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
-    // this.sunlight.position.set(0, Chunk.HEIGHT, 0);
-    this.sunlightTarget.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
-    this.sunlight.translateX(Terrain.SIZE_X / 2);
-    this.sunlight.translateZ(Terrain.SIZE_Z / 2);
-    this.sunlight.translateY(Chunk.HEIGHT);
-
-    this.sunlight.target = this.sunlightTarget;
-    this.sunlight.castShadow = true;
-    this.sunlight.shadow.mapSize.width = 4096;
-    this.sunlight.shadow.mapSize.height = 4096;
-    this.sunlight.shadow.camera.visible = true;
-    this.sunlight.shadow.camera.castShadow = true;
-    this.sunlight.shadow.bias = 0.0001;
-    this.sunlight.shadow.camera.left = -d;
-    this.sunlight.shadow.camera.right = d;
-    this.sunlight.shadow.camera.top = d;
-    this.sunlight.shadow.camera.bottom = -d;
-    this.sunlight.shadow.camera.near = 150;
-    this.sunlight.shadow.camera.far = 1000000;
-
-    if (configSvc.config.DEBUG) {
-      const dirHelper = new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize();
-      this.lightHelper = new THREE.ArrowHelper(dirHelper, this.sunlight.position.clone(), Chunk.HEIGHT, 0xff0000, 10000);
-      this.scene.add(this.lightHelper);
-    }
-
-    this.scene.add(this.sunlight);
   }
 
   /**
@@ -236,7 +195,6 @@ class World {
     this.player.update(this.terrain, delta);
     this.weather.update(delta);
     this.generator.getBiome().update(delta);
-    this.updateSunlight();
   }
 
   /**
@@ -327,21 +285,6 @@ class World {
         }, null, () => reject());
       }, null, () => reject());
     });
-  }
-
-  private updateSunlight() {
-    // change position here
-    const elapsedTime = (window.performance.now() - this.timerStart) / 10000;
-    this.sunlight.position.x = Chunk.HEIGHT * Math.cos(elapsedTime);
-    this.sunlight.position.y = Chunk.HEIGHT * Math.sin(elapsedTime);
-    // this.sunlight.translateX(Chunk.HEIGHT * Math.cos(elapsedTime));
-    // this.sunlight.translateY(Chunk.HEIGHT * Math.sin(elapsedTime));
-
-    if (configSvc.config.DEBUG) {
-      this.lightHelper.setDirection(new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize());
-    }
-
-    this.sunlight.shadow.camera.updateProjectionMatrix();
   }
 
 }
