@@ -70,6 +70,7 @@ class Weather {
   update(delta: number) {
     this.updateClouds(delta);
     this.updateSun();
+    this.updateLights();
     this.updateStars();
   }
 
@@ -138,7 +139,7 @@ class Weather {
     light.castShadow = false;
     this.scene.add(light);
 
-    this.ambientLight = new THREE.AmbientLight(0xffffff, 0.275);
+    this.ambientLight = new THREE.AmbientLight(0xB1D8FF, 0.4);
     this.ambientLight.position.set(0, Chunk.HEIGHT, 15000);
     this.ambientLight.castShadow = false;
     this.scene.add(this.ambientLight);
@@ -264,7 +265,7 @@ class Weather {
   }
 
   private updateSun() {
-    const elapsedTime = (window.performance.now() - this.startTime) / 1000; // 60000
+    const elapsedTime = (window.performance.now() - this.startTime) / 3000; // 60000
 
     const x = Terrain.SIZE_X / 2 + Chunk.HEIGHT * Math.cos(elapsedTime);
     const y = Chunk.HEIGHT * Math.sin(elapsedTime);
@@ -280,14 +281,17 @@ class Weather {
     this.sunlight.shadow.camera.updateProjectionMatrix();
     this.moonlight.shadow.camera.updateProjectionMatrix();
 
-    // uupdate light
-    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.04, 0.3);
-    if (y > 0) this.computeFogColor(y);
-
     if (this.configSvc.config.DEBUG) {
       this.lightHelper.position.copy(this.sunlight.position);
       this.lightHelper.setDirection(new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize());
     }
+  }
+
+  private updateLights() {
+    const y = this.sunlight.position.y;
+
+    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.05, 0.3);
+    if (y > 0) this.computeFogColor(y);
   }
 
   private updateStars() {
@@ -335,7 +339,7 @@ class Weather {
 
   private initMoonlight() {
     const d = 1000000;
-    this.moonlight = new THREE.DirectionalLight(0xffffff, 0.05);
+    this.moonlight = new THREE.DirectionalLight(0x5FEBDF, 0.20);
 
     this.moonlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.moonlight.target.updateMatrixWorld(true);
