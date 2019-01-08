@@ -62,6 +62,8 @@ class Player {
     this.controls.getObject().rotateY(-Math.PI / 4);
     this.controls.getObject().children[0].rotateX(angle);
     this.position = spawn;
+
+    this.playerSvc.setPosition(spawn);
   }
 
   /**

@@ -79,6 +79,13 @@ class World {
   async init() {
     this.initSeed();
 
+    // entities
+    const spawn = new THREE.Vector3(-24000, Terrain.SIZE_Y, Terrain.SIZE_Z + 24000);
+    const target = new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
+
+    this.player = new Player(this.controls);
+    this.player.init(spawn, target);
+
     // terrain
     this.generator = new BiomeGenerator();
     this.terrain = new Terrain(this.scene, this, this.generator);
@@ -95,13 +102,6 @@ class World {
     this.weather.initRain();
 
     this.generator.getBiome().init(this.scene, this.terrain);
-
-    // entities
-    const spawn = new THREE.Vector3(-24000, Terrain.SIZE_Y, Terrain.SIZE_Z + 24000);
-    const target = new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
-
-    this.player = new Player(this.controls);
-    this.player.init(spawn, target);
 
     this.scene.add(this.controls.getObject());
 

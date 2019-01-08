@@ -169,6 +169,8 @@ class Weather {
     const starsCount: number = 1000;
     const stars = new THREE.Geometry();
 
+    const position = this.playerSvc.getPosition();
+
     for (let i = 0; i < starsCount; i++) {
 
       const u = Math.random();
@@ -177,9 +179,9 @@ class Weather {
       const theta = 2 * Math.PI * u;
       const phi = Math.acos(2 * v - 1);
 
-      const x = Terrain.SIZE_X / 2 + (radius * Math.sin(phi) * Math.cos(theta));
-      const y = radius * Math.sin(phi) * Math.sin(theta);
-      const z = Terrain.SIZE_Z / 2 + (radius * Math.cos(phi));
+      const x = (radius * Math.sin(phi) * Math.cos(theta));
+      const y = (radius * Math.sin(phi) * Math.sin(theta));
+      const z = (radius * Math.cos(phi));
 
       stars.vertices.push(new THREE.Vector3(x, y, z));
     }
@@ -193,6 +195,7 @@ class Weather {
     });
 
     this.starsSystem = new THREE.Points(stars, material);
+    this.starsSystem.position.copy(position);
     this.starsSystem.frustumCulled = false;
 
     this.scene.add(this.starsSystem);
