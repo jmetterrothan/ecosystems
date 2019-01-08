@@ -133,8 +133,8 @@ class World {
 
   private initFog() {
     if (World.SHOW_FOG) {
-      const near = configSvc.config.MAX_RENDERABLE_CHUNKS * ((Chunk.WIDTH + Chunk.DEPTH) / 2);
       const far = configSvc.config.MAX_RENDERABLE_CHUNKS * ((Chunk.WIDTH + Chunk.DEPTH) / 2);
+      const near = far / 2;
 
       this.scene.fog = new THREE.Fog(World.FOG_COLOR, near, far);
     }
