@@ -39,7 +39,6 @@ class Weather {
   // sun objects
   private sun: THREE.Mesh;
   private moon: THREE.Mesh;
-  private target: THREE.Mesh;
 
   private fogColor: THREE.Color = new THREE.Color();
   /**
@@ -153,10 +152,7 @@ class Weather {
     this.moon = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'blue' }));
     this.moon.position.copy(this.sunlight.position);
 
-    this.target = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'green' }));
-    this.target.position.copy(this.sunlight.target.position);
-
-    this.scene.add(this.sun, this.moon, this.target);
+    this.scene.add(this.sun, this.moon);
 
     if (configSvc.config.DEBUG) {
       const dirHelper = new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize();
@@ -169,13 +165,11 @@ class Weather {
     const starsCount: number = 1000;
     const stars = new THREE.Geometry();
 
-    const position = this.playerSvc.getPosition();
-
     for (let i = 0; i < starsCount; i++) {
 
       const u = Math.random();
       const v = Math.random();
-      const radius = Chunk.HEIGHT * 2;
+      const radius = Chunk.HEIGHT * 2.5;
       const theta = 2 * Math.PI * u;
       const phi = Math.acos(2 * v - 1);
 
@@ -195,7 +189,7 @@ class Weather {
     });
 
     this.starsSystem = new THREE.Points(stars, material);
-    this.starsSystem.position.copy(position);
+    this.starsSystem.position.copy(this.playerSvc.getPosition());
     this.starsSystem.frustumCulled = false;
 
     this.scene.add(this.starsSystem);
@@ -270,7 +264,7 @@ class Weather {
   }
 
   private updateSun() {
-    const elapsedTime = (window.performance.now() - this.startTime) / 60000;
+    const elapsedTime = (window.performance.now() - this.startTime) / 1000; // 60000
 
     const x = Terrain.SIZE_X / 2 + Chunk.HEIGHT * Math.cos(elapsedTime);
     const y = Chunk.HEIGHT * Math.sin(elapsedTime);
@@ -282,7 +276,6 @@ class Weather {
 
     this.sun.position.copy(this.sunlight.position);
     this.moon.position.copy(this.moonlight.position);
-    this.target.position.copy(this.sunlight.target.position);
 
     this.sunlight.shadow.camera.updateProjectionMatrix();
     this.moonlight.shadow.camera.updateProjectionMatrix();
@@ -306,7 +299,7 @@ class Weather {
     const yFloor = Math.floor(y);
 
     if (!Weather.FOG_COLORS.has(yFloor)) {
-      const color = CommonUtils.lerpColor('#212C37', /* '#B1D8FF' */ '#000000', MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0, 1));
+      const color = CommonUtils.lerpColor('#212C37', '#B1D8FF', MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0, 1));
       const threeColor = new THREE.Color(color);
       Weather.FOG_COLORS.set(y, threeColor);
       this.fogColor = threeColor;
