@@ -6,16 +6,21 @@ import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
 
 import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
+import PlayerService, { playerSvc } from '@services/player.service';
 
 import { ICloudData } from '@shared/models/cloudData.model';
 
 import MathUtils from '@shared/utils/Math.utils';
+import CommonUtils from '@app/Shared/utils/Common.utils';
 
 class Weather {
+  private static FOG_COLORS = new Map<number, THREE.Color>();
+
   private scene: THREE.Scene;
   private generator: BiomeGenerator;
 
   private configSvc: GraphicsConfigService;
+  private playerSvc: PlayerService;
 
   private clouds: THREE.Group;
   private wind: THREE.Vector3;
@@ -23,15 +28,20 @@ class Weather {
   private startTime: number;
 
   // lights
+  private ambientLight: THREE.AmbientLight;
   private sunlight: THREE.DirectionalLight;
   private moonlight: THREE.DirectionalLight;
   private lightHelper: THREE.ArrowHelper;
+
+  // stars
+  private starsSystem: THREE.Points;
 
   // sun objects
   private sun: THREE.Mesh;
   private moon: THREE.Mesh;
   private target: THREE.Mesh;
 
+  private fogColor: THREE.Color = new THREE.Color();
   /**
    * Weather constructor
    * @param {THREE.Scene} scene
@@ -42,6 +52,7 @@ class Weather {
     this.generator = generator;
 
     this.configSvc = configSvc;
+    this.playerSvc = playerSvc;
 
     this.startTime = window.performance.now();
   }
@@ -50,12 +61,17 @@ class Weather {
     return this.clouds;
   }
 
+  getFogColor(): THREE.Color {
+    return this.fogColor;
+  }
+
   /**
    * @param {number} delta
    */
   update(delta: number) {
     this.updateClouds(delta);
     this.updateSun();
+    this.updateStars();
   }
 
   initClouds() {
@@ -123,10 +139,10 @@ class Weather {
     light.castShadow = false;
     this.scene.add(light);
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.275);
-    ambient.position.set(0, Chunk.HEIGHT, 15000);
-    ambient.castShadow = false;
-    this.scene.add(ambient);
+    this.ambientLight = new THREE.AmbientLight(0xffffff, 0.275);
+    this.ambientLight.position.set(0, Chunk.HEIGHT, 15000);
+    this.ambientLight.castShadow = false;
+    this.scene.add(this.ambientLight);
 
     this.initSunlight();
     this.initMoonlight();
@@ -147,6 +163,39 @@ class Weather {
       this.lightHelper = new THREE.ArrowHelper(dirHelper, this.sunlight.position.clone(), Chunk.HEIGHT, 0xff0000, 10000);
       this.scene.add(this.lightHelper);
     }
+  }
+
+  initStars() {
+    const starsCount: number = 1000;
+    const stars = new THREE.Geometry();
+
+    for (let i = 0; i < starsCount; i++) {
+
+      const u = Math.random();
+      const v = Math.random();
+      const radius = Chunk.HEIGHT * 2;
+      const theta = 2 * Math.PI * u;
+      const phi = Math.acos(2 * v - 1);
+
+      const x = Terrain.SIZE_X / 2 + (radius * Math.sin(phi) * Math.cos(theta));
+      const y = radius * Math.sin(phi) * Math.sin(theta);
+      const z = Terrain.SIZE_Z / 2 + (radius * Math.cos(phi));
+
+      stars.vertices.push(new THREE.Vector3(x, y, z));
+    }
+
+    const material = new THREE.PointsMaterial({
+      size: 3000,
+      color: 'white',
+      transparent: true,
+      opacity: 0.9,
+      fog: false
+    });
+
+    this.starsSystem = new THREE.Points(stars, material);
+    this.starsSystem.frustumCulled = false;
+
+    this.scene.add(this.starsSystem);
   }
 
   /**
@@ -214,27 +263,53 @@ class Weather {
       });
 
       rainData.particles.verticesNeedUpdate = true;
-
     }
   }
 
   private updateSun() {
-    const elapsedTime = (window.performance.now() - this.startTime) / 5000;
+    const elapsedTime = (window.performance.now() - this.startTime) / 60000;
 
-    this.sunlight.position.x = Terrain.SIZE_X / 2 + Chunk.HEIGHT * Math.cos(elapsedTime);
-    this.sunlight.position.y = Chunk.HEIGHT * Math.sin(elapsedTime);
+    const x = Terrain.SIZE_X / 2 + Chunk.HEIGHT * Math.cos(elapsedTime);
+    const y = Chunk.HEIGHT * Math.sin(elapsedTime);
 
-    this.moonlight.position.set(Terrain.SIZE_X - this.sun.position.x, -this.sun.position.y, this.sun.position.z);
+    this.sunlight.position.setX(x);
+    this.sunlight.position.setY(y);
+
+    this.moonlight.position.set(Terrain.SIZE_X - this.sun.position.x, -y, this.sun.position.z);
 
     this.sun.position.copy(this.sunlight.position);
     this.moon.position.copy(this.moonlight.position);
     this.target.position.copy(this.sunlight.target.position);
 
-    this.lightHelper.position.copy(this.sunlight.position);
-    this.lightHelper.setDirection(new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize());
-
     this.sunlight.shadow.camera.updateProjectionMatrix();
     this.moonlight.shadow.camera.updateProjectionMatrix();
+
+    // uupdate light
+    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.04, 0.3);
+    if (y > 0) this.computeFogColor(y);
+
+    if (this.configSvc.config.DEBUG) {
+      this.lightHelper.position.copy(this.sunlight.position);
+      this.lightHelper.setDirection(new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize());
+    }
+  }
+
+  private updateStars() {
+    const position = this.playerSvc.getPosition();
+    this.starsSystem.position.copy(position);
+  }
+
+  private computeFogColor(y: number) {
+    const yFloor = Math.floor(y);
+
+    if (!Weather.FOG_COLORS.has(yFloor)) {
+      const color = CommonUtils.lerpColor('#212C37', /* '#B1D8FF' */ '#000000', MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0, 1));
+      const threeColor = new THREE.Color(color);
+      Weather.FOG_COLORS.set(y, threeColor);
+      this.fogColor = threeColor;
+    } else {
+      this.fogColor = Weather.FOG_COLORS.get(yFloor);
+    }
   }
 
   private initSunlight() {

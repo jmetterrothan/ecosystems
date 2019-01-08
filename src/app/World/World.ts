@@ -12,10 +12,6 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import Weather from '@world/Weather';
 import Player from '@app/Player';
 
-import { ITexture } from '@shared/models/texture.model';
-
-import { TEXTURES } from '@shared/constants/texture.constants';
-
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 import MathUtils from '@utils/Math.utils';
@@ -82,16 +78,16 @@ class World {
 
   async init() {
     this.initSeed();
-    this.initFog();
-    // this.initLights();
 
     // terrain
     this.generator = new BiomeGenerator();
     this.terrain = new Terrain(this.scene, this, this.generator);
 
     this.weather = new Weather(this.scene, this.generator);
+    this.initFog();
     this.weather.initClouds();
     this.weather.initLights();
+    this.weather.initStars();
 
     this.terrain.init();
     this.terrain.preload();
@@ -138,7 +134,7 @@ class World {
       const far = configSvc.config.MAX_RENDERABLE_CHUNKS * ((Chunk.WIDTH + Chunk.DEPTH) / 2);
       const near = far / 2;
 
-      // this.scene.fog = new THREE.Fog(World.FOG_COLOR, near, far);
+      this.scene.fog = new THREE.Fog(this.getWeather().getFogColor().getHex(), near, far);
     }
   }
 
