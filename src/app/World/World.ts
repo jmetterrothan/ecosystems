@@ -3,7 +3,7 @@ import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
-import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
+import GraphicsConfigService, { configSvc } from '@services/graphicsConfig.service';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
@@ -14,7 +14,6 @@ import Player from '@app/Player';
 
 import { ITexture } from '@shared/models/texture.model';
 
-import { OBJECTS } from '@shared/constants/object.constants';
 import { TEXTURES } from '@shared/constants/texture.constants';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
@@ -69,12 +68,22 @@ class World {
     this.configScv = configSvc;
   }
 
+  getWeather(): Weather {
+    return this.weather;
+  }
+
+  getTerrain(): Terrain {
+    return this.terrain;
+  }
+
+  getGenerator(): BiomeGenerator {
+    return this.generator;
+  }
+
   async init() {
     this.initSeed();
     this.initFog();
     this.initLights();
-    await this.initObjects();
-    await this.initTextures();
 
     // terrain
     this.generator = new BiomeGenerator();
@@ -99,7 +108,7 @@ class World {
 
     this.scene.add(this.controls.getObject());
 
-    if (configSvc.config.DEBUG) {
+    if (this.configScv.config.DEBUG) {
       this.showAxesHelper();
     }
   }
@@ -125,8 +134,8 @@ class World {
 
   private initFog() {
     if (World.SHOW_FOG) {
-      const near = configSvc.config.MAX_RENDERABLE_CHUNKS * ((Chunk.WIDTH + Chunk.DEPTH) / 2);
-      const far = configSvc.config.MAX_RENDERABLE_CHUNKS * ((Chunk.WIDTH + Chunk.DEPTH) / 2);
+      const near = this.configScv.config.MAX_RENDERABLE_CHUNKS * ((Chunk.WIDTH + Chunk.DEPTH) / 2);
+      const far = this.configScv.config.MAX_RENDERABLE_CHUNKS * ((Chunk.WIDTH + Chunk.DEPTH) / 2);
 
       this.scene.fog = new THREE.Fog(World.FOG_COLOR, near, far);
     }
@@ -164,42 +173,6 @@ class World {
     }
 
     this.scene.add(sunlight);
-  }
-
-  /**
-   * Loads all objects
-   * @return {Promise<any>}
-   */
-  private async initObjects(): Promise<any> {
-    // load all models
-    const stack = OBJECTS.map(element => {
-      const p = World.loadObjModel(element);
-
-      return p.then((object) => {
-        object.scale.set(World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE); // scale from maya size to a decent world size
-      });
-    });
-
-    await Promise.all(stack);
-  }
-
-  /**
-   * Loads all textures
-   * @return {Promise<any>}
-   */
-  private initTextures(): Promise<any> {
-    const loader = new THREE.TextureLoader();
-
-    return new Promise(resolve => {
-      TEXTURES.forEach((texture: ITexture) => {
-        if (!World.LOADED_TEXTURES.has(texture.name)) {
-          const img = loader.load(texture.img);
-          World.LOADED_TEXTURES.set(texture.name, img);
-        }
-      });
-      resolve();
-    });
-
   }
 
   /**
@@ -246,76 +219,11 @@ class World {
     this.player.handleKeyboard(key, active);
   }
 
-  getWeather(): Weather {
-    return this.weather;
-  }
-
-  getTerrain(): Terrain {
-    return this.terrain;
-  }
-
-  getGenerator(): BiomeGenerator {
-    return this.generator;
-  }
-
   static pointInWorld(point: THREE.Vector3): boolean {
     const margin: number = 1000;
     return MathUtils.between(point.x, 0 + margin, Terrain.SIZE_X - margin) && MathUtils.between(point.z, 0 + margin, Terrain.SIZE_Z - margin);
   }
 
-  /**
-   * Load an obj file
-   * @param name Name of the object
-   * @param objSrc obj source file path
-   * @param mtlSrc mtl source file path
-   * @return Promise<any>
-   */
-  static async loadObjModel(element): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      if (World.LOADED_MODELS.has(element.name)) {
-        resolve(World.LOADED_MODELS.get(element.name));
-      }
-
-      const objLoader = new THREE.OBJLoader();
-      const mtlLoader = new THREE.MTLLoader();
-
-      mtlLoader.load(element.mtl, (materials) => {
-        materials.preload();
-
-        objLoader.setMaterials(materials);
-
-        objLoader.load(element.obj, (object) => {
-          object.castShadow = true;
-          object.receiveShadow = false;
-          object.frustumCulled = false;
-
-          object.traverse((child) => {
-            if (child instanceof THREE.Mesh) {
-              child.castShadow = true;
-              child.receiveShadow = false;
-              child.frustumCulled = false;
-
-              if (!(child.material instanceof THREE.Material)) {
-                child.material.forEach(material => {
-                  material.flatShading = true;
-                  if (element.doubleSide === true) material.side = THREE.DoubleSide;
-                });
-              } else {
-                child.material.flatShading = true;
-                if (element.doubleSide === true) child.material.side = THREE.DoubleSide;
-              }
-            }
-          });
-
-          World.LOADED_MODELS.set(element.name, object);
-          // const box = new THREE.Box3().setFromObject(object);
-          // const size = box.getSize(new THREE.Vector3(0, 0, 0));
-
-          resolve(object);
-        }, null, () => reject());
-      }, null, () => reject());
-    });
-  }
 }
 
 export default World;

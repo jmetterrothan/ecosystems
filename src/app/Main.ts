@@ -13,9 +13,10 @@ import TranslationService, { translationSvc } from '@shared/services/translation
 import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
 import UnderwaterService, { underwaterSvc } from '@services/underwater.service';
 import StorageService, { storageSvc } from '@services/storage.service';
+import CoreService, { coreSvc } from '@services/core.service';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
-import { GRAPHICS_QUALITY } from './Shared/enums/graphicsQuality.enum';
+import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
 
 class Main {
   private renderer: THREE.WebGLRenderer;
@@ -32,6 +33,7 @@ class Main {
   private focused: boolean;
   private stats: statsJs;
 
+  private coreSvc: CoreService;
   private translationSvc: TranslationService;
   private progressionSvc: ProgressionService;
   private configSvc: GraphicsConfigService;
@@ -42,6 +44,7 @@ class Main {
     this.containerElement = document.body;
     this.lastTime = window.performance.now();
 
+    this.coreSvc = coreSvc;
     this.translationSvc = translationSvc;
     this.progressionSvc = progressionSvc;
     this.configSvc = configSvc;
@@ -80,6 +83,8 @@ class Main {
 
   async init() {
     this.initControls();
+
+    await this.coreSvc.init();
 
     this.progressionSvc.init();
     await this.translationSvc.init();
