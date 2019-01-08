@@ -1,5 +1,8 @@
 import { IObject } from '@shared/models/object.model';
 
+import carrotObj from '@objmodels/vegetables/carrot.obj';
+import carrotMtl from '@objmodels/vegetables/carrot.mtl';
+
 import butterflyObj from '@objmodels/fauna/butterfly.obj';
 import butterflyMtl from '@objmodels/fauna/butterfly.mtl';
 
@@ -8,6 +11,9 @@ import snowy_bushMtl from '@objmodels/tree/snowy_bush.mtl';
 
 import snowmanObj from '@objmodels/misc/snowman.obj';
 import snowmanMtl from '@objmodels/misc/snowman.mtl';
+
+import snowmanNoCarrotObj from '@objmodels/misc/snowman_no_carrot.obj';
+import snowmanNoCarrotMtl from '@objmodels/misc/snowman_no_carrot.mtl';
 
 import chestObj from '@objmodels/misc/chest.obj';
 import chestMtl from '@objmodels/misc/chest.mtl';
@@ -155,6 +161,12 @@ import cloud4Mtl from '@objmodels/cloud/cloud4.mtl';
 
 export const OBJECTS: IObject[] = [
   {
+    name: 'carrot',
+    obj: carrotObj,
+    mtl: carrotMtl,
+    doubleSide: true
+  },
+  {
     name: 'butterfly',
     obj: butterflyObj,
     mtl: butterflyMtl,
@@ -169,6 +181,11 @@ export const OBJECTS: IObject[] = [
     name: 'snowman',
     obj: snowmanObj,
     mtl: snowmanMtl
+  },
+  {
+    name: 'snowman_no_carrot',
+    obj: snowmanNoCarrotObj,
+    mtl: snowmanNoCarrotMtl
   },
   {
     name: 'chest',
