@@ -70,6 +70,7 @@ class Weather {
   update(delta: number) {
     this.updateClouds(delta);
     this.updateSun();
+    this.updateMoon();
     this.updateLights();
     this.updateStars();
   }
@@ -275,13 +276,8 @@ class Weather {
     this.sunlight.position.setX(x);
     this.sunlight.position.setY(y);
 
-    this.moonlight.position.set(Terrain.SIZE_X - this.sun.position.x, -y, this.sun.position.z);
-
     this.sun.position.copy(this.sunlight.position);
-    this.moon.position.copy(this.moonlight.position);
-
     this.sunlight.shadow.camera.updateProjectionMatrix();
-    this.moonlight.shadow.camera.updateProjectionMatrix();
 
     if (this.configSvc.config.DEBUG) {
       this.lightHelper.position.copy(this.sunlight.position);
@@ -289,10 +285,17 @@ class Weather {
     }
   }
 
+  private updateMoon() {
+    this.moonlight.position.set(Terrain.SIZE_X - this.sun.position.x, -this.sun.position.y, this.sun.position.z);
+
+    this.moon.position.copy(this.moonlight.position);
+    this.moonlight.shadow.camera.updateProjectionMatrix();
+  }
+
   private updateLights() {
     const y = this.sunlight.position.y;
 
-    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.05, 0.3);
+    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.05, 0.4);
     if (y > 0) this.computeFogColor(y);
   }
 
