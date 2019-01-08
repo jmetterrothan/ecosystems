@@ -159,7 +159,25 @@ import cloud3Mtl from '@objmodels/cloud/cloud3.mtl';
 import cloud4Obj from '@objmodels/cloud/cloud4.obj';
 import cloud4Mtl from '@objmodels/cloud/cloud4.mtl';
 
+import sunObj from '@objmodels/misc/sun.obj';
+import sunMtl from '@objmodels/misc/sun.mtl';
+
+import moonObj from '@objmodels/misc/moon.obj';
+import moonMtl from '@objmodels/misc/moon.mtl';
+
 export const OBJECTS: IObject[] = [
+  {
+    name: 'sun',
+    obj: sunObj,
+    mtl: sunMtl,
+    doubleSide: true
+  },
+  {
+    name: 'moon',
+    obj: moonObj,
+    mtl: moonMtl,
+    doubleSide: true
+  },
   {
     name: 'carrot',
     obj: carrotObj,
