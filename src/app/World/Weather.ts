@@ -15,6 +15,8 @@ class Weather {
   private scene: THREE.Scene;
   private generator: BiomeGenerator;
 
+  private configSvc: GraphicsConfigService;
+
   private clouds: THREE.Group;
   private wind: THREE.Vector3;
 
@@ -38,6 +40,8 @@ class Weather {
   constructor(scene: THREE.Scene, generator: BiomeGenerator) {
     this.scene = scene;
     this.generator = generator;
+
+    this.configSvc = configSvc;
 
     this.startTime = window.performance.now();
   }
