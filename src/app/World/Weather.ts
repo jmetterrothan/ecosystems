@@ -183,9 +183,9 @@ class Weather {
 
     const material = new THREE.PointsMaterial({
       size: 1500,
-      color: 'white',
+      color: '#fefdef',
       transparent: true,
-      opacity: 0.9,
+      opacity: 0.75,
       fog: false,
     });
 
@@ -341,7 +341,7 @@ class Weather {
 
   private initMoonlight() {
     const d = 1000000;
-    this.moonlight = new THREE.DirectionalLight(0x5FEBDF, 0.20);
+    this.moonlight = new THREE.DirectionalLight(0x5fc2eb, 0.15);
 
     this.moonlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.moonlight.target.updateMatrixWorld(true);
