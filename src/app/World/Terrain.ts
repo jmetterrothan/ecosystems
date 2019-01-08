@@ -288,7 +288,6 @@ class Terrain {
 
       break;
     }
-
   }
 
   /**

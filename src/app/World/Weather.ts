@@ -303,9 +303,11 @@ class Weather {
     const yFloor = Math.floor(y);
 
     if (!Weather.FOG_COLORS.has(yFloor)) {
-      const color = CommonUtils.lerpColor('#212C37', '#B1D8FF', MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0, 1));
+      const t = MathUtils.mapInterval(yFloor, 0, Chunk.HEIGHT, 0, 1);
+      const color = CommonUtils.lerpColor('#212C37', '#B1D8FF', t);
       const threeColor = new THREE.Color(color);
-      Weather.FOG_COLORS.set(y, threeColor);
+
+      Weather.FOG_COLORS.set(yFloor, threeColor);
       this.fogColor = threeColor;
     } else {
       this.fogColor = Weather.FOG_COLORS.get(yFloor);
