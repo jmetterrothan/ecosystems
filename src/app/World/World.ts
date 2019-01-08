@@ -4,6 +4,7 @@ import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
 import GraphicsConfigService, { configSvc } from '@services/graphicsConfig.service';
+import MultiplayerService, { multiplayerSvc } from '@services/multiplayer.service';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
@@ -46,6 +47,7 @@ class World {
   private seed: string;
 
   private configScv: GraphicsConfigService;
+  private multiplayerSvc: MultiplayerService;
 
   /**
    * World constructor
@@ -62,6 +64,7 @@ class World {
     this.raycaster = new THREE.Raycaster();
 
     this.configScv = configSvc;
+    this.multiplayerSvc = multiplayerSvc;
   }
 
   getWeather(): Weather {
@@ -155,6 +158,7 @@ class World {
     this.terrain.update(this.frustum, this.player.position, delta);
     this.player.update(this.terrain, delta);
     this.weather.update(delta);
+    this.multiplayerSvc.update(this.player.position);
     this.generator.getBiome().update(delta);
   }
 

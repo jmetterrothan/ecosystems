@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js dev
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add --save @types/ws
 
 PATH: 
-  D:\Programmes\cmder\bin;D:\Programmes\cmder\vendor\bin;D:\Programmes\cmder\vendor\conemu-maximus5\ConEmu\Scripts;D:\Programmes\cmder\vendor\conemu-maximus5;D:\Programmes\cmder\vendor\conemu-maximus5\ConEmu;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files\RedHat\java-1.8.0-openjdk-1.8.0.144-1\bin;C:\MinGW;D:\Documents\WAMP\bin\php\php7.1.9;C:\ProgramData\chocolatey\bin;C:\Program Files\Java\jdk1.8.0_152\bin;D:\Programmes\android-sdk\tools;D:\Programmes\android-sdk\platform-tools;C:\Program Files\nodejs;D:\Programmes\composer;D:\Programmes\Putty\;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;C:\Users\Florian\AppData\Roaming\npm;C:\Users\Florian\AppData\Roaming\npm\node_modules\@angular\cli\bin;D:\Documents\WAMP\bin\mysql\mysql5.7.19\bin;C:\Program Files\Git\cmd;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Program Files\MongoDB\Server\4.0\bin;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Users\Florian\AppData\Local\Microsoft\WindowsApps;C:\Users\Florian\AppData\Roaming\Dashlane\6.1848.0.15588\bin\Firefox_Extension\{442718d9-475e-452a-b3e1-fb1ee16b8e9f}\components;C:\Users\Florian\AppData\Roaming\Dashlane\6.1848.0.15588\ucrt;C:\Users\Florian\AppData\Roaming\Dashlane\6.1848.0.15588\bin\Qt;C:\Users\Florian\AppData\Roaming\Dashlane\6.1848.0.15588\bin\Ssl;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;D:\Programmes\cmder
+  D:\Programmes\cmder\bin;D:\Programmes\cmder\vendor\bin;D:\Programmes\cmder\vendor\conemu-maximus5\ConEmu\Scripts;D:\Programmes\cmder\vendor\conemu-maximus5;D:\Programmes\cmder\vendor\conemu-maximus5\ConEmu;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files\RedHat\java-1.8.0-openjdk-1.8.0.144-1\bin;C:\MinGW;D:\Documents\WAMP\bin\php\php7.1.9;C:\ProgramData\chocolatey\bin;C:\Program Files\Java\jdk1.8.0_152\bin;D:\Programmes\android-sdk\tools;D:\Programmes\android-sdk\platform-tools;C:\Program Files\nodejs;D:\Programmes\composer;D:\Programmes\Putty\;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;C:\Users\Florian\AppData\Roaming\npm;C:\Users\Florian\AppData\Roaming\npm\node_modules\@angular\cli\bin;D:\Documents\WAMP\bin\mysql\mysql5.7.19\bin;C:\Program Files\Git\cmd;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Program Files\MongoDB\Server\4.0\bin;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;D:\Programmes\flutter\bin;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Users\Florian\AppData\Local\Microsoft\WindowsApps;C:\Users\Florian\AppData\Roaming\Dashlane\6.1901.0.16461\bin\Firefox_Extension\{442718d9-475e-452a-b3e1-fb1ee16b8e9f}\components;C:\Users\Florian\AppData\Roaming\Dashlane\6.1901.0.16461\ucrt;C:\Users\Florian\AppData\Roaming\Dashlane\6.1901.0.16461\bin\Qt;C:\Users\Florian\AppData\Roaming\Dashlane\6.1901.0.16461\bin\Ssl;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;D:\Programmes\cmder
 
 Yarn version: 
   1.5.1
@@ -26,6 +26,7 @@ npm manifest:
       "@babel/plugin-proposal-class-properties": "^7.1.0",
       "@babel/preset-env": "^7.1.6",
       "@babel/preset-typescript": "^7.1.0",
+      "@types/google.analytics": "^0.0.39",
       "autoprefixer": "^9.3.1",
       "babel-loader": "^8.0.4",
       "clean-webpack-plugin": "^1.0.0",
@@ -54,13 +55,21 @@ npm manifest:
       "prod": "webpack --progress --inline --mode production --config config/webpack.prod.js"
     },
     "dependencies": {
+      "@reactivex/rxjs": "^6.3.3",
       "@tweenjs/tween.js": "^17.2.0",
       "@types/es6-promise": "^3.3.0",
+      "@types/i18next": "^12.1.0",
       "@types/node": "^10.12.10",
       "@types/three": "^0.93.10",
+      "@types/tween.js": "^16.9.0",
+      "i18next": "^13.1.0",
+      "i18next-browser-languagedetector": "^2.2.4",
+      "js-yaml-loader": "^1.0.1",
       "poisson-disk-sampling": "^1.0.2",
+      "rxjs": "^6.3.3",
       "seedrandom": "^2.4.4",
       "simplex-noise": "^2.4.0",
+      "snake-case": "^2.1.0",
       "stats.js": "^0.17.0",
       "three": "^0.98.0"
     }
@@ -644,16 +653,29 @@ Lockfile:
       reflect-metadata "^0.1.12"
       tslib "^1.8.1"
   
+  "@reactivex/rxjs@^6.3.3":
+    version "6.3.3"
+    resolved "https://registry.yarnpkg.com/@reactivex/rxjs/-/rxjs-6.3.3.tgz#f79527359e6ce2bb310cb3d61a16c634d25042aa"
+    dependencies:
+      tslib "^1.9.0"
+  
   "@tweenjs/tween.js@^17.2.0":
     version "17.2.0"
     resolved "https://registry.yarnpkg.com/@tweenjs/tween.js/-/tween.js-17.2.0.tgz#21f89b709bafc4b303adae7a83b4f35a0d9e4796"
-    integrity sha1-IfibcJuvxLMDra56g7TzWg2eR5Y=
   
   "@types/es6-promise@^3.3.0":
     version "3.3.0"
     resolved "https://registry.yarnpkg.com/@types/es6-promise/-/es6-promise-3.3.0.tgz#61b55e554fd807b563f158a7986ee53d3a5a5a9d"
     dependencies:
       es6-promise "*"
+  
+  "@types/google.analytics@^0.0.39":
+    version "0.0.39"
+    resolved "https://registry.yarnpkg.com/@types/google.analytics/-/google.analytics-0.0.39.tgz#19a952003dbf3c7373d655a5c3203b4726b8b802"
+  
+  "@types/i18next@^12.1.0":
+    version "12.1.0"
+    resolved "https://registry.yarnpkg.com/@types/i18next/-/i18next-12.1.0.tgz#7c3fd3dbe03f9531147033773bbd0ca4f474a180"
   
   "@types/node@^10.12.10":
     version "10.12.10"
@@ -662,6 +684,10 @@ Lockfile:
   "@types/three@^0.93.10":
     version "0.93.10"
     resolved "https://registry.yarnpkg.com/@types/three/-/three-0.93.10.tgz#80b97c28530966393c90ab83a6ad11bb74d87a93"
+  
+  "@types/tween.js@^16.9.0":
+    version "16.9.0"
+    resolved "https://registry.yarnpkg.com/@types/tween.js/-/tween.js-16.9.0.tgz#af25067f86e15d2cba89b26776fc273ff7f55650"
   
   "@webassemblyjs/ast@1.7.11":
     version "1.7.11"
@@ -2587,6 +2613,14 @@ Lockfile:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
   
+  i18next-browser-languagedetector@^2.2.4:
+    version "2.2.4"
+    resolved "https://registry.yarnpkg.com/i18next-browser-languagedetector/-/i18next-browser-languagedetector-2.2.4.tgz#b02412d7ab15d7d74e1b1317d67d8a244b219ee3"
+  
+  i18next@^13.1.0:
+    version "13.1.0"
+    resolved "https://registry.yarnpkg.com/i18next/-/i18next-13.1.0.tgz#d8656bbc53216ffcd428364fbfb75f75647846a5"
+  
   iconv-lite@0.4.23:
     version "0.4.23"
     resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.23.tgz#297871f63be507adcfbfca715d0cd0eed84e9a63"
@@ -2944,7 +2978,15 @@ Lockfile:
     version "3.0.2"
     resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
   
-  js-yaml@^3.7.0, js-yaml@^3.9.0:
+  js-yaml-loader@^1.0.1:
+    version "1.0.1"
+    resolved "https://registry.yarnpkg.com/js-yaml-loader/-/js-yaml-loader-1.0.1.tgz#3151b5b3f9438697e46be4a199b4a8954f01b3b6"
+    dependencies:
+      js-yaml "^3.9.1"
+      loader-utils "^1.1.0"
+      un-eval "^1.2.0"
+  
+  js-yaml@^3.7.0, js-yaml@^3.9.0, js-yaml@^3.9.1:
     version "3.12.0"
     resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.12.0.tgz#eaed656ec8344f10f527c6bfa1b6e2244de167d1"
     dependencies:
@@ -4335,6 +4377,12 @@ Lockfile:
     dependencies:
       aproba "^1.1.1"
   
+  rxjs@^6.3.3:
+    version "6.3.3"
+    resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.3.3.tgz#3c6a7fa420e844a81390fb1158a9ec614f4bad55"
+    dependencies:
+      tslib "^1.9.0"
+  
   safe-buffer@5.1.2, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
     version "5.1.2"
     resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
@@ -4522,6 +4570,12 @@ Lockfile:
   simplex-noise@^2.4.0:
     version "2.4.0"
     resolved "https://registry.yarnpkg.com/simplex-noise/-/simplex-noise-2.4.0.tgz#81b3458fb22dccc3bc8dd9a977c73797f86f523a"
+  
+  snake-case@^2.1.0:
+    version "2.1.0"
+    resolved "https://registry.yarnpkg.com/snake-case/-/snake-case-2.1.0.tgz#41bdb1b73f30ec66a04d4e2cad1b76387d4d6d9f"
+    dependencies:
+      no-case "^2.2.0"
   
   snapdragon-node@^2.0.1:
     version "2.1.1"
@@ -5041,6 +5095,10 @@ Lockfile:
       webpack-sources "^1.1.0"
       worker-farm "^1.5.2"
   
+  un-eval@^1.2.0:
+    version "1.2.0"
+    resolved "https://registry.yarnpkg.com/un-eval/-/un-eval-1.2.0.tgz#22a95c650334d59d21697efae32612218ecad65f"
+  
   unicode-canonical-property-names-ecmascript@^1.0.4:
     version "1.0.4"
     resolved "https://registry.yarnpkg.com/unicode-canonical-property-names-ecmascript/-/unicode-canonical-property-names-ecmascript-1.0.4.tgz#2619800c4c825800efdd8343af7dd9933cbe2818"
@@ -5474,17 +5532,14 @@ Lockfile:
       ndarray "^1.0.16"
 
 Trace: 
-  Error: Command failed.
-  Exit code: 3221225786
-  Command: C:\WINDOWS\system32\cmd.exe
-  Arguments: /d /s /c webpack-dev-server --progress --inline --mode development --config config/webpack.dev.js
-  Directory: D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\islands
-  Output:
-  
-      at ProcessTermError.MessageError (C:\Program Files (x86)\Yarn\lib\cli.js:186:110)
-      at new ProcessTermError (C:\Program Files (x86)\Yarn\lib\cli.js:226:113)
-      at ChildProcess.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:30281:17)
-      at emitTwo (events.js:126:13)
-      at ChildProcess.emit (events.js:214:7)
-      at maybeClose (internal/child_process.js:925:16)
-      at Process.ChildProcess._handle.onexit (internal/child_process.js:209:5)
+  Error: Missing list of packages to add to your project.
+      at new MessageError (C:\Program Files (x86)\Yarn\lib\cli.js:186:110)
+      at Object.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:40587:13)
+      at Generator.next (<anonymous>)
+      at step (C:\Program Files (x86)\Yarn\lib\cli.js:98:30)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:116:14
+      at new Promise (<anonymous>)
+      at new F (C:\Program Files (x86)\Yarn\lib\cli.js:23451:28)
+      at Object.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:95:12)
+      at Object.run (C:\Program Files (x86)\Yarn\lib\cli.js:40599:19)
+      at run (C:\Program Files (x86)\Yarn\lib\cli.js:89113:20)
