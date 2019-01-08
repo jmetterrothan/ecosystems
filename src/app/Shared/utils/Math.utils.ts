@@ -77,6 +77,16 @@ class MathUtils {
     return (1 - t) * a + t * b;
   }
 
+  /**
+   * @param {array} x
+   * @param {number} mean
+   * @param {number} std
+   * @return {array}
+   */
+  static normalize(x, mean, std) {
+    return x.map(x => (x - mean) / std);
+  }
+
 }
 
 export default MathUtils;
