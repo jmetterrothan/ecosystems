@@ -21,10 +21,12 @@ class Weather {
 
   // lights
   private sunlight: THREE.DirectionalLight;
+  private moonlight: THREE.DirectionalLight;
   private lightHelper: THREE.ArrowHelper;
 
   // sun objects
   private sun: THREE.Mesh;
+  private moon: THREE.Mesh;
   private target: THREE.Mesh;
 
   /**
@@ -37,6 +39,10 @@ class Weather {
     this.generator = generator;
 
     this.startTime = window.performance.now();
+  }
+
+  getClouds(): THREE.Group {
+    return this.clouds;
   }
 
   /**
@@ -117,42 +123,25 @@ class Weather {
     ambient.castShadow = false;
     this.scene.add(ambient);
 
-    const d = 1000000;
-    this.sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
-
-    this.sunlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
-    this.sunlight.target.updateMatrixWorld(true);
-
-    this.sunlight.position.set(Terrain.SIZE_X / 2, Chunk.HEIGHT, Terrain.SIZE_Z / 2);
-
-    this.sunlight.castShadow = true;
-    this.sunlight.shadow.mapSize.width = 4096;
-    this.sunlight.shadow.mapSize.height = 4096;
-    this.sunlight.shadow.camera.visible = true;
-    this.sunlight.shadow.camera.castShadow = true;
-    this.sunlight.shadow.bias = 0.0001;
-    this.sunlight.shadow.camera.left = -d;
-    this.sunlight.shadow.camera.right = d;
-    this.sunlight.shadow.camera.top = d;
-    this.sunlight.shadow.camera.bottom = -d;
-    this.sunlight.shadow.camera.near = 150;
-    this.sunlight.shadow.camera.far = 1000000;
+    this.initSunlight();
+    this.initMoonlight();
 
     this.sun = new THREE.Mesh(new THREE.SphereGeometry(5000, 24, 24), new THREE.MeshBasicMaterial({ color: 'red' }));
     this.sun.position.copy(this.sunlight.position);
 
+    this.moon = new THREE.Mesh(new THREE.SphereGeometry(5000, 24, 24), new THREE.MeshBasicMaterial({ color: 'blue' }));
+    this.moon.position.copy(this.sunlight.position);
+
     this.target = new THREE.Mesh(new THREE.SphereGeometry(5000, 24, 24), new THREE.MeshBasicMaterial({ color: 'green' }));
     this.target.position.copy(this.sunlight.target.position);
 
-    this.scene.add(this.sun, this.target);
+    this.scene.add(this.sun, this.moon, this.target);
 
     if (configSvc.config.DEBUG) {
       const dirHelper = new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize();
       this.lightHelper = new THREE.ArrowHelper(dirHelper, this.sunlight.position.clone(), Chunk.HEIGHT, 0xff0000, 10000);
       this.scene.add(this.lightHelper);
     }
-
-    this.scene.add(this.sunlight);
   }
 
   /**
@@ -230,17 +219,67 @@ class Weather {
     this.sunlight.position.x = Terrain.SIZE_X / 2 + Chunk.HEIGHT * Math.cos(elapsedTime);
     this.sunlight.position.y = Chunk.HEIGHT * Math.sin(elapsedTime);
 
+    this.moonlight.position.set(Terrain.SIZE_X - this.sun.position.x, -this.sun.position.y, this.sun.position.z);
+
     this.sun.position.copy(this.sunlight.position);
+    this.moon.position.copy(this.moonlight.position);
     this.target.position.copy(this.sunlight.target.position);
 
     this.lightHelper.position.copy(this.sunlight.position);
     this.lightHelper.setDirection(new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize());
 
     this.sunlight.shadow.camera.updateProjectionMatrix();
+    this.moonlight.shadow.camera.updateProjectionMatrix();
   }
 
-  getClouds(): THREE.Group {
-    return this.clouds;
+  private initSunlight() {
+    const d = 1000000;
+    this.sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
+
+    this.sunlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
+    this.sunlight.target.updateMatrixWorld(true);
+
+    this.sunlight.position.set(Terrain.SIZE_X / 2, Chunk.HEIGHT, Terrain.SIZE_Z / 2);
+
+    this.sunlight.castShadow = true;
+    this.sunlight.shadow.mapSize.width = 4096;
+    this.sunlight.shadow.mapSize.height = 4096;
+    this.sunlight.shadow.camera.visible = true;
+    this.sunlight.shadow.camera.castShadow = true;
+    this.sunlight.shadow.bias = 0.0001;
+    this.sunlight.shadow.camera.left = -d;
+    this.sunlight.shadow.camera.right = d;
+    this.sunlight.shadow.camera.top = d;
+    this.sunlight.shadow.camera.bottom = -d;
+    this.sunlight.shadow.camera.near = 150;
+    this.sunlight.shadow.camera.far = 1000000;
+
+    this.scene.add(this.sunlight);
+  }
+
+  private initMoonlight() {
+    const d = 1000000;
+    this.moonlight = new THREE.DirectionalLight(0xffffff, 0.05);
+
+    this.moonlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
+    this.moonlight.target.updateMatrixWorld(true);
+
+    this.moonlight.position.set(Terrain.SIZE_X / 2, Chunk.HEIGHT, Terrain.SIZE_Z / 2);
+
+    this.moonlight.castShadow = true;
+    this.moonlight.shadow.mapSize.width = 4096;
+    this.moonlight.shadow.mapSize.height = 4096;
+    this.moonlight.shadow.camera.visible = true;
+    this.moonlight.shadow.camera.castShadow = true;
+    this.moonlight.shadow.bias = 0.0001;
+    this.moonlight.shadow.camera.left = -d;
+    this.moonlight.shadow.camera.right = d;
+    this.moonlight.shadow.camera.top = d;
+    this.moonlight.shadow.camera.bottom = -d;
+    this.moonlight.shadow.camera.near = 150;
+    this.moonlight.shadow.camera.far = 1000000;
+
+    this.scene.add(this.moonlight);
   }
 }
 
