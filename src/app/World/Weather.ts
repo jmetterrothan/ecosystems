@@ -185,7 +185,7 @@ class Weather {
     }
 
     const material = new THREE.PointsMaterial({
-      size: 3000,
+      size: 1500,
       color: 'white',
       transparent: true,
       opacity: 0.9,
