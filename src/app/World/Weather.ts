@@ -147,13 +147,13 @@ class Weather {
     this.initSunlight();
     this.initMoonlight();
 
-    this.sun = new THREE.Mesh(new THREE.SphereGeometry(5000, 24, 24), new THREE.MeshBasicMaterial({ color: 'red' }));
+    this.sun = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'red' }));
     this.sun.position.copy(this.sunlight.position);
 
-    this.moon = new THREE.Mesh(new THREE.SphereGeometry(5000, 24, 24), new THREE.MeshBasicMaterial({ color: 'blue' }));
+    this.moon = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'blue' }));
     this.moon.position.copy(this.sunlight.position);
 
-    this.target = new THREE.Mesh(new THREE.SphereGeometry(5000, 24, 24), new THREE.MeshBasicMaterial({ color: 'green' }));
+    this.target = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'green' }));
     this.target.position.copy(this.sunlight.target.position);
 
     this.scene.add(this.sun, this.moon, this.target);
@@ -189,7 +189,7 @@ class Weather {
       color: 'white',
       transparent: true,
       opacity: 0.9,
-      fog: false
+      fog: false,
     });
 
     this.starsSystem = new THREE.Points(stars, material);
