@@ -46,14 +46,6 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.70 0.70 0.70
 Ns 6.00
-newmtl fjord_bushSG
-illum 4
-Kd 0.45 0.70 0.54
-Ka 0.45 0.45 0.45
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.50 0.50 0.50
-Ns 6.00
 newmtl highland_leavesSG
 illum 4
 Kd 1.00 0.38 0.12
@@ -198,8 +190,8 @@ Ks 0.50 0.50 0.50
 Ns 6.00
 newmtl pasted__phong1SG
 illum 4
-Kd 0.06 0.51 0.33
-Ka 0.37 0.50 0.28
+Kd 0.03 0.30 0.10
+Ka 0.37 0.50 0.40
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
@@ -214,7 +206,7 @@ Ks 0.27 0.27 0.27
 Ns 6.00
 newmtl pasted__phong2SG2
 illum 4
-Kd 0.36 0.28 0.18
+Kd 0.33 0.13 0.05
 Ka 0.42 0.42 0.42
 Tf 1.00 1.00 1.00
 Ni 1.00

@@ -1,10 +1,8 @@
-import snakeCase from 'snake-case';
+import AchievementService, { achievementSvc } from '@services/achievement.service';
+import StorageService, { storageSvc } from '@services/storage.service';
 
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
 import { PROGRESSION_STORAGE } from '@achievements/constants/progressionStorageKeys.constants';
-
-import StorageService, { storageSvc } from './storage.service';
-import AchievementService, { achievementSvc } from './achievement.service';
 
 class ProgressionService {
 

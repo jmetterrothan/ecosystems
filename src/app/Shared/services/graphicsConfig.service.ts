@@ -13,9 +13,10 @@ class GraphicsConfigService {
     return this.q;
   }
 
-  get config() : IConfig {
+  get config(): IConfig {
     return CONFIGS[this.q];
   }
 }
 
 export const configSvc = new GraphicsConfigService();
+export default GraphicsConfigService;

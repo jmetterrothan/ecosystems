@@ -3,8 +3,9 @@ import * as THREE from 'three';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Stack from '@shared/Stack';
 
-import { MESH_TYPES } from '@shared/enums/mesh.enum';
 import { IChunkParameters } from '@shared/models/chunkParameters.model';
+
+import { MESH_TYPES } from '@shared/enums/mesh.enum';
 
 abstract class Mesh {
   static GEOMETRY_STACK = new Stack<THREE.Geometry>();

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import Chunk from '@world/Chunk';
+
 import { IBiomes } from '@shared/models/biomes.model';
 
 export const SUB_BIOMES: IBiomes = {
@@ -45,6 +46,74 @@ export const SUB_BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 0.5, max: 1.25 },
+        float: false,
+      },
+    ]
+  },
+  FJORD: {
+    color: new THREE.Color(0x546c63),
+    organisms: [
+      {
+        weight: 0.1,
+        name: 'birch',
+        scarcity: 0.5,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 },
+        m: null,
+        scale: { min: 0.8, max: 1.6 },
+        float: false,
+      },
+      {
+        weight: 0.15,
+        name: 'rock6',
+        scarcity: 0.5,
+        e: null,
+        m: null,
+        scale: { min: 0.5, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.45,
+        name: 'bush2',
+        scarcity: 0.4,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 },
+        m: null,
+        scale: { min: 0.65, max: 1.65 },
+        float: false,
+      },
+      {
+        weight: 0.3,
+        name: 'spruce',
+        scarcity: 0.4,
+        e: { low: Chunk.SEA_ELEVATION + 0.25, high: null },
+        m: { low: 0.0, high: 0.325 },
+        scale: { min: 1.0, max: 1.75 },
+        float: false,
+      },
+    ]
+  },
+  FJORD_SNOW_CAP: {
+    color: new THREE.Color(0xffffff),
+    organisms: []
+  },
+  FJORD_BEACH: {
+    color: new THREE.Color(0x87a194),
+    organisms: [
+      {
+        weight: 0.5,
+        name: 'pink_mushroom',
+        scarcity: 0.9,
+        e: { low: Chunk.SEA_ELEVATION + 0.025, high: 1.0 },
+        m: null,
+        scale: { min: 0.85, max: 1.35 },
+        float: false,
+      },
+      {
+        weight: 0.5,
+        name: 'blue_mushroom',
+        scarcity: 0.9,
+        e: { low: Chunk.SEA_ELEVATION + 0.025, high: 1.0 },
+        m: null,
+        scale: { min: 0.85, max: 1.25 },
         float: false,
       },
     ]
@@ -245,11 +314,11 @@ export const SUB_BIOMES: IBiomes = {
     organisms: []
   },
   CORAL_REEF: {
-    color: new THREE.Color(0xf0e68c),
+    color: new THREE.Color(0xeacd73),
     organisms: [
       {
         weight: 0.45,
-        name: 'rock2',
+        name: 'rock1',
         scarcity: 0.975,
         e: null,
         m: null,
@@ -469,7 +538,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   OCEAN: {
-    color: new THREE.Color(0xeacd73),
+    color: new THREE.Color(0xf1c176),
     organisms: [
       {
         weight: 0.5,

@@ -1,29 +1,32 @@
 import * as THREE from 'three';
 
 import World from '@world/World';
-import Creature from './Creature';
+import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
+import Creature from '@boids/Creature';
 
-import { configSvc } from '@shared/services/graphicsConfig.service';
-import { BoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
+import GraphicsConfigService, { configSvc } from '@services/graphicsConfig.service';
 import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
+
+import { BoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
 
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
 class Boids {
-  modelName: string;
-  creaturesCount: number;
+  private modelName: string;
+  private creaturesCount: number;
 
-  creatures: Creature[] = [];
+  private creatures: Creature[] = [];
 
-  boudingBox: THREE.Vector3;
-  origin: THREE.Vector3;
+  private boudingBox: THREE.Vector3;
+  private origin: THREE.Vector3;
 
-  scene: THREE.Scene;
+  private scene: THREE.Scene;
 
   private playerSvc: PlayerService;
   private progressionSvc: ProgressionService;
+  private configSvc: GraphicsConfigService;
 
   /**
    * Boids constructor
@@ -32,10 +35,8 @@ class Boids {
    * @param {THREE.Vector3} origin
    * @param {string} modelName
    * @param {number} creaturesCount
-   * @param {BoidCreatureParameters} creaturesParameters
    */
-  constructor(scene: THREE.Scene, boudingBox: THREE.Vector3, origin: THREE.Vector3 = new THREE.Vector3(), modelName: string, creaturesCount: number, creaturesParameters: BoidCreatureParameters) {
-
+  constructor(scene: THREE.Scene, boudingBox: THREE.Vector3, origin: THREE.Vector3 = new THREE.Vector3(), modelName: string, creaturesCount: number) {
     this.scene = scene;
     this.boudingBox = boudingBox;
     this.modelName = modelName;
@@ -44,21 +45,19 @@ class Boids {
 
     this.playerSvc = playerSvc;
     this.progressionSvc = progressionSvc;
+    this.configSvc = configSvc;
 
-    const mesh = new THREE.Box3().setFromCenterAndSize(
-      new THREE.Vector3(
-        this.origin.x, this.origin.y, this.origin.z
-      ),
-      new THREE.Vector3(
-        this.boudingBox.x, this.boudingBox.y, this.boudingBox.z
-      )
-    );
-
-    if (configSvc.config.DEBUG) {
+    if (this.configSvc.config.DEBUG) {
+      const mesh = new THREE.Box3().setFromCenterAndSize(
+        new THREE.Vector3(
+          this.origin.x, this.origin.y, this.origin.z
+        ),
+        new THREE.Vector3(
+          this.boudingBox.x, this.boudingBox.y, this.boudingBox.z
+        )
+      );
       this.scene.add(<THREE.Object3D>new THREE.Box3Helper(mesh, 0xffff00));
     }
-
-    this.generate(creaturesParameters);
   }
 
   /**
@@ -67,10 +66,11 @@ class Boids {
    */
   generate(parameters: BoidCreatureParameters) {
     for (let i = 0; i < this.creaturesCount; i++) {
+      const py = Math.random() * this.boudingBox.y - this.boudingBox.y / 2;
 
       const position = new THREE.Vector3(
         Math.random() * this.boudingBox.x - this.boudingBox.x / 2,
-        Math.random() * this.boudingBox.y - this.boudingBox.y / 2,
+        parameters.underwater ? py : Math.max(py, Chunk.SEA_LEVEL - this.boudingBox.y + 2048),
         Math.random() * this.boudingBox.z - this.boudingBox.z / 2
       );
 
@@ -97,7 +97,8 @@ class Boids {
     this.creatures.forEach((creature: Creature) => {
       creature.update(this.creatures, generator, delta);
     });
-    const someFishesRepulsed = this.creatures.some((creature: Creature) => creature.position.clone().add(this.origin).distanceTo(this.playerSvc.getPosition()) < creature.getMinRepulseDistance());
+
+    const someFishesRepulsed = this.creatures.some((creature: Creature) => creature.getPosition().distanceTo(this.playerSvc.getPosition()) < creature.getMinRepulseDistance());
     if (someFishesRepulsed) {
       this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_fishes);
     }

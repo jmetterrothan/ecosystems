@@ -4,11 +4,12 @@ import World from '@world/World';
 import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
-import MathUtils from '@shared/utils/Math.utils';
+
+import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
 
 import { ICloudData } from '@shared/models/cloudData.model';
 
-import { configSvc } from '@shared/services/graphicsConfig.service';
+import MathUtils from '@shared/utils/Math.utils';
 
 class Weather {
   private scene: THREE.Scene;
@@ -64,14 +65,14 @@ class Weather {
     this.wind = new THREE.Vector3(0, 0, 768 * Math.sign(Math.random() - 0.5));
 
     // wind direction helper
-    if (configSvc.config.DEBUG) {
+    if (this.configSvc.config.DEBUG) {
       const arrowHelper = new THREE.ArrowHelper(this.wind, new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.CLOUD_LEVEL, Terrain.SIZE_Z / 2), 10000, 0xff0000);
       this.scene.add(arrowHelper);
     }
   }
 
   initRain() {
-    if (!configSvc.config.ENABLE_WEATHER_EFFECTS) { return; }
+    if (!this.configSvc.config.ENABLE_WEATHER_EFFECTS) { return; }
 
     this.clouds.children.forEach((cloud: THREE.Mesh) => {
       // particles
@@ -172,7 +173,7 @@ class Weather {
         cloud.position.z = size.z / 2;
       }
 
-      if (!configSvc.config.ENABLE_WEATHER_EFFECTS) { continue; }
+      if (!this.configSvc.config.ENABLE_WEATHER_EFFECTS) { continue; }
 
       // rain
       const rainData = cloud.userData as ICloudData;

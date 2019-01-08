@@ -1,15 +1,15 @@
 import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
 
-import { TROPHY_DIFFICULTY } from '@shared/enums/trophyDIfficulty.enum';
-import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
-
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 import { PROGRESSION_OBJECTS_STORAGE_KEYS } from '@achievements/constants/progressionObjectsStorageKeys.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 import { PROGRESSION_TROPHIES_STORAG_KEYS } from '@achievements/constants/progressionTrophiesStorageKeys.constants';
-
 import { TRANSLATION_KEYS } from '@shared/constants/translationKeys.constants';
+
+import { TROPHY_DIFFICULTY } from '@shared/enums/trophyDIfficulty.enum';
+import { TROPHY_TYPE } from '@shared/enums/trophyType.enum';
+import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
 
 export const TROPHIES: ITrophy[] = [
   // GAME
@@ -148,12 +148,43 @@ export const TROPHIES: ITrophy[] = [
   },
   // TROPHIES
   {
-    name: { key: TRANSLATION_KEYS.unlock_trophy_percentage, options: { counter: 10 } },
+    name: { key: TRANSLATION_KEYS.unlock_trophy_percentage, options: { counter: 25 } },
+    value: 'unlock 25 percent trophies',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.GOLD,
+    type: TROPHY_TYPE.TROPHY,
+    checklist: [
+      { name: 'unlock 25 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage, limit: 25, comparison: COMPARISON_TYPE.SUPERIOR }
+    ]
+  },
+  {
+    name: { key: TRANSLATION_KEYS.unlock_trophy_percentage, options: { counter: 50 } },
     value: 'unlock 50 percent trophies',
     img: '',
     difficulty: TROPHY_DIFFICULTY.GOLD,
+    type: TROPHY_TYPE.TROPHY,
     checklist: [
-      { name: 'unlock 50 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage, limit: 10, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'unlock 50 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage, limit: 50, comparison: COMPARISON_TYPE.SUPERIOR }
+    ]
+  },
+  {
+    name: { key: TRANSLATION_KEYS.unlock_trophy_percentage, options: { counter: 75 } },
+    value: 'unlock 75 percent trophies',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.GOLD,
+    type: TROPHY_TYPE.TROPHY,
+    checklist: [
+      { name: 'unlock 75 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage, limit: 75, comparison: COMPARISON_TYPE.SUPERIOR }
+    ]
+  },
+  {
+    name: { key: TRANSLATION_KEYS.unlock_trophy_percentage, options: { counter: 100 } },
+    value: 'unlock 100 percent trophies',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.DIAMOND,
+    type: TROPHY_TYPE.TROPHY,
+    checklist: [
+      { name: 'unlock 100 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage, limit: 100, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   }
 ];

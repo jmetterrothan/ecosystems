@@ -2,6 +2,7 @@ const path = require('path');
 const PATHS = require('./paths');
 
 module.exports = {
+  "@app": path.resolve(PATHS.APP),
   "@images": path.resolve(PATHS.IMAGES),
   "@shared": path.resolve(PATHS.APP, 'Shared'),
   "@services": path.resolve(PATHS.APP, 'Shared', 'services'),
@@ -15,5 +16,6 @@ module.exports = {
   "@materials": path.resolve(PATHS.APP, 'Shared', 'materials'),
   "@boids": path.resolve(PATHS.APP, 'Boids'),
   "@public": path.resolve(PATHS.PUBLIC),
-  "@achievements": path.resolve(PATHS.APP, 'Achievements')
+  "@achievements": path.resolve(PATHS.APP, 'Achievements'),
+  "@ui": path.resolve(PATHS.APP, 'UI')
 };

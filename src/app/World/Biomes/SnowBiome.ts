@@ -5,13 +5,14 @@ import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
-import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
-import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { IPick } from '@shared/models/pick.model';
 
+import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
+
+import MathUtils from '@shared/utils/Math.utils';
 
 class SnowBiome extends Biome {
   constructor(generator: BiomeGenerator) {
@@ -26,7 +27,7 @@ class SnowBiome extends Biome {
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {
-     // corpse
+    // corpse
     let chunk: Chunk;
     let corpseItem: IPick;
     let corpseObject: THREE.Object3D;

@@ -1,24 +1,24 @@
 import * as THREE from 'three';
-
 import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
+import GraphicsConfigService, { configSvc } from '@services/graphicsConfig.service';
+
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import Chunk from '@world/Chunk';
-import Player from '../Player';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Weather from '@world/Weather';
-import MathUtils from '@utils/Math.utils';
-import TestBiome from './Biomes/TestBiome';
+import Player from '@app/Player';
 
-import { OBJECTS } from '@shared/constants/object.constants';
-import { TEXTURES } from '@shared/constants/texture.constants';
-import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { ITexture } from '@shared/models/texture.model';
 
-import { configSvc } from '@shared/services/graphicsConfig.service';
+import { TEXTURES } from '@shared/constants/texture.constants';
+
+import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+
+import MathUtils from '@utils/Math.utils';
 
 class World {
   static readonly SEED: string | null = null;
@@ -49,13 +49,7 @@ class World {
   private raycaster: THREE.Raycaster;
   private seed: string;
 
-  private sunlight: THREE.DirectionalLight;
-  private sunlightTarget: THREE.Object3D;
-
-  // light helper
-  private lightHelper: THREE.ArrowHelper;
-
-  private timerStart: number;
+  private configScv: GraphicsConfigService;
 
   /**
    * World constructor
@@ -71,17 +65,25 @@ class World {
     this.frustum = new THREE.Frustum();
     this.raycaster = new THREE.Raycaster();
 
-    this.sunlightTarget = new THREE.Object3D();
+    this.configScv = configSvc;
+  }
 
-    this.timerStart = window.performance.now();
+  getWeather(): Weather {
+    return this.weather;
+  }
+
+  getTerrain(): Terrain {
+    return this.terrain;
+  }
+
+  getGenerator(): BiomeGenerator {
+    return this.generator;
   }
 
   async init() {
     this.initSeed();
     this.initFog();
     // this.initLights();
-    await this.initObjects();
-    await this.initTextures();
 
     // terrain
     this.generator = new BiomeGenerator();
@@ -107,7 +109,7 @@ class World {
 
     this.scene.add(this.controls.getObject());
 
-    if (configSvc.config.DEBUG) {
+    if (this.configScv.config.DEBUG) {
       this.showAxesHelper();
     }
   }
@@ -141,46 +143,9 @@ class World {
   }
 
   /**
-   * Loads all objects
-   * @return {Promise<any>}
-   */
-  private async initObjects(): Promise<any> {
-    // load all models
-    const stack = OBJECTS.map(element => {
-      const p = World.loadObjModel(element);
-
-      return p.then((object) => {
-        object.scale.set(World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE); // scale from maya size to a decent world size
-      });
-    });
-
-    await Promise.all(stack);
-  }
-
-  /**
-   * Loads all textures
-   * @return {Promise<any>}
-   */
-  private initTextures(): Promise<any> {
-    const loader = new THREE.TextureLoader();
-
-    return new Promise(resolve => {
-      TEXTURES.forEach((texture: ITexture) => {
-        if (!World.LOADED_TEXTURES.has(texture.name)) {
-          const img = loader.load(texture.img);
-          World.LOADED_TEXTURES.set(texture.name, img);
-        }
-      });
-      resolve();
-    });
-
-  }
-
-  /**
    * @param {number} delta
-   * @param {number} tick
    */
-  update(delta: number, tick: number) {
+  update(delta: number) {
     this.handleMouseInteraction(MOUSE_TYPES.MOVE);
     this.camera.updateMatrixWorld(true);
 
@@ -191,7 +156,7 @@ class World {
       )
     );
 
-    this.terrain.update(this.frustum, this.player.position, delta, tick);
+    this.terrain.update(this.frustum, this.player.position, delta);
     this.player.update(this.terrain, delta);
     this.weather.update(delta);
     this.generator.getBiome().update(delta);
@@ -221,70 +186,9 @@ class World {
     this.player.handleKeyboard(key, active);
   }
 
-  getWeather(): Weather {
-    return this.weather;
-  }
-
-  getTerrain(): Terrain {
-    return this.terrain;
-  }
-
-  getGenerator(): BiomeGenerator {
-    return this.generator;
-  }
-
-  /**
-   * Load an obj file
-   * @param name Name of the object
-   * @param objSrc obj source file path
-   * @param mtlSrc mtl source file path
-   * @return Promise<any>
-   */
-  static async loadObjModel(element): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      if (World.LOADED_MODELS.has(element.name)) {
-        resolve(World.LOADED_MODELS.get(element.name));
-      }
-
-      const objLoader = new THREE.OBJLoader();
-      const mtlLoader = new THREE.MTLLoader();
-
-      mtlLoader.load(element.mtl, (materials) => {
-        materials.preload();
-
-        objLoader.setMaterials(materials);
-
-        objLoader.load(element.obj, (object) => {
-          object.castShadow = true;
-          object.receiveShadow = false;
-          object.frustumCulled = false;
-
-          object.traverse((child) => {
-            if (child instanceof THREE.Mesh) {
-              child.castShadow = true;
-              child.receiveShadow = false;
-              child.frustumCulled = false;
-
-              if (!(child.material instanceof THREE.Material)) {
-                child.material.forEach(material => {
-                  material.flatShading = true;
-                  if (element.doubleSide === true) material.side = THREE.DoubleSide;
-                });
-              } else {
-                child.material.flatShading = true;
-                if (element.doubleSide === true) child.material.side = THREE.DoubleSide;
-              }
-            }
-          });
-
-          World.LOADED_MODELS.set(element.name, object);
-          // const box = new THREE.Box3().setFromObject(object);
-          // const size = box.getSize(new THREE.Vector3(0, 0, 0));
-
-          resolve(object);
-        }, null, () => reject());
-      }, null, () => reject());
-    });
+  static pointInWorld(point: THREE.Vector3): boolean {
+    const margin: number = 1000;
+    return MathUtils.between(point.x, 0 + margin, Terrain.SIZE_X - margin) && MathUtils.between(point.z, 0 + margin, Terrain.SIZE_Z - margin);
   }
 
 }

@@ -1,4 +1,4 @@
-import { ITranslationKeys } from './../models/translationKeys.models';
+import { ITranslationKeys } from '@shared/models/translationKeys.models';
 
 export const TRANSLATION_KEYS: ITranslationKeys = {
   play_games_counter: 'play_games_counter',

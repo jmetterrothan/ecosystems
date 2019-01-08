@@ -1,4 +1,4 @@
-import { ITranslationKeys } from './../models/translationKeys.models';
+import { ITranslationKeys } from '@shared/models/translationKeys.models';
 
 export const FR_TRANSLATION: ITranslationKeys = {
   play_games_counter: 'Jouer {{counter}} parties',

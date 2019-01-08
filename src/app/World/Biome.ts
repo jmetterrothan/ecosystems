@@ -1,16 +1,17 @@
 import * as THREE from 'three';
 
+import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
+import ProgressionService, { progressionSvc } from '@services/progression.service';
+
 import BiomeGenerator from '@world/BiomeGenerator';
-import Terrain from './Terrain';
-import CommonUtils from '@shared/utils/Common.utils';
+import Terrain from '@world/Terrain';
 
 import { IBiome } from '@shared/models/biome.model';
-import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 
-import ProgressionService, { progressionSvc } from '@services/progression.service';
+import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 
-import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
+import CommonUtils from '@shared/utils/Common.utils';
 
 abstract class Biome {
   private static WATER_COLORS = new Map<number, THREE.Color>();
