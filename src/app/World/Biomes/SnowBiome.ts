@@ -15,6 +15,11 @@ import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progress
 import MathUtils from '@shared/utils/Math.utils';
 
 class SnowBiome extends Biome {
+
+  private snowmanChunk: Chunk;
+  private snowmanItem: IPick;
+  private snowmanObject: THREE.Object3D;
+
   constructor(generator: BiomeGenerator) {
     super('SNOW', generator);
 
@@ -27,36 +32,41 @@ class SnowBiome extends Biome {
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {
-    // corpse
-    let chunk: Chunk;
-    let corpseItem: IPick;
-    let corpseObject: THREE.Object3D;
 
     do {
       const x = Terrain.SIZE_X / 4 + Math.floor(Math.random() * Terrain.SIZE_X / 2);
       const z = Terrain.SIZE_Z / 4 + Math.floor(Math.random() * Terrain.SIZE_Z / 2);
 
-      chunk = terrain.getChunkAt(x, z);
+      this.snowmanChunk = terrain.getChunkAt(x, z);
 
       const y = terrain.getHeightAt(x, z);
       if (y <= 0) { continue; }
 
-      corpseItem = {
+      this.snowmanItem = {
         x, y, z,
         s: World.OBJ_INITIAL_SCALE,
-        n: 'snowman',
+        n: 'snowman_no_carrot',
         r: MathUtils.randomFloat(0, Math.PI * 2)
       };
 
-      corpseObject = chunk.getObject(corpseItem);
-    } while (!chunk.canPlaceObject(corpseObject));
+      this.snowmanObject = this.snowmanChunk.getObject(this.snowmanItem);
+    } while (!this.snowmanChunk.canPlaceObject(this.snowmanObject));
 
-    chunk.placeObject(corpseObject, { save: true });
+    this.snowmanChunk.placeObject(this.snowmanObject, { save: true });
   }
 
   update(delta: number) { }
 
-  handleClick(raycaster: THREE.Raycaster) { }
+  handleClick(raycaster: THREE.Raycaster) {
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.snowmanObject], true);
+
+    if (intersections.length && this.snowmanItem.n !== 'snowman') {
+      this.snowmanItem = { ...this.snowmanItem, n: 'snowman' };
+      this.snowmanChunk.repurposeObject(this.snowmanObject);
+      this.snowmanObject = this.snowmanChunk.getObject(this.snowmanItem);
+      this.snowmanChunk.placeObject(this.snowmanObject, { save: true });
+    }
+  }
 
   /**
    * Compute elevation

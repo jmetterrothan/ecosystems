@@ -251,7 +251,7 @@ class Terrain {
 
       case MOUSE_TYPES.CLICK:
         this.placeObjectWithMouseClick(raycaster);
-        this.generator.getBiome().handleClick(raycaster);
+        this.generator.getBiome().handleClick(raycaster, this);
         break;
 
       default:
