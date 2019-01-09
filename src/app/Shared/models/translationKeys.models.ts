@@ -11,5 +11,6 @@ export interface ITranslationKeys {
   repulse_fishes: string;
   repulse_butterflies: string;
   find_captain_treasure: string;
+  add_carrot_snowmnan: string;
   unlock_trophy_percentage: string;
 }

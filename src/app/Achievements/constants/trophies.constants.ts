@@ -164,6 +164,15 @@ export const TROPHIES: ITrophy[] = [
       { name: 'find captain treasure', value: PROGRESSION_EXTRAS_STORAGE_KEYS.find_captain_treasure }
     ]
   },
+  {
+    name: { key: TRANSLATION_KEYS.add_carrot_snowmnan },
+    value: 'add carrot snowman',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    checklist: [
+      { name: 'add carrot snowman', value: PROGRESSION_EXTRAS_STORAGE_KEYS.snowman_carrot }
+    ]
+  },
   // TROPHIES
   {
     name: { key: TRANSLATION_KEYS.unlock_trophy_percentage, options: { counter: 25 } },

@@ -11,6 +11,7 @@ import { IPick } from '@shared/models/pick.model';
 
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
+import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@app/Achievements/constants/progressionExtrasStorageKeys.constants';
 
 import MathUtils from '@shared/utils/Math.utils';
 
@@ -65,6 +66,7 @@ class SnowBiome extends Biome {
       this.snowmanChunk.repurposeObject(this.snowmanObject);
       this.snowmanObject = this.snowmanChunk.getObject(this.snowmanItem);
       this.snowmanChunk.placeObject(this.snowmanObject, { save: true });
+      this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.snowman_carrot);
     }
   }
 
