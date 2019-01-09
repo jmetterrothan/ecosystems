@@ -27,7 +27,7 @@ class Voice {
   }
 
   togglePredictState() {
-    this.predictState = recognizer.isListening();
+    this.predictState = this.recognizer.isListening();
   }
 
   stopListening() {
