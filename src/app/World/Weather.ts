@@ -37,8 +37,8 @@ class Weather {
   private starsSystem: THREE.Points;
 
   // sun objects
-  private sun: THREE.Mesh;
-  private moon: THREE.Mesh;
+  private sun: THREE.Object3D;
+  private moon: THREE.Object3D;
 
   private fogColor: THREE.Color = new THREE.Color();
   /**
@@ -148,13 +148,15 @@ class Weather {
     this.initSunlight();
     this.initMoonlight();
 
-    this.sun = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'red' }));
+    this.sun = World.LOADED_MODELS.get('sun').clone();
+    // this.sun = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'red' }));
     this.sun.position.copy(this.sunlight.position);
-    this.sun.visible = configSvc.config.DEBUG;
+    // this.sun.visible = configSvc.config.DEBUG;
 
-    this.moon = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'blue' }));
+    this.moon = World.LOADED_MODELS.get('moon').clone();
+    // this.moon = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'blue' }));
     this.moon.position.copy(this.sunlight.position);
-    this.moon.visible = configSvc.config.DEBUG;
+    // this.moon.visible = configSvc.config.DEBUG;
 
     this.scene.add(this.sun, this.moon);
 
@@ -268,7 +270,7 @@ class Weather {
   }
 
   private updateSun() {
-    const elapsedTime = (window.performance.now() - this.startTime) / 3000; // 60000
+    const elapsedTime = (window.performance.now() - this.startTime) / 5000; // 60000
 
     const x = Terrain.SIZE_X / 2 + Chunk.HEIGHT * Math.cos(elapsedTime);
     const y = Chunk.HEIGHT * Math.sin(elapsedTime);
