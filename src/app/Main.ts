@@ -9,7 +9,7 @@ import Crosshair from '@ui/Crosshair';
 import PostProcess from '@app/PostProcess';
 
 import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
-import UnderwaterService, { underwaterSvc } from '@services/underwater.service';
+import PlayerService, { playerSvc } from '@shared/services/player.service';
 import StorageService, { storageSvc } from '@services/storage.service';
 import CoreService, { coreSvc } from '@services/core.service';
 
@@ -32,8 +32,8 @@ class Main {
   private stats: statsJs;
 
   private coreSvc: CoreService;
+  private playerSvc: PlayerService;
   private configSvc: GraphicsConfigService;
-  private underwaterSvc: UnderwaterService;
   private storageSvc: StorageService;
 
   constructor() {
@@ -42,7 +42,7 @@ class Main {
 
     this.coreSvc = coreSvc;
     this.configSvc = configSvc;
-    this.underwaterSvc = underwaterSvc;
+    this.playerSvc = playerSvc;
     this.storageSvc = storageSvc;
 
     // TODO: Change quality based on user input / hardware detection / live frame render time ?
@@ -59,6 +59,7 @@ class Main {
       resetStrorage.addEventListener('click', () => {
         this.storageSvc.clearAll();
         console.log(localStorage);
+        this.coreSvc.init();
       }, false);
       document.body.appendChild(resetStrorage);
     }
@@ -175,7 +176,7 @@ class Main {
     if (this.focused) {
       this.world.update(delta);
 
-      if (this.underwaterSvc.isUnderwater) {
+      if (this.playerSvc.isUnderwater()) {
         this.postProcess.update();
       }
 
@@ -186,7 +187,7 @@ class Main {
     }
 
     // switch render func if underwater
-    if (this.underwaterSvc.isUnderwater) {
+    if (this.playerSvc.isUnderwater()) {
       this.postProcess.render(delta);
     } else {
       this.renderer.render(this.scene, this.camera);

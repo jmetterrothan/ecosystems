@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
 
@@ -8,12 +9,20 @@ class PlayerService {
 
   private progressionSvc: ProgressionService;
 
+  private underwater: boolean;
+  private sourceUnderwater: BehaviorSubject<boolean>;
+  underwater$: Observable<boolean>;
+
   private position: THREE.Vector3;
 
   private totalDistance: number = 0;
 
   constructor() {
     this.progressionSvc = progressionSvc;
+
+    this.underwater = false;
+    this.sourceUnderwater = new BehaviorSubject<boolean>(this.underwater);
+    this.underwater$ = this.sourceUnderwater.asObservable();
 
     this.timer();
   }
@@ -24,6 +33,22 @@ class PlayerService {
     if (!this.position) this.position = new THREE.Vector3(pos.x, pos.y, pos.z);
     else this.totalDistance += Math.round(this.position.distanceTo(pos));
     this.position.copy(pos);
+
+    // go underwater
+    if (this.position.y < 0 && !this.underwater) {
+      this.underwater = true;
+    }
+
+    // terrestiral
+    if (this.position.y >= 0 && this.underwater) {
+      this.underwater = false;
+    }
+  }
+
+  isUnderwater(): boolean { return this.underwater; }
+
+  setUnderwater(underwater: boolean) {
+    this.underwater = underwater;
   }
 
   private timer() {

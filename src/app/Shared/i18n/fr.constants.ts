@@ -13,5 +13,6 @@ export const FR_TRANSLATION: ITranslationKeys = {
   repulse_fishes: 'Les poissons sont nos amis, on n\'y touche plus',
   repulse_butterflies: 'Faire peur aux papillons',
   find_captain_treasure: 'Trouver le trésor du capitaine',
+  add_carrot_snowmnan: 'J\'ai pas d\'nez',
   unlock_trophy_percentage: ''
 };

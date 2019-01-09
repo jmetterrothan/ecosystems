@@ -6,7 +6,6 @@ import 'three/examples/js/controls/PointerLockControls';
 import Chunk from '@world/Chunk';
 import Terrain from '@world/Terrain';
 
-import UnderwaterService, { underwaterSvc } from './Shared/services/underwater.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
 import ProgressionService, { progressionSvc } from '@services/progression.service';
@@ -26,7 +25,6 @@ class Player {
   private progressionSvc: ProgressionService;
   private monitoringSvc: MonitoringService;
   private playerSvc: PlayerService;
-  private underwaterSvc: UnderwaterService;
 
   /**
    * Player constructor
@@ -48,7 +46,6 @@ class Player {
     this.progressionSvc = progressionSvc;
     this.monitoringSvc = monitoringSvc;
     this.playerSvc = playerSvc;
-    this.underwaterSvc = underwaterSvc;
   }
 
   /**
@@ -132,14 +129,13 @@ class Player {
     }
 
     // update underwater service
-    if (!this.underwaterSvc.isUnderwater && position.y <= Chunk.SEA_LEVEL && isWithinWorldBorders) {
-      this.underwaterSvc.set(true);
+    if (!this.playerSvc.isUnderwater() && position.y <= Chunk.SEA_LEVEL && isWithinWorldBorders) {
       this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
       this.monitoringSvc.sendEvent(this.monitoringSvc.categories.biome, this.monitoringSvc.actions.visited, PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
     }
 
-    if (this.underwaterSvc.isUnderwater && (position.y > Chunk.SEA_LEVEL || !isWithinWorldBorders)) {
-      this.underwaterSvc.set(false);
+    if (this.playerSvc.isUnderwater() && (position.y > Chunk.SEA_LEVEL || !isWithinWorldBorders)) {
+      this.playerSvc.setUnderwater(false);
     }
   }
 
