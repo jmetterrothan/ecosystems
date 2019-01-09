@@ -149,11 +149,13 @@ class Weather {
     this.initMoonlight();
 
     this.sun = World.LOADED_MODELS.get('sun').clone();
+    this.sun.children.forEach(mesh => { mesh.castShadow = false; });
     // this.sun = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'red' }));
     this.sun.position.copy(this.sunlight.position);
     // this.sun.visible = configSvc.config.DEBUG;
 
     this.moon = World.LOADED_MODELS.get('moon').clone();
+    this.moon.children.forEach(mesh => { mesh.castShadow = false; });
     // this.moon = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'blue' }));
     this.moon.position.copy(this.sunlight.position);
     // this.moon.visible = configSvc.config.DEBUG;
