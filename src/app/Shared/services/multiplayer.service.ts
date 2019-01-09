@@ -26,6 +26,8 @@ class MultiplayerService {
 
     this.socket = io.connect(url);
 
+    this.socket.emit('room', seed);
+
     /*     return new Promise((resolve, reject) => {
           this.socket = io.connect(url);
 

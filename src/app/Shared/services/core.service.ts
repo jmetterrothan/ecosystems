@@ -26,7 +26,6 @@ class CoreService {
 
   async init() {
     this.progressionSvc.init();
-    await this.multiplayerSvc.init();
     await this.translationSvc.init();
     await this.initModels();
     await this.initTextures();

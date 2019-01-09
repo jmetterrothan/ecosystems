@@ -102,12 +102,13 @@ class Main {
         (<HTMLElement>ev.target).style.display = 'none';
         const seed = this.world.getSeed();
         this.multiplayerSvc.init(seed);
-      });
+      }, false);
       document.body.appendChild(createRoom);
 
       // join room
       const input = document.createElement('input');
       input.type = 'text';
+      input.id = 'inputSeed';
       input.placeholder = 'room';
       input.classList.add('input', 'join');
       document.body.appendChild(input);
@@ -115,6 +116,11 @@ class Main {
       const join = document.createElement('button');
       join.textContent = 'Join room';
       join.classList.add('button', 'join');
+      join.addEventListener('click', ev => {
+        (<HTMLElement>ev.target).style.display = 'none';
+        const seed = input.value;
+        this.multiplayerSvc.init(seed);
+      }, false);
       document.body.appendChild(join);
     }
   }
