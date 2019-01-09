@@ -5,6 +5,8 @@ import 'three/examples/js/controls/PointerLockControls';
 
 import Chunk from '@world/Chunk';
 import Terrain from '@world/Terrain';
+import Model from '@voice/Model';
+import Voice from '@voice/Voice';
 
 import UnderwaterService, { underwaterSvc } from './Shared/services/underwater.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
@@ -22,6 +24,9 @@ class Player {
 
   private speed: THREE.Vector3;
   private velocity: THREE.Vector3;
+
+  private world: World;
+  private voiceModel: Model;
 
   private progressionSvc: ProgressionService;
   private monitoringSvc: MonitoringService;
@@ -56,12 +61,22 @@ class Player {
    * @param {THREE.Vector3} spawn Spawn location
    * @param {THREE.Vector3} target Target used to calculate player orientation
    */
-  init(spawn: THREE.Vector3, target: THREE.Vector3 = new THREE.Vector3()) {
+  async init(spawn: THREE.Vector3, target: THREE.Vector3 = new THREE.Vector3()) {
     const angle = -Math.cos(target.dot(spawn) / (target.length() * spawn.length()));
 
     this.controls.getObject().rotateY(-Math.PI / 4);
     this.controls.getObject().children[0].rotateX(angle);
     this.position = spawn;
+
+    await this.initVoice();
+  }
+
+  private async initVoice() {
+    this.voiceModel = new Model();
+    await this.voiceModel.train();
+
+    this.voice = new Voice(this.voiceModel);
+    // this.voice.listen();
   }
 
   /**
@@ -150,10 +165,11 @@ class Player {
     switch (key) {
       case 'ArrowUp': case 'z': this.moveForward = active; break;
       case 'ArrowDown': case 's': this.moveBackward = active; break;
-      case 'ArrowLeft': case 'q': this.moveLeft = active; break;
+      case 'ArrowLeft': case 'q': this.moveLeft = active; break ;
       case 'ArrowRight': case 'd': this.moveRight = active; break;
       case '+': case 'a': this.moveUp = active; break;
       case '-': case 'e': this.moveDown = active; break;
+      case 'v': !this.voice.predictState ? this.voice.listen() : this.voice.stopListening();
     }
   }
 

@@ -24,6 +24,6 @@ interface Math {
 }
 
 interface Sample {
-  vals: number;
+  vals: number[];
   label: string;
 }
