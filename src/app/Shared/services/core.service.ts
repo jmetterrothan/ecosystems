@@ -24,9 +24,9 @@ class CoreService {
     this.multiplayerSvc = multiplayerSvc;
   }
 
-  async init(scene: THREE.Scene) {
+  async init() {
     this.progressionSvc.init();
-    await this.multiplayerSvc.init(scene);
+    await this.multiplayerSvc.init();
     await this.translationSvc.init();
     await this.initModels();
     await this.initTextures();
@@ -62,10 +62,10 @@ class CoreService {
 
       mtlLoader.load(element.mtl, (materials) => {
         materials.preload();
-
         objLoader.setMaterials(materials);
 
         objLoader.load(element.obj, (object) => {
+
           object.castShadow = true;
           object.receiveShadow = false;
           object.frustumCulled = false;

@@ -1,17 +1,30 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add --save @types/ws
+  /usr/local/bin/node /usr/share/yarn/bin/yarn.js add socket-io-client
 
 PATH: 
-  D:\Programmes\cmder\bin;D:\Programmes\cmder\vendor\bin;D:\Programmes\cmder\vendor\conemu-maximus5\ConEmu\Scripts;D:\Programmes\cmder\vendor\conemu-maximus5;D:\Programmes\cmder\vendor\conemu-maximus5\ConEmu;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files\RedHat\java-1.8.0-openjdk-1.8.0.144-1\bin;C:\MinGW;D:\Documents\WAMP\bin\php\php7.1.9;C:\ProgramData\chocolatey\bin;C:\Program Files\Java\jdk1.8.0_152\bin;D:\Programmes\android-sdk\tools;D:\Programmes\android-sdk\platform-tools;C:\Program Files\nodejs;D:\Programmes\composer;D:\Programmes\Putty\;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;C:\Users\Florian\AppData\Roaming\npm;C:\Users\Florian\AppData\Roaming\npm\node_modules\@angular\cli\bin;D:\Documents\WAMP\bin\mysql\mysql5.7.19\bin;C:\Program Files\Git\cmd;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Program Files\MongoDB\Server\4.0\bin;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;D:\Programmes\flutter\bin;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Users\Florian\AppData\Local\Microsoft\WindowsApps;C:\Users\Florian\AppData\Roaming\Dashlane\6.1901.0.16461\bin\Firefox_Extension\{442718d9-475e-452a-b3e1-fb1ee16b8e9f}\components;C:\Users\Florian\AppData\Roaming\Dashlane\6.1901.0.16461\ucrt;C:\Users\Florian\AppData\Roaming\Dashlane\6.1901.0.16461\bin\Qt;C:\Users\Florian\AppData\Roaming\Dashlane\6.1901.0.16461\bin\Ssl;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;D:\Programmes\cmder
+  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/home/florian/Android/Sdk/tools:/home/florian/Android/Sdk/platform-tools:/opt/android-studio/gradle/gradle-4.4/bin:/opt/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/home/florian/Android/Sdk/tools:/home/florian/Android/Sdk/platform-tools:/opt/android-studio/gradle/gradle-4.4/bin
 
 Yarn version: 
-  1.5.1
+  1.9.4
 
 Node version: 
-  8.10.0
+  11.2.0
 
 Platform: 
-  win32 x64
+  linux x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/socket-io-client: Not found
+      at Request.params.callback [as _callback] (/usr/share/yarn/lib/cli.js:64202:18)
+      at Request.self.callback (/usr/share/yarn/lib/cli.js:137468:22)
+      at Request.emit (events.js:182:13)
+      at Request.<anonymous> (/usr/share/yarn/lib/cli.js:138440:10)
+      at Request.emit (events.js:182:13)
+      at IncomingMessage.<anonymous> (/usr/share/yarn/lib/cli.js:138362:12)
+      at Object.onceWrapper (events.js:273:13)
+      at IncomingMessage.emit (events.js:187:15)
+      at endReadableNT (_stream_readable.js:1098:12)
+      at process.internalTickCallback (internal/process/next_tick.js:72:19)
 
 npm manifest: 
   {
@@ -62,6 +75,7 @@ npm manifest:
       "@types/node": "^10.12.10",
       "@types/three": "^0.93.10",
       "@types/tween.js": "^16.9.0",
+      "@types/ws": "^6.0.1",
       "i18next": "^13.1.0",
       "i18next-browser-languagedetector": "^2.2.4",
       "js-yaml-loader": "^1.0.1",
@@ -669,6 +683,10 @@ Lockfile:
     dependencies:
       es6-promise "*"
   
+  "@types/events@*":
+    version "1.2.0"
+    resolved "https://registry.yarnpkg.com/@types/events/-/events-1.2.0.tgz#81a6731ce4df43619e5c8c945383b3e62a89ea86"
+  
   "@types/google.analytics@^0.0.39":
     version "0.0.39"
     resolved "https://registry.yarnpkg.com/@types/google.analytics/-/google.analytics-0.0.39.tgz#19a952003dbf3c7373d655a5c3203b4726b8b802"
@@ -676,6 +694,10 @@ Lockfile:
   "@types/i18next@^12.1.0":
     version "12.1.0"
     resolved "https://registry.yarnpkg.com/@types/i18next/-/i18next-12.1.0.tgz#7c3fd3dbe03f9531147033773bbd0ca4f474a180"
+  
+  "@types/node@*":
+    version "10.12.18"
+    resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.18.tgz#1d3ca764718915584fcd9f6344621b7672665c67"
   
   "@types/node@^10.12.10":
     version "10.12.10"
@@ -688,6 +710,13 @@ Lockfile:
   "@types/tween.js@^16.9.0":
     version "16.9.0"
     resolved "https://registry.yarnpkg.com/@types/tween.js/-/tween.js-16.9.0.tgz#af25067f86e15d2cba89b26776fc273ff7f55650"
+  
+  "@types/ws@^6.0.1":
+    version "6.0.1"
+    resolved "https://registry.yarnpkg.com/@types/ws/-/ws-6.0.1.tgz#ca7a3f3756aa12f62a0a62145ed14c6db25d5a28"
+    dependencies:
+      "@types/events" "*"
+      "@types/node" "*"
   
   "@webassemblyjs/ast@1.7.11":
     version "1.7.11"
@@ -5530,16 +5559,3 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/zeros/-/zeros-1.0.0.tgz#64e2d83c0da8d322aa4cb882497b31b7dc33a540"
     dependencies:
       ndarray "^1.0.16"
-
-Trace: 
-  Error: Missing list of packages to add to your project.
-      at new MessageError (C:\Program Files (x86)\Yarn\lib\cli.js:186:110)
-      at Object.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:40587:13)
-      at Generator.next (<anonymous>)
-      at step (C:\Program Files (x86)\Yarn\lib\cli.js:98:30)
-      at C:\Program Files (x86)\Yarn\lib\cli.js:116:14
-      at new Promise (<anonymous>)
-      at new F (C:\Program Files (x86)\Yarn\lib\cli.js:23451:28)
-      at Object.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:95:12)
-      at Object.run (C:\Program Files (x86)\Yarn\lib\cli.js:40599:19)
-      at run (C:\Program Files (x86)\Yarn\lib\cli.js:89113:20)

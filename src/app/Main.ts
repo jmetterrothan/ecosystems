@@ -78,7 +78,7 @@ class Main {
   async init() {
     this.initControls();
 
-    await this.coreSvc.init(this.scene);
+    await this.coreSvc.init();
 
     this.world = new World(this.scene, this.camera, this.controls);
     await this.world.init();

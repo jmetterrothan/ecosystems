@@ -13,6 +13,8 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import Weather from '@world/Weather';
 import Player from '@app/Player';
 
+import { IOnlinePlayer } from '@shared/models/onlinePlayer.model';
+
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 import MathUtils from '@utils/Math.utils';
@@ -38,6 +40,7 @@ class World {
   private controls: THREE.PointerLockControls;
 
   private player: Player;
+  private onlinePlayers: IOnlinePlayer[] = [];
 
   private terrain: Terrain;
   private weather: Weather;
@@ -65,6 +68,8 @@ class World {
 
     this.configScv = configSvc;
     this.multiplayerSvc = multiplayerSvc;
+
+    this.watchNewPlayer();
   }
 
   getWeather(): Weather {
@@ -158,7 +163,7 @@ class World {
     this.terrain.update(this.frustum, this.player.position, delta);
     this.player.update(this.terrain, delta);
     this.weather.update(delta);
-    this.multiplayerSvc.update(this.player.position);
+    this.multiplayerSvc.update(this.onlinePlayers);
     this.generator.getBiome().update(delta);
   }
 
@@ -184,6 +189,29 @@ class World {
    */
   handleKeyboard(key: string, active: boolean) {
     this.player.handleKeyboard(key, active);
+  }
+
+  private watchNewPlayer() {
+    this.multiplayerSvc.multiplayerObservable.subscribe(
+      uniqid => {
+        const newPlayer = <IOnlinePlayer>{
+          uniqid,
+          position: new THREE.Vector3(0, 0, 0),
+          mesh: new THREE.Mesh(
+            new THREE.BoxGeometry(6000, 6000, 6000),
+            new THREE.MeshBasicMaterial({
+              color: new THREE.Color(
+                MathUtils.randomInt(0, 255),
+                MathUtils.randomInt(0, 255),
+                MathUtils.randomInt(0, 255)
+              )
+            })
+          )
+        };
+        this.onlinePlayers.push(newPlayer);
+        this.scene.add(newPlayer.mesh);
+      }
+    );
   }
 
   static pointInWorld(point: THREE.Vector3): boolean {
