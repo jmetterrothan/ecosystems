@@ -253,11 +253,11 @@ class Weather {
         if (position.y <= Chunk.SEA_ELEVATION) position.y = Chunk.CLOUD_LEVEL - size.y / 2;
         if (rainData.isRaininig) {
           rainData.particleMaterial.visible = true;
-          position.y -= World.RAIN_SPEED;
+          position.y -= Weather.RAIN_SPEED;
         } else {
           // rain stop
           if (position.y < Chunk.CLOUD_LEVEL - 1000) {
-            position.y -= World.RAIN_SPEED;
+            position.y -= Weather.RAIN_SPEED;
           } else {
             position.set(cloud.position.x, Chunk.CLOUD_LEVEL - size.y / 2, cloud.position.z);
           }

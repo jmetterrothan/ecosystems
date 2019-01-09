@@ -22,6 +22,12 @@ class FjordBiome extends Biome {
     this.e = MathUtils.randomFloat(2, 3);
   }
 
+  init(scene: THREE.Scene, terrain: Terrain) { }
+
+  update(delta: number) { }
+
+  handleClick(raycaster: THREE.Raycaster) { }
+
   /**
    * Compute elevation
    * @param {number} x coord component
