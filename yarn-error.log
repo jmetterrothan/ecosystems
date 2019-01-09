@@ -1,30 +1,17 @@
 Arguments: 
-  /usr/local/bin/node /usr/share/yarn/bin/yarn.js add socket-io-client
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js dev
 
 PATH: 
-  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/home/florian/Android/Sdk/tools:/home/florian/Android/Sdk/platform-tools:/opt/android-studio/gradle/gradle-4.4/bin:/opt/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/home/florian/Android/Sdk/tools:/home/florian/Android/Sdk/platform-tools:/opt/android-studio/gradle/gradle-4.4/bin
+  D:\Programmes\cmder\bin;D:\Programmes\cmder\vendor\bin;D:\Programmes\cmder\vendor\conemu-maximus5\ConEmu\Scripts;D:\Programmes\cmder\vendor\conemu-maximus5;D:\Programmes\cmder\vendor\conemu-maximus5\ConEmu;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files\RedHat\java-1.8.0-openjdk-1.8.0.144-1\bin;C:\MinGW;D:\Documents\WAMP\bin\php\php7.1.9;C:\ProgramData\chocolatey\bin;C:\Program Files\Java\jdk1.8.0_152\bin;D:\Programmes\android-sdk\tools;D:\Programmes\android-sdk\platform-tools;C:\Program Files\nodejs;D:\Programmes\composer;D:\Programmes\Putty\;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;C:\Users\Florian\AppData\Roaming\npm;C:\Users\Florian\AppData\Roaming\npm\node_modules\@angular\cli\bin;D:\Documents\WAMP\bin\mysql\mysql5.7.19\bin;C:\Program Files\Git\cmd;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Program Files\MongoDB\Server\4.0\bin;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;D:\Programmes\flutter\bin;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Users\Florian\AppData\Local\Microsoft\WindowsApps;C:\Users\Florian\AppData\Roaming\Dashlane\6.1901.0.16461\bin\Firefox_Extension\{442718d9-475e-452a-b3e1-fb1ee16b8e9f}\components;C:\Users\Florian\AppData\Roaming\Dashlane\6.1901.0.16461\ucrt;C:\Users\Florian\AppData\Roaming\Dashlane\6.1901.0.16461\bin\Qt;C:\Users\Florian\AppData\Roaming\Dashlane\6.1901.0.16461\bin\Ssl;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;D:\Programmes\cmder
 
 Yarn version: 
-  1.9.4
+  1.5.1
 
 Node version: 
-  11.2.0
+  8.10.0
 
 Platform: 
-  linux x64
-
-Trace: 
-  Error: https://registry.yarnpkg.com/socket-io-client: Not found
-      at Request.params.callback [as _callback] (/usr/share/yarn/lib/cli.js:64202:18)
-      at Request.self.callback (/usr/share/yarn/lib/cli.js:137468:22)
-      at Request.emit (events.js:182:13)
-      at Request.<anonymous> (/usr/share/yarn/lib/cli.js:138440:10)
-      at Request.emit (events.js:182:13)
-      at IncomingMessage.<anonymous> (/usr/share/yarn/lib/cli.js:138362:12)
-      at Object.onceWrapper (events.js:273:13)
-      at IncomingMessage.emit (events.js:187:15)
-      at endReadableNT (_stream_readable.js:1098:12)
-      at process.internalTickCallback (internal/process/next_tick.js:72:19)
+  win32 x64
 
 npm manifest: 
   {
@@ -73,6 +60,7 @@ npm manifest:
       "@types/es6-promise": "^3.3.0",
       "@types/i18next": "^12.1.0",
       "@types/node": "^10.12.10",
+      "@types/socket.io-client": "^1.4.32",
       "@types/three": "^0.93.10",
       "@types/tween.js": "^16.9.0",
       "@types/ws": "^6.0.1",
@@ -84,6 +72,7 @@ npm manifest:
       "seedrandom": "^2.4.4",
       "simplex-noise": "^2.4.0",
       "snake-case": "^2.1.0",
+      "socket.io-client": "^2.2.0",
       "stats.js": "^0.17.0",
       "three": "^0.98.0"
     }
@@ -703,6 +692,10 @@ Lockfile:
     version "10.12.10"
     resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.10.tgz#4fa76e6598b7de3f0cb6ec3abacc4f59e5b3a2ce"
   
+  "@types/socket.io-client@^1.4.32":
+    version "1.4.32"
+    resolved "https://registry.yarnpkg.com/@types/socket.io-client/-/socket.io-client-1.4.32.tgz#988a65a0386c274b1c22a55377fab6a30789ac14"
+  
   "@types/three@^0.93.10":
     version "0.93.10"
     resolved "https://registry.yarnpkg.com/@types/three/-/three-0.93.10.tgz#80b97c28530966393c90ab83a6ad11bb74d87a93"
@@ -872,6 +865,10 @@ Lockfile:
     version "5.7.3"
     resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.3.tgz#67aa231bf8812974b85235a96771eb6bd07ea279"
   
+  after@0.8.2:
+    version "0.8.2"
+    resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
+  
   ajv-errors@^1.0.0:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/ajv-errors/-/ajv-errors-1.0.0.tgz#ecf021fa108fd17dfb5e6b383f2dd233e31ffc59"
@@ -981,6 +978,10 @@ Lockfile:
     version "0.3.2"
     resolved "https://registry.yarnpkg.com/array-unique/-/array-unique-0.3.2.tgz#a894b75d4bc4f6cd679ef3244a9fd8f46ae2d428"
   
+  arraybuffer.slice@~0.0.7:
+    version "0.0.7"
+    resolved "https://registry.yarnpkg.com/arraybuffer.slice/-/arraybuffer.slice-0.0.7.tgz#3bbc4275dd584cc1b10809b89d4e8b63a69e7675"
+  
   asn1.js@^4.0.0:
     version "4.10.1"
     resolved "https://registry.yarnpkg.com/asn1.js/-/asn1.js-4.10.1.tgz#b9c2bf5805f1e64aadeed6df3a2bfafb5a73f5a0"
@@ -1016,6 +1017,10 @@ Lockfile:
   async-foreach@^0.1.3:
     version "0.1.3"
     resolved "https://registry.yarnpkg.com/async-foreach/-/async-foreach-0.1.3.tgz#36121f845c0578172de419a97dbeb1d16ec34542"
+  
+  async-limiter@~1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/async-limiter/-/async-limiter-1.0.0.tgz#78faed8c3d074ab81f22b4e985d79e8738f720f8"
   
   async@^1.5.2:
     version "1.5.2"
@@ -1065,9 +1070,17 @@ Lockfile:
       mkdirp "^0.5.1"
       util.promisify "^1.0.0"
   
+  backo2@1.0.2:
+    version "1.0.2"
+    resolved "https://registry.yarnpkg.com/backo2/-/backo2-1.0.2.tgz#31ab1ac8b129363463e35b3ebb69f4dfcfba7947"
+  
   balanced-match@^1.0.0:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
+  
+  base64-arraybuffer@0.1.5:
+    version "0.1.5"
+    resolved "https://registry.yarnpkg.com/base64-arraybuffer/-/base64-arraybuffer-0.1.5.tgz#73926771923b5a19747ad666aa5cd4bf9c6e9ce8"
   
   base64-js@^1.0.2:
     version "1.3.0"
@@ -1095,6 +1108,12 @@ Lockfile:
     dependencies:
       tweetnacl "^0.14.3"
   
+  better-assert@~1.0.0:
+    version "1.0.2"
+    resolved "https://registry.yarnpkg.com/better-assert/-/better-assert-1.0.2.tgz#40866b9e1b9e0b55b481894311e68faffaebc522"
+    dependencies:
+      callsite "1.0.0"
+  
   big.js@^3.1.3:
     version "3.2.0"
     resolved "https://registry.yarnpkg.com/big.js/-/big.js-3.2.0.tgz#a5fc298b81b9e0dca2e458824784b65c52ba588e"
@@ -1102,6 +1121,10 @@ Lockfile:
   binary-extensions@^1.0.0:
     version "1.12.0"
     resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.12.0.tgz#c2d780f53d45bba8317a8902d4ceeaf3a6385b14"
+  
+  blob@0.0.5:
+    version "0.0.5"
+    resolved "https://registry.yarnpkg.com/blob/-/blob-0.0.5.tgz#d680eeef25f8cd91ad533f5b01eed48e64caf683"
   
   block-stream@*:
     version "0.0.9"
@@ -1298,6 +1321,10 @@ Lockfile:
       union-value "^1.0.0"
       unset-value "^1.0.0"
   
+  callsite@1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/callsite/-/callsite-1.0.0.tgz#280398e5d664bd74038b6f0905153e6e8af1bc20"
+  
   camel-case@3.0.x:
     version "3.0.0"
     resolved "https://registry.yarnpkg.com/camel-case/-/camel-case-3.0.0.tgz#ca3c3688a4e9cf3a4cda777dc4dcbc713249cf73"
@@ -1479,9 +1506,17 @@ Lockfile:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
   
-  component-emitter@^1.2.1:
+  component-bind@1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/component-bind/-/component-bind-1.0.0.tgz#00c608ab7dcd93897c0009651b1d3a8e1e73bbd1"
+  
+  component-emitter@1.2.1, component-emitter@^1.2.1:
     version "1.2.1"
     resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.2.1.tgz#137918d6d78283f7df7a6b7c5a63e140e69425e6"
+  
+  component-inherit@0.0.3:
+    version "0.0.3"
+    resolved "https://registry.yarnpkg.com/component-inherit/-/component-inherit-0.0.3.tgz#645fc4adf58b72b649d5cae65135619db26ff143"
   
   compressible@~2.0.14:
     version "2.0.15"
@@ -1719,7 +1754,7 @@ Lockfile:
     dependencies:
       ms "2.0.0"
   
-  debug@=3.1.0:
+  debug@=3.1.0, debug@~3.1.0:
     version "3.1.0"
     resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
     dependencies:
@@ -1962,6 +1997,32 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/end-of-stream/-/end-of-stream-1.4.1.tgz#ed29634d19baba463b6ce6b80a37213eab71ec43"
     dependencies:
       once "^1.4.0"
+  
+  engine.io-client@~3.3.1:
+    version "3.3.1"
+    resolved "https://registry.yarnpkg.com/engine.io-client/-/engine.io-client-3.3.1.tgz#afedb4a07b2ea48b7190c3136bfea98fdd4f0f03"
+    dependencies:
+      component-emitter "1.2.1"
+      component-inherit "0.0.3"
+      debug "~3.1.0"
+      engine.io-parser "~2.1.1"
+      has-cors "1.1.0"
+      indexof "0.0.1"
+      parseqs "0.0.5"
+      parseuri "0.0.5"
+      ws "~6.1.0"
+      xmlhttprequest-ssl "~1.5.4"
+      yeast "0.1.2"
+  
+  engine.io-parser@~2.1.1:
+    version "2.1.3"
+    resolved "https://registry.yarnpkg.com/engine.io-parser/-/engine.io-parser-2.1.3.tgz#757ab970fbf2dfb32c7b74b033216d5739ef79a6"
+    dependencies:
+      after "0.8.2"
+      arraybuffer.slice "~0.0.7"
+      base64-arraybuffer "0.1.5"
+      blob "0.0.5"
+      has-binary2 "~1.0.2"
   
   enhanced-resolve@^4.1.0:
     version "4.1.0"
@@ -2476,6 +2537,16 @@ Lockfile:
     dependencies:
       ansi-regex "^2.0.0"
   
+  has-binary2@~1.0.2:
+    version "1.0.3"
+    resolved "https://registry.yarnpkg.com/has-binary2/-/has-binary2-1.0.3.tgz#7776ac627f3ea77250cfc332dab7ddf5e4f5d11d"
+    dependencies:
+      isarray "2.0.1"
+  
+  has-cors@1.1.0:
+    version "1.1.0"
+    resolved "https://registry.yarnpkg.com/has-cors/-/has-cors-1.1.0.tgz#5e474793f7ea9843d1bb99c23eef49ff126fff39"
+  
   has-flag@^3.0.0:
     version "3.0.0"
     resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-3.0.0.tgz#b5d454dc2199ae225699f3467e5a07f3b955bafd"
@@ -2972,6 +3043,10 @@ Lockfile:
   isarray@1.0.0, isarray@^1.0.0, isarray@~1.0.0:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
+  
+  isarray@2.0.1:
+    version "2.0.1"
+    resolved "https://registry.yarnpkg.com/isarray/-/isarray-2.0.1.tgz#a37d94ed9cda2d59865c9f76fe596ee1f338741e"
   
   isexe@^2.0.0:
     version "2.0.0"
@@ -3665,6 +3740,10 @@ Lockfile:
     version "4.1.1"
     resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   
+  object-component@0.0.3:
+    version "0.0.3"
+    resolved "https://registry.yarnpkg.com/object-component/-/object-component-0.0.3.tgz#f0c69aa50efc95b866c186f400a33769cb2f1291"
+  
   object-copy@^0.1.0:
     version "0.1.0"
     resolved "https://registry.yarnpkg.com/object-copy/-/object-copy-0.1.0.tgz#7e7d858b781bd7c991a41ba975ed3812754e998c"
@@ -3857,6 +3936,18 @@ Lockfile:
     dependencies:
       error-ex "^1.3.1"
       json-parse-better-errors "^1.0.1"
+  
+  parseqs@0.0.5:
+    version "0.0.5"
+    resolved "https://registry.yarnpkg.com/parseqs/-/parseqs-0.0.5.tgz#d5208a3738e46766e291ba2ea173684921a8b89d"
+    dependencies:
+      better-assert "~1.0.0"
+  
+  parseuri@0.0.5:
+    version "0.0.5"
+    resolved "https://registry.yarnpkg.com/parseuri/-/parseuri-0.0.5.tgz#80204a50d4dbb779bfdc6ebe2778d90e4bce320a"
+    dependencies:
+      better-assert "~1.0.0"
   
   parseurl@~1.3.2:
     version "1.3.2"
@@ -4633,6 +4724,33 @@ Lockfile:
       source-map-resolve "^0.5.0"
       use "^3.1.0"
   
+  socket.io-client@^2.2.0:
+    version "2.2.0"
+    resolved "https://registry.yarnpkg.com/socket.io-client/-/socket.io-client-2.2.0.tgz#84e73ee3c43d5020ccc1a258faeeb9aec2723af7"
+    dependencies:
+      backo2 "1.0.2"
+      base64-arraybuffer "0.1.5"
+      component-bind "1.0.0"
+      component-emitter "1.2.1"
+      debug "~3.1.0"
+      engine.io-client "~3.3.1"
+      has-binary2 "~1.0.2"
+      has-cors "1.1.0"
+      indexof "0.0.1"
+      object-component "0.0.3"
+      parseqs "0.0.5"
+      parseuri "0.0.5"
+      socket.io-parser "~3.3.0"
+      to-array "0.1.4"
+  
+  socket.io-parser@~3.3.0:
+    version "3.3.0"
+    resolved "https://registry.yarnpkg.com/socket.io-parser/-/socket.io-parser-3.3.0.tgz#2b52a96a509fdf31440ba40fed6094c7d4f1262f"
+    dependencies:
+      component-emitter "1.2.1"
+      debug "~3.1.0"
+      isarray "2.0.1"
+  
   sockjs-client@1.3.0:
     version "1.3.0"
     resolved "https://registry.yarnpkg.com/sockjs-client/-/sockjs-client-1.3.0.tgz#12fc9d6cb663da5739d3dc5fb6e8687da95cb177"
@@ -4933,6 +5051,10 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/timers-browserify/-/timers-browserify-2.0.10.tgz#1d28e3d2aadf1d5a5996c4e9f95601cd053480ae"
     dependencies:
       setimmediate "^1.0.4"
+  
+  to-array@0.1.4:
+    version "0.1.4"
+    resolved "https://registry.yarnpkg.com/to-array/-/to-array-0.1.4.tgz#17e6c11f73dd4f3d74cda7a4ff3238e9ad9bf890"
   
   to-arraybuffer@^1.0.0:
     version "1.0.1"
@@ -5460,6 +5582,16 @@ Lockfile:
     version "1.0.2"
     resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   
+  ws@~6.1.0:
+    version "6.1.2"
+    resolved "https://registry.yarnpkg.com/ws/-/ws-6.1.2.tgz#3cc7462e98792f0ac679424148903ded3b9c3ad8"
+    dependencies:
+      async-limiter "~1.0.0"
+  
+  xmlhttprequest-ssl@~1.5.4:
+    version "1.5.5"
+    resolved "https://registry.yarnpkg.com/xmlhttprequest-ssl/-/xmlhttprequest-ssl-1.5.5.tgz#c2876b06168aadc40e57d97e81191ac8f4398b3e"
+  
   xregexp@4.0.0:
     version "4.0.0"
     resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-4.0.0.tgz#e698189de49dd2a18cc5687b05e17c8e43943020"
@@ -5554,8 +5686,28 @@ Lockfile:
       y18n "^3.2.1"
       yargs-parser "^5.0.0"
   
+  yeast@0.1.2:
+    version "0.1.2"
+    resolved "https://registry.yarnpkg.com/yeast/-/yeast-0.1.2.tgz#008e06d8094320c372dbc2f8ed76a0ca6c8ac419"
+  
   zeros@~1.0.0:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/zeros/-/zeros-1.0.0.tgz#64e2d83c0da8d322aa4cb882497b31b7dc33a540"
     dependencies:
       ndarray "^1.0.16"
+
+Trace: 
+  Error: Command failed.
+  Exit code: 1
+  Command: C:\WINDOWS\system32\cmd.exe
+  Arguments: /d /s /c webpack-dev-server --progress --inline --mode development --config config/webpack.dev.js
+  Directory: D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem
+  Output:
+  
+      at ProcessTermError.MessageError (C:\Program Files (x86)\Yarn\lib\cli.js:186:110)
+      at new ProcessTermError (C:\Program Files (x86)\Yarn\lib\cli.js:226:113)
+      at ChildProcess.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:30281:17)
+      at emitTwo (events.js:126:13)
+      at ChildProcess.emit (events.js:214:7)
+      at maybeClose (internal/child_process.js:925:16)
+      at Process.ChildProcess._handle.onexit (internal/child_process.js:209:5)

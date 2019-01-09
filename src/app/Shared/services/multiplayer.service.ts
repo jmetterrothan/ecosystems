@@ -4,6 +4,8 @@ import { Observable, Subject } from 'rxjs';
 
 import { IOnlinePlayer } from '@shared/models/onlinePlayer.model';
 
+import { ENV } from '@shared/env/env';
+
 class MultiplayerService {
 
   private userId: string;
@@ -22,24 +24,24 @@ class MultiplayerService {
 
   init(): Promise<any> {
     const port: number = 4200;
-    const url: string = `ws://localhost:${port}`;
+    const url: string = `${ENV.socketBaseUrl}:${ENV.socketPort}`;
 
-    return new Promise((resolve, reject) => {
-      this.socket = io.connect(url);
+    /*     return new Promise((resolve, reject) => {
+          this.socket = io.connect(url);
 
-      this.socket.on('connect', () => {
-        this.handleServer();
-        resolve(this.socket);
-      });
+          this.socket.on('connect', () => {
+            this.handleServer();
+            resolve(this.socket);
+          });
 
-      this.socket.on('connect_error', err => {
-        reject(err);
-      });
-    });
+          this.socket.on('connect_error', err => {
+            reject(err);
+          });
+        }); */
   }
 
   update(players: IOnlinePlayer[]) {
-    this.socket.emit('broadcast', { players });
+    // this.socket.emit('broadcast', { players });
   }
 
   private handleServer() {
