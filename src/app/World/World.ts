@@ -84,6 +84,10 @@ class World {
     return this.generator;
   }
 
+  getSeed(): string {
+    return this.seed;
+  }
+
   async init() {
     this.initSeed();
 
@@ -122,12 +126,11 @@ class World {
     this.seed = World.SEED ? World.SEED : MathUtils.randomUint32().toString();
     MathUtils.rng = new Math.seedrandom(this.seed);
     console.info(`SEED : ${this.seed}`);
-    /*
+
     const span = document.createElement('span');
     span.className = 'seed';
     span.textContent = `Seed: ${this.seed}`;
     document.body.appendChild(span);
-    */
   }
 
   private showAxesHelper() {

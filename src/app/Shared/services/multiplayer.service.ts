@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import io from 'socket.io-client';
+import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
 
 import { IOnlinePlayer } from '@shared/models/onlinePlayer.model';
@@ -8,9 +8,7 @@ import { ENV } from '@shared/env/env';
 
 class MultiplayerService {
 
-  private userId: string;
-
-  private socket: any;
+  private socket: SocketIOClient.Socket;
 
   private p2: THREE.Mesh;
 
@@ -22,9 +20,11 @@ class MultiplayerService {
     this.multiplayerObservable = this.source.asObservable();
   }
 
-  init(): Promise<any> {
+  init(seed): Promise<any> {
     const port: number = 4200;
     const url: string = `${ENV.socketBaseUrl}:${ENV.socketPort}`;
+
+    this.socket = io.connect(url);
 
     /*     return new Promise((resolve, reject) => {
           this.socket = io.connect(url);
