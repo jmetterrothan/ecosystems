@@ -9,7 +9,7 @@ import GraphicsConfigService, { configSvc } from '@services/graphicsConfig.servi
 import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 
-import { BoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
+import { IBoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
 
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
@@ -62,9 +62,9 @@ class Boids {
 
   /**
    * Creates boids creatures and places them in the world
-   * @param {BoidCreatureParameters} parameters
+   * @param {IBoidCreatureParameters} parameters
    */
-  generate(parameters: BoidCreatureParameters) {
+  generate(parameters: IBoidCreatureParameters) {
     for (let i = 0; i < this.creaturesCount; i++) {
       const py = Math.random() * this.boudingBox.y - this.boudingBox.y / 2;
 
@@ -98,9 +98,11 @@ class Boids {
       creature.update(this.creatures, generator, delta);
     });
 
-    const someFishesRepulsed = this.creatures.some((creature: Creature) => creature.getPosition().distanceTo(this.playerSvc.getPosition()) < creature.getMinRepulseDistance());
-    if (someFishesRepulsed) {
-      this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_fishes);
+    const someCreaturesRepulsed = this.creatures.some((creature: Creature) => creature.getModelPosition().distanceTo(this.playerSvc.getPosition()) < creature.getMinRepulseDistance());
+    if (someCreaturesRepulsed) {
+      this.progressionSvc.increment(this.creatures[0].getParameters().underwater
+        ? PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_fishes
+        : PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_butterflies);
     }
   }
 }

@@ -8,8 +8,8 @@ import Biome from '@world/Biome';
 import MathUtils from '@shared/utils/Math.utils';
 import Crosshair from '@ui/Crosshair';
 
-import UnderwaterService, { underwaterSvc } from '@shared/services/underwater.service';
 import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
+import PlayerService, { playerSvc } from '@services/player.service';
 import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
 
 import { WATER_MATERIAL } from '@materials/water.material';
@@ -34,6 +34,9 @@ class Terrain {
   static readonly SIZE_Y: number = Chunk.HEIGHT;
   static readonly SIZE_Z: number = Terrain.NROWS * Chunk.CELL_SIZE_Z;
 
+  static readonly CENTER: THREE.Vector2 = new THREE.Vector2(Terrain.SIZE_X / 2, Terrain.SIZE_Z / 2);
+  static readonly MIDDLE: THREE.Vector3 = new THREE.Vector3(Terrain.SIZE_X / 2, Terrain.SIZE_Y / 2, Terrain.SIZE_Z / 2);
+
   static readonly OFFSET_X: number = Terrain.SIZE_X / 2;
   static readonly OFFSET_Z: number = Terrain.SIZE_Z / 2;
 
@@ -55,7 +58,7 @@ class Terrain {
   private layers: THREE.Group;
 
   private progressionSvc: ProgressionService;
-  private underwaterSvc: UnderwaterService;
+  private playerSvc: PlayerService;
   private configSvc: GraphicsConfigService;
 
   // preview
@@ -83,7 +86,7 @@ class Terrain {
     this.layers = new THREE.Group();
 
     this.progressionSvc = progressionSvc;
-    this.underwaterSvc = underwaterSvc;
+    this.playerSvc = playerSvc;
     this.configSvc = configSvc;
 
     this.chunk = new Coord();
@@ -248,6 +251,7 @@ class Terrain {
 
       case MOUSE_TYPES.CLICK:
         this.placeObjectWithMouseClick(raycaster);
+        this.generator.getBiome().handleClick(raycaster);
         break;
 
       default:
@@ -285,7 +289,6 @@ class Terrain {
 
       break;
     }
-
   }
 
   /**
@@ -582,7 +585,7 @@ class Terrain {
   }
 
   private initUnderwater() {
-    this.underwaterSvc.observable$.subscribe(
+    this.playerSvc.underwater$.subscribe(
       () => {
         if (this.previewObject) {
           this.scene.remove(this.previewObject);

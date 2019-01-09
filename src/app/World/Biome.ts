@@ -53,13 +53,15 @@ abstract class Biome {
    * @param {THREE.Scene} scene
    * @param {Terrain} terrain
    */
-  init(scene: THREE.Scene, terrain: Terrain) { }
+  abstract init(scene: THREE.Scene, terrain: Terrain);
 
   /**
    * Biome update
    * @param {number} delta
    */
-  update(delta: number) { }
+  abstract update(delta: number);
+
+  abstract handleClick(raycaster: THREE.Raycaster);
 
   /**
    * Retrieve biome object (color and organisms) at the given position
@@ -115,7 +117,6 @@ abstract class Biome {
    * @return string
    */
   getName(): string { return this.name; }
-
   hasWater(): boolean { return this.water; }
   getWaterDistortion(): boolean { return this.waterDistortion; }
   getWaterDistortionFreq(): number { return this.waterDistortionFreq; }

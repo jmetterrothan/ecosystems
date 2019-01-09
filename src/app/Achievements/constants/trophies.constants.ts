@@ -146,12 +146,39 @@ export const TROPHIES: ITrophy[] = [
       { name: 'repulse fishes', value: PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_fishes }
     ]
   },
+  {
+    name: { key: TRANSLATION_KEYS.repulse_butterflies },
+    value: 'repulse butterflies',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    checklist: [
+      { name: 'repulse butterflies', value: PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_butterflies }
+    ]
+  },
+  {
+    name: { key: TRANSLATION_KEYS.find_captain_treasure },
+    value: 'find captain treasure',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    checklist: [
+      { name: 'find captain treasure', value: PROGRESSION_EXTRAS_STORAGE_KEYS.find_captain_treasure }
+    ]
+  },
+  {
+    name: { key: TRANSLATION_KEYS.add_carrot_snowmnan },
+    value: 'add carrot snowman',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    checklist: [
+      { name: 'add carrot snowman', value: PROGRESSION_EXTRAS_STORAGE_KEYS.snowman_carrot }
+    ]
+  },
   // TROPHIES
   {
     name: { key: TRANSLATION_KEYS.unlock_trophy_percentage, options: { counter: 25 } },
     value: 'unlock 25 percent trophies',
     img: '',
-    difficulty: TROPHY_DIFFICULTY.GOLD,
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.TROPHY,
     checklist: [
       { name: 'unlock 25 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage, limit: 25, comparison: COMPARISON_TYPE.SUPERIOR }
@@ -184,7 +211,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
     type: TROPHY_TYPE.TROPHY,
     checklist: [
-      { name: 'unlock 100 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage, limit: 100, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'unlock 100 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage, limit: 100 }
     ]
   }
 ];

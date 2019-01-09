@@ -3,7 +3,7 @@ import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
-import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
+import GraphicsConfigService, { configSvc } from '@services/graphicsConfig.service';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
@@ -11,11 +11,6 @@ import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Weather from '@world/Weather';
 import Player from '@app/Player';
-
-import { ITexture } from '@shared/models/texture.model';
-
-import { OBJECTS } from '@shared/constants/object.constants';
-import { TEXTURES } from '@shared/constants/texture.constants';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
@@ -30,9 +25,6 @@ class World {
 
   static readonly SHOW_FOG: boolean = true;
   static readonly FOG_COLOR: number = 0xb1d8ff;
-
-  static readonly RAIN_PROBABILITY: number = 1;
-  static readonly RAIN_SPEED: number = 320;
 
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
   static LOADED_TEXTURES = new Map<string, THREE.Texture>();
@@ -50,7 +42,7 @@ class World {
   private raycaster: THREE.Raycaster;
   private seed: string;
 
-  private configScv: GraphicsConfigService;
+  private configSvc: GraphicsConfigService;
 
   /**
    * World constructor
@@ -66,29 +58,23 @@ class World {
     this.frustum = new THREE.Frustum();
     this.raycaster = new THREE.Raycaster();
 
-    this.configScv = configSvc;
+    this.configSvc = configSvc;
+  }
+
+  getWeather(): Weather {
+    return this.weather;
+  }
+
+  getTerrain(): Terrain {
+    return this.terrain;
+  }
+
+  getGenerator(): BiomeGenerator {
+    return this.generator;
   }
 
   async init() {
     this.initSeed();
-    this.initFog();
-    this.initLights();
-    await this.initObjects();
-    await this.initTextures();
-
-    // terrain
-    this.generator = new BiomeGenerator();
-    this.terrain = new Terrain(this.scene, this, this.generator);
-
-    this.weather = new Weather(this.scene, this.generator);
-    this.weather.initClouds();
-
-    this.terrain.init();
-    this.terrain.preload();
-
-    this.weather.initRain();
-
-    this.generator.getBiome().init(this.scene, this.terrain);
 
     // entities
     const spawn = new THREE.Vector3(-24000, Terrain.SIZE_Y, Terrain.SIZE_Z + 24000);
@@ -97,9 +83,26 @@ class World {
     this.player = new Player(this.controls);
     this.player.init(spawn, target);
 
+    // terrain
+    this.generator = new BiomeGenerator();
+    this.terrain = new Terrain(this.scene, this, this.generator);
+
+    this.weather = new Weather(this.scene, this.generator);
+    this.initFog();
+    this.weather.initClouds();
+    this.weather.initLights();
+    this.weather.initStars();
+
+    this.terrain.init();
+    this.terrain.preload();
+
+    this.weather.initRain();
+
+    this.generator.getBiome().init(this.scene, this.terrain);
+
     this.scene.add(this.controls.getObject());
 
-    if (configSvc.config.DEBUG) {
+    if (this.configSvc.config.DEBUG) {
       this.showAxesHelper();
     }
   }
@@ -125,10 +128,10 @@ class World {
 
   private initFog() {
     if (World.SHOW_FOG) {
-      const near = configSvc.config.MAX_RENDERABLE_CHUNKS * ((Chunk.WIDTH + Chunk.DEPTH) / 2);
       const far = configSvc.config.MAX_RENDERABLE_CHUNKS * ((Chunk.WIDTH + Chunk.DEPTH) / 2);
+      const near = far / 2;
 
-      this.scene.fog = new THREE.Fog(World.FOG_COLOR, near, far);
+      this.scene.fog = new THREE.Fog(this.getWeather().getFogColor().getHex(), near, far);
     }
   }
 
@@ -164,42 +167,6 @@ class World {
     }
 
     this.scene.add(sunlight);
-  }
-
-  /**
-   * Loads all objects
-   * @return {Promise<any>}
-   */
-  private async initObjects(): Promise<any> {
-    // load all models
-    const stack = OBJECTS.map(element => {
-      const p = World.loadObjModel(element);
-
-      return p.then((object) => {
-        object.scale.set(World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE); // scale from maya size to a decent world size
-      });
-    });
-
-    await Promise.all(stack);
-  }
-
-  /**
-   * Loads all textures
-   * @return {Promise<any>}
-   */
-  private initTextures(): Promise<any> {
-    const loader = new THREE.TextureLoader();
-
-    return new Promise(resolve => {
-      TEXTURES.forEach((texture: ITexture) => {
-        if (!World.LOADED_TEXTURES.has(texture.name)) {
-          const img = loader.load(texture.img);
-          World.LOADED_TEXTURES.set(texture.name, img);
-        }
-      });
-      resolve();
-    });
-
   }
 
   /**
@@ -242,20 +209,8 @@ class World {
    * @param {string} key
    * @param {boolean} active
    */
-  public handleKeyboard(key: string, active: boolean) {
+  handleKeyboard(key: string, active: boolean) {
     this.player.handleKeyboard(key, active);
-  }
-
-  getWeather(): Weather {
-    return this.weather;
-  }
-
-  getTerrain(): Terrain {
-    return this.terrain;
-  }
-
-  getGenerator(): BiomeGenerator {
-    return this.generator;
   }
 
   static pointInWorld(point: THREE.Vector3): boolean {
@@ -263,59 +218,6 @@ class World {
     return MathUtils.between(point.x, 0 + margin, Terrain.SIZE_X - margin) && MathUtils.between(point.z, 0 + margin, Terrain.SIZE_Z - margin);
   }
 
-  /**
-   * Load an obj file
-   * @param name Name of the object
-   * @param objSrc obj source file path
-   * @param mtlSrc mtl source file path
-   * @return Promise<any>
-   */
-  static async loadObjModel(element): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      if (World.LOADED_MODELS.has(element.name)) {
-        resolve(World.LOADED_MODELS.get(element.name));
-      }
-
-      const objLoader = new THREE.OBJLoader();
-      const mtlLoader = new THREE.MTLLoader();
-
-      mtlLoader.load(element.mtl, (materials) => {
-        materials.preload();
-
-        objLoader.setMaterials(materials);
-
-        objLoader.load(element.obj, (object) => {
-          object.castShadow = true;
-          object.receiveShadow = false;
-          object.frustumCulled = false;
-
-          object.traverse((child) => {
-            if (child instanceof THREE.Mesh) {
-              child.castShadow = true;
-              child.receiveShadow = false;
-              child.frustumCulled = false;
-
-              if (!(child.material instanceof THREE.Material)) {
-                child.material.forEach(material => {
-                  material.flatShading = true;
-                  if (element.doubleSide === true) material.side = THREE.DoubleSide;
-                });
-              } else {
-                child.material.flatShading = true;
-                if (element.doubleSide === true) child.material.side = THREE.DoubleSide;
-              }
-            }
-          });
-
-          World.LOADED_MODELS.set(element.name, object);
-          // const box = new THREE.Box3().setFromObject(object);
-          // const size = box.getSize(new THREE.Vector3(0, 0, 0));
-
-          resolve(object);
-        }, null, () => reject());
-      }, null, () => reject());
-    });
-  }
 }
 
 export default World;

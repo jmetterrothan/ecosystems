@@ -1,5 +1,8 @@
 import { IObject } from '@shared/models/object.model';
 
+import carrotObj from '@objmodels/vegetables/carrot.obj';
+import carrotMtl from '@objmodels/vegetables/carrot.mtl';
+
 import butterflyObj from '@objmodels/fauna/butterfly.obj';
 import butterflyMtl from '@objmodels/fauna/butterfly.mtl';
 
@@ -8,6 +11,9 @@ import snowy_bushMtl from '@objmodels/tree/snowy_bush.mtl';
 
 import snowmanObj from '@objmodels/misc/snowman.obj';
 import snowmanMtl from '@objmodels/misc/snowman.mtl';
+
+import snowmanNoCarrotObj from '@objmodels/misc/snowman_no_carrot.obj';
+import snowmanNoCarrotMtl from '@objmodels/misc/snowman_no_carrot.mtl';
 
 import chestObj from '@objmodels/misc/chest.obj';
 import chestMtl from '@objmodels/misc/chest.mtl';
@@ -153,7 +159,31 @@ import cloud3Mtl from '@objmodels/cloud/cloud3.mtl';
 import cloud4Obj from '@objmodels/cloud/cloud4.obj';
 import cloud4Mtl from '@objmodels/cloud/cloud4.mtl';
 
+import sunObj from '@objmodels/misc/sun.obj';
+import sunMtl from '@objmodels/misc/sun.mtl';
+
+import moonObj from '@objmodels/misc/moon.obj';
+import moonMtl from '@objmodels/misc/moon.mtl';
+
 export const OBJECTS: IObject[] = [
+  {
+    name: 'sun',
+    obj: sunObj,
+    mtl: sunMtl,
+    doubleSide: true
+  },
+  {
+    name: 'moon',
+    obj: moonObj,
+    mtl: moonMtl,
+    doubleSide: true
+  },
+  {
+    name: 'carrot',
+    obj: carrotObj,
+    mtl: carrotMtl,
+    doubleSide: true
+  },
   {
     name: 'butterfly',
     obj: butterflyObj,
@@ -169,6 +199,11 @@ export const OBJECTS: IObject[] = [
     name: 'snowman',
     obj: snowmanObj,
     mtl: snowmanMtl
+  },
+  {
+    name: 'snowman_no_carrot',
+    obj: snowmanNoCarrotObj,
+    mtl: snowmanNoCarrotMtl
   },
   {
     name: 'chest',

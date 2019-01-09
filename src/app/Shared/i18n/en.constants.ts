@@ -11,5 +11,8 @@ export const EN_TRANSLATION: ITranslationKeys = {
   place_objects_counter: '{{counter}} objects placed',
   travelled_distance_counter: 'Travelled {{counter}}',
   repulse_fishes: 'Repulse fish',
+  repulse_butterflies: 'Repulse Butterflies',
+  find_captain_treasure: 'Find captain treasure',
+  add_carrot_snowmnan: 'Add carrot to snowman',
   unlock_trophy_percentage: ''
 };
