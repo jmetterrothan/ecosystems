@@ -56,6 +56,8 @@ class SnowBiome extends Biome {
 
   update(delta: number) { }
 
+  handleClick(raycaster: THREE.Raycaster) { }
+
   /**
    * Compute elevation
    * @param {number} x coord component

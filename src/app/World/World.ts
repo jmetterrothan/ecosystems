@@ -26,9 +26,6 @@ class World {
   static readonly SHOW_FOG: boolean = true;
   static readonly FOG_COLOR: number = 0xb1d8ff;
 
-  static readonly RAIN_PROBABILITY: number = 1;
-  static readonly RAIN_SPEED: number = 320;
-
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
   static LOADED_TEXTURES = new Map<string, THREE.Texture>();
 
@@ -45,7 +42,7 @@ class World {
   private raycaster: THREE.Raycaster;
   private seed: string;
 
-  private configScv: GraphicsConfigService;
+  private configSvc: GraphicsConfigService;
 
   /**
    * World constructor
@@ -61,7 +58,7 @@ class World {
     this.frustum = new THREE.Frustum();
     this.raycaster = new THREE.Raycaster();
 
-    this.configScv = configSvc;
+    this.configSvc = configSvc;
   }
 
   getWeather(): Weather {
@@ -105,7 +102,7 @@ class World {
 
     this.scene.add(this.controls.getObject());
 
-    if (this.configScv.config.DEBUG) {
+    if (this.configSvc.config.DEBUG) {
       this.showAxesHelper();
     }
   }
@@ -136,6 +133,40 @@ class World {
 
       this.scene.fog = new THREE.Fog(this.getWeather().getFogColor().getHex(), near, far);
     }
+  }
+
+  private initLights() {
+    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.75);
+    light.position.set(0, Chunk.SEA_LEVEL, 0);
+    light.castShadow = false;
+    this.scene.add(light);
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.275);
+    ambient.position.set(0, Chunk.HEIGHT, 15000);
+    ambient.castShadow = false;
+    this.scene.add(ambient);
+
+    const d = 1000000;
+    const sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
+    sunlight.position.set(Terrain.SIZE_X, Chunk.HEIGHT, Terrain.SIZE_Z);
+    sunlight.castShadow = true;
+    sunlight.shadow.mapSize.width = configSvc.config.SHADOW_MAP_SIZE;
+    sunlight.shadow.mapSize.height = configSvc.config.SHADOW_MAP_SIZE;
+    sunlight.shadow.camera.visible = true;
+    sunlight.shadow.camera.castShadow = true;
+    sunlight.shadow.bias = 0.0001;
+    sunlight.shadow.camera.left = -d;
+    sunlight.shadow.camera.right = d;
+    sunlight.shadow.camera.top = d;
+    sunlight.shadow.camera.bottom = -d;
+    sunlight.shadow.camera.near = 150;
+    sunlight.shadow.camera.far = 1000000;
+
+    if (configSvc.config.DEBUG) {
+      this.scene.add(new THREE.DirectionalLightHelper(sunlight, 1024));
+    }
+
+    this.scene.add(sunlight);
   }
 
   /**

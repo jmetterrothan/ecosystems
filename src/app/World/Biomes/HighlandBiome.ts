@@ -84,6 +84,8 @@ class HighlandBiome extends Biome {
     this.boids.forEach(boids => boids.update(this.generator, delta));
   }
 
+  handleClick(raycaster: THREE.Raycaster) { }
+
   /**
    * Compute elevation
    * @param {number} x coord component
