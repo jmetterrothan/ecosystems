@@ -7,3 +7,7 @@ export interface ISocketPositionUpdated {
   userID: string;
   position: THREE.Vector3;
 }
+
+export interface ISocketDisconnection {
+  userID: string;
+}
