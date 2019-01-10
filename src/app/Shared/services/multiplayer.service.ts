@@ -29,7 +29,7 @@ class MultiplayerService {
     // this.multiplayerObservable = this.sourcse.asObservable();
   }
 
-  init(seed) {
+  init(seed: string) {
     const url: string = `${ENV.socketBaseUrl}:${ENV.socketPort}`;
 
     this.room = seed;
@@ -40,9 +40,12 @@ class MultiplayerService {
     this.socket.emit('room', this.room);
 
     this.socket.on('room_joined', (data: ISocketRoomJoined) => {
-      if (this.userId !== data.id) {
+      console.log(this.userId);
+      if (!this.userId && this.userId !== data.id) {
         this.userId = data.id;
-        this.debugArea.innerHTML += `<h1 style='color: blue'>You are ${data.id}</h1>`;
+        this.debugArea.innerHTML += `<h1 style='color: blue'>You are : ${data.id}</h1>`;
+      } else {
+        this.debugArea.innerHTML += `<h1 style='color: green'>${data.id} connected</h1>`;
       }
       this.debugArea.innerHTML += `<h1>${data.userCount} users connected</h1>`;
     });
