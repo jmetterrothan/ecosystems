@@ -69,7 +69,7 @@ class World {
     this.configScv = configSvc;
     this.multiplayerSvc = multiplayerSvc;
 
-    this.watchNewPlayer();
+    // this.watchNewPlayer();
   }
 
   getWeather(): Weather {
