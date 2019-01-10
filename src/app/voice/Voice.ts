@@ -3,9 +3,7 @@ import * as sc from '@tensorflow-models/speech-commands';
 
 import MathUtils from '@shared/utils/Math.utils';
 
-// import CONFIG from 'voice.constants';
-const NUM_FRAMES = 5;
-const INPUT_SHAPE = [NUM_FRAMES, 232, 1];
+import { SAMPLES_CONFIG } from './constants/voice.constants';
 
 class Voice {
   private recognizer: sc.SpeechCommandRecognizer;
@@ -45,11 +43,11 @@ class Voice {
 
     this.recognizer.listen(async ({ spectrogram: { frameSize, data } }) => {
       const vals = MathUtils.normalize(
-        data.subarray(-frameSize * NUM_FRAMES),
+        data.subarray(-frameSize * SAMPLES_CONFIG.NUM_FRAMES),
         -100,
         10
       );
-      const input = tf.tensor(vals, [1, ...INPUT_SHAPE]);
+      const input = tf.tensor(vals, [1, ...SAMPLES_CONFIG.INPUT_SHAPE]);
       const probs = this.model.model.predict(input);
       const predLabel = probs.argMax(1);
       await this.getPredictionLabel(predLabel);

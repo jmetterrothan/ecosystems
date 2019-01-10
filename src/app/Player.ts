@@ -4,7 +4,7 @@ import 'three/examples/js/controls/PointerLockControls';
 
 import Chunk from '@world/Chunk';
 import Terrain from '@world/Terrain';
-import Model from '@voice/Model';
+import VoiceModel from '@voice/VoiceModel';
 import Voice from '@voice/Voice';
 
 import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
@@ -74,7 +74,7 @@ class Player {
   }
 
   private async initVoice() {
-    this.voiceModel = new Model();
+    this.voiceModel = new VoiceModel();
     await this.voiceModel.train();
 
     // this.voice = new Voice(this.voiceModel);
