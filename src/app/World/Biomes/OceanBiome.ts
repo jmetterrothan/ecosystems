@@ -103,8 +103,8 @@ class OceanBiome extends Biome {
     let chestItem: IPick;
 
     do {
-      const x = Terrain.SIZE_X / 4 + Math.floor(Math.random() * Terrain.SIZE_X / 2);
-      const z = Terrain.SIZE_Z / 4 + Math.floor(Math.random() * Terrain.SIZE_Z / 2);
+      const x = Terrain.SIZE_X / 4 + Math.floor(MathUtils.rng() * Terrain.SIZE_X / 2);
+      const z = Terrain.SIZE_Z / 4 + Math.floor(MathUtils.rng() * Terrain.SIZE_Z / 2);
 
       chunk = terrain.getChunkAt(x, z);
 

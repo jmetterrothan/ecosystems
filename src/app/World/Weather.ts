@@ -14,7 +14,8 @@ import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@app/Shared/utils/Common.utils';
 
 class Weather {
-  private static FOG_COLORS = new Map<number, THREE.Color>();
+  private static RAIN_SPEED : number = 200;
+  private static FOG_COLORS : Map<number, THREE.Color> = new Map<number, THREE.Color>();
 
   private scene: THREE.Scene;
   private generator: BiomeGenerator;
@@ -140,7 +141,7 @@ class Weather {
     light.castShadow = false;
     this.scene.add(light);
 
-    this.ambientLight = new THREE.AmbientLight(0xB1D8FF, 0.4);
+    this.ambientLight = new THREE.AmbientLight(0xB1D8FF, 0.3);
     this.ambientLight.position.set(0, Chunk.HEIGHT, 15000);
     this.ambientLight.castShadow = false;
     this.scene.add(this.ambientLight);
@@ -169,14 +170,64 @@ class Weather {
     }
   }
 
+  private initSunlight() {
+    const d = 1000000;
+    this.sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
+
+    this.sunlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
+    this.sunlight.target.updateMatrixWorld(true);
+
+    this.sunlight.position.set(Terrain.SIZE_X / 2, Chunk.HEIGHT, Terrain.SIZE_Z / 2);
+
+    this.sunlight.castShadow = true;
+    this.sunlight.shadow.mapSize.width = 4096;
+    this.sunlight.shadow.mapSize.height = 4096;
+    this.sunlight.shadow.camera.visible = true;
+    this.sunlight.shadow.camera.castShadow = true;
+    this.sunlight.shadow.bias = 0.0001;
+    this.sunlight.shadow.camera.left = -d;
+    this.sunlight.shadow.camera.right = d;
+    this.sunlight.shadow.camera.top = d;
+    this.sunlight.shadow.camera.bottom = -d;
+    this.sunlight.shadow.camera.near = 150;
+    this.sunlight.shadow.camera.far = 1000000;
+
+    this.scene.add(this.sunlight);
+  }
+
+  private initMoonlight() {
+    const d = 1000000;
+    this.moonlight = new THREE.DirectionalLight(0x5fc2eb, 0.15);
+
+    this.moonlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
+    this.moonlight.target.updateMatrixWorld(true);
+
+    this.moonlight.position.set(Terrain.SIZE_X / 2, Chunk.HEIGHT, Terrain.SIZE_Z / 2);
+
+    this.moonlight.castShadow = true;
+    this.moonlight.shadow.mapSize.width = 4096;
+    this.moonlight.shadow.mapSize.height = 4096;
+    this.moonlight.shadow.camera.visible = true;
+    this.moonlight.shadow.camera.castShadow = true;
+    this.moonlight.shadow.bias = 0.0001;
+    this.moonlight.shadow.camera.left = -d;
+    this.moonlight.shadow.camera.right = d;
+    this.moonlight.shadow.camera.top = d;
+    this.moonlight.shadow.camera.bottom = -d;
+    this.moonlight.shadow.camera.near = 150;
+    this.moonlight.shadow.camera.far = 1000000;
+
+    this.scene.add(this.moonlight);
+  }
+
   initStars() {
     const starsCount: number = 1000;
     const stars = new THREE.Geometry();
 
     for (let i = 0; i < starsCount; i++) {
 
-      const u = Math.random();
-      const v = Math.random();
+      const u = MathUtils.rng();
+      const v = MathUtils.rng();
       const radius = Chunk.HEIGHT * 2.5;
       const theta = 2 * Math.PI * u;
       const phi = Math.acos(2 * v - 1);
@@ -272,7 +323,7 @@ class Weather {
   }
 
   private updateSun() {
-    const elapsedTime = (window.performance.now() - this.startTime) / 5000; // 60000
+    const elapsedTime = (window.performance.now() - this.startTime) / 80000; // 60000
 
     const x = Terrain.SIZE_X / 2 + Chunk.HEIGHT * Math.cos(elapsedTime);
     const y = Chunk.HEIGHT * Math.sin(elapsedTime);
@@ -299,7 +350,7 @@ class Weather {
   private updateLights() {
     const y = this.sunlight.position.y;
 
-    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.05, 0.4);
+    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.05, 0.3);
     if (y > 0) this.computeFogColor(y);
   }
 
@@ -321,56 +372,6 @@ class Weather {
     } else {
       this.fogColor = Weather.FOG_COLORS.get(yFloor);
     }
-  }
-
-  private initSunlight() {
-    const d = 1000000;
-    this.sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
-
-    this.sunlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
-    this.sunlight.target.updateMatrixWorld(true);
-
-    this.sunlight.position.set(Terrain.SIZE_X / 2, Chunk.HEIGHT, Terrain.SIZE_Z / 2);
-
-    this.sunlight.castShadow = true;
-    this.sunlight.shadow.mapSize.width = 4096;
-    this.sunlight.shadow.mapSize.height = 4096;
-    this.sunlight.shadow.camera.visible = true;
-    this.sunlight.shadow.camera.castShadow = true;
-    this.sunlight.shadow.bias = 0.0001;
-    this.sunlight.shadow.camera.left = -d;
-    this.sunlight.shadow.camera.right = d;
-    this.sunlight.shadow.camera.top = d;
-    this.sunlight.shadow.camera.bottom = -d;
-    this.sunlight.shadow.camera.near = 150;
-    this.sunlight.shadow.camera.far = 1000000;
-
-    this.scene.add(this.sunlight);
-  }
-
-  private initMoonlight() {
-    const d = 1000000;
-    this.moonlight = new THREE.DirectionalLight(0x5fc2eb, 0.15);
-
-    this.moonlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
-    this.moonlight.target.updateMatrixWorld(true);
-
-    this.moonlight.position.set(Terrain.SIZE_X / 2, Chunk.HEIGHT, Terrain.SIZE_Z / 2);
-
-    this.moonlight.castShadow = true;
-    this.moonlight.shadow.mapSize.width = 4096;
-    this.moonlight.shadow.mapSize.height = 4096;
-    this.moonlight.shadow.camera.visible = true;
-    this.moonlight.shadow.camera.castShadow = true;
-    this.moonlight.shadow.bias = 0.0001;
-    this.moonlight.shadow.camera.left = -d;
-    this.moonlight.shadow.camera.right = d;
-    this.moonlight.shadow.camera.top = d;
-    this.moonlight.shadow.camera.bottom = -d;
-    this.moonlight.shadow.camera.near = 150;
-    this.moonlight.shadow.camera.far = 1000000;
-
-    this.scene.add(this.moonlight);
   }
 }
 
