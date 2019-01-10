@@ -5698,7 +5698,7 @@ Lockfile:
 
 Trace: 
   Error: Command failed.
-  Exit code: 1
+  Exit code: 3221225786
   Command: C:\WINDOWS\system32\cmd.exe
   Arguments: /d /s /c webpack-dev-server --progress --inline --mode development --config config/webpack.dev.js
   Directory: D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem

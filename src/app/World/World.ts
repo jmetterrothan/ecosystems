@@ -166,7 +166,7 @@ class World {
     this.terrain.update(this.frustum, this.player.position, delta);
     this.player.update(this.terrain, delta);
     this.weather.update(delta);
-    this.multiplayerSvc.update(this.onlinePlayers);
+    // this.multiplayerSvc.update(this.onlinePlayers);
     this.generator.getBiome().update(delta);
   }
 
