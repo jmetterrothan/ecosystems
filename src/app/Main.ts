@@ -25,6 +25,8 @@ class Main {
 
   private containerElement: HTMLElement;
 
+  private world: World;
+
   private lastTime: number;
   private focused: boolean;
   private stats: statsJs;
@@ -44,7 +46,7 @@ class Main {
     this.storageSvc = storageSvc;
 
     // TODO: Change quality based on user input / hardware detection / live frame render time ?
-    this.configSvc.quality = GRAPHICS_QUALITY.HIGH;
+    this.configSvc.quality = GRAPHICS_QUALITY.LOW;
 
     if (this.configSvc.config.DEBUG) {
       this.stats = new statsJs();

@@ -48,6 +48,9 @@
       ],
       "@ui/*": [
         "src/app/UI/*"
+      ],
+      "@voice/*": [
+        "src/app/Voice/*"
       ]
     },
     "typeRoots": [
