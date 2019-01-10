@@ -101,7 +101,7 @@ class Main {
       createRoom.addEventListener('click', (ev) => {
         (<HTMLElement>ev.target).style.display = 'none';
         const seed = this.world.getSeed();
-        this.multiplayerSvc.init(seed);
+        this.multiplayerSvc.init(this.scene, 'seed');
       }, false);
       document.body.appendChild(createRoom);
 
@@ -119,7 +119,7 @@ class Main {
       join.addEventListener('click', ev => {
         (<HTMLElement>ev.target).style.display = 'none';
         const seed = input.value;
-        this.multiplayerSvc.init(seed);
+        this.multiplayerSvc.init(this.scene, 'seed');
       }, false);
       document.body.appendChild(join);
     }

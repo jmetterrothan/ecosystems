@@ -1,4 +1,9 @@
 export interface ISocketRoomJoined {
-  id: string;
-  userCount: number;
+  me: string;
+  usersConnected: string[];
+}
+
+export interface ISocketPositionUpdated {
+  userID: string;
+  position: THREE.Vector3;
 }

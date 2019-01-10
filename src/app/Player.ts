@@ -6,7 +6,8 @@ import 'three/examples/js/controls/PointerLockControls';
 import Chunk from '@world/Chunk';
 import Terrain from '@world/Terrain';
 
-import UnderwaterService, { underwaterSvc } from './Shared/services/underwater.service';
+import UnderwaterService, { underwaterSvc } from '@services/underwater.service';
+import MultiplayerService, { multiplayerSvc } from '@services/multiplayer.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
 import ProgressionService, { progressionSvc } from '@services/progression.service';
@@ -26,6 +27,7 @@ class Player {
   private progressionSvc: ProgressionService;
   private monitoringSvc: MonitoringService;
   private playerSvc: PlayerService;
+  private multiplayerSvc: MultiplayerService;
   private underwaterSvc: UnderwaterService;
 
   /**
@@ -48,6 +50,7 @@ class Player {
     this.progressionSvc = progressionSvc;
     this.monitoringSvc = monitoringSvc;
     this.playerSvc = playerSvc;
+    this.multiplayerSvc = multiplayerSvc;
     this.underwaterSvc = underwaterSvc;
   }
 
@@ -122,6 +125,7 @@ class Player {
   update(terrain: Terrain, delta: number) {
     const position = this.move(delta);
     this.playerSvc.setPosition(position);
+    if (this.multiplayerSvc.isUsed()) this.multiplayerSvc.sendPosition(position);
 
     const yMin = terrain.getHeightAt(position.x, position.z) + 5000;
     const isWithinWorldBorders = this.isWithinWorldBorders();
