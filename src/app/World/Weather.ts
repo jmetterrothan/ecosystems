@@ -34,6 +34,9 @@ class Weather {
   private moonlight: THREE.DirectionalLight;
   private lightHelper: THREE.ArrowHelper;
 
+  private moonBoundLight: THREE.PointLight;
+  private sunBoundLight: THREE.PointLight;
+
   // stars
   private starsSystem: THREE.Points;
 
@@ -149,14 +152,29 @@ class Weather {
     this.initSunlight();
     this.initMoonlight();
 
+    this.moonBoundLight = new THREE.PointLight(0xc5dadd, 1, Terrain.SIZE_X, 2);
+    this.moonBoundLight.castShadow = false;
+    this.scene.add(this.moonBoundLight);
+
+    this.sunBoundLight = new THREE.PointLight(0xff0000, 1, Terrain.SIZE_X, 2);
+    this.sunBoundLight.castShadow = false;
+    this.scene.add(this.sunBoundLight);
+
+    const materialCallback = (mesh) => {
+      mesh.castShadow = false;
+      mesh.receiveShadow = false;
+      mesh.material.transparent = true;
+      mesh.material.side = THREE.FrontSide;
+    };
+
     this.sun = World.LOADED_MODELS.get('sun').clone();
-    this.sun.children.forEach(mesh => { mesh.castShadow = false; });
+    this.sun.children.forEach(materialCallback);
     // this.sun = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'red' }));
     this.sun.position.copy(this.sunlight.position);
     // this.sun.visible = configSvc.config.DEBUG;
 
     this.moon = World.LOADED_MODELS.get('moon').clone();
-    this.moon.children.forEach(mesh => { mesh.castShadow = false; });
+    this.moon.children.forEach(materialCallback);
     // this.moon = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'blue' }));
     this.moon.position.copy(this.sunlight.position);
     // this.moon.visible = configSvc.config.DEBUG;
@@ -323,7 +341,7 @@ class Weather {
   }
 
   private updateSun() {
-    const elapsedTime = (window.performance.now() - this.startTime) / 80000; // 60000
+    const elapsedTime = (window.performance.now() - this.startTime) / 6000; // 60000
 
     const x = Terrain.SIZE_X / 2 + Chunk.HEIGHT * Math.cos(elapsedTime);
     const y = Chunk.HEIGHT * Math.sin(elapsedTime);
@@ -333,6 +351,8 @@ class Weather {
 
     this.sun.position.copy(this.sunlight.position);
     this.sunlight.shadow.camera.updateProjectionMatrix();
+
+    this.sunBoundLight.position.copy(this.sunlight.position);
 
     if (this.configSvc.config.DEBUG) {
       this.lightHelper.position.copy(this.sunlight.position);
@@ -345,6 +365,8 @@ class Weather {
 
     this.moon.position.copy(this.moonlight.position);
     this.moonlight.shadow.camera.updateProjectionMatrix();
+
+    this.moonBoundLight.position.copy(this.moonlight.position);
   }
 
   private updateLights() {
