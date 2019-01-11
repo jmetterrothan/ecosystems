@@ -17,7 +17,7 @@ import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import MathUtils from '@utils/Math.utils';
 
 class World {
-  static readonly SEED: string | null = null;
+  static readonly SEED: string | null = '4107507334';
   static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
   static readonly EMPTY: boolean = false;
 
@@ -63,7 +63,6 @@ class World {
 
     this.configScv = configSvc;
 
-    // this.watchNewPlayer();
   }
 
   getWeather(): Weather {

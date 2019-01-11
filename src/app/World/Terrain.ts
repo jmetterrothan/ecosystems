@@ -18,6 +18,7 @@ import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.mate
 
 import { IBiome } from '@shared/models/biome.model';
 import { IPick } from '@shared/models/pick.model';
+import { IOnlineObject } from '@shared/models/onlineObjects.model';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 
@@ -281,7 +282,14 @@ class Terrain {
       }
 
       chunk.placeObject(this.previewObject, { animate: true, save: true });
-      this.multiplayerSvc.placeObject(this.previewItem);
+      this.previewItem = {
+        ...this.previewItem,
+        x: this.previewObject.position.x,
+        y: this.previewObject.position.y,
+        z: this.previewObject.position.z
+      };
+
+      if (this.multiplayerSvc.isUsed()) this.multiplayerSvc.placeObject(this.previewItem);
 
       this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed);
       this.progressionSvc.increment(CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n));
@@ -587,22 +595,14 @@ class Terrain {
     this.scene.add(this.layers);
   }
 
-  private initUnderwater() {
-    this.underwaterSvc.observable$.subscribe(
-      () => {
-        if (this.previewObject) {
-          this.scene.remove(this.previewObject);
-          this.resetPreview();
-        }
-      }
-    );
-  }
-
   private watchObjectPlaced() {
     this.multiplayerSvc.objectPlaced$.subscribe(
-      item => {
+      ({ item, animate }: IOnlineObject) => {
+        console.log(item);
         const chunk = this.getChunkAt(item.x, item.z);
-        chunk.placeObject(chunk.getObject(item), { save: true, animate: true });
+        const object = chunk.getObject(item);
+        console.log(object);
+        chunk.placeObject(object, { animate, save: true, });
       }
     );
   }

@@ -2,8 +2,9 @@ import * as THREE from 'three';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
 
-import { ISocketRoomJoined, ISocketPositionUpdated, ISocketDisconnection, ISocketObjectAdded } from '@shared/models/socketEvents.model';
+import { ISocketRoomJoined, ISocketPositionUpdated, ISocketDisconnection, ISocketObjectAdded, ISocketObjectsInitialized } from '@shared/models/socketEvents.model';
 import { IPick } from '@shared/models/pick.model';
+import { IOnlineObject } from '@shared/models/onlineObjects.model';
 
 import { ENV } from '@shared/env/env';
 
@@ -11,16 +12,17 @@ class MultiplayerService {
 
   private socket: SocketIOClient.Socket;
   private scene: THREE.Scene;
-
   private used: boolean = false;
-  private objectPlacedSource: Subject<IPick>;
-  objectPlaced$: Observable<IPick>;
+
+  private objectPlacedSource: Subject<IOnlineObject>;
+  objectPlaced$: Observable<IOnlineObject>;
 
   private room: string;
   private userId: string;
 
   private onlineUsers: string[] = [];
   private onlineUsersMeshes: THREE.Mesh[] = [];
+  private objectsPlaced: IPick[] = [];
 
   private debugArea: HTMLElement;
 
@@ -55,11 +57,13 @@ class MultiplayerService {
   }
 
   placeObject(item: IPick) {
+    this.objectsPlaced.push(item);
     this.socket.emit('object', { item, room: this.room });
   }
 
   private handleServerInteraction() {
     this.socket.on('room_joined', (data: ISocketRoomJoined) => this.onRoomJoined(data));
+    this.socket.on('objects_initialized', (data: ISocketObjectsInitialized) => this.onObjectsInitialized(data));
     this.socket.on('position_updated', (data: ISocketPositionUpdated) => this.onPositionupdated(data));
     this.socket.on('object_added', (data: ISocketObjectAdded) => this.onObjectAdded(data));
     this.socket.on('disconnection', (data: ISocketDisconnection) => this.onDisconnection(data));
@@ -70,6 +74,7 @@ class MultiplayerService {
       this.userId = data.me;
       // this.debugArea.innerHTML += `<h1 style='color: blue'>You are : ${data.me}</h1>`;
     } else {
+      this.socket.emit('objects_init', { room: this.room, objectsPlaced: this.objectsPlaced });
       // this.debugArea.innerHTML += `<h1 style='color: green'>${data.me} connected</h1>`;
     }
 
@@ -83,13 +88,23 @@ class MultiplayerService {
     // this.debugArea.innerHTML += `<ul><li>${this.userId}</li>${this.onlineUsers.reverse().map(user => `<li>${user}</li>`)}-----------------------</ul>`;
   }
 
+  private onObjectsInitialized(data: ISocketObjectsInitialized) {
+    if (this.objectsPlaced.length) return;
+
+    this.objectsPlaced = data.objectsPlaced;
+    this.objectsPlaced.forEach((item: IPick) => {
+      this.objectPlacedSource.next(<IOnlineObject>{ item, animate: false });
+    });
+  }
+
   private onPositionupdated(data: ISocketPositionUpdated) {
     const mesh = this.onlineUsersMeshes.find((mesh: THREE.Mesh) => mesh.userData.userID === data.userID);
     if (mesh) mesh.position.copy(data.position);
   }
 
   private onObjectAdded(data: ISocketObjectAdded) {
-    this.objectPlacedSource.next(data.item);
+    this.objectsPlaced.push(data.item);
+    this.objectPlacedSource.next(<IOnlineObject>{ item: data.item, animate: true });
   }
 
   private onDisconnection(data: ISocketDisconnection) {

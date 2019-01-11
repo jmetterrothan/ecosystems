@@ -13,6 +13,10 @@ export interface ISocketObjectAdded {
   item: IPick;
 }
 
+export interface ISocketObjectsInitialized {
+  objectsPlaced: IPick[];
+}
+
 export interface ISocketDisconnection {
   userID: string;
 }
