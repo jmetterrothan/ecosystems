@@ -4,12 +4,13 @@ import World from '@world/World';
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Creature from '@boids/Creature';
+import MathUtils from '@shared/utils/Math.utils';
 
 import GraphicsConfigService, { configSvc } from '@services/graphicsConfig.service';
 import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 
-import { BoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
+import { IBoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
 
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
@@ -62,22 +63,22 @@ class Boids {
 
   /**
    * Creates boids creatures and places them in the world
-   * @param {BoidCreatureParameters} parameters
+   * @param {IBoidCreatureParameters} parameters
    */
-  generate(parameters: BoidCreatureParameters) {
+  generate(parameters: IBoidCreatureParameters) {
     for (let i = 0; i < this.creaturesCount; i++) {
-      const py = Math.random() * this.boudingBox.y - this.boudingBox.y / 2;
+      const py = MathUtils.rng() * this.boudingBox.y - this.boudingBox.y / 2;
 
       const position = new THREE.Vector3(
-        Math.random() * this.boudingBox.x - this.boudingBox.x / 2,
+        MathUtils.rng() * this.boudingBox.x - this.boudingBox.x / 2,
         parameters.underwater ? py : Math.max(py, Chunk.SEA_LEVEL - this.boudingBox.y + 2048),
-        Math.random() * this.boudingBox.z - this.boudingBox.z / 2
+        MathUtils.rng() * this.boudingBox.z - this.boudingBox.z / 2
       );
 
       const velocity = new THREE.Vector3(
-        Math.random() * 2 - 1,
-        Math.random() * 2 - 1,
-        Math.random() * 2 - 1,
+        MathUtils.rng() * 2 - 1,
+        MathUtils.rng() * 2 - 1,
+        MathUtils.rng() * 2 - 1,
       );
 
       const model = World.LOADED_MODELS.get(this.modelName).clone();
@@ -98,9 +99,11 @@ class Boids {
       creature.update(this.creatures, generator, delta);
     });
 
-    const someFishesRepulsed = this.creatures.some((creature: Creature) => creature.getPosition().distanceTo(this.playerSvc.getPosition()) < creature.getMinRepulseDistance());
-    if (someFishesRepulsed) {
-      this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_fishes);
+    const someCreaturesRepulsed = this.creatures.some((creature: Creature) => creature.getModelPosition().distanceTo(this.playerSvc.getPosition()) < creature.getMinRepulseDistance());
+    if (someCreaturesRepulsed) {
+      this.progressionSvc.increment(this.creatures[0].getParameters().underwater
+        ? PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_fishes
+        : PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_butterflies);
     }
   }
 }

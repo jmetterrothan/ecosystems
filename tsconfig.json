@@ -57,6 +57,7 @@
     "lib": [
       "dom",
       "es2017",
+      "es6",
       "es7"
     ]
   },
@@ -65,7 +66,6 @@
   ],
   "exclude": [
     "node_modules",
-    "src/typings",
     "dist"
   ]
 }

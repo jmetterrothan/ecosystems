@@ -13,6 +13,7 @@ import { IPick } from '@shared/models/pick.model';
 
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
+import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
 import Boids from '@boids/Boids';
 
@@ -21,6 +22,8 @@ class OceanBiome extends Biome {
   private depth: number;
 
   private boids: Boids[];
+
+  private chest: THREE.Object3D;
 
   constructor(generator: BiomeGenerator) {
     super('OCEAN', generator);
@@ -97,33 +100,42 @@ class OceanBiome extends Biome {
 
     // chest
     let chunk: Chunk;
-    let corpseItem: IPick;
-    let corpseObject: THREE.Object3D;
+    let chestItem: IPick;
 
     do {
-      const x = Terrain.SIZE_X / 4 + Math.floor(Math.random() * Terrain.SIZE_X / 2);
-      const z = Terrain.SIZE_Z / 4 + Math.floor(Math.random() * Terrain.SIZE_Z / 2);
+      const x = Terrain.SIZE_X / 4 + Math.floor(MathUtils.rng() * Terrain.SIZE_X / 2);
+      const z = Terrain.SIZE_Z / 4 + Math.floor(MathUtils.rng() * Terrain.SIZE_Z / 2);
 
       chunk = terrain.getChunkAt(x, z);
 
       const y = terrain.getHeightAt(x, z);
 
-      corpseItem = {
+      chestItem = {
         x, y, z,
         s: World.OBJ_INITIAL_SCALE,
         n: 'chest',
         r: MathUtils.randomFloat(0, Math.PI * 2)
       };
 
-      corpseObject = chunk.getObject(corpseItem);
+      this.chest = chunk.getObject(chestItem);
 
-    } while (!chunk.canPlaceObject(corpseObject));
+    } while (!chunk.canPlaceObject(this.chest));
 
-    chunk.placeObject(corpseObject, { save: true });
+    chunk.placeObject(this.chest, { save: true });
+
   }
 
   update(delta: number) {
     this.boids.forEach(boids => boids.update(this.generator, delta));
+  }
+
+  handleClick(raycaster: THREE.Raycaster) {
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.chest], true);
+
+    if (intersections.length) {
+      this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.find_captain_treasure);
+    }
+
   }
 
   /**

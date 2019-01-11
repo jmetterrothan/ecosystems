@@ -1,4 +1,4 @@
-export interface BoidCreatureParameters {
+export interface IBoidCreatureParameters {
   neighbourRadius: number;
   alignmentWeighting: number;
   cohesionWeighting: number;

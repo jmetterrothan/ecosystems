@@ -8,14 +8,13 @@ import World from '@world/World';
 import Crosshair from '@ui/Crosshair';
 import PostProcess from '@app/PostProcess';
 
-import ProgressionService, { progressionSvc } from '@services/progression.service';
-import TranslationService, { translationSvc } from '@shared/services/translation.service';
 import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
 import UnderwaterService, { underwaterSvc } from '@services/underwater.service';
 import StorageService, { storageSvc } from '@services/storage.service';
+import CoreService, { coreSvc } from '@services/core.service';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
-import { GRAPHICS_QUALITY } from './Shared/enums/graphicsQuality.enum';
+import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
 
 class Main {
   private renderer: THREE.WebGLRenderer;
@@ -30,8 +29,7 @@ class Main {
   private focused: boolean;
   private stats: statsJs;
 
-  private translationSvc: TranslationService;
-  private progressionSvc: ProgressionService;
+  private coreSvc: CoreService;
   private configSvc: GraphicsConfigService;
   private underwaterSvc: UnderwaterService;
   private storageSvc: StorageService;
@@ -40,8 +38,7 @@ class Main {
     this.containerElement = document.body;
     this.lastTime = window.performance.now();
 
-    this.translationSvc = translationSvc;
-    this.progressionSvc = progressionSvc;
+    this.coreSvc = coreSvc;
     this.configSvc = configSvc;
     this.underwaterSvc = underwaterSvc;
     this.storageSvc = storageSvc;
@@ -79,8 +76,7 @@ class Main {
   async init() {
     this.initControls();
 
-    this.progressionSvc.init();
-    await this.translationSvc.init();
+    await this.coreSvc.init();
 
     this.world = new World(this.scene, this.camera, this.controls);
     await this.world.init();
@@ -110,7 +106,7 @@ class Main {
     this.renderer.shadowMap.enabled = this.configSvc.config.ENABLE_SHADOWS;
     this.renderer.shadowMap.type = this.configSvc.config.SHADOW_MAP_TYPE;
 
-    this.renderer.setClearColor(new THREE.Color(World.FOG_COLOR));
+    this.renderer.setClearColor(new THREE.Color(this.world.getWeather().getFogColor()));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -181,6 +177,9 @@ class Main {
         this.postProcess.update();
       }
 
+      const color: THREE.Color = this.world.getWeather().getFogColor();
+      this.renderer.setClearColor(color);
+      this.scene.fog.color.set(color);
       TWEEN.update();
     }
 

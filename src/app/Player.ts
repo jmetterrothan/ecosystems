@@ -68,6 +68,8 @@ class Player {
     this.controls.getObject().children[0].rotateX(angle);
     this.position = spawn;
 
+    this.playerSvc.setPosition(spawn);
+
     await this.initVoice();
   }
 
