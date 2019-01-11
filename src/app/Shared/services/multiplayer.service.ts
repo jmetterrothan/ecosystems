@@ -68,9 +68,9 @@ class MultiplayerService {
   private onRoomJoined(data: ISocketRoomJoined) {
     if (!this.userId && this.userId !== data.me) {
       this.userId = data.me;
-      this.debugArea.innerHTML += `<h1 style='color: blue'>You are : ${data.me}</h1>`;
+      // this.debugArea.innerHTML += `<h1 style='color: blue'>You are : ${data.me}</h1>`;
     } else {
-      this.debugArea.innerHTML += `<h1 style='color: green'>${data.me} connected</h1>`;
+      // this.debugArea.innerHTML += `<h1 style='color: green'>${data.me} connected</h1>`;
     }
 
     const newUsers = data.usersConnected.filter(user => this.onlineUsers.indexOf(user) < 0 && user !== this.userId);
@@ -80,7 +80,7 @@ class MultiplayerService {
       this.onlineUsers.push(user);
     });
 
-    this.debugArea.innerHTML += `<ul><li>${this.userId}</li>${this.onlineUsers.reverse().map(user => `<li>${user}</li>`)}-----------------------</ul>`;
+    // this.debugArea.innerHTML += `<ul><li>${this.userId}</li>${this.onlineUsers.reverse().map(user => `<li>${user}</li>`)}-----------------------</ul>`;
   }
 
   private onPositionupdated(data: ISocketPositionUpdated) {
@@ -94,7 +94,7 @@ class MultiplayerService {
 
   private onDisconnection(data: ISocketDisconnection) {
     if (this.onlineUsers.includes(data.userID)) {
-      this.debugArea.innerHTML += `<h1 style='color: red'>${data.userID} disconnected</h1>`;
+      // this.debugArea.innerHTML += `<h1 style='color: red'>${data.userID} disconnected</h1>`;
       // remove mesh
       const userIndex = this.onlineUsers.indexOf(data.userID);
       const userMeshIndex = this.onlineUsersMeshes.findIndex((mesh: THREE.Mesh) => mesh.userData.userID === data.userID);
