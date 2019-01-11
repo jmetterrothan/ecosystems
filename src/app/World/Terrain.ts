@@ -9,6 +9,7 @@ import MathUtils from '@shared/utils/Math.utils';
 import Crosshair from '@ui/Crosshair';
 
 import UnderwaterService, { underwaterSvc } from '@shared/services/underwater.service';
+import MultiplayerService, { multiplayerSvc } from '@services/multiplayer.service';
 import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
 import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
 
@@ -59,6 +60,7 @@ class Terrain {
 
   private progressionSvc: ProgressionService;
   private underwaterSvc: UnderwaterService;
+  private multiplayerSvc: MultiplayerService;
   private configSvc: GraphicsConfigService;
 
   // preview
@@ -87,6 +89,7 @@ class Terrain {
 
     this.progressionSvc = progressionSvc;
     this.underwaterSvc = underwaterSvc;
+    this.multiplayerSvc = multiplayerSvc;
     this.configSvc = configSvc;
 
     this.chunk = new Coord();
@@ -96,7 +99,7 @@ class Terrain {
 
   init() {
     this.initMeshes();
-    this.initUnderwater();
+    /* if (this.multiplayerSvc.isUsed()) */ this.watchObjectPlaced();
   }
 
   /**
@@ -278,6 +281,7 @@ class Terrain {
       }
 
       chunk.placeObject(this.previewObject, { animate: true, save: true });
+      this.multiplayerSvc.placeObject(this.previewItem);
 
       this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed);
       this.progressionSvc.increment(CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n));
@@ -590,6 +594,15 @@ class Terrain {
           this.scene.remove(this.previewObject);
           this.resetPreview();
         }
+      }
+    );
+  }
+
+  private watchObjectPlaced() {
+    this.multiplayerSvc.objectPlaced$.subscribe(
+      item => {
+        const chunk = this.getChunkAt(item.x, item.z);
+        chunk.placeObject(chunk.getObject(item), { save: true, animate: true });
       }
     );
   }

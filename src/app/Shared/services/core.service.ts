@@ -1,4 +1,3 @@
-import MultiplayerService, { multiplayerSvc } from './multiplayer.service';
 import * as THREE from 'three';
 
 import World from '@world/World';
@@ -16,12 +15,10 @@ class CoreService {
 
   private translationSvc: TranslationService;
   private progressionSvc: ProgressionService;
-  private multiplayerSvc: MultiplayerService;
 
   constructor() {
     this.translationSvc = translationSvc;
     this.progressionSvc = progressionSvc;
-    this.multiplayerSvc = multiplayerSvc;
   }
 
   async init() {
