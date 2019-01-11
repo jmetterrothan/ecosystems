@@ -29,6 +29,7 @@ class Weather {
   private startTime: number;
 
   // lights
+  private hemisphereLight: THREE.HemisphereLight;
   private ambientLight: THREE.AmbientLight;
   private sunlight: THREE.DirectionalLight;
   private moonlight: THREE.DirectionalLight;
@@ -139,10 +140,10 @@ class Weather {
   }
 
   initLights() {
-    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.75);
-    light.position.set(0, Chunk.SEA_LEVEL, 0);
-    light.castShadow = false;
-    this.scene.add(light);
+    this.hemisphereLight = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.75);
+    this.hemisphereLight.position.set(0, Chunk.SEA_LEVEL, 0);
+    this.hemisphereLight.castShadow = false;
+    this.scene.add(this.hemisphereLight);
 
     this.ambientLight = new THREE.AmbientLight(0xB1D8FF, 0.3);
     this.ambientLight.position.set(0, Chunk.HEIGHT, 15000);
@@ -152,11 +153,11 @@ class Weather {
     this.initSunlight();
     this.initMoonlight();
 
-    this.moonBoundLight = new THREE.PointLight(0xc5dadd, 1, Terrain.SIZE_X, 2);
+    this.moonBoundLight = new THREE.PointLight(0xc5dadd, 0.2, Terrain.SIZE_X, 1.0);
     this.moonBoundLight.castShadow = false;
     this.scene.add(this.moonBoundLight);
 
-    this.sunBoundLight = new THREE.PointLight(0xff0000, 1, Terrain.SIZE_X, 2);
+    this.sunBoundLight = new THREE.PointLight(0xfd5e53, 1.0, Terrain.SIZE_X * 2, 0.75);
     this.sunBoundLight.castShadow = false;
     this.scene.add(this.sunBoundLight);
 
@@ -341,7 +342,7 @@ class Weather {
   }
 
   private updateSun() {
-    const elapsedTime = (window.performance.now() - this.startTime) / 6000; // 60000
+    const elapsedTime = (window.performance.now() - this.startTime) / 24000; // 60000
 
     const x = Terrain.SIZE_X / 2 + Chunk.HEIGHT * Math.cos(elapsedTime);
     const y = Chunk.HEIGHT * Math.sin(elapsedTime);
@@ -371,9 +372,16 @@ class Weather {
 
   private updateLights() {
     const y = this.sunlight.position.y;
+    this.hemisphereLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, Chunk.HEIGHT, 0.35, 0.75);
+    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.15, 0.3);
+    this.sunlight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.15, 0.25);
 
-    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.05, 0.3);
-    if (y > 0) this.computeFogColor(y);
+    if (y > 0) {
+      this.computeFogColor(y);
+      this.sunBoundLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, Chunk.HEIGHT, 1.0, 0);
+    } else {
+      this.sunBoundLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, Chunk.HEIGHT / 2, 1.0, 0);
+    }
   }
 
   private updateStars() {
