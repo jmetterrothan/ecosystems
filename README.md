@@ -1,1 +1,1 @@
-[DEMO](https://three-iamac.netlify.com)
+[DEMO](https://goo.gl/LGBTpK)
