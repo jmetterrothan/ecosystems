@@ -3,12 +3,13 @@ import * as THREE from 'three';
 import Mesh from '@mesh/Mesh';
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
-import MathUtils from '@shared/utils/Math.utils';
-
-import { MESH_TYPES } from '@shared/enums/mesh.enum';
-import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 
 import { IChunkParameters } from '@shared/models/chunkParameters.model';
+import { TERRAIN_MATERIAL } from '@materials/terrain.material';
+
+import { MESH_TYPES } from '@shared/enums/mesh.enum';
+
+import MathUtils from '@shared/utils/Math.utils';
 
 class TerrainMesh extends Mesh {
   constructor(generator: BiomeGenerator, row: number, col: number) {

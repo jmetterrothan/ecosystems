@@ -6,19 +6,21 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import Coord from '@world/Coord';
 import Biome from '@world/Biome';
 import MathUtils from '@shared/utils/Math.utils';
-import Crosshair from '../UI/Crosshair';
+import Crosshair from '@ui/Crosshair';
 
-import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
-import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
+import UnderwaterService, { underwaterSvc } from '@shared/services/underwater.service';
+import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
+import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
+
 import { WATER_MATERIAL } from '@materials/water.material';
+import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
 
 import { IBiome } from '@shared/models/biome.model';
 import { IPick } from '@shared/models/pick.model';
-import { underwaterSvc } from '@shared/services/underwater.service';
 
-import { configSvc } from '@shared/services/graphicsConfig.service';
-import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
+
+import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 import CommonUtils from '@shared/utils/Common.utils';
 
@@ -31,6 +33,9 @@ class Terrain {
   static readonly SIZE_X: number = Terrain.NCOLS * Chunk.CELL_SIZE_X;
   static readonly SIZE_Y: number = Chunk.HEIGHT;
   static readonly SIZE_Z: number = Terrain.NROWS * Chunk.CELL_SIZE_Z;
+
+  static readonly CENTER: THREE.Vector2 = new THREE.Vector2(Terrain.SIZE_X / 2, Terrain.SIZE_Z / 2);
+  static readonly MIDDLE: THREE.Vector3 = new THREE.Vector3(Terrain.SIZE_X / 2, Terrain.SIZE_Y / 2, Terrain.SIZE_Z / 2);
 
   static readonly OFFSET_X: number = Terrain.SIZE_X / 2;
   static readonly OFFSET_Z: number = Terrain.SIZE_Z / 2;
@@ -53,6 +58,8 @@ class Terrain {
   private layers: THREE.Group;
 
   private progressionSvc: ProgressionService;
+  private underwaterSvc: UnderwaterService;
+  private configSvc: GraphicsConfigService;
 
   // preview
   private previewItem: IPick;
@@ -79,6 +86,8 @@ class Terrain {
     this.layers = new THREE.Group();
 
     this.progressionSvc = progressionSvc;
+    this.underwaterSvc = underwaterSvc;
+    this.configSvc = configSvc;
 
     this.chunk = new Coord();
     this.start = new Coord();
@@ -174,9 +183,8 @@ class Terrain {
    * @param {THREE.Frustum} frustum
    * @param {THREE.Vector3} position
    * @param {number} delta
-   * @param {number} tick
    */
-  update(frustum: THREE.Frustum, position: THREE.Vector3, delta: number, tick: number) {
+  update(frustum: THREE.Frustum, position: THREE.Vector3, delta: number) {
     this.getChunkCoordAt(this.chunk, position.x, position.z);
 
     this.start.col = this.chunk.col - configSvc.config.MAX_VISIBLE_CHUNKS;
@@ -225,7 +233,7 @@ class Terrain {
     const biome = this.generator.getBiome();
     if (biome.hasWater()) {
       // update water distorsion effect
-      (<THREE.ShaderMaterial>this.water.material).uniforms.time.value = tick;
+      (<THREE.ShaderMaterial>this.water.material).uniforms.time.value = window.performance.now() / 1000;
       (<THREE.ShaderMaterial>this.water.material).needsUpdate = true;
     }
   }
@@ -243,6 +251,7 @@ class Terrain {
 
       case MOUSE_TYPES.CLICK:
         this.placeObjectWithMouseClick(raycaster);
+        this.generator.getBiome().handleClick(raycaster, this);
         break;
 
       default:
@@ -280,7 +289,6 @@ class Terrain {
 
       break;
     }
-
   }
 
   /**
@@ -571,13 +579,13 @@ class Terrain {
     this.water.receiveShadow = true;
     this.layers.add(this.water);
 
-    if (configSvc.config.DEBUG) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
+    if (this.configSvc.config.DEBUG) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
 
     this.scene.add(this.layers);
   }
 
   private initUnderwater() {
-    underwaterSvc.observable$.subscribe(
+    this.underwaterSvc.observable$.subscribe(
       () => {
         if (this.previewObject) {
           this.scene.remove(this.previewObject);

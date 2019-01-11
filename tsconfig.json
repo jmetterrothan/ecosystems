@@ -10,6 +10,9 @@
     "allowJs": true,
     "forceConsistentCasingInFileNames": false,
     "paths": {
+      "@app/*": [
+        "src/app/*"
+      ],
       "@shared/*": [
         "src/app/Shared/*"
       ],
@@ -42,6 +45,9 @@
       ],
       "@achievements/*": [
         "src/app/Achievements/*"
+      ],
+      "@ui/*": [
+        "src/app/UI/*"
       ]
     },
     "typeRoots": [
@@ -51,6 +57,7 @@
     "lib": [
       "dom",
       "es2017",
+      "es6",
       "es7"
     ]
   },

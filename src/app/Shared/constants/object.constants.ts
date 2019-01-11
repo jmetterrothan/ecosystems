@@ -1,5 +1,8 @@
 import { IObject } from '@shared/models/object.model';
 
+import carrotObj from '@objmodels/vegetables/carrot.obj';
+import carrotMtl from '@objmodels/vegetables/carrot.mtl';
+
 import butterflyObj from '@objmodels/fauna/butterfly.obj';
 import butterflyMtl from '@objmodels/fauna/butterfly.mtl';
 
@@ -9,8 +12,17 @@ import snowy_bushMtl from '@objmodels/tree/snowy_bush.mtl';
 import snowmanObj from '@objmodels/misc/snowman.obj';
 import snowmanMtl from '@objmodels/misc/snowman.mtl';
 
+import snowmanNoCarrotObj from '@objmodels/misc/snowman_no_carrot.obj';
+import snowmanNoCarrotMtl from '@objmodels/misc/snowman_no_carrot.mtl';
+
 import chestObj from '@objmodels/misc/chest.obj';
 import chestMtl from '@objmodels/misc/chest.mtl';
+
+import round_treeObj from '@objmodels/tree/round_tree.obj';
+import round_treeMtl from '@objmodels/tree/round_tree.mtl';
+
+import bush2Obj from '@objmodels/tree/bush2.obj';
+import bush2Mtl from '@objmodels/tree/bush2.mtl';
 
 import dead_treeObj from '@objmodels/tree/dead_tree.obj';
 import dead_treeMtl from '@objmodels/tree/dead_tree.mtl';
@@ -62,6 +74,9 @@ import rock4Mtl from '@objmodels/rock/rock4.mtl';
 
 import rock5Obj from '@objmodels/rock/rock5.obj';
 import rock5Mtl from '@objmodels/rock/rock5.mtl';
+
+import rock6Obj from '@objmodels/rock/rock6.obj';
+import rock6Mtl from '@objmodels/rock/rock6.mtl';
 
 import iceberg1Obj from '@objmodels/rock/iceberg1.obj';
 import iceberg1Mtl from '@objmodels/rock/iceberg1.mtl';
@@ -144,7 +159,31 @@ import cloud3Mtl from '@objmodels/cloud/cloud3.mtl';
 import cloud4Obj from '@objmodels/cloud/cloud4.obj';
 import cloud4Mtl from '@objmodels/cloud/cloud4.mtl';
 
+import sunObj from '@objmodels/misc/sun.obj';
+import sunMtl from '@objmodels/misc/sun.mtl';
+
+import moonObj from '@objmodels/misc/moon.obj';
+import moonMtl from '@objmodels/misc/moon.mtl';
+
 export const OBJECTS: IObject[] = [
+  {
+    name: 'sun',
+    obj: sunObj,
+    mtl: sunMtl,
+    doubleSide: true
+  },
+  {
+    name: 'moon',
+    obj: moonObj,
+    mtl: moonMtl,
+    doubleSide: true
+  },
+  {
+    name: 'carrot',
+    obj: carrotObj,
+    mtl: carrotMtl,
+    doubleSide: true
+  },
   {
     name: 'butterfly',
     obj: butterflyObj,
@@ -162,14 +201,29 @@ export const OBJECTS: IObject[] = [
     mtl: snowmanMtl
   },
   {
+    name: 'snowman_no_carrot',
+    obj: snowmanNoCarrotObj,
+    mtl: snowmanNoCarrotMtl
+  },
+  {
     name: 'chest',
     obj: chestObj,
     mtl: chestMtl
   },
   {
+    name: 'bush2',
+    obj: bush2Obj,
+    mtl: bush2Mtl
+  },
+  {
     name: 'dead_tree',
     obj: dead_treeObj,
     mtl: dead_treeMtl
+  },
+  {
+    name: 'round_tree',
+    obj: round_treeObj,
+    mtl: round_treeMtl
   },
   {
     name: 'skull',
@@ -376,6 +430,11 @@ export const OBJECTS: IObject[] = [
     name: 'rock3',
     obj: rock3Obj,
     mtl: rock3Mtl
+  },
+  {
+    name: 'rock6',
+    obj: rock6Obj,
+    mtl: rock6Mtl
   },
   {
     name: 'iceberg1',

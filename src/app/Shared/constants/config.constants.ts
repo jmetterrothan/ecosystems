@@ -1,15 +1,16 @@
 import * as THREE from 'three';
 
-import CommonUtils from '@shared/utils/Common.utils';
-
 import { IConfig } from '@shared/models/graphicsConfig.model';
+
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
+
+import CommonUtils from '@shared/utils/Common.utils';
 
 const GLOBAL_CONFIG = {
   DEBUG: CommonUtils.isDev(),
 };
 
-export const LOW_CONFIG : IConfig = {
+export const LOW_CONFIG: IConfig = {
   ...GLOBAL_CONFIG,
 
   MAX_VISIBLE_CHUNKS: 12,
@@ -25,7 +26,7 @@ export const LOW_CONFIG : IConfig = {
   SHADOW_MAP_TYPE: THREE.BasicShadowMap
 };
 
-export const MEDIUM_CONFIG : IConfig = {
+export const MEDIUM_CONFIG: IConfig = {
   ...GLOBAL_CONFIG,
 
   MAX_VISIBLE_CHUNKS: 20,
@@ -40,7 +41,7 @@ export const MEDIUM_CONFIG : IConfig = {
   SHADOW_MAP_TYPE: THREE.PCFShadowMap
 };
 
-export const HIGH_CONFIG : IConfig = {
+export const HIGH_CONFIG: IConfig = {
   ...GLOBAL_CONFIG,
 
   MAX_VISIBLE_CHUNKS: 24,

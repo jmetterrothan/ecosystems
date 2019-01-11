@@ -1,4 +1,4 @@
-import { ITranslationKeys } from './../models/translationKeys.models';
+import { ITranslationKeys } from '@shared/models/translationKeys.models';
 
 export const FR_TRANSLATION: ITranslationKeys = {
   play_games_counter: 'Jouer {{counter}} parties',
@@ -11,5 +11,7 @@ export const FR_TRANSLATION: ITranslationKeys = {
   place_objects_counter: 'Placer {{counter}} objets',
   travelled_distance_counter: 'Marathonien {{counter}}',
   repulse_fishes: 'Les poissons sont nos amis, on n\'y touche plus',
+  repulse_butterflies: 'Faire peur aux papillons',
+  find_captain_treasure: 'Trouver le trésor du capitaine',
   unlock_trophy_percentage: ''
 };

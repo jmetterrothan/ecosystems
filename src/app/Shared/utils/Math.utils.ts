@@ -1,5 +1,3 @@
-import { IMinMax } from '@shared/models/biomeWeightedObject.model';
-
 class MathUtils {
 
   static rng = null; // current random number generator shared across the app
@@ -77,6 +75,16 @@ class MathUtils {
    */
   static lerp(a, b, t) {
     return (1 - t) * a + t * b;
+  }
+
+  /**
+   * @param {array} x
+   * @param {number} mean
+   * @param {number} std
+   * @return {array}
+   */
+  static normalize(x, mean, std) {
+    return x.map(x => (x - mean) / std);
   }
 
 }

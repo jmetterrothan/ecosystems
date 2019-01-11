@@ -1,19 +1,25 @@
 import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-import Main from '../../Main';
+import GraphicsConfigService, { configSvc } from './graphicsConfig.service';
 
 import { EN_TRANSLATION } from '@shared/i18n/en.constants';
 import { FR_TRANSLATION } from '@shared/i18n/fr.constants';
 
 class TranslationService {
 
+  private configSvc: GraphicsConfigService;
+
+  constructor() {
+    this.configSvc = configSvc;
+  }
+
   init(): Promise<any> {
     return new Promise((resolve, reject) => {
       i18next
         .use(LanguageDetector)
         .init({
-          debug: Main.DEBUG,
+          debug: this.configSvc.config.DEBUG,
           fallbackLng: ['en', 'fr'],
           resources: {
             en: {

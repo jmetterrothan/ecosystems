@@ -1,7 +1,9 @@
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
+import Terrain from '@world/Terrain';
 
 import { IBiome } from '@shared/models/biome.model';
+
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
 class TestBiome extends Biome {
@@ -10,6 +12,12 @@ class TestBiome extends Biome {
 
     this.water = false;
   }
+
+  init(scene: THREE.Scene, terrain: Terrain) { }
+
+  update(delta: number) { }
+
+  handleClick(raycaster: THREE.Raycaster) { }
 
   /**
    * Compute elevation

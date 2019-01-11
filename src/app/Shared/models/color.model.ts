@@ -1,5 +1,5 @@
-import { Color } from 'THREE';
+import * as THREE from 'three';
 export interface IColor {
   stop: number;
-  color: Color;
+  color: THREE.Color;
 }

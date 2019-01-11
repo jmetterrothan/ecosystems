@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import { IBiomeWeightedObject } from './biomeWeightedObject.model';
+
+import { IBiomeWeightedObject } from '@shared/models/biomeWeightedObject.model';
 
 export interface IBiome {
   color: THREE.Color;

@@ -1,39 +1,42 @@
 import * as THREE from 'three';
 
+import World from '@world/World';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
-import MathUtils from '@utils/Math.utils';
 
-import { playerSvc } from '@shared/services/player.service';
-import { BoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
+import PlayerService, { playerSvc } from '@shared/services/player.service';
+
+import { IBoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
+
+import MathUtils from '@utils/Math.utils';
+import Terrain from '@app/World/Terrain';
 
 class Creature {
   static SPEED: number = 100;
 
-  position: THREE.Vector3;
-  velocity: THREE.Vector3;
-  speed: number;
+  private position: THREE.Vector3;
+  private velocity: THREE.Vector3;
+  private speed: number;
 
-  minRepulseDistance: number = 20000;
+  private minRepulseDistance: number = 30000;
 
-  model: THREE.Object3D;
-  parameters: BoidCreatureParameters;
+  private model: THREE.Object3D;
+  private parameters: IBoidCreatureParameters;
 
-  avoidTarget: THREE.Vector3 = null;
+  private boidsBoundingBox: THREE.Vector3;
+  private boidsOrigin: THREE.Vector3;
 
-  protected boidsBoundingBox: THREE.Vector3;
-  protected boidsOrigin: THREE.Vector3;
+  private playerSvc: PlayerService;
 
-  constructor(position: THREE.Vector3, velocity: THREE.Vector3, model: THREE.Object3D, parameters: BoidCreatureParameters) {
+  constructor(position: THREE.Vector3, velocity: THREE.Vector3, model: THREE.Object3D, parameters: IBoidCreatureParameters) {
     this.position = position;
     this.velocity = velocity;
     this.model = model;
     this.parameters = parameters;
 
+    this.playerSvc = playerSvc;
+
     this.speed = this.parameters.speed + MathUtils.randomInt(-10, 10); // TODO: improve the random factor (put it higher)
-  }
-  getMinRepulseDistance(): number {
-    return this.minRepulseDistance;
   }
 
   update(creatures: Creature[], generator: BiomeGenerator, delta: number) {
@@ -45,26 +48,60 @@ class Creature {
     const avoidance = this.calculateBoundsAvoidance();
     this.velocity.add(avoidance);
 
-    const repulse = this.calculateRepel(playerSvc.getPosition());
-    this.velocity.add(repulse);
-
-    const wp = this.position.clone().add(this.velocity).add(this.boidsOrigin);
+    // terrain repel
+    const wp = this.position.clone().add(this.velocity.clone().normalize().multiplyScalar(this.speed * delta)).add(this.boidsOrigin);
     const y = generator.computeHeightAt(wp.x, wp.z);
-    const by = y - this.boidsOrigin.y;
+    const by = (this.parameters.underwater ? y : Math.max(y, Chunk.SEA_LEVEL)) - this.boidsOrigin.y;
     const d = Math.sqrt((by - this.position.y) * (by - this.position.y)) / Chunk.HEIGHT;
     const td = 4096 / Chunk.HEIGHT;
 
-    if (d < td) {
+    if (d <= td) {
       const ground = new THREE.Vector3(this.position.x, by, this.position.z);
-      const repulse2 = this.repulse(ground, 1);
+      const repulse2 = this.repulse(ground, 1 / d);
 
       this.velocity.add(repulse2);
+    } else {
+      // only apply if creature is not repelled by the ground
+      if (
+        this.position.x > -this.boidsBoundingBox.x &&
+        this.position.z > -this.boidsBoundingBox.x &&
+        this.position.x < this.boidsBoundingBox.x &&
+        this.position.z < this.boidsBoundingBox.z) {
+        // player repel
+        const repulse = this.calculateRepel(this.playerSvc.getPosition());
+        this.velocity.add(repulse);
+      }
     }
 
+    // apply transformation
     this.velocity.normalize();
-    this.position.add(this.velocity.clone().multiplyScalar(this.speed));
+    this.position.add(this.velocity.clone().multiplyScalar(this.speed * delta));
 
-    this.updateModel();
+    if (this.parameters.underwater) {
+      if (this.position.y + this.boidsOrigin.y > 0) { this.position.y = -this.boidsOrigin.y; }
+      if (this.position.x + this.boidsOrigin.x < 0) { this.position.x = -this.boidsOrigin.x; }
+      if (this.position.z + this.boidsOrigin.z < 0) { this.position.z = -this.boidsOrigin.z; }
+      if (this.position.x + this.boidsOrigin.x > Terrain.SIZE_X) { this.position.x = Terrain.SIZE_X - this.boidsOrigin.x; }
+      if (this.position.z + this.boidsOrigin.z > Terrain.SIZE_Z) { this.position.z = Terrain.SIZE_Z - this.boidsOrigin.z; }
+    }
+
+    this.updateModel(delta);
+  }
+
+  getPosition(): THREE.Vector3 {
+    return this.position;
+  }
+
+  getModelPosition(): THREE.Vector3 {
+    return this.position.clone().add(this.boidsOrigin);
+  }
+
+  getMinRepulseDistance(): number {
+    return this.minRepulseDistance;
+  }
+
+  getParameters(): IBoidCreatureParameters {
+    return this.parameters;
   }
 
   setBoidsBoundingBox(box: THREE.Vector3) {
@@ -73,10 +110,6 @@ class Creature {
 
   setOriginPoint(origin: THREE.Vector3) {
     this.boidsOrigin = origin;
-  }
-
-  setAvoidTarget(target: THREE.Vector3) {
-    this.avoidTarget = target;
   }
 
   steer(target: THREE.Vector3, wieghting: number = 1): THREE.Vector3 {
@@ -97,12 +130,14 @@ class Creature {
     return v;
   }
 
-  private updateModel() {
-    const v = this.position.clone().add(this.boidsOrigin);
-    // console.log(this.position.add(this.boidsOrigin));
-    this.model.position.copy(v);
-    this.model.rotation.y = Math.atan2(-this.velocity.z, this.velocity.x);
-    this.model.rotation.z = Math.asin(this.velocity.y / this.velocity.length());
+  private updateModel(delta: number) {
+    const v1 = this.position.clone().add(this.boidsOrigin);
+
+    this.model.position.copy(v1);
+
+    const v2 = this.velocity.clone().multiplyScalar(delta);
+    this.model.rotation.y = Math.atan2(-v2.z, v2.x);
+    this.model.rotation.z = Math.asin(v2.y / v2.length());
   }
 
   private calculateInteraction(creatures: Creature[]): THREE.Vector3 {
@@ -179,12 +214,12 @@ class Creature {
     const distance = this.position.clone().add(this.boidsOrigin).distanceTo(target);
 
     if (distance < this.minRepulseDistance) {
-      const forceWeighting = 5 / distance;
+      const forceWeighting = 1 / distance;
       v.subVectors(this.position.clone().add(this.boidsOrigin), target);
       v.multiplyScalar(forceWeighting);
-      this.speed += 40;
+      this.speed += 350;
     } else if (this.speed > this.parameters.speed) {
-      this.speed -= 40;
+      this.speed -= 350;
     } else {
       this.speed = this.parameters.speed;
     }

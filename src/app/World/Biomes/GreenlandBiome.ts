@@ -6,12 +6,13 @@ import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 import Boids from '@boids/Boids';
-import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
-import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
+import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
+
+import MathUtils from '@shared/utils/Math.utils';
 
 class GreenlandBiome extends Biome {
   private a: number;
@@ -54,23 +55,26 @@ class GreenlandBiome extends Biome {
         const pz = s / 2 + point.shift();
 
         const sy = MathUtils.randomFloat(Chunk.HEIGHT / 5, Chunk.HEIGHT / 3);
+        const py = Math.max(Chunk.SEA_LEVEL + sy / 2, this.generator.computeHeightAt(px, pz) + sy / 3);
 
         // butterflies
         const boids = new Boids(
           scene,
           new THREE.Vector3(s, sy, s),
-          new THREE.Vector3(px, Chunk.SEA_LEVEL + sy / 2, pz),
+          new THREE.Vector3(px, py, pz),
           'butterfly',
-          MathUtils.randomInt(1, 4),
-          {
-            speed: 75,
-            neighbourRadius: 6000,
-            alignmentWeighting: 0.005,
-            cohesionWeighting: 0.075,
-            separationWeighting: 0.1,
-            viewAngle: 12
-          }
+          MathUtils.randomInt(1, 4)
         );
+
+        boids.generate({
+          speed: 7500,
+          neighbourRadius: 6000,
+          alignmentWeighting: 0.005,
+          cohesionWeighting: 0.075,
+          separationWeighting: 0.1,
+          viewAngle: 12,
+          underwater: false
+        });
 
         this.boids.push(boids);
       });
@@ -80,6 +84,8 @@ class GreenlandBiome extends Biome {
   update(delta: number) {
     this.boids.forEach(boids => boids.update(this.generator, delta));
   }
+
+  handleClick(raycaster: THREE.Raycaster) { }
 
   /**
    * Compute elevation

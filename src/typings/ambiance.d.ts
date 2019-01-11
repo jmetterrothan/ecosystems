@@ -1,0 +1,5 @@
+declare module '*.css' { export default '' as string; }
+declare module '*.scss' { export default '' as string; }
+declare module '*.html' { export default '' as string; }
+declare module '*.obj' { export default '' as string; }
+declare module '*.mtl' { export default '' as string; }

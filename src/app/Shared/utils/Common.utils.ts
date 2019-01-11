@@ -25,7 +25,9 @@ class CommonUtils {
     const rg = ag + amount * (bg - ag);
     const rb = ab + amount * (bb - ab);
 
-    /* tslint:disable */ return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1); /* tslint:enable */
+    /* tslint:disable */
+    return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
+    /* tslint:enable */
   }
 
   /**

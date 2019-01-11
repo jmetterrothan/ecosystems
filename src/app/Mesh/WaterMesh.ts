@@ -1,13 +1,14 @@
 import * as THREE from 'three';
-import Mesh from './Mesh';
 
 import BiomeGenerator from '@world/BiomeGenerator';
 import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
+import Mesh from '@mesh/Mesh';
+
+import { IChunkParameters } from '@shared/models/chunkParameters.model';
+import { WATER_MATERIAL } from '@materials/water.material';
 
 import { MESH_TYPES } from '@shared/enums/mesh.enum';
-import { WATER_MATERIAL } from '@materials/water.material';
-import { IChunkParameters } from '@shared/models/chunkParameters.model';
 
 class WaterMesh extends Mesh {
   constructor(generator: BiomeGenerator, row: number, col: number) {

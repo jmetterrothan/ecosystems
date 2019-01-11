@@ -6,20 +6,24 @@ import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
-import Boids from '@boids/Boids';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
-import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { IPick } from '@shared/models/pick.model';
 
+import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
+import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
+
+import Boids from '@boids/Boids';
 
 class OceanBiome extends Biome {
   private spike: number;
   private depth: number;
 
   private boids: Boids[];
+
+  private chest: THREE.Object3D;
 
   constructor(generator: BiomeGenerator) {
     super('OCEAN', generator);
@@ -38,7 +42,7 @@ class OceanBiome extends Biome {
 
   init(scene: THREE.Scene, terrain: Terrain) {
     const smin = 80000;
-    const smax = 160000;
+    const smax = 140000;
     const s = MathUtils.randomFloat(smin, smax);
 
     const pds = new poissonDiskSampling([Terrain.SIZE_X - s, Terrain.SIZE_Z - s], s, s, 30, MathUtils.rng);
@@ -47,24 +51,26 @@ class OceanBiome extends Biome {
     const T1 = {
       model: 'fish1',
       config: {
-        speed: 75,
+        speed: 7500,
         neighbourRadius: 6000,
         alignmentWeighting: 0.0065,
         cohesionWeighting: 0.01,
         separationWeighting: 0.05,
-        viewAngle: 12
+        viewAngle: 8,
+        underwater: true
       }
     };
 
     const T2 = {
       model: 'fish2',
       config: {
-        speed: 75,
+        speed: 7500,
         neighbourRadius: 10000,
         alignmentWeighting: 0.0065,
         cohesionWeighting: 0.01,
-        separationWeighting: 0.2,
-        viewAngle: 6
+        separationWeighting: 0.35,
+        viewAngle: 12,
+        underwater: true
       }
     };
 
@@ -75,8 +81,8 @@ class OceanBiome extends Biome {
       const px = s / 2 + point.shift();
       const pz = s / 2 + point.shift();
 
-      const sy = MathUtils.randomFloat(Chunk.HEIGHT / 3, Chunk.HEIGHT / 2);
-      const py = -Chunk.HEIGHT / 2 + sy / 2;
+      const sy = MathUtils.randomFloat(Chunk.HEIGHT / 3.75, Chunk.HEIGHT / 3);
+      const py = Chunk.SEA_LEVEL - sy / 2;
 
       // fishs
       const boids = new Boids(
@@ -85,41 +91,51 @@ class OceanBiome extends Biome {
         new THREE.Vector3(px, py, pz),
         type.model,
         nb,
-        type.config
       );
+
+      boids.generate(type.config);
 
       this.boids.push(boids);
     });
 
     // chest
     let chunk: Chunk;
-    let corpseItem: IPick;
-    let corpseObject: THREE.Object3D;
+    let chestItem: IPick;
 
     do {
-      const x = Terrain.SIZE_X / 4 + Math.floor(Math.random() * Terrain.SIZE_X / 2);
-      const z = Terrain.SIZE_Z / 4 + Math.floor(Math.random() * Terrain.SIZE_Z / 2);
+      const x = Terrain.SIZE_X / 4 + Math.floor(MathUtils.rng() * Terrain.SIZE_X / 2);
+      const z = Terrain.SIZE_Z / 4 + Math.floor(MathUtils.rng() * Terrain.SIZE_Z / 2);
 
       chunk = terrain.getChunkAt(x, z);
 
       const y = terrain.getHeightAt(x, z);
 
-      corpseItem = {
+      chestItem = {
         x, y, z,
         s: World.OBJ_INITIAL_SCALE,
         n: 'chest',
         r: MathUtils.randomFloat(0, Math.PI * 2)
       };
 
-      corpseObject = chunk.getObject(corpseItem);
+      this.chest = chunk.getObject(chestItem);
 
-    } while (!chunk.canPlaceObject(corpseObject));
+    } while (!chunk.canPlaceObject(this.chest));
 
-    chunk.placeObject(corpseObject, { save: true });
+    chunk.placeObject(this.chest, { save: true });
+
   }
 
   update(delta: number) {
     this.boids.forEach(boids => boids.update(this.generator, delta));
+  }
+
+  handleClick(raycaster: THREE.Raycaster) {
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.chest], true);
+
+    if (intersections.length) {
+      this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.find_captain_treasure);
+    }
+
   }
 
   /**
