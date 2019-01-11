@@ -23,6 +23,8 @@ class Main {
   private camera: THREE.PerspectiveCamera;
   private controls: THREE.PointerLockControls;
 
+  private world: World;
+
   private containerElement: HTMLElement;
 
   private lastTime: number;
