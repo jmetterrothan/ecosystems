@@ -35,14 +35,16 @@ class DesertBiome extends Biome {
       const x = Terrain.SIZE_X / 4 + Math.floor(MathUtils.rng() * Terrain.SIZE_X / 2);
       const z = Terrain.SIZE_Z / 4 + Math.floor(MathUtils.rng() * Terrain.SIZE_Z / 2);
       const y = terrain.getHeightAt(x, z);
-      const s = World.OBJ_INITIAL_SCALE;
+
+      const s = new THREE.Vector3(World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE);
+      const r = new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0);
 
       chunk = terrain.getChunkAt(x, z);
 
       corpseItem = {
+        s,
         p: new THREE.Vector3(x, y, z),
-        s: new THREE.Vector3(s, s, s),
-        r: new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0),
+        r: new THREE.Euler().setFromVector3(r),
         n: 'skull',
         f: false,
       };

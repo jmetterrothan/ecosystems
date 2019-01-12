@@ -205,7 +205,7 @@ class Chunk {
       p: translation,
       f: object.userData.float,
       n: object.userData.stackReference,
-      r: object.rotation.toVector3(),
+      r: object.rotation,
       s: scale
     };
 

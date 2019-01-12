@@ -251,7 +251,7 @@ class Terrain {
 
       case MOUSE_TYPES.CLICK:
         this.placeObjectWithMouseClick(raycaster);
-        this.generator.getBiome().handleClick(raycaster, this);
+        this.generator.getBiome().handleClick(raycaster);
         break;
 
       default:
@@ -336,7 +336,8 @@ class Terrain {
         const item = chunk.pick(intersection.point.x, intersection.point.z, {
           force: true,
           float: (this.intersectionSurface === this.water)
-        });
+        }, this.scene);
+
         if (!item) {
           // bail out if no item gets picked
           this.previewActive = false;

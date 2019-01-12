@@ -77,7 +77,7 @@ class Player {
     this.voiceModel = new Model();
     await this.voiceModel.train();
 
-    this.voice = new Voice(this.voiceModel);
+    // this.voice = new Voice(this.voiceModel);
     // this.voice.listen();
   }
 
