@@ -25,7 +25,6 @@ class Player {
   private speed: THREE.Vector3;
   private velocity: THREE.Vector3;
 
-  private world: World;
   private voiceModel: Model;
 
   private progressionSvc: ProgressionService;
@@ -77,7 +76,7 @@ class Player {
     this.voiceModel = new Model();
     await this.voiceModel.train();
 
-    this.voice = new Voice(this.voiceModel);
+    // this.voice = new Voice(this.voiceModel);
     // this.voice.listen();
   }
 

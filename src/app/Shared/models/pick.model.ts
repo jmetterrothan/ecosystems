@@ -1,8 +1,8 @@
+import * as THREE from 'three';
 export interface IPick {
-  x: number;
-  y: number;
-  z: number;
+  p: THREE.Vector3; // position
+  r: THREE.Euler; // rotation
+  s: THREE.Vector3; // scale
+  f: boolean; // float flag
   n: string; // model name
-  r: number; // rotation
-  s: number; // scale
 }

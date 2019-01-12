@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 
-import World from '@world/World';
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
@@ -11,8 +10,6 @@ import { IPick } from '@shared/models/pick.model';
 
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
-
-import MathUtils from '@shared/utils/Math.utils';
 
 class SnowBiome extends Biome {
 
@@ -32,26 +29,8 @@ class SnowBiome extends Biome {
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {
-    do {
-      const x = Terrain.SIZE_X / 4 + Math.floor(MathUtils.rng() * Terrain.SIZE_X / 2);
-      const z = Terrain.SIZE_Z / 4 + Math.floor(MathUtils.rng() * Terrain.SIZE_Z / 2);
-
-      this.snowmanChunk = terrain.getChunkAt(x, z);
-
-      const y = terrain.getHeightAt(x, z);
-      if (y <= 0) { continue; }
-
-      this.snowmanItem = {
-        x, y, z,
-        s: World.OBJ_INITIAL_SCALE,
-        n: 'snowman_no_carrot',
-        r: MathUtils.randomFloat(0, Math.PI * 2)
-      };
-
-      this.snowmanObject = this.snowmanChunk.getObject(this.snowmanItem);
-    } while (!this.snowmanChunk.canPlaceObject(this.snowmanObject));
-
-    this.snowmanChunk.placeObject(this.snowmanObject, { save: true });
+    // snowman
+    terrain.placeObject('snowman_no_carrot');
   }
 
   update(delta: number) { }

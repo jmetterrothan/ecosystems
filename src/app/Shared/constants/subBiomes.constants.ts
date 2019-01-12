@@ -260,7 +260,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.05,
         name: 'carcass',
-        scarcity: 0.9985,
+        scarcity: 0.999,
         e: null,
         m: null,
         scale: { min: 0.65, max: 1.25 },
@@ -364,7 +364,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.20,
         name: 'algea3',
-        scarcity: 0.9,
+        scarcity: 0.975,
         e: null,
         m: null,
         scale: { min: 1.0, max: 1.5 },
@@ -711,7 +711,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.15,
         name: 'mangrove',
-        scarcity: 0.935,
+        scarcity: 0.95,
         e: { low: Chunk.SEA_ELEVATION - 0.05, high: Chunk.SEA_ELEVATION + 0.2 },
         m: null,
         scale: { min: 1.0, max: 1.25 },

@@ -15,7 +15,6 @@ import Player from '@app/Player';
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 import MathUtils from '@utils/Math.utils';
-import SnowBiome from './Biomes/SnowBiome';
 
 class World {
   static readonly SEED: string | null = null;
