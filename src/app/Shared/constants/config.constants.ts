@@ -29,7 +29,7 @@ export const LOW_CONFIG: IConfig = {
 export const MEDIUM_CONFIG: IConfig = {
   ...GLOBAL_CONFIG,
 
-  MAX_VISIBLE_CHUNKS: 20,
+  MAX_VISIBLE_CHUNKS: 18,
   MAX_RENDERABLE_CHUNKS: 24,
 
   ENABLE_WATER_EFFECTS: false,
@@ -44,7 +44,7 @@ export const MEDIUM_CONFIG: IConfig = {
 export const HIGH_CONFIG: IConfig = {
   ...GLOBAL_CONFIG,
 
-  MAX_VISIBLE_CHUNKS: 24,
+  MAX_VISIBLE_CHUNKS: 22,
   MAX_RENDERABLE_CHUNKS: 30,
 
   ENABLE_WATER_EFFECTS: true,
