@@ -138,6 +138,15 @@ import algea2Mtl from '@objmodels/flower/algea2.mtl';
 import algea3Obj from '@objmodels/flower/algea3.obj';
 import algea3Mtl from '@objmodels/flower/algea3.mtl';
 
+import starObj from '@objmodels/flower/star.obj';
+import starMtl from '@objmodels/flower/star.mtl';
+
+import shellObj from '@objmodels/misc/shell.obj';
+import shellMtl from '@objmodels/misc/shell.mtl';
+
+import reedObj from '@objmodels/flower/reed.obj';
+import reedMtl from '@objmodels/flower/reed.mtl';
+
 import highlands_treeObj from '@objmodels/tree/highlands_tree.obj';
 import highlands_treeMtl from '@objmodels/tree/highlands_tree.mtl';
 
@@ -305,6 +314,23 @@ export const OBJECTS: IObject[] = [
     name: 'algea3',
     obj: algea3Obj,
     mtl: algea3Mtl,
+    doubleSide: true
+  },
+  {
+    name: 'star',
+    obj: starObj,
+    mtl: starMtl
+  },
+  {
+    name: 'shell',
+    obj: shellObj,
+    mtl: shellMtl
+  },
+  {
+    name: 'reed',
+    obj: reedObj,
+    mtl: reedMtl,
+    doubleSide: true
   },
   {
     name: 'diamond',
