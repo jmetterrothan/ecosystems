@@ -2,9 +2,11 @@ import * as THREE from 'three';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
 
-import { ISocketRoomJoined, ISocketPositionUpdated, ISocketDisconnection, ISocketObjectAdded, ISocketObjectsInitialized } from '@shared/models/socketEvents.model';
+import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded, ISocketDataObjectsInitialized } from '@app/Shared/models/SocketData.model';
 import { IPick } from '@shared/models/pick.model';
 import { IOnlineObject } from '@shared/models/onlineObjects.model';
+
+import { SOCKET_EVENTS } from '@shared/constants/socketEvents.constants';
 
 import { ENV } from '@shared/env/env';
 
@@ -22,7 +24,7 @@ class MultiplayerService {
 
   private onlineUsers: string[] = [];
   private onlineUsersMeshes: THREE.Mesh[] = [];
-  private objectsPlaced: IPick[] = [];
+  private placedObjects: IPick[] = [];
 
   private debugArea: HTMLElement;
 
@@ -35,6 +37,11 @@ class MultiplayerService {
     this.objectPlaced$ = this.objectPlacedSource.asObservable();
   }
 
+  /**
+   * Init multiplayer with seed
+   * @param {THREE.Scene} scene
+   * @param {string} seed
+   */
   init(scene: THREE.Scene, seed: string) {
     this.used = true;
     this.scene = scene;
@@ -45,36 +52,51 @@ class MultiplayerService {
 
     this.debugArea.innerHTML += `<h1>ROOM = ${this.room}</h1>`;
 
-    this.socket.emit('join_room', this.room);
+    this.socket.emit(SOCKET_EVENTS.CL_SEND_JOIN_ROOM, this.room);
 
     this.handleServerInteraction();
   }
 
+  /**
+   * Returns if multiplayer service is used
+   * @returns {boolean}
+   */
   isUsed(): boolean { return this.used; }
 
+  /**
+   * Send current player position to server
+   * @param {THREE.Vector3} position
+   */
   sendPosition(position: THREE.Vector3) {
-    if (this.onlineUsers.length) this.socket.emit('position', { position, room: this.room });
+    if (this.onlineUsers.length) this.socket.emit(SOCKET_EVENTS.CL_SEND_PLAYER_POSITION, { position, room: this.room });
   }
 
+  /**
+   * Send last object place by current player to server
+   * @param {IPick} item
+   */
   placeObject(item: IPick) {
-    this.objectsPlaced.push(item);
-    this.socket.emit('object', { item, room: this.room });
+    this.placedObjects.push(item);
+    this.socket.emit(SOCKET_EVENTS.CL_SEND_ADD_OBJECT, { item, room: this.room });
   }
 
+  /**
+   * Listen events from server
+   */
   private handleServerInteraction() {
-    this.socket.on('room_joined', (data: ISocketRoomJoined) => this.onRoomJoined(data));
-    this.socket.on('objects_initialized', (data: ISocketObjectsInitialized) => this.onObjectsInitialized(data));
-    this.socket.on('position_updated', (data: ISocketPositionUpdated) => this.onPositionupdated(data));
-    this.socket.on('object_added', (data: ISocketObjectAdded) => this.onObjectAdded(data));
-    this.socket.on('disconnection', (data: ISocketDisconnection) => this.onDisconnection(data));
+    this.socket.on(SOCKET_EVENTS.SV_SEND_JOIN_ROOM, (data: ISocketDataRoomJoined) => this.onRoomJoined(data));
+    this.socket.on(SOCKET_EVENTS.SV_SEND_INIT_OBJECTS, (data: ISocketDataObjectsInitialized) => this.onObjectsInitialized(data));
+    this.socket.on(SOCKET_EVENTS.SV_SEND_PLAYER_POSITION, (data: ISocketDataPositionUpdated) => this.onPositionupdated(data));
+    this.socket.on(SOCKET_EVENTS.SV_SEND_ADD_OBJECT, (data: ISocketDataObjectAdded) => this.onObjectAdded(data));
+    this.socket.on(SOCKET_EVENTS.SV_SEND_DISCONNECTION, (data: ISocketDataDisconnection) => this.onDisconnection(data));
   }
 
-  private onRoomJoined(data: ISocketRoomJoined) {
+  private onRoomJoined(data: ISocketDataRoomJoined) {
     if (!this.userId && this.userId !== data.me) {
       this.userId = data.me;
       // this.debugArea.innerHTML += `<h1 style='color: blue'>You are : ${data.me}</h1>`;
     } else {
-      this.socket.emit('objects_init', { room: this.room, objectsPlaced: this.objectsPlaced });
+      this.socket.emit(SOCKET_EVENTS.CL_SEND_INIT_OBJECTS, { room: this.room, placedObjects: this.placedObjects });
       // this.debugArea.innerHTML += `<h1 style='color: green'>${data.me} connected</h1>`;
     }
 
@@ -88,26 +110,26 @@ class MultiplayerService {
     // this.debugArea.innerHTML += `<ul><li>${this.userId}</li>${this.onlineUsers.reverse().map(user => `<li>${user}</li>`)}-----------------------</ul>`;
   }
 
-  private onObjectsInitialized(data: ISocketObjectsInitialized) {
-    if (this.objectsPlaced.length) return;
+  private onObjectsInitialized(data: ISocketDataObjectsInitialized) {
+    if (this.placedObjects.length) return;
 
-    this.objectsPlaced = data.objectsPlaced;
-    this.objectsPlaced.forEach((item: IPick) => {
+    this.placedObjects = data.placedObjects;
+    this.placedObjects.forEach((item: IPick) => {
       this.objectPlacedSource.next(<IOnlineObject>{ item, animate: false });
     });
   }
 
-  private onPositionupdated(data: ISocketPositionUpdated) {
+  private onPositionupdated(data: ISocketDataPositionUpdated) {
     const mesh = this.onlineUsersMeshes.find((mesh: THREE.Mesh) => mesh.userData.userID === data.userID);
     if (mesh) mesh.position.copy(data.position);
   }
 
-  private onObjectAdded(data: ISocketObjectAdded) {
-    this.objectsPlaced.push(data.item);
+  private onObjectAdded(data: ISocketDataObjectAdded) {
+    this.placedObjects.push(data.item);
     this.objectPlacedSource.next(<IOnlineObject>{ item: data.item, animate: true });
   }
 
-  private onDisconnection(data: ISocketDisconnection) {
+  private onDisconnection(data: ISocketDataDisconnection) {
     if (this.onlineUsers.includes(data.userID)) {
       // this.debugArea.innerHTML += `<h1 style='color: red'>${data.userID} disconnected</h1>`;
       // remove mesh

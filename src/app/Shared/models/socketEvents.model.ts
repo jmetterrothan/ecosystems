@@ -1,22 +1,15 @@
-import { IPick } from './pick.model';
-export interface ISocketRoomJoined {
-  me: string;
-  usersConnected: string[];
-}
+export interface ISocketEvents {
+  CL_SEND_JOIN_ROOM: string;
+  SV_SEND_JOIN_ROOM: string;
 
-export interface ISocketPositionUpdated {
-  userID: string;
-  position: THREE.Vector3;
-}
+  CL_SEND_PLAYER_POSITION: string;
+  SV_SEND_PLAYER_POSITION: string;
 
-export interface ISocketObjectAdded {
-  item: IPick;
-}
+  CL_SEND_INIT_OBJECTS: string;
+  SV_SEND_INIT_OBJECTS: string;
 
-export interface ISocketObjectsInitialized {
-  objectsPlaced: IPick[];
-}
+  CL_SEND_ADD_OBJECT: string;
+  SV_SEND_ADD_OBJECT: string;
 
-export interface ISocketDisconnection {
-  userID: string;
+  SV_SEND_DISCONNECTION: string;
 }

@@ -207,18 +207,18 @@ class Main {
     this.lastTime = time;
 
     // update
-    if (this.focused) {
-      this.world.update(delta);
+    // if (this.focused) {
+    this.world.update(delta);
 
-      if (this.underwaterSvc.isUnderwater) {
-        this.postProcess.update();
-      }
-
-      const color: THREE.Color = this.world.getWeather().getFogColor();
-      this.renderer.setClearColor(color);
-      this.scene.fog.color.set(color);
-      TWEEN.update();
+    if (this.underwaterSvc.isUnderwater) {
+      this.postProcess.update();
     }
+
+    const color: THREE.Color = this.world.getWeather().getFogColor();
+    this.renderer.setClearColor(color);
+    this.scene.fog.color.set(color);
+    TWEEN.update();
+    // }
 
     // switch render func if underwater
     if (this.underwaterSvc.isUnderwater) {
