@@ -11,10 +11,11 @@ const customUniforms = THREE.UniformsUtils.merge([
     water_distortion: { value: true },
     water_distortion_freq: { value: 4.0 },
     water_distortion_amp: { value: 512.0 },
-    shininess: { value: 35 },
+    shininess: { value: 45 },
     opacity: { value: 0.675 },
-    reflectivity: { value: 2.0 },
+    reflectivity: { value: 8.0 },
     emissive: { value: new THREE.Color(0x101010) },
+    specular: { value: new THREE.Color(0x757575) },
   }
 ]);
 
