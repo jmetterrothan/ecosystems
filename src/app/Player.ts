@@ -70,7 +70,7 @@ class Player {
 
     this.playerSvc.setPosition(spawn);
 
-    await this.initVoice();
+    // await this.initVoice();
   }
 
   private async initVoice() {
