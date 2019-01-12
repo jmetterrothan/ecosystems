@@ -342,7 +342,7 @@ class Weather {
   }
 
   private updateSun() {
-    const elapsedTime = (window.performance.now() - this.startTime) / 24000; // 60000
+    const elapsedTime = (window.performance.now() - this.startTime) / 4000; // 60000
 
     const x = Terrain.SIZE_X / 2 + Chunk.HEIGHT * Math.cos(elapsedTime);
     const y = Chunk.HEIGHT * Math.sin(elapsedTime);
@@ -376,11 +376,11 @@ class Weather {
     this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.1, 0.25);
     this.sunlight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.15, 0.25);
 
-    if (y >= 0) {
-      this.computeFogColor(y);
-      this.sunBoundLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.75, 0);
+    if (y >= -Chunk.HEIGHT / 4) {
+      if (y > 0) this.computeFogColor(y);
+      this.sunBoundLight.intensity = MathUtils.mapInterval(y, -Chunk.HEIGHT / 4, Chunk.HEIGHT, 0.75, 0);
     } else {
-      this.sunBoundLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, Chunk.HEIGHT, 0.75, 0);
+      this.sunBoundLight.intensity = MathUtils.mapInterval(Math.abs(y), Chunk.HEIGHT / 4, Chunk.HEIGHT, 0.75, 0);
     }
   }
 

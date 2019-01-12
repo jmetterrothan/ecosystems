@@ -22,7 +22,7 @@ export const LOW_CONFIG: IConfig = {
   ENABLE_SHADOWS: false,
 
   // only used if shadows are enabled
-  SHADOW_MAP_SIZE: 1024,
+  SHADOW_MAP_SIZE: 2048,
   SHADOW_MAP_TYPE: THREE.BasicShadowMap
 };
 
@@ -35,9 +35,9 @@ export const MEDIUM_CONFIG: IConfig = {
   ENABLE_WATER_EFFECTS: false,
   ENABLE_WEATHER_EFFECTS: false,
   ENABLE_AA: true,
-  ENABLE_SHADOWS: true,
+  ENABLE_SHADOWS: false,
 
-  SHADOW_MAP_SIZE: 2048,
+  SHADOW_MAP_SIZE: 2048 * 2,
   SHADOW_MAP_TYPE: THREE.PCFShadowMap
 };
 
@@ -52,7 +52,7 @@ export const HIGH_CONFIG: IConfig = {
   ENABLE_AA: true,
   ENABLE_SHADOWS: true,
 
-  SHADOW_MAP_SIZE: 4096,
+  SHADOW_MAP_SIZE: 2048 * 10,
   SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap
 };
 
