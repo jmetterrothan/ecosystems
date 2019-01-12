@@ -35,8 +35,8 @@ class Weather {
   private moonlight: THREE.DirectionalLight;
   private lightHelper: THREE.ArrowHelper;
 
-  private moonBoundLight: THREE.PointLight;
-  private sunBoundLight: THREE.PointLight;
+  private moonBoundLight: THREE.SpotLight;
+  private sunBoundLight: THREE.SpotLight;
 
   // stars
   private starsSystem: THREE.Points;
@@ -140,6 +140,10 @@ class Weather {
   }
 
   initLights() {
+    const target = new THREE.Object3D();
+    target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
+    this.scene.add(target);
+
     this.hemisphereLight = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.75);
     this.hemisphereLight.position.set(0, Chunk.SEA_LEVEL, 0);
     this.hemisphereLight.castShadow = false;
@@ -153,13 +157,20 @@ class Weather {
     this.initSunlight();
     this.initMoonlight();
 
-    this.moonBoundLight = new THREE.PointLight(0xc5dadd, 0.2, Terrain.SIZE_X, 1.0);
+    this.moonBoundLight = new THREE.SpotLight(0xc5dadd, 0.1, 0, Math.PI / 2, 1.0);
     this.moonBoundLight.castShadow = false;
+    this.moonBoundLight.target = target;
     this.scene.add(this.moonBoundLight);
 
-    this.sunBoundLight = new THREE.PointLight(0xfd5e53, 0.75, Terrain.SIZE_X * 2, 1.0);
+    this.sunBoundLight = new THREE.SpotLight(0xfd5e53, 1.0, 0, Math.PI / 2, 1.0); // 0xfd5e53
     this.sunBoundLight.castShadow = false;
+    this.sunBoundLight.target = target;
     this.scene.add(this.sunBoundLight);
+
+    if (configSvc.config.DEBUG) {
+      this.scene.add(new THREE.SpotLightHelper(this.moonBoundLight));
+      this.scene.add(new THREE.SpotLightHelper(this.sunBoundLight));
+    }
 
     const materialCallback = (mesh) => {
       mesh.castShadow = false;
@@ -373,14 +384,14 @@ class Weather {
   private updateLights() {
     const y = this.sunlight.position.y;
     this.hemisphereLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, Chunk.HEIGHT, 0.35, 0.75);
-    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.1, 0.25);
-    this.sunlight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.15, 0.25);
+    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.15, 0.25);
+    this.sunlight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.0, 0.25);
 
     if (y >= -Chunk.HEIGHT / 4) {
       if (y > 0) this.computeFogColor(y);
-      this.sunBoundLight.intensity = MathUtils.mapInterval(y, -Chunk.HEIGHT / 4, Chunk.HEIGHT, 0.75, 0);
+      this.sunBoundLight.intensity = MathUtils.mapInterval(y, -Chunk.HEIGHT / 4, Chunk.HEIGHT, 1.0, 0);
     } else {
-      this.sunBoundLight.intensity = MathUtils.mapInterval(Math.abs(y), Chunk.HEIGHT / 4, Chunk.HEIGHT, 0.75, 0);
+      this.sunBoundLight.intensity = MathUtils.mapInterval(Math.abs(y), Chunk.HEIGHT / 4, Chunk.HEIGHT, 1.0, 0);
     }
   }
 
