@@ -260,7 +260,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.05,
         name: 'carcass',
-        scarcity: 0.9985,
+        scarcity: 0.999,
         e: null,
         m: null,
         scale: { min: 0.65, max: 1.25 },
