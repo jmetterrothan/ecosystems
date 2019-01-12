@@ -35,17 +35,18 @@ class SnowBiome extends Biome {
     do {
       const x = Terrain.SIZE_X / 4 + Math.floor(MathUtils.rng() * Terrain.SIZE_X / 2);
       const z = Terrain.SIZE_Z / 4 + Math.floor(MathUtils.rng() * Terrain.SIZE_Z / 2);
+      const y = terrain.getHeightAt(x, z);
+      const s = World.OBJ_INITIAL_SCALE;
 
       this.snowmanChunk = terrain.getChunkAt(x, z);
-
-      const y = terrain.getHeightAt(x, z);
       if (y <= 0) { continue; }
 
       this.snowmanItem = {
-        x, y, z,
-        s: World.OBJ_INITIAL_SCALE,
+        p: new THREE.Vector3(x, y, z),
+        s: new THREE.Vector3(s, s, s),
+        r: new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0),
         n: 'snowman_no_carrot',
-        r: MathUtils.randomFloat(0, Math.PI * 2)
+        f: false,
       };
 
       this.snowmanObject = this.snowmanChunk.getObject(this.snowmanItem);

@@ -62,7 +62,7 @@ class BiomeGenerator {
 
         if (organism.float && !this.biome.hasWater()) { return null; } // prevent placing objects on water if it's disabled
 
-        const scale = organism.scale ? MathUtils.randomFloat(organism.scale.min, organism.scale.max) : 1;
+        const scale = (organism.scale ? MathUtils.randomFloat(organism.scale.min, organism.scale.max) : 1) * World.OBJ_INITIAL_SCALE;
 
         const lowM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).low : null;
         const highM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).high : null;
@@ -72,10 +72,10 @@ class BiomeGenerator {
 
         if (organism.float === true) {
           // sample 4 points and take the highest one to prevent (as much as possible) clipping into the water
-          const p1 = this.computeWaterHeightAt(x - 350, z);
-          const p2 = this.computeWaterHeightAt(x + 350, z);
-          const p3 = this.computeWaterHeightAt(x, z + 350);
-          const p4 = this.computeWaterHeightAt(x, z + 350);
+          const p1 = this.computeWaterHeightAt(x - 1024, z);
+          const p2 = this.computeWaterHeightAt(x + 1024, z);
+          const p3 = this.computeWaterHeightAt(x, z + 1024);
+          const p4 = this.computeWaterHeightAt(x, z + 1024);
 
           const p = Math.max(p1, p2, p3, p4);
           y = Math.max(y, p);
@@ -90,10 +90,11 @@ class BiomeGenerator {
           (lowM === null || m >= lowM) &&
           (highM === null || m <= highM)) {
           return (<IPick>{
-            x, y, z,
+            p: new THREE.Vector3(x, y, z),
             n: organism.name,
-            r: MathUtils.randomFloat(0, Math.PI * 2),
-            s: scale * World.OBJ_INITIAL_SCALE
+            f: organism.float,
+            r: new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0),
+            s: new THREE.Vector3(scale, scale, scale),
           });
         }
       }

@@ -202,12 +202,11 @@ class Chunk {
 
     // convert object to pick
     const item: IPick = {
-      x: translation.x,
-      y: translation.y,
-      z: translation.z,
+      p: translation,
+      f: object.userData.float,
       n: object.userData.stackReference,
-      r: object.rotation.y,
-      s: scale.x
+      r: object.rotation.toVector3(),
+      s: scale
     };
 
     this.savePick(item);
@@ -259,10 +258,10 @@ class Chunk {
     }
 
     // restore transformations
-    object.rotation.y = item.r;
-    object.scale.set(item.s, item.s, item.s);
-    object.position.set(item.x, item.y, item.z);
-    object.userData = <IStackReference>{ stackReference: item.n };
+    object.rotation.copy(item.r);
+    object.scale.copy(item.s);
+    object.position.copy(item.p);
+    object.userData = <IStackReference>{ stackReference: item.n, float: item.f };
     object.visible = true;
 
     return object;
