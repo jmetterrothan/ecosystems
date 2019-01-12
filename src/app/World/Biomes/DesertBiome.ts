@@ -4,15 +4,11 @@ import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
-import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
-import { IPick } from '@shared/models/pick.model';
 
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
-
-import World from '@world/World';
 
 class DesertBiome extends Biome {
   // private vulture: THREE.Object3D;
@@ -27,33 +23,7 @@ class DesertBiome extends Biome {
 
   init(scene: THREE.Scene, terrain: Terrain) {
     // corpse
-    let chunk: Chunk;
-    let corpseItem: IPick;
-    let corpseObject: THREE.Object3D;
-
-    do {
-      const x = Terrain.SIZE_X / 4 + Math.floor(MathUtils.rng() * Terrain.SIZE_X / 2);
-      const z = Terrain.SIZE_Z / 4 + Math.floor(MathUtils.rng() * Terrain.SIZE_Z / 2);
-      const y = terrain.getHeightAt(x, z);
-
-      const s = new THREE.Vector3(World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE);
-      const r = new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0);
-
-      chunk = terrain.getChunkAt(x, z);
-
-      corpseItem = {
-        s,
-        p: new THREE.Vector3(x, y, z),
-        r: new THREE.Euler().setFromVector3(r),
-        n: 'skull',
-        f: false,
-      };
-
-      corpseObject = chunk.getObject(corpseItem);
-
-    } while (!chunk.canPlaceObject(corpseObject));
-
-    chunk.placeObject(corpseObject, { save: true });
+    terrain.placeObject('skull');
 
     // vulture
     // this.vulture = chunk.getObject({ ...corpseItem });

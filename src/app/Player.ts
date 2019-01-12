@@ -25,7 +25,6 @@ class Player {
   private speed: THREE.Vector3;
   private velocity: THREE.Vector3;
 
-  private world: World;
   private voiceModel: Model;
 
   private progressionSvc: ProgressionService;
