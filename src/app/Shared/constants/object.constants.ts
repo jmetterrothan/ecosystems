@@ -27,8 +27,11 @@ import bush2Mtl from '@objmodels/tree/bush2.mtl';
 import dead_treeObj from '@objmodels/tree/dead_tree.obj';
 import dead_treeMtl from '@objmodels/tree/dead_tree.mtl';
 
-import skullObj from '@objmodels/fauna/skull.obj';
-import skullMtl from '@objmodels/fauna/skull.mtl';
+import skullObj from '@objmodels/misc/skull.obj';
+import skullMtl from '@objmodels/misc/skull.mtl';
+
+import carcassObj from '@objmodels/misc/carcass.obj';
+import carcassMtl from '@objmodels/misc/carcass.mtl';
 
 import fish1Obj from '@objmodels/fauna/fish1.obj';
 import fish1Mtl from '@objmodels/fauna/fish1.mtl';
@@ -229,6 +232,11 @@ export const OBJECTS: IObject[] = [
     name: 'skull',
     obj: skullObj,
     mtl: skullMtl
+  },
+  {
+    name: 'carcass',
+    obj: carcassObj,
+    mtl: carcassMtl
   },
   {
     name: 'fish2',

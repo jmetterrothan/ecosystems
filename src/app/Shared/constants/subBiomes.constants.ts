@@ -231,7 +231,7 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.2,
+        weight: 0.15,
         name: 'cactus4',
         scarcity: 0.9975,
         e: null,
@@ -246,6 +246,15 @@ export const SUB_BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 1.0, max: 2.85 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: 'carcass',
+        scarcity: 0.9985,
+        e: null,
+        m: null,
+        scale: { min: 0.65, max: 1.25 },
         float: false,
       },
       {
