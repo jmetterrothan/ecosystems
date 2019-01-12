@@ -598,10 +598,8 @@ class Terrain {
   private watchObjectPlaced() {
     this.multiplayerSvc.objectPlaced$.subscribe(
       ({ item, animate }: IOnlineObject) => {
-        console.log(item);
         const chunk = this.getChunkAt(item.x, item.z);
         const object = chunk.getObject(item);
-        console.log(object);
         chunk.placeObject(object, { animate, save: true, });
       }
     );
