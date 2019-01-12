@@ -19,6 +19,9 @@ class MultiplayerService {
   private objectPlacedSource: Subject<IOnlineObject>;
   objectPlaced$: Observable<IOnlineObject>;
 
+  private timeSource: Subject<number>;
+  time$: Observable<number>;
+
   private room: string;
   private userId: string;
 
@@ -35,6 +38,9 @@ class MultiplayerService {
 
     this.objectPlacedSource = new Subject();
     this.objectPlaced$ = this.objectPlacedSource.asObservable();
+
+    this.timeSource = new Subject();
+    this.time$ = this.timeSource.asObservable();
   }
 
   /**
@@ -100,8 +106,12 @@ class MultiplayerService {
       // this.debugArea.innerHTML += `<h1 style='color: green'>${data.me} connected</h1>`;
     }
 
-    const newUsers = data.usersConnected.filter(user => this.onlineUsers.indexOf(user) < 0 && user !== this.userId);
+    // share time
+    console.log(window.performance.now() - data.startTime);
+    this.timeSource.next(window.performance.now() - data.startTime);
 
+    // init mesh for each new users
+    const newUsers = data.usersConnected.filter(user => this.onlineUsers.indexOf(user) < 0 && user !== this.userId);
     newUsers.forEach(user => {
       this.createUserMesh(user);
       this.onlineUsers.push(user);

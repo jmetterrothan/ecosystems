@@ -2,6 +2,7 @@ import { IPick } from './pick.model';
 export interface ISocketDataRoomJoined {
   me: string;
   usersConnected: string[];
+  startTime: number;
 }
 
 export interface ISocketDataPositionUpdated {
