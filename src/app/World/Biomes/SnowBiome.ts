@@ -31,7 +31,7 @@ class SnowBiome extends Biome {
 
   init(scene: THREE.Scene, terrain: Terrain) {
     // snowman
-    terrain.placeObject('snowman_no_carrot');
+    terrain.placeSpecialObject({ stackReference: 'snowman_no_carrot', float: false, underwater: false });
   }
 
   update(delta: number) { }

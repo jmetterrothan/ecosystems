@@ -24,7 +24,10 @@ import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progres
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
+import { ISpecialObject } from '@shared/models/objectParameters.model';
+
 import CommonUtils from '@shared/utils/Common.utils';
+import { stack } from '@tensorflow/tfjs';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 16;
@@ -301,7 +304,7 @@ class Terrain {
     }
   }
 
-  placeObject(name: string, ox: number = Terrain.SIZE_X / 2, oz: number = Terrain.SIZE_Z / 2, sizeX: number = Terrain.SIZE_X, sizeZ: number = Terrain.SIZE_Z): THREE.Object3D {
+  placeSpecialObject(special: ISpecialObject, ox: number = Terrain.SIZE_X / 2, oz: number = Terrain.SIZE_Z / 2, sizeX: number = Terrain.SIZE_X, sizeZ: number = Terrain.SIZE_Z): THREE.Object3D {
     let object: THREE.Object3D;
     let chunk: Chunk;
     let item: IPick;
@@ -316,12 +319,14 @@ class Terrain {
 
       chunk = this.getChunkAt(x, z);
 
+      if (special.underwater === false && y <= Chunk.SEA_LEVEL) { continue; }
+
       item = {
         s,
         p: new THREE.Vector3(x, y, z),
         r: new THREE.Euler().setFromVector3(r),
-        n: name,
-        f: false,
+        n: special.stackReference,
+        f: special.float,
       };
 
       object = chunk.getObject(item);

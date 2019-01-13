@@ -29,7 +29,7 @@ class DesertBiome extends Biome {
     const sizeX = 8192;
     const sizeZ = 8192;
 
-    terrain.placeObject('skull', centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+    terrain.placeSpecialObject({ stackReference: 'skull', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
 
     // vulture
     // this.vulture = chunk.getObject({ ...corpseItem });

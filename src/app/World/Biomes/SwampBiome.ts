@@ -31,20 +31,20 @@ class SwampBiome extends Biome {
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {
-    const s = 100000;
+    const size = 100000;
 
-    const pds = new poissonDiskSampling([Terrain.SIZE_X - s, Terrain.SIZE_Z - s], s, s, 30, MathUtils.rng);
+    const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
     const points = pds.fill();
 
     points.forEach((point: number[]) => {
-      const px = s / 2 + point.shift();
-      const pz = s / 2 + point.shift();
+      const px = size / 2 + point.shift();
+      const pz = size / 2 + point.shift();
 
-      const sy = MathUtils.randomFloat(Chunk.HEIGHT / 6, Chunk.HEIGHT / 4);
-      const py = Math.max(Chunk.SEA_LEVEL + sy / 2, this.generator.computeHeightAt(px, pz) + sy / 3);
+      const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 6, Chunk.HEIGHT / 4);
+      const py = Math.max(Chunk.SEA_LEVEL + ySize / 2, this.generator.computeHeightAt(px, pz) + ySize / 3);
 
       // butterflies
-      const boids: Boids = new Boids(scene, new THREE.Vector3(s, sy, s), new THREE.Vector3(px, py, pz));
+      const boids: Boids = new Boids(scene, new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
       for (let i = 0, n = MathUtils.randomInt(2, 5); i < n; i++) {
         boids.addCreature(new Butterfly());
       }

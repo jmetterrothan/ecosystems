@@ -40,26 +40,26 @@ class OceanBiome extends Biome {
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {
-    const smin = 80000;
-    const smax = 140000;
-    const s = MathUtils.randomFloat(smin, smax);
+    const minSize = 80000;
+    const maxSize = 140000;
+    const size = MathUtils.randomFloat(minSize, maxSize);
 
-    const pds = new poissonDiskSampling([Terrain.SIZE_X - s, Terrain.SIZE_Z - s], s, s, 30, MathUtils.rng);
+    const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
     const points = pds.fill();
 
     points.forEach((point: number[]) => {
-      const nbMax = (s * 14 / smax) || 0; // maximum nb based on boids size
+      const nbMax = (size * 14 / maxSize) || 0; // maximum nb based on boids size
       const n = MathUtils.randomInt(2, nbMax);
-      const px = s / 2 + point.shift();
-      const pz = s / 2 + point.shift();
+      const px = size / 2 + point.shift();
+      const pz = size / 2 + point.shift();
 
-      const sy = MathUtils.randomFloat(Chunk.HEIGHT / 3.75, Chunk.HEIGHT / 3) - 4096;
-      const py = Chunk.SEA_LEVEL - 4096 - sy / 2;
+      const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 3.75, Chunk.HEIGHT / 3) - 4096;
+      const py = Chunk.SEA_LEVEL - 4096 - ySize / 2;
 
       const fishClass = n > 3 ? DiscusFish : SalmonFish;
 
       // fishs
-      const boids: Boids = new Boids(scene, new THREE.Vector3(s, sy, s), new THREE.Vector3(px, py, pz));
+      const boids: Boids = new Boids(scene, new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
       for (let i = 0; i < n; i++) {
         boids.addCreature(new fishClass());
       }
@@ -74,7 +74,7 @@ class OceanBiome extends Biome {
     const sizeX = 8192;
     const sizeZ = 8192;
 
-    this.chest = terrain.placeObject('chest', centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+    this.chest = terrain.placeSpecialObject({ stackReference: 'chest', float: false, underwater: true }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
   }
 
   update(delta: number) {

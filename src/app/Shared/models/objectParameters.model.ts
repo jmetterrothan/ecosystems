@@ -12,3 +12,9 @@ export interface IStackReference {
   float: boolean;
   stackReference: string;
 }
+
+export interface ISpecialObject {
+  underwater: boolean;
+  float: boolean;
+  stackReference: string;
+}
