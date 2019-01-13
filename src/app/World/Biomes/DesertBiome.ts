@@ -23,7 +23,13 @@ class DesertBiome extends Biome {
 
   init(scene: THREE.Scene, terrain: Terrain) {
     // corpse
-    terrain.placeObject('skull');
+    const centerX = Terrain.SIZE_X / 2;
+    const centerZ = Terrain.SIZE_Z / 2;
+
+    const sizeX = 8192;
+    const sizeZ = 8192;
+
+    terrain.placeObject('skull', centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
 
     // vulture
     // this.vulture = chunk.getObject({ ...corpseItem });

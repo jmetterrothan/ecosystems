@@ -97,7 +97,13 @@ class OceanBiome extends Biome {
     });
 
     // chest
-    this.chest = terrain.placeObject('chest');
+    const centerX = Terrain.SIZE_X / 2;
+    const centerZ = Terrain.SIZE_Z / 2;
+
+    const sizeX = 8192;
+    const sizeZ = 8192;
+
+    this.chest = terrain.placeObject('chest', centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
   }
 
   update(delta: number) {
