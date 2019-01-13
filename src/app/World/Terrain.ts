@@ -8,6 +8,7 @@ import Biome from '@world/Biome';
 import MathUtils from '@shared/utils/Math.utils';
 import Crosshair from '@ui/Crosshair';
 
+import MultiplayerService, { multiplayerSvc } from '@services/multiplayer.service';
 import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
 import PlayerService, { playerSvc } from '@services/player.service';
 import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
@@ -17,6 +18,7 @@ import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.mate
 
 import { IBiome } from '@shared/models/biome.model';
 import { IPick } from '@shared/models/pick.model';
+import { IOnlineObject } from '@shared/models/onlineObjects.model';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 
@@ -59,6 +61,7 @@ class Terrain {
 
   private progressionSvc: ProgressionService;
   private playerSvc: PlayerService;
+  private multiplayerSvc: MultiplayerService;
   private configSvc: GraphicsConfigService;
 
   // preview
@@ -87,6 +90,7 @@ class Terrain {
 
     this.progressionSvc = progressionSvc;
     this.playerSvc = playerSvc;
+    this.multiplayerSvc = multiplayerSvc;
     this.configSvc = configSvc;
 
     this.chunk = new Coord();
@@ -96,7 +100,7 @@ class Terrain {
 
   init() {
     this.initMeshes();
-    this.initUnderwater();
+    /* if (this.multiplayerSvc.isUsed()) */ this.watchObjectPlaced();
   }
 
   /**
@@ -279,6 +283,12 @@ class Terrain {
       }
 
       chunk.placeObject(this.previewObject, { animate: true, save: true });
+      this.previewItem = {
+        ...this.previewItem,
+        p: this.previewObject.position
+      };
+
+      if (this.multiplayerSvc.isUsed()) this.multiplayerSvc.placeObject(this.previewItem);
 
       this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed);
       this.progressionSvc.increment(CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n));
@@ -291,7 +301,7 @@ class Terrain {
     }
   }
 
-  placeObject(name: string, ox: number = Terrain.SIZE_X / 2, oz: number = Terrain.SIZE_Z / 2, sizeX: number = Terrain.SIZE_X, sizeZ: number = Terrain.SIZE_Z) : THREE.Object3D {
+  placeObject(name: string, ox: number = Terrain.SIZE_X / 2, oz: number = Terrain.SIZE_Z / 2, sizeX: number = Terrain.SIZE_X, sizeZ: number = Terrain.SIZE_Z): THREE.Object3D {
     let object: THREE.Object3D;
     let chunk: Chunk;
     let item: IPick;
@@ -617,13 +627,12 @@ class Terrain {
     this.scene.add(this.layers);
   }
 
-  private initUnderwater() {
-    this.playerSvc.underwater$.subscribe(
-      () => {
-        if (this.previewObject) {
-          this.scene.remove(this.previewObject);
-          this.resetPreview();
-        }
+  private watchObjectPlaced() {
+    this.multiplayerSvc.objectPlaced$.subscribe(
+      ({ item, animate }: IOnlineObject) => {
+        const chunk = this.getChunkAt(item.p.x, item.p.z);
+        const object = chunk.getObject(item);
+        chunk.placeObject(object, { animate, save: true, });
       }
     );
   }

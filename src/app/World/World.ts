@@ -17,7 +17,7 @@ import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import MathUtils from '@utils/Math.utils';
 
 class World {
-  static readonly SEED: string | null = null;
+  static readonly SEED: string | null = '4107507334';
   static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
   static readonly EMPTY: boolean = false;
 
@@ -58,7 +58,12 @@ class World {
     this.frustum = new THREE.Frustum();
     this.raycaster = new THREE.Raycaster();
 
+<<<<<<< HEAD
     this.configSvc = configSvc;
+=======
+    this.configScv = configSvc;
+
+>>>>>>> 86-socket
   }
 
   getWeather(): Weather {
@@ -71,6 +76,10 @@ class World {
 
   getGenerator(): BiomeGenerator {
     return this.generator;
+  }
+
+  getSeed(): string {
+    return this.seed;
   }
 
   async init() {
@@ -111,12 +120,11 @@ class World {
     this.seed = World.SEED ? World.SEED : MathUtils.randomUint32().toString();
     MathUtils.rng = new Math.seedrandom(this.seed);
     console.info(`SEED : ${this.seed}`);
-    /*
+
     const span = document.createElement('span');
     span.className = 'seed';
     span.textContent = `Seed: ${this.seed}`;
     document.body.appendChild(span);
-    */
   }
 
   private showAxesHelper() {

@@ -10,6 +10,7 @@ import PostProcess from '@app/PostProcess';
 
 import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
+import MultiplayerService, { multiplayerSvc } from '@services/multiplayer.service';
 import StorageService, { storageSvc } from '@services/storage.service';
 import CoreService, { coreSvc } from '@services/core.service';
 
@@ -34,6 +35,7 @@ class Main {
   private coreSvc: CoreService;
   private playerSvc: PlayerService;
   private configSvc: GraphicsConfigService;
+  private multiplayerSvc: MultiplayerService;
   private storageSvc: StorageService;
 
   constructor() {
@@ -43,6 +45,7 @@ class Main {
     this.coreSvc = coreSvc;
     this.configSvc = configSvc;
     this.playerSvc = playerSvc;
+    this.multiplayerSvc = multiplayerSvc;
     this.storageSvc = storageSvc;
 
     // TODO: Change quality based on user input / hardware detection / live frame render time ?
@@ -53,6 +56,7 @@ class Main {
       this.stats.showPanel(1);
       document.body.appendChild(this.stats.dom);
 
+      // reset
       const resetStrorage = document.createElement('button');
       resetStrorage.textContent = 'reset';
       resetStrorage.classList.add('button', 'reset');
@@ -71,7 +75,6 @@ class Main {
     this.camera = new THREE.PerspectiveCamera(55, aspect, near, far);
 
     this.focused = true;
-
   }
 
   async init() {
@@ -87,6 +90,38 @@ class Main {
 
     this.postProcess = new PostProcess(this.scene, this.renderer, this.camera);
     this.postProcess.init();
+
+    if (this.configSvc.config.DEBUG) {
+      // socket
+      // create room
+      const createRoom = document.createElement('button');
+      createRoom.textContent = 'create room';
+      createRoom.classList.add('button', 'create');
+      createRoom.addEventListener('click', (ev) => {
+        (<HTMLElement>ev.target).style.display = 'none';
+        const seed = this.world.getSeed();
+        this.multiplayerSvc.init(this.scene, 'seed');
+      }, false);
+      document.body.appendChild(createRoom);
+
+      // join room
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.id = 'inputSeed';
+      input.placeholder = 'room';
+      input.classList.add('input', 'join');
+      document.body.appendChild(input);
+
+      const join = document.createElement('button');
+      join.textContent = 'Join room';
+      join.classList.add('button', 'join');
+      join.addEventListener('click', ev => {
+        (<HTMLElement>ev.target).style.display = 'none';
+        const seed = input.value;
+        this.multiplayerSvc.init(this.scene, seed);
+      }, false);
+      document.body.appendChild(join);
+    }
   }
 
   private initControls() {

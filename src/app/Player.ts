@@ -1,4 +1,3 @@
-import { PROGRESSION_COMMON_STORAGE_KEYS } from './Achievements/constants/progressionCommonStorageKeys.constants';
 import * as THREE from 'three';
 
 import 'three/examples/js/controls/PointerLockControls';
@@ -8,9 +7,12 @@ import Terrain from '@world/Terrain';
 import Model from '@voice/Model';
 import Voice from '@voice/Voice';
 
+import MultiplayerService, { multiplayerSvc } from '@services/multiplayer.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
 import ProgressionService, { progressionSvc } from '@services/progression.service';
+
+import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 
 class Player {
   private controls: THREE.PointerLockControls;
@@ -29,6 +31,7 @@ class Player {
   private progressionSvc: ProgressionService;
   private monitoringSvc: MonitoringService;
   private playerSvc: PlayerService;
+  private multiplayerSvc: MultiplayerService;
 
   /**
    * Player constructor
@@ -50,6 +53,7 @@ class Player {
     this.progressionSvc = progressionSvc;
     this.monitoringSvc = monitoringSvc;
     this.playerSvc = playerSvc;
+    this.multiplayerSvc = multiplayerSvc;
   }
 
   /**
@@ -133,6 +137,7 @@ class Player {
   update(terrain: Terrain, delta: number) {
     const position = this.move(delta);
     this.playerSvc.setPosition(position);
+    if (this.multiplayerSvc.isUsed()) this.multiplayerSvc.sendPosition(position);
 
     const yMin = terrain.getHeightAt(position.x, position.z) + 5000;
 
@@ -151,7 +156,7 @@ class Player {
     switch (key) {
       case 'ArrowUp': case 'z': this.moveForward = active; break;
       case 'ArrowDown': case 's': this.moveBackward = active; break;
-      case 'ArrowLeft': case 'q': this.moveLeft = active; break ;
+      case 'ArrowLeft': case 'q': this.moveLeft = active; break;
       case 'ArrowRight': case 'd': this.moveRight = active; break;
       case '+': case 'a': this.moveUp = active; break;
       case '-': case 'e': this.moveDown = active; break;

@@ -2,8 +2,59 @@
   &.reset {
     position: absolute;
     left: 1%;
-    bottom: 1%;
+    bottom: 4%;
     font-size: 1.5em;
     z-index: 300;
+  }
+
+  &.create {
+    position: absolute;
+    right: 1%;
+    bottom: 8%;
+    font-size: 1.5em;
+    z-index: 300;
+  }
+
+  &.join {
+    position: absolute;
+    right: 1%;
+    bottom: 4%;
+    font-size: 1.5em;
+    z-index: 300;
+  }
+}
+
+.input {
+  &.join {
+    position: absolute;
+    right: 1%;
+    bottom: 4%;
+    font-size: 1.5em;
+    z-index: 300;
+  }
+}
+
+div {
+  &.debug {
+    width: 40%;
+    position: absolute;
+    left: 1%;
+    bottom: 8%;
+    height: 70%;
+    z-index: 300;
+    background: white;
+    padding: 4px;
+    display: none;
+    * {
+      margin-bottom: 8px;
+    }
+    ul {
+      margin-left: 50px;
+      list-style-type: disc;
+      list-style-position: inside;
+      li {
+
+      }
+    }
   }
 }
