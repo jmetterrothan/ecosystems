@@ -5,9 +5,6 @@ export interface ISocketEvents {
   CL_SEND_PLAYER_POSITION: string;
   SV_SEND_PLAYER_POSITION: string;
 
-  CL_SEND_INIT_OBJECTS: string;
-  SV_SEND_INIT_OBJECTS: string;
-
   CL_SEND_ADD_OBJECT: string;
   SV_SEND_ADD_OBJECT: string;
 

@@ -82,7 +82,6 @@ class MultiplayerService {
    */
   private handleServerInteraction() {
     this.socket.on(SOCKET_EVENTS.SV_SEND_JOIN_ROOM, (data: ISocketDataRoomJoined) => this.onRoomJoined(data));
-    this.socket.on(SOCKET_EVENTS.SV_SEND_INIT_OBJECTS, (data: ISocketDataObjectsInitialized) => this.onObjectsInitialized(data));
     this.socket.on(SOCKET_EVENTS.SV_SEND_PLAYER_POSITION, (data: ISocketDataPositionUpdated) => this.onPositionupdated(data));
     this.socket.on(SOCKET_EVENTS.SV_SEND_ADD_OBJECT, (data: ISocketDataObjectAdded) => this.onObjectAdded(data));
     this.socket.on(SOCKET_EVENTS.SV_SEND_DISCONNECTION, (data: ISocketDataDisconnection) => this.onDisconnection(data));
@@ -93,13 +92,10 @@ class MultiplayerService {
       this.userId = data.me;
     }
 
+    // place all objects already placed on this room
     data.allObjects.forEach((item: IPick) => {
       this.objectPlacedSource.next(<IOnlineObject>{ item, animate: false });
     });
-
-    // else {
-    //   // this.socket.emit(SOCKET_EVENTS.CL_SEND_INIT_OBJECTS, { room: this.room, placedObjects: this.placedObjects });
-    // }
 
     // share time
     this.timeSource.next(data.startTime);
@@ -123,16 +119,13 @@ class MultiplayerService {
   }
 
   private onDisconnection(data: ISocketDataDisconnection) {
-    if (this.onlineUsers.includes(data.userID)) {
-      // this.debugArea.innerHTML += `<h1 style='color: red'>${data.userID} disconnected</h1>`;
-      // remove mesh
-      const userIndex = this.onlineUsers.indexOf(data.userID);
-      const userMeshIndex = this.onlineUsersMeshes.findIndex((mesh: THREE.Mesh) => mesh.userData.userID === data.userID);
+    // remove mesh
+    const userIndex = this.onlineUsers.indexOf(data.userID);
+    const userMeshIndex = this.onlineUsersMeshes.findIndex((mesh: THREE.Mesh) => mesh.userData.userID === data.userID);
 
-      this.scene.remove(this.onlineUsersMeshes[userMeshIndex]);
-      this.onlineUsers.splice(userIndex, 1);
-      this.onlineUsersMeshes.splice(userMeshIndex, 1);
-    }
+    this.scene.remove(this.onlineUsersMeshes[userMeshIndex]);
+    this.onlineUsers.splice(userIndex, 1);
+    this.onlineUsersMeshes.splice(userMeshIndex, 1);
   }
 
   private createUserMesh(userID: string) {
