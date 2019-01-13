@@ -90,12 +90,13 @@ class MultiplayerService {
   private onRoomJoined(data: ISocketDataRoomJoined) {
     if (!this.userId && this.userId !== data.me) {
       this.userId = data.me;
-    }
 
-    // place all objects already placed on this room
-    data.allObjects.forEach((item: IPick) => {
-      this.objectPlacedSource.next(<IOnlineObject>{ item, animate: false });
-    });
+      // place all objects already placed on this room
+      console.log('me', data);
+      data.allObjects.forEach((item: IPick) => {
+        this.objectPlacedSource.next(<IOnlineObject>{ item, animate: false });
+      });
+    }
 
     // share time
     this.timeSource.next(data.startTime);
