@@ -5,13 +5,12 @@ import ProgressionService, { progressionSvc } from '@services/progression.servic
 
 import BiomeGenerator from '@world/BiomeGenerator';
 import Terrain from '@world/Terrain';
+import CommonUtils from '@shared/utils/Common.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
-
-import CommonUtils from '@shared/utils/Common.utils';
 
 abstract class Biome {
   private static WATER_COLORS = new Map<number, THREE.Color>();

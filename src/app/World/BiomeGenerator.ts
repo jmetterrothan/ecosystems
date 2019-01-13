@@ -5,6 +5,7 @@ import World from '@world/World';
 import Chunk from '@world/Chunk';
 import Biome from '@world/Biome';
 import Terrain from '@world/Terrain';
+import MathUtils from '@utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
@@ -12,8 +13,6 @@ import { IPick } from '@shared/models/pick.model';
 import { IPickObject } from '@shared/models/objectParameters.model';
 
 import { BIOMES } from '@shared/constants/biomes.constants';
-
-import MathUtils from '@utils/Math.utils';
 
 class BiomeGenerator {
   private simplex: simplexNoise;

@@ -7,6 +7,7 @@ import Coord from '@world/Coord';
 import Biome from '@world/Biome';
 import MathUtils from '@shared/utils/Math.utils';
 import Crosshair from '@ui/Crosshair';
+import CommonUtils from '@shared/utils/Common.utils';
 
 import MultiplayerService, { multiplayerSvc } from '@services/multiplayer.service';
 import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
@@ -19,14 +20,11 @@ import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.mate
 import { IBiome } from '@shared/models/biome.model';
 import { IPick } from '@shared/models/pick.model';
 import { IOnlineObject } from '@shared/models/onlineObjects.model';
-
-import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
-
-import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
-
 import { ISpecialObject } from '@shared/models/objectParameters.model';
 
-import CommonUtils from '@shared/utils/Common.utils';
+import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
+import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+
 import { stack } from '@tensorflow/tfjs';
 
 class Terrain {

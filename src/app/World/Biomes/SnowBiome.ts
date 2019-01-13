@@ -39,7 +39,6 @@ class SnowBiome extends Biome {
       const item = Chunk.convertObjectToPick(this.snowmanObject);
       const newItem = { ...item, n: 'snowman' };
       const chunk: Chunk = this.terrain.getChunkAt(item.p.x, item.p.z);
-      console.log(chunk, item, newItem);
 
       chunk.repurposeObject(this.snowmanObject);
       this.snowmanObject = chunk.getObject(newItem);

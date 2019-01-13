@@ -4,6 +4,8 @@ import World from '@world/World';
 import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
+import MathUtils from '@shared/utils/Math.utils';
+import CommonUtils from '@app/Shared/utils/Common.utils';
 
 import GraphicsConfigService, { configSvc } from '@services/graphicsConfig.service';
 import PlayerService, { playerSvc } from '@services/player.service';
@@ -13,9 +15,6 @@ import MultiplayerService, { multiplayerSvc } from '@services/multiplayer.servic
 import { ICloudData } from '@shared/models/cloudData.model';
 
 import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
-
-import MathUtils from '@shared/utils/Math.utils';
-import CommonUtils from '@app/Shared/utils/Common.utils';
 
 class Weather {
   private static RAIN_SPEED: number = 200;
