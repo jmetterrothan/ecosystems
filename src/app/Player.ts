@@ -121,21 +121,10 @@ class Player {
     this.playerSvc.setPosition(position);
 
     const yMin = terrain.getHeightAt(position.x, position.z) + 5000;
-    const isWithinWorldBorders = this.isWithinWorldBorders();
 
-    if (isWithinWorldBorders && position.y < yMin) {
+    if (this.playerSvc.isWithinWorldBorders() && position.y < yMin) {
       // collision with min ground dist
       this.positionY = yMin;
-    }
-
-    // update underwater service
-    if (!this.playerSvc.isUnderwater() && position.y <= Chunk.SEA_LEVEL && isWithinWorldBorders) {
-      this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
-      this.monitoringSvc.sendEvent(this.monitoringSvc.categories.biome, this.monitoringSvc.actions.visited, PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
-    }
-
-    if (this.playerSvc.isUnderwater() && (position.y > Chunk.SEA_LEVEL || !isWithinWorldBorders)) {
-      this.playerSvc.setUnderwater(false);
     }
   }
 
@@ -153,11 +142,6 @@ class Player {
       case '+': case 'a': this.moveUp = active; break;
       case '-': case 'e': this.moveDown = active; break;
     }
-  }
-
-  isWithinWorldBorders(): boolean {
-    const position = this.position;
-    return !(position.x < 0 || position.x > Terrain.SIZE_X || position.z < 0 || position.z > Terrain.SIZE_Z || position.y < -Terrain.SIZE_Y / 2);
   }
 
   get position(): THREE.Vector3 {

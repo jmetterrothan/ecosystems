@@ -58,8 +58,6 @@ class Main {
       resetStrorage.classList.add('button', 'reset');
       resetStrorage.addEventListener('click', () => {
         this.storageSvc.clearAll();
-        console.log(localStorage);
-        this.coreSvc.init();
       }, false);
       document.body.appendChild(resetStrorage);
     }

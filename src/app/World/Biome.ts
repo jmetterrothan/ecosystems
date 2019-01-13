@@ -45,7 +45,7 @@ abstract class Biome {
     this.waterColor2 = WATER_CONSTANTS.WATER_COLOR_B;
 
     this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.game_played);
-    this.monitoringSvc.sendEvent(this.monitoringSvc.categories.game, this.monitoringSvc.actions.played);
+    this.monitoringSvc.sendEvent(this.monitoringSvc.categories.game, this.monitoringSvc.actions.played, 'game_played');
   }
 
   /**

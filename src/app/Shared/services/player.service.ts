@@ -1,13 +1,18 @@
 import * as THREE from 'three';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
+import Terrain from '@world/Terrain';
+import Chunk from '@world/Chunk';
+
+import ProgressionService, { progressionSvc } from '@services/progression.service';
+import MonitoringService, { monitoringSvc } from '@services/monitoring.service';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 
 class PlayerService {
 
   private progressionSvc: ProgressionService;
+  private monitoringSvc: MonitoringService;
 
   private underwater: boolean;
   private sourceUnderwater: BehaviorSubject<boolean>;
@@ -19,6 +24,7 @@ class PlayerService {
 
   constructor() {
     this.progressionSvc = progressionSvc;
+    this.monitoringSvc = monitoringSvc;
 
     this.underwater = false;
     this.sourceUnderwater = new BehaviorSubject<boolean>(this.underwater);
@@ -34,13 +40,18 @@ class PlayerService {
     else this.totalDistance += Math.round(this.position.distanceTo(pos));
     this.position.copy(pos);
 
+    const isWithinWorldBorders = this.isWithinWorldBorders();
+
     // go underwater
-    if (this.position.y < 0 && !this.underwater) {
+    if (this.position.y < Chunk.SEA_LEVEL && !this.underwater && isWithinWorldBorders) {
       this.underwater = true;
+
+      this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
+      this.monitoringSvc.sendEvent(this.monitoringSvc.categories.biome, this.monitoringSvc.actions.visited, PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
     }
 
     // terrestiral
-    if (this.position.y >= 0 && this.underwater) {
+    if ((this.position.y >= Chunk.SEA_LEVEL || !isWithinWorldBorders) && this.underwater) {
       this.underwater = false;
     }
   }
@@ -49,6 +60,11 @@ class PlayerService {
 
   setUnderwater(underwater: boolean) {
     this.underwater = underwater;
+  }
+
+  isWithinWorldBorders(): boolean {
+    const position = this.position;
+    return !(position.x < 0 || position.x > Terrain.SIZE_X || position.z < 0 || position.z > Terrain.SIZE_Z || position.y < -Terrain.SIZE_Y / 2);
   }
 
   private timer() {
