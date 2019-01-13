@@ -55,6 +55,7 @@ class BiomeGenerator {
 
     for (let i = 0, n = organisms.length; i < n; i++) {
       let y = e * Chunk.MAX_TERRAIN_HEIGHT;
+
       temp += biome.organisms[i].weight;
 
       if (rand <= temp) {
@@ -62,27 +63,29 @@ class BiomeGenerator {
 
         if (organism.float && !this.biome.hasWater()) { return null; } // prevent placing objects on water if it's disabled
 
-        const scale = organism.scale ? MathUtils.randomFloat(organism.scale.min, organism.scale.max) : 1;
-
         const lowM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).low : null;
         const highM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).high : null;
 
         const lowE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).low : null;
         const highE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).high : null;
 
+        const scale = (organism.scale ? MathUtils.randomFloat(organism.scale.min, organism.scale.max) : 1) * World.OBJ_INITIAL_SCALE;
+        const r = new THREE.Vector3();
+
         if (organism.float === true) {
           // sample 4 points and take the highest one to prevent (as much as possible) clipping into the water
-          const p1 = this.computeWaterHeightAt(x - 350, z);
-          const p2 = this.computeWaterHeightAt(x + 350, z);
-          const p3 = this.computeWaterHeightAt(x, z + 350);
-          const p4 = this.computeWaterHeightAt(x, z + 350);
+          const p1 = this.computeWaterHeightAt(x - 1024, z);
+          const p2 = this.computeWaterHeightAt(x + 1024, z);
+          const p3 = this.computeWaterHeightAt(x, z + 1024);
+          const p4 = this.computeWaterHeightAt(x, z + 1024);
 
           const p = Math.max(p1, p2, p3, p4);
           y = Math.max(y, p);
         }
 
-        const rand = MathUtils.rng();
+        r.y = MathUtils.randomFloat(0, Math.PI * 2);
 
+        const rand = MathUtils.rng();
         // test for scarcity and ground elevation criteria
         if ((parameters.force || rand >= organism.scarcity) &&
           (lowE === null || e >= lowE) &&
@@ -90,10 +93,11 @@ class BiomeGenerator {
           (lowM === null || m >= lowM) &&
           (highM === null || m <= highM)) {
           return (<IPick>{
-            x, y, z,
+            r: new THREE.Euler().setFromVector3(r),
+            p: new THREE.Vector3(x, y, z),
             n: organism.name,
-            r: MathUtils.randomFloat(0, Math.PI * 2),
-            s: scale * World.OBJ_INITIAL_SCALE
+            f: organism.float,
+            s: new THREE.Vector3(scale, scale, scale),
           });
         }
       }

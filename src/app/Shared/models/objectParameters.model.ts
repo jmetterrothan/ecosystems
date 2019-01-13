@@ -9,5 +9,6 @@ export interface IPickObject {
 }
 
 export interface IStackReference {
+  float: boolean;
   stackReference: string;
 }

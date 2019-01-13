@@ -291,6 +291,38 @@ class Terrain {
     }
   }
 
+  placeObject(name: string, ox: number = Terrain.SIZE_X / 2, oz: number = Terrain.SIZE_Z / 2, sizeX: number = Terrain.SIZE_X, sizeZ: number = Terrain.SIZE_Z) : THREE.Object3D {
+    let object: THREE.Object3D;
+    let chunk: Chunk;
+    let item: IPick;
+
+    do {
+      const x = ox - sizeX / 2 + Math.floor(MathUtils.rng() * sizeX);
+      const z = oz - sizeZ / 2 + Math.floor(MathUtils.rng() * sizeZ);
+      const y = this.getHeightAt(x, z);
+
+      const s = new THREE.Vector3(World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE);
+      const r = new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0);
+
+      chunk = this.getChunkAt(x, z);
+
+      item = {
+        s,
+        p: new THREE.Vector3(x, y, z),
+        r: new THREE.Euler().setFromVector3(r),
+        n: name,
+        f: false,
+      };
+
+      object = chunk.getObject(item);
+
+    } while (!chunk.canPlaceObject(object));
+
+    chunk.placeObject(object, { save: true });
+
+    return object;
+  }
+
   /**
    * Handle mouse click in the 3d space
    * @param {THREE.Raycaster} raycaster
@@ -337,6 +369,7 @@ class Terrain {
           force: true,
           float: (this.intersectionSurface === this.water)
         });
+
         if (!item) {
           // bail out if no item gets picked
           this.previewActive = false;

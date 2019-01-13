@@ -22,3 +22,8 @@ interface Math {
 interface Math {
   seedrandom(): void;
 }
+
+interface Sample {
+  vals: number[];
+  label: string;
+}

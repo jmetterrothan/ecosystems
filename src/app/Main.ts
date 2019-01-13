@@ -23,9 +23,9 @@ class Main {
   private camera: THREE.PerspectiveCamera;
   private controls: THREE.PointerLockControls;
 
-  private containerElement: HTMLElement;
-
   private world: World;
+
+  private containerElement: HTMLElement;
 
   private lastTime: number;
   private focused: boolean;
@@ -171,8 +171,8 @@ class Main {
     this.lastTime = time;
 
     // update
-    if (this.focused) {
-      this.world.update(delta);
+    // if (this.focused) {
+    this.world.update(delta);
 
       if (this.playerSvc.isUnderwater()) {
         this.postProcess.update();
@@ -183,6 +183,12 @@ class Main {
       this.scene.fog.color.set(color);
       TWEEN.update();
     }
+
+    const color: THREE.Color = this.world.getWeather().getFogColor();
+    this.renderer.setClearColor(color);
+    this.scene.fog.color.set(color);
+    TWEEN.update();
+    // }
 
     // switch render func if underwater
     if (this.playerSvc.isUnderwater()) {

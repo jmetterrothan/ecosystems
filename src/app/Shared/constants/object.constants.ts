@@ -27,8 +27,11 @@ import bush2Mtl from '@objmodels/tree/bush2.mtl';
 import dead_treeObj from '@objmodels/tree/dead_tree.obj';
 import dead_treeMtl from '@objmodels/tree/dead_tree.mtl';
 
-import skullObj from '@objmodels/fauna/skull.obj';
-import skullMtl from '@objmodels/fauna/skull.mtl';
+import skullObj from '@objmodels/misc/skull.obj';
+import skullMtl from '@objmodels/misc/skull.mtl';
+
+import carcassObj from '@objmodels/misc/carcass.obj';
+import carcassMtl from '@objmodels/misc/carcass.mtl';
 
 import fish1Obj from '@objmodels/fauna/fish1.obj';
 import fish1Mtl from '@objmodels/fauna/fish1.mtl';
@@ -135,6 +138,15 @@ import algea2Mtl from '@objmodels/flower/algea2.mtl';
 import algea3Obj from '@objmodels/flower/algea3.obj';
 import algea3Mtl from '@objmodels/flower/algea3.mtl';
 
+import starObj from '@objmodels/flower/star.obj';
+import starMtl from '@objmodels/flower/star.mtl';
+
+import shellObj from '@objmodels/misc/shell.obj';
+import shellMtl from '@objmodels/misc/shell.mtl';
+
+import reedObj from '@objmodels/flower/reed.obj';
+import reedMtl from '@objmodels/flower/reed.mtl';
+
 import highlands_treeObj from '@objmodels/tree/highlands_tree.obj';
 import highlands_treeMtl from '@objmodels/tree/highlands_tree.mtl';
 
@@ -231,6 +243,11 @@ export const OBJECTS: IObject[] = [
     mtl: skullMtl
   },
   {
+    name: 'carcass',
+    obj: carcassObj,
+    mtl: carcassMtl
+  },
+  {
     name: 'fish2',
     obj: fish2Obj,
     mtl: fish2Mtl,
@@ -297,6 +314,23 @@ export const OBJECTS: IObject[] = [
     name: 'algea3',
     obj: algea3Obj,
     mtl: algea3Mtl,
+    doubleSide: true
+  },
+  {
+    name: 'star',
+    obj: starObj,
+    mtl: starMtl
+  },
+  {
+    name: 'shell',
+    obj: shellObj,
+    mtl: shellMtl
+  },
+  {
+    name: 'reed',
+    obj: reedObj,
+    mtl: reedMtl,
+    doubleSide: true
   },
   {
     name: 'diamond',

@@ -4,6 +4,7 @@ import World from '@world/World';
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Creature from '@boids/Creature';
+import MathUtils from '@shared/utils/Math.utils';
 
 import GraphicsConfigService, { configSvc } from '@services/graphicsConfig.service';
 import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
@@ -66,18 +67,18 @@ class Boids {
    */
   generate(parameters: IBoidCreatureParameters) {
     for (let i = 0; i < this.creaturesCount; i++) {
-      const py = Math.random() * this.boudingBox.y - this.boudingBox.y / 2;
+      const py = MathUtils.rng() * this.boudingBox.y - this.boudingBox.y / 2;
 
       const position = new THREE.Vector3(
-        Math.random() * this.boudingBox.x - this.boudingBox.x / 2,
+        MathUtils.rng() * this.boudingBox.x - this.boudingBox.x / 2,
         parameters.underwater ? py : Math.max(py, Chunk.SEA_LEVEL - this.boudingBox.y + 2048),
-        Math.random() * this.boudingBox.z - this.boudingBox.z / 2
+        MathUtils.rng() * this.boudingBox.z - this.boudingBox.z / 2
       );
 
       const velocity = new THREE.Vector3(
-        Math.random() * 2 - 1,
-        Math.random() * 2 - 1,
-        Math.random() * 2 - 1,
+        MathUtils.rng() * 2 - 1,
+        MathUtils.rng() * 2 - 1,
+        MathUtils.rng() * 2 - 1,
       );
 
       const model = World.LOADED_MODELS.get(this.modelName).clone();
