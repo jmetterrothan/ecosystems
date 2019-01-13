@@ -37,7 +37,7 @@ class BiomeGenerator {
       this.biome = new biomeClass(terrain);
     } else {
       // @ts-ignore
-      this.biome = new World.BIOME(this);
+      this.biome = new World.BIOME(terrain);
     }
 
     return this.biome;
