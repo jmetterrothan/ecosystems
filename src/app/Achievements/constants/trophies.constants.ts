@@ -5,6 +5,7 @@ import { PROGRESSION_OBJECTS_STORAGE_KEYS } from '@achievements/constants/progre
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 import { PROGRESSION_TROPHIES_STORAG_KEYS } from '@achievements/constants/progressionTrophiesStorageKeys.constants';
+import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
 import { TRANSLATION_KEYS } from '@shared/constants/translationKeys.constants';
 
 import { TROPHY_DIFFICULTY } from '@shared/enums/trophyDIfficulty.enum';
@@ -29,13 +30,7 @@ export const TROPHIES: ITrophy[] = [
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     checklist: [
-      { name: 'desert', value: PROGRESSION_BIOME_STORAGE_KEYS.desert_visited },
-      { name: 'greenland', value: PROGRESSION_BIOME_STORAGE_KEYS.greenland_visited },
-      { name: 'highland', value: PROGRESSION_BIOME_STORAGE_KEYS.highland_visited },
-      { name: 'ocean', value: PROGRESSION_BIOME_STORAGE_KEYS.ocean_visited },
-      { name: 'rainforest', value: PROGRESSION_BIOME_STORAGE_KEYS.rainforest_visited },
-      { name: 'snow', value: PROGRESSION_BIOME_STORAGE_KEYS.snow_visited },
-      { name: 'swamp', value: PROGRESSION_BIOME_STORAGE_KEYS.swamp_visited },
+      ...Object.values(PROGRESSION_BIOME_STORAGE_KEYS).reduce((acc, name) => acc.concat(<IChecklistOption>{ name, value: name }), [])
     ]
   },
   {
@@ -44,13 +39,7 @@ export const TROPHIES: ITrophy[] = [
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     checklist: [
-      { name: 'desert', value: PROGRESSION_BIOME_STORAGE_KEYS.desert_visited, limit: 5 },
-      { name: 'greenland', value: PROGRESSION_BIOME_STORAGE_KEYS.greenland_visited, limit: 5 },
-      { name: 'highland', value: PROGRESSION_BIOME_STORAGE_KEYS.highland_visited, limit: 5 },
-      { name: 'ocean', value: PROGRESSION_BIOME_STORAGE_KEYS.ocean_visited, limit: 5 },
-      { name: 'rainforest', value: PROGRESSION_BIOME_STORAGE_KEYS.rainforest_visited, limit: 5 },
-      { name: 'snow', value: PROGRESSION_BIOME_STORAGE_KEYS.snow_visited, limit: 5 },
-      { name: 'swamp', value: PROGRESSION_BIOME_STORAGE_KEYS.swamp_visited, limit: 5 },
+      ...Object.values(PROGRESSION_BIOME_STORAGE_KEYS).reduce((acc, name) => acc.concat(<IChecklistOption>{ name, value: name, limit: 10 }), [])
     ]
   },
   {
@@ -136,6 +125,25 @@ export const TROPHIES: ITrophy[] = [
       { name: 'parcourir 100000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled, limit: 100000000, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   },
+  // WEATHER
+  {
+    name: { key: TRANSLATION_KEYS.going_under_rain },
+    value: 'going under rain',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    checklist: [
+      { name: 'going under rain', value: PROGRESSION_WEATHER_STORAGE_KEYS.under_rain }
+    ]
+  },
+  {
+    name: { key: TRANSLATION_KEYS.go_in_sun },
+    value: 'go in sun',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    checklist: [
+      { name: 'go in sun', value: PROGRESSION_WEATHER_STORAGE_KEYS.in_sun }
+    ]
+  },
   // EXTRAS
   {
     name: { key: TRANSLATION_KEYS.repulse_fishes },
@@ -162,6 +170,15 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     checklist: [
       { name: 'find captain treasure', value: PROGRESSION_EXTRAS_STORAGE_KEYS.find_captain_treasure }
+    ]
+  },
+  {
+    name: { key: TRANSLATION_KEYS.add_carrot_snowmnan },
+    value: 'add carrot snowman',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    checklist: [
+      { name: 'add carrot snowman', value: PROGRESSION_EXTRAS_STORAGE_KEYS.snowman_carrot }
     ]
   },
   // TROPHIES

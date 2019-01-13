@@ -8,7 +8,6 @@ import Terrain from '@world/Terrain';
 import Model from '@voice/Model';
 import Voice from '@voice/Voice';
 
-import UnderwaterService, { underwaterSvc } from './Shared/services/underwater.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
 import ProgressionService, { progressionSvc } from '@services/progression.service';
@@ -30,7 +29,6 @@ class Player {
   private progressionSvc: ProgressionService;
   private monitoringSvc: MonitoringService;
   private playerSvc: PlayerService;
-  private underwaterSvc: UnderwaterService;
 
   /**
    * Player constructor
@@ -52,7 +50,6 @@ class Player {
     this.progressionSvc = progressionSvc;
     this.monitoringSvc = monitoringSvc;
     this.playerSvc = playerSvc;
-    this.underwaterSvc = underwaterSvc;
   }
 
   /**
@@ -138,22 +135,10 @@ class Player {
     this.playerSvc.setPosition(position);
 
     const yMin = terrain.getHeightAt(position.x, position.z) + 5000;
-    const isWithinWorldBorders = this.isWithinWorldBorders();
 
-    if (isWithinWorldBorders && position.y < yMin) {
+    if (this.playerSvc.isWithinWorldBorders() && position.y < yMin) {
       // collision with min ground dist
       this.positionY = yMin;
-    }
-
-    // update underwater service
-    if (!this.underwaterSvc.isUnderwater && position.y <= Chunk.SEA_LEVEL && isWithinWorldBorders) {
-      this.underwaterSvc.set(true);
-      this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
-      this.monitoringSvc.sendEvent(this.monitoringSvc.categories.biome, this.monitoringSvc.actions.visited, PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
-    }
-
-    if (this.underwaterSvc.isUnderwater && (position.y > Chunk.SEA_LEVEL || !isWithinWorldBorders)) {
-      this.underwaterSvc.set(false);
     }
   }
 
@@ -172,11 +157,6 @@ class Player {
       case '-': case 'e': this.moveDown = active; break;
       case 'v': !this.voice.predictState ? this.voice.listen() : this.voice.stopListening();
     }
-  }
-
-  isWithinWorldBorders(): boolean {
-    const position = this.position;
-    return !(position.x < 0 || position.x > Terrain.SIZE_X || position.z < 0 || position.z > Terrain.SIZE_Z || position.y < -Terrain.SIZE_Y / 2);
   }
 
   get position(): THREE.Vector3 {
