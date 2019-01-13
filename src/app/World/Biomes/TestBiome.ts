@@ -5,11 +5,14 @@ import { IBiome } from '@shared/models/biome.model';
 
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
+import ForestSFXMp3 from '@sounds/ForestSFX.mp3';
+
 class TestBiome extends Biome {
   constructor(terrain: Terrain) {
     super('TEST', terrain);
 
     this.water = false;
+    this.sound = ForestSFXMp3;
   }
 
   handleClick(raycaster: THREE.Raycaster) { }

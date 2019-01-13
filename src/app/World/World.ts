@@ -15,12 +15,11 @@ import Player from '@app/Player';
 import MathUtils from '@utils/Math.utils';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
-
-import ForestSFXMp3 from '@sounds/ForestSFX.mp3';
+import TestBiome from './Biomes/TestBiome';
 
 class World {
   static readonly SEED: string | null = null;
-  static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
+  static readonly BIOME: Biome | null = TestBiome; // lock a specific biome here, if null a biome is selected randomly
   static readonly EMPTY: boolean = false;
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
@@ -190,7 +189,8 @@ class World {
   }
 
   private initAudio() {
-    this.audioLoader.load(ForestSFXMp3, (buffer) => {
+    const mySound = this.generator.getBiome().getSound();
+    this.audioLoader.load(mySound, (buffer) => {
       this.zSound.setBuffer(buffer);
       this.zSound.setRefDistance(2500);
       this.zSound.setLoop(true);
