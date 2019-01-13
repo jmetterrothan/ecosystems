@@ -1,5 +1,8 @@
 import { IObject } from '@shared/models/object.model';
 
+import scarecrowObj from '@objmodels/misc/scarecrow.obj';
+import scarecrowMtl from '@objmodels/misc/scarecrow.mtl';
+
 import carrotObj from '@objmodels/vegetables/carrot.obj';
 import carrotMtl from '@objmodels/vegetables/carrot.mtl';
 
@@ -178,6 +181,12 @@ import moonObj from '@objmodels/misc/moon.obj';
 import moonMtl from '@objmodels/misc/moon.mtl';
 
 export const OBJECTS: IObject[] = [
+  {
+    name: 'scarecrow',
+    obj: scarecrowObj,
+    mtl: scarecrowMtl,
+    doubleSide: true
+  },
   {
     name: 'sun',
     obj: sunObj,
