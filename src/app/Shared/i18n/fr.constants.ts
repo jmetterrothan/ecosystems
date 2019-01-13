@@ -14,5 +14,6 @@ export const FR_TRANSLATION: ITranslationKeys = {
   repulse_butterflies: 'Faire peur aux papillons',
   find_captain_treasure: 'Trouver le trésor du capitaine',
   add_carrot_snowmnan: 'J\'ai pas d\'nez',
+  going_under_rain: 'La pluie ça mouille',
   unlock_trophy_percentage: ''
 };

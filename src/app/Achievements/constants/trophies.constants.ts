@@ -5,6 +5,7 @@ import { PROGRESSION_OBJECTS_STORAGE_KEYS } from '@achievements/constants/progre
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 import { PROGRESSION_TROPHIES_STORAG_KEYS } from '@achievements/constants/progressionTrophiesStorageKeys.constants';
+import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
 import { TRANSLATION_KEYS } from '@shared/constants/translationKeys.constants';
 
 import { TROPHY_DIFFICULTY } from '@shared/enums/trophyDIfficulty.enum';
@@ -134,6 +135,16 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     checklist: [
       { name: 'parcourir 100000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled, limit: 100000000, comparison: COMPARISON_TYPE.SUPERIOR }
+    ]
+  },
+  // WEATHER
+  {
+    name: { key: TRANSLATION_KEYS.going_under_rain },
+    value: 'going under rain',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    checklist: [
+      { name: 'going under rain', value: PROGRESSION_WEATHER_STORAGE_KEYS.under_rain }
     ]
   },
   // EXTRAS
