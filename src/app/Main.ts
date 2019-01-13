@@ -174,14 +174,8 @@ class Main {
     // if (this.focused) {
     this.world.update(delta);
 
-      if (this.playerSvc.isUnderwater()) {
-        this.postProcess.update();
-      }
-
-      const color: THREE.Color = this.world.getWeather().getFogColor();
-      this.renderer.setClearColor(color);
-      this.scene.fog.color.set(color);
-      TWEEN.update();
+    if (this.playerSvc.isUnderwater()) {
+      this.postProcess.update();
     }
 
     const color: THREE.Color = this.world.getWeather().getFogColor();
