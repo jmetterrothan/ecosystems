@@ -202,22 +202,7 @@ class Chunk {
    * @param {THREE.Object3D} object
    */
   saveObject(object: THREE.Object3D) {
-    const translation = new THREE.Vector3();
-    const rotationQ = new THREE.Quaternion();
-    const scale = new THREE.Vector3();
-
-    object.matrixWorld.decompose(translation, rotationQ, scale);
-
-    // convert object to pick
-    const item: IPick = {
-      p: translation,
-      f: object.userData.float,
-      n: object.userData.stackReference,
-      r: object.rotation,
-      s: scale
-    };
-
-    this.savePick(item);
+    this.savePick(Chunk.convertObjectToPick(object));
   }
 
   /**
@@ -443,6 +428,30 @@ class Chunk {
    */
   static createBoundingBoxHelperFromCoords(row: number, col: number): THREE.Box3Helper {
     return new THREE.Box3Helper(Chunk.createBoundingBox(row, col), 0xffff00);
+  }
+
+  /**
+   * Convert an object3d to pick information
+   * @param {THREE.Object3D} object
+   * @return {IPick}
+   */
+  static convertObjectToPick(object: THREE.Object3D): IPick {
+    const translation = new THREE.Vector3();
+    const rotationQ = new THREE.Quaternion();
+    const scale = new THREE.Vector3();
+
+    object.matrixWorld.decompose(translation, rotationQ, scale);
+
+    // convert object to pick
+    const item: IPick = {
+      p: translation,
+      f: object.userData.float,
+      n: object.userData.stackReference,
+      r: object.rotation,
+      s: scale
+    };
+
+    return item;
   }
 
   static debugStacks() {
