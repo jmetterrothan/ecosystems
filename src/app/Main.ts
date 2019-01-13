@@ -75,7 +75,6 @@ class Main {
     this.camera = new THREE.PerspectiveCamera(55, aspect, near, far);
 
     this.focused = true;
-
   }
 
   async init() {
@@ -119,7 +118,7 @@ class Main {
       join.addEventListener('click', ev => {
         (<HTMLElement>ev.target).style.display = 'none';
         const seed = input.value;
-        this.multiplayerSvc.init(this.scene, 'seed');
+        this.multiplayerSvc.init(this.scene, seed);
       }, false);
       document.body.appendChild(join);
     }
@@ -207,18 +206,18 @@ class Main {
     this.lastTime = time;
 
     // update
-    if (this.focused) {
-      this.world.update(delta);
+    // if (this.focused) {
+    this.world.update(delta);
 
-      if (this.underwaterSvc.isUnderwater) {
-        this.postProcess.update();
-      }
-
-      const color: THREE.Color = this.world.getWeather().getFogColor();
-      this.renderer.setClearColor(color);
-      this.scene.fog.color.set(color);
-      TWEEN.update();
+    if (this.underwaterSvc.isUnderwater) {
+      this.postProcess.update();
     }
+
+    const color: THREE.Color = this.world.getWeather().getFogColor();
+    this.renderer.setClearColor(color);
+    this.scene.fog.color.set(color);
+    TWEEN.update();
+    // }
 
     // switch render func if underwater
     if (this.underwaterSvc.isUnderwater) {
