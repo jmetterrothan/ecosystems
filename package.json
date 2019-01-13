@@ -53,6 +53,7 @@
     "i18next": "^13.1.0",
     "i18next-browser-languagedetector": "^2.2.4",
     "js-yaml-loader": "^1.0.1",
+    "howler": "^2.1.1",
     "poisson-disk-sampling": "^1.0.2",
     "rxjs": "^6.3.3",
     "seedrandom": "^2.4.4",

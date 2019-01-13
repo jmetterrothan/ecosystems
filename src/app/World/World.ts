@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
+import { Howl, Howler } from 'howler';
 
 import GraphicsConfigService, { configSvc } from '@services/graphicsConfig.service';
 
@@ -14,6 +15,8 @@ import Player from '@app/Player';
 import MathUtils from '@utils/Math.utils';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+
+import ForestSFXMp3 from '@sounds/ForestSFX.mp3';
 
 class World {
   static readonly SEED: string | null = null;
@@ -43,6 +46,10 @@ class World {
 
   private configSvc: GraphicsConfigService;
 
+  private listener: THREE.AudioListener;
+  private zSound: THREE.PositionalAudio;
+  private audioLoader: THREE.AudioLoader;
+
   /**
    * World constructor
    * @param {THREE.Scene} scene
@@ -58,6 +65,10 @@ class World {
     this.raycaster = new THREE.Raycaster();
 
     this.configSvc = configSvc;
+    this.listener = new THREE.AudioListener();
+    this.camera.add(this.listener);
+    this.zSound = new THREE.PositionalAudio(this.listener);
+    this.audioLoader = new THREE.AudioLoader();
   }
 
   getWeather(): Weather {
@@ -114,6 +125,7 @@ class World {
     if (this.configSvc.config.DEBUG) {
       this.showAxesHelper();
     }
+    this.initAudio();
   }
 
   private initSeed() {
@@ -175,6 +187,28 @@ class World {
     }
 
     this.scene.add(sunlight);
+  }
+
+  private initAudio() {
+    this.audioLoader.load(ForestSFXMp3, (buffer) => {
+      this.zSound.setBuffer(buffer);
+      this.zSound.setRefDistance(2500);
+      this.zSound.setLoop(true);
+      this.zSound.setVolume(1);
+      this.zSound.play();
+    }, () => { }, () => { });
+
+    // create an object for the sound to play from
+    const sphere = new THREE.SphereGeometry(500, 32, 16);
+    const material = new THREE.MeshPhongMaterial({ color: 0xff2200 });
+    const mesh = new THREE.Mesh(sphere, material);
+    this.scene.add(mesh);
+
+    // finally add the sound to the mesh
+    mesh.add(this.zSound);
+    mesh.position.set(0, Terrain.SIZE_Y / 2, Terrain.SIZE_Z / 2);
+
+    console.log(this.zSound);
   }
 
   /**
