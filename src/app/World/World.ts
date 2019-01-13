@@ -58,12 +58,7 @@ class World {
     this.frustum = new THREE.Frustum();
     this.raycaster = new THREE.Raycaster();
 
-<<<<<<< HEAD
     this.configSvc = configSvc;
-=======
-    this.configScv = configSvc;
-
->>>>>>> 86-socket
   }
 
   getWeather(): Weather {
