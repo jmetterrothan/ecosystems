@@ -1,24 +1,19 @@
 import * as THREE from 'three';
 
-import World from '@world/World';
 import BiomeGenerator from '@world/BiomeGenerator';
+import World from '@app/World/World';
+import Terrain from '@app/World/Terrain';
 import Chunk from '@world/Chunk';
+import MathUtils from '@utils/Math.utils';
 
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 
 import { IBoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
 
-import MathUtils from '@utils/Math.utils';
-import Terrain from '@app/World/Terrain';
-
 class Creature {
-  static SPEED: number = 100;
-
   private position: THREE.Vector3;
   private velocity: THREE.Vector3;
   private speed: number;
-
-  private minRepulseDistance: number = 30000;
 
   private model: THREE.Object3D;
   private parameters: IBoidCreatureParameters;
@@ -28,15 +23,18 @@ class Creature {
 
   private playerSvc: PlayerService;
 
-  constructor(position: THREE.Vector3, velocity: THREE.Vector3, model: THREE.Object3D, parameters: IBoidCreatureParameters) {
-    this.position = position;
-    this.velocity = velocity;
-    this.model = model;
+  constructor(models: string[], parameters: IBoidCreatureParameters) {
+    const model = models[MathUtils.randomInt(0, models.length - 1)];
+    this.model = World.LOADED_MODELS.get(model).clone();
     this.parameters = parameters;
 
-    this.playerSvc = playerSvc;
+    this.position = new THREE.Vector3();
+    this.velocity = new THREE.Vector3();
 
-    this.speed = this.parameters.speed + MathUtils.randomInt(-10, 10); // TODO: improve the random factor (put it higher)
+    this.speed = parameters.speed;
+    this.model.scale.multiplyScalar(parameters.scale);
+
+    this.playerSvc = playerSvc;
   }
 
   update(creatures: Creature[], generator: BiomeGenerator, delta: number) {
@@ -88,6 +86,14 @@ class Creature {
     this.updateModel(delta);
   }
 
+  addToScene(scene: THREE.Scene) {
+    scene.add(this.model);
+  }
+
+  setPosition(v: THREE.Vector3) {
+    this.position.copy(v);
+  }
+
   getPosition(): THREE.Vector3 {
     return this.position;
   }
@@ -97,7 +103,7 @@ class Creature {
   }
 
   getMinRepulseDistance(): number {
-    return this.minRepulseDistance;
+    return this.parameters.minRepulseDistance;
   }
 
   getParameters(): IBoidCreatureParameters {
@@ -213,7 +219,7 @@ class Creature {
 
     const distance = this.position.clone().add(this.boidsOrigin).distanceTo(target);
 
-    if (distance < this.minRepulseDistance) {
+    if (distance < this.parameters.minRepulseDistance) {
       const forceWeighting = 1 / distance;
       v.subVectors(this.position.clone().add(this.boidsOrigin), target);
       v.multiplyScalar(forceWeighting);

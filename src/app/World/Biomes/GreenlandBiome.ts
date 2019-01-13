@@ -6,13 +6,13 @@ import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 import Boids from '@boids/Boids';
+import Butterfly from '@boids/Creatures/Butterfly';
+import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
-
-import MathUtils from '@shared/utils/Math.utils';
 
 class GreenlandBiome extends Biome {
   private a: number;
@@ -44,7 +44,7 @@ class GreenlandBiome extends Biome {
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {
-    if (MathUtils.rng() > 0.35) {
+    if (MathUtils.rng() > 0.15) {
       const s = MathUtils.randomInt(90000, 120000);
 
       const pds = new poissonDiskSampling([Terrain.SIZE_X - s, Terrain.SIZE_Z - s], s, s, 30, MathUtils.rng);
@@ -58,23 +58,10 @@ class GreenlandBiome extends Biome {
         const py = Math.max(Chunk.SEA_LEVEL + sy / 2, this.generator.computeHeightAt(px, pz) + sy / 3);
 
         // butterflies
-        const boids = new Boids(
-          scene,
-          new THREE.Vector3(s, sy, s),
-          new THREE.Vector3(px, py, pz),
-          'butterfly',
-          MathUtils.randomInt(1, 4)
-        );
-
-        boids.generate({
-          speed: 7500,
-          neighbourRadius: 6000,
-          alignmentWeighting: 0.005,
-          cohesionWeighting: 0.075,
-          separationWeighting: 0.1,
-          viewAngle: 12,
-          underwater: false
-        });
+        const boids: Boids = new Boids(scene, new THREE.Vector3(s, sy, s), new THREE.Vector3(px, py, pz));
+        for (let i = 0, n = MathUtils.randomInt(2, 5); i < n; i++) {
+          boids.addCreature(new Butterfly());
+        }
 
         this.boids.push(boids);
       });
