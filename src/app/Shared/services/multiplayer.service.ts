@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
 
-import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded, ISocketDataObjectsInitialized } from '@app/Shared/models/SocketData.model';
+import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded, ISocketDataObjectsInitialized } from '@app/Shared/models/socketData.model';
 import { IPick } from '@shared/models/pick.model';
 import { IOnlineObject } from '@shared/models/onlineObjects.model';
 
@@ -22,20 +22,13 @@ class MultiplayerService {
   private timeSource: Subject<number>;
   time$: Observable<number>;
 
-  private room: string;
+  private roomID: string;
   private userId: string;
 
   private onlineUsers: string[] = [];
   private onlineUsersMeshes: THREE.Mesh[] = [];
-  private placedObjects: IPick[] = [];
-
-  private debugArea: HTMLElement;
 
   constructor() {
-    this.debugArea = document.createElement('div');
-    this.debugArea.classList.add('div', 'debug');
-    document.body.appendChild(this.debugArea);
-
     this.objectPlacedSource = new Subject();
     this.objectPlaced$ = this.objectPlacedSource.asObservable();
 
@@ -51,14 +44,12 @@ class MultiplayerService {
   init(scene: THREE.Scene, seed: string) {
     this.used = true;
     this.scene = scene;
-    this.room = seed;
+    this.roomID = seed;
 
     const url: string = `${ENV.socketBaseUrl}:${ENV.socketPort}`;
     this.socket = io.connect(url);
 
-    this.debugArea.innerHTML += `<h1>ROOM = ${this.room}</h1>`;
-
-    this.socket.emit(SOCKET_EVENTS.CL_SEND_JOIN_ROOM, this.room);
+    this.socket.emit(SOCKET_EVENTS.CL_SEND_JOIN_ROOM, this.roomID);
 
     this.handleServerInteraction();
   }
@@ -74,7 +65,7 @@ class MultiplayerService {
    * @param {THREE.Vector3} position
    */
   sendPosition(position: THREE.Vector3) {
-    if (this.onlineUsers.length) this.socket.emit(SOCKET_EVENTS.CL_SEND_PLAYER_POSITION, { position, room: this.room });
+    if (this.onlineUsers.length) this.socket.emit(SOCKET_EVENTS.CL_SEND_PLAYER_POSITION, { position, roomID: this.roomID });
   }
 
   /**
@@ -82,8 +73,8 @@ class MultiplayerService {
    * @param {IPick} item
    */
   placeObject(item: IPick) {
-    this.placedObjects.push(item);
-    this.socket.emit(SOCKET_EVENTS.CL_SEND_ADD_OBJECT, { item, room: this.room });
+    // this.placedObjects.push(item);
+    this.socket.emit(SOCKET_EVENTS.CL_SEND_ADD_OBJECT, { item, roomID: this.roomID });
   }
 
   /**
@@ -100,15 +91,18 @@ class MultiplayerService {
   private onRoomJoined(data: ISocketDataRoomJoined) {
     if (!this.userId && this.userId !== data.me) {
       this.userId = data.me;
-      // this.debugArea.innerHTML += `<h1 style='color: blue'>You are : ${data.me}</h1>`;
-    } else {
-      this.socket.emit(SOCKET_EVENTS.CL_SEND_INIT_OBJECTS, { room: this.room, placedObjects: this.placedObjects });
-      // this.debugArea.innerHTML += `<h1 style='color: green'>${data.me} connected</h1>`;
     }
 
+    data.allObjects.forEach((item: IPick) => {
+      this.objectPlacedSource.next(<IOnlineObject>{ item, animate: false });
+    });
+
+    // else {
+    //   // this.socket.emit(SOCKET_EVENTS.CL_SEND_INIT_OBJECTS, { room: this.room, placedObjects: this.placedObjects });
+    // }
+
     // share time
-    console.log(window.performance.now() - data.startTime);
-    this.timeSource.next(window.performance.now() - data.startTime);
+    this.timeSource.next(data.startTime);
 
     // init mesh for each new users
     const newUsers = data.usersConnected.filter(user => this.onlineUsers.indexOf(user) < 0 && user !== this.userId);
@@ -117,16 +111,6 @@ class MultiplayerService {
       this.onlineUsers.push(user);
     });
 
-    // this.debugArea.innerHTML += `<ul><li>${this.userId}</li>${this.onlineUsers.reverse().map(user => `<li>${user}</li>`)}-----------------------</ul>`;
-  }
-
-  private onObjectsInitialized(data: ISocketDataObjectsInitialized) {
-    if (this.placedObjects.length) return;
-
-    this.placedObjects = data.placedObjects;
-    this.placedObjects.forEach((item: IPick) => {
-      this.objectPlacedSource.next(<IOnlineObject>{ item, animate: false });
-    });
   }
 
   private onPositionupdated(data: ISocketDataPositionUpdated) {
@@ -135,7 +119,6 @@ class MultiplayerService {
   }
 
   private onObjectAdded(data: ISocketDataObjectAdded) {
-    this.placedObjects.push(data.item);
     this.objectPlacedSource.next(<IOnlineObject>{ item: data.item, animate: true });
   }
 

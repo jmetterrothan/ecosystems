@@ -1,7 +1,9 @@
 import { IPick } from './pick.model';
+
 export interface ISocketDataRoomJoined {
   me: string;
   usersConnected: string[];
+  allObjects: IPick[];
   startTime: number;
 }
 
