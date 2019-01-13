@@ -5,8 +5,9 @@ import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
 
-import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
+import GraphicsConfigService, { configSvc } from '@services/graphicsConfig.service';
 import PlayerService, { playerSvc } from '@services/player.service';
+import MultiplayerService, { multiplayerSvc } from '@services/multiplayer.service';
 
 import { ICloudData } from '@shared/models/cloudData.model';
 
@@ -21,6 +22,7 @@ class Weather {
 
   private configSvc: GraphicsConfigService;
   private playerSvc: PlayerService;
+  private multiplayerSvc: MultiplayerService;
 
   private clouds: THREE.Group;
   private wind: THREE.Vector3;
@@ -52,8 +54,11 @@ class Weather {
 
     this.configSvc = configSvc;
     this.playerSvc = playerSvc;
+    this.multiplayerSvc = multiplayerSvc;
 
     this.startTime = window.performance.now();
+
+    this.watchStartTime();
   }
 
   getClouds(): THREE.Group {
@@ -367,6 +372,12 @@ class Weather {
     this.moonlight.shadow.camera.far = 1000000;
 
     this.scene.add(this.moonlight);
+  }
+
+  private watchStartTime() {
+    this.multiplayerSvc.time$.subscribe(
+      time => this.startTime = time
+    );
   }
 }
 

@@ -75,7 +75,6 @@ class Main {
     this.camera = new THREE.PerspectiveCamera(55, aspect, near, far);
 
     this.focused = true;
-
   }
 
   async init() {
@@ -119,7 +118,7 @@ class Main {
       join.addEventListener('click', ev => {
         (<HTMLElement>ev.target).style.display = 'none';
         const seed = input.value;
-        this.multiplayerSvc.init(this.scene, 'seed');
+        this.multiplayerSvc.init(this.scene, seed);
       }, false);
       document.body.appendChild(join);
     }
