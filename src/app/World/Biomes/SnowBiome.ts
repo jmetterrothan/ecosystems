@@ -6,16 +6,12 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 
 import { IBiome } from '@shared/models/biome.model';
-import { IPick } from '@shared/models/pick.model';
 
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@app/Achievements/constants/progressionExtrasStorageKeys.constants';
 
 class SnowBiome extends Biome {
-
-  private snowmanChunk: Chunk;
-  private snowmanItem: IPick;
   private snowmanObject: THREE.Object3D;
 
   constructor(terrain: Terrain) {
@@ -31,7 +27,7 @@ class SnowBiome extends Biome {
 
   init() {
     // snowman
-    this.terrain.placeSpecialObject({ stackReference: 'snowman_no_carrot', float: false, underwater: false });
+    this.snowmanObject = this.terrain.placeSpecialObject({ stackReference: 'snowman_no_carrot', float: false, underwater: false });
   }
 
   update(delta: number) { }
@@ -39,11 +35,16 @@ class SnowBiome extends Biome {
   handleClick(raycaster: THREE.Raycaster) {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.snowmanObject], true);
 
-    if (intersections.length && this.snowmanItem.n !== 'snowman') {
-      this.snowmanItem = { ...this.snowmanItem, n: 'snowman' };
-      this.snowmanChunk.repurposeObject(this.snowmanObject);
-      this.snowmanObject = this.snowmanChunk.getObject(this.snowmanItem);
-      this.snowmanChunk.placeObject(this.snowmanObject, { save: true });
+    if (intersections.length && this.snowmanObject.userData.stackReference !== 'snowman') {
+      const item = Chunk.convertObjectToPick(this.snowmanObject);
+      const newItem = { ...item, n: 'snowman' };
+      const chunk: Chunk = this.terrain.getChunkAt(item.p.x, item.p.z);
+      console.log(chunk, item, newItem);
+
+      chunk.repurposeObject(this.snowmanObject);
+      this.snowmanObject = chunk.getObject(newItem);
+      chunk.placeObject(this.snowmanObject, { save: true });
+
       this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.snowman_carrot);
     }
   }
