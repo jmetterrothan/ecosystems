@@ -4,6 +4,9 @@ import statsJs from 'stats.js';
 import 'three/examples/js/controls/PointerLockControls';
 import 'seedrandom';
 
+import ReactDOM from 'react-dom';
+import Home from '@templates/home';
+
 import World from '@world/World';
 import Crosshair from '@ui/Crosshair';
 import PostProcess from '@app/PostProcess';
@@ -39,6 +42,7 @@ class Main {
   private storageSvc: StorageService;
 
   constructor() {
+    ReactDOM.render(Home(), document.querySelector('main'));
     this.containerElement = document.body;
     this.lastTime = window.performance.now();
 

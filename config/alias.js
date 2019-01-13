@@ -15,8 +15,9 @@ module.exports = {
   "@materials": path.resolve(PATHS.APP, 'shared', 'materials'),
   "@boids": path.resolve(PATHS.APP, 'boids'),
   "@public": path.resolve(PATHS.PUBLIC),
-  "@achievements": path.resolve(PATHS.APP, 'achievements'),
-  "@ui": path.resolve(PATHS.APP, 'ui'),
-  "@voice": path.resolve(PATHS.APP, 'voice'),
+  "@achievements": path.resolve(PATHS.APP, 'Achievements'),
+  "@ui": path.resolve(PATHS.APP, 'UI'),
+  "@templates": path.resolve(PATHS.PUBLIC, 'templates')
+  "@voice": path.resolve(PATHS.APP, 'Voice'),
   "@online": path.resolve(PATHS.APP, 'online')
 };

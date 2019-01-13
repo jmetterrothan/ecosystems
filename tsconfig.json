@@ -9,6 +9,7 @@
     "baseUrl": ".",
     "allowJs": true,
     "forceConsistentCasingInFileNames": false,
+    "jsx": "react",
     "paths": {
       "@app/*": [
         "src/app/*"
@@ -49,8 +50,8 @@
       "@voice/*": [
         "src/app/voice/*"
       ],
-      "@online/*": [
-        "src/app/online/*"
+      "@templates/*": [
+        "src/public/templates/*"
       ]
     },
     "typeRoots": [

@@ -17,7 +17,7 @@ module.exports = {
   },
   resolve: {
     modules: ['node_modules', PATHS.SRC],
-    extensions: ['.ts', '.js', '.json', '.scss', '.css', '.yml'],
+    extensions: ['.ts', '.js', '.jsx', '.json', '.scss', '.css', '.yml'],
     alias: {
       ...alias,
       three$: 'three/build/three.min.js',
@@ -36,6 +36,11 @@ module.exports = {
         enforce: 'pre',
         exclude: '/node_modules/',
         loader: 'tslint-loader'
+      },
+      {
+        test: /\.jsx$/,
+        exclude: '/node_modules/',
+        loader: 'babel-loader'
       },
       {
         test: /\.(scss|sass)$/,
