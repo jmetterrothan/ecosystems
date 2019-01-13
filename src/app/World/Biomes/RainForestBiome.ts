@@ -2,13 +2,12 @@ import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
+import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
-
-import MathUtils from '@shared/utils/Math.utils';
 
 class RainForestBiome extends Biome {
   private a: number;
@@ -19,8 +18,8 @@ class RainForestBiome extends Biome {
   private spread: number;
   private ridges: number;
 
-  constructor(generator: BiomeGenerator) {
-    super('RAINFOREST', generator);
+  constructor(terrain: Terrain) {
+    super('RAINFOREST', terrain);
 
     this.waterDistortion = true;
     this.waterDistortionFreq = 2.5;
@@ -37,12 +36,6 @@ class RainForestBiome extends Biome {
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.rainforest_visited);
   }
-
-  init(scene: THREE.Scene, terrain: Terrain) { }
-
-  update(delta: number) { }
-
-  handleClick(raycaster: THREE.Raycaster) { }
 
   /**
    * Compute elevation

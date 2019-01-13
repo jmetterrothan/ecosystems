@@ -5,18 +5,18 @@ import ProgressionService, { progressionSvc } from '@services/progression.servic
 
 import BiomeGenerator from '@world/BiomeGenerator';
 import Terrain from '@world/Terrain';
+import CommonUtils from '@shared/utils/Common.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 
 import { WATER_CONSTANTS } from '@shared/constants/water.constants';
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 
-import CommonUtils from '@shared/utils/Common.utils';
-
 abstract class Biome {
   private static WATER_COLORS = new Map<number, THREE.Color>();
 
   private name: string;
+  protected terrain: Terrain;
   protected generator: BiomeGenerator;
 
   protected water: boolean;
@@ -29,9 +29,10 @@ abstract class Biome {
   protected progressionSvc: ProgressionService;
   protected monitoringSvc: MonitoringService;
 
-  constructor(name: string, generator: BiomeGenerator) {
+  constructor(name: string, terrain: Terrain) {
     this.name = name;
-    this.generator = generator;
+    this.terrain = terrain;
+    this.generator = terrain.getBiomeGenerator();
 
     this.water = true;
     this.progressionSvc = progressionSvc;
@@ -50,18 +51,20 @@ abstract class Biome {
 
   /**
    * Biome init
-   * @param {THREE.Scene} scene
-   * @param {Terrain} terrain
    */
-  abstract init(scene: THREE.Scene, terrain: Terrain);
+  init() { }
 
   /**
    * Biome update
    * @param {number} delta
    */
-  abstract update(delta: number);
+  update(delta: number) { }
 
-  abstract handleClick(raycaster: THREE.Raycaster);
+  /**
+   * Handle click interaction
+   * @param {THREE.Raycaster} raycaster
+   */
+  handleClick(raycaster: THREE.Raycaster) { }
 
   /**
    * Retrieve biome object (color and organisms) at the given position

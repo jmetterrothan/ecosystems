@@ -2,7 +2,6 @@ import * as THREE from 'three';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
-import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 
 import { IBiome } from '@shared/models/biome.model';
@@ -13,15 +12,15 @@ import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progress
 class DesertBiome extends Biome {
   // private vulture: THREE.Object3D;
 
-  constructor(generator: BiomeGenerator) {
-    super('DESERT', generator);
+  constructor(terrain: Terrain) {
+    super('DESERT', terrain);
 
     this.waterDistortion = false;
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.desert_visited);
   }
 
-  init(scene: THREE.Scene, terrain: Terrain) {
+  init() {
     // corpse
     const centerX = Terrain.SIZE_X / 2;
     const centerZ = Terrain.SIZE_Z / 2;
@@ -29,7 +28,7 @@ class DesertBiome extends Biome {
     const sizeX = 8192;
     const sizeZ = 8192;
 
-    terrain.placeObject('skull', centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+    this.terrain.placeSpecialObject({ stackReference: 'skull', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
 
     // vulture
     // this.vulture = chunk.getObject({ ...corpseItem });

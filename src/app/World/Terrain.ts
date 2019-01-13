@@ -7,6 +7,7 @@ import Coord from '@world/Coord';
 import Biome from '@world/Biome';
 import MathUtils from '@shared/utils/Math.utils';
 import Crosshair from '@ui/Crosshair';
+import CommonUtils from '@shared/utils/Common.utils';
 
 import MultiplayerService, { multiplayerSvc } from '@services/multiplayer.service';
 import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
@@ -19,12 +20,12 @@ import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.mate
 import { IBiome } from '@shared/models/biome.model';
 import { IPick } from '@shared/models/pick.model';
 import { IOnlineObject } from '@shared/models/onlineObjects.model';
+import { ISpecialObject } from '@shared/models/objectParameters.model';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
-
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
-import CommonUtils from '@shared/utils/Common.utils';
+import { stack } from '@tensorflow/tfjs';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 16;
@@ -78,10 +79,10 @@ class Terrain {
    * @param {World} world
    * @param {BiomeGenerator} generator
    */
-  constructor(scene: THREE.Scene, world: World, generator: BiomeGenerator) {
-    this.scene = scene;
+  constructor(world: World) {
     this.world = world;
-    this.generator = generator;
+    this.scene = world.getScene();
+    this.generator = world.getBiomeGenerator();
 
     this.chunks = new Map<string, Chunk>();
     this.visibleChunks = [];
@@ -100,7 +101,8 @@ class Terrain {
 
   init() {
     this.initMeshes();
-    /* if (this.multiplayerSvc.isUsed()) */ this.watchObjectPlaced();
+    /* if (this.multiplayerSvc.isUsed()) */
+    this.watchObjectPlaced();
   }
 
   /**
@@ -301,7 +303,7 @@ class Terrain {
     }
   }
 
-  placeObject(name: string, ox: number = Terrain.SIZE_X / 2, oz: number = Terrain.SIZE_Z / 2, sizeX: number = Terrain.SIZE_X, sizeZ: number = Terrain.SIZE_Z): THREE.Object3D {
+  placeSpecialObject(special: ISpecialObject, ox: number = Terrain.SIZE_X / 2, oz: number = Terrain.SIZE_Z / 2, sizeX: number = Terrain.SIZE_X, sizeZ: number = Terrain.SIZE_Z): THREE.Object3D {
     let object: THREE.Object3D;
     let chunk: Chunk;
     let item: IPick;
@@ -316,12 +318,14 @@ class Terrain {
 
       chunk = this.getChunkAt(x, z);
 
+      if (special.underwater === false && y <= Chunk.SEA_LEVEL) { continue; }
+
       item = {
         s,
         p: new THREE.Vector3(x, y, z),
         r: new THREE.Euler().setFromVector3(r),
-        n: name,
-        f: false,
+        n: special.stackReference,
+        f: special.float,
       };
 
       object = chunk.getObject(item);
@@ -648,6 +652,14 @@ class Terrain {
     const offset = 200;
     return MathUtils.between(intersection.x, -offset, offset) || MathUtils.between(intersection.x, Terrain.SIZE_X - offset, Terrain.SIZE_X + offset) ||
       MathUtils.between(intersection.z, -offset, offset) || MathUtils.between(intersection.z, Terrain.SIZE_Z - offset, Terrain.SIZE_Z + offset);
+  }
+
+  public getScene(): THREE.Scene {
+    return this.scene;
+  }
+
+  public getBiomeGenerator(): BiomeGenerator {
+    return this.generator;
   }
 
   public getWorld(): World {

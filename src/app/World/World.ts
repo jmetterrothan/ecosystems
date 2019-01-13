@@ -11,13 +11,12 @@ import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Weather from '@world/Weather';
 import Player from '@app/Player';
+import MathUtils from '@utils/Math.utils';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
-import MathUtils from '@utils/Math.utils';
-
 class World {
-  static readonly SEED: string | null = '4107507334';
+  static readonly SEED: string | null = null;
   static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
   static readonly EMPTY: boolean = false;
 
@@ -69,8 +68,12 @@ class World {
     return this.terrain;
   }
 
-  getGenerator(): BiomeGenerator {
+  getBiomeGenerator(): BiomeGenerator {
     return this.generator;
+  }
+
+  getScene(): THREE.Scene {
+    return this.scene;
   }
 
   getSeed(): string {
@@ -89,7 +92,9 @@ class World {
 
     // terrain
     this.generator = new BiomeGenerator();
-    this.terrain = new Terrain(this.scene, this, this.generator);
+    this.terrain = new Terrain(this);
+
+    const biome = this.generator.init(this.terrain);
 
     this.weather = new Weather(this.scene, this.generator);
     this.initFog();
@@ -102,7 +107,7 @@ class World {
 
     this.weather.initRain();
 
-    this.generator.getBiome().init(this.scene, this.terrain);
+    biome.init();
 
     this.scene.add(this.controls.getObject());
 

@@ -6,4 +6,6 @@ export interface IBoidCreatureParameters {
   viewAngle: number;
   speed: number;
   underwater: boolean;
+  minRepulseDistance: number;
+  scale: number;
 }

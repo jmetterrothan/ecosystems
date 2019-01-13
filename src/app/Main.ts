@@ -206,7 +206,6 @@ class Main {
     this.lastTime = time;
 
     // update
-    // if (this.focused) {
     this.world.update(delta);
 
     if (this.playerSvc.isUnderwater()) {
@@ -217,7 +216,6 @@ class Main {
     this.renderer.setClearColor(color);
     this.scene.fog.color.set(color);
     TWEEN.update();
-    // }
 
     // switch render func if underwater
     if (this.playerSvc.isUnderwater()) {

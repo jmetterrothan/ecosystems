@@ -3,22 +3,21 @@ import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
-import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 import Boids from '@boids/Boids';
+import Butterfly from '@boids/Creatures/Butterfly';
+import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
-import MathUtils from '@shared/utils/Math.utils';
-
 class SwampBiome extends Biome {
   private boids: Boids[];
 
-  constructor(generator: BiomeGenerator) {
-    super('SWAMPS', generator);
+  constructor(terrain: Terrain) {
+    super('SWAMPS', terrain);
 
     this.boids = [];
 
@@ -29,38 +28,24 @@ class SwampBiome extends Biome {
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.swamp_visited);
   }
 
-  init(scene: THREE.Scene, terrain: Terrain) {
-    const sx = 100000;
-    const sz = 100000;
+  init() {
+    const size = 100000;
 
-    const pds = new poissonDiskSampling([Terrain.SIZE_X - sx, Terrain.SIZE_Z - sz], sx, sz, 30, MathUtils.rng);
+    const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
     const points = pds.fill();
 
     points.forEach((point: number[]) => {
-      const px = sx / 2 + point.shift();
-      const pz = sz / 2 + point.shift();
+      const px = size / 2 + point.shift();
+      const pz = size / 2 + point.shift();
 
-      const sy = MathUtils.randomFloat(Chunk.HEIGHT / 6, Chunk.HEIGHT / 4);
-      const py = Math.max(Chunk.SEA_LEVEL + sy / 2, this.generator.computeHeightAt(px, pz) + sy / 3);
+      const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 6, Chunk.HEIGHT / 4);
+      const py = Math.max(Chunk.SEA_LEVEL + ySize / 2, this.generator.computeHeightAt(px, pz) + ySize / 3);
 
       // butterflies
-      const boids = new Boids(
-        scene,
-        new THREE.Vector3(sx, sy, sz),
-        new THREE.Vector3(px, py, pz),
-        'butterfly',
-        MathUtils.randomInt(1, 6)
-      );
-
-      boids.generate({
-        speed: 7500,
-        neighbourRadius: 6000,
-        alignmentWeighting: 0.005,
-        cohesionWeighting: 0.075,
-        separationWeighting: 0.1,
-        viewAngle: 12,
-        underwater: false
-      });
+      const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
+      for (let i = 0, n = MathUtils.randomInt(2, 5); i < n; i++) {
+        boids.addCreature(new Butterfly());
+      }
 
       this.boids.push(boids);
     });

@@ -1,5 +1,4 @@
 import Biome from '@world/Biome';
-import BiomeGenerator from '@world/BiomeGenerator';
 import Terrain from '@world/Terrain';
 
 import { IBiome } from '@shared/models/biome.model';
@@ -7,15 +6,11 @@ import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
 class TestBiome extends Biome {
-  constructor(generator: BiomeGenerator) {
-    super('TEST', generator);
+  constructor(terrain: Terrain) {
+    super('TEST', terrain);
 
     this.water = false;
   }
-
-  init(scene: THREE.Scene, terrain: Terrain) { }
-
-  update(delta: number) { }
 
   handleClick(raycaster: THREE.Raycaster) { }
 

@@ -3,17 +3,17 @@ import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
-import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
+import Boids from '@boids/Boids';
+import DiscusFish from '@boids/Creatures/DiscusFish';
+import SalmonFish from '@boids/Creatures/SalmonFish';
 
 import { IBiome } from '@shared/models/biome.model';
 
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
-
-import Boids from '@boids/Boids';
 
 class OceanBiome extends Biome {
   private spike: number;
@@ -23,8 +23,8 @@ class OceanBiome extends Biome {
 
   private chest: THREE.Object3D;
 
-  constructor(generator: BiomeGenerator) {
-    super('OCEAN', generator);
+  constructor(terrain: Terrain) {
+    super('OCEAN', terrain);
 
     this.boids = [];
 
@@ -38,60 +38,30 @@ class OceanBiome extends Biome {
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.ocean_visited);
   }
 
-  init(scene: THREE.Scene, terrain: Terrain) {
-    const smin = 80000;
-    const smax = 140000;
-    const s = MathUtils.randomFloat(smin, smax);
+  init() {
+    const minSize = 90000;
+    const maxSize = 150000;
+    const size = MathUtils.randomFloat(minSize, maxSize);
 
-    const pds = new poissonDiskSampling([Terrain.SIZE_X - s, Terrain.SIZE_Z - s], s, s, 30, MathUtils.rng);
+    const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
     const points = pds.fill();
 
-    const T1 = {
-      model: 'fish1',
-      config: {
-        speed: 7500,
-        neighbourRadius: 6000,
-        alignmentWeighting: 0.0065,
-        cohesionWeighting: 0.01,
-        separationWeighting: 0.05,
-        viewAngle: 8,
-        underwater: true
-      }
-    };
-
-    const T2 = {
-      model: 'fish2',
-      config: {
-        speed: 7500,
-        neighbourRadius: 10000,
-        alignmentWeighting: 0.0065,
-        cohesionWeighting: 0.01,
-        separationWeighting: 0.35,
-        viewAngle: 12,
-        underwater: true
-      }
-    };
-
     points.forEach((point: number[]) => {
-      const nbMax = (s * 18 / smax) || 0; // maximum nb based on boids size
-      const nb = MathUtils.randomInt(1, nbMax);
-      const type = nb > 3 ? T1 : T2;
-      const px = s / 2 + point.shift();
-      const pz = s / 2 + point.shift();
+      const nbMax = (size * 14 / maxSize) || 0; // maximum nb based on boids size
+      const n = MathUtils.randomInt(2, nbMax);
+      const px = size / 2 + point.shift();
+      const pz = size / 2 + point.shift();
 
-      const sy = MathUtils.randomFloat(Chunk.HEIGHT / 3.75, Chunk.HEIGHT / 3);
-      const py = Chunk.SEA_LEVEL - sy / 2;
+      const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 3.75, Chunk.HEIGHT / 3) - 4096;
+      const py = Chunk.SEA_LEVEL - 4096 - ySize / 2;
+
+      const fishClass = n > 3 ? DiscusFish : SalmonFish;
 
       // fishs
-      const boids = new Boids(
-        scene,
-        new THREE.Vector3(s, sy, s),
-        new THREE.Vector3(px, py, pz),
-        type.model,
-        nb,
-      );
-
-      boids.generate(type.config);
+      const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
+      for (let i = 0; i < n; i++) {
+        boids.addCreature(new fishClass());
+      }
 
       this.boids.push(boids);
     });
@@ -103,7 +73,7 @@ class OceanBiome extends Biome {
     const sizeX = 8192;
     const sizeZ = 8192;
 
-    this.chest = terrain.placeObject('chest', centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+    this.chest = this.terrain.placeSpecialObject({ stackReference: 'chest', float: false, underwater: true }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
   }
 
   update(delta: number) {

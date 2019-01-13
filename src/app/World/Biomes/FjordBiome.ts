@@ -1,19 +1,17 @@
 import Biome from '@world/Biome';
 import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
-import BiomeGenerator from '@world/BiomeGenerator';
+import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
-import MathUtils from '@shared/utils/Math.utils';
-
 class FjordBiome extends Biome {
   private e: number;
 
-  constructor(generator: BiomeGenerator) {
-    super('FJORD', generator);
+  constructor(terrain: Terrain) {
+    super('FJORD', terrain);
 
     this.waterDistortion = true;
     this.waterDistortionFreq = 2.25;
@@ -22,7 +20,7 @@ class FjordBiome extends Biome {
     this.e = MathUtils.randomFloat(2, 3);
   }
 
-  init(scene: THREE.Scene, terrain: Terrain) { }
+  init() { }
 
   update(delta: number) { }
 

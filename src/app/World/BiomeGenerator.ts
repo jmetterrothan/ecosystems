@@ -4,6 +4,8 @@ import simplexNoise from 'simplex-noise';
 import World from '@world/World';
 import Chunk from '@world/Chunk';
 import Biome from '@world/Biome';
+import Terrain from '@world/Terrain';
+import MathUtils from '@utils/Math.utils';
 
 import { IBiome } from '@shared/models/biome.model';
 import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
@@ -11,8 +13,6 @@ import { IPick } from '@shared/models/pick.model';
 import { IPickObject } from '@shared/models/objectParameters.model';
 
 import { BIOMES } from '@shared/constants/biomes.constants';
-
-import MathUtils from '@utils/Math.utils';
 
 class BiomeGenerator {
   private simplex: simplexNoise;
@@ -24,14 +24,22 @@ class BiomeGenerator {
     this.simplex = new simplexNoise(MathUtils.rng);
     this.simplex2 = new simplexNoise(MathUtils.rng);
     this.simplex3 = new simplexNoise(MathUtils.rng);
+  }
 
+  /**
+   * Biome generator init
+   * @param {Terrain} terrain
+   */
+  init(terrain: Terrain): Biome {
     if (World.BIOME === null) {
       const biomeClass = BIOMES[MathUtils.randomInt(0, BIOMES.length - 1)];
-      this.biome = new biomeClass(this);
+      this.biome = new biomeClass(terrain);
     } else {
       // @ts-ignore
-      this.biome = new World.BIOME(this);
+      this.biome = new World.BIOME(terrain);
     }
+
+    return this.biome;
   }
 
   /**
