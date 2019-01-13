@@ -25,8 +25,7 @@ class MultiplayerService {
   private roomID: string;
   private userId: string;
 
-  private onlineUsers: string[] = [];
-  private onlineUsersMeshes: THREE.Mesh[] = [];
+  private onlineUsers: Map<string, THREE.Mesh>;
 
   constructor() {
     this.objectPlacedSource = new Subject();
@@ -34,6 +33,8 @@ class MultiplayerService {
 
     this.timeSource = new Subject();
     this.time$ = this.timeSource.asObservable();
+
+    this.onlineUsers = new Map();
   }
 
   /**
@@ -65,7 +66,7 @@ class MultiplayerService {
    * @param {THREE.Vector3} position
    */
   sendPosition(position: THREE.Vector3) {
-    if (this.onlineUsers.length) this.socket.emit(SOCKET_EVENTS.CL_SEND_PLAYER_POSITION, { position, roomID: this.roomID });
+    if (this.onlineUsers.size) this.socket.emit(SOCKET_EVENTS.CL_SEND_PLAYER_POSITION, { position, roomID: this.roomID });
   }
 
   /**
@@ -73,7 +74,6 @@ class MultiplayerService {
    * @param {IPick} item
    */
   placeObject(item: IPick) {
-    // this.placedObjects.push(item);
     this.socket.emit(SOCKET_EVENTS.CL_SEND_ADD_OBJECT, { item, roomID: this.roomID });
   }
 
@@ -92,7 +92,6 @@ class MultiplayerService {
       this.userId = data.me;
 
       // place all objects already placed on this room
-      console.log('me', data);
       data.allObjects.forEach((item: IPick) => {
         this.objectPlacedSource.next(<IOnlineObject>{ item, animate: false });
       });
@@ -102,17 +101,18 @@ class MultiplayerService {
     this.timeSource.next(data.startTime);
 
     // init mesh for each new users
-    const newUsers = data.usersConnected.filter(user => this.onlineUsers.indexOf(user) < 0 && user !== this.userId);
-    newUsers.forEach(user => {
-      this.createUserMesh(user);
-      this.onlineUsers.push(user);
+    data.usersConnected.forEach((user: string) => {
+      if (!this.onlineUsers.has(user) && user !== this.userId) {
+        const userMesh = this.createUserMesh(user);
+        this.onlineUsers.set(user, userMesh);
+        this.scene.add(userMesh);
+      }
     });
-
   }
 
   private onPositionupdated(data: ISocketDataPositionUpdated) {
-    const mesh = this.onlineUsersMeshes.find((mesh: THREE.Mesh) => mesh.userData.userID === data.userID);
-    if (mesh) mesh.position.copy(data.position);
+    const mesh = this.onlineUsers.get(data.userID);
+    mesh.position.copy(data.position);
   }
 
   private onObjectAdded(data: ISocketDataObjectAdded) {
@@ -120,24 +120,21 @@ class MultiplayerService {
   }
 
   private onDisconnection(data: ISocketDataDisconnection) {
-    // remove mesh
-    const userIndex = this.onlineUsers.indexOf(data.userID);
-    const userMeshIndex = this.onlineUsersMeshes.findIndex((mesh: THREE.Mesh) => mesh.userData.userID === data.userID);
-
-    this.scene.remove(this.onlineUsersMeshes[userMeshIndex]);
-    this.onlineUsers.splice(userIndex, 1);
-    this.onlineUsersMeshes.splice(userMeshIndex, 1);
+    // remove mesh from scene
+    const user = this.onlineUsers.get(data.userID);
+    this.scene.remove(user);
+    this.onlineUsers.delete(data.userID);
   }
 
-  private createUserMesh(userID: string) {
+  private createUserMesh(userID: string): THREE.Mesh {
     const user = new THREE.Mesh(
       new THREE.SphereGeometry(3000, 24, 24),
       new THREE.MeshBasicMaterial({ color: new THREE.Color() })
     );
     user.userData = { userID };
-    this.onlineUsersMeshes.push(user);
-    user.position.set(this.onlineUsersMeshes.length * 3000, 10000, 0);
-    this.scene.add(user);
+
+    user.position.set(this.onlineUsers.size * 3000, 10000, 0);
+    return user;
   }
 
 }
