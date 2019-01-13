@@ -177,10 +177,12 @@ class Weather {
     this.sunBoundLight.target = target;
     this.scene.add(this.sunBoundLight);
 
+    /*
     if (configSvc.config.DEBUG) {
       this.scene.add(new THREE.SpotLightHelper(this.moonBoundLight));
       this.scene.add(new THREE.SpotLightHelper(this.sunBoundLight));
     }
+    */
 
     const materialCallback = (mesh) => {
       mesh.castShadow = false;

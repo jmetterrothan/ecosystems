@@ -113,10 +113,18 @@ class Chunk {
 
     // generate water
     if (terrain.getBiome().hasWater() && this.terrainBlueprint.needGenerateWater()) {
-      const waterMesh = this.waterBlueprint.generate();
+      const p1 = this.generator.computeHeightAt(this.col * Chunk.WIDTH, this.row * Chunk.DEPTH);
+      const p2 = this.generator.computeHeightAt(this.col * Chunk.WIDTH + Chunk.WIDTH, this.row * Chunk.DEPTH);
+      const p3 = this.generator.computeHeightAt(this.col * Chunk.WIDTH, this.row * Chunk.DEPTH + Chunk.DEPTH);
+      const p4 = this.generator.computeHeightAt(this.col * Chunk.WIDTH + Chunk.WIDTH, this.row * Chunk.DEPTH + Chunk.DEPTH);
+      const p5 = this.generator.computeHeightAt(this.col * Chunk.WIDTH + Chunk.WIDTH / 2, this.row * Chunk.DEPTH + Chunk.DEPTH / 2);
 
-      (<THREE.Geometry>terrain.water.geometry).mergeMesh(waterMesh);
-      (<THREE.Geometry>terrain.water.geometry).elementsNeedUpdate = true;
+      if (p1 <= Chunk.SEA_LEVEL || p2 <= Chunk.SEA_LEVEL || p3 <= Chunk.SEA_LEVEL || p4 <= Chunk.SEA_LEVEL || p5 <= Chunk.SEA_LEVEL) {
+        const waterMesh = this.waterBlueprint.generate();
+
+        (<THREE.Geometry>terrain.water.geometry).mergeMesh(waterMesh);
+        (<THREE.Geometry>terrain.water.geometry).elementsNeedUpdate = true;
+      }
     }
 
     // generate clouds

@@ -40,8 +40,8 @@ class OceanBiome extends Biome {
   }
 
   init(scene: THREE.Scene, terrain: Terrain) {
-    const minSize = 80000;
-    const maxSize = 140000;
+    const minSize = 90000;
+    const maxSize = 150000;
     const size = MathUtils.randomFloat(minSize, maxSize);
 
     const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
