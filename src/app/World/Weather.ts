@@ -17,8 +17,8 @@ import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@app/Shared/utils/Common.utils';
 
 class Weather {
-  private static RAIN_SPEED : number = 200;
-  private static FOG_COLORS : Map<number, THREE.Color> = new Map<number, THREE.Color>();
+  private static RAIN_SPEED: number = 200;
+  private static FOG_COLORS: Map<number, THREE.Color> = new Map<number, THREE.Color>();
 
   private scene: THREE.Scene;
   private generator: BiomeGenerator;
@@ -186,13 +186,11 @@ class Weather {
 
     this.sun = World.LOADED_MODELS.get('sun').clone();
     this.sun.children.forEach(materialCallback);
-    // this.sun = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'red' }));
     this.sun.position.copy(this.sunlight.position);
     // this.sun.visible = configSvc.config.DEBUG;
 
     this.moon = World.LOADED_MODELS.get('moon').clone();
     this.moon.children.forEach(materialCallback);
-    // this.moon = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'blue' }));
     this.moon.position.copy(this.sunlight.position);
     // this.moon.visible = configSvc.config.DEBUG;
 
@@ -356,8 +354,8 @@ class Weather {
       });
 
       // progression
-      const playerPositionAtCloudElevation = playerPosition.setY(Chunk.CLOUD_LEVEL + 500);
-      if (rainData.isRaininig && bbox.containsPoint(playerPositionAtCloudElevation)) {
+      const playerPositionAtCloudElevation = new THREE.Vector3().copy(playerPosition).setY(Chunk.CLOUD_LEVEL + 500);
+      if (rainData.isRaininig && MathUtils.between(playerPosition.y, Chunk.SEA_LEVEL, Chunk.CLOUD_LEVEL) && bbox.containsPoint(playerPositionAtCloudElevation)) {
         this.progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.under_rain);
       }
 
@@ -378,6 +376,12 @@ class Weather {
     this.sunlight.shadow.camera.updateProjectionMatrix();
 
     this.sunBoundLight.position.copy(this.sunlight.position);
+
+    const bbox = new THREE.Box3().setFromObject(this.sun);
+
+    if (bbox.containsPoint(this.playerSvc.getPosition())) {
+      console.log('dans le soleil');
+    }
 
     if (this.configSvc.config.DEBUG) {
       this.lightHelper.position.copy(this.sunlight.position);

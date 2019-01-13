@@ -147,6 +147,15 @@ export const TROPHIES: ITrophy[] = [
       { name: 'going under rain', value: PROGRESSION_WEATHER_STORAGE_KEYS.under_rain }
     ]
   },
+  {
+    name: { key: TRANSLATION_KEYS.go_in_sun },
+    value: 'go in sun',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    checklist: [
+      { name: 'go in sun', value: PROGRESSION_WEATHER_STORAGE_KEYS.in_sun }
+    ]
+  },
   // EXTRAS
   {
     name: { key: TRANSLATION_KEYS.repulse_fishes },

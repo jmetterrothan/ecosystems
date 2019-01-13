@@ -15,5 +15,6 @@ export const FR_TRANSLATION: ITranslationKeys = {
   find_captain_treasure: 'Trouver le trésor du capitaine',
   add_carrot_snowmnan: 'J\'ai pas d\'nez',
   going_under_rain: 'La pluie ça mouille',
+  go_in_sun: 'Le feu ça brûle',
   unlock_trophy_percentage: ''
 };

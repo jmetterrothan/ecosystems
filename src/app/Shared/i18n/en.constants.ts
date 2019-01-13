@@ -15,5 +15,6 @@ export const EN_TRANSLATION: ITranslationKeys = {
   find_captain_treasure: 'Find captain treasure',
   add_carrot_snowmnan: 'Add carrot to snowman',
   going_under_rain: 'It\'s raining today',
+  go_in_sun: 'go in sun',
   unlock_trophy_percentage: ''
 };

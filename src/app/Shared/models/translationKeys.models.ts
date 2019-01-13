@@ -13,5 +13,6 @@ export interface ITranslationKeys {
   find_captain_treasure: string;
   add_carrot_snowmnan: string;
   going_under_rain: string;
+  go_in_sun: string;
   unlock_trophy_percentage: string;
 }
