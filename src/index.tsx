@@ -1,12 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import UIManager from '@ui/UIManager';
-
-ReactDOM.render(<UIManager />, document.getElementById('root'));
-
-/*
 import Main from '@app/Main';
+import UIManager from '@ui/UIManager';
 
 const app = new Main();
 
@@ -16,4 +12,5 @@ const run = async () => {
 };
 
 run();
-*/
+
+ReactDOM.render(<UIManager />, document.getElementById('root'));
