@@ -60,7 +60,7 @@ class PostProcess
 
     // vignette effect
     const pass1 = new THREE.ShaderPass(THREE.VignetteShader);
-    pass1.uniforms.darkness.value = 2.25;
+    pass1.uniforms.darkness.value = 2.00;
     this.composer.addPass(pass1);
     this.effects.push({ effect: pass1, update: null });
 
@@ -68,7 +68,7 @@ class PostProcess
     const pass2 = new THREE.ShaderPass(THREE.ColorCorrectionShader);
     pass2.uniforms.addRGB.value.y = 0.025;
     pass2.uniforms.addRGB.value.z = 0.10;
-    pass2.uniforms.powRGB.value.y = 1.5;
+    pass2.uniforms.powRGB.value.y = 1.25;
     pass2.uniforms.powRGB.value.z = 0.80;
     this.composer.addPass(pass2);
     this.effects.push({ effect: pass2, update: null });
