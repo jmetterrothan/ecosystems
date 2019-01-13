@@ -24,8 +24,8 @@ class GreenlandBiome extends Biome {
 
   private boids: Boids[];
 
-  constructor(generator: BiomeGenerator) {
-    super('GREENLANDS', generator);
+  constructor(terrain: Terrain) {
+    super('GREENLANDS', terrain);
 
     this.boids = [];
 
@@ -43,7 +43,7 @@ class GreenlandBiome extends Biome {
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.greenland_visited);
   }
 
-  init(scene: THREE.Scene, terrain: Terrain) {
+  init() {
     if (MathUtils.rng() > 0.15) {
       const size = MathUtils.randomInt(90000, 120000);
 
@@ -58,7 +58,7 @@ class GreenlandBiome extends Biome {
         const py = Math.max(Chunk.SEA_LEVEL + ySize / 2, this.generator.computeHeightAt(px, pz) + ySize / 3);
 
         // butterflies
-        const boids: Boids = new Boids(scene, new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
+        const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
         for (let i = 0, n = MathUtils.randomInt(2, 5); i < n; i++) {
           boids.addCreature(new Butterfly());
         }
@@ -74,7 +74,7 @@ class GreenlandBiome extends Biome {
     const sizeX = 8192;
     const sizeZ = 8192;
 
-    terrain.placeSpecialObject({ stackReference: 'scarecrow', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+    this.terrain.placeSpecialObject({ stackReference: 'scarecrow', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
   }
 
   update(delta: number) {

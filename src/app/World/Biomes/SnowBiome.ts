@@ -18,8 +18,8 @@ class SnowBiome extends Biome {
   private snowmanItem: IPick;
   private snowmanObject: THREE.Object3D;
 
-  constructor(generator: BiomeGenerator) {
-    super('SNOW', generator);
+  constructor(terrain: Terrain) {
+    super('SNOW', terrain);
 
     this.waterDistortion = false;
 
@@ -29,9 +29,9 @@ class SnowBiome extends Biome {
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.snow_visited);
   }
 
-  init(scene: THREE.Scene, terrain: Terrain) {
+  init() {
     // snowman
-    terrain.placeSpecialObject({ stackReference: 'snowman_no_carrot', float: false, underwater: false });
+    this.terrain.placeSpecialObject({ stackReference: 'snowman_no_carrot', float: false, underwater: false });
   }
 
   update(delta: number) { }

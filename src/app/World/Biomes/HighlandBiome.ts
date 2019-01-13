@@ -24,8 +24,8 @@ class HighlandBiome extends Biome {
 
   private boids: Boids[];
 
-  constructor(generator: BiomeGenerator) {
-    super('HIGHLANDS', generator);
+  constructor(terrain: Terrain) {
+    super('HIGHLANDS', terrain);
 
     this.boids = [];
 
@@ -43,7 +43,7 @@ class HighlandBiome extends Biome {
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.highland_visited);
   }
 
-  init(scene: THREE.Scene, terrain: Terrain) {
+  init() {
     if (MathUtils.rng() > 0.35) {
       const size = MathUtils.randomInt(100000, 140000);
 
@@ -58,7 +58,7 @@ class HighlandBiome extends Biome {
         const py = Math.max(Chunk.SEA_LEVEL + sy / 2, this.generator.computeHeightAt(px, pz) + sy / 3);
 
         // butterflies
-        const boids: Boids = new Boids(scene, new THREE.Vector3(size, sy, size), new THREE.Vector3(px, py, pz));
+        const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, sy, size), new THREE.Vector3(px, py, pz));
         for (let i = 0, n = MathUtils.randomInt(2, 5); i < n; i++) {
           boids.addCreature(new Butterfly());
         }

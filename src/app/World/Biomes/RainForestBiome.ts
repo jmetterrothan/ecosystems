@@ -19,8 +19,8 @@ class RainForestBiome extends Biome {
   private spread: number;
   private ridges: number;
 
-  constructor(generator: BiomeGenerator) {
-    super('RAINFOREST', generator);
+  constructor(terrain: Terrain) {
+    super('RAINFOREST', terrain);
 
     this.waterDistortion = true;
     this.waterDistortionFreq = 2.5;
@@ -37,12 +37,6 @@ class RainForestBiome extends Biome {
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.rainforest_visited);
   }
-
-  init(scene: THREE.Scene, terrain: Terrain) { }
-
-  update(delta: number) { }
-
-  handleClick(raycaster: THREE.Raycaster) { }
 
   /**
    * Compute elevation

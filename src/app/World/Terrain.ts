@@ -81,10 +81,10 @@ class Terrain {
    * @param {World} world
    * @param {BiomeGenerator} generator
    */
-  constructor(scene: THREE.Scene, world: World, generator: BiomeGenerator) {
-    this.scene = scene;
+  constructor(world: World) {
     this.world = world;
-    this.generator = generator;
+    this.scene = world.getScene();
+    this.generator = world.getBiomeGenerator();
 
     this.chunks = new Map<string, Chunk>();
     this.visibleChunks = [];
@@ -103,7 +103,8 @@ class Terrain {
 
   init() {
     this.initMeshes();
-    /* if (this.multiplayerSvc.isUsed()) */ this.watchObjectPlaced();
+    /* if (this.multiplayerSvc.isUsed()) */
+    this.watchObjectPlaced();
   }
 
   /**
@@ -653,6 +654,14 @@ class Terrain {
     const offset = 200;
     return MathUtils.between(intersection.x, -offset, offset) || MathUtils.between(intersection.x, Terrain.SIZE_X - offset, Terrain.SIZE_X + offset) ||
       MathUtils.between(intersection.z, -offset, offset) || MathUtils.between(intersection.z, Terrain.SIZE_Z - offset, Terrain.SIZE_Z + offset);
+  }
+
+  public getScene(): THREE.Scene {
+    return this.scene;
+  }
+
+  public getBiomeGenerator(): BiomeGenerator {
+    return this.generator;
   }
 
   public getWorld(): World {

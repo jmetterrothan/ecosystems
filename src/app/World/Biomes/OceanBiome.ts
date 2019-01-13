@@ -3,7 +3,6 @@ import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
-import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 import Boids from '@boids/Boids';
@@ -24,8 +23,8 @@ class OceanBiome extends Biome {
 
   private chest: THREE.Object3D;
 
-  constructor(generator: BiomeGenerator) {
-    super('OCEAN', generator);
+  constructor(terrain: Terrain) {
+    super('OCEAN', terrain);
 
     this.boids = [];
 
@@ -39,7 +38,7 @@ class OceanBiome extends Biome {
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.ocean_visited);
   }
 
-  init(scene: THREE.Scene, terrain: Terrain) {
+  init() {
     const minSize = 90000;
     const maxSize = 150000;
     const size = MathUtils.randomFloat(minSize, maxSize);
@@ -59,7 +58,7 @@ class OceanBiome extends Biome {
       const fishClass = n > 3 ? DiscusFish : SalmonFish;
 
       // fishs
-      const boids: Boids = new Boids(scene, new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
+      const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
       for (let i = 0; i < n; i++) {
         boids.addCreature(new fishClass());
       }
@@ -74,7 +73,7 @@ class OceanBiome extends Biome {
     const sizeX = 8192;
     const sizeZ = 8192;
 
-    this.chest = terrain.placeSpecialObject({ stackReference: 'chest', float: false, underwater: true }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+    this.chest = this.terrain.placeSpecialObject({ stackReference: 'chest', float: false, underwater: true }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
   }
 
   update(delta: number) {
