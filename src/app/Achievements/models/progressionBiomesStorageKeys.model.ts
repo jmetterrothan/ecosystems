@@ -6,4 +6,5 @@ export interface IProgressionBiomesStorageKeys {
   rainforest_visited: string;
   snow_visited: string;
   swamp_visited: string;
+  fjord_visited: string;
 }

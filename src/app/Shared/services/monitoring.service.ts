@@ -16,7 +16,7 @@ class MonitoringService {
 
   sendEvent(category: string, action: string, label?: string, numericValue?: number) {
     ga('send', 'event', category, action, label, numericValue);
-    if (configSvc.config.DEBUG) console.log(`event ${category} ${action} sent`);
+    if (configSvc.config.DEBUG) console.log(`event ${category} ${action} sent (${label})`);
   }
 
 }

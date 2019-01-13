@@ -7,20 +7,24 @@ import BiomeGenerator from '@world/BiomeGenerator';
 
 import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
 import PlayerService, { playerSvc } from '@services/player.service';
+import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
 
 import { ICloudData } from '@shared/models/cloudData.model';
+
+import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
 
 import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@app/Shared/utils/Common.utils';
 
 class Weather {
-  private static RAIN_SPEED : number = 200;
-  private static FOG_COLORS : Map<number, THREE.Color> = new Map<number, THREE.Color>();
+  private static RAIN_SPEED: number = 200;
+  private static FOG_COLORS: Map<number, THREE.Color> = new Map<number, THREE.Color>();
 
   private scene: THREE.Scene;
   private generator: BiomeGenerator;
 
   private configSvc: GraphicsConfigService;
+  private progressionSvc: ProgressionService;
   private playerSvc: PlayerService;
 
   private clouds: THREE.Group;
@@ -57,6 +61,7 @@ class Weather {
 
     this.configSvc = configSvc;
     this.playerSvc = playerSvc;
+    this.progressionSvc = progressionSvc;
 
     this.startTime = window.performance.now();
   }
@@ -181,13 +186,11 @@ class Weather {
 
     this.sun = World.LOADED_MODELS.get('sun').clone();
     this.sun.children.forEach(materialCallback);
-    // this.sun = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'red' }));
     this.sun.position.copy(this.sunlight.position);
     // this.sun.visible = configSvc.config.DEBUG;
 
     this.moon = World.LOADED_MODELS.get('moon').clone();
     this.moon.children.forEach(materialCallback);
-    // this.moon = new THREE.Mesh(new THREE.SphereGeometry(1000, 24, 24), new THREE.MeshBasicMaterial({ color: 'blue' }));
     this.moon.position.copy(this.sunlight.position);
     // this.moon.visible = configSvc.config.DEBUG;
 
@@ -289,6 +292,8 @@ class Weather {
    * @param {number} delta
    */
   private updateClouds(delta: number) {
+    const playerPosition = this.playerSvc.getPosition();
+
     for (const cloud of this.clouds.children) {
       // move cloud
       cloud.position.add(this.wind.clone().multiplyScalar(delta));
@@ -348,6 +353,12 @@ class Weather {
         }
       });
 
+      // progression
+      const playerPositionAtCloudElevation = new THREE.Vector3().copy(playerPosition).setY(Chunk.CLOUD_LEVEL + 500);
+      if (rainData.isRaininig && MathUtils.between(playerPosition.y, Chunk.SEA_LEVEL, Chunk.CLOUD_LEVEL) && bbox.containsPoint(playerPositionAtCloudElevation)) {
+        this.progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.under_rain);
+      }
+
       rainData.particles.verticesNeedUpdate = true;
     }
   }
@@ -365,6 +376,12 @@ class Weather {
     this.sunlight.shadow.camera.updateProjectionMatrix();
 
     this.sunBoundLight.position.copy(this.sunlight.position);
+
+    const bbox = new THREE.Box3().setFromObject(this.sun);
+
+    if (bbox.containsPoint(this.playerSvc.getPosition())) {
+      this.progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.in_sun);
+    }
 
     if (this.configSvc.config.DEBUG) {
       this.lightHelper.position.copy(this.sunlight.position);

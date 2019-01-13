@@ -7,5 +7,6 @@ export const PROGRESSION_BIOME_STORAGE_KEYS: IProgressionBiomesStorageKeys = {
   ocean_visited: 'ocean_visited',
   rainforest_visited: 'rainforest_visited',
   snow_visited: 'snow_visited',
-  swamp_visited: 'swamp_visited'
+  swamp_visited: 'swamp_visited',
+  fjord_visited: 'fjord_visited'
 };
