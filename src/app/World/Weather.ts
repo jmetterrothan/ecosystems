@@ -380,7 +380,7 @@ class Weather {
     const bbox = new THREE.Box3().setFromObject(this.sun);
 
     if (bbox.containsPoint(this.playerSvc.getPosition())) {
-      console.log('dans le soleil');
+      this.progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.in_sun);
     }
 
     if (this.configSvc.config.DEBUG) {
