@@ -18,5 +18,6 @@ module.exports = {
   "@public": path.resolve(PATHS.PUBLIC),
   "@achievements": path.resolve(PATHS.APP, 'Achievements'),
   "@ui": path.resolve(PATHS.APP, 'UI'),
-  "@voice": path.resolve(PATHS.APP, 'Voice')
+  "@voice": path.resolve(PATHS.APP, 'Voice'),
+  "@templates": path.resolve(PATHS.PUBLIC, 'templates')
 };
