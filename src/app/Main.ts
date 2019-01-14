@@ -10,12 +10,14 @@ import PostProcess from '@app/PostProcess';
 
 import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
-import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
-import StorageService, { storageSvc } from '@shared/services/storage.service';
-import CoreService, { coreSvc } from '@shared/services/core.service';
+import MultiplayerService, { multiplayerSvc } from '@services/multiplayer.service';
+import StorageService, { storageSvc } from '@services/storage.service';
+import CoreService, { coreSvc } from '@services/core.service';
+import UIService, { uiSvc } from '@ui/services/ui.service';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
+import { UI_STATES } from '@ui/enums/UIStates.enum';
 
 class Main {
   private renderer: THREE.WebGLRenderer;
@@ -35,6 +37,7 @@ class Main {
   private coreSvc: CoreService;
   private playerSvc: PlayerService;
   private configSvc: GraphicsConfigService;
+  private uiSvc: UIService;
   private multiplayerSvc: MultiplayerService;
   private storageSvc: StorageService;
 
@@ -45,6 +48,7 @@ class Main {
     this.coreSvc = coreSvc;
     this.configSvc = configSvc;
     this.playerSvc = playerSvc;
+    this.uiSvc = uiSvc;
     this.multiplayerSvc = multiplayerSvc;
     this.storageSvc = storageSvc;
 
@@ -145,6 +149,7 @@ class Main {
     this.renderer.domElement.style.left = '0';
     this.renderer.domElement.style.width = '100vw';
     this.renderer.domElement.style.height = '100vh';
+    this.renderer.domElement.style.zIndex = '-1';
 
     this.renderer.shadowMap.enabled = this.configSvc.config.ENABLE_SHADOWS;
     this.renderer.shadowMap.type = this.configSvc.config.SHADOW_MAP_TYPE;
@@ -187,10 +192,13 @@ class Main {
       document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
 
       document.body.addEventListener('click', () => {
-        if (!this.controls.enabled || !this.world.isInitialized()) { return; }
+
+        if (!this.uiSvc.isState(UI_STATES.PLAY)) return;
 
         document.body.requestPointerLock = document.body.requestPointerLock || document.body.mozRequestPointerLock || document.body.webkitRequestPointerLock;
         document.body.requestPointerLock();
+
+        if (!this.controls.enabled || !this.world.isInitialized()) { return; }
 
         // mouse position always in the center of the screen
         this.world.handleMouseInteraction(MOUSE_TYPES.CLICK);
