@@ -14,7 +14,7 @@ interface IUIManagerState {
   currentUiStateID: number;
 }
 
-class UIManager extends React.Component<IUIManagerProps, IUIManagerState> {
+class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   private states: Map<UI_STATES, UIState>;
 
   constructor(props) {
@@ -31,11 +31,12 @@ class UIManager extends React.Component<IUIManagerProps, IUIManagerState> {
 
   render() {
     const uiState = this.states.get(this.state.currentUiStateID);
-    if (uiState) {
-      return uiState.render();
-    }
 
-    return null;
+    return <div className="ui">
+      <div className="ui__state">
+        {uiState ? uiState.render() : null}
+      </div>
+    </div>;
   }
 
   private addState(key: UI_STATES, value: UIState) {
