@@ -15,9 +15,11 @@ interface IUIManagerState {
 }
 
 class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
+  static readonly ENABLED: boolean = true;
+
   private states: Map<UI_STATES, UIState>;
 
-  constructor(props) {
+  constructor(props: IUIManagerProps) {
     super(props);
 
     this.state = {
@@ -32,11 +34,13 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   render() {
     const uiState = this.states.get(this.state.currentUiStateID);
 
-    return <div className="ui">
-      <div className="ui__state">
-        {uiState ? uiState.render() : null}
+    return (
+      <div className="ui full">
+        <div className="ui__state">
+          {uiState && uiState.render()}
+        </div>
       </div>
-    </div>;
+    );
   }
 
   private addState(key: UI_STATES, value: UIState) {
@@ -47,7 +51,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   }
 
   public switchState(state: UI_STATES) {
-    this.setState({ currentUiStateID : state });
+    this.setState({ currentUiStateID: state });
   }
 }
 
