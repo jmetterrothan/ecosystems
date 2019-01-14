@@ -8,7 +8,7 @@ interface Props {
   children: JSX.Element;
   className?: string;
   debug?: boolean;
-  textAlign?: string;
+  textAlign?: textAlign;
   Tag?: any;
 }
 

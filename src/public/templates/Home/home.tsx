@@ -5,7 +5,7 @@ import Col from '@components/Col/col';
 
 const Home = () => (
   <Row justify='start' debug>
-    <Col className='col_6' textAlign='center' debug>ok</Col>
+    <Col className='col_6' textAlign='start' debug>ok</Col>
   </Row>
 );
 
