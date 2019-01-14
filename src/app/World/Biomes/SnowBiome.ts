@@ -9,7 +9,7 @@ import { IBiome } from '@shared/models/biome.model';
 
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
-import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@app/Achievements/constants/progressionExtrasStorageKeys.constants';
+import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
 class SnowBiome extends Biome {
   private snowmanObject: THREE.Object3D;

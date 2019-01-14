@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 
 import BiomeGenerator from '@world/BiomeGenerator';
-import World from '@app/World/World';
-import Terrain from '@app/World/Terrain';
+import World from '@world/World';
+import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
 import MathUtils from '@utils/Math.utils';
 

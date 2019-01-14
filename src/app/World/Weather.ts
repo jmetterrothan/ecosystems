@@ -5,7 +5,7 @@ import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
 import MathUtils from '@shared/utils/Math.utils';
-import CommonUtils from '@app/Shared/utils/Common.utils';
+import CommonUtils from '@shared/utils/Common.utils';
 
 import GraphicsConfigService, { configSvc } from '@services/graphicsConfig.service';
 import PlayerService, { playerSvc } from '@services/player.service';
