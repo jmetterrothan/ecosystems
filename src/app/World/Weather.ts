@@ -4,15 +4,15 @@ import World from '@world/World';
 import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
-import MathUtils from '@shared/utils/Math.utils';
-import CommonUtils from '@shared/utils/Common.utils';
+import MathUtils from '@utils/Math.utils';
+import CommonUtils from '@utils/Common.utils';
 
 import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
 import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
 
-import { ICloudData } from '@app/world/models/cloudData.model';
+import { ICloudData } from '@world/models/cloudData.model';
 
 import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
 

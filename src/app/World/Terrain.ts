@@ -1,13 +1,12 @@
 import * as THREE from 'three';
+import { stack } from '@tensorflow/tfjs';
 
 import World from '@world/World';
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Coord from '@world/Coord';
 import Biome from '@world/Biome';
-import MathUtils from '@shared/utils/Math.utils';
 import Crosshair from '@ui/Crosshair';
-import CommonUtils from '@shared/utils/Common.utils';
 
 import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
 import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
@@ -19,13 +18,14 @@ import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.mate
 
 import { IBiome } from '@world/models/biome.model';
 import { IPick } from '@world/models/pick.model';
-import { IOnlineObject } from '@app/online/models/onlineObjects.model';
+import { IOnlineObject } from '@online/models/onlineObjects.model';
 import { ISpecialObject } from '@world/models/objectParameters.model';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
-import { stack } from '@tensorflow/tfjs';
+import MathUtils from '@shared/utils/Math.utils';
+import CommonUtils from '@shared/utils/Common.utils';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 16;

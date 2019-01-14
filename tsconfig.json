@@ -50,6 +50,9 @@
       "@voice/*": [
         "src/app/voice/*"
       ],
+      "@online/*": [
+        "src/app/online/*"
+      ],
       "@components/*": [
         "src/public/components/*"
       ],

@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js dev
 
 PATH: 
   D:\Programmes\cmder\bin;D:\Programmes\cmder\vendor\bin;D:\Programmes\cmder\vendor\conemu-maximus5\ConEmu\Scripts;D:\Programmes\cmder\vendor\conemu-maximus5;D:\Programmes\cmder\vendor\conemu-maximus5\ConEmu;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files\RedHat\java-1.8.0-openjdk-1.8.0.144-1\bin;C:\MinGW;D:\Documents\WAMP\bin\php\php7.1.9;C:\ProgramData\chocolatey\bin;C:\Program Files\Java\jdk1.8.0_152\bin;D:\Programmes\android-sdk\tools;D:\Programmes\android-sdk\platform-tools;C:\Program Files\nodejs;D:\Programmes\composer;D:\Programmes\Putty\;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;C:\Users\Florian\AppData\Roaming\npm;C:\Users\Florian\AppData\Roaming\npm\node_modules\@angular\cli\bin;D:\Documents\WAMP\bin\mysql\mysql5.7.19\bin;C:\Program Files\Git\cmd;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Program Files\MongoDB\Server\4.0\bin;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;D:\Programmes\flutter\bin;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Users\Florian\AppData\Local\Microsoft\WindowsApps;C:\Users\Florian\AppData\Roaming\Dashlane\6.1901.0.16461\bin\Firefox_Extension\{442718d9-475e-452a-b3e1-fb1ee16b8e9f}\components;C:\Users\Florian\AppData\Roaming\Dashlane\6.1901.0.16461\ucrt;C:\Users\Florian\AppData\Roaming\Dashlane\6.1901.0.16461\bin\Qt;C:\Users\Florian\AppData\Roaming\Dashlane\6.1901.0.16461\bin\Ssl;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;D:\Programmes\cmder
@@ -45,6 +45,7 @@ npm manifest:
       "tslint": "^5.11.0",
       "tslint-config-airbnb": "^5.11.1",
       "tslint-loader": "^3.5.4",
+      "tslint-react": "^3.6.0",
       "typescript": "^3.1.6",
       "webpack": "^4.25.1",
       "webpack-cli": "^3.1.2",
@@ -60,17 +61,20 @@ npm manifest:
     "dependencies": {
       "@reactivex/rxjs": "^6.3.3",
       "@tensorflow-models/speech-commands": "^0.2.3",
-      "@tensorflow/tfjs": "^0.14.1",
+      "@tensorflow/tfjs": "^0.14.2",
       "@tweenjs/tween.js": "^17.2.0",
       "@types/es6-promise": "^3.3.0",
       "@types/i18next": "^12.1.0",
       "@types/node": "^10.12.10",
+      "@types/react": "^16.7.18",
+      "@types/react-dom": "^16.0.11",
       "@types/socket.io-client": "^1.4.32",
       "@types/three": "^0.93.10",
       "@types/tween.js": "^16.9.0",
       "@types/ws": "^6.0.1",
       "i18next": "^13.1.0",
       "i18next-browser-languagedetector": "^2.2.4",
+      "jmetterrothan-flexgrid": "^1.0.2",
       "js-yaml-loader": "^1.0.1",
       "poisson-disk-sampling": "^1.0.2",
       "rxjs": "^6.3.3",
@@ -809,43 +813,42 @@ Lockfile:
     version "0.2.3"
     resolved "https://registry.yarnpkg.com/@tensorflow-models/speech-commands/-/speech-commands-0.2.3.tgz#f8071f35efeebefb061ba1c0f3d585414ae51a78"
   
-  "@tensorflow/tfjs-converter@0.7.1":
-    version "0.7.1"
-    resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-converter/-/tfjs-converter-0.7.1.tgz#af33b89f34fdfbdfbe8d9361c5542d7db514364d"
+  "@tensorflow/tfjs-converter@0.7.2":
+    version "0.7.2"
+    resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-converter/-/tfjs-converter-0.7.2.tgz#49e578f71eb82d821af05176754c3452b42cfe9c"
     dependencies:
       "@types/long" "~3.0.32"
       protobufjs "~6.8.6"
   
-  "@tensorflow/tfjs-core@0.14.2":
-    version "0.14.2"
-    resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-core/-/tfjs-core-0.14.2.tgz#b1ee6af0d893782a1c3b2c988091c36c42f1d7a4"
+  "@tensorflow/tfjs-core@0.14.5":
+    version "0.14.5"
+    resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-core/-/tfjs-core-0.14.5.tgz#17c3beeec31c4cd92b0f79a5ef30c4975a11e408"
     dependencies:
       "@types/seedrandom" "2.4.27"
       "@types/webgl-ext" "0.0.30"
       "@types/webgl2" "0.0.4"
       seedrandom "2.4.3"
   
-  "@tensorflow/tfjs-data@0.1.4":
-    version "0.1.4"
-    resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-data/-/tfjs-data-0.1.4.tgz#4732a2505c5d7d0d8ba0458f5b92837fd02ba442"
+  "@tensorflow/tfjs-data@0.1.7":
+    version "0.1.7"
+    resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-data/-/tfjs-data-0.1.7.tgz#8a4e43313b3d63cdfab719c0c1c47ced2ef321e3"
     dependencies:
       "@types/node-fetch" "^2.1.2"
       node-fetch "~2.1.2"
       seedrandom "~2.4.3"
-      utf8 "~2.1.2"
   
-  "@tensorflow/tfjs-layers@0.9.1":
-    version "0.9.1"
-    resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-layers/-/tfjs-layers-0.9.1.tgz#685b741cf5c42aa9b2621485ffafdcc43c8db699"
+  "@tensorflow/tfjs-layers@0.9.2":
+    version "0.9.2"
+    resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-layers/-/tfjs-layers-0.9.2.tgz#f5c1918d1a9660096f259cd1f99f59e689b41b69"
   
-  "@tensorflow/tfjs@^0.14.1":
-    version "0.14.1"
-    resolved "https://registry.yarnpkg.com/@tensorflow/tfjs/-/tfjs-0.14.1.tgz#d9b198c26eb1f154c5c27228800c9df7630d2cbf"
+  "@tensorflow/tfjs@^0.14.2":
+    version "0.14.2"
+    resolved "https://registry.yarnpkg.com/@tensorflow/tfjs/-/tfjs-0.14.2.tgz#f38fa572286dadfe981c219f5639defd586c20c4"
     dependencies:
-      "@tensorflow/tfjs-converter" "0.7.1"
-      "@tensorflow/tfjs-core" "0.14.2"
-      "@tensorflow/tfjs-data" "0.1.4"
-      "@tensorflow/tfjs-layers" "0.9.1"
+      "@tensorflow/tfjs-converter" "0.7.2"
+      "@tensorflow/tfjs-core" "0.14.5"
+      "@tensorflow/tfjs-data" "0.1.7"
+      "@tensorflow/tfjs-layers" "0.9.2"
   
   "@tweenjs/tween.js@^17.2.0":
     version "17.2.0"
@@ -890,6 +893,23 @@ Lockfile:
   "@types/node@^10.12.10":
     version "10.12.10"
     resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.10.tgz#4fa76e6598b7de3f0cb6ec3abacc4f59e5b3a2ce"
+  
+  "@types/prop-types@*":
+    version "15.5.8"
+    resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.8.tgz#8ae4e0ea205fe95c3901a5a1df7f66495e3a56ce"
+  
+  "@types/react-dom@^16.0.11":
+    version "16.0.11"
+    resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.11.tgz#bd10ccb0d9260343f4b9a49d4f7a8330a5c1f081"
+    dependencies:
+      "@types/react" "*"
+  
+  "@types/react@*", "@types/react@^16.7.18":
+    version "16.7.18"
+    resolved "https://registry.yarnpkg.com/@types/react/-/react-16.7.18.tgz#f4ce0d539a893dd61e36cd11ae3a5e54f5a48337"
+    dependencies:
+      "@types/prop-types" "*"
+      csstype "^2.2.0"
   
   "@types/seedrandom@2.4.27":
     version "2.4.27"
@@ -1950,6 +1970,10 @@ Lockfile:
   cssesc@^0.1.0:
     version "0.1.0"
     resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-0.1.0.tgz#c814903e45623371a0477b40109aaafbeeaddbb4"
+  
+  csstype@^2.2.0:
+    version "2.6.0"
+    resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.0.tgz#6cf7b2fa7fc32aab3d746802c244d4eda71371a2"
   
   currently-unhandled@^0.4.1:
     version "0.4.1"
@@ -3300,6 +3324,11 @@ Lockfile:
   isstream@~0.1.2:
     version "0.1.2"
     resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
+  
+  jmetterrothan-flexgrid@^1.0.2:
+    version "1.0.2"
+    resolved "https://registry.yarnpkg.com/jmetterrothan-flexgrid/-/jmetterrothan-flexgrid-1.0.2.tgz#7303b4c508f835f5ab8dd13e802f403f2d89f0b7"
+    integrity sha512-s8ESNI6A45k3ZJsmjhFAHXvqXHKs6bOSRCxhJw8Dm2Roa70kkXvD7QivvjbODroj9FG8SS0zmKFjJutJRPUItQ==
   
   js-base64@^2.1.8:
     version "2.4.9"
@@ -5458,6 +5487,12 @@ Lockfile:
     dependencies:
       tsutils "^2.27.2 <2.29.0"
   
+  tslint-react@^3.6.0:
+    version "3.6.0"
+    resolved "https://registry.yarnpkg.com/tslint-react/-/tslint-react-3.6.0.tgz#7f462c95c4a0afaae82507f06517ff02942196a1"
+    dependencies:
+      tsutils "^2.13.1"
+  
   tslint@^5.11.0:
     version "5.11.0"
     resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.11.0.tgz#98f30c02eae3cde7006201e4c33cb08b48581eed"
@@ -5475,7 +5510,7 @@ Lockfile:
       tslib "^1.8.0"
       tsutils "^2.27.2"
   
-  tsutils@^2.27.2, tsutils@^2.29.0:
+  tsutils@^2.13.1, tsutils@^2.27.2, tsutils@^2.29.0:
     version "2.29.0"
     resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.29.0.tgz#32b488501467acbedd4b85498673a0812aca0b99"
     dependencies:
@@ -5639,10 +5674,6 @@ Lockfile:
   use@^3.1.0:
     version "3.1.1"
     resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
-  
-  utf8@~2.1.2:
-    version "2.1.2"
-    resolved "https://registry.yarnpkg.com/utf8/-/utf8-2.1.2.tgz#1fa0d9270e9be850d9b05027f63519bf46457d96"
   
   util-deprecate@~1.0.1:
     version "1.0.2"
@@ -6004,159 +6035,13 @@ Lockfile:
       ndarray "^1.0.16"
 
 Trace: 
-  Error: D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass: Command failed.
+  Error: Command failed.
   Exit code: 1
   Command: C:\WINDOWS\system32\cmd.exe
-  Arguments: /d /s /c node scripts/build.js
-  Directory: D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass
+  Arguments: /d /s /c webpack-dev-server --progress --inline --mode development --config config/webpack.dev.js
+  Directory: D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem
   Output:
-  Building: C:\Program Files\nodejs\node.exe D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-gyp\bin\node-gyp.js rebuild --verbose --libsass_ext= --libsass_cflags= --libsass_ldflags= --libsass_library=
-  gyp info it worked if it ends with ok
-  gyp verb cli [ 'C:\\Program Files\\nodejs\\node.exe',
-  gyp verb cli   'D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\node-gyp\\bin\\node-gyp.js',
-  gyp verb cli   'rebuild',
-  gyp verb cli   '--verbose',
-  gyp verb cli   '--libsass_ext=',
-  gyp verb cli   '--libsass_cflags=',
-  gyp verb cli   '--libsass_ldflags=',
-  gyp verb cli   '--libsass_library=' ]
-  gyp info using node-gyp@3.8.0
-  gyp info using node@8.10.0 | win32 | x64
-  gyp verb command rebuild []
-  gyp verb command clean []
-  gyp verb clean removing "build" directory
-  gyp verb command configure []
-  gyp verb check python checking for Python executable "python2" in the PATH
-  gyp verb `which` failed Error: not found: python2
-  gyp verb `which` failed     at getNotFoundError (D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\which\which.js:13:12)
-  gyp verb `which` failed     at F (D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\which\which.js:68:19)
-  gyp verb `which` failed     at E (D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\which\which.js:80:29)
-  gyp verb `which` failed     at D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\which\which.js:89:16
-  gyp verb `which` failed     at D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\isexe\index.js:42:5
-  gyp verb `which` failed     at D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\isexe\windows.js:36:5
-  gyp verb `which` failed     at FSReqWrap.oncomplete (fs.js:152:21)
-  gyp verb `which` failed  python2 { Error: not found: python2
-  gyp verb `which` failed     at getNotFoundError (D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\which\which.js:13:12)
-  gyp verb `which` failed     at F (D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\which\which.js:68:19)
-  gyp verb `which` failed     at E (D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\which\which.js:80:29)
-  gyp verb `which` failed     at D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\which\which.js:89:16
-  gyp verb `which` failed     at D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\isexe\index.js:42:5
-  gyp verb `which` failed     at D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\isexe\windows.js:36:5
-  gyp verb `which` failed     at FSReqWrap.oncomplete (fs.js:152:21)
-  gyp verb `which` failed   stack: 'Error: not found: python2\n    at getNotFoundError (D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\which\\which.js:13:12)\n    at F (D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\which\\which.js:68:19)\n    at E (D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\which\\which.js:80:29)\n    at D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\which\\which.js:89:16\n    at D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\isexe\\index.js:42:5\n    at D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\isexe\\windows.js:36:5\n    at FSReqWrap.oncomplete (fs.js:152:21)',
-  gyp verb `which` failed   code: 'ENOENT' }
-  gyp verb check python checking for Python executable "python" in the PATH
-  gyp verb `which` failed Error: not found: python
-  gyp verb `which` failed     at getNotFoundError (D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\which\which.js:13:12)
-  gyp verb `which` failed     at F (D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\which\which.js:68:19)
-  gyp verb `which` failed     at E (D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\which\which.js:80:29)
-  gyp verb `which` failed     at D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\which\which.js:89:16
-  gyp verb `which` failed     at D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\isexe\index.js:42:5
-  gyp verb `which` failed     at D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\isexe\windows.js:36:5
-  gyp verb `which` failed     at FSReqWrap.oncomplete (fs.js:152:21)
-  gyp verb `which` failed  python { Error: not found: python
-  gyp verb `which` failed     at getNotFoundError (D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\which\which.js:13:12)
-  gyp verb `which` failed     at F (D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\which\which.js:68:19)
-  gyp verb `which` failed     at E (D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\which\which.js:80:29)
-  gyp verb `which` failed     at D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\which\which.js:89:16
-  gyp verb `which` failed     at D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\isexe\index.js:42:5
-  gyp verb `which` failed     at D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\isexe\windows.js:36:5
-  gyp verb `which` failed     at FSReqWrap.oncomplete (fs.js:152:21)
-  gyp verb `which` failed   stack: 'Error: not found: python\n    at getNotFoundError (D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\which\\which.js:13:12)\n    at F (D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\which\\which.js:68:19)\n    at E (D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\which\\which.js:80:29)\n    at D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\which\\which.js:89:16\n    at D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\isexe\\index.js:42:5\n    at D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\isexe\\windows.js:36:5\n    at FSReqWrap.oncomplete (fs.js:152:21)',
-  gyp verb `which` failed   code: 'ENOENT' }
-  gyp verb could not find "python". checking python launcher 
-  gyp verb check python launcher python executable found: "C:\\Users\\Florian\\.windows-build-tools\\python27\\python.exe"
-  gyp verb check python version `C:\Users\Florian\.windows-build-tools\python27\python.exe -c "import sys; print "2.7.14
-  gyp verb check python version .%s.%s" % sys.version_info[:3];"` returned: %j
-  gyp verb get node dir no --target version specified, falling back to host node version: 8.10.0
-  gyp verb command install [ '8.10.0' ]
-  gyp verb install input version string "8.10.0"
-  gyp verb install installing version: 8.10.0
-  gyp verb install --ensure was passed, so won't reinstall if already installed
-  gyp verb install version is already installed, need to check "installVersion"
-  gyp verb got "installVersion" 9
-  gyp verb needs "installVersion" 9
-  gyp verb install version is good
-  gyp verb get node dir target node version installed: 8.10.0
-  gyp verb build dir attempting to create "build" dir: D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\build
-  gyp verb build dir "build" dir needed to be created? D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\build
-  gyp verb Not using VS2017: Could not use PowerShell to find VS2017
-  gyp verb build/config.gypi creating config file
-  gyp verb build/config.gypi writing out config file: D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\build\config.gypi
-  gyp verb config.gypi checking for gypi file: D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\config.gypi
-  gyp verb common.gypi checking for gypi file: D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\common.gypi
-  gyp verb gyp gyp format was not specified; forcing "msvs"
-  gyp info spawn C:\Users\Florian\.windows-build-tools\python27\python.exe
-  gyp info spawn args [ 'D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\node-gyp\\gyp\\gyp_main.py',
-  gyp info spawn args   'binding.gyp',
-  gyp info spawn args   '-f',
-  gyp info spawn args   'msvs',
-  gyp info spawn args   '-G',
-  gyp info spawn args   'msvs_version=auto',
-  gyp info spawn args   '-I',
-  gyp info spawn args   'D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\node-sass\\build\\config.gypi',
-  gyp info spawn args   '-I',
-  gyp info spawn args   'D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\node-gyp\\addon.gypi',
-  gyp info spawn args   '-I',
-  gyp info spawn args   'C:\\Users\\Florian\\.node-gyp\\8.10.0\\include\\node\\common.gypi',
-  gyp info spawn args   '-Dlibrary=shared_library',
-  gyp info spawn args   '-Dvisibility=default',
-  gyp info spawn args   '-Dnode_root_dir=C:\\Users\\Florian\\.node-gyp\\8.10.0',
-  gyp info spawn args   '-Dnode_gyp_dir=D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\node-gyp',
-  gyp info spawn args   '-Dnode_lib_file=C:\\Users\\Florian\\.node-gyp\\8.10.0\\<(target_arch)\\node.lib',
-  gyp info spawn args   '-Dmodule_root_dir=D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\node-sass',
-  gyp info spawn args   '-Dnode_engine=v8',
-  gyp info spawn args   '--depth=.',
-  gyp info spawn args   '--no-parallel',
-  gyp info spawn args   '--generator-output',
-  gyp info spawn args   'D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\node-sass\\build',
-  gyp info spawn args   '-Goutput_dir=.' ]
-  gyp verb command build []
-  gyp verb build type Release
-  gyp verb architecture x64
-  gyp verb node dev dir C:\Users\Florian\.node-gyp\8.10.0
-  gyp verb found first Solution file build/binding.sln
-  gyp verb could not find "msbuild.exe" in PATH - finding location in registry 
-  gyp info spawn C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe
-  gyp info spawn args [ 'build/binding.sln',
-  gyp info spawn args   '/nologo',
-  gyp info spawn args   '/p:Configuration=Release;Platform=x64' ]
-  G�n�ration des projets individuellement dans cette solution. Pour activer la g�n�ration en parall�le, ajoutez le commutateur "/m".
-  La g�n�ration a d�marr� 13/01/2019 21:30:19.
-  Projet "D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\build\binding.sln" sur le noud 1 (cibles par d�faut).
-  ValidateSolutionConfiguration:
-    G�n�ration de la configuration de solution "Release|x64".
-  Le projet "D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\build\binding.sln" (1) g�n�re "D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\build\binding.vcxproj.metaproj" (2) sur le noud 1 (cibles par d�faut).
-  Le projet "D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\build\binding.vcxproj.metaproj" (2) g�n�re "D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\build\src\libsass.vcxproj" (3) sur le noud 1 (cibles par d�faut).
-  D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\build\src\libsass.vcxproj(20,3): error MSB4019: Le projet import� "D:\Microsoft.Cpp.Default.props" est introuvable. V�rifiez que le chemin d'acc�s dans la d�claration <Import> est correct et que le fichier existe sur le disque.
-  G�n�ration du projet "D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\build\src\libsass.vcxproj" termin�e (cibles par d�faut) -- �CHEC.
-  G�n�ration du projet "D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\build\binding.vcxproj.metaproj" termin�e (cibles par d�faut) -- �CHEC.
-  G�n�ration du projet "D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\build\binding.sln" termin�e (cibles par d�faut) -- �CHEC.
   
-  �CHEC de la build.
-  
-  "D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\build\binding.sln" (cible par d�faut) (1) ->
-  "D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\build\binding.vcxproj.metaproj" (cible par d�faut) (2) ->
-  "D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\build\src\libsass.vcxproj" (cible par d�faut) (3) ->
-    D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass\build\src\libsass.vcxproj(20,3): error MSB4019: Le projet import� "D:\Microsoft.Cpp.Default.props" est introuvable. V�rifiez que le chemin d'acc�s dans la d�claration <Import> est correct et que le fichier existe sur le disque.
-  
-      0 Avertissement(s)
-      1 Erreur(s)
-  
-  Temps �coul� 00:00:00.61
-  gyp ERR! build error 
-  gyp ERR! stack Error: `C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe` failed with exit code: 1
-  gyp ERR! stack     at ChildProcess.onExit (D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-gyp\lib\build.js:262:23)
-  gyp ERR! stack     at emitTwo (events.js:126:13)
-  gyp ERR! stack     at ChildProcess.emit (events.js:214:7)
-  gyp ERR! stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:198:12)
-  gyp ERR! System Windows_NT 10.0.17134
-  gyp ERR! command "C:\\Program Files\\nodejs\\node.exe" "D:\\Documents\\IMAC\\3.IMAC3\\IntelligenceArtificielle\\ecosystem\\node_modules\\node-gyp\\bin\\node-gyp.js" "rebuild" "--verbose" "--libsass_ext=" "--libsass_cflags=" "--libsass_ldflags=" "--libsass_library="
-  gyp ERR! cwd D:\Documents\IMAC\3.IMAC3\IntelligenceArtificielle\ecosystem\node_modules\node-sass
-  gyp ERR! node -v v8.10.0
-  gyp ERR! node-gyp -v v3.8.0
-  gyp ERR! not ok 
-  Build failed with error code: 1
       at ProcessTermError.MessageError (C:\Program Files (x86)\Yarn\lib\cli.js:186:110)
       at new ProcessTermError (C:\Program Files (x86)\Yarn\lib\cli.js:226:113)
       at ChildProcess.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:30281:17)

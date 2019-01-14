@@ -10,9 +10,9 @@ import PostProcess from '@app/PostProcess';
 
 import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
-import MultiplayerService, { multiplayerSvc } from '@services/multiplayer.service';
-import StorageService, { storageSvc } from '@services/storage.service';
-import CoreService, { coreSvc } from '@services/core.service';
+import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
+import StorageService, { storageSvc } from '@shared/services/storage.service';
+import CoreService, { coreSvc } from '@shared/services/core.service';
 import UIService, { uiSvc } from '@ui/services/ui.service';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
