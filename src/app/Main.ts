@@ -13,7 +13,6 @@ import PlayerService, { playerSvc } from '@shared/services/player.service';
 import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
 import StorageService, { storageSvc } from '@shared/services/storage.service';
 import CoreService, { coreSvc } from '@shared/services/core.service';
-import UIService, { uiSvc } from '@ui/services/ui.service';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
@@ -37,7 +36,6 @@ class Main {
   private coreSvc: CoreService;
   private playerSvc: PlayerService;
   private configSvc: GraphicsConfigService;
-  private uiSvc: UIService;
   private multiplayerSvc: MultiplayerService;
   private storageSvc: StorageService;
 
@@ -48,7 +46,6 @@ class Main {
     this.coreSvc = coreSvc;
     this.configSvc = configSvc;
     this.playerSvc = playerSvc;
-    this.uiSvc = uiSvc;
     this.multiplayerSvc = multiplayerSvc;
     this.storageSvc = storageSvc;
 
@@ -192,8 +189,6 @@ class Main {
       document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
 
       document.body.addEventListener('click', () => {
-
-        if (!this.uiSvc.isState(UI_STATES.PLAY)) return;
 
         document.body.requestPointerLock = document.body.requestPointerLock || document.body.mozRequestPointerLock || document.body.webkitRequestPointerLock;
         document.body.requestPointerLock();
