@@ -1,5 +1,9 @@
 {
-  "extends": "tslint-config-airbnb",
+  "extends": [
+    "tslint-config-airbnb",
+    "tslint-react"
+  ],
+  "jsRules": {},
   "rules": {
     "trailing-comma": false,
     "no-boolean-literal-compare": false,
@@ -8,6 +12,14 @@
     "align": false,
     "ter-arrow-parens": false,
     "no-parameter-reassignment": false,
-    "import-name": false
-  }
+    "import-name": false,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-pascal-case"
+    ],
+    "jsx-no-lambda": false
+  },
+  "rulesDirectory": []
 }

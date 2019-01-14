@@ -32,7 +32,7 @@ module.exports = {
         loader: 'babel-loader'
       },
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         enforce: 'pre',
         exclude: '/node_modules/',
         loader: 'tslint-loader'

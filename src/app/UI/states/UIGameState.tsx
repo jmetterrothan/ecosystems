@@ -8,9 +8,11 @@ class UIGameState extends UIState {
   }
 
   render() {
-    return <>
-      <h1>game</h1>
-    </>;
+    return (
+      <>
+        <h1>game</h1>
+      </>
+    );
   }
 }
 

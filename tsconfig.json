@@ -53,6 +53,9 @@
       "@voice/*": [
         "src/app/Voice/*"
       ],
+      "@components/*": [
+        "src/public/components/*"
+      ],
       "@templates/*": [
         "src/public/templates/*"
       ]
