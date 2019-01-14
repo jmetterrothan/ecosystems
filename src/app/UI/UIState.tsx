@@ -6,10 +6,10 @@ abstract class UIState extends React.PureComponent<void, void> {
 
   protected uiManager: UIManager;
 
-  constructor(uiManger: UIManager) {
+  constructor(uiManager: UIManager) {
     super();
 
-    this.uiManager = uiManger;
+    this.uiManager = uiManager;
   }
 
   abstract init();

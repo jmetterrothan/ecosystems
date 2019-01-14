@@ -1,6 +1,9 @@
 import React from 'react';
 
+import Game from '@templates/Game/game';
+
 import UIState from '@ui/UIState';
+import withService from '@public/components/withService/withService';
 
 class UIGameState extends UIState {
   init() {
@@ -9,9 +12,7 @@ class UIGameState extends UIState {
 
   render() {
     return (
-      <>
-        <h1>game</h1>
-      </>
+      withService(Game)({ uiManager: this.uiManager })
     );
   }
 }
