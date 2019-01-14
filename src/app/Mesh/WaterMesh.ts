@@ -5,10 +5,10 @@ import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
 import Mesh from '@mesh/Mesh';
 
-import { IChunkParameters } from '@shared/models/chunkParameters.model';
+import { IChunkParameters } from '@world/models/chunkParameters.model';
 import { WATER_MATERIAL } from '@materials/water.material';
 
-import { MESH_TYPES } from '@shared/enums/mesh.enum';
+import { MESH_TYPES } from '@mesh/enums/mesh.enum';
 
 class WaterMesh extends Mesh {
   constructor(generator: BiomeGenerator, row: number, col: number) {

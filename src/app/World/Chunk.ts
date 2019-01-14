@@ -10,8 +10,8 @@ import TerrainMesh from '@mesh/TerrainMesh';
 import WaterMesh from '@mesh/WaterMesh';
 import Stack from '@shared/Stack';
 
-import { IPick } from '@shared/models/pick.model';
-import { IPlaceObject, IPickObject, IStackReference } from '@shared/models/objectParameters.model';
+import { IPick } from '@world/models/pick.model';
+import { IPlaceObject, IPickObject, IStackReference } from '@world/models/objectParameters.model';
 
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 

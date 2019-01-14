@@ -2,11 +2,11 @@ import * as THREE from 'three';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
 
-import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded, ISocketDataObjectsInitialized } from '@app/Shared/models/socketData.model';
-import { IPick } from '@shared/models/pick.model';
-import { IOnlineObject } from '@shared/models/onlineObjects.model';
+import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded } from '@online/models/socketData.model';
+import { IPick } from '@world/models/pick.model';
+import { IOnlineObject } from '@online/models/onlineObjects.model';
 
-import { SOCKET_EVENTS } from '@shared/constants/socketEvents.constants';
+import { SOCKET_EVENTS } from '@online/constants/socketEvents.constants';
 
 import { ENV } from '@shared/env/env';
 

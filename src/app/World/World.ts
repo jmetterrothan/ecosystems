@@ -3,7 +3,7 @@ import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
-import GraphicsConfigService, { configSvc } from '@services/graphicsConfig.service';
+import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';

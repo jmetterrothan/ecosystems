@@ -9,18 +9,18 @@ import MathUtils from '@shared/utils/Math.utils';
 import Crosshair from '@ui/Crosshair';
 import CommonUtils from '@shared/utils/Common.utils';
 
-import MultiplayerService, { multiplayerSvc } from '@services/multiplayer.service';
+import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
 import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
-import PlayerService, { playerSvc } from '@services/player.service';
-import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
+import PlayerService, { playerSvc } from '@shared/services/player.service';
+import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
 
 import { WATER_MATERIAL } from '@materials/water.material';
 import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
 
-import { IBiome } from '@shared/models/biome.model';
-import { IPick } from '@shared/models/pick.model';
-import { IOnlineObject } from '@shared/models/onlineObjects.model';
-import { ISpecialObject } from '@shared/models/objectParameters.model';
+import { IBiome } from '@world/models/biome.model';
+import { IPick } from '@world/models/pick.model';
+import { IOnlineObject } from '@app/online/models/onlineObjects.model';
+import { ISpecialObject } from '@world/models/objectParameters.model';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';

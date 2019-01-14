@@ -1,14 +1,14 @@
 import * as THREE from 'three';
 
 import BiomeGenerator from '@world/BiomeGenerator';
-import World from '@app/World/World';
-import Terrain from '@app/World/Terrain';
+import World from '@world/World';
+import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
 import MathUtils from '@utils/Math.utils';
 
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 
-import { IBoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
+import { IBoidCreatureParameters } from '@boids/models/boidCreatureParameters.model';
 
 class Creature {
   private position: THREE.Vector3;

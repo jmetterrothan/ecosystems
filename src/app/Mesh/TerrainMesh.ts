@@ -4,10 +4,10 @@ import Mesh from '@mesh/Mesh';
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
 
-import { IChunkParameters } from '@shared/models/chunkParameters.model';
+import { IChunkParameters } from '@world/models/chunkParameters.model';
 import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 
-import { MESH_TYPES } from '@shared/enums/mesh.enum';
+import { MESH_TYPES } from '@mesh/enums/mesh.enum';
 
 import MathUtils from '@shared/utils/Math.utils';
 

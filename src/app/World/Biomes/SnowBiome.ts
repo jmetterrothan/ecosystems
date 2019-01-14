@@ -5,11 +5,11 @@ import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 
-import { IBiome } from '@shared/models/biome.model';
+import { IBiome } from '@world/models/biome.model';
 
-import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
+import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
-import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@app/Achievements/constants/progressionExtrasStorageKeys.constants';
+import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
 class SnowBiome extends Biome {
   private snowmanObject: THREE.Object3D;

@@ -1,15 +1,15 @@
 import * as THREE from 'three';
 
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
-import ProgressionService, { progressionSvc } from '@services/progression.service';
+import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
 
 import BiomeGenerator from '@world/BiomeGenerator';
 import Terrain from '@world/Terrain';
 import CommonUtils from '@shared/utils/Common.utils';
 
-import { IBiome } from '@shared/models/biome.model';
+import { IBiome } from '@world/models/biome.model';
 
-import { WATER_CONSTANTS } from '@shared/constants/water.constants';
+import { WATER_CONSTANTS } from '@world/constants/water.constants';
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 
 abstract class Biome {

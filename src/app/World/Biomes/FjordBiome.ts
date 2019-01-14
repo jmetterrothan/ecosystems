@@ -3,9 +3,9 @@ import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 
-import { IBiome } from '@shared/models/biome.model';
+import { IBiome } from '@world/models/biome.model';
 
-import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
+import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 
 class FjordBiome extends Biome {
   private e: number;

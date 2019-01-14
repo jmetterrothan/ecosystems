@@ -1,6 +1,5 @@
 import * as THREE from 'three';
-export interface Effect
-{
+export interface IEffect {
   effect: THREE.ShaderPass;
   update: Function;
 }

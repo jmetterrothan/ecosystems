@@ -8,7 +8,7 @@ import 'three/examples/js/postprocessing/ShaderPass';
 import 'three/examples/js/shaders/VignetteShader';
 import 'three/examples/js/shaders/ColorCorrectionShader';
 
-import { Effect } from '@shared/models/effect.model';
+import { IEffect } from '@shared/models/effect.model';
 
 import vergilwaterVertexGlsl from '@shaders/vergilwater.vertex.glsl';
 import vergilwaterFragmentGlsl from '@shaders/vergilwater.fragment.glsl';
@@ -18,9 +18,9 @@ import { configSvc } from '@shared/services/graphicsConfig.service';
 THREE.VergilWaterShader = {
   uniforms: {
     tDiffuse: { type: 't', value: null },
-    time:     { type: 'f', value: 0.0 },
+    time: { type: 'f', value: 0.0 },
     distort_speed: { type: 'f', value: 0.0004 },
-    distortion:   { type: 'f', value: 0.075 },
+    distortion: { type: 'f', value: 0.075 },
     centerX: { type: 'f', value: 0.5 },
     centerY: { type: 'f', value: 0.5 },
   },
@@ -28,13 +28,12 @@ THREE.VergilWaterShader = {
   fragmentShader: vergilwaterFragmentGlsl
 };
 
-class PostProcess
-{
+class PostProcess {
   private scene: THREE.Scene;
   private renderPass: THREE.RenderPass;
   private composer: THREE.EffectComposer;
 
-  private effects: Effect[];
+  private effects: IEffect[];
 
   /**
    * PostProcess constructor

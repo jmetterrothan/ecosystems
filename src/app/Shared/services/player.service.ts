@@ -4,8 +4,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
 
-import ProgressionService, { progressionSvc } from '@services/progression.service';
-import MonitoringService, { monitoringSvc } from '@services/monitoring.service';
+import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
+import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 
