@@ -8,9 +8,9 @@ class UIHomeState extends UIState {
   }
 
   render() {
-    return <div className="ui-state">
-      home
-    </div>;
+    return <>
+      <h1>home</h1>
+    </>;
   }
 }
 

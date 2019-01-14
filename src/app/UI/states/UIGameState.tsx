@@ -8,9 +8,9 @@ class UIGameState extends UIState {
   }
 
   render() {
-    return <div className="ui-state">
-      game
-    </div>;
+    return <>
+      <h1>game</h1>
+    </>;
   }
 }
 
