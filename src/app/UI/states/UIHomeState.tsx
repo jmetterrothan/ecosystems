@@ -8,9 +8,9 @@ class UIHomeState extends UIState {
   }
 
   render() {
-    return <>
+    return (
       <h1>home</h1>
-    </>;
+    );
   }
 }
 

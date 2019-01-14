@@ -54,7 +54,7 @@ class Main {
     if (this.configSvc.config.DEBUG) {
       this.stats = new statsJs();
       this.stats.showPanel(1);
-      document.body.appendChild(this.stats.dom);
+      // document.body.appendChild(this.stats.dom);
 
       /*
       // reset
@@ -187,10 +187,10 @@ class Main {
       document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
 
       document.body.addEventListener('click', () => {
+        if (!this.controls.enabled || !this.world.isInitialized()) { return; }
+
         document.body.requestPointerLock = document.body.requestPointerLock || document.body.mozRequestPointerLock || document.body.webkitRequestPointerLock;
         document.body.requestPointerLock();
-
-        if (!this.controls.enabled || !this.world.isInitialized()) { return; }
 
         // mouse position always in the center of the screen
         this.world.handleMouseInteraction(MOUSE_TYPES.CLICK);
