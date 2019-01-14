@@ -3232,6 +3232,11 @@ isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
 
+jmetterrothan-flexgrid@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/jmetterrothan-flexgrid/-/jmetterrothan-flexgrid-1.0.2.tgz#7303b4c508f835f5ab8dd13e802f403f2d89f0b7"
+  integrity sha512-s8ESNI6A45k3ZJsmjhFAHXvqXHKs6bOSRCxhJw8Dm2Roa70kkXvD7QivvjbODroj9FG8SS0zmKFjJutJRPUItQ==
+
 js-base64@^2.1.8:
   version "2.4.9"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.9.tgz#748911fb04f48a60c4771b375cac45a80df11c03"
