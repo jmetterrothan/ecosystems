@@ -5,6 +5,7 @@ import UIHomeState from '@ui/states/UIHomeState';
 import UIGameState from '@ui/states/UIGameState';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
+import UIService, { uiSvc } from '@ui/services/ui.service';
 
 interface IUIManagerProps {
 
@@ -19,12 +20,16 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
   private states: Map<UI_STATES, UIState>;
 
+  private uiSvc: UIService;
+
   constructor(props: IUIManagerProps) {
     super(props);
 
     this.state = {
       currentUiStateID: UI_STATES.HOME
     };
+
+    this.uiSvc = uiSvc;
 
     this.states = new Map<UI_STATES, UIState>();
     this.addState(UI_STATES.HOME, new UIHomeState(this));
@@ -52,6 +57,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
   public switchState(state: UI_STATES) {
     this.setState({ currentUiStateID: state });
+    this.uiSvc.switchState(state);
   }
 }
 

@@ -13,6 +13,7 @@ import PlayerService, { playerSvc } from '@shared/services/player.service';
 import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
 import StorageService, { storageSvc } from '@shared/services/storage.service';
 import CoreService, { coreSvc } from '@shared/services/core.service';
+import UIService, { uiSvc } from '@ui/services/ui.service';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
@@ -38,6 +39,7 @@ class Main {
   private configSvc: GraphicsConfigService;
   private multiplayerSvc: MultiplayerService;
   private storageSvc: StorageService;
+  private uiSvc: UIService;
 
   constructor() {
     this.containerElement = document.body;
@@ -48,6 +50,7 @@ class Main {
     this.playerSvc = playerSvc;
     this.multiplayerSvc = multiplayerSvc;
     this.storageSvc = storageSvc;
+    this.uiSvc = uiSvc;
 
     // TODO: Change quality based on user input / hardware detection / live frame render time ?
     this.configSvc.quality = GRAPHICS_QUALITY.HIGH;
@@ -189,6 +192,8 @@ class Main {
       document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
 
       document.body.addEventListener('click', () => {
+
+        if (!this.uiSvc.isState(UI_STATES.PLAY)) return;
 
         document.body.requestPointerLock = document.body.requestPointerLock || document.body.mozRequestPointerLock || document.body.webkitRequestPointerLock;
         document.body.requestPointerLock();
