@@ -16,9 +16,6 @@
       "@shared/*": [
         "src/app/shared/*"
       ],
-      "@services/*": [
-        "src/app/shared/services/*"
-      ],
       "@utils/*": [
         "src/app/shared/utils/*"
       ],
@@ -51,6 +48,9 @@
       ],
       "@voice/*": [
         "src/app/voice/*"
+      ],
+      "@online/*": [
+        "src/app/online/*"
       ]
     },
     "typeRoots": [

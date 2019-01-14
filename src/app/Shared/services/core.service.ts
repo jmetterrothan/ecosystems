@@ -2,8 +2,8 @@ import * as THREE from 'three';
 
 import World from '@world/World';
 
-import TranslationService, { translationSvc } from '@services/translation.service';
-import ProgressionService, { progressionSvc } from '@services/progression.service';
+import TranslationService, { translationSvc } from '@shared/services/translation.service';
+import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
 
 import { IObject } from '@shared/models/object.model';
 import { ITexture } from '@shared/models/texture.model';

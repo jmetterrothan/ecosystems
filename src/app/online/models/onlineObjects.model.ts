@@ -1,4 +1,4 @@
-import { IPick } from '@shared/models/pick.model';
+import { IPick } from '@world/models/pick.model';
 
 export interface IOnlineObject {
   item: IPick;

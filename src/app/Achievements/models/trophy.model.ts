@@ -1,5 +1,5 @@
-import { TROPHY_DIFFICULTY } from '@shared/enums/trophyDIfficulty.enum';
-import { TROPHY_TYPE } from '@shared/enums/trophyType.enum';
+import { TROPHY_DIFFICULTY } from '@achievements/enums/trophyDIfficulty.enum';
+import { TROPHY_TYPE } from '@achievements/enums/trophyType.enum';
 import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
 
 export interface ITrophy {

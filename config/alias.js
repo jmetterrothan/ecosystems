@@ -5,7 +5,6 @@ module.exports = {
   "@app": path.resolve(PATHS.APP),
   "@images": path.resolve(PATHS.IMAGES),
   "@shared": path.resolve(PATHS.APP, 'shared'),
-  "@services": path.resolve(PATHS.APP, 'shared', 'services'),
   "@assets": path.resolve(PATHS.PUBLIC, 'assets'),
   "@shaders": path.resolve(PATHS.PUBLIC, 'shaders'),
   "@objmodels": path.resolve(PATHS.PUBLIC, 'assets', 'obj'),
@@ -18,5 +17,6 @@ module.exports = {
   "@public": path.resolve(PATHS.PUBLIC),
   "@achievements": path.resolve(PATHS.APP, 'achievements'),
   "@ui": path.resolve(PATHS.APP, 'ui'),
-  "@voice": path.resolve(PATHS.APP, 'voice')
+  "@voice": path.resolve(PATHS.APP, 'voice'),
+  "@online": path.resolve(PATHS.APP, 'online')
 };

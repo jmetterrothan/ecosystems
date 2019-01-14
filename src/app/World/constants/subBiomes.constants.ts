@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 import Chunk from '@world/Chunk';
 
-import { IBiomes } from '@shared/models/biomes.model';
+import { IBiomes } from '@world/models/biomes.model';
 
 export const SUB_BIOMES: IBiomes = {
   FROZEN_TAIGA: {

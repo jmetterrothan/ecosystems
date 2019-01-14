@@ -7,10 +7,10 @@ import Terrain from '@world/Terrain';
 import Model from '@voice/Model';
 import Voice from '@voice/Voice';
 
-import MultiplayerService, { multiplayerSvc } from '@services/multiplayer.service';
+import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
-import ProgressionService, { progressionSvc } from '@services/progression.service';
+import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 

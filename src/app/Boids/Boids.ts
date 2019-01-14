@@ -6,11 +6,11 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import Creature from '@boids/Creatures/Creature';
 import MathUtils from '@shared/utils/Math.utils';
 
-import GraphicsConfigService, { configSvc } from '@services/graphicsConfig.service';
-import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
+import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
+import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 
-import { IBoidCreatureParameters } from '@shared/models/boidCreatureParameters.model';
+import { IBoidCreatureParameters } from '@boids/models/boidCreatureParameters.model';
 
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 

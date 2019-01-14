@@ -7,12 +7,12 @@ import Biome from '@world/Biome';
 import Terrain from '@world/Terrain';
 import MathUtils from '@utils/Math.utils';
 
-import { IBiome } from '@shared/models/biome.model';
-import { ILowHigh } from '@shared/models/biomeWeightedObject.model';
-import { IPick } from '@shared/models/pick.model';
-import { IPickObject } from '@shared/models/objectParameters.model';
+import { IBiome } from '@world/models/biome.model';
+import { ILowHigh } from '@world/models/biomeWeightedObject.model';
+import { IPick } from '@world/models/pick.model';
+import { IPickObject } from '@world/models/objectParameters.model';
 
-import { BIOMES } from '@shared/constants/biomes.constants';
+import { BIOMES } from '@world/constants/biomes.constants';
 
 class BiomeGenerator {
   private simplex: simplexNoise;

@@ -9,9 +9,9 @@ import Boids from '@boids/Boids';
 import DiscusFish from '@boids/Creatures/DiscusFish';
 import SalmonFish from '@boids/Creatures/SalmonFish';
 
-import { IBiome } from '@shared/models/biome.model';
+import { IBiome } from '@world/models/biome.model';
 
-import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
+import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 

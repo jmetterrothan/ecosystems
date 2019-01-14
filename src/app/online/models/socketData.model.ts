@@ -1,4 +1,4 @@
-import { IPick } from './pick.model';
+import { IPick } from '@world/models/pick.model';
 
 export interface ISocketDataRoomJoined {
   me: string;

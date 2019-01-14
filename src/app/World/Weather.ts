@@ -7,12 +7,12 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@shared/utils/Common.utils';
 
-import GraphicsConfigService, { configSvc } from '@services/graphicsConfig.service';
-import PlayerService, { playerSvc } from '@services/player.service';
-import ProgressionService, { progressionSvc } from '@shared/services/progression.service';
-import MultiplayerService, { multiplayerSvc } from '@services/multiplayer.service';
+import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
+import PlayerService, { playerSvc } from '@shared/services/player.service';
+import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
+import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
 
-import { ICloudData } from '@shared/models/cloudData.model';
+import { ICloudData } from '@app/world/models/cloudData.model';
 
 import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
 

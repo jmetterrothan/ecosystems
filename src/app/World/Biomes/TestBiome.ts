@@ -1,9 +1,9 @@
 import Biome from '@world/Biome';
 import Terrain from '@world/Terrain';
 
-import { IBiome } from '@shared/models/biome.model';
+import { IBiome } from '@world/models/biome.model';
 
-import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
+import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 
 class TestBiome extends Biome {
   constructor(terrain: Terrain) {
