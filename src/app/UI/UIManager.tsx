@@ -41,8 +41,8 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     const uiState = this.states.get(this.state.currentUiStateID);
 
     return (
-      <div className="ui full">
-        <div className="ui__state">
+      <div className='ui full'>
+        <div className='ui__state'>
           {uiState && uiState.render()}
         </div>
       </div>

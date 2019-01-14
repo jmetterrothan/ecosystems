@@ -1,27 +1,4 @@
-$spacing-sizes: 0px, 8px, 16px, 24px, 32px, 48px, 64px, 96px;
-
-.no-padding-horizontal {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
-
-.no-padding-bottom {
-  padding-bottom: 0 !important;
-}
-
-.no-margin {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-}
-
-.fill-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  .fill {
-    flex: 1;
-  }
-}
+@import '~jmetterrothan-flexgrid/src/assets/sass/grid';
 
 .full {
   width: 100% !important;
@@ -34,56 +11,4 @@ $spacing-sizes: 0px, 8px, 16px, 24px, 32px, 48px, 64px, 96px;
 
 .full-height {
   height: 100% !important;
-}
-
-@each $size in $spacing-sizes {
-  $i: index($spacing-sizes, $size) - 1;
-
-  .margin-top-#{$i} {
-    margin-top: $size;
-  }
-  .margin-bottom-#{$i} {
-    margin-bottom: $size;
-  }
-  .margin-left-#{$i} {
-    margin-left: $size;
-  }
-  .margin-right-#{$i} {
-    margin-right: $size;
-  }
-  .margin-horizontal-#{$i} {
-    margin-left: $size;
-    margin-right: $size;
-  }
-  .margin-vertical-#{$i} {
-    margin-top: $size;
-    margin-bottom: $size;
-  }
-  .margin-#{$i} {
-    margin: $size;
-  }
-
-  .padding-top-#{$i} {
-    padding-top: $size;
-  }
-  .padding-bottom-#{$i} {
-    padding-bottom: $size;
-  }
-  .padding-left-#{$i} {
-    padding-left: $size;
-  }
-  .padding-right-#{$i} {
-    padding-right: $size;
-  }
-  .padding-horizontal-#{$i} {
-    padding-left: $size;
-    padding-right: $size;
-  }
-  .padding-vertical-#{$i} {
-    padding-top: $size;
-    padding-bottom: $size;
-  }
-  .padding-#{$i} {
-    padding: $size;
-  }
 }
