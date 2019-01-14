@@ -4,6 +4,7 @@ import Home from '@templates/Home/home';
 
 import UIState from '@ui/UIState';
 import { UI_STATES } from '../enums/UIStates.enum';
+import withService from '@public/components/withService/withService';
 
 class UIHomeState extends UIState {
   init() {
@@ -16,7 +17,7 @@ class UIHomeState extends UIState {
 
   render() {
     return (
-      <Home />
+      withService(Home)({ uiSvc: this.uiSvc })
     );
   }
 }

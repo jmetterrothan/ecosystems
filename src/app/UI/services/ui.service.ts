@@ -14,6 +14,7 @@ class UIService {
 
   switchState(state: UI_STATES) {
     this.currentState = state;
+
   }
 
 }
