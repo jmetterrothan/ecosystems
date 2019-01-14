@@ -44,6 +44,8 @@ class World {
 
   private configSvc: GraphicsConfigService;
 
+  private initialized: boolean;
+
   /**
    * World constructor
    * @param {THREE.Scene} scene
@@ -59,30 +61,12 @@ class World {
     this.raycaster = new THREE.Raycaster();
 
     this.configSvc = configSvc;
+
+    this.initialized = false;
   }
 
-  getWeather(): Weather {
-    return this.weather;
-  }
-
-  getTerrain(): Terrain {
-    return this.terrain;
-  }
-
-  getBiomeGenerator(): BiomeGenerator {
-    return this.generator;
-  }
-
-  getScene(): THREE.Scene {
-    return this.scene;
-  }
-
-  getSeed(): string {
-    return this.seed;
-  }
-
-  async init() {
-    this.initSeed();
+  init(seed: string = MathUtils.randomUint32().toString()) {
+    this.initSeed(seed);
 
     // entities
     const spawn = new THREE.Vector3(-24000, Terrain.SIZE_Y, Terrain.SIZE_Z + 24000);
@@ -115,10 +99,13 @@ class World {
     if (this.configSvc.config.DEBUG) {
       this.showAxesHelper();
     }
+
+    this.initialized = true;
   }
 
-  private initSeed() {
-    this.seed = World.SEED ? World.SEED : MathUtils.randomUint32().toString();
+  private initSeed(seed: string) {
+    this.seed = seed;
+
     MathUtils.rng = new Math.seedrandom(this.seed);
     console.info(`SEED : ${this.seed}`);
 
@@ -140,48 +127,16 @@ class World {
       const far = configSvc.config.MAX_RENDERABLE_CHUNKS * ((Chunk.WIDTH + Chunk.DEPTH) / 2);
       const near = far / 2;
 
-      this.scene.fog = new THREE.Fog(this.getWeather().getFogColor().getHex(), near, far);
+      this.scene.fog = new THREE.Fog(0x000000, near, far);
     }
-  }
-
-  private initLights() {
-    const light = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.75);
-    light.position.set(0, Chunk.SEA_LEVEL, 0);
-    light.castShadow = false;
-    this.scene.add(light);
-
-    const ambient = new THREE.AmbientLight(0xffffff, 0.275);
-    ambient.position.set(0, Chunk.HEIGHT, 15000);
-    ambient.castShadow = false;
-    this.scene.add(ambient);
-
-    const d = 1000000;
-    const sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
-    sunlight.position.set(Terrain.SIZE_X, Chunk.HEIGHT, Terrain.SIZE_Z);
-    sunlight.castShadow = true;
-    sunlight.shadow.mapSize.width = configSvc.config.SHADOW_MAP_SIZE;
-    sunlight.shadow.mapSize.height = configSvc.config.SHADOW_MAP_SIZE;
-    sunlight.shadow.camera.visible = true;
-    sunlight.shadow.camera.castShadow = true;
-    sunlight.shadow.bias = 0.0001;
-    sunlight.shadow.camera.left = -d;
-    sunlight.shadow.camera.right = d;
-    sunlight.shadow.camera.top = d;
-    sunlight.shadow.camera.bottom = -d;
-    sunlight.shadow.camera.near = 150;
-    sunlight.shadow.camera.far = 1000000;
-
-    if (configSvc.config.DEBUG) {
-      this.scene.add(new THREE.DirectionalLightHelper(sunlight, 1024));
-    }
-
-    this.scene.add(sunlight);
   }
 
   /**
    * @param {number} delta
    */
   update(delta: number) {
+    if (!this.initialized) return;
+
     this.handleMouseInteraction(MOUSE_TYPES.MOVE);
     this.camera.updateMatrixWorld(true);
 
@@ -222,11 +177,22 @@ class World {
     this.player.handleKeyboard(key, active);
   }
 
+  isInitialized(): boolean { return this.initialized; }
+
+  getWeather(): Weather { return this.weather; }
+
+  getTerrain(): Terrain { return this.terrain; }
+
+  getBiomeGenerator(): BiomeGenerator { return this.generator; }
+
+  getScene(): THREE.Scene { return this.scene; }
+
+  getSeed(): string { return this.seed; }
+
   static pointInWorld(point: THREE.Vector3): boolean {
     const margin: number = 1000;
     return MathUtils.between(point.x, 0 + margin, Terrain.SIZE_X - margin) && MathUtils.between(point.z, 0 + margin, Terrain.SIZE_Z - margin);
   }
-
 }
 
 export default World;
