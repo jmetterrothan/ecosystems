@@ -1,0 +1,9 @@
+@import 'styles/abstracts/_colors';
+
+.col {
+  &.debug {
+    background: $debug-col;
+    border: solid 1px darken($debug-col, 20);
+    padding: 6px !important;
+  }
+}

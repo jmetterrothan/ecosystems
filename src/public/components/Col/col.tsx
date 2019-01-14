@@ -1,15 +1,21 @@
 import React from 'react';
 
+import './col.styles';
+
+type textAlign = 'left' | 'center' | 'right' | 'justify';
+
 interface Props {
   children: JSX.Element;
   className?: string;
+  debug?: boolean;
+  textAlign?: string;
   Tag?: any;
 }
 
-const Col = ({ children, className, Tag = 'div' }: Props) => {
+const Col = ({ children, className, debug, textAlign = 'left', Tag = 'div' }: Props) => {
 
   return (
-    <Tag className={`col ${className || ''}`}>
+    <Tag className={`col ${className || ''} ${debug ? 'debug' : ''}`} style={{ textAlign }}>
       {children}
     </Tag>
   );
