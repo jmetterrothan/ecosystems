@@ -8,10 +8,3 @@ ReactDOM.render(
   <UIManager />,
   document.getElementById('root')
 );
-
-// (async () => {
-//   await app.init();
-
-//   app.load();
-//   app.run();
-// })();

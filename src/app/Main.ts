@@ -193,7 +193,7 @@ class Main {
 
       document.body.addEventListener('click', () => {
 
-        if (!this.uiSvc.isState(UI_STATES.PLAY)) return;
+        if (!this.uiSvc.isState(UI_STATES.GAME)) return;
 
         document.body.requestPointerLock = document.body.requestPointerLock || document.body.mozRequestPointerLock || document.body.webkitRequestPointerLock;
         document.body.requestPointerLock();
