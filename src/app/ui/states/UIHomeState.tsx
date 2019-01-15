@@ -6,6 +6,7 @@ import withService from '@components/withService/withService';
 import { IServices } from '@ui/models/services.model';
 
 class UIHomeState extends UIState {
+
   init() {
     console.info('INIT HOME');
   }

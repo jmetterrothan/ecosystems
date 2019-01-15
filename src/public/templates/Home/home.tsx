@@ -2,9 +2,9 @@ import React from 'react';
 
 import Row from '@components/Row/row';
 import Col from '@components/Col/col';
-import Button from '@components/Button/button';
 
 import { IServices } from '@ui/models/services.model';
+import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 
@@ -22,7 +22,7 @@ const Home = ({ uiManager }: IServices) => {
       seedValid = seed.checkValidity();
     }
 
-    uiManager.switchState(UI_STATES.LOADING, seedValid ? { seed: seed.value } : null);
+    uiManager.switchState(UI_STATES.LOADING, { seed: seedValid ? seed.value : null } as IUIManagerParameters);
   };
 
   return (

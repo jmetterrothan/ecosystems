@@ -7,13 +7,15 @@ import { IServices } from '@ui/models/services.model';
 
 import Loading from '@templates/Loading/loading';
 
-import { UI_STATES } from '../enums/UIStates.enum';
+import { UI_STATES } from '@ui/enums/UIStates.enum';
 
 class UILoadingState extends UIState {
 
   async init() {
     // TODO: add loader
     console.info('INIT LOADING');
+
+    console.log('load', this.uiManager);
 
     const app = new Main();
     // await app.init();

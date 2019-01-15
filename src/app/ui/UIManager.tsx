@@ -4,9 +4,10 @@ import UIState from '@ui/UIState';
 import UIHomeState from '@ui/states/UIHomeState';
 import UIGameState from '@ui/states/UIGameState';
 
+import stateFactory from '@ui/UIStatesFactory';
 import UIService, { uiSvc } from '@ui/services/ui.service';
 
-import stateFactory from '@ui/UIStatesFactory';
+import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 
@@ -22,12 +23,12 @@ interface IUIManagerState {
 class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   static readonly ENABLED: boolean = true;
 
-  private states: Map<UI_STATES, UIState>;
+  private uiStates: Map<UI_STATES, UIState>;
 
   private uiSvc: UIService;
 
-  constructor(props: IUIManagerProps) {
-    super(props);
+  constructor(props: IUIManagerProps, context: IUIManagerState) {
+    super(props, context);
 
     this.state = {
       currentUiStateID: UI_STATES.HOME,
@@ -36,15 +37,13 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
     this.uiSvc = uiSvc;
 
-    this.states = new Map<UI_STATES, UIState>();
+    this.uiStates = new Map<UI_STATES, UIState>();
     this.addState(UI_STATES.HOME, new UIHomeState(this));
   }
 
   render() {
-    const uiState = this.states.get(this.state.currentUiStateID);
-    console.log(uiState, this.state);
+    const uiState = this.uiStates.get(this.state.currentUiStateID);
 
-    // TODO: Parameters Provider
     return (
       <div className='ui full'>
         <div className='ui__state'>
@@ -55,15 +54,15 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   }
 
   private addState(key: UI_STATES, value?: UIState) {
-    if (!this.states.has(key)) {
+    if (!this.uiStates.has(key)) {
       const uiState = value ? value : stateFactory(key, this);
       uiState.init();
-      this.states.set(key, uiState);
+      this.uiStates.set(key, uiState);
     }
   }
 
-  public switchState(state: UI_STATES, parameters: Object = null) {
-    if (!this.states.has(state)) this.addState(state);
+  public switchState(state: UI_STATES, parameters: IUIManagerParameters = null) {
+    if (!this.uiStates.has(state)) this.addState(state);
     this.setState({
       currentUiStateID: state,
       parameters: parameters ? parameters : this.state.parameters

@@ -8,7 +8,6 @@ abstract class UIState extends React.PureComponent<void, void> {
 
   constructor(uiManager: UIManager) {
     super();
-
     this.uiManager = uiManager;
   }
 
