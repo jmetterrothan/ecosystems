@@ -16,6 +16,7 @@ interface IUIManagerProps {
 
 interface IUIManagerState {
   currentUiStateID: number;
+  parameters: Object;
 }
 
 class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
@@ -29,7 +30,8 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     super(props);
 
     this.state = {
-      currentUiStateID: UI_STATES.HOME
+      currentUiStateID: UI_STATES.HOME,
+      parameters: null
     };
 
     this.uiSvc = uiSvc;
@@ -40,7 +42,9 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
   render() {
     const uiState = this.states.get(this.state.currentUiStateID);
+    console.log(uiState, this.state);
 
+    // TODO: Parameters Provider
     return (
       <div className='ui full'>
         <div className='ui__state'>
@@ -58,9 +62,12 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     }
   }
 
-  public switchState(state: UI_STATES) {
-    this.setState({ currentUiStateID: state });
+  public switchState(state: UI_STATES, parameters: Object = null) {
     if (!this.states.has(state)) this.addState(state);
+    this.setState({
+      currentUiStateID: state,
+      parameters: parameters ? parameters : this.state.parameters
+    });
 
     this.uiSvc.switchState(state);
   }

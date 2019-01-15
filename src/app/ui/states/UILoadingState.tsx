@@ -16,12 +16,12 @@ class UILoadingState extends UIState {
     console.info('INIT LOADING');
 
     const app = new Main();
-    await app.init();
-    await app.load();
-    app.run();
+    // await app.init();
+    // await app.load();
+    // app.run();
 
     this.uiManager.switchState(UI_STATES.GAME);
-    document.body.requestPointerLock();
+    // document.body.requestPointerLock();
   }
 
   render() {

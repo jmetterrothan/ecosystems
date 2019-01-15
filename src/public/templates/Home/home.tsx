@@ -11,11 +11,18 @@ import { UI_STATES } from '@ui/enums/UIStates.enum';
 const Home = ({ uiManager }: IServices) => {
 
   let form: HTMLFormElement;
+  let seed: HTMLInputElement;
 
   const handleSubmit = ev => {
     ev.preventDefault();
 
-    uiManager.switchState(UI_STATES.LOADING);
+    let seedValid = false;
+    if (seed.value.length) {
+      seed.required = true;
+      seedValid = seed.checkValidity();
+    }
+
+    uiManager.switchState(UI_STATES.LOADING, seedValid ? { seed: seed.value } : null);
   };
 
   return (
@@ -26,7 +33,7 @@ const Home = ({ uiManager }: IServices) => {
       <Row justify='center'>
         <Col className='col_6'>
           <form onSubmit={handleSubmit} ref={el => form = el}>
-            <input type='text' className='full' placeholder='seed' pattern='^[a-zA-Z]+$' minLength={6} />
+            <input type='text' className='full' placeholder='seed' pattern='^[a-zA-Z]+$' minLength={6} ref={el => seed = el} />
             <input type='submit' value='jouer' className='full' />
           </form>
         </Col>
