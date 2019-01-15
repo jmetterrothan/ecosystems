@@ -10,10 +10,6 @@ class UIGameState extends UIState {
     console.info('INIT GAME');
   }
 
-  isValid(): boolean {
-    return true;
-  }
-
   render() {
     return (
       withService(Game)({ uiManager: this.uiManager } as IServices)

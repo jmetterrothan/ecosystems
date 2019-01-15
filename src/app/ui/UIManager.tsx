@@ -4,8 +4,11 @@ import UIState from '@ui/UIState';
 import UIHomeState from '@ui/states/UIHomeState';
 import UIGameState from '@ui/states/UIGameState';
 
-import { UI_STATES } from '@ui/enums/UIStates.enum';
 import UIService, { uiSvc } from '@ui/services/ui.service';
+
+import stateFactory from '@ui/UIStatesFactory';
+
+import { UI_STATES } from '@ui/enums/UIStates.enum';
 
 interface IUIManagerProps {
 
@@ -33,7 +36,6 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
     this.states = new Map<UI_STATES, UIState>();
     this.addState(UI_STATES.HOME, new UIHomeState(this));
-    this.addState(UI_STATES.PLAY, new UIGameState(this));
   }
 
   render() {
@@ -48,22 +50,18 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     );
   }
 
-  private addState(key: UI_STATES, value: UIState) {
+  private addState(key: UI_STATES, value?: UIState) {
     if (!this.states.has(key)) {
-      value.init();
-      this.states.set(key, value);
+      const uiState = value ? value : stateFactory(key, this);
+      uiState.init();
+      this.states.set(key, uiState);
     }
   }
 
   public switchState(state: UI_STATES) {
-    // TODO add some verification here
-    const uiState = this.states.get(this.state.currentUiStateID);
-    if (!uiState.isValid()) {
-      console.warn('invalid');
-      return;
-    }
-
     this.setState({ currentUiStateID: state });
+    if (!this.states.has(state)) this.addState(state);
+
     this.uiSvc.switchState(state);
   }
 }

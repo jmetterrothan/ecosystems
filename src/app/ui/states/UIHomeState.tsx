@@ -10,10 +10,6 @@ class UIHomeState extends UIState {
     console.info('INIT HOME');
   }
 
-  isValid(): boolean {
-    return true;
-  }
-
   render() {
     return (
       withService(Home)({ uiManager: this.uiManager } as IServices)

@@ -14,7 +14,8 @@ const Home = ({ uiManager }: IServices) => {
 
   const handleSubmit = ev => {
     ev.preventDefault();
-    console.log(form.checkValidity());
+
+    uiManager.switchState(UI_STATES.LOADING);
   };
 
   return (
@@ -25,7 +26,7 @@ const Home = ({ uiManager }: IServices) => {
       <Row justify='center'>
         <Col className='col_6'>
           <form onSubmit={handleSubmit} ref={el => form = el}>
-            <input type='text' className='full' placeholder='seed' pattern='^[a-zA-Z]+$' minLength={6} required />
+            <input type='text' className='full' placeholder='seed' pattern='^[a-zA-Z]+$' minLength={6} />
             <input type='submit' value='jouer' className='full' />
           </form>
         </Col>
