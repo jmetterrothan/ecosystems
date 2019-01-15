@@ -4,13 +4,14 @@ import ReactDOM from 'react-dom';
 import Main from '@app/Main';
 import UIManager from '@ui/UIManager';
 
-const app = new Main();
+ReactDOM.render(
+  <UIManager />,
+  document.getElementById('root')
+);
 
-ReactDOM.render(<UIManager />, document.getElementById('root'));
+// (async () => {
+//   await app.init();
 
-(async () => {
-  await app.init();
-
-  app.load();
-  app.run();
-})();
+//   app.load();
+//   app.run();
+// })();

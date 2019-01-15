@@ -13,6 +13,8 @@ abstract class UIState extends React.PureComponent<void, void> {
   }
 
   abstract init();
+
+  abstract isValid(): boolean;
 }
 
 export default UIState;

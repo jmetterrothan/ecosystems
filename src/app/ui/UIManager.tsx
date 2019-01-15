@@ -56,6 +56,13 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   }
 
   public switchState(state: UI_STATES) {
+    // TODO add some verification here
+    const uiState = this.states.get(this.state.currentUiStateID);
+    if (!uiState.isValid()) {
+      console.warn('invalid');
+      return;
+    }
+
     this.setState({ currentUiStateID: state });
     this.uiSvc.switchState(state);
   }
