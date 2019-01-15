@@ -11,6 +11,6 @@ ReactDOM.render(<UIManager />, document.getElementById('root'));
 (async () => {
   await app.init();
 
+  app.load();
   app.run();
-  app.load('302725644');
 })();

@@ -18,7 +18,7 @@ import TestBiome from '@world/biomes/TestBiome';
 
 class World {
   static readonly SEED: string | null = null;
-  static readonly BIOME: Biome | null = TestBiome; // lock a specific biome here, if null a biome is selected randomly
+  static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
   static readonly EMPTY: boolean = false;
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;

@@ -131,7 +131,7 @@ class Main {
     }
   }
 
-  async load(seed: string) {
+  async load(seed?: string) {
     await this.world.init(seed);
   }
 
