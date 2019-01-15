@@ -3235,7 +3235,6 @@ isstream@~0.1.2:
 jmetterrothan-flexgrid@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/jmetterrothan-flexgrid/-/jmetterrothan-flexgrid-1.0.2.tgz#7303b4c508f835f5ab8dd13e802f403f2d89f0b7"
-  integrity sha512-s8ESNI6A45k3ZJsmjhFAHXvqXHKs6bOSRCxhJw8Dm2Roa70kkXvD7QivvjbODroj9FG8SS0zmKFjJutJRPUItQ==
 
 js-base64@^2.1.8:
   version "2.4.9"
@@ -3253,15 +3252,7 @@ js-tokens@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
-js-yaml-loader@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/js-yaml-loader/-/js-yaml-loader-1.0.1.tgz#3151b5b3f9438697e46be4a199b4a8954f01b3b6"
-  dependencies:
-    js-yaml "^3.9.1"
-    loader-utils "^1.1.0"
-    un-eval "^1.2.0"
-
-js-yaml@^3.7.0, js-yaml@^3.9.0, js-yaml@^3.9.1:
+js-yaml@^3.7.0, js-yaml@^3.9.0:
   version "3.12.0"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.12.0.tgz#eaed656ec8344f10f527c6bfa1b6e2244de167d1"
   dependencies:
@@ -5490,10 +5481,6 @@ uglifyjs-webpack-plugin@^1.2.4:
     uglify-es "^3.3.4"
     webpack-sources "^1.1.0"
     worker-farm "^1.5.2"
-
-un-eval@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/un-eval/-/un-eval-1.2.0.tgz#22a95c650334d59d21697efae32612218ecad65f"
 
 unicode-canonical-property-names-ecmascript@^1.0.4:
   version "1.0.4"

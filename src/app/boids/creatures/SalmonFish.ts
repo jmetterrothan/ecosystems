@@ -1,5 +1,5 @@
 import MathUtils from '@utils/Math.utils';
-import Creature from '@boids/Creatures/Creature';
+import Creature from '@boids/creatures/Creature';
 
 class SalmonFish extends Creature {
   constructor() {
