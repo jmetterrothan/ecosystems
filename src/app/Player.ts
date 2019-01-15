@@ -154,12 +154,12 @@ class Player {
    */
   handleKeyboard(key: string, active: boolean) {
     switch (key) {
-      case 'ArrowUp': case 'z': this.moveForward = active; break;
-      case 'ArrowDown': case 's': this.moveBackward = active; break;
-      case 'ArrowLeft': case 'q': this.moveLeft = active; break;
-      case 'ArrowRight': case 'd': this.moveRight = active; break;
-      case '+': case 'a': this.moveUp = active; break;
-      case '-': case 'e': this.moveDown = active; break;
+      case 'ArrowUp': case 'z': case 'Z': this.moveForward = active; break;
+      case 'ArrowDown': case 's': case 'S': this.moveBackward = active; break;
+      case 'ArrowLeft': case 'q': case 'Q': this.moveLeft = active; break;
+      case 'ArrowRight': case 'd': case 'D': this.moveRight = active; break;
+      case '+': case 'a': case 'A': this.moveUp = active; break;
+      case '-': case 'e': case 'E': this.moveDown = active; break;
       case 'v': !this.voice.predictState ? this.voice.listen() : this.voice.stopListening();
     }
   }
