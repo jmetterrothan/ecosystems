@@ -158,7 +158,7 @@ class Weather {
     this.hemisphereLight.castShadow = false;
     this.scene.add(this.hemisphereLight);
 
-    this.ambientLight = new THREE.AmbientLight(0xB1D8FF, 0.25);
+    this.ambientLight = new THREE.AmbientLight(0xB1D8FF, 0.35);
     this.ambientLight.position.set(0, Chunk.HEIGHT, 15000);
     this.ambientLight.castShadow = false;
     this.scene.add(this.ambientLight);
@@ -407,7 +407,7 @@ class Weather {
   private updateLights() {
     const y = this.sunlight.position.y;
     this.hemisphereLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, Chunk.HEIGHT, 0.35, 0.75);
-    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.15, 0.25);
+    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.2, 0.35);
     this.sunlight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.0, 0.25);
 
     if (y >= -Chunk.HEIGHT / 4) {
