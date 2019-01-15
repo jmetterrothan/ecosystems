@@ -18,6 +18,7 @@ import UIService, { uiSvc } from '@ui/services/ui.service';
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
 import { UI_STATES } from '@ui/enums/UIStates.enum';
+import UIManager from './ui/UIManager';
 
 class Main {
   private renderer: THREE.WebGLRenderer;
@@ -70,6 +71,11 @@ class Main {
       }, false);
       document.body.appendChild(resetStrorage);
       */
+    }
+
+    if (!UIManager.ENABLED) {
+      this.uiSvc.switchState(UI_STATES.GAME);
+      // document.body.requestPointerLock();
     }
 
     this.scene = new THREE.Scene();

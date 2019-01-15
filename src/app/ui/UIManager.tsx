@@ -21,7 +21,7 @@ interface IUIManagerState {
 }
 
 class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
-  static readonly ENABLED: boolean = true;
+  static readonly ENABLED: boolean = false;
 
   private uiStates: Map<UI_STATES, UIState>;
 
@@ -39,6 +39,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
     this.uiStates = new Map<UI_STATES, UIState>();
     this.addState(UI_STATES.HOME, new UIHomeState(this));
+
   }
 
   render() {
