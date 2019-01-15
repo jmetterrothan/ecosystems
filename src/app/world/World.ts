@@ -65,7 +65,7 @@ class World {
     this.initialized = false;
   }
 
-  init(seed: string = MathUtils.randomUint32().toString()) {
+  init(seed: string = MathUtils.randomUint32().toString()): string {
     this.initSeed(seed);
 
     // entities
@@ -101,6 +101,8 @@ class World {
     }
 
     this.initialized = true;
+
+    return seed;
   }
 
   private initSeed(seed: string) {

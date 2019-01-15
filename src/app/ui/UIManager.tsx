@@ -17,7 +17,7 @@ interface IUIManagerProps {
 
 interface IUIManagerState {
   currentUiStateID: number;
-  parameters: Object;
+  parameters: IUIManagerParameters;
 }
 
 class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
@@ -32,7 +32,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
     this.state = {
       currentUiStateID: UI_STATES.HOME,
-      parameters: null
+      parameters: {}
     };
 
     this.uiSvc = uiSvc;
@@ -66,6 +66,8 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     this.setState({
       currentUiStateID: state,
       parameters: parameters ? parameters : this.state.parameters
+    }, () => {
+      this.uiStates.get(state).process();
     });
 
     this.uiSvc.switchState(state);

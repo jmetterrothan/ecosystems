@@ -11,6 +11,8 @@ class UIHomeState extends UIState {
     console.info('INIT HOME');
   }
 
+  process() { }
+
   render() {
     return (
       withService(Home)({ uiManager: this.uiManager } as IServices)

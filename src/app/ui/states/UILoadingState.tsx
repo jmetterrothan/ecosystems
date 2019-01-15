@@ -1,10 +1,9 @@
 import Main from '@app/Main';
 import UIState from '@ui/UIState';
 
-import withService from '@public/components/withService/withService';
-
 import { IServices } from '@ui/models/services.model';
 
+import withService from '@components/withService/withService';
 import Loading from '@templates/Loading/loading';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
@@ -15,15 +14,18 @@ class UILoadingState extends UIState {
     // TODO: add loader
     console.info('INIT LOADING');
 
-    console.log('load', this.uiManager);
+  }
+
+  async process() {
+    const { state } = this.uiManager;
 
     const app = new Main();
-    // await app.init();
-    // await app.load();
-    // app.run();
+    await app.init();
+    const seed = await app.load(state.parameters.seed);
+    app.run();
 
-    this.uiManager.switchState(UI_STATES.GAME);
-    // document.body.requestPointerLock();
+    document.body.requestPointerLock();
+    this.uiManager.switchState(UI_STATES.GAME, { seed });
   }
 
   render() {

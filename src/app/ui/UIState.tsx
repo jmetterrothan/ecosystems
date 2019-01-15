@@ -12,6 +12,8 @@ abstract class UIState extends React.PureComponent<void, void> {
   }
 
   abstract init();
+
+  abstract process();
 }
 
 export default UIState;

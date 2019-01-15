@@ -22,7 +22,7 @@ const Home = ({ uiManager }: IServices) => {
       seedValid = seed.checkValidity();
     }
 
-    uiManager.switchState(UI_STATES.LOADING, { seed: seedValid ? seed.value : null } as IUIManagerParameters);
+    uiManager.switchState(UI_STATES.LOADING, { seed: seedValid ? seed.value.trim() : null } as IUIManagerParameters);
   };
 
   return (
@@ -33,7 +33,7 @@ const Home = ({ uiManager }: IServices) => {
       <Row justify='center'>
         <Col className='col_6'>
           <form onSubmit={handleSubmit} ref={el => form = el}>
-            <input type='text' className='full' placeholder='seed' pattern='^[a-zA-Z]+$' minLength={6} ref={el => seed = el} />
+            <input type='text' className='full' placeholder='seed' pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={6} ref={el => seed = el} />
             <input type='submit' value='jouer' className='full' />
           </form>
         </Col>

@@ -1,19 +1,16 @@
-import Game from '@templates/Game/game';
+import React from 'react';
 
 import UIState from '@ui/UIState';
-import withService from '@public/components/withService/withService';
-
-import { IServices } from '@ui/models/services.model';
 
 class UIGameState extends UIState {
   init() {
     console.info('INIT GAME');
   }
 
+  process() { }
+
   render() {
-    return (
-      withService(Game)({ uiManager: this.uiManager } as IServices)
-    );
+    return <div />;
   }
 }
 

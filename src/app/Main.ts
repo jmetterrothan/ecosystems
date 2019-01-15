@@ -131,8 +131,8 @@ class Main {
     }
   }
 
-  async load(seed?: string) {
-    await this.world.init(seed);
+  async load(seed?: string): Promise<string> {
+    return await this.world.init(seed);
   }
 
   private initControls() {
