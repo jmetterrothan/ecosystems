@@ -2,23 +2,14 @@ import React from 'react';
 
 import Home from '@templates/Home/home';
 
-import { UIState } from '@ui/UIState';
-import withService from '@components/withService/withService';
+import { IUIState } from '@ui/models/uiState.model';
 
-import { IServices } from '@ui/models/services.model';
-import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
+class UIHomeState extends React.Component implements IUIState {
 
-import { UI_STATES } from '@ui/enums/UIStates.enum';
-import UIManager from '../UIManager';
-
-class UIHomeState extends React.Component implements UIState {
+  component = Home;
 
   init() {
     console.info('INIT HOME');
-
-    // if (!UIManager.ENABLED) {
-    // this.uiManager.switchState(UI_STATES.LOADING, { seed: '' } as IUIManagerParameters);
-    // }
   }
 
   process() { }

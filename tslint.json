@@ -24,7 +24,6 @@
       "check-format",
       "allow-pascal-case"
     ],
-    // jsx
     "jsx-no-lambda": false,
     "jsx-boolean-value": false,
     "jsx-no-multiline-js": false

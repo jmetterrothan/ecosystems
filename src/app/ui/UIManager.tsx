@@ -1,6 +1,5 @@
 import React from 'react';
 
-import UIState from '@ui/UIState';
 import UIHomeState from '@ui/states/UIHomeState';
 
 import stateFactory from '@ui/UIStatesFactory';
@@ -11,6 +10,7 @@ import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 import withService from '@public/components/withService/withService';
 import { IServices } from './models/services.model';
+import { IUIState } from './models/uiState.model';
 
 interface IUIManagerProps {
 
@@ -24,7 +24,7 @@ interface IUIManagerState {
 class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   static readonly ENABLED: boolean = true;
 
-  private uiStates: Map<UI_STATES, UIState>;
+  private uiStates: Map<UI_STATES, React.Component>;
 
   private uiSvc: UIService;
 
@@ -42,24 +42,17 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
     // if (!UIManager.ENABLED) return;
 
-    this.addState(UI_STATES.HOME, new UIHomeState());
+    this.addState(UI_STATES.HOME, new UIHomeState(null));
   }
 
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
-    console.log(this);
 
     return (
-      // <Router history={history}>
       <div className='ui full'>
         <div className='ui__state'>
           {withService(uiState.render())({ uiManager: this } as IServices)}
-          {/* <Switch>
-              <Route path='/loading' component={Loading} />
-              <Route path='/' render={() => withService(Home)({ uiManager: this })} />
-            </Switch> */}
         </div>
-        {/* </Router> */}
       </div>
     );
   }
@@ -71,7 +64,6 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
       parameters: parameters ? parameters : this.state.parameters
     }, async () => {
       await this.uiStates.get(state).process();
-      // history.push(state);
       this.uiSvc.switchState(state);
     });
 
@@ -81,7 +73,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     console.log('ui handle', key, active);
   }
 
-  private addState(key: UI_STATES, value?: UIState) {
+  private addState(key: UI_STATES, value?: IUIState) {
     if (!this.uiStates.has(key)) {
       const uiState = value ? value : stateFactory(key);
       uiState.init();
