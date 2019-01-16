@@ -18,7 +18,7 @@ import UIService, { uiSvc } from '@ui/services/ui.service';
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
 import { UI_STATES } from '@ui/enums/UIStates.enum';
-import UIManager from './ui/UIManager';
+import UIManager from '@ui/UIManager';
 
 class Main {
   private renderer: THREE.WebGLRenderer;
@@ -41,6 +41,8 @@ class Main {
   private multiplayerSvc: MultiplayerService;
   private storageSvc: StorageService;
   private uiSvc: UIService;
+
+  private uiManager: UIManager;
 
   constructor() {
     this.containerElement = document.body;
@@ -89,7 +91,8 @@ class Main {
     this.focused = true;
   }
 
-  async init() {
+  async init(uiManager: UIManager = new UIManager(null, null)) {
+    this.uiManager = uiManager;
     this.initControls();
 
     this.world = new World(this.scene, this.camera, this.controls);
@@ -213,11 +216,13 @@ class Main {
       document.body.addEventListener('keydown', e => {
         if (this.world.isInitialized()) {
           this.world.handleKeyboard(e.key, true && this.controls.enabled);
+          this.uiManager.handleKeyboard(e.key, true);
         }
       });
       document.body.addEventListener('keyup', e => {
         if (this.world.isInitialized()) {
           this.world.handleKeyboard(e.key, false);
+          this.uiManager.handleKeyboard(e.key, false);
         }
       });
 

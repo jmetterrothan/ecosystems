@@ -27,8 +27,8 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
   private uiSvc: UIService;
 
-  constructor(props: IUIManagerProps, context: IUIManagerState) {
-    super(props, context);
+  constructor(props: IUIManagerProps, state: IUIManagerState) {
+    super(props, state);
 
     this.state = {
       currentUiStateID: UI_STATES.HOME,
@@ -38,8 +38,10 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     this.uiSvc = uiSvc;
 
     this.uiStates = new Map<UI_STATES, UIState>();
-    this.addState(UI_STATES.HOME, new UIHomeState(this));
 
+    if (!UIManager.ENABLED) return;
+
+    this.addState(UI_STATES.HOME, new UIHomeState(this));
   }
 
   render() {
@@ -54,15 +56,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     );
   }
 
-  private addState(key: UI_STATES, value?: UIState) {
-    if (!this.uiStates.has(key)) {
-      const uiState = value ? value : stateFactory(key, this);
-      uiState.init();
-      this.uiStates.set(key, uiState);
-    }
-  }
-
-  public switchState(state: UI_STATES, parameters: IUIManagerParameters = null) {
+  switchState(state: UI_STATES, parameters: IUIManagerParameters = null) {
     if (!this.uiStates.has(state)) this.addState(state);
     this.setState({
       currentUiStateID: state,
@@ -73,6 +67,19 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
     this.uiSvc.switchState(state);
   }
+
+  handleKeyboard(key: string, active: boolean) {
+    console.log('ui handle', key, active);
+  }
+
+  private addState(key: UI_STATES, value?: UIState) {
+    if (!this.uiStates.has(key)) {
+      const uiState = value ? value : stateFactory(key, this);
+      uiState.init();
+      this.uiStates.set(key, uiState);
+    }
+  }
+
 }
 
 export default UIManager;

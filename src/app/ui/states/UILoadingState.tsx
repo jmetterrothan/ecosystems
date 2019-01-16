@@ -10,6 +10,8 @@ import { UI_STATES } from '@ui/enums/UIStates.enum';
 
 class UILoadingState extends UIState {
 
+  app: Main;
+
   async init() {
     // TODO: add loader
     console.info('INIT LOADING');
