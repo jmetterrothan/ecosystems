@@ -17,8 +17,12 @@ import { ICloudData } from '@world/models/cloudData.model';
 import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
 
 class Weather {
-  private static RAIN_SPEED: number = 200;
   private static FOG_COLORS: Map<number, THREE.Color> = new Map<number, THREE.Color>();
+
+  private static RAIN_SPEED: number = 200;
+  private static FOG_COLOR1: string = '#212C37';
+  private static FOG_COLOR2: string = '#B1D8FF';
+  private static TICK_RATIO_DIV: number = 24000;
 
   private scene: THREE.Scene;
   private generator: BiomeGenerator;
@@ -68,6 +72,11 @@ class Weather {
     this.startTime = window.performance.now();
 
     this.watchStartTime();
+
+    // precalculate fog colors
+    for (let i = 1; i < Chunk.HEIGHT; i++) {
+      this.computeFogColor(i);
+    }
   }
 
   getClouds(): THREE.Group {
@@ -370,10 +379,10 @@ class Weather {
   }
 
   private updateSun() {
-    const elapsedTime = (window.performance.now() - this.startTime) / 4000; // 60000
+    const elapsedTime: number = (window.performance.now() - this.startTime) / Weather.TICK_RATIO_DIV;
 
-    const x = Terrain.SIZE_X / 2 + Chunk.HEIGHT * Math.cos(elapsedTime);
-    const y = Chunk.HEIGHT * Math.sin(elapsedTime);
+    const x: number = Terrain.SIZE_X / 2 + Chunk.HEIGHT * Math.cos(elapsedTime);
+    const y: number = Chunk.HEIGHT * Math.sin(elapsedTime);
 
     this.sunlight.position.setX(x);
     this.sunlight.position.setY(y);
@@ -383,7 +392,7 @@ class Weather {
 
     this.sunBoundLight.position.copy(this.sunlight.position);
 
-    const bbox = new THREE.Box3().setFromObject(this.sun);
+    const bbox: THREE.Box3 = new THREE.Box3().setFromObject(this.sun);
 
     if (bbox.containsPoint(this.playerSvc.getPosition())) {
       this.progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.in_sun);
@@ -423,19 +432,16 @@ class Weather {
     this.starsSystem.position.copy(position);
   }
 
-  private computeFogColor(y: number) {
-    const yFloor = Math.floor(y);
+  private computeFogColor(y: number): THREE.Color {
+    const t = Math.floor(y / Chunk.HEIGHT * 360) / 360;
 
-    if (!Weather.FOG_COLORS.has(yFloor)) {
-      const t = MathUtils.mapInterval(yFloor, 0, Chunk.HEIGHT, 0, 1);
-      const color = CommonUtils.lerpColor('#212C37', '#B1D8FF', t);
-      const threeColor = new THREE.Color(color);
+    if (!Weather.FOG_COLORS.has(t)) {
+      const color = new THREE.Color(CommonUtils.lerpColor(Weather.FOG_COLOR1, Weather.FOG_COLOR2, t));
+      Weather.FOG_COLORS.set(t, color);
 
-      Weather.FOG_COLORS.set(yFloor, threeColor);
-      this.fogColor = threeColor;
-    } else {
-      this.fogColor = Weather.FOG_COLORS.get(yFloor);
+      return color;
     }
+    return Weather.FOG_COLORS.get(t);
   }
 
   private watchStartTime() {
