@@ -8,7 +8,7 @@ import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 
-const Home = ({ uiSvc }: IServices) => {
+const Home = ({ uiManager }) => {
 
   let form: HTMLFormElement;
   let seed: HTMLInputElement;
@@ -22,8 +22,7 @@ const Home = ({ uiSvc }: IServices) => {
       seedValid = seed.checkValidity();
     }
 
-    console.log(uiSvc);
-    // uiManager.switchState(UI_STATES.LOADING, { seed: seedValid ? seed.value.trim() : null } as IUIManagerParameters);
+    uiManager.switchState(UI_STATES.LOADING, { seed: seedValid ? seed.value.trim() : null } as IUIManagerParameters);
   };
 
   return (

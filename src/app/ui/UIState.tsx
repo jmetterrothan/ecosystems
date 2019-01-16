@@ -9,8 +9,6 @@ abstract class UIState extends React.PureComponent<void, void> {
 
   constructor() {
     super();
-
-    this.uiSvc = uiSvc;
   }
 
   abstract init();

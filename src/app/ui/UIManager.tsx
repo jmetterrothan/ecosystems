@@ -1,4 +1,9 @@
 import React from 'react';
+import { Router, Switch, Route } from 'react-router-dom';
+
+import { history } from '@shared/helpers/history.helpers';
+
+import Home from '@templates/Home/home';
 
 import UIState from '@ui/UIState';
 import UIHomeState from '@ui/states/UIHomeState';
@@ -10,13 +15,16 @@ import UIService, { uiSvc } from '@ui/services/ui.service';
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
+import withService from '@public/components/withService/withService';
+import { IServices } from './models/services.model';
+import Loading from '@public/templates/Loading/loading';
 
 interface IUIManagerProps {
 
 }
 
 interface IUIManagerState {
-  currentUiStateID: number;
+  currentUiStateID: UI_STATES;
   parameters: IUIManagerParameters;
 }
 
@@ -46,13 +54,20 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
+    console.log(this.state.currentUiStateID);
 
     return (
-      <div className='ui full'>
-        <div className='ui__state'>
-          {uiState && uiState.render()}
+      <Router history={history}>
+        <div className='ui full'>
+          <div className='ui__state'>
+            <Switch>
+              <Route path='/loading' component={Loading} />
+              <Route path='/' render={() => withService(Home)({ uiManager: this })} />
+              {/* {uiState && uiState.render()} */}
+            </Switch>
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 
@@ -61,11 +76,12 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     this.setState({
       currentUiStateID: state,
       parameters: parameters ? parameters : this.state.parameters
-    }, () => {
-      this.uiStates.get(state).process();
+    }, async () => {
+      await this.uiStates.get(state).process();
+      history.push(state);
+      this.uiSvc.switchState(state);
     });
 
-    this.uiSvc.switchState(state);
   }
 
   handleKeyboard(key: string, active: boolean) {

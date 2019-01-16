@@ -12,7 +12,7 @@ if (UIManager.ENABLED) {
 } else {
   (async () => {
     const app = new Main();
-    await app.init();
+    await app.init(new UIManager(null, null));
     await app.load();
     app.run();
   })();
