@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Main from '@app/Main';
 import UIState from '@ui/UIState';
 
@@ -19,20 +21,19 @@ class UILoadingState extends UIState {
   }
 
   async process() {
-    const { state } = this.uiManager;
 
     const app = new Main();
     await app.init();
-    const seed = await app.load(state.parameters.seed);
+    // const seed = await app.load(state.parameters.seed);
     app.run();
 
     document.body.requestPointerLock();
-    this.uiManager.switchState(UI_STATES.GAME, { seed });
+    // this.uiManager.switchState(UI_STATES.GAME, { seed });
   }
 
   render() {
     return (
-      withService(Loading)({ uiManager: this.uiManager } as IServices)
+      withService(Loading)({ uiSvc: this.uiSvc } as IServices)
     );
   }
 }

@@ -1,14 +1,16 @@
 import React from 'react';
 
 import UIManager from '@ui/UIManager';
+import UIService, { uiSvc } from './services/ui.service';
 
 abstract class UIState extends React.PureComponent<void, void> {
 
-  protected uiManager: UIManager;
+  protected uiSvc: UIService;
 
-  constructor(uiManager: UIManager) {
+  constructor() {
     super();
-    this.uiManager = uiManager;
+
+    this.uiSvc = uiSvc;
   }
 
   abstract init();

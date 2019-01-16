@@ -7,11 +7,11 @@ import UIGameState from '@ui/states/UIGameState';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 
-const UIStateFactory = (state: UI_STATES, manager: UIManager): UIState => {
+const UIStateFactory = (state: UI_STATES): UIState => {
   switch (state) {
-    case UI_STATES.HOME: return new UIHomeState(manager);
-    case UI_STATES.LOADING: return new UILoadingState(manager);
-    case UI_STATES.GAME: return new UIGameState(manager);
+    case UI_STATES.HOME: return new UIHomeState();
+    case UI_STATES.LOADING: return new UILoadingState();
+    case UI_STATES.GAME: return new UIGameState();
   }
 };
 

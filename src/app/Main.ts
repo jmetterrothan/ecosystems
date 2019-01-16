@@ -75,10 +75,10 @@ class Main {
       */
     }
 
-    if (!UIManager.ENABLED) {
-      this.uiSvc.switchState(UI_STATES.GAME);
-      // document.body.requestPointerLock();
-    }
+    // if (!UIManager.ENABLED) {
+    // this.uiSvc.switchState(UI_STATES.GAME);
+    // document.body.requestPointerLock();
+    // }
 
     this.scene = new THREE.Scene();
 
