@@ -69,7 +69,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   }
 
   handleKeyboard(key: string, active: boolean) {
-    console.log('ui handle', key, active);
+    // console.log('ui handle', key, active);
   }
 
   private addState(key: UI_STATES, value?: UIState) {
