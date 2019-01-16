@@ -1,13 +1,7 @@
 import React from 'react';
-import { Router, Switch, Route } from 'react-router-dom';
-
-import { history } from '@shared/helpers/history.helpers';
-
-import Home from '@templates/Home/home';
 
 import UIState from '@ui/UIState';
 import UIHomeState from '@ui/states/UIHomeState';
-import UIGameState from '@ui/states/UIGameState';
 
 import stateFactory from '@ui/UIStatesFactory';
 import UIService, { uiSvc } from '@ui/services/ui.service';
@@ -17,7 +11,6 @@ import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 import withService from '@public/components/withService/withService';
 import { IServices } from './models/services.model';
-import Loading from '@public/templates/Loading/loading';
 
 interface IUIManagerProps {
 
@@ -45,7 +38,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
     this.uiSvc = uiSvc;
 
-    this.uiStates = new Map<UI_STATES, UIState>();
+    this.uiStates = new Map<UI_STATES, React.Component>();
 
     // if (!UIManager.ENABLED) return;
 
@@ -54,20 +47,20 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
-    console.log(this.state.currentUiStateID);
+    console.log(this);
 
     return (
-      <Router history={history}>
-        <div className='ui full'>
-          <div className='ui__state'>
-            <Switch>
+      // <Router history={history}>
+      <div className='ui full'>
+        <div className='ui__state'>
+          {withService(uiState.render())({ uiManager: this } as IServices)}
+          {/* <Switch>
               <Route path='/loading' component={Loading} />
               <Route path='/' render={() => withService(Home)({ uiManager: this })} />
-              {/* {uiState && uiState.render()} */}
-            </Switch>
-          </div>
+            </Switch> */}
         </div>
-      </Router>
+        {/* </Router> */}
+      </div>
     );
   }
 
@@ -78,7 +71,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
       parameters: parameters ? parameters : this.state.parameters
     }, async () => {
       await this.uiStates.get(state).process();
-      history.push(state);
+      // history.push(state);
       this.uiSvc.switchState(state);
     });
 

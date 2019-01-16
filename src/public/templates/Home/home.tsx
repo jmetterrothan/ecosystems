@@ -8,7 +8,7 @@ import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 
-const Home = ({ uiManager }) => {
+const Home = ({ uiManager }: IServices) => {
 
   let form: HTMLFormElement;
   let seed: HTMLInputElement;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import Home from '@templates/Home/home';
 
-import UIState from '@ui/UIState';
+import { UIState } from '@ui/UIState';
 import withService from '@components/withService/withService';
 
 import { IServices } from '@ui/models/services.model';
@@ -11,7 +11,8 @@ import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 import UIManager from '../UIManager';
 
-class UIHomeState extends UIState {
+class UIHomeState extends React.Component implements UIState {
+
   init() {
     console.info('INIT HOME');
 
@@ -23,10 +24,7 @@ class UIHomeState extends UIState {
   process() { }
 
   render() {
-    return (
-      // <Home />
-      withService(Home)({ uiSvc: this.uiSvc } as IServices)
-    );
+    return Home;
   }
 }
 

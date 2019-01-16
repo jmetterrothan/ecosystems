@@ -3,17 +3,22 @@ import React from 'react';
 import UIManager from '@ui/UIManager';
 import UIService, { uiSvc } from './services/ui.service';
 
-abstract class UIState extends React.PureComponent<void, void> {
+// abstract class UIState extends React.PureComponent<void, void> {
 
-  protected uiSvc: UIService;
+//   protected uiSvc: UIService;
 
-  constructor() {
-    super();
-  }
+//   constructor() {
+//     super();
+//   }
 
-  abstract init();
+//   abstract init();
 
-  abstract process();
+//   abstract process();
+// }
+
+// export default UIState;
+
+export interface UIState {
+  init: Function;
+  process: Function;
 }
-
-export default UIState;
