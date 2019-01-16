@@ -1,8 +1,8 @@
 export enum UI_STATES {
   HOME,
-  TUTORIAL,
   LOADING,
-  PLAY,
+  GAME,
+  TUTORIAL,
   PAUSE,
   TROPHIES,
   PROGRESSION,

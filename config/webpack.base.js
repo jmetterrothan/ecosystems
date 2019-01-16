@@ -82,11 +82,12 @@ module.exports = {
       },
       {
         test: /\.(obj|mtl)$/,
-        loader: 'file-loader'
-      },
-      {
-        test: /\.ya?ml$/,
-        use: 'js-yaml-loader',
+        loader: 'file-loader',
+        options: {
+          name: webpackMode.isProduction
+            ? '/objects/[name]/[hash:8].[ext]'
+            : '[name].[ext]'
+        }
       }
     ]
   },

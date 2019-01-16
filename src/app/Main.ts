@@ -18,6 +18,7 @@ import UIService, { uiSvc } from '@ui/services/ui.service';
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
 import { UI_STATES } from '@ui/enums/UIStates.enum';
+import UIManager from '@ui/UIManager';
 
 class Main {
   private renderer: THREE.WebGLRenderer;
@@ -37,9 +38,11 @@ class Main {
   private coreSvc: CoreService;
   private playerSvc: PlayerService;
   private configSvc: GraphicsConfigService;
-  private uiSvc: UIService;
   private multiplayerSvc: MultiplayerService;
   private storageSvc: StorageService;
+  private uiSvc: UIService;
+
+  private uiManager: UIManager;
 
   constructor() {
     this.containerElement = document.body;
@@ -48,9 +51,9 @@ class Main {
     this.coreSvc = coreSvc;
     this.configSvc = configSvc;
     this.playerSvc = playerSvc;
-    this.uiSvc = uiSvc;
     this.multiplayerSvc = multiplayerSvc;
     this.storageSvc = storageSvc;
+    this.uiSvc = uiSvc;
 
     // TODO: Change quality based on user input / hardware detection / live frame render time ?
     this.configSvc.quality = GRAPHICS_QUALITY.HIGH;
@@ -72,6 +75,11 @@ class Main {
       */
     }
 
+    if (!UIManager.ENABLED) {
+      this.uiSvc.switchState(UI_STATES.GAME);
+      // document.body.requestPointerLock();
+    }
+
     this.scene = new THREE.Scene();
 
     const aspect = window.innerWidth / window.innerHeight;
@@ -83,7 +91,8 @@ class Main {
     this.focused = true;
   }
 
-  async init() {
+  async init(uiManager: UIManager = new UIManager(null, null)) {
+    this.uiManager = uiManager;
     this.initControls();
 
     this.world = new World(this.scene, this.camera, this.controls);
@@ -131,8 +140,8 @@ class Main {
     }
   }
 
-  async load(seed: string) {
-    await this.world.init(seed);
+  async load(seed?: string): Promise<string> {
+    return await this.world.init(seed);
   }
 
   private initControls() {
@@ -193,7 +202,7 @@ class Main {
 
       document.body.addEventListener('click', () => {
 
-        if (!this.uiSvc.isState(UI_STATES.PLAY)) return;
+        if (!this.uiSvc.isState(UI_STATES.GAME)) return;
 
         document.body.requestPointerLock = document.body.requestPointerLock || document.body.mozRequestPointerLock || document.body.webkitRequestPointerLock;
         document.body.requestPointerLock();
@@ -207,11 +216,13 @@ class Main {
       document.body.addEventListener('keydown', e => {
         if (this.world.isInitialized()) {
           this.world.handleKeyboard(e.key, true && this.controls.enabled);
+          this.uiManager.handleKeyboard(e.key, true);
         }
       });
       document.body.addEventListener('keyup', e => {
         if (this.world.isInitialized()) {
           this.world.handleKeyboard(e.key, false);
+          this.uiManager.handleKeyboard(e.key, false);
         }
       });
 

@@ -7,12 +7,10 @@ class UIGameState extends UIState {
     console.info('INIT GAME');
   }
 
+  process() { }
+
   render() {
-    return (
-      <>
-        <h1>game</h1>
-      </>
-    );
+    return <div />;
   }
 }
 

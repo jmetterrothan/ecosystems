@@ -13,13 +13,21 @@
     "ter-arrow-parens": false,
     "no-parameter-reassignment": false,
     "import-name": false,
+    "quotemark": [
+      true,
+      "single",
+      "jsx-single"
+    ],
     "variable-name": [
       true,
       "ban-keywords",
       "check-format",
       "allow-pascal-case"
     ],
-    "jsx-no-lambda": false
+    // jsx
+    "jsx-no-lambda": false,
+    "jsx-boolean-value": false,
+    "jsx-no-multiline-js": false
   },
   "rulesDirectory": []
 }

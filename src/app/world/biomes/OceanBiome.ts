@@ -6,8 +6,8 @@ import Biome from '@world/Biome';
 import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 import Boids from '@boids/Boids';
-import DiscusFish from '@boids/Creatures/DiscusFish';
-import SalmonFish from '@boids/Creatures/SalmonFish';
+import DiscusFish from '@boids/creatures/DiscusFish';
+import SalmonFish from '@boids/creatures/SalmonFish';
 
 import { IBiome } from '@world/models/biome.model';
 

@@ -1,18 +1,51 @@
 import React from 'react';
 
-import Button from '@components/Button/button';
+import Row from '@components/Row/row';
+import Col from '@components/Col/col';
 
-const Home = () => (
-  <>
-    <h1>Home page</h1>
-    <div className="flexgrid">
-      <div className="col col_12">
-        1
-        <Button onClick={() => console.log('here')}>le bouton</Button>
-      </div>
-      <div className="col col_12">2</div>
-    </div>
-  </>
-);
+import { IServices } from '@ui/models/services.model';
+import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
+
+import { UI_STATES } from '@ui/enums/UIStates.enum';
+
+const Home = ({ uiManager }: IServices) => {
+
+  let form: HTMLFormElement;
+  let seed: HTMLInputElement;
+
+  const handleSubmit = ev => {
+    ev.preventDefault();
+
+    let seedValid = false;
+    if (seed.value.length) {
+      seed.required = true;
+      seedValid = seed.checkValidity();
+    }
+
+    uiManager.switchState(UI_STATES.LOADING, { seed: seedValid ? seed.value.trim() : null } as IUIManagerParameters);
+  };
+
+  return (
+    <>
+      <Row justify='center'>
+        <Col className='col_24' textAlign='center' style={{ margin: '60px 0' }}>Ecosystem</Col>
+      </Row>
+      <Row justify='center'>
+        <Col className='col_6'>
+          <form onSubmit={handleSubmit} ref={el => form = el}>
+            <input type='text' className='full' placeholder='seed' pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={1} ref={el => seed = el} />
+            <input type='submit' value='jouer' className='full' />
+          </form>
+        </Col>
+      </Row>
+      {/* <Row justify='center'>
+        <Col className='col_6' textAlign='center' style={{ margin: 20 }}>
+          <Button className='full' onClick={() => uiManager.switchState(UI_STATES.PLAY)}>Jouer</Button>
+        </Col>
+      </Row> */}
+    </>
+  );
+
+};
 
 export default Home;

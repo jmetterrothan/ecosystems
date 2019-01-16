@@ -6,7 +6,7 @@ import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 import Boids from '@boids/Boids';
-import Butterfly from '@boids/Creatures/Butterfly';
+import Butterfly from '@boids/creatures/Butterfly';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@world/models/biome.model';
