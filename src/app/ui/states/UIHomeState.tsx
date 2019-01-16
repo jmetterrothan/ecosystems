@@ -2,11 +2,9 @@ import React from 'react';
 
 import Home from '@templates/Home/home';
 
-import { IUIState } from '@ui/models/uiState.model';
+import UIState from '@ui/UIState';
 
-class UIHomeState extends React.Component implements IUIState {
-
-  component = Home;
+class UIHomeState extends UIState {
 
   init() {
     console.info('INIT HOME');

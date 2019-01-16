@@ -1,21 +1,20 @@
 import React from 'react';
 
-import { UIState } from '@ui/UIState';
+import UIState from '@ui/UIState';
 
-import Loading from '@templates/Loading/loading';
+import Game from '@templates/Game/game';
 
-class UILoadingState extends React.Component implements UIState {
+class UILoadingState extends UIState {
 
   init() {
 
   }
 
   process() {
-
   }
 
   render() {
-    return Loading;
+    return Game;
   }
 
 }

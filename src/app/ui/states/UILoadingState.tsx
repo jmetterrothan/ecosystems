@@ -1,14 +1,15 @@
 import React from 'react';
 
 import Main from '@app/Main';
-import { IUIState } from '@ui/models/uiState.model';
+import UIState from '@ui/UIState';
 
 import Loading from '@templates/Loading/loading';
+import { UI_STATES } from '../enums/UIStates.enum';
 
-class UILoadingState extends React.Component implements IUIState {
+class UILoadingState extends UIState {
 
   init() {
-
+    console.log('init loading');
   }
 
   async process() {
@@ -16,6 +17,10 @@ class UILoadingState extends React.Component implements IUIState {
     await app.init();
     const seed = await app.load();
     app.run();
+
+    console.log('ok');
+
+    this.uiManager.switchState(UI_STATES.GAME);
   }
 
   render() {
