@@ -1,4 +1,9 @@
 export interface ITranslationKeys {
+  TROPHIES: ITrophiesTranslationKeys;
+  UI: IUITranslationKeys;
+}
+
+export interface ITrophiesTranslationKeys {
   play_games_counter: string;
   visit_all_biomes: string;
   visit_all_biomes_counter: string;
@@ -15,6 +20,8 @@ export interface ITranslationKeys {
   going_under_rain: string;
   go_in_sun: string;
   unlock_trophy_percentage: string;
-  // UI
+}
+
+export interface IUITranslationKeys {
   trophies: string;
 }

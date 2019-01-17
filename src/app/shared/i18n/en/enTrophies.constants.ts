@@ -1,8 +1,6 @@
-import { ITranslationKeys } from '@shared/models/translationKeys.models';
-import Trophies from '@public/templates/Trophies/trophies';
+import { ITrophiesTranslationKeys } from '@shared/models/translationKeys.models';
 
-export const EN_TRANSLATION: ITranslationKeys = {
-  // trophies
+export const EN_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   play_games_counter: 'Play {{counter}} games',
   visit_all_biomes: 'All biomes visited',
   visit_all_biomes_counter: 'All biomes visited {{counter}} times',
@@ -19,6 +17,4 @@ export const EN_TRANSLATION: ITranslationKeys = {
   going_under_rain: 'It\'s raining today',
   go_in_sun: 'go in sun',
   unlock_trophy_percentage: '',
-  // UI
-  trophies: 'Trophies page'
 };

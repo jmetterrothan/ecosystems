@@ -5,7 +5,7 @@ import StorageService from '@app/shared/services/storage.service';
 import TranslationService from '@app/shared/services/translation.service';
 
 const Trophies = ({ storageSvc, translationSvc }) => (
-  <h1>{translationSvc.translate('trophies')}</h1>
+  <h1>{translationSvc.translate('UI.trophies')}</h1>
 );
 
 export default Trophies;

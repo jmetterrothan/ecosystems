@@ -1,7 +1,6 @@
-import { ITranslationKeys } from '@shared/models/translationKeys.models';
+import { ITrophiesTranslationKeys } from '@shared/models/translationKeys.models';
 
-export const FR_TRANSLATION: ITranslationKeys = {
-  // trophies
+export const FR_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   play_games_counter: 'Jouer {{counter}} parties',
   visit_all_biomes: 'Visiter tous les biomes',
   visit_all_biomes_counter: 'Visiter {{counter}} fois tous les biomes',
@@ -17,7 +16,5 @@ export const FR_TRANSLATION: ITranslationKeys = {
   add_carrot_snowmnan: 'J\'ai pas d\'nez',
   going_under_rain: 'La pluie ça mouille',
   go_in_sun: 'Le feu ça brûle',
-  unlock_trophy_percentage: '',
-  // UI
-  trophies: 'La page des trophées'
+  unlock_trophy_percentage: 'Vous avez débloqué {{counter}}% des trophées',
 };
