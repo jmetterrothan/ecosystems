@@ -2,16 +2,21 @@ import React from 'react';
 
 import UIState from '@ui/UIState';
 
-class UIGameState extends UIState {
+import Game from '@templates/Game/game';
+
+class UILoadingState extends UIState {
+
   init() {
-    console.info('INIT GAME');
+
   }
 
-  process() { }
+  process() {
+  }
 
   render() {
-    return <div />;
+    return Game;
   }
+
 }
 
-export default UIGameState;
+export default UILoadingState;

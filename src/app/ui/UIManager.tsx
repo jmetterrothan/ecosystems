@@ -2,11 +2,10 @@ import React from 'react';
 
 import UIState from '@ui/UIState';
 import UIHomeState from '@ui/states/UIHomeState';
-import UIGameState from '@ui/states/UIGameState';
-
 import stateFactory from '@ui/UIStatesFactory';
-import UIService, { uiSvc } from '@ui/services/ui.service';
+import withService from '@components/withService/withService';
 
+import { IUIServices, IManager } from './models/services.model';
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
@@ -16,16 +15,14 @@ interface IUIManagerProps {
 }
 
 interface IUIManagerState {
-  currentUiStateID: number;
+  currentUiStateID: UI_STATES;
   parameters: IUIManagerParameters;
 }
 
 class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
-  static readonly ENABLED: boolean = false;
+  static readonly ENABLED: boolean = true;
 
   private uiStates: Map<UI_STATES, UIState>;
-
-  private uiSvc: UIService;
 
   constructor(props: IUIManagerProps, state: IUIManagerState) {
     super(props, state);
@@ -35,22 +32,27 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
       parameters: {}
     };
 
-    this.uiSvc = uiSvc;
-
     this.uiStates = new Map<UI_STATES, UIState>();
 
-    if (!UIManager.ENABLED) return;
+    // if (!UIManager.ENABLED) return;
 
-    this.addState(UI_STATES.HOME, new UIHomeState(this));
+    this.addState(UI_STATES.HOME, new UIHomeState());
   }
 
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
+    uiState.setUIManager(this);
+    const services: IUIServices & IManager = {
+      uiManager: this,
+      ...uiState.getNeededServices()
+    };
 
     return (
       <div className='ui full'>
         <div className='ui__state'>
-          {uiState && uiState.render()}
+          {
+            withService(uiState.render())(services)
+          }
         </div>
       </div>
     );
@@ -61,11 +63,10 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     this.setState({
       currentUiStateID: state,
       parameters: parameters ? parameters : this.state.parameters
-    }, () => {
-      this.uiStates.get(state).process();
+    }, async () => {
+      await this.uiStates.get(state).process();
     });
 
-    this.uiSvc.switchState(state);
   }
 
   handleKeyboard(key: string, active: boolean) {
@@ -74,7 +75,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
   private addState(key: UI_STATES, value?: UIState) {
     if (!this.uiStates.has(key)) {
-      const uiState = value ? value : stateFactory(key, this);
+      const uiState = value ? value : stateFactory(key);
       uiState.init();
       this.uiStates.set(key, uiState);
     }
