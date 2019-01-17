@@ -1,7 +1,11 @@
 import React from 'react';
 
-const Trophies = () => (
-  <h1>Les trophées</h1>
+import { IUIServices } from '@ui/models/services.model';
+import StorageService from '@app/shared/services/storage.service';
+import TranslationService from '@app/shared/services/translation.service';
+
+const Trophies = ({ storageSvc, translationSvc }) => (
+  <h1>{translationSvc.translate('trophies')}</h1>
 );
 
 export default Trophies;

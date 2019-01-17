@@ -15,4 +15,6 @@ export interface ITranslationKeys {
   going_under_rain: string;
   go_in_sun: string;
   unlock_trophy_percentage: string;
+  // UI
+  trophies: string;
 }
