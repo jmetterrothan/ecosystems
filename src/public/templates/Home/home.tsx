@@ -8,44 +8,58 @@ import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 
-const Home = ({ uiManager }: IUIServices & IManager) => {
+class Home extends React.PureComponent {
 
-  let form: HTMLFormElement;
-  let seed: HTMLInputElement;
+  form: HTMLFormElement;
+  seedInput: HTMLInputElement;
 
-  const handleSubmit = ev => {
-    ev.preventDefault();
-
-    let seedValid = false;
-    if (seed.value.length) {
-      seed.required = true;
-      seedValid = seed.checkValidity();
-    }
-
-    uiManager.switchState(UI_STATES.LOADING, { seed: seedValid ? seed.value.trim() : null } as IUIManagerParameters);
+  state = {
+    seedValue: '',
+    formValid: true
   };
 
-  return (
-    <>
-      <Row justify='center'>
-        <Col className='col_24' textAlign='center' style={{ margin: '60px 0' }}>Ecosystem</Col>
-      </Row>
-      <Row justify='center'>
-        <Col className='col_6'>
-          <form onSubmit={handleSubmit} ref={el => form = el}>
-            <input type='text' className='full' placeholder='seed' pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={1} ref={el => seed = el} />
-            <input type='submit' value='jouer' className='full' />
-          </form>
-        </Col>
-      </Row>
-      {/* <Row justify='center'>
-        <Col className='col_6' textAlign='center' style={{ margin: 20 }}>
-          <Button className='full' onClick={() => uiManager.switchState(UI_STATES.PLAY)}>Jouer</Button>
-        </Col>
-      </Row> */}
-    </>
-  );
+  handleSubmit = ev => {
+    const { uiManager } = this.props;
+    ev.preventDefault();
 
-};
+    uiManager.switchState(UI_STATES.LOADING, { seed: this.state.seedValue.length ? this.state.seedValue.trim() : undefined } as IUIManagerParameters);
+  }
+
+  handleChange = ev => {
+
+    let valid;
+    if (this.seedInput.value.length) {
+      this.seedInput.required = true;
+      valid = this.seedInput.checkValidity();
+    } else {
+      this.seedInput.required = false;
+      valid = true;
+    }
+
+    this.setState({
+      seedValue: this.seedInput.value,
+      formValid: valid
+    });
+  }
+
+  render() {
+    return (
+      <>
+        <Row justify='center'>
+          <Col className='col_24' textAlign='center' style={{ margin: '60px 0' }}>Ecosystem</Col>
+        </Row>
+        <Row justify='center'>
+          <Col className='col_6'>
+            <form onSubmit={this.handleSubmit} ref={el => this.form = el}>
+              <input type='text' className='full' placeholder='seed' onChange={this.handleChange} pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={1} ref={el => this.seedInput = el} />
+              <input type='submit' value='jouer' className='full' disabled={!this.state.formValid} />
+            </form>
+          </Col>
+        </Row>
+      </>
+    );
+  }
+
+}
 
 export default Home;

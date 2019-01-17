@@ -14,7 +14,6 @@ class UIGameState extends UIState {
   }
 
   process() {
-
   }
 
   render() {

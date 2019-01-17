@@ -13,12 +13,13 @@ class UILoadingState extends UIState {
   }
 
   async process() {
+    const { parameters } = this.uiManager.state;
+
     const app = new Main();
     await app.init(this.uiManager);
-    const seed = await app.load();
+    const seed = await app.load(parameters.seed);
     app.run();
 
-    document.body.requestPointerLock();
     this.uiManager.switchState(UI_STATES.GAME, { seed });
   }
 
