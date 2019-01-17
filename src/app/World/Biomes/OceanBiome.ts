@@ -15,6 +15,8 @@ import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
+import WaterSFXMp3 from '@sounds/WaterSFX.mp3';
+
 class OceanBiome extends Biome {
   private spike: number;
   private depth: number;
@@ -36,6 +38,7 @@ class OceanBiome extends Biome {
     this.waterDistortionAmp = 720.0;
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.ocean_visited);
+    this.sound = WaterSFXMp3;
   }
 
   init() {
