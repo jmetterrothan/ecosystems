@@ -216,13 +216,12 @@ class Main {
       document.body.addEventListener('keydown', e => {
         if (this.world.isInitialized()) {
           this.world.handleKeyboard(e.key, true && this.controls.enabled);
-          this.uiManager.handleKeyboard(e.key, true);
+          this.uiManager.handleKeyboard(e.key);
         }
       });
       document.body.addEventListener('keyup', e => {
         if (this.world.isInitialized()) {
           this.world.handleKeyboard(e.key, false);
-          this.uiManager.handleKeyboard(e.key, false);
         }
       });
 

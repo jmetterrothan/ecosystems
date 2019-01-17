@@ -28,6 +28,9 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
   private uiSvc: UIService;
 
+  // pages
+  private trophiesPageOpen: boolean = false;
+
   constructor(props: IUIManagerProps, state: IUIManagerState) {
     super(props, state);
 
@@ -77,8 +80,15 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     });
   }
 
-  handleKeyboard(key: string, active: boolean) {
-    // console.log('ui handle', key, active);
+  handleKeyboard(key: string) {
+    switch (key) {
+      case 't': case 'T': this.manageTrophiesPage();
+    }
+  }
+
+  private manageTrophiesPage() {
+    this.switchState(!this.trophiesPageOpen ? UI_STATES.TROPHIES : UI_STATES.GAME);
+    this.trophiesPageOpen = !this.trophiesPageOpen;
   }
 
   private addState(key: UI_STATES, value?: UIState) {
