@@ -7,6 +7,8 @@ import { IBiome } from '@shared/models/biome.model';
 
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
+import ForestSFXMp3 from '@sounds/ForestSFX.mp3';
+
 class FjordBiome extends Biome {
   private e: number;
 
@@ -18,6 +20,7 @@ class FjordBiome extends Biome {
     this.waterDistortionAmp = 1024.0;
 
     this.e = MathUtils.randomFloat(2, 3);
+    this.sound = ForestSFXMp3;
   }
 
   init() { }
