@@ -15,7 +15,7 @@ import Player from '@app/Player';
 import MathUtils from '@utils/Math.utils';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
-import FjordBiome from './Biomes/FjordBiome';
+import FjordBiome from './Biomes/FjordBiome'; // Remove when done with testing
 
 class World {
   static readonly SEED: string | null = null;
