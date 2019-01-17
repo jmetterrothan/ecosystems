@@ -91,7 +91,7 @@ class Main {
     this.focused = true;
   }
 
-  async init(uiManager: UIManager = new UIManager(null, null)) {
+  async init(uiManager: UIManager) {
     this.uiManager = uiManager;
     this.initControls();
 

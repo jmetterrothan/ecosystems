@@ -1,10 +1,10 @@
 export enum UI_STATES {
-  HOME = '/',
-  LOADING = '/loading',
-  GAME = '/game',
-  TUTORIAL = '',
-  PAUSE = '',
-  TROPHIES = '/trophies',
-  PROGRESSION = '',
-  CREDITS = ''
+  HOME,
+  LOADING,
+  GAME,
+  TUTORIAL,
+  PAUSE,
+  TROPHIES,
+  PROGRESSION,
+  CREDITS
 }

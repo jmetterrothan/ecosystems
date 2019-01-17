@@ -5,6 +5,8 @@ import UIHomeState from '@ui/states/UIHomeState';
 import stateFactory from '@ui/UIStatesFactory';
 import withService from '@components/withService/withService';
 
+import UIService, { uiSvc } from './services/ui.service';
+
 import { IUIServices, IManager } from './models/services.model';
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
@@ -24,8 +26,12 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
   private uiStates: Map<UI_STATES, UIState>;
 
+  private uiSvc: UIService;
+
   constructor(props: IUIManagerProps, state: IUIManagerState) {
     super(props, state);
+
+    this.uiSvc = uiSvc;
 
     this.state = {
       currentUiStateID: UI_STATES.HOME,
@@ -34,14 +40,13 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
     this.uiStates = new Map<UI_STATES, UIState>();
 
-    // if (!UIManager.ENABLED) return;
-
     this.addState(UI_STATES.HOME, new UIHomeState());
   }
 
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
     uiState.setUIManager(this);
+    if (this.state.currentUiStateID === UI_STATES.HOME) uiState.process();
     const services: IUIServices & IManager = {
       uiManager: this,
       ...uiState.getNeededServices()
@@ -58,15 +63,18 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     );
   }
 
-  switchState(state: UI_STATES, parameters: IUIManagerParameters = null) {
+  switchState(state: UI_STATES, parameters: IUIManagerParameters = {}) {
     if (!this.uiStates.has(state)) this.addState(state);
     this.setState({
       currentUiStateID: state,
-      parameters: parameters ? parameters : this.state.parameters
+      parameters: {
+        ...this.state.parameters,
+        ...parameters
+      }
     }, async () => {
+      this.uiSvc.switchState(state, parameters);
       await this.uiStates.get(state).process();
     });
-
   }
 
   handleKeyboard(key: string, active: boolean) {

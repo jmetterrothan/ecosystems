@@ -1,8 +1,9 @@
-import React from 'react';
-
 import Home from '@templates/Home/home';
 
 import UIState from '@ui/UIState';
+import UIManager from '@ui/UIManager';
+
+import { UI_STATES } from '@ui/enums/UIStates.enum';
 
 class UIHomeState extends UIState {
 
@@ -10,7 +11,11 @@ class UIHomeState extends UIState {
     console.info('INIT HOME');
   }
 
-  process() { }
+  process() {
+    if (!UIManager.ENABLED) {
+      this.uiManager.switchState(UI_STATES.LOADING);
+    }
+  }
 
   render() {
     return Home;

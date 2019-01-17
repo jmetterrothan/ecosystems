@@ -1,16 +1,20 @@
 import React from 'react';
 
-import UIState from '@ui/UIState';
-
 import Game from '@templates/Game/game';
 
-class UILoadingState extends UIState {
+import UIState from '@ui/UIState';
+import UIManager from '@ui/UIManager';
+
+import { UI_STATES } from '../enums/UIStates.enum';
+
+class UIGameState extends UIState {
 
   init() {
 
   }
 
   process() {
+
   }
 
   render() {
@@ -19,4 +23,4 @@ class UILoadingState extends UIState {
 
 }
 
-export default UILoadingState;
+export default UIGameState;

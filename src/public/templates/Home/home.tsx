@@ -3,12 +3,12 @@ import React from 'react';
 import Row from '@components/Row/row';
 import Col from '@components/Col/col';
 
-import { IServices } from '@ui/models/services.model';
+import { IUIServices, IManager } from '@ui/models/services.model';
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 
-const Home = ({ uiManager }: IServices) => {
+const Home = ({ uiManager }: IUIServices & IManager) => {
 
   let form: HTMLFormElement;
   let seed: HTMLInputElement;

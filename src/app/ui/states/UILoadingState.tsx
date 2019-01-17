@@ -9,18 +9,17 @@ import { UI_STATES } from '../enums/UIStates.enum';
 class UILoadingState extends UIState {
 
   init() {
-    console.log('init loading');
+    console.log('INIT LOADING');
   }
 
   async process() {
     const app = new Main();
-    await app.init();
+    await app.init(this.uiManager);
     const seed = await app.load();
     app.run();
 
-    console.log('ok');
-
-    this.uiManager.switchState(UI_STATES.GAME);
+    document.body.requestPointerLock();
+    this.uiManager.switchState(UI_STATES.GAME, { seed });
   }
 
   render() {
