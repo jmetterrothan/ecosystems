@@ -1,30 +1,24 @@
 import Home from '@templates/Home/home';
 
 import UIState from '@ui/UIState';
-import withService from '@components/withService/withService';
-
-import { IServices } from '@ui/models/services.model';
-import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
+import UIManager from '@ui/UIManager';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
-import UIManager from '../UIManager';
 
 class UIHomeState extends UIState {
 
   init() {
     console.info('INIT HOME');
+  }
 
+  process() {
     if (!UIManager.ENABLED) {
-      this.uiManager.switchState(UI_STATES.LOADING, { seed: '' } as IUIManagerParameters);
+      this.uiManager.switchState(UI_STATES.LOADING);
     }
   }
 
-  process() { }
-
   render() {
-    return (
-      withService(Home)({ uiManager: this.uiManager } as IServices)
-    );
+    return Home;
   }
 }
 

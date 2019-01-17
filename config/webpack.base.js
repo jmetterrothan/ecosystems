@@ -38,11 +38,6 @@ module.exports = {
         loader: 'tslint-loader'
       },
       {
-        test: /\.jsx$/,
-        exclude: '/node_modules/',
-        loader: 'babel-loader'
-      },
-      {
         test: /\.(scss|sass)$/,
         use: [
           webpackMode.isDevelopment

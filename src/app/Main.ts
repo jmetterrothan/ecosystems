@@ -75,10 +75,10 @@ class Main {
       */
     }
 
-    if (!UIManager.ENABLED) {
-      this.uiSvc.switchState(UI_STATES.GAME);
-      // document.body.requestPointerLock();
-    }
+    // if (!UIManager.ENABLED) {
+    // this.uiSvc.switchState(UI_STATES.GAME);
+    // document.body.requestPointerLock();
+    // }
 
     this.scene = new THREE.Scene();
 
@@ -91,7 +91,7 @@ class Main {
     this.focused = true;
   }
 
-  async init(uiManager: UIManager = new UIManager(null, null)) {
+  async init(uiManager: UIManager) {
     this.uiManager = uiManager;
     this.initControls();
 

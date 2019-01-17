@@ -1,29 +1,21 @@
+import React from 'react';
+
 import Main from '@app/Main';
 import UIState from '@ui/UIState';
 
-import { IServices } from '@ui/models/services.model';
-
-import withService from '@components/withService/withService';
 import Loading from '@templates/Loading/loading';
-
-import { UI_STATES } from '@ui/enums/UIStates.enum';
+import { UI_STATES } from '../enums/UIStates.enum';
 
 class UILoadingState extends UIState {
 
-  app: Main;
-
-  async init() {
-    // TODO: add loader
-    console.info('INIT LOADING');
-
+  init() {
+    console.log('INIT LOADING');
   }
 
   async process() {
-    const { state } = this.uiManager;
-
     const app = new Main();
-    await app.init();
-    const seed = await app.load(state.parameters.seed);
+    await app.init(this.uiManager);
+    const seed = await app.load();
     app.run();
 
     document.body.requestPointerLock();
@@ -31,10 +23,9 @@ class UILoadingState extends UIState {
   }
 
   render() {
-    return (
-      withService(Loading)({ uiManager: this.uiManager } as IServices)
-    );
+    return Loading;
   }
+
 }
 
 export default UILoadingState;
