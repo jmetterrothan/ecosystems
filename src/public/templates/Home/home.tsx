@@ -4,7 +4,8 @@ import Row from '@components/Row/row';
 import Col from '@components/Col/col';
 import UIManager from '@app/ui/UIManager';
 
-import { IUIServices, IManager } from '@ui/models/services.model';
+import UIManager from '@ui/UIManager';
+
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
@@ -14,14 +15,6 @@ import { configSvc } from '@app/shared/services/graphicsConfig.service';
 interface IHomeProps {
   uiManager: UIManager;
 }
-
-interface IHomeState {
-  seedValue: string;
-  selectedQuality: GRAPHICS_QUALITY;
-  formValid: boolean;
-}
-
-class Home extends React.PureComponent<IHomeProps, IHomeState> {
 
   form: HTMLFormElement;
   seedInput: HTMLInputElement;
@@ -43,7 +36,8 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     } as IUIManagerParameters);
   }
 
-  handleChange = ev => {
+  handleChange = () => {
+
     let valid;
     if (this.seedInput.value.length) {
       this.seedInput.required = true;

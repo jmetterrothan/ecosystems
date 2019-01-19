@@ -11,9 +11,9 @@ class UIHomeState extends UIState {
     console.info('INIT HOME');
   }
 
-  process() {
+  process(uiManager: UIManager) {
     if (!UIManager.ENABLED) {
-      this.uiManager.switchState(UI_STATES.LOADING);
+      uiManager.switchState(UI_STATES.LOADING);
     }
   }
 
