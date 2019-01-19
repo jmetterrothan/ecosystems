@@ -60,6 +60,7 @@
     "i18next-browser-languagedetector": "^2.2.4",
     "jmetterrothan-flexgrid": "^1.0.2",
     "poisson-disk-sampling": "^1.0.2",
+    "react-notifications": "^1.4.3",
     "react-router-dom": "^4.3.1",
     "rxjs": "^6.3.3",
     "seedrandom": "^2.4.4",
