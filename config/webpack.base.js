@@ -56,6 +56,12 @@ module.exports = {
             }
           },
           'sass-loader',
+          {
+            loader: 'sass-resources-loader',
+            options: {
+              resources: [path.join(PATHS.STYLES, 'variables.scss')]
+            }
+          }
         ]
       },
       {
