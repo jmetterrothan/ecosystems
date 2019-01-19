@@ -8,6 +8,8 @@ import CommonUtils from '@shared/utils/Common.utils';
 
 const GLOBAL_CONFIG = {
   DEBUG: CommonUtils.isDev(),
+  SHADOW_MAP_SIZE: 2048 * 10,
+  SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap
 };
 
 export const LOW_CONFIG: IConfig = {
@@ -19,11 +21,7 @@ export const LOW_CONFIG: IConfig = {
   ENABLE_WATER_EFFECTS: false,
   ENABLE_WEATHER_EFFECTS: false,
   ENABLE_AA: false,
-  ENABLE_SHADOWS: false,
-
-  // only used if shadows are enabled
-  SHADOW_MAP_SIZE: 2048,
-  SHADOW_MAP_TYPE: THREE.BasicShadowMap
+  ENABLE_SHADOWS: false
 };
 
 export const MEDIUM_CONFIG: IConfig = {
@@ -33,12 +31,9 @@ export const MEDIUM_CONFIG: IConfig = {
   MAX_RENDERABLE_CHUNKS: 24,
 
   ENABLE_WATER_EFFECTS: false,
-  ENABLE_WEATHER_EFFECTS: false,
+  ENABLE_WEATHER_EFFECTS: true,
   ENABLE_AA: true,
-  ENABLE_SHADOWS: false,
-
-  SHADOW_MAP_SIZE: 2048 * 2,
-  SHADOW_MAP_TYPE: THREE.PCFShadowMap
+  ENABLE_SHADOWS: false
 };
 
 export const HIGH_CONFIG: IConfig = {
@@ -51,9 +46,6 @@ export const HIGH_CONFIG: IConfig = {
   ENABLE_WEATHER_EFFECTS: true,
   ENABLE_AA: true,
   ENABLE_SHADOWS: true,
-
-  SHADOW_MAP_SIZE: 2048 * 10,
-  SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap
 };
 
 export const CONFIGS = {

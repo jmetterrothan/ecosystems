@@ -14,6 +14,8 @@ import Player from '@app/Player';
 import MathUtils from '@utils/Math.utils';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
+
 import TestBiome from '@world/biomes/TestBiome';
 
 class World {
@@ -60,8 +62,6 @@ class World {
     this.frustum = new THREE.Frustum();
     this.raycaster = new THREE.Raycaster();
 
-    this.configSvc = configSvc;
-
     this.initialized = false;
   }
 
@@ -96,8 +96,11 @@ class World {
 
     this.scene.add(this.controls.getObject());
 
-    if (this.configSvc.config.DEBUG) {
+    if (configSvc.config.DEBUG) {
       this.showAxesHelper();
+
+      console.info(`SEED : ${this.seed}`);
+      console.info(`QUALITY : ${GRAPHICS_QUALITY[configSvc.quality]}`);
     }
 
     this.initialized = true;
@@ -109,7 +112,6 @@ class World {
     this.seed = seed;
 
     MathUtils.rng = new Math.seedrandom(this.seed);
-    console.info(`SEED : ${this.seed}`);
 
     const span = document.createElement('span');
     span.className = 'seed';

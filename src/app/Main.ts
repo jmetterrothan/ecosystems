@@ -8,7 +8,7 @@ import World from '@world/World';
 import Crosshair from '@ui/Crosshair';
 import PostProcess from '@app/PostProcess';
 
-import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
+import { configSvc } from '@shared/services/graphicsConfig.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
 import StorageService, { storageSvc } from '@shared/services/storage.service';
@@ -16,7 +16,6 @@ import CoreService, { coreSvc } from '@shared/services/core.service';
 import UIService, { uiSvc } from '@ui/services/ui.service';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
-import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 import UIManager from '@ui/UIManager';
 
@@ -37,7 +36,6 @@ class Main {
 
   private coreSvc: CoreService;
   private playerSvc: PlayerService;
-  private configSvc: GraphicsConfigService;
   private multiplayerSvc: MultiplayerService;
   private storageSvc: StorageService;
   private uiSvc: UIService;
@@ -49,16 +47,12 @@ class Main {
     this.lastTime = window.performance.now();
 
     this.coreSvc = coreSvc;
-    this.configSvc = configSvc;
     this.playerSvc = playerSvc;
     this.multiplayerSvc = multiplayerSvc;
     this.storageSvc = storageSvc;
     this.uiSvc = uiSvc;
 
-    // TODO: Change quality based on user input / hardware detection / live frame render time ?
-    this.configSvc.quality = GRAPHICS_QUALITY.HIGH;
-
-    if (this.configSvc.config.DEBUG) {
+    if (configSvc.config.DEBUG) {
       this.stats = new statsJs();
       this.stats.showPanel(1);
       // document.body.appendChild(this.stats.dom);
@@ -84,7 +78,7 @@ class Main {
 
     const aspect = window.innerWidth / window.innerHeight;
     const near = 0.1;
-    const far = this.configSvc.config.MAX_RENDERABLE_CHUNKS * (8 * 2048);
+    const far = 32 * 8 * 2048;
 
     this.camera = new THREE.PerspectiveCamera(50, aspect, near, far);
 
@@ -105,7 +99,7 @@ class Main {
     this.postProcess = new PostProcess(this.scene, this.renderer, this.camera);
     this.postProcess.init();
 
-    if (this.configSvc.config.DEBUG) {
+    if (configSvc.config.DEBUG) {
       /*
       // socket
       // create room
@@ -140,7 +134,7 @@ class Main {
     }
   }
 
-  async load(seed?: string): Promise<string> {
+  async load(seed: string): Promise<string> {
     return await this.world.init(seed);
   }
 
@@ -152,7 +146,7 @@ class Main {
 
   private initRenderer() {
     // renderer setup
-    this.renderer = new THREE.WebGLRenderer({ antialias: this.configSvc.config.ENABLE_AA, logarithmicDepthBuffer: true, alpha: true });
+    this.renderer = new THREE.WebGLRenderer({ antialias: configSvc.config.ENABLE_AA, logarithmicDepthBuffer: true, alpha: true });
     this.renderer.domElement.style.position = 'fixed';
     this.renderer.domElement.style.top = '0';
     this.renderer.domElement.style.left = '0';
@@ -160,8 +154,8 @@ class Main {
     this.renderer.domElement.style.height = '100vh';
     this.renderer.domElement.style.zIndex = '-1';
 
-    this.renderer.shadowMap.enabled = this.configSvc.config.ENABLE_SHADOWS;
-    this.renderer.shadowMap.type = this.configSvc.config.SHADOW_MAP_TYPE;
+    this.renderer.shadowMap.enabled = configSvc.config.ENABLE_SHADOWS;
+    this.renderer.shadowMap.type = configSvc.config.SHADOW_MAP_TYPE;
 
     this.renderer.setClearColor(new THREE.Color(0x000000));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -231,7 +225,7 @@ class Main {
   }
 
   private render() {
-    if (this.configSvc.config.DEBUG) this.stats.begin();
+    if (configSvc.config.DEBUG) this.stats.begin();
 
     const time = window.performance.now();
     const elapsed = time - this.lastTime;
@@ -259,7 +253,7 @@ class Main {
       }
     }
 
-    if (this.configSvc.config.DEBUG) this.stats.end();
+    if (configSvc.config.DEBUG) this.stats.end();
 
     window.requestAnimationFrame(this.render.bind(this));
   }

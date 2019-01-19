@@ -27,7 +27,6 @@ class Weather {
   private scene: THREE.Scene;
   private generator: BiomeGenerator;
 
-  private configSvc: GraphicsConfigService;
   private progressionSvc: ProgressionService;
   private playerSvc: PlayerService;
   private multiplayerSvc: MultiplayerService;
@@ -64,7 +63,6 @@ class Weather {
     this.scene = scene;
     this.generator = generator;
 
-    this.configSvc = configSvc;
     this.playerSvc = playerSvc;
     this.progressionSvc = progressionSvc;
     this.multiplayerSvc = multiplayerSvc;
@@ -109,14 +107,14 @@ class Weather {
     this.wind = new THREE.Vector3(0, 0, 768 * Math.sign(Math.random() - 0.5));
 
     // wind direction helper
-    if (this.configSvc.config.DEBUG) {
+    if (configSvc.config.DEBUG) {
       const arrowHelper = new THREE.ArrowHelper(this.wind, new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.CLOUD_LEVEL, Terrain.SIZE_Z / 2), 10000, 0xff0000);
       this.scene.add(arrowHelper);
     }
   }
 
   initRain() {
-    if (!this.configSvc.config.ENABLE_WEATHER_EFFECTS) { return; }
+    if (!configSvc.config.ENABLE_WEATHER_EFFECTS) { return; }
 
     this.clouds.children.forEach((cloud: THREE.Mesh) => {
       // particles
@@ -230,8 +228,8 @@ class Weather {
     this.sunlight.castShadow = true;
     this.sunlight.shadow.mapSize.width = 4096;
     this.sunlight.shadow.mapSize.height = 4096;
-    this.sunlight.shadow.camera.visible = true;
-    this.sunlight.shadow.camera.castShadow = true;
+    this.sunlight.shadow.camera.visible = false;
+    this.sunlight.shadow.camera.castShadow = false;
     this.sunlight.shadow.bias = 0.0001;
     this.sunlight.shadow.camera.left = -d;
     this.sunlight.shadow.camera.right = d;
@@ -255,8 +253,8 @@ class Weather {
     this.moonlight.castShadow = true;
     this.moonlight.shadow.mapSize.width = 4096;
     this.moonlight.shadow.mapSize.height = 4096;
-    this.moonlight.shadow.camera.visible = true;
-    this.moonlight.shadow.camera.castShadow = true;
+    this.moonlight.shadow.camera.visible = false;
+    this.moonlight.shadow.camera.castShadow = false;
     this.moonlight.shadow.bias = 0.0001;
     this.moonlight.shadow.camera.left = -d;
     this.moonlight.shadow.camera.right = d;
@@ -332,7 +330,7 @@ class Weather {
         cloud.position.z = size.z / 2;
       }
 
-      if (!this.configSvc.config.ENABLE_WEATHER_EFFECTS) { continue; }
+      if (!configSvc.config.ENABLE_WEATHER_EFFECTS) { continue; }
 
       // rain
       const rainData = cloud.userData as ICloudData;
@@ -398,7 +396,7 @@ class Weather {
       this.progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.in_sun);
     }
 
-    if (this.configSvc.config.DEBUG) {
+    if (configSvc.config.DEBUG) {
       this.lightHelper.position.copy(this.sunlight.position);
       this.lightHelper.setDirection(new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize());
     }

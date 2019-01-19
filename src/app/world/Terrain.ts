@@ -9,7 +9,7 @@ import Biome from '@world/Biome';
 import Crosshair from '@ui/Crosshair';
 
 import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
-import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
+import { configSvc } from '@shared/services/graphicsConfig.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
 
@@ -63,7 +63,6 @@ class Terrain {
   private progressionSvc: ProgressionService;
   private playerSvc: PlayerService;
   private multiplayerSvc: MultiplayerService;
-  private configSvc: GraphicsConfigService;
 
   // preview
   private previewItem: IPick;
@@ -92,7 +91,6 @@ class Terrain {
     this.progressionSvc = progressionSvc;
     this.playerSvc = playerSvc;
     this.multiplayerSvc = multiplayerSvc;
-    this.configSvc = configSvc;
 
     this.chunk = new Coord();
     this.start = new Coord();
@@ -626,7 +624,7 @@ class Terrain {
     this.water.receiveShadow = true;
     this.layers.add(this.water);
 
-    if (this.configSvc.config.DEBUG) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
+    if (configSvc.config.DEBUG) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
 
     this.scene.add(this.layers);
   }

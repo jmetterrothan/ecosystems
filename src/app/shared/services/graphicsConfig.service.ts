@@ -4,7 +4,7 @@ import { CONFIGS } from '@shared/constants/config.constants';
 import { IConfig } from '@shared/models/graphicsConfig.model';
 
 class GraphicsConfigService {
-  private q: GRAPHICS_QUALITY;
+  private q: GRAPHICS_QUALITY = GRAPHICS_QUALITY.HIGH;
 
   set quality(q: GRAPHICS_QUALITY) {
     this.q = q;
