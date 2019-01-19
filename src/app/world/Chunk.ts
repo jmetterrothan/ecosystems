@@ -380,7 +380,7 @@ class Chunk {
 
   private placeObjectWithAnimation(object: THREE.Object3D) {
     const scaleSaved = object.scale.clone();
-    object.scale.set(0, 0, 0);
+    object.scale.set(0.00001, 0.00001, 0.00001);
     this.objects.add(object);
 
     // animation
