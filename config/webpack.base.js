@@ -38,7 +38,7 @@ module.exports = {
         loader: 'tslint-loader'
       },
       {
-        test: /\.(scss|sass)$/,
+        test: /\.(css|scss|sass)$/,
         use: [
           webpackMode.isDevelopment
             ? 'style-loader'
@@ -83,7 +83,17 @@ module.exports = {
             ? '/objects/[name]/[hash:8].[ext]'
             : '[name].[ext]'
         }
-      }
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg|otf)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]',
+            outputPath: 'fonts/'
+          }
+        }]
+    }
     ]
   },
   plugins: [

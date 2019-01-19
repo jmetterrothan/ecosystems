@@ -1,5 +1,7 @@
 import snakeCase from 'snake-case';
 
+import { toast } from 'react-toastify';
+
 import StorageService, { storageSvc } from '@shared/services/storage.service';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
 import { progressionSvc } from '@achievements/services/progression.service';
@@ -106,6 +108,17 @@ class AchievementService {
     (<string[]>completedArray).push(snakeCase(trophy.value));
     this.storageSvc.set(STORAGES_KEY.completed, completedArray);
 
+    // send notification
+    // console.warn('unlocked', trophy);
+    toast(`Trophy unlocked : ${trophy.name.key}`, {
+      position: toast.POSITION.TOP_RIGHT,
+      autoClose: 5000,
+      draggable: false,
+      closeButton: false,
+      hideProgressBar: true,
+      className: 'toast-trophy'
+    });
+
     // send event to google analytics
     this.monitoringSvc.sendEvent(this.monitoringSvc.categories.trophy, this.monitoringSvc.actions.completed, snakeCase(trophy.value));
 
@@ -115,7 +128,6 @@ class AchievementService {
       MathUtils.percent(this.storageSvc.getTrophiesCompleted(), this.trophies.filter((trophy: ITrophy) => trophy.type !== TROPHY_TYPE.TROPHY))
     );
   }
-
 }
 
 export const achievementSvc = new AchievementService();

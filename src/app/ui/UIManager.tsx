@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import UIState from '@ui/UIState';
 import UIHomeState from '@ui/states/UIHomeState';
 import stateFactory from '@ui/UIStatesFactory';
@@ -57,6 +60,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
     return (
       <div className='ui full'>
+        <ToastContainer />
         <div className='ui__state'>
           {
             withService(uiState.render())(services)
