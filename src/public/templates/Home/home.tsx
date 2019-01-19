@@ -18,6 +18,7 @@ interface IHomeState {
   seedValue: string;
   selectedQuality: GRAPHICS_QUALITY;
   debugMode: boolean;
+  onlineMode: boolean;
   formValid: boolean;
 }
 
@@ -29,17 +30,19 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     seedValue: '',
     selectedQuality: GRAPHICS_QUALITY.HIGH,
     debugMode: configSvc.debug,
+    onlineMode: false,
     formValid: true
   };
 
   handleSubmit = ev => {
     ev.preventDefault();
 
-    const { seedValue } = this.state;
+    const { seedValue, onlineMode } = this.state;
     const { uiManager } = this.props;
 
     uiManager.switchState(UI_STATES.LOADING, {
-      seed: seedValue.length ? seedValue.trim() : undefined
+      seed: seedValue.length ? seedValue.trim() : undefined,
+      online: onlineMode
     } as IUIManagerParameters);
   }
 
@@ -70,8 +73,13 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     this.setState({ debugMode: configSvc.debug });
   }
 
+  handleOnlineChange = ev => {
+    const onlineMode = Number(ev.target.value) === 1;
+    this.setState({ onlineMode });
+  }
+
   render() {
-    const { formValid, selectedQuality, debugMode } = this.state;
+    const { formValid, selectedQuality, debugMode, onlineMode } = this.state;
 
     return (
       <>
@@ -81,6 +89,17 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
         <Row justify='center'>
           <Col className='col_8'>
             <form onSubmit={this.handleSubmit} ref={el => this.form = el}>
+              <Row>
+                <Col className='col_8'>
+                  <input type='radio' id='onlineModeOff' name='onlineMode' onChange={this.handleOnlineChange} value='0' checked={onlineMode === false} />
+                  <label htmlFor='onlineModeOff'>Solo</label>
+                </Col>
+                <Col className='col_8'>
+                  <input type='radio' id='onlineModeOn' name='onlineMode' onChange={this.handleOnlineChange} value='1' checked={onlineMode !== false} />
+                  <label htmlFor='onlineModeOn'>Multiplayer</label>
+                </Col>
+              </Row>
+
               <input type='text' className='full' placeholder='seed' onChange={this.handleChange} pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={1} ref={el => this.seedInput = el} />
 
               <input type='checkbox' id='debugMode' onChange={this.handleDebugChange} checked={debugMode === true} />

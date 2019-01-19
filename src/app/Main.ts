@@ -55,7 +55,7 @@ class Main {
     if (configSvc.debug) {
       this.stats = new statsJs();
       this.stats.showPanel(1);
-      // document.body.appendChild(this.stats.dom);
+      document.body.appendChild(this.stats.dom);
 
       /*
       // reset
@@ -68,11 +68,6 @@ class Main {
       document.body.appendChild(resetStrorage);
       */
     }
-
-    // if (!UIManager.ENABLED) {
-    // this.uiSvc.switchState(UI_STATES.GAME);
-    // document.body.requestPointerLock();
-    // }
 
     this.scene = new THREE.Scene();
 
@@ -98,43 +93,13 @@ class Main {
 
     this.postProcess = new PostProcess(this.scene, this.renderer, this.camera);
     this.postProcess.init();
-
-    if (configSvc.debug) {
-      /*
-      // socket
-      // create room
-      const createRoom = document.createElement('button');
-      createRoom.textContent = 'create room';
-      createRoom.classList.add('button', 'create');
-      createRoom.addEventListener('click', (ev) => {
-        (<HTMLElement>ev.target).style.display = 'none';
-        const seed = this.world.getSeed();
-        this.multiplayerSvc.init(this.scene, 'seed');
-      }, false);
-      document.body.appendChild(createRoom);
-
-      // join room
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.id = 'inputSeed';
-      input.placeholder = 'room';
-      input.classList.add('input', 'join');
-      document.body.appendChild(input);
-
-      const join = document.createElement('button');
-      join.textContent = 'Join room';
-      join.classList.add('button', 'join');
-      join.addEventListener('click', ev => {
-        (<HTMLElement>ev.target).style.display = 'none';
-        const seed = input.value;
-        this.multiplayerSvc.init(this.scene, seed);
-      }, false);
-      document.body.appendChild(join);
-      */
-    }
   }
 
-  async load(seed: string): Promise<string> {
+  async load(seed: string, online: boolean): Promise<string> {
+    if (online === true) {
+      this.multiplayerSvc.init(this.scene, seed);
+    }
+
     return await this.world.init(seed);
   }
 
