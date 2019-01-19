@@ -1,6 +1,4 @@
 export interface IConfig {
-  DEBUG: boolean;
-
   MAX_VISIBLE_CHUNKS: number;
   MAX_RENDERABLE_CHUNKS: number;
 

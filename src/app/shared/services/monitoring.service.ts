@@ -1,4 +1,4 @@
-import { configSvc } from './graphicsConfig.service';
+import { configSvc } from './config.service';
 
 import { IEventAction, IEventCategory } from '@shared/models/monitoring.model';
 
@@ -16,7 +16,7 @@ class MonitoringService {
 
   sendEvent(category: string, action: string, label?: string, numericValue?: number) {
     ga('send', 'event', category, action, label, numericValue);
-    if (configSvc.config.DEBUG) console.log(`event ${category} ${action} sent (${label})`);
+    if (configSvc.debug) console.log(`event ${category} ${action} sent (${label})`);
   }
 
 }

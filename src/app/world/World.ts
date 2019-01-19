@@ -3,7 +3,7 @@ import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
-import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
+import ConfigService, { configSvc } from '@shared/services/config.service';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
@@ -44,7 +44,7 @@ class World {
   private raycaster: THREE.Raycaster;
   private seed: string;
 
-  private configSvc: GraphicsConfigService;
+  private configSvc: ConfigService;
 
   private initialized: boolean;
 
@@ -96,7 +96,7 @@ class World {
 
     this.scene.add(this.controls.getObject());
 
-    if (configSvc.config.DEBUG) {
+    if (configSvc.debug) {
       this.showAxesHelper();
 
       console.info(`SEED : ${this.seed}`);

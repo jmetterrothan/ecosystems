@@ -5,7 +5,7 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import Creature from '@boids/Creatures/Creature';
 import MathUtils from '@shared/utils/Math.utils';
 
-import { configSvc } from '@shared/services/graphicsConfig.service';
+import { configSvc } from '@app/shared/services/config.service';
 import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 
@@ -38,7 +38,7 @@ class Boids {
     this.playerSvc = playerSvc;
     this.progressionSvc = progressionSvc;
 
-    if (configSvc.config.DEBUG) {
+    if (configSvc.debug) {
       const mesh = new THREE.Box3().setFromCenterAndSize(
         new THREE.Vector3(this.origin.x, this.origin.y, this.origin.z),
         new THREE.Vector3(this.boudingBox.x, this.boudingBox.y, this.boudingBox.z)

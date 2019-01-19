@@ -8,7 +8,6 @@ import { UI_STATES } from '../enums/UIStates.enum';
 import UIManager from '../UIManager';
 
 class UILoadingState extends UIState {
-
   init() {
     console.log('INIT LOADING');
   }

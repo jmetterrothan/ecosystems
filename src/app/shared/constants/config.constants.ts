@@ -4,41 +4,31 @@ import { IConfig } from '@shared/models/graphicsConfig.model';
 
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
 
-import CommonUtils from '@shared/utils/Common.utils';
-
-const GLOBAL_CONFIG = {
-  DEBUG: CommonUtils.isDev(),
-  SHADOW_MAP_SIZE: 2048 * 10,
-  SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap
-};
-
 export const LOW_CONFIG: IConfig = {
-  ...GLOBAL_CONFIG,
-
   MAX_VISIBLE_CHUNKS: 12,
   MAX_RENDERABLE_CHUNKS: 16,
 
   ENABLE_WATER_EFFECTS: false,
   ENABLE_WEATHER_EFFECTS: false,
   ENABLE_AA: false,
-  ENABLE_SHADOWS: false
+  ENABLE_SHADOWS: false,
+  SHADOW_MAP_SIZE: 2048 * 10,
+  SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap
 };
 
 export const MEDIUM_CONFIG: IConfig = {
-  ...GLOBAL_CONFIG,
-
   MAX_VISIBLE_CHUNKS: 18,
   MAX_RENDERABLE_CHUNKS: 24,
 
   ENABLE_WATER_EFFECTS: false,
   ENABLE_WEATHER_EFFECTS: true,
   ENABLE_AA: true,
-  ENABLE_SHADOWS: false
+  ENABLE_SHADOWS: false,
+  SHADOW_MAP_SIZE: 2048 * 10,
+  SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap
 };
 
 export const HIGH_CONFIG: IConfig = {
-  ...GLOBAL_CONFIG,
-
   MAX_VISIBLE_CHUNKS: 22,
   MAX_RENDERABLE_CHUNKS: 30,
 
@@ -46,6 +36,8 @@ export const HIGH_CONFIG: IConfig = {
   ENABLE_WEATHER_EFFECTS: true,
   ENABLE_AA: true,
   ENABLE_SHADOWS: true,
+  SHADOW_MAP_SIZE: 2048 * 10,
+  SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap
 };
 
 export const CONFIGS = {

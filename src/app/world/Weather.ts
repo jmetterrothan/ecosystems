@@ -7,7 +7,7 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import MathUtils from '@utils/Math.utils';
 import CommonUtils from '@utils/Common.utils';
 
-import GraphicsConfigService, { configSvc } from '@shared/services/graphicsConfig.service';
+import ConfigService, { configSvc } from '@app/shared/services/config.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
 import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
@@ -107,7 +107,7 @@ class Weather {
     this.wind = new THREE.Vector3(0, 0, 768 * Math.sign(Math.random() - 0.5));
 
     // wind direction helper
-    if (configSvc.config.DEBUG) {
+    if (configSvc.debug) {
       const arrowHelper = new THREE.ArrowHelper(this.wind, new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.CLOUD_LEVEL, Terrain.SIZE_Z / 2), 10000, 0xff0000);
       this.scene.add(arrowHelper);
     }
@@ -184,7 +184,7 @@ class Weather {
     this.scene.add(this.sunBoundLight);
 
     /*
-    if (configSvc.config.DEBUG) {
+    if (configSvc.debug) {
       this.scene.add(new THREE.SpotLightHelper(this.moonBoundLight));
       this.scene.add(new THREE.SpotLightHelper(this.sunBoundLight));
     }
@@ -200,16 +200,16 @@ class Weather {
     this.sun = World.LOADED_MODELS.get('sun').clone();
     this.sun.children.forEach(materialCallback);
     this.sun.position.copy(this.sunlight.position);
-    // this.sun.visible = configSvc.config.DEBUG;
+    // this.sun.visible = configSvc.debug;
 
     this.moon = World.LOADED_MODELS.get('moon').clone();
     this.moon.children.forEach(materialCallback);
     this.moon.position.copy(this.sunlight.position);
-    // this.moon.visible = configSvc.config.DEBUG;
+    // this.moon.visible = configSvc.debug;
 
     this.scene.add(this.sun, this.moon);
 
-    if (configSvc.config.DEBUG) {
+    if (configSvc.debug) {
       const dirHelper = new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize();
       this.lightHelper = new THREE.ArrowHelper(dirHelper, this.sunlight.position.clone(), Chunk.HEIGHT, 0xff0000, 10000);
       this.scene.add(this.lightHelper);
@@ -396,7 +396,7 @@ class Weather {
       this.progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.in_sun);
     }
 
-    if (configSvc.config.DEBUG) {
+    if (configSvc.debug) {
       this.lightHelper.position.copy(this.sunlight.position);
       this.lightHelper.setDirection(new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize());
     }

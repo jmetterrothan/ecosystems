@@ -13,7 +13,7 @@ import { IEffect } from '@shared/models/effect.model';
 import vergilwaterVertexGlsl from '@shaders/vergilwater.vertex.glsl';
 import vergilwaterFragmentGlsl from '@shaders/vergilwater.fragment.glsl';
 
-import { configSvc } from '@shared/services/graphicsConfig.service';
+import { configSvc } from '@app/shared/services/config.service';
 
 THREE.VergilWaterShader = {
   uniforms: {

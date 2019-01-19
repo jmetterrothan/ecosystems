@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-import { configSvc } from './graphicsConfig.service';
+import { configSvc } from './config.service';
 
 import { EN_TRANSLATION } from '@app/shared/i18n/en/en.constants';
 import { FR_TRANSLATION } from '@app/shared/i18n/fr/fr.constants';
@@ -12,7 +12,7 @@ class TranslationService {
       i18next
         .use(LanguageDetector)
         .init({
-          debug: configSvc.config.DEBUG,
+          debug: configSvc.debug,
           fallbackLng: ['en', 'fr'],
           resources: {
             en: {

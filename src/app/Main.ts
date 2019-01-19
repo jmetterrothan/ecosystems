@@ -8,7 +8,7 @@ import World from '@world/World';
 import Crosshair from '@ui/Crosshair';
 import PostProcess from '@app/PostProcess';
 
-import { configSvc } from '@shared/services/graphicsConfig.service';
+import { configSvc } from '@app/shared/services/config.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
 import StorageService, { storageSvc } from '@shared/services/storage.service';
@@ -52,7 +52,7 @@ class Main {
     this.storageSvc = storageSvc;
     this.uiSvc = uiSvc;
 
-    if (configSvc.config.DEBUG) {
+    if (configSvc.debug) {
       this.stats = new statsJs();
       this.stats.showPanel(1);
       // document.body.appendChild(this.stats.dom);
@@ -99,7 +99,7 @@ class Main {
     this.postProcess = new PostProcess(this.scene, this.renderer, this.camera);
     this.postProcess.init();
 
-    if (configSvc.config.DEBUG) {
+    if (configSvc.debug) {
       /*
       // socket
       // create room
@@ -225,7 +225,7 @@ class Main {
   }
 
   private render() {
-    if (configSvc.config.DEBUG) this.stats.begin();
+    if (configSvc.debug) this.stats.begin();
 
     const time = window.performance.now();
     const elapsed = time - this.lastTime;
@@ -253,7 +253,7 @@ class Main {
       }
     }
 
-    if (configSvc.config.DEBUG) this.stats.end();
+    if (configSvc.debug) this.stats.end();
 
     window.requestAnimationFrame(this.render.bind(this));
   }
