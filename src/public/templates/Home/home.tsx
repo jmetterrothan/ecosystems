@@ -3,6 +3,7 @@ import React from 'react';
 import Row from '@components/Row/row';
 import Col from '@components/Col/col';
 import UIManager from '@ui/UIManager';
+import NotificationManager from '@public/components/Notification/NotificationManager';
 
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
@@ -33,6 +34,17 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     onlineMode: false,
     formValid: true
   };
+
+  /*
+  componentDidMount() {
+    NotificationManager.push({
+      icon: null,
+      label: 'Trophy unlocked',
+      content: 'A test trophy',
+      duration: 5000
+    });
+  }
+  */
 
   handleSubmit = ev => {
     ev.preventDefault();

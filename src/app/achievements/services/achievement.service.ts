@@ -1,6 +1,6 @@
 import snakeCase from 'snake-case';
 
-import { toast } from 'react-toastify';
+import NotificationManager from '@public/components/Notification/NotificationManager';
 
 import StorageService, { storageSvc } from '@shared/services/storage.service';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
@@ -112,14 +112,11 @@ class AchievementService {
     this.storageSvc.set(STORAGES_KEY.completed, completedArray);
 
     // send notification
-    // console.warn('unlocked', trophy);
-    toast(`Trophy unlocked : ${this.translationSvc.translate(trophy.name.key, trophy.name.options)}`, {
-      position: toast.POSITION.TOP_RIGHT,
-      autoClose: 5000,
-      draggable: false,
-      closeButton: false,
-      hideProgressBar: true,
-      className: 'toast-trophy'
+    NotificationManager.push({
+      icon: null,
+      label: 'Trophy unlocked',
+      content: this.translationSvc.translate(trophy.name.key, trophy.name.options),
+      duration: 5000
     });
 
     // send event to google analytics
