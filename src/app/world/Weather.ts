@@ -25,6 +25,8 @@ class Weather {
   private static FOG_COLOR2: string = '#B1D8FF';
   private static TICK_RATIO_DIV: number = 24000;
 
+  private static SOLAR_SYSTEM_RADIUS: number = Math.max(Terrain.SIZE_X, Terrain.SIZE_Z) * 2;
+
   private scene: THREE.Scene;
   private generator: BiomeGenerator;
 
@@ -56,10 +58,10 @@ class Weather {
 
   private fogColor: THREE.Color = new THREE.Color();
   /**
-   * Weather constructor
-   * @param {THREE.Scene} scene
-   * @param {BiomeGenerator} generator
-   */
+  * Weather constructor
+  * @param {THREE.Scene} scene
+  * @param {BiomeGenerator} generator
+  */
   constructor(scene: THREE.Scene, generator: BiomeGenerator) {
     this.scene = scene;
     this.generator = generator;
@@ -79,8 +81,8 @@ class Weather {
   }
 
   /**
-   * @param {number} delta
-   */
+  * @param {number} delta
+  */
   update(delta: number) {
     this.updateClouds(delta);
     this.updateSun();
@@ -241,7 +243,7 @@ class Weather {
 
   private initMoonlight() {
     const d = 1000000;
-    this.moonlight = new THREE.DirectionalLight(0x5fc2eb, 0.1);
+    this.moonlight = new THREE.DirectionalLight(0x5fc2eb, 0.15);
 
     this.moonlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.moonlight.target.updateMatrixWorld(true);
@@ -299,9 +301,9 @@ class Weather {
   }
 
   /**
-   * Cloud world entry animation
-   * @param {THREE.Object3D} cloud
-   */
+  * Cloud world entry animation
+  * @param {THREE.Object3D} cloud
+  */
   private animateCloudIn(cloud: THREE.Object3D) {
     new TWEEN.Tween(cloud.scale)
       .to(cloud.userData.scale, 750)
@@ -314,10 +316,10 @@ class Weather {
   }
 
   /**
-   * Cloud world exit animation
-   * @param {THREE.Object3D} cloud
-   * @param {THREE.Vector3} position Position to set after the animation is finished
-   */
+  * Cloud world exit animation
+  * @param {THREE.Object3D} cloud
+  * @param {THREE.Vector3} position Position to set after the animation is finished
+  */
   private animateCloudOut(cloud: THREE.Object3D, position: THREE.Vector3) {
     cloud.userData.animating = true;
 
@@ -332,9 +334,9 @@ class Weather {
   }
 
   /**
-   * Update cloud movements an weather particles
-   * @param {number} delta
-   */
+  * Update cloud movements an weather particles
+  * @param {number} delta
+  */
   private updateClouds(delta: number) {
     const playerPosition = this.playerSvc.getPosition();
 
@@ -456,7 +458,7 @@ class Weather {
   private updateLights() {
     const y = this.sunlight.position.y;
 
-    this.hemisphereLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, Chunk.HEIGHT, 0.4, 0.75);
+    this.hemisphereLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, Chunk.HEIGHT, 0.35, 0.75);
     // this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.2, 0.35);
     this.sunlight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.0, 0.25);
 

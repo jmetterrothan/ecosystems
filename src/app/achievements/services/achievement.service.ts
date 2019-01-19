@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import StorageService, { storageSvc } from '@shared/services/storage.service';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
 import { progressionSvc } from '@achievements/services/progression.service';
+import TranslationService, { translationSvc } from '@shared/services/translation.service';
 
 import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
 
@@ -21,6 +22,7 @@ class AchievementService {
 
   private storageSvc: StorageService;
   private monitoringSvc: MonitoringService;
+  private translationSvc: TranslationService;
 
   private storage: Object;
 
@@ -29,6 +31,7 @@ class AchievementService {
   constructor() {
     this.storageSvc = storageSvc;
     this.monitoringSvc = monitoringSvc;
+    this.translationSvc = translationSvc;
 
     this.trophies = TROPHIES;
 
@@ -110,7 +113,7 @@ class AchievementService {
 
     // send notification
     // console.warn('unlocked', trophy);
-    toast(`Trophy unlocked : ${trophy.name.key}`, {
+    toast(`Trophy unlocked : ${this.translationSvc.translate(trophy.name.key, trophy.name.options)}`, {
       position: toast.POSITION.TOP_RIGHT,
       autoClose: 5000,
       draggable: false,
