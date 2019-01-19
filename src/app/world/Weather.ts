@@ -303,6 +303,7 @@ class Weather {
   private animateCloudIn(cloud: THREE.Object3D) {
     new TWEEN.Tween(cloud.scale)
       .to(cloud.userData.scale, 750)
+      .delay(500)
       .easing(TWEEN.Easing.Quadratic.Out)
       .onComplete(() => {
         cloud.userData.animating = false;
@@ -337,9 +338,9 @@ class Weather {
 
     for (const cloud of this.clouds.children) {
       // move cloud
-      cloud.position.add(this.wind.clone().multiplyScalar(delta));
-
-      cloud.updateMatrixWorld(true);
+      if (!cloud.userData.animating) {
+        cloud.position.add(this.wind.clone().multiplyScalar(delta));
+      }
 
       // reset position if the cloud goes off the edges of the world
       const bbox: THREE.Box3 = new THREE.Box3().setFromObject(cloud);
@@ -347,24 +348,24 @@ class Weather {
 
       // animate cloud when it's off bounds
       if (!cloud.userData.animating) {
-        if (bbox.max.x < size.x / 2) {
+        if (cloud.position.x < 0) {
           const position = cloud.position.clone();
-          position.x = Terrain.SIZE_X - size.x / 2;
+          position.x = Terrain.SIZE_X;
           this.animateCloudOut(cloud, position);
         }
-        if (bbox.max.z < size.z / 2) {
+        if (cloud.position.z < 0) {
           const position = cloud.position.clone();
-          position.z = Terrain.SIZE_Z - size.z / 2;
+          position.z = Terrain.SIZE_Z;
           this.animateCloudOut(cloud, position);
         }
-        if (bbox.min.x > Terrain.SIZE_X) {
+        if (cloud.position.x > Terrain.SIZE_X) {
           const position = cloud.position.clone();
-          position.x = size.x / 2;
+          position.x = 0;
           this.animateCloudOut(cloud, position);
         }
-        if (bbox.min.z > Terrain.SIZE_Z) {
+        if (cloud.position.z > Terrain.SIZE_Z) {
           const position = cloud.position.clone();
-          position.z = size.z / 2;
+          position.z = 0;
           this.animateCloudOut(cloud, position);
         }
       }
