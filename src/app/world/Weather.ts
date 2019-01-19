@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import * as TWEEN from '@tweenjs/tween.js';
 
 import World from '@world/World';
 import Terrain from '@world/Terrain';
@@ -77,14 +78,6 @@ class Weather {
     }
   }
 
-  getClouds(): THREE.Group {
-    return this.clouds;
-  }
-
-  getFogColor(): THREE.Color {
-    return this.fogColor;
-  }
-
   /**
    * @param {number} delta
    */
@@ -104,7 +97,7 @@ class Weather {
     this.clouds.receiveShadow = true;
     this.scene.add(this.clouds);
 
-    this.wind = new THREE.Vector3(0, 0, 768 * Math.sign(Math.random() - 0.5));
+    this.wind = new THREE.Vector3(0, 0, MathUtils.randomInt(600, 1200) * Math.sign(Math.random() - 0.5));
 
     // wind direction helper
     if (configSvc.debug) {
@@ -117,6 +110,8 @@ class Weather {
     if (!configSvc.config.ENABLE_WEATHER_EFFECTS) { return; }
 
     this.clouds.children.forEach((cloud: THREE.Mesh) => {
+      cloud.updateMatrixWorld(true);
+
       // particles
       const size = new THREE.Box3().setFromObject(cloud).getSize(new THREE.Vector3());
       const particles = new THREE.Geometry();
@@ -145,13 +140,14 @@ class Weather {
         particleMaterial: material,
         particleSystem: new THREE.Points(particles, material),
         isRaininig: false,
-        allParticlesDropped: false
+        allParticlesDropped: false,
+        scale: cloud.scale.clone(),
+        animating: false
       };
 
       this.scene.add(data.particleSystem);
 
       cloud.userData = data;
-
     });
   }
 
@@ -301,6 +297,38 @@ class Weather {
   }
 
   /**
+   * Cloud world entry animation
+   * @param {THREE.Object3D} cloud
+   */
+  private animateCloudIn(cloud: THREE.Object3D) {
+    new TWEEN.Tween(cloud.scale)
+      .to(cloud.userData.scale, 750)
+      .easing(TWEEN.Easing.Quadratic.Out)
+      .onComplete(() => {
+        cloud.userData.animating = false;
+      })
+      .start();
+  }
+
+  /**
+   * Cloud world exit animation
+   * @param {THREE.Object3D} cloud
+   * @param {THREE.Vector3} position Position to set after the animation is finished
+   */
+  private animateCloudOut(cloud: THREE.Object3D, position: THREE.Vector3) {
+    cloud.userData.animating = true;
+
+    new TWEEN.Tween(cloud.scale)
+      .to(new THREE.Vector3(0.00001, 0.00001, 0.00001), 750)
+      .easing(TWEEN.Easing.Quadratic.Out)
+      .onComplete(() => {
+        cloud.position.copy(position);
+        this.animateCloudIn(cloud);
+      })
+      .start();
+  }
+
+  /**
    * Update cloud movements an weather particles
    * @param {number} delta
    */
@@ -317,17 +345,28 @@ class Weather {
       const bbox: THREE.Box3 = new THREE.Box3().setFromObject(cloud);
       const size: THREE.Vector3 = bbox.getSize(new THREE.Vector3());
 
-      if (bbox.max.x < 0) {
-        cloud.position.x = Terrain.SIZE_X - size.z / 2;
-      }
-      if (bbox.max.z < 0) {
-        cloud.position.z = Terrain.SIZE_Z - size.z / 2;
-      }
-      if (bbox.min.x > Terrain.SIZE_X) {
-        cloud.position.x = size.x / 2;
-      }
-      if (bbox.min.z > Terrain.SIZE_Z) {
-        cloud.position.z = size.z / 2;
+      // animate cloud when it's off bounds
+      if (!cloud.userData.animating) {
+        if (bbox.max.x < size.x / 2) {
+          const position = cloud.position.clone();
+          position.x = Terrain.SIZE_X - size.x / 2;
+          this.animateCloudOut(cloud, position);
+        }
+        if (bbox.max.z < size.z / 2) {
+          const position = cloud.position.clone();
+          position.z = Terrain.SIZE_Z - size.z / 2;
+          this.animateCloudOut(cloud, position);
+        }
+        if (bbox.min.x > Terrain.SIZE_X) {
+          const position = cloud.position.clone();
+          position.x = size.x / 2;
+          this.animateCloudOut(cloud, position);
+        }
+        if (bbox.min.z > Terrain.SIZE_Z) {
+          const position = cloud.position.clone();
+          position.z = size.z / 2;
+          this.animateCloudOut(cloud, position);
+        }
       }
 
       if (!configSvc.config.ENABLE_WEATHER_EFFECTS) { continue; }
@@ -415,7 +454,7 @@ class Weather {
     const y = this.sunlight.position.y;
 
     this.hemisphereLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, Chunk.HEIGHT, 0.35, 0.75);
-    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.2, 0.35);
+    // this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.2, 0.35);
     this.sunlight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.0, 0.25);
 
     if (y > 0) {
@@ -451,6 +490,14 @@ class Weather {
 
   private watchStartTime() {
     this.multiplayerSvc.time$.subscribe(time => this.startTime = time);
+  }
+
+  getClouds(): THREE.Group {
+    return this.clouds;
+  }
+
+  getFogColor(): THREE.Color {
+    return this.fogColor;
   }
 }
 

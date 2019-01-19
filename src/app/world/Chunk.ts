@@ -160,10 +160,6 @@ class Chunk {
       const p4 = this.generator.computeHeightAt(bbox.max.x, bbox.max.z);
 
       if (p1 < Chunk.CLOUD_LEVEL && p2 < Chunk.CLOUD_LEVEL && p3 < Chunk.CLOUD_LEVEL && p4 < Chunk.CLOUD_LEVEL) {
-        /*
-        (<THREE.Geometry>terrain.world.clouds.geometry).mergeMesh(mesh);
-        (<THREE.Geometry>terrain.world.clouds.geometry).elementsNeedUpdate = true;
-        */
         terrain.getWorld().getWeather().getClouds().add(mesh);
       }
     }
