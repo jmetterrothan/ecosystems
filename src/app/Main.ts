@@ -206,8 +206,9 @@ class Main {
       }
 
       const color: THREE.Color = this.world.getWeather().getFogColor();
-      this.renderer.setClearColor(color);
-      this.scene.fog.color.set(color);
+      this.scene.background = color;
+      this.scene.fog.color = color;
+
       TWEEN.update();
 
       // switch render func if underwater
