@@ -54,7 +54,7 @@ class Main {
 
     if (configSvc.debug) {
       this.stats = new statsJs();
-      this.stats.showPanel(1);
+      this.stats.showPanel(0);
       document.body.appendChild(this.stats.dom);
 
       /*

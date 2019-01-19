@@ -72,7 +72,7 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.45,
+        weight: 0.35,
         name: 'bush2',
         scarcity: 0.4,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 },
@@ -87,6 +87,24 @@ export const SUB_BIOMES: IBiomes = {
         e: { low: Chunk.SEA_ELEVATION + 0.25, high: null },
         m: { low: 0.0, high: 0.325 },
         scale: { min: 1.0, max: 1.75 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: 'pink_mushroom',
+        scarcity: 0.975,
+        e: { low: Chunk.SEA_ELEVATION + 0.025, high: 1.0 },
+        m: null,
+        scale: { min: 0.85, max: 1.35 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: 'blue_mushroom',
+        scarcity: 0.975,
+        e: { low: Chunk.SEA_ELEVATION + 0.025, high: 1.0 },
+        m: null,
+        scale: { min: 0.85, max: 1.25 },
         float: false,
       },
     ]

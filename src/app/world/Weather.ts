@@ -194,11 +194,13 @@ class Weather {
     };
 
     this.sun = World.LOADED_MODELS.get('sun').clone();
+    this.sun.children[0].material = new THREE.MeshLambertMaterial({ color: 0xffec83, emissive: 0x505050, emissiveIntensity: 1.0, reflectivity: 0.75 });
     this.sun.children.forEach(materialCallback);
     this.sun.position.copy(this.sunlight.position);
     // this.sun.visible = configSvc.debug;
 
     this.moon = World.LOADED_MODELS.get('moon').clone();
+    this.moon.children[0].material = new THREE.MeshLambertMaterial({ color: 0x83d8ff, emissive: 0x505050, emissiveIntensity: 1.0, reflectivity: 0.75 });
     this.moon.children.forEach(materialCallback);
     this.moon.position.copy(this.sunlight.position);
     // this.moon.visible = configSvc.debug;
