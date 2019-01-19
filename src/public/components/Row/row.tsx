@@ -5,7 +5,7 @@ import './row.styles';
 type Justify = 'start' | 'center' | 'between' | 'around';
 
 interface Props {
-  children: JSX.Element;
+  children: JSX.Element[] | JSX.Element | string;
   className?: string;
   debug?: boolean;
   style?: React.CSSProperties;

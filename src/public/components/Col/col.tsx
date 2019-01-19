@@ -5,7 +5,7 @@ import './col.styles';
 type textAlign = 'left' | 'center' | 'right' | 'justify';
 
 interface Props {
-  children: JSX.Element | string;
+  children: JSX.Element[] | JSX.Element | string;
   className?: string;
   debug?: boolean;
   textAlign?: textAlign;
