@@ -241,7 +241,7 @@ class Weather {
 
   private initMoonlight() {
     const d = 1000000;
-    this.moonlight = new THREE.DirectionalLight(0x5fc2eb, 0.15);
+    this.moonlight = new THREE.DirectionalLight(0x5fc2eb, 0.1);
 
     this.moonlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.moonlight.target.updateMatrixWorld(true);
@@ -456,7 +456,7 @@ class Weather {
   private updateLights() {
     const y = this.sunlight.position.y;
 
-    this.hemisphereLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, Chunk.HEIGHT, 0.35, 0.75);
+    this.hemisphereLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, Chunk.HEIGHT, 0.4, 0.75);
     // this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.2, 0.35);
     this.sunlight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.0, 0.25);
 
