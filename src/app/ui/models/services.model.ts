@@ -7,13 +7,10 @@ import TranslationService from '@shared/services/translation.service';
 import UIService from '@ui/services/ui.service';
 
 export interface IUIServices {
+  uiManager?: UIManager;
   uiSvc?: UIService;
   storageSvc?: StorageService;
   configSvc?: GraphicsConfigService;
   monitoringSvc?: MonitoringService;
   translationSvc?: TranslationService;
-}
-
-export interface IManager {
-  uiManager: UIManager;
 }

@@ -7,7 +7,7 @@ import withService from '@components/withService/withService';
 
 import UIService, { uiSvc } from './services/ui.service';
 
-import { IUIServices, IManager } from './models/services.model';
+import { IUIServices } from './models/services.model';
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
@@ -48,9 +48,9 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
-    uiState.setUIManager(this);
-    if (this.state.currentUiStateID === UI_STATES.HOME) uiState.process();
-    const services: IUIServices & IManager = {
+    if (this.state.currentUiStateID === UI_STATES.HOME) uiState.process(this);
+
+    const services: IUIServices = {
       uiManager: this,
       ...uiState.getNeededServices()
     };
@@ -76,7 +76,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
       }
     }, async () => {
       this.uiSvc.switchState(state, parameters);
-      await this.uiStates.get(state).process();
+      await this.uiStates.get(state).process(this);
     });
   }
 

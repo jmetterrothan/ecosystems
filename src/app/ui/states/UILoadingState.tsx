@@ -5,6 +5,7 @@ import UIState from '@ui/UIState';
 
 import Loading from '@templates/Loading/loading';
 import { UI_STATES } from '../enums/UIStates.enum';
+import UIManager from '../UIManager';
 
 class UILoadingState extends UIState {
 
@@ -12,15 +13,15 @@ class UILoadingState extends UIState {
     console.log('INIT LOADING');
   }
 
-  async process() {
-    const { parameters } = this.uiManager.state;
+  async process(uiManager: UIManager) {
+    const { parameters } = uiManager.state;
 
     const app = new Main();
-    await app.init(this.uiManager);
+    await app.init(uiManager);
     const seed = await app.load(parameters.seed);
     app.run();
 
-    this.uiManager.switchState(UI_STATES.GAME, { seed });
+    uiManager.switchState(UI_STATES.GAME, { seed });
   }
 
   render() {

@@ -3,12 +3,17 @@ import React from 'react';
 import Row from '@components/Row/row';
 import Col from '@components/Col/col';
 
-import { IUIServices, IManager } from '@ui/models/services.model';
+import UIManager from '@ui/UIManager';
+
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 
-class Home extends React.PureComponent {
+interface Props {
+  uiManager: UIManager;
+}
+
+class Home extends React.PureComponent<Props> {
 
   form: HTMLFormElement;
   seedInput: HTMLInputElement;
@@ -25,7 +30,7 @@ class Home extends React.PureComponent {
     uiManager.switchState(UI_STATES.LOADING, { seed: this.state.seedValue.length ? this.state.seedValue.trim() : undefined } as IUIManagerParameters);
   }
 
-  handleChange = ev => {
+  handleChange = () => {
 
     let valid;
     if (this.seedInput.value.length) {
