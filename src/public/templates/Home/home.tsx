@@ -36,17 +36,6 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     formValid: true
   };
 
-  /*
-  componentDidMount() {
-    notificationSvc.push({
-      icon: null,
-      label: 'Trophy unlocked',
-      content: 'A test trophy',
-      duration: 5000
-    });
-  }
-  */
-
   handleSubmit = ev => {
     ev.preventDefault();
 
