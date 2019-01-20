@@ -4,10 +4,11 @@
   box-sizing: border-box;
 }
 
-html, body {
-  display: block;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
+html {
   font-size: 14px;
+  font-family: $font;
+}
+
+body {
+  overflow:hidden;
 }

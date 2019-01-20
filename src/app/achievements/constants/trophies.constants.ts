@@ -15,6 +15,15 @@ import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
 export const TROPHIES: ITrophy[] = [
   // GAME
   {
+    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.play_games_counter}`, options: { counter: 2 } },
+    value: 'play ten games',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    checklist: [
+      { name: 'jouer 2 fois', value: PROGRESSION_COMMON_STORAGE_KEYS.game_played, limit: 2 }
+    ]
+  },
+  {
     name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.play_games_counter}`, options: { counter: 10 } },
     value: 'play ten games',
     img: '',

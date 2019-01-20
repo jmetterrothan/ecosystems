@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs';
 import snakeCase from 'snake-case';
 
 import NotificationManager from '@public/components/Notification/NotificationManager';
@@ -19,7 +20,6 @@ import { TROPHY_TYPE } from '@achievements/enums/trophyType.enum';
 import MathUtils from '@shared/utils/Math.utils';
 
 class AchievementService {
-
   private storageSvc: StorageService;
   private monitoringSvc: MonitoringService;
   private translationSvc: TranslationService;
@@ -27,6 +27,8 @@ class AchievementService {
   private storage: Object;
 
   private trophies: ITrophy[];
+
+  trophy$: Subject<number>;
 
   constructor() {
     this.storageSvc = storageSvc;
@@ -36,6 +38,16 @@ class AchievementService {
     this.trophies = TROPHIES;
 
     this.storage = this.storageSvc.get(STORAGES_KEY.trophies) || {};
+
+    this.trophy$ = new Subject();
+  }
+
+  getTrophiesCount(): number {
+    return this.trophies.length;
+  }
+
+  getUnlockedTrophiesCount(): number {
+    return (<string[]>this.storageSvc.get(STORAGES_KEY.completed)).length;
   }
 
   /**
@@ -127,6 +139,9 @@ class AchievementService {
       PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage,
       MathUtils.percent(this.storageSvc.getTrophiesCompleted(), this.trophies.filter((trophy: ITrophy) => trophy.type !== TROPHY_TYPE.TROPHY))
     );
+
+    // notify unlocked count change
+    this.trophy$.next(this.getUnlockedTrophiesCount());
   }
 }
 

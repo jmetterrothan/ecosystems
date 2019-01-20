@@ -34,8 +34,7 @@ class NotificationContainer extends React.Component<any, INotificationContainerS
     list.push(notification);
 
     setTimeout(() => {
-      const { list } = this.state;
-      this.setState({ list: list.filter(n => n !== notification) });
+      this.setState({ list: this.state.list.filter(n => n !== notification) });
     }, notification.duration);
 
     this.setState({ list });
@@ -46,7 +45,7 @@ class NotificationContainer extends React.Component<any, INotificationContainerS
 
     return (
       <ul className='notification-container'>
-        {list.map((notification, i) => <li key={i}><Notification {...notification} /></li>)}
+        {list.map((notification, i) => <li key={i} className='mb-2'><Notification {...notification} /></li>)}
       </ul>
     );
   }
