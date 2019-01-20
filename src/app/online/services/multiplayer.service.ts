@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
 
+import World from '@app/world/World';
+
 import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded } from '@online/models/socketData.model';
 import { IPick } from '@world/models/pick.model';
 import { IOnlineObject } from '@online/models/onlineObjects.model';
@@ -25,7 +27,7 @@ class MultiplayerService {
   private roomID: string;
   private userId: string;
 
-  private onlineUsers: Map<string, THREE.Mesh>;
+  private onlineUsers: Map<string, THREE.Object3D>;
 
   constructor() {
     this.objectPlacedSource = new Subject();
@@ -104,6 +106,7 @@ class MultiplayerService {
     data.usersConnected.forEach((user: string) => {
       if (!this.onlineUsers.has(user) && user !== this.userId) {
         const userMesh = this.createUserMesh(user);
+
         this.onlineUsers.set(user, userMesh);
         this.scene.add(userMesh);
       }
@@ -126,11 +129,8 @@ class MultiplayerService {
     this.onlineUsers.delete(data.userID);
   }
 
-  private createUserMesh(userID: string): THREE.Mesh {
-    const user = new THREE.Mesh(
-      new THREE.SphereGeometry(3000, 24, 24),
-      new THREE.MeshBasicMaterial({ color: new THREE.Color() })
-    );
+  private createUserMesh(userID: string): THREE.Object3D {
+    const user = World.LOADED_MODELS.get('player').clone();
     user.userData = { userID };
 
     user.position.set(this.onlineUsers.size * 3000, 10000, 0);

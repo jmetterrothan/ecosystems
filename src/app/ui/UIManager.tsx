@@ -48,6 +48,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     this.addState(UI_STATES.HOME, new UIHomeState());
   }
 
+  /*
   componentDidMount() {
     notificationSvc.push({
       icon: null,
@@ -56,6 +57,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
       duration: 500000
     });
   }
+  */
 
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);

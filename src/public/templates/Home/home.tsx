@@ -4,7 +4,6 @@ import Row from '@components/Row/row';
 import Col from '@components/Col/col';
 import UIManager from '@ui/UIManager';
 
-import { notificationSvc } from '@app/shared/services/notification.service';
 import { configSvc } from '@app/shared/services/config.service';
 
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';

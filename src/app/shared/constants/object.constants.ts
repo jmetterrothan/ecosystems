@@ -180,7 +180,15 @@ import sunMtl from '@objmodels/misc/sun.mtl';
 import moonObj from '@objmodels/misc/moon.obj';
 import moonMtl from '@objmodels/misc/moon.mtl';
 
+import playerObj from '@objmodels/misc/player.obj';
+import playerMtl from '@objmodels/misc/player.mtl';
+
 export const OBJECTS: IObject[] = [
+  {
+    name: 'player',
+    obj: playerObj,
+    mtl: playerMtl,
+  },
   {
     name: 'scarecrow',
     obj: scarecrowObj,
