@@ -59,7 +59,10 @@ module.exports = {
           {
             loader: 'sass-resources-loader',
             options: {
-              resources: [path.join(PATHS.STYLES, 'variables.scss')]
+              resources: [
+                path.join(PATHS.STYLES, 'abstracts', '_variables.scss'),
+                path.join(PATHS.STYLES, 'abstracts', '_colors.scss')
+              ]
             }
           }
         ]
