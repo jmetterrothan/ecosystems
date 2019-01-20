@@ -2,7 +2,7 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 
 import Notification from '@public/components/Notification/Notification';
-import NotificationManager from '@public/components/Notification/NotificationManager';
+import { notificationSvc } from '@app/shared/services/notification.service';
 
 import { INotification } from '@shared/models/notification.model';
 
@@ -22,7 +22,7 @@ class NotificationContainer extends React.Component<any, INotificationContainerS
   }
 
   componentWillMount() {
-    this.subscription = NotificationManager.notifications$.subscribe((notification) => this.add(notification));
+    this.subscription = notificationSvc.notifications$.subscribe((notification) => this.add(notification));
   }
 
   componentWillUnmount() {

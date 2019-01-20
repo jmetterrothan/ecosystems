@@ -1,10 +1,9 @@
 import { Subject } from 'rxjs';
 import snakeCase from 'snake-case';
 
-import NotificationManager from '@public/components/Notification/NotificationManager';
-
 import StorageService, { storageSvc } from '@shared/services/storage.service';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
+import { notificationSvc } from '@app/shared/services/notification.service';
 import { progressionSvc } from '@achievements/services/progression.service';
 import TranslationService, { translationSvc } from '@shared/services/translation.service';
 
@@ -124,7 +123,7 @@ class AchievementService {
     this.storageSvc.set(STORAGES_KEY.completed, completedArray);
 
     // send notification
-    NotificationManager.push({
+    notificationSvc.push({
       icon: null,
       label: 'Trophy unlocked',
       content: this.translationSvc.translate(trophy.name.key, trophy.name.options),

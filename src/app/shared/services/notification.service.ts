@@ -2,7 +2,7 @@ import { Observable, Subject } from 'rxjs';
 
 import { INotification } from '@shared/models/notification.model';
 
-class NotificationManager {
+class NotificationService {
   public notifications$: Subject<INotification>;
 
   constructor() {
@@ -14,5 +14,6 @@ class NotificationManager {
   }
 }
 
-const manager = new NotificationManager();
-export default manager;
+export const notificationSvc = new NotificationService();
+
+export default NotificationService;

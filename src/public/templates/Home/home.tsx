@@ -3,13 +3,14 @@ import React from 'react';
 import Row from '@components/Row/row';
 import Col from '@components/Col/col';
 import UIManager from '@ui/UIManager';
-import NotificationManager from '@public/components/Notification/NotificationManager';
+
+import { notificationSvc } from '@app/shared/services/notification.service';
+import { configSvc } from '@app/shared/services/config.service';
 
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
-import { configSvc } from '@app/shared/services/config.service';
 
 interface IHomeProps {
   uiManager: UIManager;
@@ -37,7 +38,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
 
   /*
   componentDidMount() {
-    NotificationManager.push({
+    notificationSvc.push({
       icon: null,
       label: 'Trophy unlocked',
       content: 'A test trophy',
