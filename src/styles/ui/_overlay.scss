@@ -5,7 +5,7 @@
     position: fixed;
     top: 0;
     right: 0;
-    padding: 1rem;
+    padding: 2rem;
     width:175px;
   }
 }
@@ -31,6 +31,6 @@
   &__inner {
     max-width: 100%;
     height: inherit;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.85);
   }
 }
