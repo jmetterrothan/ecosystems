@@ -1,10 +1,12 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 
+import UIManager from '@app/ui/UIManager';
+
 import { achievementSvc } from '@achievements/services/achievement.service';
 
 interface IGameProps {
-
+  uiManager: UIManager;
 }
 
 interface IGameState {
@@ -35,17 +37,22 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
   }
 
   render() {
+    const { uiManager } = this.props;
     const { unlockedTrophiesCount, trophiesCount } = this.state;
     const trophiesProgression = unlockedTrophiesCount * 100 / trophiesCount;
+
     return (
       <div className='ui-overlay'>
-        <div className='ui-overlay__trophies p-2'>
-          <div className='counter mb-1'>
-            <span className='counter__current'>{unlockedTrophiesCount}</span> / <span className='counter__total'>{trophiesCount}</span>
+        <div className='ui-overlay__trophies'>
+          <div className='ui-counter mb-1'>
+            <span className='ui-counter__current'>{unlockedTrophiesCount}</span> / <span className='ui-counter__total'>{trophiesCount}</span>
           </div>
-          <div className='progression'>
-            <div className='progression__inner' style={{ width: `${trophiesProgression}%` }} />
+          <div className='ui-progression'>
+            <div className='ui-progression__inner' style={{ width: `${trophiesProgression}%` }} />
           </div>
+        </div>
+        <div className='ui-overlay__seed'>
+          Seed : {uiManager.state.parameters.seed}
         </div>
       </div>
     );

@@ -8,12 +8,12 @@ import UIManager from '@ui/UIManager';
 import { UI_STATES } from '../enums/UIStates.enum';
 
 class UIGameState extends UIState {
-
   init() {
 
   }
 
   process(uiManager: UIManager) {
+
   }
 
   render() {

@@ -110,13 +110,7 @@ class World {
 
   private initSeed(seed: string) {
     this.seed = seed;
-
     MathUtils.rng = new Math.seedrandom(this.seed);
-
-    const span = document.createElement('span');
-    span.className = 'seed';
-    span.textContent = `Seed: ${this.seed}`;
-    document.body.appendChild(span);
   }
 
   private showAxesHelper() {

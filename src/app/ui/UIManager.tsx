@@ -7,6 +7,7 @@ import stateFactory from '@ui/UIStatesFactory';
 import withService from '@components/withService/withService';
 
 import UIService, { uiSvc } from './services/ui.service';
+import { notificationSvc } from '@shared/services/notification.service';
 
 import { IUIServices } from './models/services.model';
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
@@ -47,6 +48,15 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     this.addState(UI_STATES.HOME, new UIHomeState());
   }
 
+  componentDidMount() {
+    notificationSvc.push({
+      icon: null,
+      label: 'Trophy unlocked',
+      content: 'This is a test notification',
+      duration: 500000
+    });
+  }
+
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
     if (this.state.currentUiStateID === UI_STATES.HOME) uiState.process(this);
@@ -57,12 +67,12 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     };
 
     return (
-      <div className='ui full'>
-        <NotificationContainer />
-        <div className='ui__state'>
-          {
-            withService(uiState.render())(services)
-          }
+      <div className='ui'>
+        <div className='ui__notifications pl-2 pt-2'>
+          <NotificationContainer />
+        </div>
+        <div className='ui__state p-2'>
+          {withService(uiState.render())(services)}
         </div>
       </div>
     );
