@@ -137,7 +137,11 @@ class Player {
   update(terrain: Terrain, delta: number) {
     const position = this.move(delta);
     this.playerSvc.setPosition(position);
-    if (this.multiplayerSvc.isUsed()) this.multiplayerSvc.sendPosition(position);
+
+    if (this.multiplayerSvc.isUsed()) {
+      this.multiplayerSvc.sendPosition(position);
+      this.multiplayerSvc.checkStatus();
+    }
 
     const yMin = terrain.getHeightAt(position.x, position.z) + 5000;
 

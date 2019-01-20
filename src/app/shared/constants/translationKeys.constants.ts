@@ -20,6 +20,7 @@ export const TRANSLATION_KEYS: ITranslationKeys = {
     unlock_trophy_percentage: 'unlock_trophy_percentage'
   },
   UI: {
-    trophies: 'trophies'
+    trophies: 'trophies',
+    online_count: 'online_count'
   }
 };

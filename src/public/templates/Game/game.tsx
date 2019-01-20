@@ -1,9 +1,14 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
+import classNames from 'classnames';
 
 import UIManager from '@app/ui/UIManager';
 
 import { achievementSvc } from '@achievements/services/achievement.service';
+import { multiplayerSvc } from '@online/services/multiplayer.service';
+import { translationSvc } from '@shared/services/translation.service';
+
+import { IOnlineStatus } from '@online/models/onlineStatus.model';
 
 interface IGameProps {
   uiManager: UIManager;
@@ -12,34 +17,54 @@ interface IGameProps {
 interface IGameState {
   unlockedTrophiesCount: number;
   trophiesCount: number;
+  onlineStatus: IOnlineStatus;
 }
 
 class Game extends React.PureComponent<IGameProps, IGameState> {
-  private subscription: Subscription;
+  private trophySubscription: Subscription;
+  private onlineStatusSubscription: Subscription;
 
   constructor(props) {
     super(props);
 
     this.state = {
       unlockedTrophiesCount: achievementSvc.getUnlockedTrophiesCount(),
-      trophiesCount: achievementSvc.getTrophiesCount()
+      trophiesCount: achievementSvc.getTrophiesCount(),
+      onlineStatus: multiplayerSvc.getOnlineStatus()
     };
   }
 
   componentWillMount() {
-    this.subscription = achievementSvc.trophy$.subscribe((count) => {
+    this.trophySubscription = achievementSvc.trophy$.subscribe((count) => {
       this.setState({ unlockedTrophiesCount: count });
+    });
+    this.onlineStatusSubscription = multiplayerSvc.onlineStatus$.subscribe((status) => {
+      this.setState({ onlineStatus: status });
     });
   }
 
   componentWillUnmount() {
-    this.subscription.unsubscribe();
+    this.trophySubscription.unsubscribe();
+    this.onlineStatusSubscription.unsubscribe();
   }
 
   render() {
     const { uiManager } = this.props;
-    const { unlockedTrophiesCount, trophiesCount } = this.state;
+    const { unlockedTrophiesCount, trophiesCount, onlineStatus } = this.state;
     const trophiesProgression = unlockedTrophiesCount * 100 / trophiesCount;
+
+    // online
+    let onlineInfo = null;
+
+    if (multiplayerSvc.isUsed()) {
+      const pastilleClassnames = classNames('mr-1', 'ui-pastille', onlineStatus.alive ? 'ui-pastille--green' : 'ui-pastille--red');
+
+      onlineInfo = (
+        <div className='ui-overlay__online'>
+          <span className={pastilleClassnames} />{translationSvc.translate('UI.online_count', { count: onlineStatus.online })}
+        </div>
+      );
+    }
 
     return (
       <div className='ui-overlay'>
@@ -54,6 +79,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
         <div className='ui-overlay__seed'>
           Seed : {uiManager.state.parameters.seed}
         </div>
+        {onlineInfo}
       </div>
     );
   }

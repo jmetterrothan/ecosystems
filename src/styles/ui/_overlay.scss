@@ -18,6 +18,16 @@
     left: 0;
     font-size:0.9rem;
   }
+
+  &__online {
+    display: flex;
+    align-items: center;
+
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size:1rem;
+  }
 }
 
 .ui-counter {
@@ -35,5 +45,21 @@
     max-width: 100%;
     height: inherit;
     background: rgba(255, 255, 255, 0.85);
+  }
+}
+
+
+.ui-pastille {
+  display: inline-block;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+
+  &--red {
+    background: #C9463D;
+  }
+
+  &--green {
+    background: #02A676;
   }
 }

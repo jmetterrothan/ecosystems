@@ -6,6 +6,7 @@ import World from '@app/world/World';
 
 import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded } from '@online/models/socketData.model';
 import { IPick } from '@world/models/pick.model';
+import { IOnlineStatus } from '@online/models/onlineStatus.model';
 import { IOnlineObject } from '@online/models/onlineObjects.model';
 
 import { SOCKET_EVENTS } from '@online/constants/socketEvents.constants';
@@ -27,7 +28,10 @@ class MultiplayerService {
   private roomID: string;
   private userId: string;
 
+  private alive: boolean;
+
   private onlineUsers: Map<string, THREE.Object3D>;
+  onlineStatus$: Subject<IOnlineStatus>;
 
   constructor() {
     this.objectPlacedSource = new Subject();
@@ -37,6 +41,9 @@ class MultiplayerService {
     this.time$ = this.timeSource.asObservable();
 
     this.onlineUsers = new Map();
+    this.onlineStatus$ = new Subject();
+
+    this.alive = true;
   }
 
   /**
@@ -69,6 +76,13 @@ class MultiplayerService {
    */
   sendPosition(position: THREE.Vector3) {
     if (this.onlineUsers.size) this.socket.emit(SOCKET_EVENTS.CL_SEND_PLAYER_POSITION, { position, roomID: this.roomID });
+  }
+
+  checkStatus() {
+    if (this.socket.connected !== this.alive) {
+      this.alive = this.socket.connected;
+      this.onlineStatus$.next(this.getOnlineStatus());
+    }
   }
 
   /**
@@ -109,6 +123,8 @@ class MultiplayerService {
 
         this.onlineUsers.set(user, userMesh);
         this.scene.add(userMesh);
+
+        this.onlineStatus$.next(this.getOnlineStatus());
       }
     });
   }
@@ -127,6 +143,8 @@ class MultiplayerService {
     const user = this.onlineUsers.get(data.userID);
     this.scene.remove(user);
     this.onlineUsers.delete(data.userID);
+
+    this.onlineStatus$.next(this.getOnlineStatus());
   }
 
   private createUserMesh(userID: string): THREE.Object3D {
@@ -137,6 +155,16 @@ class MultiplayerService {
     return user;
   }
 
+  getOnlineUsersCount() : number {
+    return this.onlineUsers.size + 1;
+  }
+
+  getOnlineStatus() : IOnlineStatus {
+    return {
+      alive: this.alive,
+      online: this.getOnlineUsersCount()
+    };
+  }
 }
 
 export const multiplayerSvc = new MultiplayerService();
