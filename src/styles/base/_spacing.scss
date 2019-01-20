@@ -26,11 +26,13 @@
 }
 
 @mixin spacingTBRL($property, $breakpoint: '') {
+  $prefix: str-slice($property, 1, 1);
   $suffix: '';
   @if str-length($breakpoint) > 0 {
     $suffix: -#{$breakpoint};
   }
-  $prefix: str-slice($property, 1, 1);
+
+  @include spacing(#{$property}, #{$prefix}, $suffix);
   @include spacing(#{$property}-top, #{$prefix}t, $suffix);
   @include spacing(#{$property}-bottom, #{$prefix}b, $suffix);
   @include spacing(#{$property}-left, #{$prefix}l, $suffix);

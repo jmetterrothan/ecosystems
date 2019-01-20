@@ -39,7 +39,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     const trophiesProgression = unlockedTrophiesCount * 100 / trophiesCount;
     return (
       <div className='ui-overlay'>
-        <div className='ui-overlay__trophies'>
+        <div className='ui-overlay__trophies p-2'>
           <div className='counter mb-1'>
             <span className='counter__current'>{unlockedTrophiesCount}</span> / <span className='counter__total'>{trophiesCount}</span>
           </div>

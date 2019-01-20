@@ -44,7 +44,7 @@ class NotificationContainer extends React.Component<any, INotificationContainerS
     const { list } = this.state;
 
     return (
-      <ul className='notification-container'>
+      <ul className='notification-container p-2'>
         {list.map((notification, i) => <li key={i} className='mb-2'><Notification {...notification} /></li>)}
       </ul>
     );
