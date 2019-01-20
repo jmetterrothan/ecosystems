@@ -25,7 +25,7 @@ class Weather {
   private static FOG_COLOR2: string = '#B1D8FF';
   private static TICK_RATIO_DIV: number = 24000;
 
-  private static SOLAR_SYSTEM_RADIUS: number = Math.max(Terrain.SIZE_X, Terrain.SIZE_Z) * 2;
+  private static SOLAR_SYSTEM_RADIUS: number = Math.max(Terrain.SIZE_X, Terrain.SIZE_Z) * 1.2;
 
   private scene: THREE.Scene;
   private generator: BiomeGenerator;
@@ -75,7 +75,7 @@ class Weather {
     this.watchStartTime();
 
     // precalculate fog colors
-    for (let i = 1; i < Chunk.HEIGHT; i++) {
+    for (let i = 1; i < Weather.SOLAR_SYSTEM_RADIUS; i++) {
       this.computeFogColor(i);
     }
   }
@@ -211,7 +211,7 @@ class Weather {
 
     if (configSvc.debug) {
       const dirHelper = new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize();
-      this.lightHelper = new THREE.ArrowHelper(dirHelper, this.sunlight.position.clone(), Chunk.HEIGHT, 0xff0000, 10000);
+      this.lightHelper = new THREE.ArrowHelper(dirHelper, this.sunlight.position.clone(), Weather.SOLAR_SYSTEM_RADIUS, 0xff0000, 10000);
       this.scene.add(this.lightHelper);
     }
   }
@@ -223,7 +223,7 @@ class Weather {
     this.sunlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.sunlight.target.updateMatrixWorld(true);
 
-    this.sunlight.position.set(Terrain.SIZE_X / 2, Chunk.HEIGHT, Terrain.SIZE_Z / 2);
+    this.sunlight.position.set(Terrain.SIZE_X / 2, Weather.SOLAR_SYSTEM_RADIUS, Terrain.SIZE_Z / 2);
 
     this.sunlight.castShadow = true;
     this.sunlight.shadow.mapSize.width = 4096;
@@ -248,7 +248,7 @@ class Weather {
     this.moonlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.moonlight.target.updateMatrixWorld(true);
 
-    this.moonlight.position.set(Terrain.SIZE_X / 2, Chunk.HEIGHT, Terrain.SIZE_Z / 2);
+    this.moonlight.position.set(Terrain.SIZE_X / 2, Weather.SOLAR_SYSTEM_RADIUS, Terrain.SIZE_Z / 2);
 
     this.moonlight.castShadow = true;
     this.moonlight.shadow.mapSize.width = 4096;
@@ -423,8 +423,8 @@ class Weather {
   private updateSun() {
     const elapsedTime: number = (window.performance.now() - this.startTime) / Weather.TICK_RATIO_DIV;
 
-    const x: number = Terrain.SIZE_X / 2 + Chunk.HEIGHT * Math.cos(elapsedTime);
-    const y: number = Chunk.HEIGHT * Math.sin(elapsedTime);
+    const x: number = Terrain.SIZE_X / 2 + Weather.SOLAR_SYSTEM_RADIUS * Math.cos(elapsedTime);
+    const y: number = Weather.SOLAR_SYSTEM_RADIUS * Math.sin(elapsedTime);
 
     this.sunlight.position.setX(x);
     this.sunlight.position.setY(y);
@@ -458,9 +458,9 @@ class Weather {
   private updateLights() {
     const y = this.sunlight.position.y;
 
-    this.hemisphereLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, Chunk.HEIGHT, 0.35, 0.75);
+    this.hemisphereLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, Weather.SOLAR_SYSTEM_RADIUS, 0.35, 0.75);
     // this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.2, 0.35);
-    this.sunlight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.0, 0.25);
+    this.sunlight.intensity = MathUtils.mapInterval(y, 0, Weather.SOLAR_SYSTEM_RADIUS, 0.0, 0.25);
 
     if (y > 0) {
       const c: THREE.Color = this.computeFogColor(y);
@@ -469,10 +469,10 @@ class Weather {
       this.fogColor = c;
     }
 
-    if (y >= -Chunk.HEIGHT / 4) {
-      this.sunBoundLight.intensity = MathUtils.mapInterval(y, -Chunk.HEIGHT / 4, Chunk.HEIGHT, 1.0, 0);
+    if (y >= -Weather.SOLAR_SYSTEM_RADIUS / 4) {
+      this.sunBoundLight.intensity = MathUtils.mapInterval(y, -Weather.SOLAR_SYSTEM_RADIUS / 4, Weather.SOLAR_SYSTEM_RADIUS, 1.0, 0);
     } else {
-      this.sunBoundLight.intensity = MathUtils.mapInterval(Math.abs(y), Chunk.HEIGHT / 4, Chunk.HEIGHT, 1.0, 0);
+      this.sunBoundLight.intensity = MathUtils.mapInterval(Math.abs(y), Weather.SOLAR_SYSTEM_RADIUS / 4, Weather.SOLAR_SYSTEM_RADIUS, 1.0, 0);
     }
   }
 
@@ -482,7 +482,7 @@ class Weather {
   }
 
   private computeFogColor(y: number): THREE.Color {
-    const t = Math.floor(y / Chunk.HEIGHT * 360) / 360;
+    const t = Math.floor(y / Weather.SOLAR_SYSTEM_RADIUS * 360) / 360;
 
     if (!Weather.FOG_COLORS.has(t)) {
       const color = new THREE.Color(CommonUtils.lerpColor(Weather.FOG_COLOR1, Weather.FOG_COLOR2, t));
