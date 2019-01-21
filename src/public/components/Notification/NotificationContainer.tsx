@@ -2,7 +2,7 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 
 import Notification from '@public/components/Notification/Notification';
-import { notificationSvc } from '@app/shared/services/notification.service';
+import { notificationSvc } from '@shared/services/notification.service';
 
 import { INotification } from '@shared/models/notification.model';
 

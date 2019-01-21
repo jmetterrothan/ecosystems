@@ -6,7 +6,6 @@ import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progress
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 import { PROGRESSION_TROPHIES_STORAG_KEYS } from '@achievements/constants/progressionTrophiesStorageKeys.constants';
 import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
-import { TRANSLATION_KEYS } from '@shared/constants/translationKeys.constants';
 
 import { TROPHY_DIFFICULTY } from '@achievements/enums/trophyDIfficulty.enum';
 import { TROPHY_TYPE } from '@achievements/enums/trophyType.enum';
@@ -15,7 +14,7 @@ import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
 export const TROPHIES: ITrophy[] = [
   // GAME
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.play_games_counter}`, options: { counter: 2 } },
+    name: { key: 'TROPHIES.play_games_counter', options: { counter: 2 } },
     value: 'play ten games',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -24,7 +23,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.play_games_counter}`, options: { counter: 10 } },
+    name: { key: 'TROPHIES.play_games_counter', options: { counter: 10 } },
     value: 'play ten games',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -34,7 +33,7 @@ export const TROPHIES: ITrophy[] = [
   },
   // BIOMES
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.visit_all_biomes}` },
+    name: { key: 'TROPHIES.visit_all_biomes' },
     value: 'visit all biomes',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -43,7 +42,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.visit_all_biomes}`, options: { counter: 10 } },
+    name: { key: 'TROPHIES.visit_all_biomes', options: { counter: 10 } },
     value: 'visit all biomes five times',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -52,7 +51,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.going_underwater}` },
+    name: { key: 'TROPHIES.going_underwater' },
     value: 'going underwater',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -61,7 +60,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.going_underwater_counter}`, options: { counter: 20 } },
+    name: { key: 'TROPHIES.going_underwater_counter', options: { counter: 20 } },
     value: 'going underwater twenty times',
     img: '',
     difficulty: TROPHY_DIFFICULTY.GOLD,
@@ -71,7 +70,7 @@ export const TROPHIES: ITrophy[] = [
   },
   // OBJECTS
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.place_all_objects}` },
+    name: { key: 'TROPHIES.place_all_objects' },
     value: 'place all objects',
     img: '',
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
@@ -80,7 +79,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.place_object}` },
+    name: { key: 'TROPHIES.place_object' },
     value: 'place 1 object',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -89,7 +88,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.place_objects_counter}`, options: { counter: 10 } },
+    name: { key: 'TROPHIES.place_objects_counter', options: { counter: 10 } },
     value: 'place 10 objects',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -98,7 +97,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.place_objects_counter}`, options: { counter: 50 } },
+    name: { key: 'TROPHIES.place_objects_counter', options: { counter: 50 } },
     value: 'place 50 objects',
     img: '',
     difficulty: TROPHY_DIFFICULTY.GOLD,
@@ -108,7 +107,7 @@ export const TROPHIES: ITrophy[] = [
   },
   // DISTANCE
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.travelled_distance_counter}`, options: { counter: 1000000 } },
+    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 1000000 } },
     value: 'travelled_1000000',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -117,7 +116,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.travelled_distance_counter}`, options: { counter: 10000000 } },
+    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 10000000 } },
     value: 'travelled_10000000',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -126,7 +125,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.travelled_distance_counter}`, options: { counter: 100000000 } },
+    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 100000000 } },
     value: 'travelled_100000000',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -136,7 +135,7 @@ export const TROPHIES: ITrophy[] = [
   },
   // WEATHER
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.going_under_rain}` },
+    name: { key: 'TROPHIES.going_under_rain' },
     value: 'going under rain',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -145,7 +144,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.go_in_sun}` },
+    name: { key: 'TROPHIES.go_in_sun' },
     value: 'go in sun',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -155,7 +154,7 @@ export const TROPHIES: ITrophy[] = [
   },
   // EXTRAS
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.repulse_fishes}` },
+    name: { key: 'TROPHIES.repulse_fishes' },
     value: 'repulse fishes',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -164,7 +163,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.repulse_butterflies}` },
+    name: { key: 'TROPHIES.repulse_butterflies' },
     value: 'repulse butterflies',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -173,7 +172,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.find_captain_treasure}` },
+    name: { key: 'TROPHIES.find_captain_treasure' },
     value: 'find captain treasure',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -182,7 +181,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.add_carrot_snowmnan}` },
+    name: { key: 'TROPHIES.add_carrot_snowmnan' },
     value: 'add carrot snowman',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -192,7 +191,7 @@ export const TROPHIES: ITrophy[] = [
   },
   // TROPHIES
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.unlock_trophy_percentage}`, options: { counter: 25 } },
+    name: { key: 'TROPHIES.unlock_trophy_percentage', options: { counter: 25 } },
     value: 'unlock 25 percent trophies',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -202,7 +201,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.unlock_trophy_percentage}`, options: { counter: 50 } },
+    name: { key: 'TROPHIES.unlock_trophy_percentage', options: { counter: 50 } },
     value: 'unlock 50 percent trophies',
     img: '',
     difficulty: TROPHY_DIFFICULTY.GOLD,
@@ -212,7 +211,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.unlock_trophy_percentage}`, options: { counter: 75 } },
+    name: { key: 'TROPHIES.unlock_trophy_percentage', options: { counter: 75 } },
     value: 'unlock 75 percent trophies',
     img: '',
     difficulty: TROPHY_DIFFICULTY.GOLD,
@@ -222,7 +221,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: `TROPHIES.${TRANSLATION_KEYS.TROPHIES.unlock_trophy_percentage}`, options: { counter: 100 } },
+    name: { key: 'TROPHIES.unlock_trophy_percentage', options: { counter: 100 } },
     value: 'unlock 100 percent trophies',
     img: '',
     difficulty: TROPHY_DIFFICULTY.DIAMOND,

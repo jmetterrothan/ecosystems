@@ -25,4 +25,5 @@ export interface ITrophiesTranslationKeys {
 export interface IUITranslationKeys {
   trophies: string;
   online_count: string;
+  trophy_unlocked: string;
 }
