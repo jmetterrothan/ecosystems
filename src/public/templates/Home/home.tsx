@@ -3,6 +3,7 @@ import React from 'react';
 import Row from '@components/Row/row';
 import Col from '@components/Col/col';
 import UIManager from '@ui/UIManager';
+import CommonUtils from '@app/shared/utils/Common.utils';
 
 import { configSvc } from '@app/shared/services/config.service';
 
@@ -93,6 +94,15 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
   render() {
     const { formValid, selectedQuality, debugMode, onlineMode, soundMode } = this.state;
 
+    const debugHtml = (
+    <div className='form__group mt-2 mb-2'>
+      <input type='checkbox' id='debugMode' onChange={this.handleDebugChange} checked={debugMode === true} />
+      <label htmlFor='debugMode'>Debug</label>
+    </div>
+    );
+
+    const debugHtmlFinal = CommonUtils.isDev() ? debugHtml : null;
+
     return (
       <section className='ui-container home p-2'>
         <header className='home__header mt-2-t mt-4-l mb-2'>
@@ -153,10 +163,8 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
             </Col>
           </Row>
 
-          <div className='form__group mt-2 mb-2'>
-            <input type='checkbox' id='debugMode' onChange={this.handleDebugChange} checked={debugMode === true} />
-            <label htmlFor='debugMode'>Debug</label>
-          </div>
+          {debugHtmlFinal}
+
           <footer className='home__footer mb-2-t mb-4-l'>
             <input form='gameSetup' type='submit' value='Play' className='btn btn--magenta' disabled={!formValid} />
           </footer>
