@@ -3,7 +3,7 @@ import snakeCase from 'snake-case';
 
 import StorageService, { storageSvc } from '@shared/services/storage.service';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
-import { notificationSvc } from '@app/shared/services/notification.service';
+import { notificationSvc } from '@shared/services/notification.service';
 import { progressionSvc } from '@achievements/services/progression.service';
 import TranslationService, { translationSvc } from '@shared/services/translation.service';
 
@@ -125,7 +125,7 @@ class AchievementService {
     // send notification
     notificationSvc.push({
       icon: null,
-      label: 'Trophy unlocked',
+      label: this.translationSvc.translate('UI.trophy_unlocked'),
       content: this.translationSvc.translate(trophy.name.key, trophy.name.options),
       duration: 5000
     });

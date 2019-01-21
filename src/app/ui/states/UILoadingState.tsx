@@ -1,11 +1,12 @@
 import React from 'react';
 
 import Main from '@app/Main';
+import UIManager from '@ui/UIManager';
 import UIState from '@ui/UIState';
 
 import Loading from '@templates/Loading/loading';
-import { UI_STATES } from '../enums/UIStates.enum';
-import UIManager from '../UIManager';
+
+import { UI_STATES } from '@ui/enums/UIStates.enum';
 
 class UILoadingState extends UIState {
   init() {

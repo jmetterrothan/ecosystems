@@ -4,7 +4,7 @@ import NotificationContainer from '@public/components/Notification/NotificationC
 import UIState from '@ui/UIState';
 import UIHomeState from '@ui/states/UIHomeState';
 import stateFactory from '@ui/UIStatesFactory';
-import withService from '@components/withService/withService';
+import withUIManager from '@public/components/withUIManager/withUIManager';
 
 import UIService, { uiSvc } from './services/ui.service';
 import { notificationSvc } from '@shared/services/notification.service';
@@ -24,7 +24,7 @@ interface IUIManagerState {
 }
 
 class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
-  static readonly ENABLED: boolean = false;
+  static readonly ENABLED: boolean = true;
 
   private uiStates: Map<UI_STATES, UIState>;
 
@@ -63,18 +63,13 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
     if (this.state.currentUiStateID === UI_STATES.HOME) uiState.process(this);
 
-    const services: IUIServices = {
-      uiManager: this,
-      ...uiState.getNeededServices()
-    };
-
     return (
       <div className='ui'>
         <div className='ui__notifications pl-2 pt-2'>
           <NotificationContainer />
         </div>
         <div className='ui__state p-2'>
-          {withService(uiState.render())(services)}
+          {withUIManager(uiState.render())(this)}
         </div>
       </div>
     );
