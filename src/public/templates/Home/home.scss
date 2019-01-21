@@ -1,32 +1,59 @@
-
+@import 'jmetterrothan-flexgrid/src/assets/sass/vars.scss';
+@import 'jmetterrothan-flexgrid/src/assets/sass/breakpoints.scss';
 
 .home {
   background: linear-gradient(0deg, #61b9cb, #b3d7f2 50%);
   flex-direction: column;
   justify-content: space-between !important;
+  z-index: 1;
 
   &__header {
+    flex-grow: 0;
+    flex-shrink: 0;
     color: $color-darkblue;
     text-align: center;
     text-transform: uppercase;
+    z-index: 2;
+  }
+
+  &__preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    width: 100%;
+    height: 0;
+
+    img {
+      display: block;
+      width: auto;
+      height: 100%;
+    }
+  }
+
+  &__form {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 720px;
+    z-index: 2;
   }
 
   &__background {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-position: center center;
-    background-size: 50vh;
-    background-repeat: no-repeat;
-    z-index: 1;
-  }
 
-  &__form {
-    width: 100%;
-    max-width: 720px;
-    z-index: 2;
+    img {
+      width: auto;
+      height: 40vh;
+      margin-bottom: 10vh;
+    }
   }
 
   &__footer {
@@ -35,11 +62,27 @@
   }
 
   &__subtitle {
-    font-size: 1.25rem;
+    font-size: 0.9rem;
   }
 
   &__title {
-    font-size: 7.5rem;
+    font-size: 4rem;
     font-weight: 700;
+  }
+
+  @include breakpoint-tablet {
+    &__subtitle {
+      font-size: 1.25rem;
+    }
+
+    &__title {
+      font-size: 5.5rem;
+    }
+  }
+
+  @include breakpoint-laptop {
+    &__title {
+      font-size: 7.5rem;
+    }
   }
 }

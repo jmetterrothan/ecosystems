@@ -95,14 +95,16 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
 
     return (
       <section className='ui-container home p-2'>
-        <div className='home__background' style={{ backgroundImage: `url(${worldImg})` }} />
-        <header className='home__header mt-5 mb-2'>
+        <header className='home__header mt-2-t mt-4-l mb-2'>
             <h2 className='home__subtitle mb-1'>A journey through audio-visual worlds</h2>
             <h1 className='home__title'>Ecosystem</h1>
         </header>
+        <div className='home__preview'>
+          <img src={worldImg} alt='world' />
+        </div>
         <form id='gameSetup' className='home__form form' onSubmit={this.handleSubmit} ref={el => this.form = el}>
           <Row>
-            <Col className='col_24 col_13-l mb-2 mb-0-l'>
+            <Col className='col_24 col_13-t mb-2 mb-0-t'>
               <Row className='form__group mb-2'>
                 <Col Tag='h4' className='col col_24 mb-1'>Choose a seed</Col>
                 <Col className='col_24'>
@@ -125,7 +127,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
                 </Col>
               </Row>
             </Col>
-            <Col className='col_24 col_11-l'>
+            <Col className='col_24 col_11-t'>
               <Row className='form__group mb-2'>
                 <Col Tag='h4' className='col col_24 mb-1'>Game mode</Col>
                 <Col className='col_12'>
@@ -155,7 +157,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
             <input type='checkbox' id='debugMode' onChange={this.handleDebugChange} checked={debugMode === true} />
             <label htmlFor='debugMode'>Debug</label>
           </div>
-          <footer className='home__footer mb-5'>
+          <footer className='home__footer mb-2-t mb-4-l'>
             <input form='gameSetup' type='submit' value='Play' className='btn btn--purple' disabled={!formValid} />
           </footer>
         </form>
