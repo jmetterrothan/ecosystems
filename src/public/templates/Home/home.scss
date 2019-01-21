@@ -2,8 +2,13 @@
 @import 'jmetterrothan-flexgrid/src/assets/sass/breakpoints.scss';
 
 @keyframes pulse {
-  from { transform: scale(0.95); }
+  from { transform: scale(0.965); }
   to { transform: scale(1); }
+}
+
+@keyframes float {
+  from { transform: translateY(8px); }
+  to { transform: translateY(-8px); }
 }
 
 .home {

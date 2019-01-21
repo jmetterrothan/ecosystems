@@ -12,9 +12,14 @@
   text-align: center;
   outline: none;
   cursor: pointer;
+  transition: all ease .4s;
 
-  &--purple {
-    background: $color-purple;
+  &--magenta {
+    background: $color-magenta;
     color:#ffffff;
+
+    &:hover {
+      background: lighten($color-magenta, 10%);
+    }
   }
 }

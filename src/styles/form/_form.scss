@@ -57,6 +57,7 @@
       color: $color-darkblue;
       box-shadow: none;
       cursor: pointer;
+      transition: all ease .2s;
     }
 
     &:checked + label {
@@ -67,6 +68,7 @@
     &:not(:checked) + label:hover {
       background: #608d9f;
       border-color: #608d9f;
+      transition: all ease .4s;
     }
   }
 }
