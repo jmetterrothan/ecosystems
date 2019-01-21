@@ -1,8 +1,13 @@
 @import 'jmetterrothan-flexgrid/src/assets/sass/vars.scss';
 @import 'jmetterrothan-flexgrid/src/assets/sass/breakpoints.scss';
 
+@keyframes pulse {
+  from { transform: scale(0.95); }
+  to { transform: scale(1); }
+}
+
 .home {
-  background: linear-gradient(0deg, #61b9cb, #b3d7f2 50%);
+  background: linear-gradient(0deg, #61b9cb, #b3d7f2 75%);
   flex-direction: column;
   justify-content: space-between !important;
   z-index: 1;
@@ -28,6 +33,11 @@
       display: block;
       width: auto;
       height: 100%;
+      animation-name: pulse;
+      animation-duration: 2s;
+      animation-timing-function: ease-in-out;
+      animation-direction: alternate;
+      animation-iteration-count: infinite;
     }
   }
 
