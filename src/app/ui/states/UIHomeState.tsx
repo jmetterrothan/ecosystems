@@ -12,9 +12,11 @@ class UIHomeState extends UIState {
   }
 
   process(uiManager: UIManager) {
+    /*
     if (!UIManager.ENABLED) {
       uiManager.switchState(UI_STATES.LOADING);
     }
+    */
   }
 
   render() {

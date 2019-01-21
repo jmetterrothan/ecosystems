@@ -28,8 +28,8 @@ import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@shared/utils/Common.utils';
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 14;
-  static readonly NCHUNKS_Z: number = 14;
+  static readonly NCHUNKS_X: number = 12;
+  static readonly NCHUNKS_Z: number = 12;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
