@@ -15,7 +15,11 @@ import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
 
 import './home.scss';
 
-import previewImage from '@images/world.png';
+import previewImage from '@images/previews/world.png';
+import previewImage2 from '@images/previews/world2.png';
+import previewImage3 from '@images/previews/world3.png';
+import previewImage4 from '@images/previews/world4.png';
+import previewImage5 from '@images/previews/world5.png';
 
 interface IHomeProps {
   uiManager: UIManager;
@@ -28,7 +32,10 @@ interface IHomeState {
   onlineMode: boolean;
   soundMode: boolean;
   formValid: boolean;
+  image: string;
 }
+
+const imageList = [previewImage, previewImage2, previewImage3, previewImage4, previewImage5];
 
 class Home extends React.PureComponent<IHomeProps, IHomeState> {
   form: HTMLFormElement;
@@ -40,7 +47,8 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     debugMode: configSvc.debug,
     onlineMode: false,
     soundMode: false,
-    formValid: true
+    formValid: true,
+    image: imageList[Math.floor(Math.random() * imageList.length)]
   };
 
   handleSubmit = ev => {
@@ -94,7 +102,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
   }
 
   render() {
-    const { formValid, selectedQuality, debugMode, onlineMode, soundMode } = this.state;
+    const { formValid, selectedQuality, debugMode, onlineMode, soundMode, image } = this.state;
 
     const debugHtml = (
     <div className='form__group mt-2'>
@@ -112,7 +120,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
             <h1 className='home__title'>{translationSvc.translate('UI.home.title')}</h1>
         </header>
         <div className='home__preview'>
-          <img src={previewImage} alt='world' />
+          <img src={image} alt='world' />
         </div>
         <form id='gameSetup' className='home__form form' onSubmit={this.handleSubmit} ref={el => this.form = el}>
           <Row suffix='-48'>
