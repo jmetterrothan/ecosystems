@@ -4,6 +4,7 @@ import Row from '@components/Row/row';
 import Col from '@components/Col/col';
 import UIManager from '@ui/UIManager';
 import CommonUtils from '@app/shared/utils/Common.utils';
+import MathUtils from '@app/shared/utils/Math.utils';
 
 import { configSvc } from '@app/shared/services/config.service';
 import { translationSvc } from '@app/shared/services/translation.service';
@@ -42,7 +43,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
   seedInput: HTMLInputElement;
 
   state = {
-    seedValue: '',
+    seedValue: MathUtils.randomUint32().toString(),
     selectedQuality: GRAPHICS_QUALITY.HIGH,
     debugMode: configSvc.debug,
     onlineMode: false,
@@ -102,7 +103,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
   }
 
   render() {
-    const { formValid, selectedQuality, debugMode, onlineMode, soundMode, image } = this.state;
+    const { seedValue, formValid, selectedQuality, debugMode, onlineMode, soundMode, image } = this.state;
 
     const debugHtml = (
     <div className='form__group mt-2'>
@@ -128,7 +129,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
               <Row className='form__group mb-2'>
                 <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.seed')}</Col>
                 <Col className='flexcol--24'>
-                  <input type='text' placeholder={translationSvc.translate('UI.home.form.seed_placeholder')} onChange={this.handleChange} pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={1} ref={el => this.seedInput = el} />
+                  <input type='text' placeholder={translationSvc.translate('UI.home.form.seed_placeholder')} onChange={this.handleChange} value={seedValue} pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={1} ref={el => this.seedInput = el} />
                 </Col>
               </Row>
               <Row className='form__group test'>
