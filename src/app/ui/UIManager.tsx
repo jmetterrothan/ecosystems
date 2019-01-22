@@ -8,9 +8,7 @@ import withUIManager from '@public/components/withUIManager/withUIManager';
 
 import UIService, { uiSvc } from './services/ui.service';
 import { notificationSvc } from '@shared/services/notification.service';
-import { translationSvc } from '@shared/services/translation.service';
 
-import { IUIServices } from './models/services.model';
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
@@ -29,7 +27,6 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
   private uiStates: Map<UI_STATES, UIState>;
   private uiSvc: UIService;
-  private trophiesPageOpen: boolean = false;
 
   constructor(props: IUIManagerProps, state: IUIManagerState) {
     super(props, state);
@@ -44,11 +41,10 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
     translationSvc.init();
 
-    this.addState(UI_STATES.HOME, new UIHomeState());
+    this.addState(UI_STATES.HOME, new UIHomeState(null));
   }
 
   componentDidMount() {
-    /*
     notificationSvc.push({
       icon: null,
       label: 'Trophy unlocked',
@@ -88,15 +84,14 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     });
   }
 
-  handleKeyboard(key: string) {
-    switch (key) {
-      case 't': case 'T': this.manageTrophiesPage();
-    }
+  manageMenu(open: boolean) {
+    this.switchState(open ? UI_STATES.MENU : UI_STATES.GAME);
   }
 
-  private manageTrophiesPage() {
-    this.switchState(!this.trophiesPageOpen ? UI_STATES.TROPHIES : UI_STATES.GAME);
-    this.trophiesPageOpen = !this.trophiesPageOpen;
+  handleKeyboard(key: string) {
+    switch (key) {
+      // case 't': case 'T': this.manageMenu(true);
+    }
   }
 
   private addState(key: UI_STATES, value?: UIState) {

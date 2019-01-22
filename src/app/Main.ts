@@ -55,7 +55,7 @@ class Main {
     if (configSvc.debug) {
       this.stats = new statsJs();
       this.stats.showPanel(0);
-      document.body.appendChild(this.stats.dom);
+      // document.body.appendChild(this.stats.dom);
 
       /*
       // reset
@@ -148,6 +148,7 @@ class Main {
 
       const pointerlockchange = (e) => {
         this.controls.enabled = document.pointerLockElement === document.body || document.mozPointerLockElement === document.body || document.webkitPointerLockElement === document.body;
+        this.uiManager.manageMenu(!this.controls.enabled);
       };
 
       const pointerlockerror = (e) => { };
