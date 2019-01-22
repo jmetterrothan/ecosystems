@@ -26,4 +26,24 @@ export interface IUITranslationKeys {
   trophies: string;
   online_count: string;
   trophy_unlocked: string;
+  home: {
+    title: string;
+    subtitle: string;
+    debug: string;
+    form: {
+      seed: string;
+      seed_placeholder: string;
+      graphics: string;
+      high_quality_option: string;
+      medium_quality_option: string;
+      low_quality_option: string;
+      gamemode: string;
+      singleplayer_option: string;
+      multiplayer_option: string;
+      soundmode: string;
+      sound_on_option: string;
+      sound_off_option: string;
+      start_btn: string;
+    }
+  };
 }

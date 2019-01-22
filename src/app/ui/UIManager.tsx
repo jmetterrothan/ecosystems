@@ -8,6 +8,7 @@ import withUIManager from '@public/components/withUIManager/withUIManager';
 
 import UIService, { uiSvc } from './services/ui.service';
 import { notificationSvc } from '@shared/services/notification.service';
+import { translationSvc } from '@shared/services/translation.service';
 
 import { IUIServices } from './models/services.model';
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
@@ -27,23 +28,21 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   static readonly ENABLED: boolean = true;
 
   private uiStates: Map<UI_STATES, UIState>;
-
   private uiSvc: UIService;
-
-  // pages
   private trophiesPageOpen: boolean = false;
 
   constructor(props: IUIManagerProps, state: IUIManagerState) {
     super(props, state);
 
     this.uiSvc = uiSvc;
+    this.uiStates = new Map<UI_STATES, UIState>();
 
     this.state = {
       currentUiStateID: UI_STATES.HOME,
       parameters: {}
     };
 
-    this.uiStates = new Map<UI_STATES, UIState>();
+    translationSvc.init();
 
     this.addState(UI_STATES.HOME, new UIHomeState());
   }

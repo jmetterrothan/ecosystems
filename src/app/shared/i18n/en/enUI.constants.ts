@@ -3,5 +3,25 @@ import { IUITranslationKeys } from '@shared/models/translationKeys.models';
 export const EN_UI_TRANSLATION: IUITranslationKeys = {
   trophies: 'Trophies page',
   online_count: 'Online {{count}}',
-  trophy_unlocked: 'Trophy unlocked'
+  trophy_unlocked: 'Trophy unlocked',
+  home: {
+    title: 'Ecosystem',
+    subtitle: 'A 3d interactive experience',
+    debug: 'Debug',
+    form: {
+      seed: 'Choose a seed',
+      seed_placeholder: '',
+      graphics: 'Graphics',
+      high_quality_option: 'High',
+      medium_quality_option: 'Medium',
+      low_quality_option: 'Low',
+      gamemode: 'Game mode',
+      singleplayer_option: 'Singleplayer',
+      multiplayer_option: 'Multiplayer',
+      soundmode: 'Sound',
+      sound_on_option: 'ON',
+      sound_off_option: 'OFF',
+      start_btn: 'Start'
+    }
+  }
 };
