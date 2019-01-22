@@ -12,7 +12,7 @@
 }
 
 .home {
-  background: linear-gradient(0deg, #61b9cb, #b3d7f2 75%);
+  background: $gradient;
   flex-direction: column;
   justify-content: space-between !important;
   z-index: 1;

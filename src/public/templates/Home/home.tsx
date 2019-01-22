@@ -13,7 +13,8 @@ import { UI_STATES } from '@ui/enums/UIStates.enum';
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
 
 import './home.scss';
-import worldImg from '@images/world.png';
+
+import previewImage from '@images/world.png';
 
 interface IHomeProps {
   uiManager: UIManager;
@@ -110,7 +111,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
             <h1 className='home__title'>Ecosystem</h1>
         </header>
         <div className='home__preview'>
-          <img src={worldImg} alt='world' />
+          <img src={previewImage} alt='world' />
         </div>
         <form id='gameSetup' className='home__form form' onSubmit={this.handleSubmit} ref={el => this.form = el}>
           <Row>
@@ -166,7 +167,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
           {debugHtmlFinal}
 
           <footer className='home__footer mb-2-t mb-4-l'>
-            <input form='gameSetup' type='submit' value='Play' className='btn btn--magenta' disabled={!formValid} />
+            <input form='gameSetup' type='submit' value='Start' className='btn btn--magenta' disabled={!formValid} />
           </footer>
         </form>
       </section>
