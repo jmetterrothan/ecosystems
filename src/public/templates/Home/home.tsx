@@ -96,7 +96,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     const { formValid, selectedQuality, debugMode, onlineMode, soundMode } = this.state;
 
     const debugHtml = (
-    <div className='form__group mt-2 mb-2'>
+    <div className='form__group mt-2'>
       <input type='checkbox' id='debugMode' onChange={this.handleDebugChange} checked={debugMode === true} />
       <label htmlFor='debugMode'>Debug</label>
     </div>
@@ -166,7 +166,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
 
           {debugHtmlFinal}
 
-          <footer className='home__footer mb-2-t mb-4-l'>
+          <footer className='home__footer mt-2 mb-2-t mb-4-l'>
             <input form='gameSetup' type='submit' value='Start' className='btn btn--magenta' disabled={!formValid} />
           </footer>
         </form>
