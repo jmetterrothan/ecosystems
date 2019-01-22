@@ -63,6 +63,7 @@
     "jmetterrothan-flexgrid": "^1.0.2",
     "poisson-disk-sampling": "^1.0.2",
     "react-router-dom": "^4.3.1",
+    "react-tabs": "^3.0.0",
     "reset-css": "^4.0.1",
     "rxjs": "^6.3.3",
     "sass-resources-loader": "^2.0.0",
