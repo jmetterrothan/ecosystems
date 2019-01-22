@@ -1,7 +1,0 @@
-trophies:
-  - name: Le premier trophée
-    img: ''
-    difficulty: gold
-    checklist:
-      - { name: first }
-      - { name: second }

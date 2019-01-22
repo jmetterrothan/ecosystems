@@ -8,19 +8,19 @@ import 'three/examples/js/postprocessing/ShaderPass';
 import 'three/examples/js/shaders/VignetteShader';
 import 'three/examples/js/shaders/ColorCorrectionShader';
 
-import { Effect } from '@shared/models/effect.model';
+import { IEffect } from '@shared/models/effect.model';
 
 import vergilwaterVertexGlsl from '@shaders/vergilwater.vertex.glsl';
 import vergilwaterFragmentGlsl from '@shaders/vergilwater.fragment.glsl';
 
-import { configSvc } from '@shared/services/graphicsConfig.service';
+import { configSvc } from '@app/shared/services/config.service';
 
 THREE.VergilWaterShader = {
   uniforms: {
     tDiffuse: { type: 't', value: null },
-    time:     { type: 'f', value: 0.0 },
+    time: { type: 'f', value: 0.0 },
     distort_speed: { type: 'f', value: 0.0004 },
-    distortion:   { type: 'f', value: 0.075 },
+    distortion: { type: 'f', value: 0.075 },
     centerX: { type: 'f', value: 0.5 },
     centerY: { type: 'f', value: 0.5 },
   },
@@ -28,13 +28,12 @@ THREE.VergilWaterShader = {
   fragmentShader: vergilwaterFragmentGlsl
 };
 
-class PostProcess
-{
+class PostProcess {
   private scene: THREE.Scene;
   private renderPass: THREE.RenderPass;
   private composer: THREE.EffectComposer;
 
-  private effects: Effect[];
+  private effects: IEffect[];
 
   /**
    * PostProcess constructor
@@ -60,7 +59,7 @@ class PostProcess
 
     // vignette effect
     const pass1 = new THREE.ShaderPass(THREE.VignetteShader);
-    pass1.uniforms.darkness.value = 2.25;
+    pass1.uniforms.darkness.value = 2.00;
     this.composer.addPass(pass1);
     this.effects.push({ effect: pass1, update: null });
 
@@ -68,7 +67,7 @@ class PostProcess
     const pass2 = new THREE.ShaderPass(THREE.ColorCorrectionShader);
     pass2.uniforms.addRGB.value.y = 0.025;
     pass2.uniforms.addRGB.value.z = 0.10;
-    pass2.uniforms.powRGB.value.y = 1.5;
+    pass2.uniforms.powRGB.value.y = 1.25;
     pass2.uniforms.powRGB.value.z = 0.80;
     this.composer.addPass(pass2);
     this.effects.push({ effect: pass2, update: null });

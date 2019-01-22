@@ -1,0 +1,31 @@
+@import '~jmetterrothan-flexgrid/src/assets/sass/grid';
+
+.full {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.full-width {
+  width: 100% !important;
+}
+
+.full-height {
+  height: 100% !important;
+}
+
+// justify
+.fl-start {
+  justify-content: start;
+}
+
+.fl-center {
+  justify-content: center
+}
+
+.fl-around {
+  justify-content: space-around;
+}
+
+.fl-between {
+  justify-content: space-between;
+}

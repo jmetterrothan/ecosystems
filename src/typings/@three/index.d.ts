@@ -11,6 +11,6 @@ declare module 'THREE' {
   }
 
   export class Box3Helper {
-    constructor(box: THREE.Box3, color: THREE.Color|number);
+    constructor(box: THREE.Box3, color: THREE.Color | number);
   }
 }
