@@ -49,6 +49,11 @@ class AchievementService {
     return (<string[]>this.storageSvc.get(STORAGES_KEY.completed)).length;
   }
 
+  getUnlockedTrophies(): ITrophy[] {
+    const unlocked: string[] = (<string[]>this.storageSvc.get(STORAGES_KEY.completed));
+    return TROPHIES.filter((trophy: ITrophy) => unlocked.includes(snakeCase(trophy.value)));
+  }
+
   /**
    * Check if trophy is unlocked
    * @param {string} - key

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import Button from '@components/Button/button';
 import UIManager from '@app/ui/UIManager';
 import { UI_STATES } from '@ui/enums/UIStates.enum';
+
+import Button from '@components/Button/button';
+import Trophies from '@templates/trophies/trophies';
 
 import './menu.styles';
 
@@ -32,7 +34,7 @@ class Menu extends React.PureComponent<Props> {
           </TabList>
 
           <TabPanel>
-            <h1>Les trophées</h1>
+            <Trophies />
           </TabPanel>
           <TabPanel>
             <h1>La progression</h1>
