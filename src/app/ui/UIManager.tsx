@@ -47,16 +47,16 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     this.addState(UI_STATES.HOME, new UIHomeState());
   }
 
-  /*
   componentDidMount() {
+    /*
     notificationSvc.push({
       icon: null,
       label: 'Trophy unlocked',
       content: 'This is a test notification',
       duration: 500000
     });
+    */
   }
-  */
 
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
