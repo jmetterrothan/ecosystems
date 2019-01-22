@@ -10,6 +10,8 @@ import { translationSvc } from '@shared/services/translation.service';
 
 import { IOnlineStatus } from '@online/models/onlineStatus.model';
 
+import './game.scss';
+
 interface IGameProps {
   uiManager: UIManager;
 }
@@ -57,30 +59,32 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     let onlineInfo = null;
 
     if (multiplayerSvc.isUsed()) {
-      const pastilleClassnames = classNames('mr-1', 'ui-pastille', onlineStatus.alive ? 'ui-pastille--green' : 'ui-pastille--red');
+      const pastilleClassnames = classNames('mr-1', 'pastille', onlineStatus.alive ? 'pastille--green' : 'pastille--red');
 
       onlineInfo = (
-        <div className='ui-overlay__online'>
+        <div className='overlay__online'>
           <span className={pastilleClassnames} />{translationSvc.translate('UI.online_count', { count: onlineStatus.online })}
         </div>
       );
     }
 
     return (
-      <div className='ui-overlay'>
-        <div className='ui-overlay__trophies'>
-          <div className='ui-counter mb-1'>
-            <span className='ui-counter__current'>{unlockedTrophiesCount}</span> / <span className='ui-counter__total'>{trophiesCount}</span>
+      <section className='ui-container game p-2'>
+        <div className='game__overlay overlay'>
+          <div className='overlay__trophies'>
+            <div className='counter mb-1'>
+              <span className='counter__current'>{unlockedTrophiesCount}</span> / <span className='counter__total'>{trophiesCount}</span>
+            </div>
+            <div className='progression'>
+              <div className='progression__inner' style={{ width: `${trophiesProgression}%` }} />
+            </div>
           </div>
-          <div className='ui-progression'>
-            <div className='ui-progression__inner' style={{ width: `${trophiesProgression}%` }} />
+          <div className='overlay__seed'>
+            Seed : {uiManager.state.parameters.seed}
           </div>
+          {onlineInfo}
         </div>
-        <div className='ui-overlay__seed'>
-          Seed : {uiManager.state.parameters.seed}
-        </div>
-        {onlineInfo}
-      </div>
+      </section>
     );
   }
 }

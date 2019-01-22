@@ -46,6 +46,8 @@ class Crosshair {
     }
 
     document.body.appendChild(Crosshair.htmlElement);
+
+    Crosshair.show(false);
   }
 
 }
