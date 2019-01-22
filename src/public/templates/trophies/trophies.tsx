@@ -13,7 +13,6 @@ class Trophies extends React.Component {
 
   render() {
     const unlockedTrophies = achievementSvc.getUnlockedTrophies();
-    console.log(unlockedTrophies);
     return (
       <ul>
         {TROPHIES.map((trophy: ITrophy, index: number) => (
