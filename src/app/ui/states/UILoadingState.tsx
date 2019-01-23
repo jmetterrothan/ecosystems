@@ -18,10 +18,10 @@ class UILoadingState extends UIState {
 
     const app = new Main();
     await app.init(uiManager);
-    const seed = await app.load(parameters.seed, parameters.online);
+    await app.load(parameters.seed, parameters.online);
     app.run();
 
-    uiManager.switchState(UI_STATES.GAME, { seed });
+    uiManager.switchState(UI_STATES.MENU, { tab: 0 });
   }
 
   render() {
