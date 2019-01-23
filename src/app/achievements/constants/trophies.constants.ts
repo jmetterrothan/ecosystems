@@ -21,7 +21,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.GAME,
     checklist: [
-      { name: 'jouer 2 fois', value: PROGRESSION_COMMON_STORAGE_KEYS.game_played.name, limit: 2 }
+      { name: 'jouer 2 fois', value: PROGRESSION_COMMON_STORAGE_KEYS.game_played.value, limit: 2 }
     ]
   },
   {
@@ -31,7 +31,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.GAME,
     checklist: [
-      { name: 'jouer 10 fois', value: PROGRESSION_COMMON_STORAGE_KEYS.game_played.name, limit: 10 }
+      { name: 'jouer 10 fois', value: PROGRESSION_COMMON_STORAGE_KEYS.game_played.value, limit: 10 }
     ]
   },
   // BIOMES
@@ -42,7 +42,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.BIOMES,
     checklist: [
-      ...Object.values(PROGRESSION_BIOME_STORAGE_KEYS).reduce((acc, item: IProgression) => acc.concat(<IChecklistOption>{ name: item.name, value: item.name }), [])
+      ...Object.values(PROGRESSION_BIOME_STORAGE_KEYS).reduce((acc, item: IProgression) => acc.concat(<IChecklistOption>{ name: item.name, value: item.value }), [])
     ]
   },
   {
@@ -52,7 +52,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.BIOMES,
     checklist: [
-      ...Object.values(PROGRESSION_BIOME_STORAGE_KEYS).reduce((acc, item: IProgression) => acc.concat(<IChecklistOption>{ name: item.name, value: item.name, limit: 10 }), [])
+      ...Object.values(PROGRESSION_BIOME_STORAGE_KEYS).reduce((acc, item: IProgression) => acc.concat(<IChecklistOption>{ name: item.name, value: item.value, limit: 10 }), [])
     ]
   },
   {
@@ -62,7 +62,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.BIOMES,
     checklist: [
-      { name: 'underwater', value: PROGRESSION_COMMON_STORAGE_KEYS.going_underwater.name }
+      { name: 'underwater', value: PROGRESSION_COMMON_STORAGE_KEYS.going_underwater.value }
     ]
   },
   {
@@ -72,7 +72,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.BIOMES,
     checklist: [
-      { name: 'underwater', value: PROGRESSION_COMMON_STORAGE_KEYS.going_underwater.name, limit: 20 }
+      { name: 'underwater', value: PROGRESSION_COMMON_STORAGE_KEYS.going_underwater.value, limit: 20 }
     ]
   },
   // OBJECTS
@@ -83,7 +83,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
     type: TROPHY_TYPE.OBJECTS,
     checklist: [
-      ...Object.values(PROGRESSION_OBJECTS_STORAGE_KEYS).reduce((acc, item: IProgression) => acc.concat(<IChecklistOption>{ name: item.name, value: item.name }), [])
+      ...Object.values(PROGRESSION_OBJECTS_STORAGE_KEYS).reduce((acc, item: IProgression) => acc.concat(<IChecklistOption>{ name: item.name, value: item.value }), [])
     ]
   },
   {
@@ -93,7 +93,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.OBJECTS,
     checklist: [
-      { name: 'place 1 object', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed.name }
+      { name: 'place 1 object', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed.value }
     ]
   },
   {
@@ -103,7 +103,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.OBJECTS,
     checklist: [
-      { name: 'place 10 objects', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed.name, limit: 10 }
+      { name: 'place 10 objects', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed.value, limit: 10 }
     ]
   },
   {
@@ -113,7 +113,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.OBJECTS,
     checklist: [
-      { name: 'place 100 objects', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed.name, limit: 100 }
+      { name: 'place 100 objects', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed.value, limit: 100 }
     ]
   },
   // DISTANCE
@@ -124,7 +124,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.DISTANCE,
     checklist: [
-      { name: 'parcourir 1000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.name, limit: 1000000, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'parcourir 1000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.value, limit: 1000000, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   },
   {
@@ -134,7 +134,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.DISTANCE,
     checklist: [
-      { name: 'parcourir 10000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.name, limit: 10000000, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'parcourir 10000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.value, limit: 10000000, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   },
   {
@@ -144,7 +144,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.DISTANCE,
     checklist: [
-      { name: 'parcourir 100000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.name, limit: 100000000, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'parcourir 100000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.value, limit: 100000000, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   },
   // WEATHER
@@ -155,7 +155,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.WEATHER,
     checklist: [
-      { name: 'going under rain', value: PROGRESSION_WEATHER_STORAGE_KEYS.under_rain.name }
+      { name: 'going under rain', value: PROGRESSION_WEATHER_STORAGE_KEYS.under_rain.value }
     ]
   },
   {
@@ -165,7 +165,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.WEATHER,
     checklist: [
-      { name: 'go in sun', value: PROGRESSION_WEATHER_STORAGE_KEYS.in_sun.name }
+      { name: 'go in sun', value: PROGRESSION_WEATHER_STORAGE_KEYS.in_sun.value }
     ]
   },
   // EXTRAS
@@ -176,7 +176,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.EXTRAS,
     checklist: [
-      { name: 'repulse fishes', value: PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_fishes.name }
+      { name: 'repulse fishes', value: PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_fishes.value }
     ]
   },
   {
@@ -186,7 +186,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.EXTRAS,
     checklist: [
-      { name: 'repulse butterflies', value: PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_butterflies.name }
+      { name: 'repulse butterflies', value: PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_butterflies.value }
     ]
   },
   {
@@ -196,7 +196,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.EXTRAS,
     checklist: [
-      { name: 'find captain treasure', value: PROGRESSION_EXTRAS_STORAGE_KEYS.find_captain_treasure.name }
+      { name: 'find captain treasure', value: PROGRESSION_EXTRAS_STORAGE_KEYS.find_captain_treasure.value }
     ]
   },
   {
@@ -206,7 +206,17 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.EXTRAS,
     checklist: [
-      { name: 'add carrot snowman', value: PROGRESSION_EXTRAS_STORAGE_KEYS.snowman_carrot.name }
+      { name: 'add carrot snowman', value: PROGRESSION_EXTRAS_STORAGE_KEYS.snowman_carrot.value }
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.find_scarecrow' },
+    value: 'find_scarecrow',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.EXTRAS,
+    checklist: [
+      { name: 'find scarecrow', value: PROGRESSION_EXTRAS_STORAGE_KEYS.find_scarecrow.value }
     ]
   },
   // TROPHIES
@@ -217,7 +227,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.TROPHY,
     checklist: [
-      { name: 'unlock 25 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage.name, limit: 25, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'unlock 25 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage.value, limit: 25, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   },
   {
@@ -227,7 +237,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.TROPHY,
     checklist: [
-      { name: 'unlock 50 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage.name, limit: 50, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'unlock 50 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage.value, limit: 50, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   },
   {
@@ -237,7 +247,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.TROPHY,
     checklist: [
-      { name: 'unlock 75 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage.name, limit: 75, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'unlock 75 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage.value, limit: 75, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   },
   {
@@ -247,7 +257,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
     type: TROPHY_TYPE.TROPHY,
     checklist: [
-      { name: 'unlock 100 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage.name, limit: 100 }
+      { name: 'unlock 100 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage.value, limit: 100 }
     ]
   }
 ];

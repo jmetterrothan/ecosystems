@@ -13,6 +13,7 @@ export const FR_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   repulse_fishes: 'Effrayer les poissons',
   repulse_butterflies: 'Faire peur aux papillons',
   find_captain_treasure: 'Trouver le trésor du capitaine',
+  find_scarecrow: 'Effrayer l\'épouvantail',
   add_carrot_snowmnan: 'J\'ai pas d\'nez',
   going_under_rain: 'Passer sous la pluie',
   go_in_sun: 'Voler trop près du soleil',

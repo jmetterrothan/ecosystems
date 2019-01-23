@@ -19,7 +19,7 @@ import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
 import TestBiome from '@world/biomes/TestBiome';
 
 class World {
-  static readonly SEED: string | null = null;
+  static readonly SEED: string | null = '2195642319';
   static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
   static readonly EMPTY: boolean = false;
 
@@ -109,7 +109,8 @@ class World {
   }
 
   private initSeed(seed: string) {
-    this.seed = seed;
+    if (World.SEED) this.seed = World.SEED;
+    else this.seed = seed;
     MathUtils.rng = new Math.seedrandom(this.seed);
   }
 

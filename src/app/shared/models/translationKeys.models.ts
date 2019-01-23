@@ -16,6 +16,7 @@ export interface ITrophiesTranslationKeys {
   repulse_fishes: string;
   repulse_butterflies: string;
   find_captain_treasure: string;
+  find_scarecrow: string;
   add_carrot_snowmnan: string;
   going_under_rain: string;
   go_in_sun: string;

@@ -13,6 +13,7 @@ export const EN_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   repulse_fishes: 'Scare off the fishes',
   repulse_butterflies: 'Scare off the butterflies',
   find_captain_treasure: 'Find the captain\'s treasure',
+  find_scarecrow: 'Find the scarecrow',
   add_carrot_snowmnan: 'Add a carrot to the snowman',
   going_under_rain: 'Get caught in the rain',
   go_in_sun: 'Fly too close to the sun',

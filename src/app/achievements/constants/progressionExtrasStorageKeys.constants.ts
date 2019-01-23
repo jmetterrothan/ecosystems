@@ -26,4 +26,9 @@ export const PROGRESSION_EXTRAS_STORAGE_KEYS: IProgressionExtrasStorageKeys = {
     value: 'find_captain_treasure',
     show: false
   },
+  find_scarecrow: {
+    name: 'find_scarecrow',
+    value: 'find_scarecrow',
+    show: false
+  }
 };

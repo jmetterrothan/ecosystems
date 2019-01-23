@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import * as TWEEN from '@tweenjs/tween.js';
 import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Terrain from '@world/Terrain';
@@ -13,6 +14,7 @@ import { IBiome } from '@world/models/biome.model';
 
 import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
+import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
 class GreenlandBiome extends Biome {
   private a: number;
@@ -23,6 +25,8 @@ class GreenlandBiome extends Biome {
   private spread: number;
 
   private boids: Boids[];
+
+  private scarecrow: THREE.Object3D;
 
   constructor(terrain: Terrain) {
     super('GREENLANDS', terrain);
@@ -74,14 +78,24 @@ class GreenlandBiome extends Biome {
     const sizeX = 8192;
     const sizeZ = 8192;
 
-    this.terrain.placeSpecialObject({ stackReference: 'scarecrow', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+    this.scarecrow = this.terrain.placeSpecialObject({ stackReference: 'scarecrow', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
   }
 
   update(delta: number) {
     this.boids.forEach(boids => boids.update(this.generator, delta));
   }
 
-  handleClick(raycaster: THREE.Raycaster) { }
+  handleClick(raycaster: THREE.Raycaster) {
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.scarecrow], true);
+
+    if (intersections.length) {
+      this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.find_scarecrow);
+      new TWEEN.Tween(this.scarecrow.rotation)
+        .to({ y: this.scarecrow.rotation.y + Math.PI * 2 }, 1200)
+        .easing(TWEEN.Easing.Bounce.Out)
+        .start();
+    }
+  }
 
   /**
    * Compute elevation

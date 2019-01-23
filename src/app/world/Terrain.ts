@@ -1,3 +1,4 @@
+import { IProgression } from './../achievements/models/progression.model';
 import * as THREE from 'three';
 import { stack } from '@tensorflow/tfjs';
 
@@ -291,7 +292,11 @@ class Terrain {
       if (this.multiplayerSvc.isUsed()) this.multiplayerSvc.placeObject(this.previewItem);
 
       this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed);
-      this.progressionSvc.increment(CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n));
+      this.progressionSvc.increment({
+        name: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
+        value: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
+        show: false
+      });
 
       this.objectAnimated = true;
       this.resetPreview();
