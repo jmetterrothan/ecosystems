@@ -1,5 +1,4 @@
 import { Subject } from 'rxjs';
-import snakeCase from 'snake-case';
 
 import StorageService, { storageSvc } from '@shared/services/storage.service';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
@@ -51,7 +50,7 @@ class AchievementService {
 
   getUnlockedTrophies(): ITrophy[] {
     const unlocked: string[] = (<string[]>this.storageSvc.get(STORAGES_KEY.completed));
-    return TROPHIES.filter((trophy: ITrophy) => unlocked.includes(snakeCase(trophy.value)));
+    return TROPHIES.filter((trophy: ITrophy) => unlocked.includes(trophy.value));
   }
 
   /**
@@ -65,7 +64,7 @@ class AchievementService {
     );
 
     for (const trophy of trophiesConcerned) {
-      const trophyName = snakeCase(trophy.value); // convert value
+      const trophyName = trophy.value;
       if (this.storageSvc.isInStorage(STORAGES_KEY.completed, trophyName)) continue;
 
       // get trophy checklist
@@ -124,7 +123,7 @@ class AchievementService {
   private unlockTrophy(trophy: ITrophy) {
     // trophy completed
     const completedArray = this.storageSvc.get(STORAGES_KEY.completed);
-    (<string[]>completedArray).push(snakeCase(trophy.value));
+    (<string[]>completedArray).push(trophy.value);
     this.storageSvc.set(STORAGES_KEY.completed, completedArray);
 
     // send notification
@@ -136,7 +135,7 @@ class AchievementService {
     });
 
     // send event to google analytics
-    this.monitoringSvc.sendEvent(this.monitoringSvc.categories.trophy, this.monitoringSvc.actions.completed, snakeCase(trophy.value));
+    this.monitoringSvc.sendEvent(this.monitoringSvc.categories.trophy, this.monitoringSvc.actions.completed, trophy.value);
 
     // update trophy progression
     progressionSvc.setValue(
