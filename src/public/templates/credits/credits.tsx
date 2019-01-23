@@ -15,7 +15,7 @@ enum Icons {
 const collaborators: ICollaboratorProps[] = [
   {
     fullname: 'Jérémie Metter-Rothan',
-    description: 'Chef de projet, développeur threejs/react.',
+    description: 'Chef de projet, développeur - three.js / React.',
     links: [
       { url: 'https://jeremie.metter-rothan.fr', icon: Icons.Portfolio },
       { url: 'https://github.com/jmetterrothan', icon: Icons.Github },
@@ -24,7 +24,7 @@ const collaborators: ICollaboratorProps[] = [
   },
   {
     fullname: 'Florian Zobèle',
-    description: 'Développeur threejs/react.',
+    description: 'Développeur - three.js / React / socket.io.',
     links: [
       { url: 'https://florianzobele.fr', icon: Icons.Portfolio },
       { url: 'https://github.com/Ghuntheur', icon: Icons.Github },
@@ -35,7 +35,7 @@ const collaborators: ICollaboratorProps[] = [
   },
   {
     fullname: 'Lucas Dussouchaud',
-    description: 'Dévelopeur gameplay - commandes vocales avec tensorflow.',
+    description: 'Développeur gameplay - commandes vocales avec tensorflow.',
     links: [
       { url: 'http://noisiv.fr', icon: Icons.Portfolio },
       { url: 'https://www.linkedin.com/in/lucas-dussouchaud-67b492166/', icon: Icons.LinkedIn }
