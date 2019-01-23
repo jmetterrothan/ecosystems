@@ -20,6 +20,7 @@ export interface ITrophiesTranslationKeys {
   add_carrot_snowmnan: string;
   going_under_rain: string;
   go_in_sun: string;
+  go_in_moon: string;
   unlock_trophy_percentage: string;
 }
 

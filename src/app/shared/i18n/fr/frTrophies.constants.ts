@@ -17,5 +17,6 @@ export const FR_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   add_carrot_snowmnan: 'J\'ai pas d\'nez',
   going_under_rain: 'Passer sous la pluie',
   go_in_sun: 'Voler trop près du soleil',
+  go_in_moon: 'C\'est un petit pas pour l\'homme',
   unlock_trophy_percentage: 'Vous avez débloqué {{counter}}% des trophées',
 };

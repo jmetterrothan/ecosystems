@@ -168,6 +168,16 @@ export const TROPHIES: ITrophy[] = [
       { name: 'go in sun', value: PROGRESSION_WEATHER_STORAGE_KEYS.in_sun.value }
     ]
   },
+  {
+    name: { key: 'TROPHIES.go_in_moon' },
+    value: 'go_in_moon',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.WEATHER,
+    checklist: [
+      { name: 'go in moon', value: PROGRESSION_WEATHER_STORAGE_KEYS.in_moon.value }
+    ]
+  },
   // EXTRAS
   {
     name: { key: 'TROPHIES.repulse_fishes' },

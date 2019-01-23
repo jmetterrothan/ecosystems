@@ -10,5 +10,10 @@ export const PROGRESSION_WEATHER_STORAGE_KEYS: IProgressionWeatherStorageKeys = 
     name: 'in_sun',
     value: 'in_sun',
     show: false
+  },
+  in_moon: {
+    name: 'in_moon',
+    value: 'in_moon',
+    show: false
   }
 };
