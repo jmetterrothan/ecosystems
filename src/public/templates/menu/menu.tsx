@@ -17,16 +17,6 @@ interface Props {
 }
 
 class Menu extends React.PureComponent<Props> {
-  constructor(props) {
-    super(props);
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        this.handleClick();
-      }
-    });
-  }
-
   handleClick = () => {
     const { uiManager } = this.props;
 
@@ -36,7 +26,7 @@ class Menu extends React.PureComponent<Props> {
 
   render() {
     return (
-      <div className='menu p-4 pt-5'>
+      <div className='menu p-2 p-4-l pt-5-l'>
         <div className='menu__container'>
           <Tabs>
             <TabList>
