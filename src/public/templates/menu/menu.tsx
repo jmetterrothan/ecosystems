@@ -7,6 +7,7 @@ import { UI_STATES } from '@ui/enums/UIStates.enum';
 import Button from '@components/Button/button';
 import Trophies from '@templates/trophies/trophies';
 import Tutorial from '@templates/tutorial/tutorial';
+import Credits from '../credits/credits';
 
 import './menu.styles';
 
@@ -32,6 +33,7 @@ class Menu extends React.PureComponent<Props> {
             <Tab>Trophées</Tab>
             <Tab>Progression</Tab>
             <Tab>Tutoriel</Tab>
+            <Tab>Crédits</Tab>
           </TabList>
 
           <TabPanel>
@@ -42,6 +44,9 @@ class Menu extends React.PureComponent<Props> {
           </TabPanel>
           <TabPanel>
             <Tutorial />
+          </TabPanel>
+          <TabPanel>
+            <Credits/>
           </TabPanel>
         </Tabs>
       </div>
