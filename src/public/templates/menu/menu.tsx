@@ -26,11 +26,11 @@ class Menu extends React.PureComponent<Props> {
 
   render() {
     return (
-      <div className='menu'>
-        <Button onClick={this.handleClick}>Revenir en jeu</Button>
-        <Tabs>
-          <TabList>
-            <Tab>Trophées</Tab>
+      <div className='menu p-4 pt-5'>
+        <div className='menu__container'>
+          <Tabs>
+            <TabList>
+              <Tab>Trophées</Tab>
             <Tab>Progression</Tab>
             <Tab>Tutoriel</Tab>
             <Tab>Crédits</Tab>
@@ -47,8 +47,12 @@ class Menu extends React.PureComponent<Props> {
           </TabPanel>
           <TabPanel>
             <Credits/>
-          </TabPanel>
-        </Tabs>
+            </TabPanel>
+          </Tabs>
+        </div>
+        <footer className='menu__footer mt-2'>
+            <Button className='btn btn--magenta' onClick={this.handleClick}>Revenir en jeu</Button>
+          </footer>
       </div>
     );
   }
