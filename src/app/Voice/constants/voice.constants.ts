@@ -11,3 +11,4 @@ export const SAMPLES_CONFIG = {
   NUM_FRAMES,
   INPUT_SHAPE: [NUM_FRAMES, 232, 1]
 };
+
