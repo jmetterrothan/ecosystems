@@ -16,7 +16,7 @@ interface Props {
 const Col = ({ children, className, debug, style, textAlign = 'left', Tag = 'div' }: Props) => {
 
   return (
-    <Tag className={`col ${className || ''} ${debug ? 'debug' : ''}`} style={{ ...style, textAlign }}>
+    <Tag className={`flexcol ${className || ''} ${debug ? 'debug' : ''}`} style={{ ...style, textAlign }}>
       {children}
     </Tag>
   );

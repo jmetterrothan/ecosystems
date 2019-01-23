@@ -1,15 +1,19 @@
-.ui-overlay {
-  position: relative;
-  color: #fff;
-  width: 100%;
-  height: 100%;
+.game {
+  &__overlay {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+}
 
+.overlay {
   &__trophies {
     position: absolute;
     top: 0;
     right: 0;
     width:175px;
     font-size:1rem;
+    color: #fff;
   }
 
   &__seed {
@@ -17,6 +21,7 @@
     bottom: 0;
     left: 0;
     font-size:0.9rem;
+    color: #fff;
   }
 
   &__online {
@@ -27,14 +32,16 @@
     bottom: 0;
     right: 0;
     font-size:1rem;
+    color: #fff;
   }
 }
 
-.ui-counter {
+.counter {
   font-size:1.25rem;
+  font-weight: 700;
 }
 
-.ui-progression {
+.progression {
   width: 100%;
   height: 12px;
   border-radius: 1px;
@@ -49,7 +56,7 @@
 }
 
 
-.ui-pastille {
+.pastille {
   display: inline-block;
   width: 0.9rem;
   height: 0.9rem;

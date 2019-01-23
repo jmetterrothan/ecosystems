@@ -1,3 +1,11 @@
+$flexgrid-suffix: '-48';
+$flexgrid-gutter: 48px;
+
+@import '~jmetterrothan-flexgrid/src/assets/sass/grid';
+
+$flexgrid-suffix: '';
+$flexgrid-gutter: 16px;
+
 @import '~jmetterrothan-flexgrid/src/assets/sass/grid';
 
 .full {

@@ -7,6 +7,8 @@ import stateFactory from '@ui/UIStatesFactory';
 import withUIManager from '@public/components/withUIManager/withUIManager';
 
 import UIService, { uiSvc } from './services/ui.service';
+import { notificationSvc } from '@shared/services/notification.service';
+import { translationSvc } from '@shared/services/translation.service';
 
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
@@ -25,20 +27,20 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   static readonly ENABLED: boolean = false;
 
   private uiStates: Map<UI_STATES, UIState>;
-
   private uiSvc: UIService;
 
   constructor(props: IUIManagerProps, state: IUIManagerState) {
     super(props, state);
 
     this.uiSvc = uiSvc;
+    this.uiStates = new Map<UI_STATES, UIState>();
 
     this.state = {
       currentUiStateID: UI_STATES.HOME,
       parameters: {}
     };
 
-    this.uiStates = new Map<UI_STATES, UIState>();
+    translationSvc.init();
 
     this.addState(UI_STATES.HOME, new UIHomeState(null));
   }
@@ -50,6 +52,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
       content: 'This is a test notification',
       duration: 500000
     });
+    * /;
   }
   */
 
@@ -62,7 +65,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
         <div className='ui__notifications pl-2 pt-2'>
           <NotificationContainer />
         </div>
-        <div className='ui__state p-2'>
+        <div className='ui__state'>
           {withUIManager(uiState.render())(this)}
         </div>
       </div>

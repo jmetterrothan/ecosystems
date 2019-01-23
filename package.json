@@ -43,6 +43,7 @@
     "prod": "webpack --progress --inline --mode production --config config/webpack.prod.js"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.2.5",
     "@reactivex/rxjs": "^6.3.3",
     "@tensorflow-models/speech-commands": "^0.2.3",
     "@tensorflow/tfjs": "^0.14.2",

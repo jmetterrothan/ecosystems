@@ -2,7 +2,6 @@ import * as THREE from 'three';
 
 import World from '@world/World';
 
-import TranslationService, { translationSvc } from '@shared/services/translation.service';
 import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
 
 import { IObject } from '@shared/models/object.model';
@@ -12,18 +11,14 @@ import { OBJECTS } from '@shared/constants/object.constants';
 import { TEXTURES } from '@shared/constants/texture.constants';
 
 class CoreService {
-
-  private translationSvc: TranslationService;
   private progressionSvc: ProgressionService;
 
   constructor() {
-    this.translationSvc = translationSvc;
     this.progressionSvc = progressionSvc;
   }
 
   async init() {
     this.progressionSvc.init();
-    await this.translationSvc.init();
     await this.initModels();
     await this.initTextures();
   }

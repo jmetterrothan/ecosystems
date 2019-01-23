@@ -11,6 +11,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   entry: {
     bundle: [
+      '@babel/polyfill',
       path.join(PATHS.SRC, 'index.tsx'),
       path.join(PATHS.STYLES, 'styles.scss')
     ]
@@ -61,7 +62,7 @@ module.exports = {
             options: {
               resources: [
                 path.join(PATHS.STYLES, 'abstracts', '_variables.scss'),
-                path.join(PATHS.STYLES, 'abstracts', '_colors.scss')
+                path.join(PATHS.STYLES, 'abstracts', '_colors.scss'),
               ]
             }
           }
