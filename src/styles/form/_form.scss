@@ -66,9 +66,9 @@
     }
 
     &:not(:checked) + label:hover {
-      background: #608d9f;
-      border-color: #608d9f;
-      transition: all ease .4s;
+      background: rgba($color-darkblue, 0.25);
+      border-color: transparent;
+      transition: background ease .4s, border-color ease .2s;
     }
   }
 }
