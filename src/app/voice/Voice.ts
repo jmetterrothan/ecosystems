@@ -8,6 +8,7 @@ import { SAMPLES_CONFIG } from './constants/voice.constants';
 class Voice {
   private recognizer: sc.SpeechCommandRecognizer;
   private predictState: Boolean;
+  private clickedButton: Boolean;
   private model: Model;
 
   constructor(model: Model) {
@@ -17,6 +18,7 @@ class Voice {
 
   init() {
     this.predictState = false;
+    this.clickedButton = false;
     this.recognizer = sc.create('BROWSER_FFT');
   }
 
@@ -34,6 +36,7 @@ class Voice {
     }
 
     this.recognizer.stopListening();
+    console.log(this.predicState);
   }
 
   listen() {
@@ -48,7 +51,7 @@ class Voice {
         10
       );
       const input = tf.tensor(vals, [1, ...SAMPLES_CONFIG.INPUT_SHAPE]);
-      const probs = this.model.model.predict(input);
+      const probs = this.model.predict(input);
       const predLabel = probs.argMax(1);
       await this.getPredictionLabel(predLabel);
       tf.dispose([input, probs, predLabel]);
@@ -57,20 +60,27 @@ class Voice {
       includeSpectrogram: true,
       invokeCallbackOnNoiseAndUnknown: true
     });
+
+    console.log(this.predicState);
   }
 
   async getPredictionLabel(predLabel: any) {
     const label = (await predLabel.data())[0];
-    if (label === 2) {
+    if (label === 1) {
+      this.clickedButton = false;
       return;
     }
     if (label === 0) {
-      console.log('listening');
+      this.clickedButton = true;
     }
   }
 
   get predictState() {
     return this.predictState;
+  }
+
+  get clickedButton() {
+    return this.clickedButton;
   }
 }
 
