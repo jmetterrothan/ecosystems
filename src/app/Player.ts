@@ -1,10 +1,10 @@
 import * as THREE from 'three';
+import * as tf from '@tensorflow/tfjs';
 
 import 'three/examples/js/controls/PointerLockControls';
 
 import Chunk from '@world/Chunk';
 import Terrain from '@world/Terrain';
-import VoiceModel from '@voice/VoiceModel';
 import Voice from '@voice/Voice';
 
 import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
@@ -23,10 +23,10 @@ class Player {
   private moveUp: boolean;
   private moveDown: boolean;
 
+  private voice: Voice;
+
   private speed: THREE.Vector3;
   private velocity: THREE.Vector3;
-
-  private voiceModel: Model;
 
   private progressionSvc: ProgressionService;
   private monitoringSvc: MonitoringService;
@@ -70,15 +70,13 @@ class Player {
 
     this.playerSvc.setPosition(spawn);
 
-    // await this.initVoice();
+    await this.initVoice();
   }
 
   private async initVoice() {
-    this.voiceModel = new VoiceModel();
-    await this.voiceModel.train();
-
-    // this.voice = new Voice(this.voiceModel);
-    // this.voice.listen();
+    const voiceModel = await tf.loadModel('https://ecosystem-server.herokuapp.com/model');
+    console.log(voiceModel);
+    this.voice = new Voice(voiceModel);
   }
 
   /**
