@@ -24,9 +24,13 @@ class Menu extends React.PureComponent<Props> {
     document.body.requestPointerLock();
   }
 
+  reload() {
+    window.location.reload();
+  }
+
   render() {
     return (
-      <div className='menu p-2 p-4-l pt-5-l'>
+      <div className='menu p-2 pt-4 p-4-l pb-3-l pt-5-l'>
         <div className='menu__container'>
           <Tabs>
             <TabList>
@@ -51,7 +55,8 @@ class Menu extends React.PureComponent<Props> {
           </Tabs>
         </div>
         <footer className='menu__footer mt-2'>
-          <Button className='btn btn--magenta' onClick={this.handleClick}>Revenir en jeu</Button>
+          <Button className='btn btn--darkblue mr-3' onClick={this.reload}>Recharger</Button>
+          <Button className='btn btn--magenta' onClick={this.handleClick}>Continuer</Button>
         </footer>
       </div>
     );

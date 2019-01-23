@@ -22,4 +22,13 @@
       background: lighten($color-magenta, 10%);
     }
   }
+
+  &--darkblue {
+    background: $color-darkblue;
+    color:#ffffff;
+
+    &:hover {
+      background: lighten($color-darkblue, 10%);
+    }
+  }
 }
