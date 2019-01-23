@@ -7,6 +7,7 @@ import { progressionSvc } from '@achievements/services/progression.service';
 import TranslationService, { translationSvc } from '@shared/services/translation.service';
 
 import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
+import { IProgression } from '@achievements/models/progression.model';
 
 import { PROGRESSION_TROPHIES_STORAG_KEYS } from '@achievements/constants/progressionTrophiesStorageKeys.constants';
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
@@ -57,10 +58,10 @@ class AchievementService {
    * Check if trophy is unlocked
    * @param {string} - key
    */
-  check(key: string) {
+  check(progression: IProgression) {
     // get trophies concerned by progression setted
     const trophiesConcerned = this.trophies.filter(
-      (trophy: ITrophy) => trophy.checklist.some((option: IChecklistOption) => option.value === key)
+      (trophy: ITrophy) => trophy.checklist.some((option: IChecklistOption) => option.value === progression.name)
     );
 
     for (const trophy of trophiesConcerned) {
@@ -77,7 +78,7 @@ class AchievementService {
 
       // if some option in checklist have a limit input
       if (trophy.checklist.some((option: IChecklistOption) => option.limit !== undefined)) {
-        const count = this.storageSvc.get(STORAGES_KEY.progression)[key];
+        const count = this.storageSvc.get(STORAGES_KEY.progression)[progression.name];
         const checklistItem = trophy.checklist.find((option: IChecklistOption) => {
           // find item in checklist to check based on progression setted
           if (option.comparison && option.comparison === COMPARISON_TYPE.SUPERIOR) return count >= option.limit;
@@ -87,7 +88,7 @@ class AchievementService {
       }
 
       // option in checklist is concerned and unlocked
-      checklist.push(key);
+      checklist.push(progression.name);
       const set = new Set<string>(checklist);
       this.storage[trophyName] = [...set];
 

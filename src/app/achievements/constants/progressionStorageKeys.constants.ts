@@ -1,4 +1,5 @@
 import { IProgressionStorageKeys } from '@achievements/models/progressionStorageKeys.model';
+import { IProgression } from '@achievements/models/progression.model';
 
 import { PROGRESSION_BIOME_STORAGE_KEYS } from './progressionBiomesStorageKeys.constants';
 import { PROGRESSION_OBJECTS_STORAGE_KEYS } from './progressionObjectsStorageKeys.constants';
@@ -18,8 +19,16 @@ export const PROGRESSION_STORAGE_KEYS: IProgressionStorageKeys = {
   trophies: PROGRESSION_TROPHIES_STORAG_KEYS
 };
 
+const tmp = Object.values(PROGRESSION_STORAGE_KEYS);
+
 export const PROGRESSION_STORAGE = {
   ...CommonUtils.arrayToObject([
-    ...Object.values(PROGRESSION_STORAGE_KEYS).reduce((acc, item) => acc.concat(CommonUtils.objectToArray(item)), [])
+    ...tmp
+      .reduce((acc, item) => acc.concat(CommonUtils.objectToArray(item)), [])
+      .reduce((acc, item) => acc.concat(item.value), [])
   ], 0)
 };
+
+export const PROGRESSION_SHOWN: IProgression[] = tmp
+  .reduce((acc, item) => acc.concat(CommonUtils.objectToArray(item)), [])
+  .reduce((acc, item) => acc.concat(item), []);
