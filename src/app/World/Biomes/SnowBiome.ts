@@ -10,6 +10,7 @@ import { IBiome } from '@shared/models/biome.model';
 import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@app/Achievements/constants/progressionExtrasStorageKeys.constants';
+import SnowWindSFXMp3 from '@sounds/SnowWindSFX.mp3';
 
 class SnowBiome extends Biome {
   private snowmanObject: THREE.Object3D;
@@ -23,6 +24,7 @@ class SnowBiome extends Biome {
     this.waterColor2 = new THREE.Color(0xacd2e5);
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.snow_visited);
+    this.sound = SnowWindSFXMp3;
   }
 
   init() {

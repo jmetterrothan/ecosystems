@@ -15,11 +15,13 @@ import Player from '@app/Player';
 import MathUtils from '@utils/Math.utils';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
-import FjordBiome from './Biomes/FjordBiome'; // Remove when done with testing
+import SwampBiome from './Biomes/SwampBiome';
+import HighlandBiome from './Biomes/HighlandBiome';
+import SnowBiome from './Biomes/SnowBiome';
 
 class World {
   static readonly SEED: string | null = null;
-  static readonly BIOME: Biome | null = FjordBiome; // lock a specific biome here, if null a biome is selected randomly
+  static readonly BIOME: Biome | null = SnowBiome; // lock a specific biome here, if null a biome is selected randomly
   static readonly EMPTY: boolean = false;
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;

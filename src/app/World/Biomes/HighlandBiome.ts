@@ -14,6 +14,8 @@ import { SUB_BIOMES } from '@shared/constants/subBiomes.constants';
 
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
+import HighlandSFXMp3 from '@sounds/HighlandSfx.mp3';
+
 class HighlandBiome extends Biome {
   private a: number;
   private b: number;
@@ -41,6 +43,7 @@ class HighlandBiome extends Biome {
     this.f = MathUtils.randomFloat(0.95, 3);
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.highland_visited);
+    this.sound = HighlandSFXMp3;
   }
 
   init() {
