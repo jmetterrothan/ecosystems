@@ -7,7 +7,6 @@ abstract class UIState extends React.PureComponent {
   abstract init();
 
   abstract process(uiManager: UIManager);
-
 }
 
 export default UIState;

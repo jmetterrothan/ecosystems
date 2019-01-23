@@ -11,9 +11,7 @@ class UIGameState extends UIState {
 
   }
 
-  process(uiManager: UIManager) {
-
-  }
+  process(uiManager: UIManager) { }
 
   render() {
     return Game;

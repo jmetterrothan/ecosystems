@@ -72,8 +72,9 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     );
   }
 
-  switchState(state: UI_STATES, parameters: IUIManagerParameters = {}) {
+  switchState(state: UI_STATES, parameters?: any) {
     if (!this.uiStates.has(state)) this.addState(state);
+
     this.setState({
       currentUiStateID: state,
       parameters: {
@@ -88,12 +89,6 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
   manageMenu(open: boolean) {
     this.switchState(open ? UI_STATES.MENU : UI_STATES.GAME);
-  }
-
-  handleKeyboard(key: string) {
-    switch (key) {
-      // case 't': case 'T': this.manageMenu(true);
-    }
   }
 
   private addState(key: UI_STATES, value?: UIState) {

@@ -9,9 +9,7 @@ class UIMenuState extends UIState {
     console.info('INIT MENU');
   }
 
-  process(uiManager: UIManager) {
-
-  }
+  process(uiManager: UIManager) { }
 
   render() {
     return Menu;

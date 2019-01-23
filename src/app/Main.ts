@@ -176,7 +176,6 @@ class Main {
       document.body.addEventListener('keydown', e => {
         if (this.world.isInitialized()) {
           this.world.handleKeyboard(e.key, true && this.controls.enabled);
-          this.uiManager.handleKeyboard(e.key);
         }
       });
       document.body.addEventListener('keyup', e => {
