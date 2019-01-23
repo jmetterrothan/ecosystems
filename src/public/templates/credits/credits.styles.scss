@@ -1,0 +1,45 @@
+@import 'jmetterrothan-flexgrid/src/assets/sass/vars.scss';
+@import 'jmetterrothan-flexgrid/src/assets/sass/breakpoints.scss';
+
+.credits {
+  &__collaborators {
+
+  }
+}
+
+.collaborator {
+  &__info {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    @include breakpoint-tablet {
+      flex-direction: row;
+    }
+  }
+
+  &__fullname {
+    font-weight: 700;
+    font-size: 1.25rem;
+    line-height: 2rem;
+    color: $color-darkblue;
+  }
+
+  &__links {
+    display: flex;
+  }
+
+  &__description {
+
+  }
+
+  &__link {
+    text-decoration: none;
+    font-size: 1.5rem;
+    color: $color-darkblue;
+
+    &:hover {
+      color: lighten($color-darkblue, 10%);
+    }
+  }
+}
