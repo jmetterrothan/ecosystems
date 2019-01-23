@@ -177,7 +177,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
           {debugHtmlFinal}
 
           <footer className='home__footer mt-3 mb-2-t mb-4-l'>
-            <input form='gameSetup' type='submit' value={translationSvc.translate('UI.home.form.start_btn')} className='btn btn--magenta' disabled={!formValid} />
+            <input form='gameSetup' type='submit' value={translationSvc.translate('UI.home.form.start_btn')} className='btn btn--magenta btn--expand-mobile' disabled={!formValid} />
           </footer>
         </form>
       </section>

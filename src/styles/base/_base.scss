@@ -5,8 +5,10 @@
 }
 
 html {
+  height: 100vh;
   font-size: 14px;
   font-family: $font;
+  background: $gradient;
 }
 
 body {

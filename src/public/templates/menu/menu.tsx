@@ -11,6 +11,8 @@ import Credits from '../credits/credits';
 import Progress from '../progress/progress';
 
 import './menu.styles';
+import Row from '@public/components/row/row';
+import Col from '@public/components/col/col';
 
 interface Props {
   uiManager: UIManager;
@@ -55,8 +57,8 @@ class Menu extends React.PureComponent<Props> {
           </Tabs>
         </div>
         <footer className='menu__footer mt-2'>
-          <Button className='btn btn--darkblue mr-3' onClick={this.reload}>Recharger</Button>
-          <Button className='btn btn--magenta' onClick={this.handleClick}>Continuer</Button>
+          <Button className='btn btn--darkblue btn--expand-mobile mb-2 mb-0-t mr-3-t' onClick={this.reload}>Nouveau monde</Button>
+          <Button className='btn btn--magenta btn--expand-mobile' onClick={this.handleClick}>Continuer</Button>
         </footer>
       </div>
     );
