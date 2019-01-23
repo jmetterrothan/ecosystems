@@ -15,7 +15,7 @@ enum Icons {
 const collaborators: ICollaboratorProps[] = [
   {
     fullname: 'Jérémie Metter-Rothan',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer varius sed neque vulputate luctus.',
+    description: 'Chef de projet, développeur threejs/react.',
     links: [
       { url: 'https://jeremie.metter-rothan.fr', icon: Icons.Portfolio },
       { url: 'https://github.com/jmetterrothan', icon: Icons.Github },
@@ -24,7 +24,7 @@ const collaborators: ICollaboratorProps[] = [
   },
   {
     fullname: 'Florian Zobèle',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer varius sed neque vulputate luctus.',
+    description: 'Développeur threejs/react.',
     links: [
       { url: 'https://florianzobele.fr', icon: Icons.Portfolio },
       { url: 'https://github.com/Ghuntheur', icon: Icons.Github },
@@ -35,7 +35,7 @@ const collaborators: ICollaboratorProps[] = [
   },
   {
     fullname: 'Lucas Dussouchaud',
-    description: 'Commandes vocales avec tensorflow',
+    description: 'Dévelopeur gameplay - commandes vocales avec tensorflow.',
     links: [
       { url: 'http://noisiv.fr', icon: Icons.Portfolio },
       { url: 'https://www.linkedin.com/in/lucas-dussouchaud-67b492166/', icon: Icons.LinkedIn }
@@ -43,7 +43,7 @@ const collaborators: ICollaboratorProps[] = [
   },
   {
     fullname: 'Jordan Vilsaint',
-    description: 'Sons et ambiences sonores',
+    description: 'Développeur - sons et ambiences sonores.',
     links: [
       { url: 'http://jovsn.alwaysdata.net', icon: Icons.Portfolio },
       { url: 'https://github.com/jovsn', icon: Icons.Github },
@@ -52,7 +52,7 @@ const collaborators: ICollaboratorProps[] = [
   },
   {
     fullname: 'Christina Schinzel',
-    description: 'UX/UI Design',
+    description: 'UX/UI Designer.',
     links: []
   }
 ];
