@@ -1,3 +1,4 @@
+import { IProgression } from '@achievements/models/progression.model';
 export interface IProgressionObjectsStorageKeys {
-  [key: string]: string;
+  [key: string]: IProgression;
 }
