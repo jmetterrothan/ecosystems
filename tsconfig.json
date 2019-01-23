@@ -9,21 +9,19 @@
     "baseUrl": ".",
     "allowJs": true,
     "forceConsistentCasingInFileNames": false,
+    "jsx": "react",
     "paths": {
       "@app/*": [
         "src/app/*"
       ],
       "@shared/*": [
-        "src/app/Shared/*"
-      ],
-      "@services/*": [
-        "src/app/Shared/services/*"
+        "src/app/shared/*"
       ],
       "@utils/*": [
-        "src/app/Shared/utils/*"
+        "src/app/shared/utils/*"
       ],
       "@world/*": [
-        "src/app/World/*"
+        "src/app/world/*"
       ],
       "@objmodels/*": [
         "src/public/assets/obj/*"
@@ -32,25 +30,34 @@
         "src/public/assets/images/*"
       ],
       "@mesh/*": [
-        "src/app/Mesh/*"
+        "src/app/mesh/*"
       ],
       "@materials/*": [
-        "src/app/Shared/materials/*"
+        "src/app/shared/materials/*"
       ],
       "@boids/*": [
-        "src/app/Boids/*"
+        "src/app/boids/*"
       ],
       "@public/*": [
         "src/public/*"
       ],
       "@achievements/*": [
-        "src/app/Achievements/*"
+        "src/app/achievements/*"
       ],
       "@ui/*": [
-        "src/app/UI/*"
+        "src/app/ui/*"
       ],
       "@voice/*": [
-        "src/app/Voice/*"
+        "src/app/voice/*"
+      ],
+      "@online/*": [
+        "src/app/online/*"
+      ],
+      "@components/*": [
+        "src/public/components/*"
+      ],
+      "@templates/*": [
+        "src/public/templates/*"
       ]
     },
     "typeRoots": [

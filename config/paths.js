@@ -7,6 +7,6 @@ module.exports = {
   APP: path.resolve(__dirname, '../', 'src', 'app'),
   PUBLIC: path.resolve(__dirname, '../', 'src', 'public'),
   STYLES: path.resolve(__dirname, '../', 'src', 'styles'),
-  IMAGES: path.resolve(__dirname, '../', 'src', 'public', 'images'),
+  IMAGES: path.resolve(__dirname, '../', 'src', 'public', 'assets', 'images'),
   SHADERS: path.resolve(__dirname, '../', 'src', 'public', 'shaders')
 };

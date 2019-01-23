@@ -11,13 +11,14 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   entry: {
     bundle: [
-      path.join(PATHS.SRC, 'index.ts'),
+      '@babel/polyfill',
+      path.join(PATHS.SRC, 'index.tsx'),
       path.join(PATHS.STYLES, 'styles.scss')
     ]
   },
   resolve: {
     modules: ['node_modules', PATHS.SRC],
-    extensions: ['.ts', '.js', '.json', '.scss', '.css', '.yml'],
+    extensions: ['.ts', '.js', '.jsx', '.tsx', '.json', '.scss', '.css', '.yml'],
     alias: {
       ...alias,
       three$: 'three/build/three.min.js',
@@ -27,18 +28,18 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         exclude: '/node_modules/',
         loader: 'babel-loader'
       },
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         enforce: 'pre',
         exclude: '/node_modules/',
         loader: 'tslint-loader'
       },
       {
-        test: /\.(scss|sass)$/,
+        test: /\.(css|scss|sass)$/,
         use: [
           webpackMode.isDevelopment
             ? 'style-loader'
@@ -56,6 +57,15 @@ module.exports = {
             }
           },
           'sass-loader',
+          {
+            loader: 'sass-resources-loader',
+            options: {
+              resources: [
+                path.join(PATHS.STYLES, 'abstracts', '_variables.scss'),
+                path.join(PATHS.STYLES, 'abstracts', '_colors.scss'),
+              ]
+            }
+          }
         ]
       },
       {
@@ -77,12 +87,23 @@ module.exports = {
       },
       {
         test: /\.(obj|mtl)$/,
-        loader: 'file-loader'
+        loader: 'file-loader',
+        options: {
+          name: webpackMode.isProduction
+            ? '/objects/[name]/[hash:8].[ext]'
+            : '[name].[ext]'
+        }
       },
       {
-        test: /\.ya?ml$/,
-        use: 'js-yaml-loader',
-      }
+        test: /\.(woff(2)?|ttf|eot|svg|otf)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]',
+            outputPath: 'fonts/'
+          }
+        }]
+    }
     ]
   },
   plugins: [

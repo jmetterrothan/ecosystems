@@ -1,4 +1,3 @@
-import { PROGRESSION_COMMON_STORAGE_KEYS } from './Achievements/constants/progressionCommonStorageKeys.constants';
 import * as THREE from 'three';
 
 import 'three/examples/js/controls/PointerLockControls';
@@ -8,9 +7,12 @@ import Terrain from '@world/Terrain';
 import VoiceModel from '@voice/VoiceModel';
 import Voice from '@voice/Voice';
 
+import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
 import PlayerService, { playerSvc } from '@shared/services/player.service';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
-import ProgressionService, { progressionSvc } from '@services/progression.service';
+import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
+
+import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 
 class Player {
   private controls: THREE.PointerLockControls;
@@ -24,12 +26,12 @@ class Player {
   private speed: THREE.Vector3;
   private velocity: THREE.Vector3;
 
-  private world: World;
   private voiceModel: Model;
 
   private progressionSvc: ProgressionService;
   private monitoringSvc: MonitoringService;
   private playerSvc: PlayerService;
+  private multiplayerSvc: MultiplayerService;
 
   /**
    * Player constructor
@@ -51,6 +53,7 @@ class Player {
     this.progressionSvc = progressionSvc;
     this.monitoringSvc = monitoringSvc;
     this.playerSvc = playerSvc;
+    this.multiplayerSvc = multiplayerSvc;
   }
 
   /**
@@ -66,16 +69,6 @@ class Player {
     this.position = spawn;
 
     this.playerSvc.setPosition(spawn);
-
-    await this.initVoice();
-  }
-
-  private async initVoice() {
-    this.voiceModel = new VoiceModel();
-    await this.voiceModel.train();
-
-    this.voice = new Voice(this.voiceModel);
-    // this.voice.listen();
   }
 
   /**
@@ -135,22 +128,16 @@ class Player {
     const position = this.move(delta);
     this.playerSvc.setPosition(position);
 
-    const yMin = terrain.getHeightAt(position.x, position.z) + 5000;
-    const isWithinWorldBorders = this.isWithinWorldBorders();
+    if (this.multiplayerSvc.isUsed()) {
+      this.multiplayerSvc.sendPosition(position);
+      this.multiplayerSvc.checkStatus();
+    }
 
-    if (isWithinWorldBorders && position.y < yMin) {
+    const yMin = terrain.getHeightAt(position.x, position.z) + 5000;
+
+    if (this.playerSvc.isWithinWorldBorders() && position.y < yMin) {
       // collision with min ground dist
       this.positionY = yMin;
-    }
-
-    // update underwater service
-    if (!this.playerSvc.isUnderwater() && position.y <= Chunk.SEA_LEVEL && isWithinWorldBorders) {
-      this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
-      this.monitoringSvc.sendEvent(this.monitoringSvc.categories.biome, this.monitoringSvc.actions.visited, PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
-    }
-
-    if (this.playerSvc.isUnderwater() && (position.y > Chunk.SEA_LEVEL || !isWithinWorldBorders)) {
-      this.playerSvc.setUnderwater(false);
     }
   }
 
@@ -161,19 +148,14 @@ class Player {
    */
   handleKeyboard(key: string, active: boolean) {
     switch (key) {
-      case 'ArrowUp': case 'z': this.moveForward = active; break;
-      case 'ArrowDown': case 's': this.moveBackward = active; break;
-      case 'ArrowLeft': case 'q': this.moveLeft = active; break ;
-      case 'ArrowRight': case 'd': this.moveRight = active; break;
-      case '+': case 'a': this.moveUp = active; break;
-      case '-': case 'e': this.moveDown = active; break;
+      case 'ArrowUp': case 'z': case 'Z': this.moveForward = active; break;
+      case 'ArrowDown': case 's': case 'S': this.moveBackward = active; break;
+      case 'ArrowLeft': case 'q': case 'Q': this.moveLeft = active; break;
+      case 'ArrowRight': case 'd': case 'D': this.moveRight = active; break;
+      case '+': case 'a': case 'A': this.moveUp = active; break;
+      case '-': case 'e': case 'E': this.moveDown = active; break;
       case 'v': !this.voice.predictState ? this.voice.listen() : this.voice.stopListening();
     }
-  }
-
-  isWithinWorldBorders(): boolean {
-    const position = this.position;
-    return !(position.x < 0 || position.x > Terrain.SIZE_X || position.z < 0 || position.z > Terrain.SIZE_Z || position.y < -Terrain.SIZE_Y / 2);
   }
 
   get position(): THREE.Vector3 {
