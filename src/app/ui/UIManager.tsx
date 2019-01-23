@@ -8,6 +8,7 @@ import withUIManager from '@public/components/withUIManager/withUIManager';
 
 import UIService, { uiSvc } from './services/ui.service';
 import { notificationSvc } from '@shared/services/notification.service';
+import { translationSvc } from '@shared/services/translation.service';
 
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
@@ -44,6 +45,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     this.addState(UI_STATES.HOME, new UIHomeState(null));
   }
 
+  /*
   componentDidMount() {
     notificationSvc.push({
       icon: null,
@@ -51,8 +53,9 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
       content: 'This is a test notification',
       duration: 500000
     });
-    */
+    * /;
   }
+  */
 
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
