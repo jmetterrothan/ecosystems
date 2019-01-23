@@ -1,4 +1,4 @@
-import Home from '@templates/Home/home';
+import Home from '@templates/home/home';
 
 import UIState from '@ui/UIState';
 import UIManager from '@ui/UIManager';

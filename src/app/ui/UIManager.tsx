@@ -1,6 +1,6 @@
 import React from 'react';
 
-import NotificationContainer from '@public/components/Notification/NotificationContainer';
+import NotificationContainer from '@public/components/notification/NotificationContainer';
 import UIState from '@ui/UIState';
 import UIHomeState from '@ui/states/UIHomeState';
 import stateFactory from '@ui/UIStatesFactory';

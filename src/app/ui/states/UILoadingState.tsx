@@ -4,7 +4,7 @@ import Main from '@app/Main';
 import UIManager from '@ui/UIManager';
 import UIState from '@ui/UIState';
 
-import Loading from '@templates/Loading/loading';
+import Loading from '@templates/loading/loading';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 

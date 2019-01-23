@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Game from '@templates/Game/game';
+import Game from '@templates/game/game';
 
 import UIState from '@ui/UIState';
 import UIManager from '@ui/UIManager';

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Row from '@components/Row/row';
-import Col from '@components/Col/col';
+import Row from '@components/row/row';
+import Col from '@components/col/col';
 import UIManager from '@ui/UIManager';
 import CommonUtils from '@app/shared/utils/Common.utils';
 import MathUtils from '@app/shared/utils/Math.utils';
@@ -106,10 +106,10 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     const { seedValue, formValid, selectedQuality, debugMode, onlineMode, soundMode, image } = this.state;
 
     const debugHtml = (
-    <div className='form__group mt-2'>
-      <input type='checkbox' id='debugMode' onChange={this.handleDebugChange} checked={debugMode === true} />
-      <label htmlFor='debugMode'>{translationSvc.translate('UI.home.debug')}</label>
-    </div>
+      <div className='form__group mt-2'>
+        <input type='checkbox' id='debugMode' onChange={this.handleDebugChange} checked={debugMode === true} />
+        <label htmlFor='debugMode'>{translationSvc.translate('UI.home.debug')}</label>
+      </div>
     );
 
     const debugHtmlFinal = CommonUtils.isDev() ? debugHtml : null;
@@ -117,8 +117,8 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     return (
       <section className='ui-container home p-2'>
         <header className='home__header mt-2-t mt-4-l mb-2'>
-            <h2 className='home__subtitle mb-1'>{translationSvc.translate('UI.home.subtitle')}</h2>
-            <h1 className='home__title'>{translationSvc.translate('UI.home.title')}</h1>
+          <h2 className='home__subtitle mb-1'>{translationSvc.translate('UI.home.subtitle')}</h2>
+          <h1 className='home__title'>{translationSvc.translate('UI.home.title')}</h1>
         </header>
         <div className='home__preview'>
           <img src={image} alt='world' />

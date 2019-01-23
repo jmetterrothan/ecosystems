@@ -4,7 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import UIManager from '@app/ui/UIManager';
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 
-import Button from '@components/Button/button';
+import Button from '@components/button/button';
 import Trophies from '@templates/trophies/trophies';
 import Tutorial from '@templates/tutorial/tutorial';
 import Credits from '../credits/credits';
@@ -46,7 +46,7 @@ class Menu extends React.PureComponent<Props> {
               <Tutorial />
             </TabPanel>
             <TabPanel>
-              <Credits/>
+              <Credits />
             </TabPanel>
           </Tabs>
         </div>
