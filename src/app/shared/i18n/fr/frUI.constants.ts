@@ -23,5 +23,12 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
       sound_off_option: 'Désactivé',
       start_btn: 'Lancer'
     }
+  },
+  progression: {
+    game_played: 'Parties jouées: {{count}}',
+    distance_travelled: 'Distance parcourue : {{count}}',
+    going_underwater: 'Nombre de fois sous l\'eau : {{count}}',
+    objects_placed: 'Objets placés : {{count}}',
+    unlock_trophies_percentage: 'Trophées débloqués : {{count}}%'
   }
 };

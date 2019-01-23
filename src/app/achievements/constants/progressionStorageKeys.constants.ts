@@ -25,10 +25,10 @@ export const PROGRESSION_STORAGE = {
   ...CommonUtils.arrayToObject([
     ...tmp
       .reduce((acc, item) => acc.concat(CommonUtils.objectToArray(item)), [])
-      .reduce((acc, item) => acc.concat(item.name), [])
+      .reduce((acc, item) => acc.concat(item.value), [])
   ], 0)
 };
 
-export const PROGRESSION_SHOWN = tmp
+export const PROGRESSION_SHOWN: IProgression[] = tmp
   .reduce((acc, item) => acc.concat(CommonUtils.objectToArray(item)), [])
   .reduce((acc, item) => acc.concat(item), []);

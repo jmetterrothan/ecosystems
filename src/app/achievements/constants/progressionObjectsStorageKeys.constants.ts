@@ -10,7 +10,7 @@ export const PROGRESSION_OBJECTS_STORAGE_KEYS: IProgressionObjectsStorageKeys =
   Object.values(SUB_BIOMES).reduce((acc, biome) => acc.concat(biome.organisms), [])
     .reduce((acc, organism) => acc.concat(CommonUtils.getObjectPlacedNameForAchievement(organism.name)), [])
     .reduce((acc, name) => {
-      const progression: IProgression = { name, show: false };
+      const progression: IProgression = { name, value: name, show: false };
       acc[name] = progression;
       return acc;
     }, {});
