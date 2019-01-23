@@ -1,6 +1,8 @@
 import AchievementService, { achievementSvc } from '@achievements/services/achievement.service';
 import StorageService, { storageSvc } from '@shared/services/storage.service';
 
+import { IProgression } from '@achievements/models/progression.model';
+
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
 import { PROGRESSION_STORAGE } from '@achievements/constants/progressionStorageKeys.constants';
 
@@ -48,12 +50,12 @@ class ProgressionService {
    * @param {string} - key
    * @param {number} - value
    */
-  setValue(key: string, value: number) {
-    if (!this.storage.hasOwnProperty(key)) return;
-    this.storage[key] = value;
+  setValue(progression: IProgression, value: number) {
+    if (!this.storage.hasOwnProperty(progression.name)) return;
+    this.storage[progression.name] = value;
     this.storageSvc.set(this.key, this.storage);
 
-    this.achievementSvc.check(key);
+    this.achievementSvc.check(progression);
   }
 
   /**
@@ -61,21 +63,21 @@ class ProgressionService {
    * @param {string} - key
    * @param {number} - value
    */
-  increment(key: string, value?: number) {
-    if (!this.storage.hasOwnProperty(key)) return;
-    this.storage[key] += value ? value : 1;
+  increment(progression: IProgression, value?: number) {
+    if (!this.storage.hasOwnProperty(progression.name)) return;
+    this.storage[progression.name] += value ? value : 1;
     this.storageSvc.set(this.key, this.storage);
 
-    this.achievementSvc.check(key);
+    this.achievementSvc.check(progression);
   }
 
   /**
    * Decrement value in storage and check if trophy is unlock
    * @param {string} key
    */
-  decrement(key: string) {
-    if (!this.storage.hasOwnProperty(key)) return;
-    this.storage[key]--;
+  decrement(progression: IProgression) {
+    if (!this.storage.hasOwnProperty(progression.name)) return;
+    this.storage[progression.name]--;
     this.storageSvc.set(this.key, this.storage);
   }
 

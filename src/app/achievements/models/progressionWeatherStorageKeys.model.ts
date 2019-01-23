@@ -1,4 +1,6 @@
+import { IProgression } from '@achievements/models/progression.model';
+
 export interface IProgressionWeatherStorageKeys {
-  under_rain: string;
-  in_sun: string;
+  under_rain: IProgression;
+  in_sun: IProgression;
 }
