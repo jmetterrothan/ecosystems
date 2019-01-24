@@ -32,7 +32,7 @@ class Menu extends React.PureComponent<Props> {
 
   render() {
     return (
-      <div className='menu p-2 pt-4 p-4-l pb-3-l pt-5-l'>
+      <div className='ui-container menu p-2 p-4-l pb-3-l pt-5-l'>
         <div className='menu__container'>
           <Tabs>
             <TabList>

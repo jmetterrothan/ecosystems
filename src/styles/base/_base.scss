@@ -11,13 +11,8 @@ html {
   font-size: 14px;
   font-family: $font;
   background-image: $gradient;
+  background-repeat: no-repeat;
   overflow-x:hidden;
   max-width: 100vw;
   min-height: 100%;
-}
-
-@include breakpoint-tablet {
-  html, #root, body {
-    height: 100%;
-  }
 }

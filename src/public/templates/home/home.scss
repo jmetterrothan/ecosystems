@@ -17,9 +17,9 @@
 
   @include breakpoint-tablet {
     display: flex;
+    // height: 100vh;
+    overflow: hidden;
     flex-direction: column;
-    justify-content: center;
-    max-height: 100vh;
     justify-content: space-between;
   }
 }
@@ -38,7 +38,7 @@
   &__preview {
     display: flex;
     flex-grow: 1;
-    flex-shrink: 0;
+    flex-shrink: 1;
     width: 100%;
     height:300px;
 
@@ -46,10 +46,14 @@
       height: initial;
     }
 
+    @include breakpoint-tablet {
+      max-height: unset;
+    }
+
     img {
       display: flex;
       width: 100%;
-      height: 100%;
+      // height: 100%;
       object-fit: contain;
       object-position: center;
 
