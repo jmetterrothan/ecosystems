@@ -14,6 +14,8 @@
 }
 
 .loading {
+  max-height: 100vh;
+
   &__message {
     text-align: center;
     text-transform: lowercase;
