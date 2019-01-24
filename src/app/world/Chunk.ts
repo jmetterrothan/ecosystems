@@ -338,8 +338,8 @@ class Chunk {
    * @param {number} z
    * @param {IPickObject} parameters
    */
-  pick(x: number, z: number, parameters: IPickObject = {}): IPick | null {
-    return this.generator.pick(x, z, parameters);
+  pick(x: number, z: number, parameters: IPickObject = {}, useWeights: boolean): IPick | null {
+    return this.generator.pick(x, z, parameters, useWeights);
   }
 
   /**
