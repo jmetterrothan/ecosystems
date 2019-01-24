@@ -5,5 +5,6 @@ export enum TROPHY_TYPE {
   DISTANCE,
   WEATHER,
   EXTRAS,
+  ONLINE,
   TROPHY
 }

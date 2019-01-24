@@ -7,6 +7,7 @@ import { PROGRESSION_COMMON_STORAGE_KEYS } from './progressionCommonStorageKeys.
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from './progressionExtrasStorageKeys.constants';
 import { PROGRESSION_WEATHER_STORAGE_KEYS } from './progressionWeatherStorageKeys.constants';
 import { PROGRESSION_TROPHIES_STORAG_KEYS } from './progressionTrophiesStorageKeys.constants';
+import { PROGRESSION_ONLINE_STORAGE_KEYS } from './progressionOnlineStorageKeys.constants';
 
 import CommonUtils from '@shared/utils/Common.utils';
 
@@ -16,7 +17,8 @@ export const PROGRESSION_STORAGE_KEYS: IProgressionStorageKeys = {
   objects: PROGRESSION_OBJECTS_STORAGE_KEYS,
   weather: PROGRESSION_WEATHER_STORAGE_KEYS,
   extras: PROGRESSION_EXTRAS_STORAGE_KEYS,
-  trophies: PROGRESSION_TROPHIES_STORAG_KEYS
+  trophies: PROGRESSION_TROPHIES_STORAG_KEYS,
+  online: PROGRESSION_ONLINE_STORAGE_KEYS
 };
 
 const tmp = Object.values(PROGRESSION_STORAGE_KEYS);

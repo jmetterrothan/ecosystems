@@ -1,4 +1,3 @@
-import { IProgression } from './../achievements/models/progression.model';
 import * as THREE from 'three';
 import { stack } from '@tensorflow/tfjs';
 
@@ -23,6 +22,8 @@ import { IOnlineObject } from '@online/models/onlineObjects.model';
 import { ISpecialObject } from '@world/models/objectParameters.model';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
+import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
+
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 import MathUtils from '@shared/utils/Math.utils';
@@ -289,7 +290,10 @@ class Terrain {
         p: this.previewObject.position
       };
 
-      if (this.multiplayerSvc.isUsed()) this.multiplayerSvc.placeObject(this.previewItem);
+      if (this.multiplayerSvc.isUsed()) {
+        this.multiplayerSvc.placeObject(this.previewItem);
+        this.progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.place_object_online);
+      }
 
       this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed);
       this.progressionSvc.increment({

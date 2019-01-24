@@ -453,6 +453,12 @@ class Weather {
     this.moonlight.shadow.camera.updateProjectionMatrix();
 
     this.moonBoundLight.position.copy(this.moonlight.position);
+
+    const bbox: THREE.Box3 = new THREE.Box3().setFromObject(this.moon);
+
+    if (bbox.containsPoint(this.playerSvc.getPosition())) {
+      this.progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.in_moon);
+    }
   }
 
   private updateLights() {
