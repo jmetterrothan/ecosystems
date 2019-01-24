@@ -274,7 +274,7 @@ class Terrain {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
 
     for (const intersection of intersections) {
-      if (!biome.hasWater() && intersection.object === this.water) { crosshairSvc.shake(true); continue; } // if water is disabled
+      if (!biome.hasWater() && intersection.object === this.water) { continue; } // if water is disabled
       if (!this.previewObject) { crosshairSvc.shake(true); return; } // no preview
 
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
@@ -362,7 +362,6 @@ class Terrain {
       const validDistance = chunk.checkInteractionDistance(intersection.distance);
 
       crosshairSvc.show(validDistance);
-      crosshairSvc.switch(validDistance && this.previewActive);
 
       if (!validDistance || this.intersectBorder(intersection.point)) {
         // bail out if the target is ouside the valid range
@@ -370,8 +369,10 @@ class Terrain {
           this.scene.remove(this.previewObject);
           this.previewActive = false;
         }
+        crosshairSvc.switch(false);
         return;
       }
+      crosshairSvc.switch(true);
 
       const biome = this.generator.getSubBiome(
         this.generator.computeElevationAt(intersection.point.x, intersection.point.z),
@@ -389,11 +390,12 @@ class Terrain {
         const item = chunk.pick(intersection.point.x, intersection.point.z, {
           force: true,
           float: (this.intersectionSurface === this.water)
-        });
+        }, false);
 
         if (!item) {
           // bail out if no item gets picked
           this.previewActive = false;
+          crosshairSvc.switch(false);
           return;
         }
 
