@@ -19,4 +19,7 @@ export const EN_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   go_in_sun: 'Fly too close to the sun',
   go_in_moon: 'That\'s one small step for a man',
   unlock_trophy_percentage: 'You unlocked {{counter}}% of all trophies',
+  create_game_online: 'Create an online game',
+  join_game_online: 'Join an online game',
+  place_object_online: 'Place object online'
 };

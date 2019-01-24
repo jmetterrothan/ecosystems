@@ -22,6 +22,9 @@ export interface ITrophiesTranslationKeys {
   go_in_sun: string;
   go_in_moon: string;
   unlock_trophy_percentage: string;
+  create_game_online: string;
+  join_game_online: string;
+  place_object_online: string;
 }
 
 export interface IUITranslationKeys {

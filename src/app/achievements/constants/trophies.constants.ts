@@ -7,6 +7,7 @@ import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progress
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 import { PROGRESSION_TROPHIES_STORAG_KEYS } from '@achievements/constants/progressionTrophiesStorageKeys.constants';
 import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
+import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
 
 import { TROPHY_DIFFICULTY } from '@achievements/enums/trophyDIfficulty.enum';
 import { TROPHY_TYPE } from '@achievements/enums/trophyType.enum';
@@ -227,6 +228,37 @@ export const TROPHIES: ITrophy[] = [
     type: TROPHY_TYPE.EXTRAS,
     checklist: [
       { name: 'find scarecrow', value: PROGRESSION_EXTRAS_STORAGE_KEYS.find_scarecrow.value }
+    ]
+  },
+  // ONLINE
+  {
+    name: { key: 'TROPHIES.create_game_online' },
+    value: 'create_game_online',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.GOLD,
+    type: TROPHY_TYPE.ONLINE,
+    checklist: [
+      { name: 'create game online', value: PROGRESSION_ONLINE_STORAGE_KEYS.create_game_online.value }
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.join_game_online' },
+    value: 'join_game_online',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.GOLD,
+    type: TROPHY_TYPE.ONLINE,
+    checklist: [
+      { name: 'join game online', value: PROGRESSION_ONLINE_STORAGE_KEYS.join_game_online.value }
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.place_object_online' },
+    value: 'place_object_online',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.GOLD,
+    type: TROPHY_TYPE.ONLINE,
+    checklist: [
+      { name: 'place object online', value: PROGRESSION_ONLINE_STORAGE_KEYS.place_object_online.value }
     ]
   },
   // TROPHIES
