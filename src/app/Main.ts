@@ -145,7 +145,7 @@ class Main {
 
       const pointerlockchange = (e) => {
         this.controls.enabled = document.pointerLockElement === document.body || document.mozPointerLockElement === document.body || document.webkitPointerLockElement === document.body;
-        // this.uiManager.manageMenu(!this.controls.enabled);
+        this.uiManager.manageMenu(!this.controls.enabled);
       };
 
       const pointerlockerror = (e) => { };
