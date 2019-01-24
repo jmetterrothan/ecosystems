@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import classNames from 'classnames';
 
 import UIManager from '@app/ui/UIManager';
-import Crosshair from '@components/crosshair/Crosshair';
+import Crosshair from '@components/crosshair/crosshair';
 
 import { achievementSvc } from '@achievements/services/achievement.service';
 import { multiplayerSvc } from '@online/services/multiplayer.service';
