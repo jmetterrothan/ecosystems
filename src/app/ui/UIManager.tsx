@@ -45,16 +45,9 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     this.addState(UI_STATES.HOME, new UIHomeState(null));
   }
 
-  /*
   componentDidMount() {
-
-      label: 'Trophy unlocked',
-      content: 'This is a test notification',
-      duration: 500000
-    });
-    * /;
+    // this.switchState(UI_STATES.LOADING);
   }
-  */
 
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
@@ -65,9 +58,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
         <div className='ui__notifications pl-2 pt-2'>
           <NotificationContainer />
         </div>
-        <div className='ui__state'>
-          {withUIManager(uiState.render())(this)}
-        </div>
+        {withUIManager(uiState.render())(this)}
       </div>
     );
   }

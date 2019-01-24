@@ -1,18 +1,16 @@
 import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
+import Button from '@public/components/button/button';
 import UIManager from '@app/ui/UIManager';
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 
-import Button from '@components/button/button';
-import Trophies from '@templates/trophies/trophies';
-import Tutorial from '@templates/tutorial/tutorial';
-import Credits from '../credits/credits';
-import Progress from '../progress/progress';
+import Trophies from '@templates/menu/trophies/trophies';
+import Tutorial from '@templates/menu/tutorial/tutorial';
+import Credits from '@templates/menu/credits/credits';
+import Progress from '@templates/menu/progress/progress';
 
 import './menu.styles';
-import Row from '@public/components/row/row';
-import Col from '@public/components/col/col';
 
 interface Props {
   uiManager: UIManager;
@@ -32,7 +30,7 @@ class Menu extends React.PureComponent<Props> {
 
   render() {
     return (
-      <div className='ui-container menu p-2 p-4-l pb-3-l pt-5-l'>
+      <div className='ui__state menu'>
         <div className='menu__container'>
           <Tabs>
             <TabList>
@@ -41,25 +39,16 @@ class Menu extends React.PureComponent<Props> {
               <Tab>Tutoriel</Tab>
               <Tab>Crédits</Tab>
             </TabList>
-
-            <TabPanel>
-              <Trophies />
-            </TabPanel>
-            <TabPanel>
-              <Progress />
-            </TabPanel>
-            <TabPanel>
-              <Tutorial />
-            </TabPanel>
-            <TabPanel>
-              <Credits />
-            </TabPanel>
+            <TabPanel><Trophies /></TabPanel>
+            <TabPanel><Progress /></TabPanel>
+            <TabPanel><Tutorial /></TabPanel>
+            <TabPanel><Credits /></TabPanel>
           </Tabs>
+          <footer className='menu__footer mb-3 mr-3'>
+            <Button className='btn btn--darkblue btn--expand-mobile mr-2' onClick={this.reload}>Nouveau monde</Button>
+            <Button className='btn btn--magenta btn--expand-mobile' onClick={this.handleClick}>Continuer</Button>
+          </footer>
         </div>
-        <footer className='menu__footer mt-2'>
-          <Button className='btn btn--darkblue btn--expand-mobile mb-2 mb-0-t mr-3-t' onClick={this.reload}>Nouveau monde</Button>
-          <Button className='btn btn--magenta btn--expand-mobile' onClick={this.handleClick}>Continuer</Button>
-        </footer>
       </div>
     );
   }

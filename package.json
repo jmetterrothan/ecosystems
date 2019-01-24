@@ -64,6 +64,8 @@
     "i18next-browser-languagedetector": "^2.2.4",
     "jmetterrothan-flexgrid": "^1.0.2",
     "poisson-disk-sampling": "^1.0.2",
+    "prop-types": "^15.6.2",
+    "react-perfect-scrollbar": "^1.4.4",
     "react-router-dom": "^4.3.1",
     "react-slick": "^0.23.2",
     "react-tabs": "^3.0.0",

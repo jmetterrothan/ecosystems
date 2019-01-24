@@ -11,18 +11,14 @@
   to { transform: translateY(-8px); }
 }
 
-.ui-container.home {
-  display: block;
-  z-index: 1;
-
-  @include breakpoint-tablet {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-}
-
 .home{
+  background-image: $gradient;
+  display: flex;
+  z-index: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
   &__header {
     width: 100%;
     flex-grow: 0;

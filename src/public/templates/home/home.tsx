@@ -115,7 +115,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     const debugHtmlFinal = CommonUtils.isDev() ? debugHtml : null;
 
     return (
-      <section className='ui-container home p-2'>
+      <section className='ui__state home p-2'>
         <header className='home__header mt-2-t mt-4-l mb-2'>
           <h2 className='home__subtitle mb-1'>{translationSvc.translate('UI.home.subtitle')}</h2>
           <h1 className='home__title'>{translationSvc.translate('UI.home.title')}</h1>

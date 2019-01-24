@@ -90,8 +90,8 @@ class Collaborator extends React.Component<ICollaboratorProps, any> {
 class Credits extends React.Component {
   render() {
     return (
-      <div className='credits p-3 pt-2 pb-2'>
-        <ul className='credits__collaborators'>
+      <div className='tab tab--credits'>
+        <ul className='credits-tab__collaborators'>
           {collaborators.map((collaborator, i) => <li key={i}><Collaborator {...collaborator} /></li>)}
         </ul>
       </div>

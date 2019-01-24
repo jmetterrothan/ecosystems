@@ -14,12 +14,16 @@
 }
 
 .loading {
-  max-height: 100vh;
+  background-image: $gradient;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   &__message {
     text-align: center;
     text-transform: lowercase;
-    font-size: 1.75rem;
+    font-size: 1.65rem;
     font-weight: 700;
     color: $color-darkblue;
   }

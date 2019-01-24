@@ -70,7 +70,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     }
 
     return (
-      <section className='ui-container game'>
+      <section className='ui__state game'>
         <div className='game__overlay overlay'>
           <Crosshair />
           <div className='overlay__trophies'>

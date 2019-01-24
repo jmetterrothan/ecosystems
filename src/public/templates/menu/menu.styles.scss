@@ -3,34 +3,34 @@
 @import 'jmetterrothan-flexgrid/src/assets/sass/breakpoints.scss';
 
 .menu {
-  background: rgba(0, 0, 0, 0.65);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+  background: rgba(0, 0, 0, 0.25);
 
   &__container {
+    width: 50%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 100%;
-    max-width: 1024px;
-    min-height: 75vh;
-    max-height: 100%;
+
+    // max-width: 1024px;
     background:#f1f1f1;
   }
 
   &__footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
     display: flex;
     flex-direction: column;
-    max-width:1280px;
-    width: 100%;
     justify-content: center;
-    flex-shrink: 0;
 
     @include breakpoint-tablet {
       flex-direction: row;
     }
   }
+}
+
+.tab {
+  margin: 2rem;
+  height: calc(100% - 4rem);
 }
