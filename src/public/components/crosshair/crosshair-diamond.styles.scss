@@ -1,0 +1,35 @@
+$crosshair-size : 16px;
+$crosshair-thickness: 3px;
+$crosshair-opacity : 0.95;
+
+.crosshair.crosshair--diamond {
+  width: $crosshair-size;
+  height: $crosshair-size;
+  position: fixed;
+  left: calc((100vw - #{$crosshair-size}) / 2);
+  top: calc((100vh - #{$crosshair-size}) / 2);
+  border: $crosshair-thickness solid #afafaf;
+  opacity: $crosshair-opacity;
+  transform: rotateZ(45deg);
+
+  &.crosshair--valid {
+    border-color: $color-green;
+  }
+  &.crosshair--invalid {
+    border-color: $color-red;
+  }
+}
+
+@keyframes shake {
+  0% { transform: rotateZ(45deg) translate(1px, 1px) }
+  10% { transform: rotateZ(45deg) translate(-1px, -2px) }
+  20% { transform: rotateZ(45deg) translate(-3px, 0px) }
+  30% { transform: rotateZ(45deg) translate(3px, 2px) }
+  40% { transform: rotateZ(45deg) translate(1px, -1px) }
+  50% { transform: rotateZ(45deg) translate(-1px, 2px) }
+  60% { transform: rotateZ(45deg) translate(-3px, 1px) }
+  70% { transform: rotateZ(45deg) translate(3px, 1px) }
+  80% { transform: rotateZ(45deg) translate(-1px, -1px) }
+  90% { transform: rotateZ(45deg) translate(1px, 2px) }
+  100% { transform: rotateZ(45deg) translate(1px, -2px) }
+}

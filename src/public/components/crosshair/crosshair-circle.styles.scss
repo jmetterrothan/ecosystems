@@ -1,0 +1,21 @@
+$crosshair-size : 18px;
+$crosshair-thickness: 4px;
+$crosshair-opacity : 0.95;
+
+.crosshair.crosshair--circle {
+  width: $crosshair-size;
+  height: $crosshair-size;
+  position: fixed;
+  left: calc((100vw - #{$crosshair-size}) / 2);
+  top: calc((100vh - #{$crosshair-size}) / 2);
+  border: $crosshair-thickness solid #afafaf;
+  border-radius: 50%;
+  opacity: $crosshair-opacity;
+
+  &.crosshair--valid {
+    border-color: $color-green;
+  }
+  &.crosshair--invalid {
+    border-color: $color-red;
+  }
+}

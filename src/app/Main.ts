@@ -5,7 +5,6 @@ import 'three/examples/js/controls/PointerLockControls';
 import 'seedrandom';
 
 import World from '@world/World';
-import Crosshair from '@ui/Crosshair';
 import PostProcess from '@app/PostProcess';
 
 import { configSvc } from '@app/shared/services/config.service';
@@ -105,8 +104,6 @@ class Main {
 
   private initControls() {
     this.controls = new THREE.PointerLockControls(this.camera);
-
-    new Crosshair();
   }
 
   private initRenderer() {
@@ -148,7 +145,7 @@ class Main {
 
       const pointerlockchange = (e) => {
         this.controls.enabled = document.pointerLockElement === document.body || document.mozPointerLockElement === document.body || document.webkitPointerLockElement === document.body;
-        this.uiManager.manageMenu(!this.controls.enabled);
+        // this.uiManager.manageMenu(!this.controls.enabled);
       };
 
       const pointerlockerror = (e) => { };

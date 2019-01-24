@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import classNames from 'classnames';
 
 import UIManager from '@app/ui/UIManager';
+import Crosshair from '@components/crosshair/Crosshair';
 
 import { achievementSvc } from '@achievements/services/achievement.service';
 import { multiplayerSvc } from '@online/services/multiplayer.service';
@@ -71,6 +72,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     return (
       <section className='ui-container game'>
         <div className='game__overlay overlay'>
+          <Crosshair />
           <div className='overlay__trophies'>
             <div className='counter mb-1'>
               <span className='counter__current'>{unlockedTrophiesCount}</span> / <span className='counter__total'>{trophiesCount}</span>

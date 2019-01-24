@@ -6,7 +6,6 @@ import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Coord from '@world/Coord';
 import Biome from '@world/Biome';
-import Crosshair from '@ui/Crosshair';
 
 import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
 import { configSvc } from '@app/shared/services/config.service';
@@ -28,6 +27,7 @@ import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@shared/utils/Common.utils';
+import { crosshairSvc } from '@app/ui/services/crosshair.service';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 14;
@@ -274,13 +274,13 @@ class Terrain {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
 
     for (const intersection of intersections) {
-      if (!biome.hasWater() && intersection.object === this.water) { continue; } // if water is disabled
-      if (!this.previewObject) return; // no preview
+      if (!biome.hasWater() && intersection.object === this.water) { crosshairSvc.shake(true); continue; } // if water is disabled
+      if (!this.previewObject) { crosshairSvc.shake(true); return; } // no preview
 
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
 
       if (!chunk.canPlaceObject(this.previewObject) || !chunk.checkInteractionDistance(intersection.distance)) {
-        Crosshair.shake();
+        crosshairSvc.shake(true);
         return;
       }
 
@@ -361,8 +361,8 @@ class Terrain {
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
       const validDistance = chunk.checkInteractionDistance(intersection.distance);
 
-      Crosshair.show(validDistance);
-      Crosshair.switch(validDistance && this.previewActive);
+      crosshairSvc.show(validDistance);
+      crosshairSvc.switch(validDistance && this.previewActive);
 
       if (!validDistance || this.intersectBorder(intersection.point)) {
         // bail out if the target is ouside the valid range
@@ -405,7 +405,7 @@ class Terrain {
       }
 
       const canPlaceObject = chunk.canPlaceObject(this.previewObject);
-      Crosshair.switch(canPlaceObject);
+      crosshairSvc.switch(canPlaceObject);
 
       if (!this.previewActive) this.scene.add(this.previewObject);
       if (!canPlaceObject) {
