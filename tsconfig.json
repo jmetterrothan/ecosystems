@@ -58,7 +58,10 @@
       ],
       "@templates/*": [
         "src/public/templates/*"
-      ]
+      ],
+      "@sounds/*": [
+        "src/public/assets/sounds/*"
+      ],
     },
     "typeRoots": [
       "./src/typings/",

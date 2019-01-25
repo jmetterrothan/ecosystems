@@ -46,6 +46,15 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   }
 
   componentDidMount() {
+    /*
+    notificationSvc.push({
+      icon: null,
+      label: 'label',
+      content: 'very long and awkward content',
+      duration: 500000
+    });
+    */
+
     // this.switchState(UI_STATES.LOADING);
   }
 

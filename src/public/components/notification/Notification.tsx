@@ -16,7 +16,7 @@ class Notification extends React.Component<INotificationProps, any> {
 
     return (
       <div className={classNames('notification', iconClass)}>
-        <div className='notification__icon'>...</div>
+        <div className='notification__icon'><span className='icon-trophy'/></div>
         <div className='notification__text'>
           <div className='notification__label'>{label}</div>
           <div className='notification__content'>{content}</div>
