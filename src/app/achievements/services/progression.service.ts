@@ -55,6 +55,7 @@ class ProgressionService {
     if (!this.storageSvc.get(STORAGES_KEY.completed)) {
       this.storageSvc.set(STORAGES_KEY.completed, []);
     }
+
   }
 
   /**
