@@ -149,6 +149,7 @@ class Player {
       // collision with min ground dist
       this.positionY = yMin;
     }
+
   }
 
   /**

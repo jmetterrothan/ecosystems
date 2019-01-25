@@ -103,7 +103,15 @@ module.exports = {
             outputPath: 'fonts/'
           }
         }]
-    }
+      },
+      {
+        test: /\.ya?ml$/,
+        use: 'js-yaml-loader',
+      },
+      {
+        test: /\.mp3$/,
+        loader: 'file-loader'
+      }
     ]
   },
   plugins: [

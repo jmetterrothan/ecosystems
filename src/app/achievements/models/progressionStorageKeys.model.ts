@@ -4,6 +4,7 @@ import { IProgressionObjectsStorageKeys } from '@achievements/models/progression
 import { IProgressionCommonStorageKeys } from '@achievements/models/progressionCommonStorgeKeys.model';
 import { IProgressionWeatherStorageKeys } from '@achievements/models/progressionWeatherStorageKeys.model';
 import { IProgressionTrophiesStorageKeys } from '@achievements/models/progressionTrophiesStorageKeys.model';
+import { IProgressionOnlineStorageKeys } from '@achievements/models/progressionOnline.model';
 
 export interface IProgressionStorageKeys {
   common: IProgressionCommonStorageKeys;
@@ -12,4 +13,5 @@ export interface IProgressionStorageKeys {
   weather: IProgressionWeatherStorageKeys;
   extras: IProgressionExtrasStorageKeys;
   trophies: IProgressionTrophiesStorageKeys;
+  online: IProgressionOnlineStorageKeys;
 }

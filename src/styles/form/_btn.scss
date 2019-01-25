@@ -1,18 +1,35 @@
+@import 'jmetterrothan-flexgrid/src/assets/sass/vars.scss';
+@import 'jmetterrothan-flexgrid/src/assets/sass/breakpoints.scss';
+
 .btn {
+  appearance: none;
   display: block;
   border: 2px solid transparent;
   border-radius: 4px;
-  padding: 0 2.5rem;
+  padding: 0 1.25rem;
   line-height: calc(3.5rem - 2px);
   height: 3.5rem;
+  min-width: 150px;
+  max-width: 100%;
   text-transform: uppercase;
   font-family: $font;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   font-weight: 600;
   text-align: center;
   outline: none;
   cursor: pointer;
   transition: all ease .4s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &--expand-mobile {
+    width: 100%;
+
+    @include breakpoint-tablet {
+      width: initial;
+    }
+  }
 
   &--magenta {
     background: $color-magenta;
@@ -20,6 +37,15 @@
 
     &:hover {
       background: lighten($color-magenta, 10%);
+    }
+  }
+
+  &--darkblue {
+    background: $color-darkblue;
+    color:#ffffff;
+
+    &:hover {
+      background: lighten($color-darkblue, 10%);
     }
   }
 }

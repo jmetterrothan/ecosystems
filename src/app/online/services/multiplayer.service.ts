@@ -1,8 +1,11 @@
+import { PROGRESSION_ONLINE_STORAGE_KEYS } from './../../achievements/constants/progressionOnlineStorageKeys.constants';
 import * as THREE from 'three';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
 
 import World from '@app/world/World';
+
+import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
 
 import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded } from '@online/models/socketData.model';
 import { IPick } from '@world/models/pick.model';
@@ -19,6 +22,8 @@ class MultiplayerService {
   private scene: THREE.Scene;
   private used: boolean = false;
 
+  private progressionSvc: ProgressionService;
+
   private objectPlacedSource: Subject<IOnlineObject>;
   objectPlaced$: Observable<IOnlineObject>;
 
@@ -34,6 +39,8 @@ class MultiplayerService {
   onlineStatus$: Subject<IOnlineStatus>;
 
   constructor() {
+    this.progressionSvc = progressionSvc;
+
     this.objectPlacedSource = new Subject();
     this.objectPlaced$ = this.objectPlacedSource.asObservable();
 
@@ -107,6 +114,8 @@ class MultiplayerService {
     if (!this.userId && this.userId !== data.me) {
       this.userId = data.me;
 
+      if (data.usersConnected.length === 1) this.progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.create_game_online);
+
       // place all objects already placed on this room
       data.allObjects.forEach((item: IPick) => {
         this.objectPlacedSource.next(<IOnlineObject>{ item, animate: false });
@@ -115,6 +124,10 @@ class MultiplayerService {
 
     // share time
     this.timeSource.next(data.startTime);
+
+    if (data.usersConnected.length > 1) {
+      this.progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.join_game_online);
+    }
 
     // init mesh for each new users
     data.usersConnected.forEach((user: string) => {
@@ -127,6 +140,7 @@ class MultiplayerService {
         this.onlineStatus$.next(this.getOnlineStatus());
       }
     });
+
   }
 
   private onPositionupdated(data: ISocketDataPositionUpdated) {
@@ -155,11 +169,11 @@ class MultiplayerService {
     return user;
   }
 
-  getOnlineUsersCount() : number {
+  getOnlineUsersCount(): number {
     return this.onlineUsers.size + 1;
   }
 
-  getOnlineStatus() : IOnlineStatus {
+  getOnlineStatus(): IOnlineStatus {
     return {
       alive: this.alive,
       online: this.getOnlineUsersCount()

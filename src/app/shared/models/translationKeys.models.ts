@@ -16,10 +16,15 @@ export interface ITrophiesTranslationKeys {
   repulse_fishes: string;
   repulse_butterflies: string;
   find_captain_treasure: string;
+  find_scarecrow: string;
   add_carrot_snowmnan: string;
   going_under_rain: string;
   go_in_sun: string;
+  go_in_moon: string;
   unlock_trophy_percentage: string;
+  create_game_online: string;
+  join_game_online: string;
+  place_object_online: string;
 }
 
 export interface IUITranslationKeys {
@@ -45,5 +50,12 @@ export interface IUITranslationKeys {
       sound_off_option: string;
       start_btn: string;
     }
+  };
+  progression: {
+    game_played: string;
+    distance_travelled: string;
+    going_underwater: string;
+    objects_placed: string;
+    unlock_trophies_percentage: string;
   };
 }

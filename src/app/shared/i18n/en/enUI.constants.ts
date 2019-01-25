@@ -23,5 +23,12 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
       sound_off_option: 'OFF',
       start_btn: 'Start'
     }
+  },
+  progression: {
+    game_played: 'Game played : {{count}}',
+    distance_travelled: 'Distance travelled : {{count}}',
+    going_underwater: 'Underwater : {{count}}',
+    objects_placed: 'Objects placed : {{count}}',
+    unlock_trophies_percentage: 'Trophies unlocked : {{count}}%'
   }
 };

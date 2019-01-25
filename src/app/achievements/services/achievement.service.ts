@@ -1,5 +1,4 @@
 import { Subject } from 'rxjs';
-import snakeCase from 'snake-case';
 
 import StorageService, { storageSvc } from '@shared/services/storage.service';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
@@ -8,6 +7,7 @@ import { progressionSvc } from '@achievements/services/progression.service';
 import TranslationService, { translationSvc } from '@shared/services/translation.service';
 
 import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
+import { IProgression } from '@achievements/models/progression.model';
 
 import { PROGRESSION_TROPHIES_STORAG_KEYS } from '@achievements/constants/progressionTrophiesStorageKeys.constants';
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
@@ -36,7 +36,7 @@ class AchievementService {
 
     this.trophies = TROPHIES;
 
-    this.storage = this.storageSvc.get(STORAGES_KEY.trophies) || {};
+    this.storage = this.storageSvc.get<Object>(STORAGES_KEY.trophies) || {};
 
     this.trophy$ = new Subject();
   }
@@ -46,25 +46,30 @@ class AchievementService {
   }
 
   getUnlockedTrophiesCount(): number {
-    return (<string[]>this.storageSvc.get(STORAGES_KEY.completed)).length;
+    return (<string[]>this.storageSvc.get<Object>(STORAGES_KEY.completed)).length;
+  }
+
+  getUnlockedTrophies(): ITrophy[] {
+    const unlocked: string[] = (<string[]>this.storageSvc.get<Object>(STORAGES_KEY.completed));
+    return TROPHIES.filter((trophy: ITrophy) => unlocked.includes(trophy.value));
   }
 
   /**
    * Check if trophy is unlocked
    * @param {string} - key
    */
-  check(key: string) {
+  check(progression: IProgression) {
     // get trophies concerned by progression setted
     const trophiesConcerned = this.trophies.filter(
-      (trophy: ITrophy) => trophy.checklist.some((option: IChecklistOption) => option.value === key)
+      (trophy: ITrophy) => trophy.checklist.some((option: IChecklistOption) => option.value === progression.name)
     );
 
     for (const trophy of trophiesConcerned) {
-      const trophyName = snakeCase(trophy.value); // convert value
+      const trophyName = trophy.value;
       if (this.storageSvc.isInStorage(STORAGES_KEY.completed, trophyName)) continue;
 
       // get trophy checklist
-      let checklist: string[] = this.storageSvc.get(STORAGES_KEY.trophies)[trophyName];
+      let checklist: string[] = this.storageSvc.get<Object>(STORAGES_KEY.trophies)[trophyName];
       if (!checklist) {
         // init trophy in local storage
         this.initTrophyInStorage(trophyName);
@@ -73,7 +78,7 @@ class AchievementService {
 
       // if some option in checklist have a limit input
       if (trophy.checklist.some((option: IChecklistOption) => option.limit !== undefined)) {
-        const count = this.storageSvc.get(STORAGES_KEY.progression)[key];
+        const count = this.storageSvc.get<Object>(STORAGES_KEY.progression)[progression.name];
         const checklistItem = trophy.checklist.find((option: IChecklistOption) => {
           // find item in checklist to check based on progression setted
           if (option.comparison && option.comparison === COMPARISON_TYPE.SUPERIOR) return count >= option.limit;
@@ -83,11 +88,11 @@ class AchievementService {
       }
 
       // option in checklist is concerned and unlocked
-      checklist.push(key);
+      checklist.push(progression.name);
       const set = new Set<string>(checklist);
       this.storage[trophyName] = [...set];
 
-      this.storageSvc.set(STORAGES_KEY.trophies, this.storage);
+      this.storageSvc.set<Object>(STORAGES_KEY.trophies, this.storage);
 
       // check if trophy is unlocked
       if (this.checkTrophyCompleted(trophy, [...set])) this.unlockTrophy(trophy);
@@ -100,7 +105,7 @@ class AchievementService {
    */
   private initTrophyInStorage(trophyName: string) {
     this.storage[trophyName] = [];
-    this.storageSvc.set(STORAGES_KEY.trophies, this.storage);
+    this.storageSvc.set<Object>(STORAGES_KEY.trophies, this.storage);
   }
 
   /**
@@ -118,9 +123,9 @@ class AchievementService {
    */
   private unlockTrophy(trophy: ITrophy) {
     // trophy completed
-    const completedArray = this.storageSvc.get(STORAGES_KEY.completed);
-    (<string[]>completedArray).push(snakeCase(trophy.value));
-    this.storageSvc.set(STORAGES_KEY.completed, completedArray);
+    const completedArray = this.storageSvc.get<Object>(STORAGES_KEY.completed);
+    (<string[]>completedArray).push(trophy.value);
+    this.storageSvc.set<Object>(STORAGES_KEY.completed, completedArray);
 
     // send notification
     notificationSvc.push({
@@ -131,7 +136,7 @@ class AchievementService {
     });
 
     // send event to google analytics
-    this.monitoringSvc.sendEvent(this.monitoringSvc.categories.trophy, this.monitoringSvc.actions.completed, snakeCase(trophy.value));
+    this.monitoringSvc.sendEvent(this.monitoringSvc.categories.trophy, this.monitoringSvc.actions.completed, trophy.value);
 
     // update trophy progression
     progressionSvc.setValue(

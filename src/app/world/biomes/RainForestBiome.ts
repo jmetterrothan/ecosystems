@@ -9,6 +9,8 @@ import { IBiome } from '@world/models/biome.model';
 import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
+import RainSFXMp3 from '@sounds/RainSFX.mp3';
+
 class RainForestBiome extends Biome {
   private a: number;
   private b: number;
@@ -35,6 +37,7 @@ class RainForestBiome extends Biome {
     this.ridges = MathUtils.randomFloat(0.225, 0.35); // makes ridges more prevalent
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.rainforest_visited);
+    this.sound = RainSFXMp3;
   }
 
   /**

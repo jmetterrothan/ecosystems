@@ -6,7 +6,6 @@ import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Coord from '@world/Coord';
 import Biome from '@world/Biome';
-import Crosshair from '@ui/Crosshair';
 
 import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
 import { configSvc } from '@app/shared/services/config.service';
@@ -22,10 +21,16 @@ import { IOnlineObject } from '@online/models/onlineObjects.model';
 import { ISpecialObject } from '@world/models/objectParameters.model';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
+import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
+
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 
 import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@shared/utils/Common.utils';
+import { crosshairSvc } from '@app/ui/services/crosshair.service';
+
+import { howler, Howl } from 'howler';
+import PopSFXMp3 from '@sounds/PopSFX.mp3';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 14;
@@ -72,6 +77,9 @@ class Terrain {
   private intersectionSurface: THREE.Object3D;
   private objectAnimated: boolean;
 
+  // Placemount sound
+  private placementSound: any;
+
   /**
    * Terrain constructor
    * @param {THREE.Scene} scene
@@ -95,6 +103,11 @@ class Terrain {
     this.chunk = new Coord();
     this.start = new Coord();
     this.end = new Coord();
+
+    this.placementSound = new Howl({
+      src: [PopSFXMp3],
+      volume: 0.5
+    });
   }
 
   init() {
@@ -273,12 +286,12 @@ class Terrain {
 
     for (const intersection of intersections) {
       if (!biome.hasWater() && intersection.object === this.water) { continue; } // if water is disabled
-      if (!this.previewObject) return; // no preview
+      if (!this.previewObject) { crosshairSvc.shake(true); return; } // no preview
 
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
 
       if (!chunk.canPlaceObject(this.previewObject) || !chunk.checkInteractionDistance(intersection.distance)) {
-        Crosshair.shake();
+        crosshairSvc.shake(true);
         return;
       }
 
@@ -288,14 +301,25 @@ class Terrain {
         p: this.previewObject.position
       };
 
-      if (this.multiplayerSvc.isUsed()) this.multiplayerSvc.placeObject(this.previewItem);
+      if (this.multiplayerSvc.isUsed()) {
+        this.multiplayerSvc.placeObject(this.previewItem);
+        this.progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.place_object_online);
+      }
 
       this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed);
-      this.progressionSvc.increment(CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n));
+      this.progressionSvc.increment({
+        name: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
+        value: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
+        show: false
+      });
 
       this.objectAnimated = true;
       this.resetPreview();
-      setTimeout(() => this.objectAnimated = false, Chunk.ANIMATION_DELAY + 200);
+      setTimeout(() => {
+        this.objectAnimated = false;
+        this.placementSound.play();
+      }, Chunk.ANIMATION_DELAY + 200
+      );
 
       break;
     }
@@ -352,8 +376,7 @@ class Terrain {
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
       const validDistance = chunk.checkInteractionDistance(intersection.distance);
 
-      Crosshair.show(validDistance);
-      Crosshair.switch(validDistance && this.previewActive);
+      crosshairSvc.show(validDistance);
 
       if (!validDistance || this.intersectBorder(intersection.point)) {
         // bail out if the target is ouside the valid range
@@ -361,8 +384,10 @@ class Terrain {
           this.scene.remove(this.previewObject);
           this.previewActive = false;
         }
+        crosshairSvc.switch(false);
         return;
       }
+      crosshairSvc.switch(true);
 
       const biome = this.generator.getSubBiome(
         this.generator.computeElevationAt(intersection.point.x, intersection.point.z),
@@ -380,11 +405,12 @@ class Terrain {
         const item = chunk.pick(intersection.point.x, intersection.point.z, {
           force: true,
           float: (this.intersectionSurface === this.water)
-        });
+        }, false);
 
         if (!item) {
           // bail out if no item gets picked
           this.previewActive = false;
+          crosshairSvc.switch(false);
           return;
         }
 
@@ -396,7 +422,7 @@ class Terrain {
       }
 
       const canPlaceObject = chunk.canPlaceObject(this.previewObject);
-      Crosshair.switch(canPlaceObject);
+      crosshairSvc.switch(canPlaceObject);
 
       if (!this.previewActive) this.scene.add(this.previewObject);
       if (!canPlaceObject) {
@@ -721,6 +747,7 @@ class Terrain {
   static createRegionWaterBoundingBoxHelper(bbox: THREE.Box3 = null): THREE.Box3Helper {
     return new THREE.Box3Helper(bbox ? bbox : Terrain.createRegionWaterBoundingBox(), 0x0000ff);
   }
+
 }
 
 export default Terrain;

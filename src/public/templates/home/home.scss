@@ -11,13 +11,16 @@
   to { transform: translateY(-8px); }
 }
 
-.home {
-  background: $gradient;
-  flex-direction: column;
-  justify-content: space-between !important;
+.home{
+  background-image: $gradient;
+  display: flex;
   z-index: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   &__header {
+    width: 100%;
     flex-grow: 0;
     flex-shrink: 0;
     color: $color-darkblue;
@@ -28,16 +31,21 @@
 
   &__preview {
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-grow: 1;
+    flex-shrink: 1;
     width: 100%;
-    height: 0;
+    height:300px;
+
+    @include breakpoint-tablet {
+      max-height: unset;
+    }
 
     img {
-      display: block;
-      width: auto;
-      height: 100%;
+      display: flex;
+      width: 100%;
+      object-fit: contain;
+      object-position: center;
+
       animation-name: pulse;
       animation-duration: 2s;
       animation-timing-function: ease-in-out;
@@ -64,7 +72,7 @@
   }
 
   &__title {
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 700;
   }
 

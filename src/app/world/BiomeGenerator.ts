@@ -48,7 +48,7 @@ class BiomeGenerator {
    * @param {number} z
    * @return {IPick|null}
    */
-  pick(x: number, z: number, parameters: IPickObject = {}): IPick | null {
+  pick(x: number, z: number, parameters: IPickObject = {}, useWeights: boolean = true): IPick | null {
     const e = this.computeElevationAt(x, z);
     const m = this.computeMoistureAt(x, z);
 
@@ -64,7 +64,7 @@ class BiomeGenerator {
     for (let i = 0, n = organisms.length; i < n; i++) {
       let y = e * Chunk.MAX_TERRAIN_HEIGHT;
 
-      temp += biome.organisms[i].weight;
+      temp += useWeights ? organisms[i].weight : 1 / organisms.length;
 
       if (rand <= temp) {
         const organism = organisms[i];

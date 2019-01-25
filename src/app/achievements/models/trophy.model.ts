@@ -7,7 +7,7 @@ export interface ITrophy {
   value: string;
   img: string;
   difficulty: TROPHY_DIFFICULTY;
-  type?: TROPHY_TYPE;
+  type: TROPHY_TYPE;
   checklist: IChecklistOption[];
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import NotificationContainer from '@public/components/Notification/NotificationContainer';
+import NotificationContainer from '@public/components/notification/NotificationContainer';
 import UIState from '@ui/UIState';
 import UIHomeState from '@ui/states/UIHomeState';
 import stateFactory from '@ui/UIStatesFactory';
@@ -10,7 +10,6 @@ import UIService, { uiSvc } from './services/ui.service';
 import { notificationSvc } from '@shared/services/notification.service';
 import { translationSvc } from '@shared/services/translation.service';
 
-import { IUIServices } from './models/services.model';
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
@@ -25,11 +24,10 @@ interface IUIManagerState {
 }
 
 class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
-  static readonly ENABLED: boolean = true;
+  static readonly ENABLED: boolean = false;
 
   private uiStates: Map<UI_STATES, UIState>;
   private uiSvc: UIService;
-  private trophiesPageOpen: boolean = false;
 
   constructor(props: IUIManagerProps, state: IUIManagerState) {
     super(props, state);
@@ -44,19 +42,12 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
     translationSvc.init();
 
-    this.addState(UI_STATES.HOME, new UIHomeState());
+    this.addState(UI_STATES.HOME, new UIHomeState(null));
   }
 
-  /*
   componentDidMount() {
-    notificationSvc.push({
-      icon: null,
-      label: 'Trophy unlocked',
-      content: 'This is a test notification',
-      duration: 500000
-    });
+    // this.switchState(UI_STATES.LOADING);
   }
-  */
 
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
@@ -64,18 +55,17 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
     return (
       <div className='ui'>
-        <div className='ui__notifications pl-2 pt-2'>
+        <div className='ui__notifications pr-2 pt-2'>
           <NotificationContainer />
         </div>
-        <div className='ui__state'>
-          {withUIManager(uiState.render())(this)}
-        </div>
+        {withUIManager(uiState.render())(this)}
       </div>
     );
   }
 
-  switchState(state: UI_STATES, parameters: IUIManagerParameters = {}) {
+  switchState(state: UI_STATES, parameters?: any) {
     if (!this.uiStates.has(state)) this.addState(state);
+
     this.setState({
       currentUiStateID: state,
       parameters: {
@@ -88,15 +78,8 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     });
   }
 
-  handleKeyboard(key: string) {
-    switch (key) {
-      case 't': case 'T': this.manageTrophiesPage();
-    }
-  }
-
-  private manageTrophiesPage() {
-    this.switchState(!this.trophiesPageOpen ? UI_STATES.TROPHIES : UI_STATES.GAME);
-    this.trophiesPageOpen = !this.trophiesPageOpen;
+  manageMenu(open: boolean) {
+    this.switchState(open ? UI_STATES.MENU : UI_STATES.GAME);
   }
 
   private addState(key: UI_STATES, value?: UIState) {

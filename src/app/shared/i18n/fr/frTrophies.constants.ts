@@ -13,8 +13,13 @@ export const FR_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   repulse_fishes: 'Effrayer les poissons',
   repulse_butterflies: 'Faire peur aux papillons',
   find_captain_treasure: 'Trouver le trésor du capitaine',
+  find_scarecrow: 'Effrayer l\'épouvantail',
   add_carrot_snowmnan: 'J\'ai pas d\'nez',
   going_under_rain: 'Passer sous la pluie',
   go_in_sun: 'Voler trop près du soleil',
+  go_in_moon: 'C\'est un petit pas pour l\'homme',
   unlock_trophy_percentage: 'Vous avez débloqué {{counter}}% des trophées',
+  create_game_online: 'Créer une partie en ligne',
+  join_game_online: 'Rejoindre une partie en ligne',
+  place_object_online: 'Placer un object en ligne'
 };

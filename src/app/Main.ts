@@ -5,7 +5,6 @@ import 'three/examples/js/controls/PointerLockControls';
 import 'seedrandom';
 
 import World from '@world/World';
-import Crosshair from '@ui/Crosshair';
 import PostProcess from '@app/PostProcess';
 
 import { configSvc } from '@app/shared/services/config.service';
@@ -55,7 +54,7 @@ class Main {
     if (configSvc.debug) {
       this.stats = new statsJs();
       this.stats.showPanel(0);
-      document.body.appendChild(this.stats.dom);
+      // document.body.appendChild(this.stats.dom);
 
       /*
       // reset
@@ -85,6 +84,7 @@ class Main {
     this.initControls();
 
     this.world = new World(this.scene, this.camera, this.controls);
+    this.playerSvc.init();
 
     await this.coreSvc.init();
 
@@ -99,14 +99,11 @@ class Main {
     if (online === true) {
       this.multiplayerSvc.init(this.scene, seed);
     }
-
     return await this.world.init(seed);
   }
 
   private initControls() {
     this.controls = new THREE.PointerLockControls(this.camera);
-
-    new Crosshair();
   }
 
   private initRenderer() {
@@ -148,6 +145,7 @@ class Main {
 
       const pointerlockchange = (e) => {
         this.controls.enabled = document.pointerLockElement === document.body || document.mozPointerLockElement === document.body || document.webkitPointerLockElement === document.body;
+        this.uiManager.manageMenu(!this.controls.enabled);
       };
 
       const pointerlockerror = (e) => { };
@@ -175,7 +173,6 @@ class Main {
       document.body.addEventListener('keydown', e => {
         if (this.world.isInitialized()) {
           this.world.handleKeyboard(e.key, true && this.controls.enabled);
-          this.uiManager.handleKeyboard(e.key);
         }
       });
       document.body.addEventListener('keyup', e => {

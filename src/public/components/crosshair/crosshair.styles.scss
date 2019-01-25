@@ -1,0 +1,31 @@
+.crosshair {
+  display: block;
+  position: fixed;
+  z-index: 50;
+
+  &--hide {
+    visibility: hidden;
+  }
+
+  &--shake {
+    animation: shake 0.3s;
+  }
+}
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) }
+  10% { transform: translate(-1px, -2px) }
+  20% { transform: translate(-3px, 0px) }
+  30% { transform: translate(3px, 2px) }
+  40% { transform: translate(1px, -1px) }
+  50% { transform: translate(-1px, 2px) }
+  60% { transform: translate(-3px, 1px) }
+  70% { transform: translate(3px, 1px) }
+  80% { transform: translate(-1px, -1px) }
+  90% { transform: translate(1px, 2px) }
+  100% { transform: translate(1px, -2px) }
+}
+
+@import './crosshair-default.styles.scss';
+@import './crosshair-circle.styles.scss';
+@import './crosshair-diamond.styles.scss';
