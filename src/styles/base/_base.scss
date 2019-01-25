@@ -14,3 +14,9 @@ html {
   max-width: 100vw;
   min-height: 100%;
 }
+
+@media screen and (min-device-width: 1024px) {
+  .ui__state {
+    min-width: 480px;
+  }
+}

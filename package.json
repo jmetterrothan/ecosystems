@@ -60,16 +60,17 @@
     "@types/tween.js": "^16.9.0",
     "@types/ws": "^6.0.1",
     "classnames": "^2.2.6",
+    "howler": "^2.1.1",
     "i18next": "^13.1.0",
     "i18next-browser-languagedetector": "^2.2.4",
     "jmetterrothan-flexgrid": "^1.0.2",
     "js-yaml-loader": "^1.0.1",
-    "howler": "^2.1.1",
     "poisson-disk-sampling": "^1.0.2",
     "prop-types": "^15.6.2",
     "react-perfect-scrollbar": "^1.4.4",
     "react-router-dom": "^4.3.1",
     "react-slick": "^0.23.2",
+    "react-spring": "^7.2.10",
     "react-tabs": "^3.0.0",
     "reset-css": "^4.0.1",
     "rxjs": "^6.3.3",
@@ -80,6 +81,7 @@
     "snake-case": "^2.1.0",
     "socket.io-client": "^2.2.0",
     "stats.js": "^0.17.0",
-    "three": "^0.98.0"
+    "three": "^0.98.0",
+    "uniqid": "^5.0.3"
   }
 }

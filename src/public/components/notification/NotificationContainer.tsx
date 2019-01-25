@@ -1,5 +1,6 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
+import { Spring, Transition } from 'react-spring';
 
 import Notification from '@public/components/notification/Notification';
 import { notificationSvc } from '@shared/services/notification.service';
@@ -34,7 +35,8 @@ class NotificationContainer extends React.Component<any, INotificationContainerS
     list.push(notification);
 
     setTimeout(() => {
-      this.setState({ list: this.state.list.filter(n => n !== notification) });
+      const newList = this.state.list.filter(n => n !== notification);
+      this.setState({ list: newList });
     }, notification.duration);
 
     this.setState({ list });
@@ -45,7 +47,9 @@ class NotificationContainer extends React.Component<any, INotificationContainerS
 
     return (
       <ul className='notification-container'>
-        {list.map((notification, i) => <li key={i} className='mb-2'><Notification {...notification} /></li>)}
+        <Transition config={{ tension: 180, friction: 14 }} items={list} keys={item => item.id} from={{ transform: 'translateX(150%)' }} enter={{ transform: 'translateX(0%)' }} leave={{ transform: 'translateX(150%)' }}>
+          {item => props => <li className='mb-2'><Notification style={props} {...item} /></li>}
+        </Transition>
       </ul>
     );
   }

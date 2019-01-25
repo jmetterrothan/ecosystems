@@ -1,4 +1,5 @@
 import { Subject } from 'rxjs';
+import uniqid from 'uniqid';
 
 import StorageService, { storageSvc } from '@shared/services/storage.service';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
@@ -129,6 +130,7 @@ class AchievementService {
 
     // send notification
     notificationSvc.push({
+      id: uniqid(),
       icon: null,
       label: this.translationSvc.translate('UI.trophy_unlocked'),
       content: this.translationSvc.translate(trophy.name.key, trophy.name.options),

@@ -1,3 +1,6 @@
+@import 'jmetterrothan-flexgrid/src/assets/sass/vars.scss';
+@import 'jmetterrothan-flexgrid/src/assets/sass/breakpoints.scss';
+
 .ui {
   min-height:100vh;
 
@@ -22,5 +25,10 @@
     right: 0;
     top: 0;
     z-index: 150;
+    width: 100%;
+
+    @include breakpoint-tablet {
+      width: auto;
+    }
   }
 }
