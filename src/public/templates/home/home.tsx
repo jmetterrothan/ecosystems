@@ -51,7 +51,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
   form: HTMLFormElement;
   seedInput: HTMLInputElement;
 
-  storage: Object<IHomeParametersStorage> = storageSvc.get(STORAGES_KEY.ui) || {
+  storage: IHomeParametersStorage = storageSvc.get<IHomeParametersStorage>(STORAGES_KEY.ui) || {
     quality: GRAPHICS_QUALITY.HIGH,
     debug: configSvc.debug,
     online: false,
@@ -69,7 +69,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
   };
 
   componentDidUpdate() {
-    storageSvc.set(STORAGES_KEY.ui, {
+    storageSvc.set<IHomeParametersStorage>(STORAGES_KEY.ui, {
       quality: this.state.selectedQuality,
       online: this.state.onlineMode,
       sound: this.state.soundMode,
