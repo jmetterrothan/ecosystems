@@ -55,7 +55,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
     return (
       <div className='ui'>
-        <div className='ui__notifications pl-2 pt-2'>
+        <div className='ui__notifications pr-2 pt-2'>
           <NotificationContainer />
         </div>
         {withUIManager(uiState.render())(this)}
