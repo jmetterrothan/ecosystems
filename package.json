@@ -63,6 +63,8 @@
     "i18next": "^13.1.0",
     "i18next-browser-languagedetector": "^2.2.4",
     "jmetterrothan-flexgrid": "^1.0.2",
+    "js-yaml-loader": "^1.0.1",
+    "howler": "^2.1.1",
     "poisson-disk-sampling": "^1.0.2",
     "prop-types": "^15.6.2",
     "react-perfect-scrollbar": "^1.4.4",

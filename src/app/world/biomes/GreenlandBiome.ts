@@ -16,6 +16,8 @@ import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
+import HighlandSFXMp3 from '@sounds/HighlandSfx.mp3';
+
 class GreenlandBiome extends Biome {
   private a: number;
   private b: number;
@@ -45,6 +47,7 @@ class GreenlandBiome extends Biome {
     this.f = MathUtils.randomFloat(0.85, 3);
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.greenland_visited);
+    this.sound = HighlandSFXMp3;
   }
 
   init() {

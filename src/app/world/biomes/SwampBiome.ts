@@ -13,6 +13,8 @@ import { IBiome } from '@world/models/biome.model';
 import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
+import SwampSFXMp3 from '@sounds/SwampSFX.mp3';
+
 class SwampBiome extends Biome {
   private boids: Boids[];
 
@@ -26,6 +28,7 @@ class SwampBiome extends Biome {
     this.waterDistortionAmp = 512.0;
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.swamp_visited);
+    this.sound = SwampSFXMp3;
   }
 
   init() {

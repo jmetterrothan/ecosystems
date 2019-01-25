@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
+import { Howl, Howler } from 'howler';
 
 import ConfigService, { configSvc } from '@shared/services/config.service';
 
@@ -15,8 +16,6 @@ import MathUtils from '@utils/Math.utils';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
-
-import TestBiome from '@world/biomes/TestBiome';
 
 class World {
   static readonly SEED: string | null = null;
@@ -48,6 +47,10 @@ class World {
 
   private initialized: boolean;
 
+  private listener: THREE.AudioListener;
+  private zSound: THREE.PositionalAudio;
+  private audioLoader: THREE.AudioLoader;
+
   /**
    * World constructor
    * @param {THREE.Scene} scene
@@ -63,6 +66,10 @@ class World {
     this.raycaster = new THREE.Raycaster();
 
     this.initialized = false;
+    this.listener = new THREE.AudioListener();
+    this.camera.add(this.listener);
+    this.zSound = new THREE.PositionalAudio(this.listener);
+    this.audioLoader = new THREE.AudioLoader();
   }
 
   init(seed: string = MathUtils.randomUint32().toString()): string {
@@ -103,6 +110,7 @@ class World {
       console.info(`QUALITY : ${GRAPHICS_QUALITY[configSvc.quality]}`);
     }
 
+    this.initAudio();
     this.initialized = true;
 
     return seed;
@@ -127,6 +135,28 @@ class World {
 
       this.scene.fog = new THREE.Fog(0x000000, near, far);
     }
+  }
+
+  private initAudio() {
+    const mySound = this.generator.getBiome().getSound();
+    this.audioLoader.load(mySound, (buffer) => {
+      this.zSound.setBuffer(buffer);
+      this.zSound.setRefDistance(2500);
+      this.zSound.setLoop(true);
+      this.zSound.setVolume(1);
+      this.zSound.play();
+    }, () => { }, () => { });
+
+    // create an object for the sound to play from
+    const sphere = new THREE.SphereGeometry(500, 32, 16);
+    const material = new THREE.MeshPhongMaterial({ color: 0xff2200 });
+    const mesh = new THREE.Mesh(sphere, material);
+    this.scene.add(mesh);
+
+    // finally add the sound to the mesh
+    mesh.add(this.zSound);
+    mesh.position.set(0, Terrain.SIZE_Y / 2, Terrain.SIZE_Z / 2);
+
   }
 
   /**

@@ -29,6 +29,8 @@ abstract class Biome {
   protected progressionSvc: ProgressionService;
   protected monitoringSvc: MonitoringService;
 
+  protected sound: any;
+
   constructor(name: string, terrain: Terrain) {
     this.name = name;
     this.terrain = terrain;
@@ -124,6 +126,7 @@ abstract class Biome {
   getWaterDistortion(): boolean { return this.waterDistortion; }
   getWaterDistortionFreq(): number { return this.waterDistortionFreq; }
   getWaterDistortionAmp(): number { return this.waterDistortionAmp; }
+  getSound(): any { return this.sound;  }
 }
 
 export default Biome;

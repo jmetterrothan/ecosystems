@@ -29,6 +29,9 @@ import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@shared/utils/Common.utils';
 import { crosshairSvc } from '@app/ui/services/crosshair.service';
 
+import { howler, Howl } from 'howler';
+import PopSFXMp3 from '@sounds/popSFX.mp3';
+
 class Terrain {
   static readonly NCHUNKS_X: number = 14;
   static readonly NCHUNKS_Z: number = 14;
@@ -74,6 +77,9 @@ class Terrain {
   private intersectionSurface: THREE.Object3D;
   private objectAnimated: boolean;
 
+  // Placemount sound
+  private placementSound: any;
+
   /**
    * Terrain constructor
    * @param {THREE.Scene} scene
@@ -97,6 +103,11 @@ class Terrain {
     this.chunk = new Coord();
     this.start = new Coord();
     this.end = new Coord();
+
+    this.placementSound = new Howl({
+      src: [PopSFXMp3],
+      volume: 0.5
+    });
   }
 
   init() {
@@ -304,7 +315,11 @@ class Terrain {
 
       this.objectAnimated = true;
       this.resetPreview();
-      setTimeout(() => this.objectAnimated = false, Chunk.ANIMATION_DELAY + 200);
+      setTimeout(() => {
+        this.objectAnimated = false;
+        this.placementSound.play();
+      }, Chunk.ANIMATION_DELAY + 200
+      );
 
       break;
     }
@@ -732,6 +747,7 @@ class Terrain {
   static createRegionWaterBoundingBoxHelper(bbox: THREE.Box3 = null): THREE.Box3Helper {
     return new THREE.Box3Helper(bbox ? bbox : Terrain.createRegionWaterBoundingBox(), 0x0000ff);
   }
+
 }
 
 export default Terrain;
