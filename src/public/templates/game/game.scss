@@ -14,7 +14,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width:175px;
+    max-width:225px;
     font-size:1rem;
     color: #fff;
   }
@@ -39,6 +39,24 @@
   }
 }
 
+.overlay-trophies {
+  position: relative;
+  padding-left: 4.75rem;
+
+  &__icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:4rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.25rem;
+    color: #fff;
+  }
+}
+
 .counter {
   font-size:1.25rem;
   font-weight: 700;
@@ -47,7 +65,7 @@
 .progression {
   width: 100%;
   height: 12px;
-  border-radius: 1px;
+  border-radius: 2px;
   overflow: hidden;
   background: rgba(0, 0, 0, 0.25);
 

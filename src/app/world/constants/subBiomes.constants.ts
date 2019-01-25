@@ -169,7 +169,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.25,
         name: 'bush',
-        scarcity: 0.85,
+        scarcity: 0.875,
         e: null,
         m: null,
         scale: { min: 1.25, max: 1.75 },
@@ -178,7 +178,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.05,
         name: 'diamond',
-        scarcity: 0.95,
+        scarcity: 0.975,
         e: null,
         m: null,
         scale: { min: 0.85, max: 1.1 },
@@ -187,7 +187,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.025,
         name: 'pink',
-        scarcity: 0.935,
+        scarcity: 0.975,
         e: null,
         m: null,
         scale: { min: 0.85, max: 1.1 },
