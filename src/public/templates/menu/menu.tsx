@@ -17,6 +17,9 @@ interface Props {
 }
 
 class Menu extends React.PureComponent<Props> {
+
+  static SELECTED_INDEX: number = 2;
+
   handleClick = () => {
     const { uiManager } = this.props;
 
@@ -32,13 +35,14 @@ class Menu extends React.PureComponent<Props> {
     return (
       <div className='ui__state menu'>
         <div className='menu__container'>
-          <Tabs>
+          <Tabs defaultIndex={Menu.SELECTED_INDEX} onSelect={tabIndex => Menu.SELECTED_INDEX = tabIndex}>
             <TabList>
               <Tab>Trophées</Tab>
               <Tab>Progression</Tab>
               <Tab>Tutoriel</Tab>
               <Tab>Crédits</Tab>
             </TabList>
+
             <TabPanel><Trophies /></TabPanel>
             <TabPanel><Progress /></TabPanel>
             <TabPanel><Tutorial /></TabPanel>
@@ -49,7 +53,7 @@ class Menu extends React.PureComponent<Props> {
             <Button className='btn btn--magenta btn--expand-mobile' onClick={this.handleClick}>Continuer</Button>
           </footer>
         </div>
-      </div>
+      </div >
     );
   }
 
