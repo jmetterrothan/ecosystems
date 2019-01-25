@@ -24,14 +24,16 @@ interface ITrophiesState {
 
 class Trophies extends React.Component<ITrophiesProps, ITrophiesState> {
 
+  static SORT_TYPE: TROPHY_SORT = TROPHY_SORT.TYPE;
+
   state = {
     allTrophies: TROPHIES,
     unlockedTrophies: achievementSvc.getUnlockedTrophies()
   };
 
   handleSelectChange = ev => {
-    const value = ev.target.value;
-    this.sortBy(value);
+    Trophies.SORT_TYPE = ev.target.value;
+    this.sortBy();
   }
 
   render() {
@@ -45,7 +47,7 @@ class Trophies extends React.Component<ITrophiesProps, ITrophiesState> {
 
             return (<Col Tag='li' key={index} className='flexcol--12-t flexcol--8-l flexcol--6-d'>
               <div className={classNames('trophy', unlockedClass, difficultyClass, 'mb-3')}>
-                <div className='trophy__icon mb-1'><span className='icon-trophy'/></div>
+                <div className='trophy__icon mb-1'><span className='icon-trophy' /></div>
                 <h4 className='trophy__name'>{translationSvc.translate(trophy.name.key, trophy.name.options)}</h4>
               </div>
             </Col>);
@@ -55,8 +57,8 @@ class Trophies extends React.Component<ITrophiesProps, ITrophiesState> {
     );
   }
 
-  private sortBy(type: TROPHY_SORT) {
-    switch (type) {
+  private sortBy() {
+    switch (Trophies.SORT_TYPE) {
       case TROPHY_SORT.TYPE:
         this.setState({
           allTrophies: this.state.allTrophies.sort((a: ITrophy, b: ITrophy) => a.type - b.type)
@@ -78,7 +80,7 @@ class Trophies extends React.Component<ITrophiesProps, ITrophiesState> {
   private renderSelect(): JSX.Element {
     const sort = Object.values(TROPHY_SORT);
     return (
-      <select onChange={this.handleSelectChange}>
+      <select onChange={this.handleSelectChange} value={Trophies.SORT_TYPE}>
         {sort.map((option: string, index: number) => (
           <option key={index} value={option}>{option}</option>
         ))}
