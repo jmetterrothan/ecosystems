@@ -14,7 +14,7 @@ import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
-import HighlandSFXMp3 from '@sounds/HighlandSfx.mp3';
+import HighlandSFXMp3 from '@sounds/HighlandSFX.mp3';
 
 class HighlandBiome extends Biome {
   private a: number;

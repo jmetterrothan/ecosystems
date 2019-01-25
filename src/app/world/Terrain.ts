@@ -30,7 +30,7 @@ import CommonUtils from '@shared/utils/Common.utils';
 import { crosshairSvc } from '@app/ui/services/crosshair.service';
 
 import { howler, Howl } from 'howler';
-import PopSFXMp3 from '@sounds/popSFX.mp3';
+import PopSFXMp3 from '@sounds/PopSFX.mp3';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 14;
