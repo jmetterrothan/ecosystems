@@ -29,7 +29,9 @@ class PlayerService {
     this.underwater = false;
     this.sourceUnderwater = new BehaviorSubject<boolean>(this.underwater);
     this.underwater$ = this.sourceUnderwater.asObservable();
+  }
 
+  init() {
     this.timer();
   }
 
@@ -47,7 +49,7 @@ class PlayerService {
       this.underwater = true;
 
       this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
-      this.monitoringSvc.sendEvent(this.monitoringSvc.categories.biome, this.monitoringSvc.actions.visited, PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
+      this.monitoringSvc.sendEvent(this.monitoringSvc.categories.biome, this.monitoringSvc.actions.visited, PROGRESSION_COMMON_STORAGE_KEYS.going_underwater.value);
     }
 
     // terrestiral

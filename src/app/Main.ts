@@ -84,6 +84,7 @@ class Main {
     this.initControls();
 
     this.world = new World(this.scene, this.camera, this.controls);
+    this.playerSvc.init();
 
     await this.coreSvc.init();
 
@@ -98,7 +99,6 @@ class Main {
     if (online === true) {
       this.multiplayerSvc.init(this.scene, seed);
     }
-
     return await this.world.init(seed);
   }
 
