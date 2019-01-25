@@ -8,11 +8,13 @@ import MathUtils from '@app/shared/utils/Math.utils';
 
 import { configSvc } from '@app/shared/services/config.service';
 import { translationSvc } from '@app/shared/services/translation.service';
+import { storageSvc } from '@shared/services/storage.service';
 
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
+import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
 
 import './home.scss';
 
@@ -36,21 +38,44 @@ interface IHomeState {
   image: string;
 }
 
+interface IHomeParametersStorage {
+  quality: GRAPHICS_QUALITY;
+  debug: boolean;
+  online: boolean;
+  sound: boolean;
+}
+
 const imageList = [previewImage, previewImage2, previewImage3, previewImage4, previewImage5];
 
 class Home extends React.PureComponent<IHomeProps, IHomeState> {
   form: HTMLFormElement;
   seedInput: HTMLInputElement;
 
+  storage: Object<IHomeParametersStorage> = storageSvc.get(STORAGES_KEY.ui) || {
+    quality: GRAPHICS_QUALITY.HIGH,
+    debug: configSvc.debug,
+    online: false,
+    sound: false
+  };
+
   state = {
     seedValue: MathUtils.randomUint32().toString(),
-    selectedQuality: GRAPHICS_QUALITY.HIGH,
-    debugMode: configSvc.debug,
-    onlineMode: false,
-    soundMode: false,
+    selectedQuality: this.storage.quality,
+    debugMode: this.storage.debug,
+    onlineMode: this.storage.online,
+    soundMode: this.storage.sound,
     formValid: true,
     image: imageList[Math.floor(Math.random() * imageList.length)]
   };
+
+  componentDidUpdate() {
+    storageSvc.set(STORAGES_KEY.ui, {
+      quality: this.state.selectedQuality,
+      online: this.state.onlineMode,
+      sound: this.state.soundMode,
+      debug: this.state.debugMode
+    });
+  }
 
   handleSubmit = ev => {
     ev.preventDefault();
@@ -65,7 +90,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     } as IUIManagerParameters);
   }
 
-  handleChange = () => {
+  handleChange = (e) => {
     let valid;
     if (this.seedInput.value.length) {
       this.seedInput.required = true;
@@ -129,7 +154,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
               <Row className='form__group mb-2'>
                 <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.seed')}</Col>
                 <Col className='flexcol--24'>
-                  <input type='text' placeholder={translationSvc.translate('UI.home.form.seed_placeholder')} onChange={this.handleChange} value={seedValue} pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={1} ref={el => this.seedInput = el} />
+                  <input type='text' name='seed' placeholder={translationSvc.translate('UI.home.form.seed_placeholder')} onChange={this.handleChange} value={seedValue} pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={1} ref={el => this.seedInput = el} />
                 </Col>
               </Row>
               <Row className='form__group test'>
