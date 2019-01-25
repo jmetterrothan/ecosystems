@@ -19,6 +19,10 @@
   align-items: center;
   justify-content: center;
 
+  @include breakpoint-laptop {
+    max-height: 100vh;
+  }
+
   &__header {
     width: 100%;
     flex-grow: 0;
@@ -35,8 +39,9 @@
     flex-shrink: 1;
     width: 100%;
     height:300px;
+    max-height: 300px;
 
-    @include breakpoint-tablet {
+    @include breakpoint-laptop {
       max-height: unset;
     }
 
@@ -78,6 +83,16 @@
 
   @include breakpoint-tablet {
     &__subtitle {
+      font-size: 1.1rem;
+    }
+
+    &__title {
+      font-size: 4.5rem;
+    }
+  }
+
+  @include breakpoint-laptop {
+    &__subtitle {
       font-size: 1.25rem;
     }
 
@@ -86,7 +101,7 @@
     }
   }
 
-  @include breakpoint-laptop {
+  @include breakpoint-desktop {
     &__title {
       font-size: 7.5rem;
     }
