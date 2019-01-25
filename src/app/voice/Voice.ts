@@ -1,6 +1,7 @@
 import * as tf from '@tensorflow/tfjs';
 import * as sc from '@tensorflow-models/speech-commands';
 
+import { voiceSvc } from '@voice/services/voice.service';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { SAMPLES_CONFIG } from './constants/voice.constants';
@@ -29,7 +30,7 @@ class Voice {
 
   stopListening() {
     this.recognizer.stopListening();
-    this.predicState = false;
+    this.predictState = false;
     console.log('Voice system is not listening anymore');
   }
 
@@ -48,7 +49,7 @@ class Voice {
     this.recognizer.listen(async ({ spectrogram: { frameSize, data } }) => {
       const vals = MathUtils.normalize(
         data.subarray(-frameSize * SAMPLES_CONFIG.NUM_FRAMES),
-        -100,
+          -100,
         10
       );
       const input = tf.tensor(vals, [1, ...SAMPLES_CONFIG.INPUT_SHAPE]);
@@ -61,17 +62,15 @@ class Voice {
       includeSpectrogram: true,
       invokeCallbackOnNoiseAndUnknown: true
     });
-    console.log('voice pick status :', this.clickedButton);
   }
 
   async getPredictionLabel(predLabel: any) {
     const label = (await predLabel.data())[0];
     if (label === 1) {
-      this.clickedButton = false;
       return;
     }
     if (label === 0) {
-      this.clickedButton = true;
+      voiceSvc.placeObject();
     }
   }
 

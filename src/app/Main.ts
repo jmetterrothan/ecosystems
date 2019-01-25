@@ -30,8 +30,6 @@ class Main {
 
   private containerElement: HTMLElement;
 
-  private world: World;
-
   private lastTime: number;
   private focused: boolean;
   private stats: statsJs;

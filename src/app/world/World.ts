@@ -4,6 +4,7 @@ import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
 import ConfigService, { configSvc } from '@shared/services/config.service';
+import { voiceSvc } from '@voice/services/voice.service';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
@@ -94,6 +95,7 @@ class World {
 
     biome.init();
 
+    this.watchObjectPlacedWithVoice();
     this.scene.add(this.controls.getObject());
 
     if (configSvc.debug) {
@@ -173,6 +175,14 @@ class World {
    */
   handleKeyboard(key: string, active: boolean) {
     this.player.handleKeyboard(key, active);
+  }
+
+  private watchObjectPlacedWithVoice() {
+    voiceSvc.voiceState$.subscribe(
+      () => {
+        this.handleMouseInteraction(MOUSE_TYPES.CLICK);
+      }
+    );
   }
 
   isInitialized(): boolean { return this.initialized; }
