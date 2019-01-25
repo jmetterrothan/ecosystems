@@ -5874,7 +5874,7 @@ Lockfile:
 
 Trace: 
   Error: Command failed.
-  Exit code: 3221225786
+  Exit code: 3221225495
   Command: C:\WINDOWS\system32\cmd.exe
   Arguments: /d /s /c webpack-dev-server --progress --inline --mode development --config config/webpack.dev.js
   Directory: C:\Users\jvsn-\Documents\Perso\Cours\IMAC3\IA\islands

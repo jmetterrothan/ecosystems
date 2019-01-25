@@ -210,7 +210,6 @@ class World {
     mesh.add(this.zSound);
     mesh.position.set(0, Terrain.SIZE_Y / 2, Terrain.SIZE_Z / 2);
 
-    console.log(this.zSound);
   }
 
   /**
@@ -260,6 +259,12 @@ class World {
   static pointInWorld(point: THREE.Vector3): boolean {
     const margin: number = 1000;
     return MathUtils.between(point.x, 0 + margin, Terrain.SIZE_X - margin) && MathUtils.between(point.z, 0 + margin, Terrain.SIZE_Z - margin);
+  }
+
+  public setSound(val) {
+    console.log('volume ->', this.zSound.getVolume());
+    this.zSound.setVolume(val);
+    console.log('volume ->', this.zSound.getVolume());
   }
 
 }
