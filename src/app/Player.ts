@@ -74,8 +74,9 @@ class Player {
   }
 
   private async initVoice() {
-    const voiceModel = await tf.loadModel('https://ecosystem-server.herokuapp.com/model');
-    console.log(voiceModel);
+    const voiceModel =
+      await tf.loadModel('https://ecosystem-server.herokuapp.com/voicemodel.json');
+
     this.voice = new Voice(voiceModel);
   }
 

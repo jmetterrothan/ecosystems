@@ -20,6 +20,7 @@ class Voice {
     this.predictState = false;
     this.clickedButton = false;
     this.recognizer = sc.create('BROWSER_FFT');
+    console.log('Voice system is ready to be use.');
   }
 
   async ensureModelLoaded() {
@@ -36,7 +37,7 @@ class Voice {
     }
 
     this.recognizer.stopListening();
-    console.log(this.predicState);
+    console.log('system is not listening anymore');
   }
 
   listen() {
@@ -60,8 +61,7 @@ class Voice {
       includeSpectrogram: true,
       invokeCallbackOnNoiseAndUnknown: true
     });
-
-    console.log(this.predicState);
+    console.log('voice pick status :', this.clickedButton);
   }
 
   async getPredictionLabel(predLabel: any) {
