@@ -141,22 +141,29 @@ class World {
     const mySound = this.generator.getBiome().getSound();
     this.audioLoader.load(mySound, (buffer) => {
       this.zSound.setBuffer(buffer);
-      this.zSound.setRefDistance(2500);
+      this.zSound.setRefDistance(5000);
       this.zSound.setLoop(true);
-      this.zSound.setVolume(1);
+      this.zSound.setVolume(0.5);
       this.zSound.play();
     }, () => { }, () => { });
 
     // create an object for the sound to play from
-    const sphere = new THREE.SphereGeometry(500, 32, 16);
-    const material = new THREE.MeshPhongMaterial({ color: 0xff2200 });
-    const mesh = new THREE.Mesh(sphere, material);
-    this.scene.add(mesh);
+    let object: THREE.Object3D;
+
+    if (configSvc.debug) {
+      const sphere = new THREE.SphereGeometry(500, 8, 8);
+      const material = new THREE.MeshPhongMaterial({ color: 0xff2200 });
+
+      object = new THREE.Mesh(sphere, material);
+    } else {
+      object = new THREE.Object3D();
+    }
+
+    this.scene.add(object);
 
     // finally add the sound to the mesh
-    mesh.add(this.zSound);
-    mesh.position.set(0, Terrain.SIZE_Y / 2, Terrain.SIZE_Z / 2);
-
+    object.add(this.zSound);
+    object.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
   }
 
   /**

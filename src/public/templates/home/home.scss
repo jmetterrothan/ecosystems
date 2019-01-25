@@ -73,7 +73,7 @@
   }
 
   &__subtitle {
-    font-size: 0.9rem;
+    font-size: 1.0rem;
   }
 
   &__title {
@@ -83,7 +83,7 @@
 
   @include breakpoint-tablet {
     &__subtitle {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
     }
 
     &__title {
@@ -93,7 +93,7 @@
 
   @include breakpoint-laptop {
     &__subtitle {
-      font-size: 1.25rem;
+      font-size: 1.35rem;
     }
 
     &__title {
