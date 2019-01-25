@@ -164,7 +164,7 @@ class Player {
       case 'ArrowRight': case 'd': case 'D': this.moveRight = active; break;
       case '+': case 'a': case 'A': this.moveUp = active; break;
       case '-': case 'e': case 'E': this.moveDown = active; break;
-      case 'v': !this.voice.predictState ? this.voice.listen() : this.voice.stopListening();
+      case 'v': case 'V': this.voice.togglePredictState(); break;
     }
   }
 

@@ -20,30 +20,30 @@ class Voice {
     this.predictState = false;
     this.clickedButton = false;
     this.recognizer = sc.create('BROWSER_FFT');
-    console.log('Voice system is ready to be use.');
+    console.log('Voice system is ready to be use');
   }
 
   async ensureModelLoaded() {
     await this.recognizer.ensureModelLoaded();
   }
 
-  togglePredictState() {
-    this.predictState = this.recognizer.isListening();
+  stopListening() {
+    this.recognizer.stopListening();
+    this.predicState = false;
+    console.log('Voice system is not listening anymore');
   }
 
-  stopListening() {
-    if (this.predictState) {
-      this.predicState = false;
+  togglePredictState() {
+    if (!this.predictState) {
+      this.listen();
+    } else {
+      this.stopListening();
     }
-
-    this.recognizer.stopListening();
-    console.log('system is not listening anymore');
   }
 
   listen() {
-    if (!this.predictState) {
-      this.predictState = true;
-    }
+    console.log('Voice system is currently listening');
+    this.predictState = true;
 
     this.recognizer.listen(async ({ spectrogram: { frameSize, data } }) => {
       const vals = MathUtils.normalize(

@@ -173,6 +173,8 @@ class Main {
       });
 
       document.body.addEventListener('keydown', e => {
+        if (e.key === 'v' || e.key === 'V') return;
+
         if (this.world.isInitialized()) {
           this.world.handleKeyboard(e.key, true && this.controls.enabled);
         }
