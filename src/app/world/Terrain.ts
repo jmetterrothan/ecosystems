@@ -8,8 +8,7 @@ import Coord from '@world/Coord';
 import Biome from '@world/Biome';
 
 import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
-import { configSvc } from '@app/shared/services/config.service';
-import PlayerService, { playerSvc } from '@shared/services/player.service';
+import ConfigService, { configSvc } from '@app/shared/services/config.service';
 import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
 
 import { WATER_MATERIAL } from '@materials/water.material';
@@ -23,13 +22,13 @@ import { ISpecialObject } from '@world/models/objectParameters.model';
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
 
-import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+import { INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
 
 import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@shared/utils/Common.utils';
 import { crosshairSvc } from '@app/ui/services/crosshair.service';
 
-import { howler, Howl } from 'howler';
+import { Howl } from 'howler';
 import PopSFXMp3 from '@sounds/PopSFX.mp3';
 
 class Terrain {
@@ -66,8 +65,8 @@ class Terrain {
   private layers: THREE.Group;
 
   private progressionSvc: ProgressionService;
-  private playerSvc: PlayerService;
   private multiplayerSvc: MultiplayerService;
+  private configSvc: ConfigService;
 
   // preview
   private previewItem: IPick;
@@ -97,8 +96,8 @@ class Terrain {
     this.layers = new THREE.Group();
 
     this.progressionSvc = progressionSvc;
-    this.playerSvc = playerSvc;
     this.multiplayerSvc = multiplayerSvc;
+    this.configSvc = configSvc;
 
     this.chunk = new Coord();
     this.start = new Coord();
@@ -112,8 +111,7 @@ class Terrain {
 
   init() {
     this.initMeshes();
-    /* if (this.multiplayerSvc.isUsed()) */
-    this.watchObjectPlaced();
+    if (this.multiplayerSvc.isUsed()) this.watchObjectPlaced();
   }
 
   /**
@@ -124,15 +122,49 @@ class Terrain {
 
     // borders generation
     const bt1 = this.getBorderMesh(1, Terrain.NCOLS, (row, col) => col * Chunk.CELL_SIZE_X, (row, col) => 0);
-    const bt2 = this.getBorderMesh(1, Terrain.NCOLS, (row, col) => col * Chunk.CELL_SIZE_X, (row, col) => Terrain.SIZE_Z);
-    const bt3 = this.getBorderMesh(1, Terrain.NROWS, (row, col) => Terrain.SIZE_X, (row, col) => col * Chunk.CELL_SIZE_Z);
+    const bt2 = this.getBorderMesh(
+      1,
+      Terrain.NCOLS,
+      (row, col) => col * Chunk.CELL_SIZE_X,
+      (row, col) => Terrain.SIZE_Z
+    );
+    const bt3 = this.getBorderMesh(
+      1,
+      Terrain.NROWS,
+      (row, col) => Terrain.SIZE_X,
+      (row, col) => col * Chunk.CELL_SIZE_Z
+    );
     const bt4 = this.getBorderMesh(1, Terrain.NROWS, (row, col) => 0, (row, col) => col * Chunk.CELL_SIZE_Z);
     const bt5 = this.getBottomMesh();
 
-    const bw1 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => Terrain.SIZE_Z, false);
-    const bw2 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_X * 4, (row, col) => col * Chunk.WIDTH / 4, (row, col) => 0, true);
-    const bw3 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => 0, (row, col) => col * Chunk.WIDTH / 4, false);
-    const bw4 = this.getWaterBorderMesh(1, Terrain.NCHUNKS_Z * 4, (row, col) => Terrain.SIZE_X, (row, col) => col * Chunk.DEPTH / 4, true);
+    const bw1 = this.getWaterBorderMesh(
+      1,
+      Terrain.NCHUNKS_X * 4,
+      (row, col) => (col * Chunk.WIDTH) / 4,
+      (row, col) => Terrain.SIZE_Z,
+      false
+    );
+    const bw2 = this.getWaterBorderMesh(
+      1,
+      Terrain.NCHUNKS_X * 4,
+      (row, col) => (col * Chunk.WIDTH) / 4,
+      (row, col) => 0,
+      true
+    );
+    const bw3 = this.getWaterBorderMesh(
+      1,
+      Terrain.NCHUNKS_Z * 4,
+      (row, col) => 0,
+      (row, col) => (col * Chunk.WIDTH) / 4,
+      false
+    );
+    const bw4 = this.getWaterBorderMesh(
+      1,
+      Terrain.NCHUNKS_Z * 4,
+      (row, col) => Terrain.SIZE_X,
+      (row, col) => (col * Chunk.DEPTH) / 4,
+      true
+    );
 
     (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt1);
     (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt2);
@@ -150,17 +182,22 @@ class Terrain {
 
       // water mesh offset
       const offset = 8;
-      const sx = 1 - (offset / Terrain.SIZE_X);
-      const sz = 1 - (offset / Terrain.SIZE_Z);
+      const sx = 1 - offset / Terrain.SIZE_X;
+      const sz = 1 - offset / Terrain.SIZE_Z;
 
       this.water.scale.set(sx, 1, sz);
       this.water.position.x += offset / 2;
       this.water.position.z += offset / 2;
 
-      (<THREE.ShaderMaterial>this.water.material).uniforms.size.value = new THREE.Vector3(Terrain.SIZE_X, Terrain.SIZE_Y, Terrain.SIZE_Z);
+      (<THREE.ShaderMaterial>this.water.material).uniforms.size.value = new THREE.Vector3(
+        Terrain.SIZE_X,
+        Terrain.SIZE_Y,
+        Terrain.SIZE_Z
+      );
 
       // water distorsion
-      (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion.value = configSvc.config.ENABLE_WATER_EFFECTS && biome.getWaterDistortion();
+      (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion.value =
+        this.configSvc.config.ENABLE_WATER_EFFECTS && biome.getWaterDistortion();
       (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion_freq.value = biome.getWaterDistortionFreq();
       (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion_amp.value = biome.getWaterDistortionAmp();
     }
@@ -204,24 +241,36 @@ class Terrain {
   update(frustum: THREE.Frustum, position: THREE.Vector3, delta: number) {
     this.getChunkCoordAt(this.chunk, position.x, position.z);
 
-    this.start.col = this.chunk.col - configSvc.config.MAX_VISIBLE_CHUNKS;
-    this.start.row = this.chunk.row - configSvc.config.MAX_VISIBLE_CHUNKS;
-    this.end.col = this.chunk.col + configSvc.config.MAX_VISIBLE_CHUNKS;
-    this.end.row = this.chunk.row + configSvc.config.MAX_VISIBLE_CHUNKS;
+    this.start.col = this.chunk.col - this.configSvc.config.MAX_VISIBLE_CHUNKS;
+    this.start.row = this.chunk.row - this.configSvc.config.MAX_VISIBLE_CHUNKS;
+    this.end.col = this.chunk.col + this.configSvc.config.MAX_VISIBLE_CHUNKS;
+    this.end.row = this.chunk.row + this.configSvc.config.MAX_VISIBLE_CHUNKS;
 
-    if (this.start.col < 0) { this.start.col = 0; }
-    if (this.start.row < 0) { this.start.row = 0; }
-    if (this.end.col > Terrain.NCHUNKS_X) { this.end.col = Terrain.NCHUNKS_X; }
-    if (this.end.row > Terrain.NCHUNKS_Z) { this.end.row = Terrain.NCHUNKS_Z; }
+    if (this.start.col < 0) {
+      this.start.col = 0;
+    }
+    if (this.start.row < 0) {
+      this.start.row = 0;
+    }
+    if (this.end.col > Terrain.NCHUNKS_X) {
+      this.end.col = Terrain.NCHUNKS_X;
+    }
+    if (this.end.row > Terrain.NCHUNKS_Z) {
+      this.end.row = Terrain.NCHUNKS_Z;
+    }
 
     // reset previously visible chunks
     for (const chunk of this.visibleChunks) {
       chunk.setVisible(false);
 
-      if (!(chunk.col >= this.start.col &&
-        chunk.col < this.start.col + (this.end.col - this.start.col) &&
-        chunk.row >= this.start.row &&
-        chunk.row < this.start.row + (this.end.row - this.start.row))) {
+      if (
+        !(
+          chunk.col >= this.start.col &&
+          chunk.col < this.start.col + (this.end.col - this.start.col) &&
+          chunk.row >= this.start.row &&
+          chunk.row < this.start.row + (this.end.row - this.start.row)
+        )
+      ) {
         chunk.clean();
       }
     }
@@ -232,7 +281,9 @@ class Terrain {
     for (let i = this.start.row; i < this.end.row; i++) {
       for (let j = this.start.col; j < this.end.col; j++) {
         const chunk = this.getChunk(i, j);
-        if (!chunk) { continue; }
+        if (!chunk) {
+          continue;
+        }
 
         // chunk is visible in frustum
         if (frustum.intersectsBox(chunk.getBbox())) {
@@ -260,15 +311,19 @@ class Terrain {
    * @param {THREE.Raycaster} raycaster
    * @param {MOUSE_TYPES} interactionType
    */
-  handleMouseInteraction(raycaster: THREE.Raycaster, interactionType: MOUSE_TYPES) {
+  handlePlayerInteraction(raycaster: THREE.Raycaster, interactionType: INTERACTION_TYPE) {
     switch (interactionType) {
-      case MOUSE_TYPES.MOVE:
+      case INTERACTION_TYPE.MOUSE_MOVE:
         this.manageObjectPreview(raycaster);
         break;
 
-      case MOUSE_TYPES.CLICK:
-        this.placeObjectWithMouseClick(raycaster);
+      case INTERACTION_TYPE.MOUSE_CLICK:
+        this.placeObject(raycaster);
         this.generator.getBiome().handleClick(raycaster);
+        break;
+
+      case INTERACTION_TYPE.VOICE:
+        this.placeObject(raycaster);
         break;
 
       default:
@@ -280,13 +335,18 @@ class Terrain {
    * Place an object at the target location
    * @param {THREE.Raycaster} raycaster
    */
-  placeObjectWithMouseClick(raycaster: THREE.Raycaster) {
+  placeObject(raycaster: THREE.Raycaster) {
     const biome = this.generator.getBiome();
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
 
     for (const intersection of intersections) {
-      if (!biome.hasWater() && intersection.object === this.water) { continue; } // if water is disabled
-      if (!this.previewObject) { crosshairSvc.shake(true); return; } // no preview
+      if (!biome.hasWater() && intersection.object === this.water) {
+        continue;
+      } // if water is disabled
+      if (!this.previewObject) {
+        crosshairSvc.shake(true);
+        return;
+      } // no preview
 
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
 
@@ -315,17 +375,23 @@ class Terrain {
 
       this.objectAnimated = true;
       this.resetPreview();
+
       setTimeout(() => {
         this.objectAnimated = false;
         this.placementSound.play();
-      }, Chunk.ANIMATION_DELAY + 200
-      );
+      }, Chunk.ANIMATION_DELAY + 200);
 
       break;
     }
   }
 
-  placeSpecialObject(special: ISpecialObject, ox: number = Terrain.SIZE_X / 2, oz: number = Terrain.SIZE_Z / 2, sizeX: number = Terrain.SIZE_X, sizeZ: number = Terrain.SIZE_Z): THREE.Object3D {
+  placeSpecialObject(
+    special: ISpecialObject,
+    ox: number = Terrain.SIZE_X / 2,
+    oz: number = Terrain.SIZE_Z / 2,
+    sizeX: number = Terrain.SIZE_X,
+    sizeZ: number = Terrain.SIZE_Z
+  ): THREE.Object3D {
     let object: THREE.Object3D;
     let chunk: Chunk;
     let item: IPick;
@@ -340,18 +406,19 @@ class Terrain {
 
       chunk = this.getChunkAt(x, z);
 
-      if (special.underwater === false && y <= Chunk.SEA_LEVEL) { continue; }
+      if (special.underwater === false && y <= Chunk.SEA_LEVEL) {
+        continue;
+      }
 
       item = {
         s,
         p: new THREE.Vector3(x, y, z),
         r: new THREE.Euler().setFromVector3(r),
         n: special.stackReference,
-        f: special.float,
+        f: special.float
       };
 
       object = chunk.getObject(item);
-
     } while (!chunk.canPlaceObject(object));
 
     chunk.placeObject(object, { save: true });
@@ -402,10 +469,15 @@ class Terrain {
         this.currentSubBiome = biome;
         this.intersectionSurface = intersection.object;
 
-        const item = chunk.pick(intersection.point.x, intersection.point.z, {
-          force: true,
-          float: (this.intersectionSurface === this.water)
-        }, false);
+        const item = chunk.pick(
+          intersection.point.x,
+          intersection.point.z,
+          {
+            force: true,
+            float: this.intersectionSurface === this.water
+          },
+          false
+        );
 
         if (!item) {
           // bail out if no item gets picked
@@ -435,7 +507,6 @@ class Terrain {
       this.previewObject.position.set(intersection.point.x, intersection.point.y, intersection.point.z);
       break;
     }
-
   }
 
   /**
@@ -491,7 +562,13 @@ class Terrain {
    * @param {Function} Z Callback function returning the z component
    * @return {THREE.Mesh}
    */
-  getWaterBorderMesh(nbRows: number, nbCols: number, X: Function, Z: Function, flipIndexes: boolean = false): THREE.Mesh {
+  getWaterBorderMesh(
+    nbRows: number,
+    nbCols: number,
+    X: Function,
+    Z: Function,
+    flipIndexes: boolean = false
+  ): THREE.Mesh {
     const geometry = new THREE.Geometry();
 
     const nbVerticesZ = nbCols + 1;
@@ -512,9 +589,9 @@ class Terrain {
     for (let col = 0; col < nbCols; col++) {
       for (let row = 0; row < nbRows; row++) {
         const a = row + nbVerticesY * col;
-        const b = (row + 1) + nbVerticesY * col;
+        const b = row + 1 + nbVerticesY * col;
         const c = row + nbVerticesY * (col + 1);
-        const d = (row + 1) + nbVerticesY * (col + 1);
+        const d = row + 1 + nbVerticesY * (col + 1);
 
         const f1 = new THREE.Face3(a, b, d);
         const f2 = new THREE.Face3(d, c, a);
@@ -584,15 +661,15 @@ class Terrain {
     for (let col = 0; col < nbCols; col++) {
       for (let row = 0; row < nbRows; row++) {
         const a = row + nbVerticesY * col;
-        const b = (row + 1) + nbVerticesY * col;
+        const b = row + 1 + nbVerticesY * col;
         const c = row + nbVerticesY * (col + 1);
-        const d = (row + 1) + nbVerticesY * (col + 1);
+        const d = row + 1 + nbVerticesY * (col + 1);
 
         const f1 = new THREE.Face3(a, b, d);
         const f2 = new THREE.Face3(d, c, a);
 
-        f1.color = this.generator.getSubBiome((-Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
-        f2.color = this.generator.getSubBiome((-Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
+        f1.color = this.generator.getSubBiome(-Chunk.HEIGHT / 2 / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
+        f2.color = this.generator.getSubBiome(-Chunk.HEIGHT / 2 / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
 
         geometry.faces.push(f1);
         geometry.faces.push(f2);
@@ -621,8 +698,8 @@ class Terrain {
 
     const f1 = new THREE.Face3(0, 1, 2);
     const f2 = new THREE.Face3(2, 0, 3);
-    f1.color = this.generator.getSubBiome((-Terrain.SIZE_Y / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
-    f2.color = this.generator.getSubBiome((-Terrain.SIZE_Y / 2) / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
+    f1.color = this.generator.getSubBiome(-Terrain.SIZE_Y / 2 / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
+    f2.color = this.generator.getSubBiome(-Terrain.SIZE_Y / 2 / Chunk.MAX_TERRAIN_HEIGHT, 0).color;
     geometry.faces.push(f1);
     geometry.faces.push(f2);
 
@@ -650,19 +727,17 @@ class Terrain {
     this.water.receiveShadow = true;
     this.layers.add(this.water);
 
-    if (configSvc.debug) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
+    if (this.configSvc.debug) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
 
     this.scene.add(this.layers);
   }
 
   private watchObjectPlaced() {
-    this.multiplayerSvc.objectPlaced$.subscribe(
-      ({ item, animate }: IOnlineObject) => {
-        const chunk = this.getChunkAt(item.p.x, item.p.z);
-        const object = chunk.getObject(item);
-        chunk.placeObject(object, { animate, save: true, });
-      }
-    );
+    this.multiplayerSvc.objectPlaced$.subscribe(({ item, animate }: IOnlineObject) => {
+      const chunk = this.getChunkAt(item.p.x, item.p.z);
+      const object = chunk.getObject(item);
+      chunk.placeObject(object, { animate, save: true });
+    });
   }
 
   private resetPreview() {
@@ -674,8 +749,12 @@ class Terrain {
 
   private intersectBorder(intersection: THREE.Vector3): boolean {
     const offset = 200;
-    return MathUtils.between(intersection.x, -offset, offset) || MathUtils.between(intersection.x, Terrain.SIZE_X - offset, Terrain.SIZE_X + offset) ||
-      MathUtils.between(intersection.z, -offset, offset) || MathUtils.between(intersection.z, Terrain.SIZE_Z - offset, Terrain.SIZE_Z + offset);
+    return (
+      MathUtils.between(intersection.x, -offset, offset) ||
+      MathUtils.between(intersection.x, Terrain.SIZE_X - offset, Terrain.SIZE_X + offset) ||
+      MathUtils.between(intersection.z, -offset, offset) ||
+      MathUtils.between(intersection.z, Terrain.SIZE_Z - offset, Terrain.SIZE_Z + offset)
+    );
   }
 
   public getScene(): THREE.Scene {
@@ -700,16 +779,9 @@ class Terrain {
    */
   static createRegionBoundingBox(): THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
-      new THREE.Vector3(
-        Terrain.SIZE_X / 2,
-        Terrain.SIZE_Y / 2,
-        Terrain.SIZE_Z / 2
-      ),
-      new THREE.Vector3(
-        Terrain.SIZE_X,
-        Terrain.SIZE_Y,
-        Terrain.SIZE_Z
-      ));
+      new THREE.Vector3(Terrain.SIZE_X / 2, Terrain.SIZE_Y / 2, Terrain.SIZE_Z / 2),
+      new THREE.Vector3(Terrain.SIZE_X, Terrain.SIZE_Y, Terrain.SIZE_Z)
+    );
   }
 
   /**
@@ -718,16 +790,9 @@ class Terrain {
    */
   static createRegionWaterBoundingBox(): THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
-      new THREE.Vector3(
-        Terrain.SIZE_X / 2,
-        Chunk.SEA_LEVEL - Terrain.SIZE_Y / 4,
-        Terrain.SIZE_Z / 2
-      ),
-      new THREE.Vector3(
-        Terrain.SIZE_X,
-        Terrain.SIZE_Y / 2,
-        Terrain.SIZE_Z
-      ));
+      new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.SEA_LEVEL - Terrain.SIZE_Y / 4, Terrain.SIZE_Z / 2),
+      new THREE.Vector3(Terrain.SIZE_X, Terrain.SIZE_Y / 2, Terrain.SIZE_Z)
+    );
   }
 
   /**
@@ -747,7 +812,6 @@ class Terrain {
   static createRegionWaterBoundingBoxHelper(bbox: THREE.Box3 = null): THREE.Box3Helper {
     return new THREE.Box3Helper(bbox ? bbox : Terrain.createRegionWaterBoundingBox(), 0x0000ff);
   }
-
 }
 
 export default Terrain;

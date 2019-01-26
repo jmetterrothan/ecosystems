@@ -7,9 +7,8 @@ import MathUtils from '@shared/utils/Math.utils';
 import { SAMPLES_CONFIG } from './constants/voice.constants';
 
 class Voice {
-  private recognizer: sc.SpeechCommandRecognizer;
-  private predictState: Boolean;
-  private clickedButton: Boolean;
+  private recognizer: sc.SpeeSpeechCommandRecognizer;
+  private predictState: boolean;
   private model: Model;
 
   constructor(model: Model) {
@@ -19,7 +18,6 @@ class Voice {
 
   init() {
     this.predictState = false;
-    this.clickedButton = false;
     this.recognizer = sc.create('BROWSER_FFT');
     console.log('Voice system is ready to be use');
   }
@@ -49,7 +47,7 @@ class Voice {
     this.recognizer.listen(async ({ spectrogram: { frameSize, data } }) => {
       const vals = MathUtils.normalize(
         data.subarray(-frameSize * SAMPLES_CONFIG.NUM_FRAMES),
-          -100,
+        -100,
         10
       );
       const input = tf.tensor(vals, [1, ...SAMPLES_CONFIG.INPUT_SHAPE]);
@@ -70,17 +68,10 @@ class Voice {
       return;
     }
     if (label === 0) {
-      voiceSvc.placeObject();
+      voiceSvc.detectPlacementWord();
     }
   }
 
-  get predictState() {
-    return this.predictState;
-  }
-
-  get clickedButton() {
-    return this.clickedButton;
-  }
 }
 
 export default Voice;

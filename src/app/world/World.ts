@@ -15,7 +15,7 @@ import Weather from '@world/Weather';
 import Player from '@app/Player';
 import MathUtils from '@utils/Math.utils';
 
-import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+import { INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
 
 class World {
@@ -174,7 +174,7 @@ class World {
   update(delta: number) {
     if (!this.initialized) return;
 
-    this.handleMouseInteraction(MOUSE_TYPES.MOVE);
+    this.handlePlayerInteraction(INTERACTION_TYPE.MOUSE_MOVE);
     this.camera.updateMatrixWorld(true);
 
     this.frustum.setFromMatrix(
@@ -194,7 +194,7 @@ class World {
    * Called each time the user has an interaction with his mouse
    * @param {MOUSE_TYPES} interactionType
    */
-  handleMouseInteraction(interactionType: MOUSE_TYPES) {
+  handlePlayerInteraction(interactionType: INTERACTION_TYPE) {
     const pos = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
     const mouse = new THREE.Vector2(
       (pos.x / window.innerWidth) * 2 - 1,
@@ -202,7 +202,7 @@ class World {
     );
 
     this.raycaster.setFromCamera(mouse, this.camera);
-    this.terrain.handleMouseInteraction(this.raycaster, interactionType);
+    this.terrain.handlePlayerInteraction(this.raycaster, interactionType);
   }
 
   /**
@@ -215,11 +215,7 @@ class World {
   }
 
   private watchObjectPlacedWithVoice() {
-    voiceSvc.voiceState$.subscribe(
-      () => {
-        this.handleMouseInteraction(MOUSE_TYPES.CLICK);
-      }
-    );
+    voiceSvc.wordDetection$.subscribe(() => this.handlePlayerInteraction(INTERACTION_TYPE.VOICE));
   }
 
   isInitialized(): boolean { return this.initialized; }
