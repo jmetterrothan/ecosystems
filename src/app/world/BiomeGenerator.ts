@@ -94,6 +94,9 @@ class BiomeGenerator {
         r.y = MathUtils.randomFloat(0, Math.PI * 2);
 
         const rand = MathUtils.rng();
+        // get a random variant name
+        const modelVariantName = typeof organism.name === 'string' ? organism.name : organism.name[MathUtils.randomInt(0, organism.name.length - 1)];
+
         // test for scarcity and ground elevation criteria
         if ((parameters.force || rand >= organism.scarcity) &&
           (lowE === null || e >= lowE) &&
@@ -103,7 +106,7 @@ class BiomeGenerator {
           return (<IPick>{
             r: new THREE.Euler().setFromVector3(r),
             p: new THREE.Vector3(x, y, z),
-            n: organism.name,
+            n: modelVariantName,
             f: organism.float,
             s: new THREE.Vector3(scale, scale, scale),
           });

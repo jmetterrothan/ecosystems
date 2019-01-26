@@ -9,9 +9,6 @@ import carrotMtl from '@objmodels/vegetables/carrot.mtl';
 import butterflyObj from '@objmodels/fauna/butterfly.obj';
 import butterflyMtl from '@objmodels/fauna/butterfly.mtl';
 
-import snowy_bushObj from '@objmodels/tree/snowy_bush.obj';
-import snowy_bushMtl from '@objmodels/tree/snowy_bush.mtl';
-
 import snowmanObj from '@objmodels/misc/snowman.obj';
 import snowmanMtl from '@objmodels/misc/snowman.mtl';
 
@@ -41,9 +38,6 @@ import fish1Mtl from '@objmodels/fauna/fish1.mtl';
 
 import fish2Obj from '@objmodels/fauna/fish2.obj';
 import fish2Mtl from '@objmodels/fauna/fish2.mtl';
-
-import snowy_spruceObj from '@objmodels/tree/snowy_spruce.obj';
-import snowy_spruceMtl from '@objmodels/tree/snowy_spruce.mtl';
 
 import spruceObj from '@objmodels/tree/spruce.obj';
 import spruceMtl from '@objmodels/tree/spruce.mtl';
@@ -152,6 +146,8 @@ import reedMtl from '@objmodels/flower/reed.mtl';
 
 import highlands_treeObj from '@objmodels/tree/highlands_tree.obj';
 import highlands_treeMtl from '@objmodels/tree/highlands_tree.mtl';
+import highlands_tree2Obj from '@objmodels/tree/highlands_tree2.obj';
+import highlands_tree2Mtl from '@objmodels/tree/highlands_tree2.mtl';
 
 import birchObj from '@objmodels/tree/birch.obj';
 import birchMtl from '@objmodels/tree/birch.mtl';
@@ -218,11 +214,6 @@ export const OBJECTS: IObject[] = [
     obj: butterflyObj,
     mtl: butterflyMtl,
     doubleSide: true
-  },
-  {
-    name: 'snowy_bush',
-    obj: snowy_bushObj,
-    mtl: snowy_bushMtl
   },
   {
     name: 'snowman',
@@ -314,8 +305,12 @@ export const OBJECTS: IObject[] = [
   {
     name: 'highlands_tree',
     obj: highlands_treeObj,
-    mtl: highlands_treeMtl,
-    doubleSide: true
+    mtl: highlands_treeMtl
+  },
+  {
+    name: 'highlands_tree2',
+    obj: highlands_tree2Obj,
+    mtl: highlands_tree2Mtl
   },
   {
     name: 'algea',
@@ -405,11 +400,6 @@ export const OBJECTS: IObject[] = [
     name: 'spruce',
     obj: spruceObj,
     mtl: spruceMtl
-  },
-  {
-    name: 'snowy_spruce',
-    obj: snowy_spruceObj,
-    mtl: snowy_spruceMtl
   },
   {
     name: 'jungle_tree',
