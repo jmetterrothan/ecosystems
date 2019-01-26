@@ -23,7 +23,9 @@ class FjordBiome extends Biome {
     this.sound = ForestSFXMp3;
   }
 
-  init() { }
+  init() {
+    this.terrain.placeSpecialObject({ stackReference: 'old_log', float: false, underwater: false, e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 } });
+  }
 
   update(delta: number) { }
 

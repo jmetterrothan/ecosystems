@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { stack } from '@tensorflow/tfjs';
+import { howler, Howl } from 'howler';
 
 import World from '@world/World';
 import Chunk from '@world/Chunk';
@@ -19,6 +20,7 @@ import { IBiome } from '@world/models/biome.model';
 import { IPick } from '@world/models/pick.model';
 import { IOnlineObject } from '@online/models/onlineObjects.model';
 import { ISpecialObject } from '@world/models/objectParameters.model';
+import { ILowHigh } from './models/biomeWeightedObject.model';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
@@ -29,12 +31,11 @@ import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@shared/utils/Common.utils';
 import { crosshairSvc } from '@app/ui/services/crosshair.service';
 
-import { howler, Howl } from 'howler';
 import PopSFXMp3 from '@sounds/PopSFX.mp3';
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 10;
-  static readonly NCHUNKS_Z: number = 10;
+  static readonly NCHUNKS_X: number = 12;
+  static readonly NCHUNKS_Z: number = 12;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
@@ -330,10 +331,18 @@ class Terrain {
     let chunk: Chunk;
     let item: IPick;
 
+    const lowM = special.m !== null && special.m !== undefined ? (<ILowHigh>special.m).low : null;
+    const highM = special.m !== null && special.m !== undefined ? (<ILowHigh>special.m).high : null;
+
+    const lowE = special.e !== null && special.e !== undefined ? (<ILowHigh>special.e).low : null;
+    const highE = special.e !== null && special.e !== undefined ? (<ILowHigh>special.e).high : null;
+
     do {
       const x = ox - sizeX / 2 + Math.floor(MathUtils.rng() * sizeX);
       const z = oz - sizeZ / 2 + Math.floor(MathUtils.rng() * sizeZ);
       const y = this.getHeightAt(x, z);
+      const e = this.generator.computeElevationAt(x, z);
+      const m = this.generator.computeMoistureAt(x, z);
 
       const s = new THREE.Vector3(World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE);
       const r = new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0);
@@ -341,6 +350,10 @@ class Terrain {
       chunk = this.getChunkAt(x, z);
 
       if (special.underwater === false && y <= Chunk.SEA_LEVEL) { continue; }
+      if ((lowE !== null && e < lowE) ||
+      (highE !== null && e > highE) ||
+      (lowM !== null && m < lowM) ||
+      (highM !== null && m > highM)) { continue; }
 
       item = {
         s,

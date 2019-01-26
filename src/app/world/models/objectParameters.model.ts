@@ -1,3 +1,5 @@
+import { ILowHigh } from './biomeWeightedObject.model';
+
 export interface IPlaceObject {
   animate?: boolean;
   save?: boolean;
@@ -17,4 +19,6 @@ export interface ISpecialObject {
   underwater: boolean;
   float: boolean;
   stackReference: string;
+  e?: ILowHigh;
+  m?: ILowHigh;
 }

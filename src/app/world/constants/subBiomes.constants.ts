@@ -13,8 +13,8 @@ export const SUB_BIOMES: IBiomes = {
     color: new THREE.Color(0x96c47b),
     organisms: [
       {
-        weight: 0.35,
-        name: 'dead_tree',
+        weight: 0.25,
+        name: ['dead_tree', 'dead_tree2'],
         scarcity: 0.85,
         e: null,
         m: null,
@@ -23,7 +23,7 @@ export const SUB_BIOMES: IBiomes = {
       },
       {
         weight: 0.25,
-        name: 'spruce',
+        name: ['spruce', 'spruce2'],
         scarcity: 0.8,
         e: null,
         m: null,
@@ -31,12 +31,12 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.1,
-        name: 'bush',
+        weight: 0.2,
+        name: ['bush', 'bush2', 'bush3'],
         scarcity: 0.825,
         e: null,
         m: null,
-        scale: { min: 0.9, max: 1.25 },
+        scale: { min: 1.0, max: 1.25 },
         float: false,
       },
       {
@@ -56,10 +56,10 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.1,
         name: 'birch',
-        scarcity: 0.5,
+        scarcity: 0.65,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 },
         m: null,
-        scale: { min: 0.8, max: 1.6 },
+        scale: { min: 1.0, max: 1.6 },
         float: false,
       },
       {
@@ -73,16 +73,16 @@ export const SUB_BIOMES: IBiomes = {
       },
       {
         weight: 0.35,
-        name: 'bush2',
+        name: ['bush', 'bush2', 'bush3'],
         scarcity: 0.4,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 },
         m: null,
-        scale: { min: 0.65, max: 1.65 },
+        scale: { min: 1.0, max: 1.65 },
         float: false,
       },
       {
         weight: 0.3,
-        name: 'spruce',
+        name: ['spruce', 'spruce2'],
         scarcity: 0.4,
         e: { low: Chunk.SEA_ELEVATION + 0.25, high: null },
         m: { low: 0.0, high: 0.325 },
@@ -140,8 +140,8 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.25,
-        name: 'bush',
+        weight: 0.35,
+        name: ['bush', 'bush2', 'bush3'],
         scarcity: 0.875,
         e: null,
         m: null,
@@ -149,30 +149,12 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.05,
-        name: 'diamond',
-        scarcity: 0.975,
-        e: null,
-        m: null,
-        scale: { min: 0.85, max: 1.1 },
-        float: false,
-      },
-      {
-        weight: 0.025,
-        name: 'pink',
-        scarcity: 0.975,
-        e: null,
-        m: null,
-        scale: { min: 0.85, max: 1.1 },
-        float: false,
-      },
-      {
-        weight: 0.175,
+        weight: 0.15,
         name: 'birch',
-        scarcity: 0.95,
+        scarcity: 0.975,
         e: null,
         m: null,
-        scale: { min: 0.9, max: 2.0 },
+        scale: { min: 1.25, max: 2.0 },
         float: false,
       },
     ]
@@ -182,7 +164,7 @@ export const SUB_BIOMES: IBiomes = {
     organisms: [
       {
         weight: 0.85,
-        name: 'spruce',
+        name: ['spruce', 'spruce2'],
         scarcity: 0.975,
         e: null,
         m: null,
@@ -255,7 +237,7 @@ export const SUB_BIOMES: IBiomes = {
       },
       {
         weight: 0.2,
-        name: ['highlands_tree', 'highlands_tree2'],
+        name: ['highlands_tree', 'highlands_tree2', 'yellow_tree'],
         scarcity: 0.95,
         e: null,
         m: null,
@@ -534,7 +516,7 @@ export const SUB_BIOMES: IBiomes = {
     organisms: [
       {
         weight: 0.35,
-        name: 'dead_tree',
+        name: ['dead_tree', 'dead_tree2'],
         scarcity: 0.85,
         e: null,
         m: null,
@@ -542,8 +524,8 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.25,
-        name: 'spruce',
+        weight: 0.3,
+        name: ['spruce', 'spruce2'],
         scarcity: 0.8,
         e: null,
         m: null,
@@ -551,16 +533,7 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.1,
-        name: 'bush',
-        scarcity: 0.825,
-        e: null,
-        m: null,
-        scale: { min: 0.9, max: 1.25 },
-        float: false,
-      },
-      {
-        weight: 0.3,
+        weight: 0.35,
         name: 'rock5',
         scarcity: 0.825,
         e: null,
