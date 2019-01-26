@@ -215,7 +215,15 @@ class World {
   }
 
   private watchObjectPlacedWithVoice() {
+<<<<<<< HEAD
     voiceSvc.wordDetection$.subscribe(() => this.handlePlayerInteraction(INTERACTION_TYPE.VOICE));
+=======
+    voiceSvc.voiceState$.subscribe(
+      () => {
+        this.handleMouseInteraction(MOUSE_TYPES.CLICK);
+      }
+    );
+>>>>>>> 31-voice
   }
 
   isInitialized(): boolean { return this.initialized; }
