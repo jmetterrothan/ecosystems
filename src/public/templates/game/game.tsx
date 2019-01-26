@@ -75,7 +75,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
           <Crosshair />
           <div className='overlay__trophies overlay-trophies'>
             <div className='overlay-trophies__icon'><span className='icon-trophy' /></div>
-            <div className='overlay-trophies__counter counter mb-1'>
+            <div className='overlay-trophies__counter counter'>
               <span className='counter__current'>{unlockedTrophiesCount}</span> / <span className='counter__total'>{trophiesCount}</span>
             </div>
             <div className='overlay-trophies__progression progression'>
