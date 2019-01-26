@@ -226,8 +226,8 @@ class Weather {
     this.sunlight.position.set(Terrain.SIZE_X / 2, Weather.SOLAR_SYSTEM_RADIUS, Terrain.SIZE_Z / 2);
 
     this.sunlight.castShadow = true;
-    this.sunlight.shadow.mapSize.width = 4096;
-    this.sunlight.shadow.mapSize.height = 4096;
+    this.sunlight.shadow.mapSize.width = 8192;
+    this.sunlight.shadow.mapSize.height = 8192;
     this.sunlight.shadow.camera.visible = false;
     this.sunlight.shadow.camera.castShadow = false;
     this.sunlight.shadow.bias = 0.0001;

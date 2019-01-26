@@ -72,7 +72,7 @@ class DesertBiome extends Biome {
     const value = super.computeMoistureAt(x, z);
 
     // bias towards low humidity because it's a desert
-    return Math.max(value - 0.5, 0.0);
+    return Math.max(value - 0.35, 0.0);
   }
 
   getParametersAt(e: number, m: number): IBiome {

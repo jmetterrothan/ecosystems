@@ -7,7 +7,7 @@ export const CLOUD_MATERIAL: THREE.MeshLambertMaterial = new THREE.MeshLambertMa
   reflectivity: 0,
   flatShading: true,
   color: 0xffffff,
-  opacity: 0.95,
+  opacity: 0.9,
   transparent: true,
   side: THREE.FrontSide,
 });
