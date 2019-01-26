@@ -41,7 +41,7 @@ export const SUB_BIOMES: IBiomes = {
       },
       {
         weight: 0.3,
-        name: 'rock5',
+        name: ['plains_rock1', 'plains_rock2', 'plains_rock3', 'plains_rock4', 'plains_rock5', 'plains_rock6'],
         scarcity: 0.825,
         e: null,
         m: null,
@@ -64,7 +64,7 @@ export const SUB_BIOMES: IBiomes = {
       },
       {
         weight: 0.15,
-        name: 'rock6',
+        name: ['plains_rock1', 'plains_rock2', 'plains_rock3', 'plains_rock4', 'plains_rock5', 'plains_rock6'],
         scarcity: 0.5,
         e: null,
         m: null,
@@ -205,7 +205,7 @@ export const SUB_BIOMES: IBiomes = {
       },
       {
         weight: 0.1,
-        name: 'rock1',
+        name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
         scarcity: 0.95,
         e: null,
         m: null,
@@ -237,7 +237,7 @@ export const SUB_BIOMES: IBiomes = {
     organisms: [
       {
         weight: 0.7,
-        name: ['rock2', 'rock3'],
+        name: ['plains_rock1', 'plains_rock2', 'plains_rock3', 'plains_rock4', 'plains_rock5', 'plains_rock6'],
         scarcity: 0.9,
         e: null,
         m: null,
@@ -273,7 +273,7 @@ export const SUB_BIOMES: IBiomes = {
     organisms: [
       {
         weight: 0.45,
-        name: 'rock1',
+        name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
         scarcity: 0.975,
         e: null,
         m: null,
@@ -328,7 +328,7 @@ export const SUB_BIOMES: IBiomes = {
     organisms: [
       {
         weight: 0.10,
-        name: 'rock4',
+        name: ['plains_rock1', 'plains_rock2', 'plains_rock3', 'plains_rock4', 'plains_rock5', 'plains_rock6'],
         scarcity: 0.85,
         e: null,
         m: null,
@@ -401,7 +401,7 @@ export const SUB_BIOMES: IBiomes = {
       },
       {
         weight: 0.375,
-        name: 'rock1',
+        name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
         scarcity: 0.965,
         e: { low: null, high: 0.5 },
         m: null,
@@ -424,7 +424,7 @@ export const SUB_BIOMES: IBiomes = {
     organisms: [
       {
         weight: 0.5,
-        name: 'rock2',
+        name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
         scarcity: 0.965,
         e: { low: null, high: 0.5 },
         m: null,
@@ -447,7 +447,7 @@ export const SUB_BIOMES: IBiomes = {
     organisms: [
       {
         weight: 0.5,
-        name: 'rock1',
+        name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
         scarcity: 0.965,
         e: null,
         m: null,
@@ -479,7 +479,7 @@ export const SUB_BIOMES: IBiomes = {
       },
       {
         weight: 0.45,
-        name: 'rock1',
+        name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
         scarcity: 0.95,
         e: null,
         m: null,
@@ -502,7 +502,7 @@ export const SUB_BIOMES: IBiomes = {
     organisms: [
       {
         weight: 0.5,
-        name: 'rock2',
+        name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
         scarcity: 0.8,
         e: null,
         m: null,
@@ -543,7 +543,7 @@ export const SUB_BIOMES: IBiomes = {
       },
       {
         weight: 0.35,
-        name: 'rock5',
+        name: ['plains_rock1', 'plains_rock2', 'plains_rock3', 'plains_rock4', 'plains_rock5', 'plains_rock6'],
         scarcity: 0.825,
         e: null,
         m: null,

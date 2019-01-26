@@ -58,19 +58,6 @@ import cactus3Mtl from '@objmodels/cactus/cactus3.mtl';
 import cactus4Obj from '@objmodels/cactus/cactus4.obj';
 import cactus4Mtl from '@objmodels/cactus/cactus4.mtl';
 
-import rock1Obj from '@objmodels/rock/rock1.obj';
-import rock1Mtl from '@objmodels/rock/rock1.mtl';
-import rock2Obj from '@objmodels/rock/rock2.obj';
-import rock2Mtl from '@objmodels/rock/rock2.mtl';
-import rock3Obj from '@objmodels/rock/rock3.obj';
-import rock3Mtl from '@objmodels/rock/rock3.mtl';
-import rock4Obj from '@objmodels/rock/rock4.obj';
-import rock4Mtl from '@objmodels/rock/rock4.mtl';
-import rock5Obj from '@objmodels/rock/rock5.obj';
-import rock5Mtl from '@objmodels/rock/rock5.mtl';
-import rock6Obj from '@objmodels/rock/rock6.obj';
-import rock6Mtl from '@objmodels/rock/rock6.mtl';
-
 import iceberg1Obj from '@objmodels/rock/iceberg1.obj';
 import iceberg1Mtl from '@objmodels/rock/iceberg1.mtl';
 import iceberg2Obj from '@objmodels/rock/iceberg2.obj';
@@ -175,6 +162,32 @@ import yellow_treeMtl from '@objmodels/tree/yellow.mtl';
 import simple_treeObj from '@objmodels/tree/simple_tree.obj';
 import simple_treeMtl from '@objmodels/tree/simple_tree.mtl';
 
+import plainsRock1Obj from '@objmodels/rock/plains_rock1.obj';
+import plainsRock1Mtl from '@objmodels/rock/plains_rock1.mtl';
+import plainsRock2Obj from '@objmodels/rock/plains_rock2.obj';
+import plainsRock2Mtl from '@objmodels/rock/plains_rock2.mtl';
+import plainsRock3Obj from '@objmodels/rock/plains_rock3.obj';
+import plainsRock3Mtl from '@objmodels/rock/plains_rock3.mtl';
+import plainsRock4Obj from '@objmodels/rock/plains_rock4.obj';
+import plainsRock4Mtl from '@objmodels/rock/plains_rock4.mtl';
+import plainsRock5Obj from '@objmodels/rock/plains_rock5.obj';
+import plainsRock5Mtl from '@objmodels/rock/plains_rock5.mtl';
+import plainsRock6Obj from '@objmodels/rock/plains_rock6.obj';
+import plainsRock6Mtl from '@objmodels/rock/plains_rock6.mtl';
+
+import desertRock1Obj from '@objmodels/rock/desert_rock1.obj';
+import desertRock1Mtl from '@objmodels/rock/desert_rock1.mtl';
+import desertRock2Obj from '@objmodels/rock/desert_rock2.obj';
+import desertRock2Mtl from '@objmodels/rock/desert_rock2.mtl';
+import desertRock3Obj from '@objmodels/rock/desert_rock3.obj';
+import desertRock3Mtl from '@objmodels/rock/desert_rock3.mtl';
+import desertRock4Obj from '@objmodels/rock/desert_rock4.obj';
+import desertRock4Mtl from '@objmodels/rock/desert_rock4.mtl';
+import desertRock5Obj from '@objmodels/rock/desert_rock5.obj';
+import desertRock5Mtl from '@objmodels/rock/desert_rock5.mtl';
+import desertRock6Obj from '@objmodels/rock/desert_rock6.obj';
+import desertRock6Mtl from '@objmodels/rock/desert_rock6.mtl';
+
 export const OBJECTS: IObject[] = [
   { name: 'simple_tree', obj: simple_treeObj, mtl: simple_treeMtl },
   { name: 'yellow_tree', obj: yellow_treeObj, mtl: yellow_treeMtl },
@@ -233,12 +246,18 @@ export const OBJECTS: IObject[] = [
   { name: 'cactus2', obj: cactus2Obj, mtl: cactus2Mtl },
   { name: 'cactus3', obj: cactus3Obj, mtl: cactus3Mtl },
   { name: 'cactus4', obj: cactus4Obj, mtl: cactus4Mtl },
-  { name: 'rock1', obj: rock1Obj, mtl: rock1Mtl },
-  { name: 'rock4', obj: rock4Obj, mtl: rock4Mtl },
-  { name: 'rock5', obj: rock5Obj, mtl: rock5Mtl },
-  { name: 'rock2', obj: rock2Obj, mtl: rock2Mtl },
-  { name: 'rock3', obj: rock3Obj, mtl: rock3Mtl },
-  { name: 'rock6', obj: rock6Obj, mtl: rock6Mtl },
+  { name: 'plains_rock1', obj: plainsRock1Obj, mtl: plainsRock1Mtl },
+  { name: 'plains_rock4', obj: plainsRock2Obj, mtl: plainsRock2Mtl },
+  { name: 'plains_rock5', obj: plainsRock3Obj, mtl: plainsRock3Mtl },
+  { name: 'plains_rock2', obj: plainsRock4Obj, mtl: plainsRock4Mtl },
+  { name: 'plains_rock3', obj: plainsRock5Obj, mtl: plainsRock5Mtl },
+  { name: 'plains_rock6', obj: plainsRock6Obj, mtl: plainsRock6Mtl },
+  { name: 'desert_rock1', obj: desertRock1Obj, mtl: desertRock1Mtl },
+  { name: 'desert_rock4', obj: desertRock2Obj, mtl: desertRock2Mtl },
+  { name: 'desert_rock5', obj: desertRock3Obj, mtl: desertRock3Mtl },
+  { name: 'desert_rock2', obj: desertRock4Obj, mtl: desertRock4Mtl },
+  { name: 'desert_rock3', obj: desertRock5Obj, mtl: desertRock5Mtl },
+  { name: 'desert_rock6', obj: desertRock6Obj, mtl: desertRock6Mtl },
   { name: 'iceberg1', obj: iceberg1Obj, mtl: iceberg1Mtl },
   { name: 'iceberg2', obj: iceberg2Obj, mtl: iceberg2Mtl },
   { name: 'lilypad', obj: lilypadObj, mtl: lilypadMtl, doubleSide: true  }
