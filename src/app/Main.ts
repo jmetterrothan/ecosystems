@@ -14,7 +14,7 @@ import StorageService, { storageSvc } from '@shared/services/storage.service';
 import CoreService, { coreSvc } from '@shared/services/core.service';
 import UIService, { uiSvc } from '@ui/services/ui.service';
 
-import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+import { MOUSE_TYPES, INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
 import { UI_STATES } from '@ui/enums/UIStates.enum';
 import UIManager from '@ui/UIManager';
 
@@ -167,7 +167,7 @@ class Main {
         if (!this.controls.enabled || !this.world.isInitialized()) { return; }
 
         // mouse position always in the center of the screen
-        this.world.handleMouseInteraction(MOUSE_TYPES.CLICK);
+        this.world.handlePlayerInteraction(INTERACTION_TYPE.MOUSE_CLICK);
       });
 
       document.body.addEventListener('keydown', e => {
