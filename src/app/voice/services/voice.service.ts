@@ -1,7 +1,6 @@
 import { Subject, Observable } from 'rxjs';
 
 class VoiceService {
-<<<<<<< HEAD
   private wordDetectionSource: Subject<boolean>;
   wordDetection$: Observable<boolean>;
 
@@ -12,18 +11,6 @@ class VoiceService {
 
   detectPlacementWord() {
     this.wordDetectionSource.next(true);
-=======
-  private voiceStateSource: Subject<boolean>;
-  voiceState$: Observable<boolean>;
-
-  constructor() {
-    this.voiceStateSource = new Subject();
-    this.voiceState$ = this.voiceStateSource.asObservable();
-  }
-
-  placeObject() {
-    this.voiceStateSource.next(true);
->>>>>>> 31-voice
   }
 }
 
