@@ -54,8 +54,8 @@ export const SUB_BIOMES: IBiomes = {
     color: new THREE.Color(0x546c63),
     organisms: [
       {
-        weight: 0.1,
-        name: 'birch',
+        weight: 0.2,
+        name: 'simple_tree',
         scarcity: 0.65,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 },
         m: null,
@@ -72,7 +72,7 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.35,
+        weight: 0.25,
         name: ['bush', 'bush2', 'bush3'],
         scarcity: 0.4,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 },
@@ -149,8 +149,17 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.15,
+        weight: 0.075,
         name: 'birch',
+        scarcity: 0.975,
+        e: null,
+        m: null,
+        scale: { min: 1.25, max: 2.0 },
+        float: false,
+      },
+      {
+        weight: 0.075,
+        name: 'simple_tree',
         scarcity: 0.975,
         e: null,
         m: null,

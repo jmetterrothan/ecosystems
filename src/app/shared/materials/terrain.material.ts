@@ -4,7 +4,7 @@ const PARAMETERS = {
   wireframe: false,
   emissive: 0x505050,
   emissiveIntensity: 0.05,
-  specular: 0x353535,
+  specular: 0x505050,
   shininess: 3,
   reflectivity: 0.2,
   flatShading: true,

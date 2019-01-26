@@ -172,7 +172,11 @@ import bush3Mtl from '@objmodels/tree/bush3.mtl';
 import yellow_treeObj from '@objmodels/tree/yellow.obj';
 import yellow_treeMtl from '@objmodels/tree/yellow.mtl';
 
+import simple_treeObj from '@objmodels/tree/simple_tree.obj';
+import simple_treeMtl from '@objmodels/tree/simple_tree.mtl';
+
 export const OBJECTS: IObject[] = [
+  { name: 'simple_tree', obj: simple_treeObj, mtl: simple_treeMtl },
   { name: 'yellow_tree', obj: yellow_treeObj, mtl: yellow_treeMtl },
   { name: 'bush3', obj: bush3Obj, mtl: bush3Mtl },
   { name: 'old_log', obj: oldLogObj, mtl: oldLogMtl },
