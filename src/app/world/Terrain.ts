@@ -33,8 +33,8 @@ import { howler, Howl } from 'howler';
 import PopSFXMp3 from '@sounds/PopSFX.mp3';
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 14;
-  static readonly NCHUNKS_Z: number = 14;
+  static readonly NCHUNKS_X: number = 10;
+  static readonly NCHUNKS_Z: number = 10;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
