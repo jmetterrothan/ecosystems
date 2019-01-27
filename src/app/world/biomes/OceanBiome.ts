@@ -37,7 +37,7 @@ class OceanBiome extends Biome {
 
     this.waterDistortion = true;
     this.waterDistortionFreq = 3.0;
-    this.waterDistortionAmp = 720.0;
+    this.waterDistortionAmp = 1720.0;
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.ocean_visited);
     this.sound = WaterSFXMp3;

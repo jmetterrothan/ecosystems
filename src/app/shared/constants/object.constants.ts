@@ -82,6 +82,8 @@ import daisyMtl from '@objmodels/flower/daisy.mtl';
 
 import palm_treeObj from '@objmodels/tree/palm_tree.obj';
 import palm_treeMtl from '@objmodels/tree/palm_tree.mtl';
+import palm_tree_groupObj from '@objmodels/tree/palm_tree_group.obj';
+import palm_tree_groupMtl from '@objmodels/tree/palm_tree_group.mtl';
 
 import banana_treeObj from '@objmodels/tree/banana_tree.obj';
 import banana_treeMtl from '@objmodels/tree/banana_tree.mtl';
@@ -237,6 +239,7 @@ export const OBJECTS: IObject[] = [
   { name: 'bush', obj: bushObj, mtl: bushMtl },
   { name: 'banana_tree', obj: banana_treeObj, mtl: banana_treeMtl, doubleSide: true },
   { name: 'palm_tree', obj: palm_treeObj, mtl: palm_treeMtl, doubleSide: true },
+  { name: 'palm_tree_group', obj: palm_tree_groupObj, mtl: palm_tree_groupMtl, doubleSide: true },
   { name: 'savanna_tree', obj: savanna_treeObj, mtl: savanna_treeMtl },
   { name: 'daisy', obj: daisyObj, mtl: daisyMtl },
   { name: 'tulip', obj: tulipObj, mtl: tulipMtl },

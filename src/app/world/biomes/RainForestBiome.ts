@@ -50,6 +50,8 @@ class RainForestBiome extends Biome {
     const nx = (x - Terrain.SIZE_X / 2) / (1024 * 128);
     const nz = (z - Terrain.SIZE_Z / 2) / (1024 * 128);
 
+    const m = this.computeMoistureAt(x, z);
+
     let e = (0.50 * this.generator.noise(1 * nx, 1 * nz)
       + 1.00 * this.generator.noise(2 * nx, 2 * nz)
       + this.ridges * this.generator.ridgeNoise(3 * nx, 3 * nz)
@@ -63,7 +65,7 @@ class RainForestBiome extends Biome {
     const d = this.spread * BiomeGenerator.getEuclideanDistance(nx, nz);
     const ne = BiomeGenerator.islandAddMethod(this.a, this.b, this.c, d, e);
 
-    return this.amplified ? (e + ne) / 1.5 : ne;
+    return this.amplified ? (e + ne) / 1.15 : ne;
   }
 
   computeMoistureAt(x: number, z: number): number {

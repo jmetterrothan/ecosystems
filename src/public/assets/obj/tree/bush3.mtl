@@ -78,6 +78,14 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.55 0.55 0.55
 Ns 6.00
+newmtl highland_leaves_yellowSG
+illum 4
+Kd 1.00 0.66 0.11
+Ka 1.00 0.61 0.29
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.55 0.55 0.55
+Ns 6.00
 newmtl initialShadingGroup
 illum 4
 Kd 0.50 0.50 0.50

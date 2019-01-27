@@ -2,9 +2,9 @@ import * as THREE from 'three';
 
 const PARAMETERS = {
   wireframe: false,
-  emissive: 0x757575,
+  emissive: 0x656565,
   emissiveIntensity: 0.05,
-  specular: 0x757575,
+  specular: 0x656565,
   shininess: 3,
   reflectivity: 0.2,
   flatShading: true,
