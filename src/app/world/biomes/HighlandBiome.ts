@@ -13,6 +13,7 @@ import { IBiome } from '@world/models/biome.model';
 import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
+import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
 import HighlandSFXMp3 from '@sounds/HighlandSFX.mp3';
 
@@ -25,6 +26,7 @@ class HighlandBiome extends Biome {
   private spread: number;
 
   private boids: Boids[];
+  private scarecrow: THREE.Object3D;
 
   constructor(terrain: Terrain) {
     super('HIGHLANDS', terrain);
@@ -47,7 +49,7 @@ class HighlandBiome extends Biome {
   }
 
   init() {
-    if (MathUtils.rng() > 0.35) {
+    if (MathUtils.rng() > 0.15) {
       const size = MathUtils.randomInt(100000, 140000);
 
       const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
@@ -69,13 +71,31 @@ class HighlandBiome extends Biome {
         this.boids.push(boids);
       });
     }
+
+    // scarecrow
+    this.scarecrow = this.terrain.placeSpecialObject({
+      stackReference: 'scarecrow',
+      float: false,
+      underwater: false,
+      e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.3 }
+    });
   }
 
   update(delta: number) {
     this.boids.forEach(boids => boids.update(this.generator, delta));
   }
 
-  handleClick(raycaster: THREE.Raycaster) { }
+  handleClick(raycaster: THREE.Raycaster) {
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.scarecrow], true);
+
+    if (intersections.length) {
+      this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.find_scarecrow);
+      new TWEEN.Tween(this.scarecrow.rotation)
+        .to({ y: this.scarecrow.rotation.y + Math.PI * 2 }, 1200)
+        .easing(TWEEN.Easing.Bounce.Out)
+        .start();
+    }
+  }
 
   /**
    * Compute elevation
@@ -124,11 +144,14 @@ class HighlandBiome extends Biome {
       return SUB_BIOMES.OCEAN;
     }
 
-    if (e > Chunk.CLOUD_ELEVATION + 0.1) {
+    if (e > Chunk.CLOUD_ELEVATION + 0.075) {
       return SUB_BIOMES.MOUNTAIN;
     }
 
-    if (e > Chunk.SEA_ELEVATION + 0.175) {
+    if (e > Chunk.SEA_ELEVATION + 0.15) {
+      if (e > Chunk.SEA_ELEVATION + 0.25 && m > 0.925) {
+        return SUB_BIOMES.GRASSLAND;
+      }
       return SUB_BIOMES.TUNDRA;
     }
 

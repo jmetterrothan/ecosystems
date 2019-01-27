@@ -28,8 +28,6 @@ class GreenlandBiome extends Biome {
 
   private boids: Boids[];
 
-  private scarecrow: THREE.Object3D;
-
   constructor(terrain: Terrain) {
     super('GREENLANDS', terrain);
 
@@ -46,7 +44,7 @@ class GreenlandBiome extends Biome {
     this.spread = MathUtils.randomFloat(1.35, 1.90); // expand over the map (higher values means more space available for water)
     this.f = MathUtils.randomFloat(0.85, 3);
 
-    this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.greenland_visited);
+    // this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.greenland_visited);
     this.sound = HighlandSFXMp3;
   }
 
@@ -73,32 +71,13 @@ class GreenlandBiome extends Biome {
         this.boids.push(boids);
       });
     }
-
-    // scarecrow
-    const centerX = Terrain.SIZE_X / 2;
-    const centerZ = Terrain.SIZE_Z / 2;
-
-    const sizeX = 8192;
-    const sizeZ = 8192;
-
-    this.scarecrow = this.terrain.placeSpecialObject({ stackReference: 'scarecrow', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
   }
 
   update(delta: number) {
     this.boids.forEach(boids => boids.update(this.generator, delta));
   }
 
-  handleClick(raycaster: THREE.Raycaster) {
-    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.scarecrow], true);
-
-    if (intersections.length) {
-      this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.find_scarecrow);
-      new TWEEN.Tween(this.scarecrow.rotation)
-        .to({ y: this.scarecrow.rotation.y + Math.PI * 2 }, 1200)
-        .easing(TWEEN.Easing.Bounce.Out)
-        .start();
-    }
-  }
+  handleClick(raycaster: THREE.Raycaster) { }
 
   /**
    * Compute elevation
@@ -110,6 +89,8 @@ class GreenlandBiome extends Biome {
     const nx = (x - Terrain.SIZE_X / 2) / (2048 * 64);
     const nz = (z - Terrain.SIZE_Z / 2) / (2048 * 64);
 
+    const d = this.spread * BiomeGenerator.getEuclideanDistance(nx, nz);
+
     let e = 0.50 * this.generator.noise(1 * nx, 1 * nz)
       + 1.00 * this.generator.noise(2 * nx, 2 * nz)
       + 0.35 * this.generator.ridgeNoise(3 * nx, 3 * nz)
@@ -119,18 +100,17 @@ class GreenlandBiome extends Biome {
       + 0.035 * this.generator.noise2(128 * nx, 128 * nz)
       + 0.025 * this.generator.noise(512 * nx, 512 * nz)
       // second layer
-      + (0.50 * this.generator.noise2(1 * nx, 1 * nz)
-        + 1.00 * this.generator.noise3(2 * nx, 2 * nz)
-        + 0.4 * this.generator.ridgeNoise2(4 * nx, 4 * nz)
-        + 0.13 * this.generator.noise2(8 * nx, 8 * nz)
-        + 0.06 * this.generator.noise3(16 * nx, 16 * nz)
-        + 0.035 * this.generator.noise2(128 * nx, 128 * nz)
-        + 0.025 * this.generator.noise2(512 * nx, 512 * nz));
+      + (d * 0.50 * this.generator.noise2(1 * nx, 1 * nz)
+        + d * 1.00 * this.generator.noise3(2 * nx, 2 * nz)
+        + d * 0.4 * this.generator.ridgeNoise2(4 * nx, 4 * nz)
+        + d * 0.13 * this.generator.noise2(8 * nx, 8 * nz)
+        + d * 0.06 * this.generator.noise3(16 * nx, 16 * nz)
+        + d * 0.035 * this.generator.noise2(128 * nx, 128 * nz)
+        + d * 0.025 * this.generator.noise2(512 * nx, 512 * nz));
 
-    e /= 0.5 + 1.0 + 0.35 + 0.13 + 0.06 + 0.035 * 2 + 0.025 + 1.00 + 0.50 + 0.4 + 0.13 + 0.06 + 0.035 + 0.025;
+    e /= 0.5 + 1.0 + 0.35 + 0.13 + 0.06 + 0.035 * 2 + 0.025 + d * (1.00 + 0.50 + 0.4 + 0.13 + 0.06 + 0.035 + 0.025);
     e **= this.f;
-    const d = this.spread * BiomeGenerator.getEuclideanDistance(nx, nz);
-    e = BiomeGenerator.islandAddMethod(this.a, this.b, this.c, d, e);
+    e = BiomeGenerator.islandMultiplyMethod(this.a, this.b, this.c, d, e);
 
     return e;
   }

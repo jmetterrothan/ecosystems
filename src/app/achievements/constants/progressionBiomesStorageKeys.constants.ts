@@ -6,11 +6,13 @@ export const PROGRESSION_BIOME_STORAGE_KEYS: IProgressionBiomesStorageKeys = {
     value: 'desert_visited',
     show: false
   },
+  /*
   greenland_visited: {
     name: 'greenland_visited',
     value: 'greenland_visited',
     show: false
   },
+  */
   highland_visited: {
     name: 'highland_visited',
     value: 'highland_visited',

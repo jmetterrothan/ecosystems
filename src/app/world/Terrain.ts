@@ -342,7 +342,11 @@ class Terrain {
     do {
       it++;
       // prevent infinite loop
-      if (it > 100) { console.warn('Special object could not be placed'); break; }
+      if (it > 1000) {
+        console.warn('Special object could not be placed');
+        object = new THREE.Object3D();
+        break;
+      }
 
       const x = ox - sizeX / 2 + Math.floor(MathUtils.rng() * sizeX);
       const z = oz - sizeZ / 2 + Math.floor(MathUtils.rng() * sizeZ);
