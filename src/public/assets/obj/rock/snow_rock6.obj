@@ -1,6 +1,6 @@
 # This file uses centimeters as units for non-parametric coordinates.
 
-mtllib plains_rock6.mtl
+mtllib snow_rock6.mtl
 v 0.635514 -0.509704 1.064670
 v -0.006888 -0.499859 -1.285931
 v 0.791442 -0.513594 -0.418258
@@ -49,7 +49,7 @@ f 1 14 17
 f 11 18 21
 f 2 20 23
 f 3 22 15
-usemtl phong20SG
+usemtl phong24SG
 f 22 25 29 37
 f 6 21 26 27
 f 25 23 28 29
@@ -59,12 +59,12 @@ f 7 24 33 30
 usemtl phong23SG
 f 15 24 7
 f 15 22 24
-usemtl phong20SG
+usemtl phong24SG
 f 21 5 32 26
 f 4 7 30 31
 usemtl phong23SG
 f 23 20 6
-usemtl phong20SG
+usemtl phong24SG
 f 24 22 37 33
 usemtl phong23SG
 f 21 18 5
@@ -93,7 +93,7 @@ f 10 8 11
 f 8 16 11
 f 8 1 16
 f 8 9 1
-usemtl phong20SG
+usemtl phong24SG
 f 31 30 34
 f 32 31 36
 f 27 32 36

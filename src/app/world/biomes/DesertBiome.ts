@@ -32,6 +32,7 @@ class DesertBiome extends Biome {
     const sizeZ = 8192;
 
     this.terrain.placeSpecialObject({ stackReference: 'skull', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+    this.terrain.placeSpecialObject({ stackReference: 'carcass', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
 
     // vulture
     // this.vulture = chunk.getObject({ ...corpseItem });
@@ -63,8 +64,6 @@ class DesertBiome extends Biome {
     e += 0.008 * this.generator.noise2(64 * nx, 64 * nz);
     e += 0.075 * this.generator.noise(4 * nx, 4 * nz);
 
-    e ** 0.005;
-
     return e - 0.135;
   }
 
@@ -72,7 +71,7 @@ class DesertBiome extends Biome {
     const value = super.computeMoistureAt(x, z);
 
     // bias towards low humidity because it's a desert
-    return Math.max(value - 0.35, 0.0);
+    return Math.max(value - 0.325, 0.0);
   }
 
   getParametersAt(e: number, m: number): IBiome {

@@ -188,6 +188,11 @@ import desertRock5Mtl from '@objmodels/rock/desert_rock5.mtl';
 import desertRock6Obj from '@objmodels/rock/desert_rock6.obj';
 import desertRock6Mtl from '@objmodels/rock/desert_rock6.mtl';
 
+import snowRock5Obj from '@objmodels/rock/snow_rock5.obj';
+import snowRock5Mtl from '@objmodels/rock/snow_rock5.mtl';
+import snowRock6Obj from '@objmodels/rock/snow_rock6.obj';
+import snowRock6Mtl from '@objmodels/rock/snow_rock6.mtl';
+
 export const OBJECTS: IObject[] = [
   { name: 'simple_tree', obj: simple_treeObj, mtl: simple_treeMtl },
   { name: 'yellow_tree', obj: yellow_treeObj, mtl: yellow_treeMtl },
@@ -258,6 +263,8 @@ export const OBJECTS: IObject[] = [
   { name: 'desert_rock2', obj: desertRock4Obj, mtl: desertRock4Mtl },
   { name: 'desert_rock3', obj: desertRock5Obj, mtl: desertRock5Mtl },
   { name: 'desert_rock6', obj: desertRock6Obj, mtl: desertRock6Mtl },
+  { name: 'snow_rock5', obj: snowRock5Obj, mtl: snowRock5Mtl },
+  { name: 'snow_rock6', obj: snowRock6Obj, mtl: snowRock6Mtl },
   { name: 'iceberg1', obj: iceberg1Obj, mtl: iceberg1Mtl },
   { name: 'iceberg2', obj: iceberg2Obj, mtl: iceberg2Mtl },
   { name: 'lilypad', obj: lilypadObj, mtl: lilypadMtl, doubleSide: true  }

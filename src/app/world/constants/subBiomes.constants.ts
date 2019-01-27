@@ -45,7 +45,7 @@ export const SUB_BIOMES: IBiomes = {
         scarcity: 0.825,
         e: null,
         m: null,
-        scale: { min: 0.5, max: 1.25 },
+        scale: { min: 0.75, max: 1.5 },
         float: false,
       },
     ]
@@ -68,7 +68,7 @@ export const SUB_BIOMES: IBiomes = {
         scarcity: 0.5,
         e: null,
         m: null,
-        scale: { min: 0.5, max: 1.25 },
+        scale: { min: 0.75, max: 1.5 },
         float: false,
       },
       {
@@ -131,7 +131,7 @@ export const SUB_BIOMES: IBiomes = {
     color: new THREE.Color(0x93c54b),
     organisms: [
       {
-        weight: 0.5,
+        weight: 0.6,
         name: ['tulip', 'daisy'],
         scarcity: 0.85,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: 1.0 },
@@ -140,7 +140,7 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.35,
+        weight: 0.25,
         name: ['bush', 'bush2', 'bush3'],
         scarcity: 0.875,
         e: null,
@@ -149,7 +149,7 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.075,
+        weight: 0.05,
         name: 'birch',
         scarcity: 0.975,
         e: null,
@@ -158,7 +158,7 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.075,
+        weight: 0.1,
         name: 'simple_tree',
         scarcity: 0.975,
         e: null,
@@ -195,39 +195,30 @@ export const SUB_BIOMES: IBiomes = {
     color: new THREE.Color(0xe6cf87),
     organisms: [
       {
-        weight: 0.775,
+        weight: 0.6,
         name: ['cactus1', 'cactus2', 'cactus3', 'cactus4'],
-        scarcity: 0.965,
+        scarcity: 0.9,
         e: null,
         m: null,
-        scale: { min: 1.00, max: 2.75 },
+        scale: { min: 1.25, max: 2.75 },
         float: false,
       },
       {
-        weight: 0.1,
+        weight: 0.25,
         name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
-        scarcity: 0.95,
+        scarcity: 0.9,
         e: null,
         m: null,
-        scale: { min: 1.0, max: 2.85 },
-        float: false,
-      },
-      {
-        weight: 0.025,
-        name: 'carcass',
-        scarcity: 0.999,
-        e: null,
-        m: null,
-        scale: { min: 0.65, max: 1.25 },
+        scale: { min: 0.5, max: 2.5 },
         float: false,
       },
       {
         weight: 0.1,
         name: 'savanna_tree',
-        scarcity: 0.9875,
+        scarcity: 0.985,
         e: null,
         m: null,
-        scale: { min: 1.25, max: 1.75 },
+        scale: { min: 1.25, max: 2.0 },
         float: false,
       },
     ]
@@ -241,7 +232,7 @@ export const SUB_BIOMES: IBiomes = {
         scarcity: 0.9,
         e: null,
         m: null,
-        scale: { min: 0.8, max: 2.75 },
+        scale: { min: 0.75, max: 2.5 },
         float: false,
       },
       {
@@ -277,7 +268,7 @@ export const SUB_BIOMES: IBiomes = {
         scarcity: 0.975,
         e: null,
         m: null,
-        scale: { min: 1.0, max: 2.0 },
+        scale: { min: 0.75, max: 2.5 },
         float: false,
       },
       {
@@ -332,7 +323,7 @@ export const SUB_BIOMES: IBiomes = {
         scarcity: 0.85,
         e: null,
         m: null,
-        scale: { min: 1.0, max: 2.0 },
+        scale: { min: 0.75, max: 2.5 },
         float: false,
       },
       {
@@ -400,18 +391,18 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.375,
+        weight: 0.25,
         name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
         scarcity: 0.965,
         e: { low: null, high: 0.5 },
         m: null,
-        scale: { min: 0.65, max: 0.95 },
+        scale: { min: 0.5, max: 1.25 },
         float: false,
       },
       {
-        weight: 0.375,
+        weight: 0.5,
         name: 'reed',
-        scarcity: 0.925,
+        scarcity: 0.9,
         e: { low: Chunk.SEA_ELEVATION - 0.01, high: Chunk.SEA_ELEVATION + 0.075 },
         m: null,
         scale: { min: 1.0, max: 1.45 },
@@ -428,7 +419,7 @@ export const SUB_BIOMES: IBiomes = {
         scarcity: 0.965,
         e: { low: null, high: 0.5 },
         m: null,
-        scale: { min: 0.65, max: 0.95 },
+        scale: { min: 0.75, max: 1.5 },
         float: false,
       },
       {
@@ -437,7 +428,7 @@ export const SUB_BIOMES: IBiomes = {
         scarcity: 0.925,
         e: { low: Chunk.SEA_ELEVATION - 0.01, high: Chunk.SEA_ELEVATION + 0.075 },
         m: null,
-        scale: { min: 1.0, max: 1.45 },
+        scale: { min: 0.5, max: 1.25 },
         float: false,
       },
     ]
@@ -451,7 +442,7 @@ export const SUB_BIOMES: IBiomes = {
         scarcity: 0.965,
         e: null,
         m: null,
-        scale: { min: 0.65, max: 0.95 },
+        scale: { min: 0.75, max: 1.5 },
         float: false,
       },
       {
@@ -483,7 +474,7 @@ export const SUB_BIOMES: IBiomes = {
         scarcity: 0.95,
         e: null,
         m: null,
-        scale: { min: 0.5, max: 2 },
+        scale: { min: 0.5, max: 2.5 },
         float: false,
       },
       {
@@ -506,7 +497,7 @@ export const SUB_BIOMES: IBiomes = {
         scarcity: 0.8,
         e: null,
         m: null,
-        scale: { min: 0.5, max: 2 },
+        scale: { min: 0.5, max: 2.5 },
         float: false,
       },
       {
@@ -543,11 +534,11 @@ export const SUB_BIOMES: IBiomes = {
       },
       {
         weight: 0.35,
-        name: ['plains_rock1', 'plains_rock2', 'plains_rock3', 'plains_rock4', 'plains_rock5', 'plains_rock6'],
+        name: ['snow_rock5', 'snow_rock6'],
         scarcity: 0.825,
         e: null,
         m: null,
-        scale: { min: 0.5, max: 1.25 },
+        scale: { min: 0.75, max: 1.50 },
         float: false,
       },
     ]
