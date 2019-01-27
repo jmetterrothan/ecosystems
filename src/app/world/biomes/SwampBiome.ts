@@ -17,11 +17,13 @@ import SwampSFXMp3 from '@sounds/SwampSFX.mp3';
 
 class SwampBiome extends Biome {
   private boids: Boids[];
+  private flat: boolean;
 
   constructor(terrain: Terrain) {
     super('SWAMPS', terrain);
 
     this.boids = [];
+    this.flat = MathUtils.rng() >= 0.5;
 
     this.waterDistortion = true;
     this.waterDistortionFreq = 1.25;
@@ -70,6 +72,8 @@ class SwampBiome extends Biome {
     const nx = (x - Terrain.SIZE_X / 2) / (1024 * 128);
     const nz = (z - Terrain.SIZE_Z / 2) / (1024 * 128);
 
+    const m = this.computeMoistureAt(x, z);
+
     let e = -0.2 * this.generator.noise2(0.35 * nx, 0.35 * nz);
     e += 0.2 * this.generator.noise3(2 * nx, 2 * nz);
     e += 0.15 * this.generator.ridgeNoise2(1 * nx, 1 * nz);
@@ -79,7 +83,7 @@ class SwampBiome extends Biome {
     e += 0.0095 * this.generator.noise2(32 * nx, 32 * nz);
     e += 0.0095 * this.generator.ridgeNoise(64 * nx, 64 * nz);
 
-    return e - 0.25;
+    return e - 0.275;
   }
 
   computeMoistureAt(x: number, z: number): number {
