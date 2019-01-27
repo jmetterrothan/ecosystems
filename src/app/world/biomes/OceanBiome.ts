@@ -20,6 +20,7 @@ import WaterSFXMp3 from '@sounds/WaterSFX.mp3';
 class OceanBiome extends Biome {
   private spike: number;
   private depth: number;
+  private flat: boolean;
 
   private boids: Boids[];
 
@@ -32,6 +33,7 @@ class OceanBiome extends Biome {
 
     this.spike = MathUtils.randomFloat(0.025, 0.125);
     this.depth = 1.425;
+    this.flat = MathUtils.rng() >= 0.45;
 
     this.waterDistortion = true;
     this.waterDistortionFreq = 3.0;
@@ -50,7 +52,7 @@ class OceanBiome extends Biome {
     const points = pds.fill();
 
     points.forEach((point: number[]) => {
-      const nbMax = (size * 14 / maxSize) || 0; // maximum nb based on boids size
+      const nbMax = (size * 20 / maxSize) || 0; // maximum nb based on boids size
       const n = MathUtils.randomInt(2, nbMax);
       const px = size / 2 + point.shift();
       const pz = size / 2 + point.shift();
@@ -101,15 +103,30 @@ class OceanBiome extends Biome {
     const nx = (x - Terrain.SIZE_X / 2) / (1024 * 128);
     const nz = (z - Terrain.SIZE_Z / 2) / (1024 * 128);
 
-    let e = 0.2 * this.generator.noise(1 * nx, 1 * nz);
-    e += 0.0035 * this.generator.noise(8 * nx, 8 * nz);
-    e += 0.015 * this.generator.noise(32 * nx, 32 * nz);
-    e += 0.025 * this.generator.ridgeNoise2(8 * nx, 8 * nz);
-    e += 0.25 * this.generator.noise(4 * nx, 4 * nz) * this.generator.noise3(nx, nz);
+    let e = 0;
+    const m = this.computeMoistureAt(x, z);
 
-    e /= (0.25 + 0.0035 + 0.015 + 0.025 + 0.25) - this.spike;
+    if (this.flat) {
+      // flat ocean bottom
+      e += 0.225 * this.generator.noise2(0.75 * nx, 0.75 * nz);
+      e += 0.2 * this.generator.noise3(1 * nx, 1 * nz);
+      e += 0.075 * this.generator.ridgeNoise(1 * nx, 1 * nz);
+      e += 0.00985 * this.generator.ridgeNoise(32 * nx, 32 * nz);
+      e += 0.008 * this.generator.noise2(64 * nx, 64 * nz);
+      e += 0.075 * this.generator.noise(4 * nx, 4 * nz);
+    } else {
+      // spiky ocean bottom
+      e += 0.2 * this.generator.noise(1 * nx, 1 * nz);
+      e += 0.0035 * this.generator.noise(8 * nx, 8 * nz);
+      e += 0.015 * this.generator.noise(32 * nx, 32 * nz);
+      e += 0.025 * this.generator.ridgeNoise2(8 * nx, 8 * nz);
+      e += 0.25 * this.generator.noise(4 * nx, 4 * nz) * this.generator.noise3(nx, nz);
 
-    e **= 2.25;
+      e /= (0.25 + 0.0035 + 0.015 + 0.025 + 0.25) - this.spike;
+
+      e **= 2.25;
+    }
+
     return e - this.depth;
   }
 
