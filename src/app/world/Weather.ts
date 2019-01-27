@@ -217,7 +217,7 @@ class Weather {
   }
 
   private initSunlight() {
-    const d = 1000000;
+    const d = 250000;
     this.sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
 
     this.sunlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
@@ -226,8 +226,8 @@ class Weather {
     this.sunlight.position.set(Terrain.SIZE_X / 2, Weather.SOLAR_SYSTEM_RADIUS, Terrain.SIZE_Z / 2);
 
     this.sunlight.castShadow = true;
-    this.sunlight.shadow.mapSize.width = 8192;
-    this.sunlight.shadow.mapSize.height = 8192;
+    this.sunlight.shadow.mapSize.width = 1024;
+    this.sunlight.shadow.mapSize.height = 1024;
     this.sunlight.shadow.camera.visible = false;
     this.sunlight.shadow.camera.castShadow = false;
     this.sunlight.shadow.bias = 0.0001;
@@ -236,13 +236,13 @@ class Weather {
     this.sunlight.shadow.camera.top = d;
     this.sunlight.shadow.camera.bottom = -d;
     this.sunlight.shadow.camera.near = 150;
-    this.sunlight.shadow.camera.far = 1000000;
+    this.sunlight.shadow.camera.far = 500000;
 
     this.scene.add(this.sunlight);
   }
 
   private initMoonlight() {
-    const d = 1000000;
+    const d = 250000;
     this.moonlight = new THREE.DirectionalLight(0x5fc2eb, 0.15);
 
     this.moonlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
@@ -251,8 +251,8 @@ class Weather {
     this.moonlight.position.set(Terrain.SIZE_X / 2, Weather.SOLAR_SYSTEM_RADIUS, Terrain.SIZE_Z / 2);
 
     this.moonlight.castShadow = true;
-    this.moonlight.shadow.mapSize.width = 4096;
-    this.moonlight.shadow.mapSize.height = 4096;
+    this.moonlight.shadow.mapSize.width = 1024;
+    this.moonlight.shadow.mapSize.height = 1024;
     this.moonlight.shadow.camera.visible = false;
     this.moonlight.shadow.camera.castShadow = false;
     this.moonlight.shadow.bias = 0.0001;
@@ -261,7 +261,7 @@ class Weather {
     this.moonlight.shadow.camera.top = d;
     this.moonlight.shadow.camera.bottom = -d;
     this.moonlight.shadow.camera.near = 150;
-    this.moonlight.shadow.camera.far = 1000000;
+    this.moonlight.shadow.camera.far = 500000;
 
     this.scene.add(this.moonlight);
   }
