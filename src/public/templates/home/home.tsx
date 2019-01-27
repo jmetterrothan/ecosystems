@@ -86,6 +86,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
 
     configSvc.quality = this.state.selectedQuality;
     configSvc.debug = this.state.debugMode;
+    configSvc.soundEnabled = this.state.soundMode;
 
     storageSvc.set<IHomeParametersStorage>(STORAGES_KEY.ui, this.storage);
   }
