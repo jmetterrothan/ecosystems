@@ -44,13 +44,15 @@ class FjordBiome extends Biome {
     let e = 1.0 * this.generator.noise(0.85 * nx, 0.85 * nz);
     e += 0.1 * this.generator.noise2(nx * 4, nz * 4);
     e += 0.035 * this.generator.ridgeNoise(nx * 8, nz * 8);
+    e += 0.005 * this.generator.ridgeNoise(nx * 32, nz * 32);
+    e += 0.001 * this.generator.ridgeNoise(nx * 256, nz * 256);
     e += 0.01 * this.generator.noise2(nx * 16, nz * 16);
     e += 0.01 * this.generator.ridgeNoise2(nx * 32, nz * 32);
     e += 0.05 * this.generator.noise(nx * 8, nz * 8);
 
     e /= 0.935 + 0.1 + 0.05 + 0.01 + 0.01 + 0.05;
 
-    return e ** this.e - 0.1;
+    return (e ** this.e * 1.65) - 0.2;
   }
 
   getParametersAt(e: number, m: number): IBiome {
@@ -59,7 +61,7 @@ class FjordBiome extends Biome {
       return SUB_BIOMES.MOUNTAIN;
     }
 
-    if (e > Chunk.SEA_ELEVATION + 0.05) {
+    if (e > Chunk.SEA_ELEVATION + 0.15) {
       return SUB_BIOMES.FJORD;
     }
 
