@@ -585,7 +585,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.1,
         name: 'reed',
-        scarcity: 0.5,
+        scarcity: 0.65,
         e: { low: Chunk.SEA_ELEVATION + 0.025, high: 1 },
         m: null,
         scale: { min: 1.0, max: 1.35 },

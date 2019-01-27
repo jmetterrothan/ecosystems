@@ -270,8 +270,15 @@ class Weather {
     const starsCount: number = 1000;
     const stars = new THREE.Geometry();
 
-    for (let i = 0; i < starsCount; i++) {
+    const material = new THREE.PointsMaterial({
+      size: 1500,
+      color: '#fefdef',
+      transparent: true,
+      opacity: 0.75,
+      fog: false,
+    });
 
+    for (let i = 0; i < starsCount; i++) {
       const u = MathUtils.rng();
       const v = MathUtils.rng();
       const radius = Chunk.HEIGHT * 2.5;
@@ -284,14 +291,6 @@ class Weather {
 
       stars.vertices.push(new THREE.Vector3(x, y, z));
     }
-
-    const material = new THREE.PointsMaterial({
-      size: 1500,
-      color: '#fefdef',
-      transparent: true,
-      opacity: 0.75,
-      fog: false,
-    });
 
     this.starsSystem = new THREE.Points(stars, material);
     this.starsSystem.position.copy(this.playerSvc.getPosition());
