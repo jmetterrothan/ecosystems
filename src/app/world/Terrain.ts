@@ -337,7 +337,12 @@ class Terrain {
     const lowE = special.e !== null && special.e !== undefined ? (<ILowHigh>special.e).low : null;
     const highE = special.e !== null && special.e !== undefined ? (<ILowHigh>special.e).high : null;
 
+    let it = 0;
+
     do {
+      it++;
+      if (it > 100) { console.warn('Special object could not be placed'); break; }
+
       const x = ox - sizeX / 2 + Math.floor(MathUtils.rng() * sizeX);
       const z = oz - sizeZ / 2 + Math.floor(MathUtils.rng() * sizeZ);
       const y = this.getHeightAt(x, z);
