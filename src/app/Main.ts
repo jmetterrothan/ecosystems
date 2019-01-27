@@ -54,7 +54,12 @@ class Main {
     if (configSvc.debug) {
       this.stats = new statsJs();
       this.stats.showPanel(0);
-      // document.body.appendChild(this.stats.dom);
+      this.stats.dom.style.left = 'unset';
+      this.stats.dom.style.top = 'unset';
+      this.stats.dom.style.right = 0;
+      this.stats.dom.style.bottom = 0;
+
+      document.body.appendChild(this.stats.dom);
 
       /*
       // reset
