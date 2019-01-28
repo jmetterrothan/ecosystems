@@ -39,6 +39,7 @@ class Chunk {
   static readonly CHUNK_OBJECT_STACK = {};
 
   static readonly INTERACTION_DISTANCE: number = 60000;
+  static readonly SO_INTERACTION_DISTANCE: number = 40000;
   static readonly ANIMATION_DELAY: number = 200;
 
   private generator: BiomeGenerator;
@@ -359,15 +360,6 @@ class Chunk {
    * @return {boolean}
    */
   isMerged(): boolean { return this.merged; }
-
-  /**
-   * User distance valid to place an objecct if true
-   * @param {number} distance
-   * @return {boolean}
-   */
-  checkInteractionDistance(distance: number): boolean {
-    return distance <= Chunk.INTERACTION_DISTANCE;
-  }
 
   /**
    * @return {THREE.Box3}

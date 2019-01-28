@@ -1,5 +1,6 @@
+import { CrosshairState } from '@app/ui/enums/CrosshairState.enum';
 export interface ICrosshairStatus {
-  valid: boolean;
+  state: CrosshairState;
   show: boolean;
   shake: boolean;
 }

@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { ICrosshairStatus } from '@app/shared/models/crosshair.model';
 import { crosshairSvc } from '@app/ui/services/crosshair.service';
 
+import { CrosshairState } from '@app/ui/enums/CrosshairState.enum';
+
 import './crosshair.styles';
 
 interface ICrosshairProps { }
@@ -37,7 +39,7 @@ class Crosshair extends React.Component<ICrosshairProps, ICrosshairState> {
     const { status } = this.state;
 
     const showClass = !status.show ? 'crosshair--hide' : null;
-    const validClass = status.valid ? 'crosshair--valid' : 'crosshair--invalid';
+    const validClass = this.getStateClass();
     const shakeClass = status.shake ? 'crosshair--shake' : null;
 
     return (
@@ -49,6 +51,15 @@ class Crosshair extends React.Component<ICrosshairProps, ICrosshairState> {
         <span />
       </div>
     );
+  }
+
+  getStateClass(): string {
+    const state = this.state.status.state;
+    switch (state) {
+      case CrosshairState.CAN_PLACE_OBJECT: return 'crosshair--can-place-object';
+      case CrosshairState.CAN_INTERACT_WITH_OBJECT: return 'crosshair--can-interact';
+      default: return 'crosshair--no-action';
+    }
   }
 }
 

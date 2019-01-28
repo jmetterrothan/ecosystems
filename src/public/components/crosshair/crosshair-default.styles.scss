@@ -56,15 +56,13 @@ $crosshair-opacity: 0.6;
     }
   }
 
-  &.crosshair--valid {
-    span {
-      background: $color-green;
-    }
+  &.crosshair--can-place-object {
+    span { background: $color-green; }
   }
-
-  &.crosshair--invalid {
-    span {
-      background: $color-red;
-    }
+  &.crosshair--can-interact{
+    span { background: $color-blue; }
+  }
+  &.crosshair--no-action {
+    span { background: $color-red; }
   }
 }
