@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import TWEEN from '@tweenjs/tween.js';
 import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Terrain from '@world/Terrain';
