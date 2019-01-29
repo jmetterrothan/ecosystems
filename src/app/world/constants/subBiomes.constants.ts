@@ -442,7 +442,7 @@ export const SUB_BIOMES: IBiomes = {
         scarcity: 0.965,
         e: { low: null, high: 0.5 },
         m: null,
-        scale: { min: 0.75, max: 1.5 },
+        scale: { min: 0.75, max: 1.0 },
         float: false,
       },
       {

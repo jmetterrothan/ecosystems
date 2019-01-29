@@ -1,0 +1,81 @@
+@import 'jmetterrothan-flexgrid/src/assets/sass/vars.scss';
+@import 'jmetterrothan-flexgrid/src/assets/sass/breakpoints.scss';
+
+.cookies-consent {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  background: #2e3b49;
+
+  @include breakpoint-tablet {
+    width: auto;
+  }
+
+  &__text {
+    color: $color-skyblue;
+    line-height: 1.65rem;
+    font-size: 1.1rem;
+    max-width: 100%;
+    font-weight: 300;
+
+    @include breakpoint-tablet {
+      max-width: 340px;
+    }
+  }
+
+  &__choices {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__btn {
+    appearance: none;
+    box-shadow: none;
+    outline: none;
+    cursor: pointer;
+    border: none;
+    height: 2.5rem;
+    line-height: calc(2.5rem - 2px);
+    padding: 0 1rem;
+    min-width: 125px;
+    border-radius: 0;
+    font-family: $font;
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: all ease 0.25s;
+
+    &--decline {
+      background: $color-darkblue;
+      color: $color-skyblue;
+
+      &:hover {
+        color: darken($color-skyblue, 15%);
+      }
+    }
+
+    &--accept {
+      background: $color-skyblue;
+      color: $color-darkblue;
+
+      &:hover {
+        background: darken($color-skyblue, 10%);
+      }
+    }
+  }
+}
+
+.link {
+  color: $color-skyblue;
+  text-decoration: underline;
+
+  &:hover {
+    color: darken($color-skyblue, 15%);
+  }
+}

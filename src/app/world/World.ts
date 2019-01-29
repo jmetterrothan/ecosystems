@@ -142,7 +142,7 @@ class World {
 
   private initAudio() {
     let volume = this.volume;
-    console.log(configSvc.soundEnabled);
+
     if (!configSvc.soundEnabled) {
       volume = 0;
     }

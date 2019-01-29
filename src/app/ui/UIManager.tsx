@@ -6,6 +6,7 @@ import UIState from '@ui/UIState';
 import UIHomeState from '@ui/states/UIHomeState';
 import stateFactory from '@ui/UIStatesFactory';
 import withUIManager from '@public/components/withUIManager/withUIManager';
+import CookiesConsent from '@public/components/cookies/cookies-consent';
 
 import UIService, { uiSvc } from './services/ui.service';
 import { notificationSvc } from '@shared/services/notification.service';
@@ -80,12 +81,15 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     if (this.state.currentUiStateID === UI_STATES.HOME) uiState.process(this);
 
     return (
-      <div className='ui'>
-        <div className='ui__notifications p-2'>
-          <NotificationContainer />
+      <>
+        <CookiesConsent />
+        <div className='ui'>
+          <div className='ui__notifications p-2'>
+            <NotificationContainer />
+          </div>
+          {withUIManager(uiState.render())(this)}
         </div>
-        {withUIManager(uiState.render())(this)}
-      </div>
+      </>
     );
   }
 

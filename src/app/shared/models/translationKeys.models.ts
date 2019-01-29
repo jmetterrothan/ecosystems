@@ -58,4 +58,10 @@ export interface IUITranslationKeys {
     objects_placed: string;
     unlock_trophies_percentage: string;
   };
+  cookies: {
+    more: string;
+    decline: string;
+    allow: string;
+    message: string;
+  };
 }

@@ -30,5 +30,11 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     going_underwater: 'Nombre de fois sous l\'eau : {{count}}',
     objects_placed: 'Objets placés : {{count}}',
     unlock_trophies_percentage: 'Trophées débloqués : {{count}}%'
+  },
+  cookies: {
+    more: 'Voir plus',
+    decline: 'Refuser',
+    allow: 'Accepter',
+    message: 'En poursuivant votre navigation, vous acceptez l’utilisation de cookies d\'analyse d\'audience et de fréquentation.'
   }
 };

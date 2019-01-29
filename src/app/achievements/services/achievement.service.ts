@@ -106,7 +106,9 @@ class AchievementService {
       this.storageSvc.set<Object>(STORAGES_KEY.trophies, this.storage);
 
       // check if trophy is unlocked
-      if (this.checkTrophyCompleted(trophy, [...set])) this.unlockTrophy(trophy);
+      if (this.checkTrophyCompleted(trophy, [...set])) {
+        this.unlockTrophy(trophy);
+      }
     }
   }
 
