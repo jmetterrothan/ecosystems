@@ -5,7 +5,7 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
   online_count: 'Online {{count}}',
   trophy_unlocked: 'Trophy unlocked',
   home: {
-    title: 'Ecosystem',
+    title: 'Ecosystems',
     subtitle: 'A 3d interactive experience',
     debug: 'Debug',
     form: {
