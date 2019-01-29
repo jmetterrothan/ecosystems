@@ -50,6 +50,7 @@ class World {
   private listener: THREE.AudioListener;
   private zSound: THREE.PositionalAudio;
   private audioLoader: THREE.AudioLoader;
+  private volume: number;
 
   /**
    * World constructor
@@ -69,6 +70,7 @@ class World {
     this.listener = new THREE.AudioListener();
     this.camera.add(this.listener);
     this.zSound = new THREE.PositionalAudio(this.listener);
+    this.volume = 1;
     this.audioLoader = new THREE.AudioLoader();
   }
 
@@ -110,7 +112,9 @@ class World {
       console.info(`QUALITY : ${GRAPHICS_QUALITY[configSvc.quality]}`);
     }
 
+    // configSvc.soundEnabled$.subscribe(() => { });
     this.initAudio();
+
     this.initialized = true;
 
     return seed;
@@ -138,12 +142,17 @@ class World {
   }
 
   private initAudio() {
+    let volume = this.volume;
+    console.log(configSvc.soundEnabled);
+    if (!configSvc.soundEnabled) {
+      volume = 0;
+    }
     const mySound = this.generator.getBiome().getSound();
     this.audioLoader.load(mySound, (buffer) => {
       this.zSound.setBuffer(buffer);
       this.zSound.setRefDistance(5000);
       this.zSound.setLoop(true);
-      this.zSound.setVolume(0.5);
+      this.zSound.setVolume(volume);
       this.zSound.play();
     }, () => { }, () => { });
 
