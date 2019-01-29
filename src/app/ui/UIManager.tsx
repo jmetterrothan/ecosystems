@@ -1,4 +1,5 @@
 import React from 'react';
+import { Howl, howler } from 'howler';
 
 import NotificationContainer from '@public/components/notification/NotificationContainer';
 import UIState from '@ui/UIState';
@@ -13,6 +14,8 @@ import { translationSvc } from '@shared/services/translation.service';
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { UI_STATES } from '@ui/enums/UIStates.enum';
+
+import Builder_Game_Item_Click_1 from '@sounds/Builder_Game_Item_Click_1.mp3';
 
 interface IUIManagerProps {
 
@@ -29,6 +32,8 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   private uiStates: Map<UI_STATES, UIState>;
   private uiSvc: UIService;
 
+  private clickSound: Howl;
+
   constructor(props: IUIManagerProps, state: IUIManagerState) {
     super(props, state);
 
@@ -40,9 +45,21 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
       parameters: {}
     };
 
+    this.clickSound = new Howl({
+      src: [Builder_Game_Item_Click_1],
+      volume: 0.5
+    });
+
     translationSvc.init();
 
     this.addState(UI_STATES.HOME, new UIHomeState(null));
+
+    // ui click sound
+    window.addEventListener('click', (e) => {
+      if (e.srcElement.classList.contains('ui-click-sound')) {
+        this.clickSound.play();
+      }
+    });
   }
 
   componentDidMount() {

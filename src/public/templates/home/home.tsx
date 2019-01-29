@@ -182,15 +182,15 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
                 <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.graphics')}</Col>
                 <Col className='flexcol--8'>
                   <input type='radio' id='qualityLow' name='selectedQuality' onChange={this.handleQualityChange} value={GRAPHICS_QUALITY.LOW} checked={selectedQuality === GRAPHICS_QUALITY.LOW} />
-                  <label htmlFor='qualityLow' className='mr-2'>{translationSvc.translate('UI.home.form.low_quality_option')}</label>
+                  <label htmlFor='qualityLow' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.low_quality_option')}</label>
                 </Col>
                 <Col className='flexcol--8'>
                   <input type='radio' id='qualityMedium' name='selectedQuality' onChange={this.handleQualityChange} value={GRAPHICS_QUALITY.MEDIUM} checked={selectedQuality === GRAPHICS_QUALITY.MEDIUM} />
-                  <label htmlFor='qualityMedium' className='mr-2'>{translationSvc.translate('UI.home.form.medium_quality_option')}</label>
+                  <label htmlFor='qualityMedium' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.medium_quality_option')}</label>
                 </Col>
                 <Col className='flexcol--8'>
                   <input type='radio' id='qualityHigh' name='selectedQuality' onChange={this.handleQualityChange} value={GRAPHICS_QUALITY.HIGH} checked={selectedQuality === GRAPHICS_QUALITY.HIGH} />
-                  <label htmlFor='qualityHigh'>{translationSvc.translate('UI.home.form.high_quality_option')}</label>
+                  <label htmlFor='qualityHigh' className='ui-click-sound'>{translationSvc.translate('UI.home.form.high_quality_option')}</label>
                 </Col>
               </Row>
             </Col>
@@ -199,22 +199,22 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
                 <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.gamemode')}</Col>
                 <Col className='flexcol--12'>
                   <input type='radio' id='onlineModeOff' name='onlineMode' onChange={this.handleOnlineChange} value='0' checked={onlineMode === false} />
-                  <label htmlFor='onlineModeOff' className='mr-2'>{translationSvc.translate('UI.home.form.singleplayer_option')}</label>
+                  <label htmlFor='onlineModeOff' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.singleplayer_option')}</label>
                 </Col>
                 <Col className='flexcol--12'>
                   <input type='radio' id='onlineModeOn' name='onlineMode' onChange={this.handleOnlineChange} value='1' checked={onlineMode !== false} />
-                  <label htmlFor='onlineModeOn'>{translationSvc.translate('UI.home.form.multiplayer_option')}</label>
+                  <label htmlFor='onlineModeOn' className='ui-click-sound'>{translationSvc.translate('UI.home.form.multiplayer_option')}</label>
                 </Col>
               </Row>
               <Row className='form__group'>
                 <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.soundmode')}</Col>
                 <Col className='flexcol--12'>
                   <input type='radio' id='soundOff' name='soundMode' onChange={this.handleSoundChange} value='0' checked={soundMode === false} />
-                  <label htmlFor='soundOff' className='mr-2'>{translationSvc.translate('UI.home.form.sound_off_option')}</label>
+                  <label htmlFor='soundOff' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.sound_off_option')}</label>
                 </Col>
                 <Col className='flexcol--12'>
                   <input type='radio' id='soundOn' name='soundMode' onChange={this.handleSoundChange} value='1' checked={soundMode !== false} />
-                  <label htmlFor='soundOn'>{translationSvc.translate('UI.home.form.sound_on_option')}</label>
+                  <label htmlFor='soundOn' className='ui-click-sound'>{translationSvc.translate('UI.home.form.sound_on_option')}</label>
                 </Col>
               </Row>
             </Col>
@@ -223,7 +223,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
           {debugHtmlFinal}
 
           <footer className='home__footer mt-3 mb-2-t mb-4-l'>
-            <input form='gameSetup' type='submit' value={translationSvc.translate('UI.home.form.start_btn')} className='btn btn--magenta btn--expand-mobile' disabled={!formValid} />
+            <input form='gameSetup' type='submit' value={translationSvc.translate('UI.home.form.start_btn')} className='btn btn--magenta btn--expand-mobile ui-click-sound' disabled={!formValid} />
           </footer>
         </form>
       </section>

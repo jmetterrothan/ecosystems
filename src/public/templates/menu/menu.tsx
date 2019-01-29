@@ -37,10 +37,10 @@ class Menu extends React.PureComponent<Props> {
         <div className='menu__container'>
           <Tabs defaultIndex={Menu.SELECTED_INDEX} onSelect={tabIndex => Menu.SELECTED_INDEX = tabIndex}>
             <TabList>
-              <Tab>Trophées</Tab>
-              <Tab>Progression</Tab>
-              <Tab>Tutoriel</Tab>
-              <Tab>Crédits</Tab>
+              <Tab><span className='ui-click-sound'>Trophées</span></Tab>
+              <Tab><span className='ui-click-sound'>Progression</span></Tab>
+              <Tab><span className='ui-click-sound'>Tutoriel</span></Tab>
+              <Tab><span className='ui-click-sound'>Crédits</span></Tab>
             </TabList>
 
             <TabPanel><Trophies /></TabPanel>
@@ -49,8 +49,8 @@ class Menu extends React.PureComponent<Props> {
             <TabPanel><Credits /></TabPanel>
           </Tabs>
           <footer className='menu__footer mb-3 mr-3'>
-            <Button className='btn btn--darkblue btn--expand-mobile mr-2' onClick={this.reload}>Nouveau monde</Button>
-            <Button className='btn btn--magenta btn--expand-mobile' onClick={this.handleClick}>Continuer</Button>
+            <Button className='btn btn--darkblue btn--expand-mobile mr-2 ui-click-sound' onClick={this.reload}>Nouveau monde</Button>
+            <Button className='btn btn--magenta btn--expand-mobile ui-click-sound' onClick={this.handleClick}>Continuer</Button>
           </footer>
         </div>
       </div >

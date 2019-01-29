@@ -32,7 +32,7 @@ import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@shared/utils/Common.utils';
 import { crosshairSvc } from '@app/ui/services/crosshair.service';
 
-import PopSFXMp3 from '@sounds/PopSFX.mp3';
+import Set_Down_Item_1 from '@sounds/Set_Down_Item_1.mp3';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 12;
@@ -108,7 +108,7 @@ class Terrain {
     this.end = new Coord();
 
     this.placementSound = new Howl({
-      src: [PopSFXMp3],
+      src: [Set_Down_Item_1],
       volume: 0.5
     });
 
