@@ -141,7 +141,7 @@ export const SUB_BIOMES: IBiomes = {
       },
       {
         weight: 0.3,
-        name: ['simple_tree', 'yellow_tree'],
+        name: ['simple_tree'],
         scarcity: 0.975,
         e: null,
         m: null,

@@ -12,10 +12,13 @@ $crosshair-opacity : 0.95;
   border-radius: 50%;
   opacity: $crosshair-opacity;
 
-  &.crosshair--valid {
+  &.crosshair--can-place-object {
     border-color: $color-green;
   }
-  &.crosshair--invalid {
+  &.crosshair--can-interact{
+    border-color: $color-blue;
+  }
+  &.crosshair--no-action {
     border-color: $color-red;
   }
 }

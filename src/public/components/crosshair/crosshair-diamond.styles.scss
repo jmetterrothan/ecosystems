@@ -11,11 +11,17 @@ $crosshair-opacity : 0.95;
   border: $crosshair-thickness solid #afafaf;
   opacity: $crosshair-opacity;
   transform: rotateZ(45deg);
+  transition: transform ease 0.25s;
 
-  &.crosshair--valid {
+  &.crosshair--can-place-object {
     border-color: $color-green;
   }
-  &.crosshair--invalid {
+  &.crosshair--can-interact{
+    border-color: $color-blue;
+    transform: rotateZ(45deg) scale(2);
+    transition: transform ease 0.25s;
+  }
+  &.crosshair--no-action {
     border-color: $color-red;
   }
 }

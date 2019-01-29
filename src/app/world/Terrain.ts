@@ -26,6 +26,7 @@ import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progres
 import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
 
 import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+import { CrosshairState } from '@app/ui/enums/CrosshairState.enum';
 
 import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@shared/utils/Common.utils';
@@ -65,6 +66,7 @@ class Terrain {
   public water: THREE.Mesh;
 
   private layers: THREE.Group;
+  private specialObjectList: THREE.Object3D[];
 
   private progressionSvc: ProgressionService;
   private playerSvc: PlayerService;
@@ -109,6 +111,8 @@ class Terrain {
       src: [PopSFXMp3],
       volume: 0.5
     });
+
+    this.specialObjectList = [];
   }
 
   init() {
@@ -243,6 +247,8 @@ class Terrain {
 
           // mark this chunk as visible for the next update
           chunk.setVisible(true);
+          chunk.update();
+
           this.visibleChunks.push(chunk);
         }
       }
@@ -251,7 +257,7 @@ class Terrain {
     const biome = this.generator.getBiome();
     if (biome.hasWater()) {
       // update water distorsion effect
-      (<THREE.ShaderMaterial>this.water.material).uniforms.time.value = window.performance.now() / 1000;
+      (<THREE.ShaderMaterial>this.water.material).uniforms.time.value = window.performance.now() / 1000; 
       (<THREE.ShaderMaterial>this.water.material).needsUpdate = true;
     }
   }
@@ -282,21 +288,26 @@ class Terrain {
    * @param {THREE.Raycaster} raycaster
    */
   placeObjectWithMouseClick(raycaster: THREE.Raycaster) {
+    // no preview
+    if (!this.previewObject) {
+      if (crosshairSvc.status.state === CrosshairState.DEFAULT) {
+        crosshairSvc.shake(true);
+      }
+      return;
+    }
+
     const biome = this.generator.getBiome();
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
 
     for (const intersection of intersections) {
-      if (!biome.hasWater() && intersection.object === this.water) { continue; } // if water is disabled
-      if (!this.previewObject) { crosshairSvc.shake(true); return; } // no preview
-
-      const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
-
-      if (!chunk.canPlaceObject(this.previewObject) || !chunk.checkInteractionDistance(intersection.distance)) {
-        crosshairSvc.shake(true);
-        return;
+      // if water is disabled
+      if (!biome.hasWater() && intersection.object === this.water) {
+        continue;
       }
 
+      const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
       chunk.placeObject(this.previewObject, { animate: true, save: true });
+
       this.previewItem = {
         ...this.previewItem,
         p: this.previewObject.position
@@ -308,6 +319,7 @@ class Terrain {
       }
 
       this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed);
+
       this.progressionSvc.increment({
         name: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
         value: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
@@ -315,7 +327,9 @@ class Terrain {
       });
 
       this.objectAnimated = true;
+
       this.resetPreview();
+
       setTimeout(() => {
         this.objectAnimated = false;
         this.placementSound.play();
@@ -378,6 +392,7 @@ class Terrain {
     } while (!chunk.canPlaceObject(object));
 
     chunk.placeObject(object, { save: true });
+    this.specialObjectList.push(object);
 
     return object;
   }
@@ -388,29 +403,41 @@ class Terrain {
    */
   manageObjectPreview(raycaster: THREE.Raycaster) {
     if (this.objectAnimated) return;
+
+    // special object interaction
+    const SOIntersections: THREE.Intersection[] = raycaster.intersectObjects(this.specialObjectList, true);
+    if (SOIntersections.length > 0) {
+      for (const intersection of SOIntersections) {
+        if (intersection.distance < Chunk.SO_INTERACTION_DISTANCE) {
+          this.resetPreview();
+          crosshairSvc.switch(CrosshairState.CAN_INTERACT_WITH_OBJECT);
+        }
+        return;
+      }
+    }
+
+    // terrain/water interaction
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
 
-    if (!intersections.length && this.previewObject) {
-      this.scene.remove(this.previewObject);
-      this.previewActive = false;
+    if (!intersections.length) {
+      // player is looking obviously outside of range
+      crosshairSvc.show(false);
+      this.resetPreview();
+      return;
     }
 
     for (const intersection of intersections) {
       const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
-      const validDistance = chunk.checkInteractionDistance(intersection.distance);
+      const validDistance = intersection.distance <= Chunk.INTERACTION_DISTANCE;
 
-      crosshairSvc.show(validDistance);
+      const inNotInRange = !validDistance || this.intersectBorder(intersection.point);
+      crosshairSvc.show(!inNotInRange);
 
-      if (!validDistance || this.intersectBorder(intersection.point)) {
+      if (inNotInRange) {
         // bail out if the target is ouside the valid range
-        if (this.previewObject) {
-          this.scene.remove(this.previewObject);
-          this.previewActive = false;
-        }
-        crosshairSvc.switch(false);
+        this.resetPreview();
         return;
       }
-      crosshairSvc.switch(true);
 
       const biome = this.generator.getSubBiome(
         this.generator.computeElevationAt(intersection.point.x, intersection.point.z),
@@ -419,12 +446,12 @@ class Terrain {
 
       // if user fly over another biome or if preview item does not exist
       if (this.currentSubBiome !== biome || !this.previewItem || this.intersectionSurface !== intersection.object) {
-        this.scene.remove(this.previewObject);
         this.resetPreview();
 
         this.currentSubBiome = biome;
         this.intersectionSurface = intersection.object;
 
+        // retrieve current preview object
         const item = chunk.pick(intersection.point.x, intersection.point.z, {
           force: true,
           float: (this.intersectionSurface === this.water)
@@ -432,8 +459,7 @@ class Terrain {
 
         if (!item) {
           // bail out if no item gets picked
-          this.previewActive = false;
-          crosshairSvc.switch(false);
+          this.resetPreview();
           return;
         }
 
@@ -444,21 +470,17 @@ class Terrain {
         this.previewActive = true;
       }
 
-      const canPlaceObject = chunk.canPlaceObject(this.previewObject);
-      crosshairSvc.switch(canPlaceObject);
-
-      if (!this.previewActive) this.scene.add(this.previewObject);
-      if (!canPlaceObject) {
+      if (!chunk.canPlaceObject(this.previewObject)) {
         // bail out if the item cannot be placed at the current location
-        this.scene.remove(this.previewObject);
-        this.previewActive = false;
+        this.resetPreview();
         return;
       }
 
+      crosshairSvc.switch(CrosshairState.CAN_PLACE_OBJECT);
       this.previewObject.position.set(intersection.point.x, intersection.point.y, intersection.point.z);
+
       break;
     }
-
   }
 
   /**
@@ -690,9 +712,16 @@ class Terrain {
 
   private resetPreview() {
     this.previewItem = null;
-    this.previewObject = null;
     this.currentSubBiome = null;
     this.intersectionSurface = null;
+
+    if (this.previewObject) {
+      this.scene.remove(this.previewObject);
+      this.previewObject = null;
+    }
+
+    crosshairSvc.switch(CrosshairState.DEFAULT);
+    this.previewActive = false;
   }
 
   private intersectBorder(intersection: THREE.Vector3): boolean {

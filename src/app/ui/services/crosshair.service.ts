@@ -1,5 +1,6 @@
 import { Observable, Subject } from 'rxjs';
 
+import { CrosshairState } from '@app/ui/enums/CrosshairState.enum';
 import { ICrosshairStatus } from '@shared/models/crosshair.model';
 
 class CrosshairService {
@@ -11,8 +12,8 @@ class CrosshairService {
     this.status$ = new Subject();
 
     this.status = {
+      state: CrosshairState.DEFAULT,
       show: false,
-      valid: false,
       shake: false
     };
 
@@ -43,10 +44,10 @@ class CrosshairService {
     };
   }
 
-  switch(v: boolean) {
+  switch(v: CrosshairState) {
     this.status = {
       ...this.status,
-      valid: v,
+      state: v,
     };
   }
 
