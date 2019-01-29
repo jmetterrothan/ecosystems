@@ -1,5 +1,5 @@
 import React from 'react';
-import { Howl, howler } from 'howler';
+import { Howl } from 'howler';
 
 import NotificationContainer from '@public/components/notification/NotificationContainer';
 import UIState from '@ui/UIState';

@@ -1,5 +1,5 @@
 import { Observable, Subject } from 'rxjs';
-
+import { Howler } from 'howler';
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
 
 import { CONFIGS } from '@shared/constants/config.constants';
@@ -34,6 +34,7 @@ class ConfigService {
 
   set soundEnabled (soundEnabled) {
     this.s = soundEnabled;
+    Howler.mute(!soundEnabled),
     this.soundEnabled$.next(soundEnabled);
   }
 

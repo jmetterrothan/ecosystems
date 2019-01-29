@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
-import { Howl, Howler } from 'howler';
 
 import ConfigService, { configSvc } from '@shared/services/config.service';
 

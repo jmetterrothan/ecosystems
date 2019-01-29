@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { stack } from '@tensorflow/tfjs';
-import { howler, Howl } from 'howler';
+import { Howl } from 'howler';
 
 import World from '@world/World';
 import Chunk from '@world/Chunk';
