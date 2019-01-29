@@ -247,6 +247,8 @@ class Terrain {
 
           // mark this chunk as visible for the next update
           chunk.setVisible(true);
+          chunk.update();
+
           this.visibleChunks.push(chunk);
         }
       }
@@ -255,7 +257,7 @@ class Terrain {
     const biome = this.generator.getBiome();
     if (biome.hasWater()) {
       // update water distorsion effect
-      (<THREE.ShaderMaterial>this.water.material).uniforms.time.value = window.performance.now() / 1000;
+      (<THREE.ShaderMaterial>this.water.material).uniforms.time.value = window.performance.now() / 1000; 
       (<THREE.ShaderMaterial>this.water.material).needsUpdate = true;
     }
   }
