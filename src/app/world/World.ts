@@ -13,7 +13,7 @@ import Weather from '@world/Weather';
 import Player from '@app/Player';
 import MathUtils from '@utils/Math.utils';
 
-import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+import { MouseTypes } from '@shared/enums/mouse.enum';
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
 
 class World {
@@ -180,7 +180,7 @@ class World {
   update(delta: number) {
     if (!this.initialized) return;
 
-    this.handleMouseInteraction(MOUSE_TYPES.MOVE);
+    this.handleMouseInteraction(MouseTypes.MOVE);
     this.camera.updateMatrixWorld(true);
 
     this.frustum.setFromMatrix(
@@ -198,9 +198,9 @@ class World {
 
   /**
    * Called each time the user has an interaction with his mouse
-   * @param {MOUSE_TYPES} interactionType
+   * @param {MouseTypes} interactionType
    */
-  handleMouseInteraction(interactionType: MOUSE_TYPES) {
+  handleMouseInteraction(interactionType: MouseTypes) {
     const pos = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
     const mouse = new THREE.Vector2(
       (pos.x / window.innerWidth) * 2 - 1,

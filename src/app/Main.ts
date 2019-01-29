@@ -14,8 +14,8 @@ import StorageService, { storageSvc } from '@shared/services/storage.service';
 import CoreService, { coreSvc } from '@shared/services/core.service';
 import UIService, { uiSvc } from '@ui/services/ui.service';
 
-import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
-import { UI_STATES } from '@ui/enums/UIStates.enum';
+import { MouseTypes } from '@shared/enums/mouse.enum';
+import { UIStates } from '@ui/enums/UIStates.enum';
 import UIManager from '@ui/UIManager';
 
 class Main {
@@ -164,7 +164,7 @@ class Main {
 
       document.body.addEventListener('click', () => {
 
-        if (!this.uiSvc.isState(UI_STATES.GAME)) return;
+        if (!this.uiSvc.isState(UIStates.GAME)) return;
 
         document.body.requestPointerLock = document.body.requestPointerLock || document.body.mozRequestPointerLock || document.body.webkitRequestPointerLock;
         document.body.requestPointerLock();
@@ -172,7 +172,7 @@ class Main {
         if (!this.controls.enabled || !this.world.isInitialized()) { return; }
 
         // mouse position always in the center of the screen
-        this.world.handleMouseInteraction(MOUSE_TYPES.CLICK);
+        this.world.handleMouseInteraction(MouseTypes.CLICK);
       });
 
       document.body.addEventListener('keydown', e => {

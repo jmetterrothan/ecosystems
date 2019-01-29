@@ -6,7 +6,7 @@ import UIState from '@ui/UIState';
 
 import Loading from '@templates/loading/loading';
 
-import { UI_STATES } from '@ui/enums/UIStates.enum';
+import { UIStates } from '@ui/enums/UIStates.enum';
 
 class UILoadingState extends UIState {
   init() {
@@ -21,7 +21,7 @@ class UILoadingState extends UIState {
     const seed = await app.load(parameters.seed, parameters.online);
     app.run();
 
-    uiManager.switchState(UI_STATES.MENU, { seed, tab: 0 });
+    uiManager.switchState(UIStates.MENU, { seed, tab: 0 });
   }
 
   render() {

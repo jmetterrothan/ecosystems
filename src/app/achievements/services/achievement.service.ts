@@ -1,6 +1,8 @@
 import { Subject } from 'rxjs';
 import uniqid from 'uniqid';
-import { Howl } from 'howler';
+
+import MathUtils from '@shared/utils/Math.utils';
+import SoundManager from '@shared/SoundManager';
 
 import StorageService, { storageSvc } from '@shared/services/storage.service';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
@@ -18,10 +20,6 @@ import { TROPHIES } from '@achievements/constants/trophies.constants';
 import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
 import { TROPHY_TYPE } from '@achievements/enums/trophyType.enum';
 
-import MathUtils from '@shared/utils/Math.utils';
-
-import Unlock_level_Game_Sound from '@sounds/Unlock_level_Game_Sound.mp3';
-
 class AchievementService {
   private storageSvc: StorageService;
   private monitoringSvc: MonitoringService;
@@ -33,8 +31,6 @@ class AchievementService {
 
   trophy$: Subject<number>;
 
-  private unlockSound: Howl;
-
   constructor() {
     this.storageSvc = storageSvc;
     this.monitoringSvc = monitoringSvc;
@@ -45,11 +41,6 @@ class AchievementService {
     this.storage = this.storageSvc.get<Object>(STORAGES_KEY.trophies) || {};
 
     this.trophy$ = new Subject();
-
-    this.unlockSound = new Howl({
-      src: [Unlock_level_Game_Sound],
-      volume: 0.5
-    });
   }
 
   getTrophiesCount(): number {
@@ -149,7 +140,7 @@ class AchievementService {
       duration: 5000
     });
 
-    this.unlockSound.play();
+    SoundManager.play('trophy_unlock');
 
     // send event to google analytics
     this.monitoringSvc.sendEvent(this.monitoringSvc.categories.trophy, this.monitoringSvc.actions.completed, trophy.value);

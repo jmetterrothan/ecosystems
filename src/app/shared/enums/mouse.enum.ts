@@ -1,4 +1,4 @@
-export enum MOUSE_TYPES {
+export enum MouseTypes {
   CLICK,
   MOVE
 }

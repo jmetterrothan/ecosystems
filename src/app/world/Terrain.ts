@@ -1,17 +1,19 @@
 import * as THREE from 'three';
 import { stack } from '@tensorflow/tfjs';
-import { Howl } from 'howler';
 
 import World from '@world/World';
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Coord from '@world/Coord';
 import Biome from '@world/Biome';
+import SoundManager from '@shared/SoundManager';
+import MathUtils from '@shared/utils/Math.utils';
+import CommonUtils from '@shared/utils/Common.utils';
 
 import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
 import { configSvc } from '@app/shared/services/config.service';
-import PlayerService, { playerSvc } from '@shared/services/player.service';
 import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
+import { crosshairSvc } from '@app/ui/services/crosshair.service';
 
 import { WATER_MATERIAL } from '@materials/water.material';
 import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
@@ -25,14 +27,8 @@ import { ILowHigh } from './models/biomeWeightedObject.model';
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
 
-import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
+import { MouseTypes } from '@shared/enums/mouse.enum';
 import { CrosshairState } from '@app/ui/enums/CrosshairState.enum';
-
-import MathUtils from '@shared/utils/Math.utils';
-import CommonUtils from '@shared/utils/Common.utils';
-import { crosshairSvc } from '@app/ui/services/crosshair.service';
-
-import Set_Down_Item_1 from '@sounds/Set_Down_Item_1.mp3';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 12;
@@ -69,19 +65,14 @@ class Terrain {
   private specialObjectList: THREE.Object3D[];
 
   private progressionSvc: ProgressionService;
-  private playerSvc: PlayerService;
   private multiplayerSvc: MultiplayerService;
 
   // preview
   private previewItem: IPick;
   private previewObject: THREE.Object3D;
-  private previewActive: boolean;
   private currentSubBiome: IBiome;
   private intersectionSurface: THREE.Object3D;
   private objectAnimated: boolean;
-
-  // Placemount sound
-  private placementSound: any;
 
   /**
    * Terrain constructor
@@ -100,17 +91,11 @@ class Terrain {
     this.layers = new THREE.Group();
 
     this.progressionSvc = progressionSvc;
-    this.playerSvc = playerSvc;
     this.multiplayerSvc = multiplayerSvc;
 
     this.chunk = new Coord();
     this.start = new Coord();
     this.end = new Coord();
-
-    this.placementSound = new Howl({
-      src: [Set_Down_Item_1],
-      volume: 0.5
-    });
 
     this.specialObjectList = [];
   }
@@ -265,15 +250,15 @@ class Terrain {
   /**
    * Handle user interaction between the terrain and mouse
    * @param {THREE.Raycaster} raycaster
-   * @param {MOUSE_TYPES} interactionType
+   * @param {MouseTypes} interactionType
    */
-  handleMouseInteraction(raycaster: THREE.Raycaster, interactionType: MOUSE_TYPES) {
+  handleMouseInteraction(raycaster: THREE.Raycaster, interactionType: MouseTypes) {
     switch (interactionType) {
-      case MOUSE_TYPES.MOVE:
+      case MouseTypes.MOVE:
         this.manageObjectPreview(raycaster);
         break;
 
-      case MOUSE_TYPES.CLICK:
+      case MouseTypes.CLICK:
         this.placeObjectWithMouseClick(raycaster);
         this.generator.getBiome().handleClick(raycaster);
         break;
@@ -332,7 +317,7 @@ class Terrain {
 
       setTimeout(() => {
         this.objectAnimated = false;
-        this.placementSound.play();
+        SoundManager.play('set_down');
       }, Chunk.ANIMATION_DELAY + 200
       );
 
@@ -467,7 +452,6 @@ class Terrain {
         this.previewObject = chunk.getObject(this.previewItem);
 
         this.scene.add(this.previewObject);
-        this.previewActive = true;
       }
 
       if (!chunk.canPlaceObject(this.previewObject)) {
@@ -721,7 +705,6 @@ class Terrain {
     }
 
     crosshairSvc.switch(CrosshairState.DEFAULT);
-    this.previewActive = false;
   }
 
   private intersectBorder(intersection: THREE.Vector3): boolean {

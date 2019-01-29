@@ -1,6 +1,6 @@
 import React from 'react';
-import { Howl } from 'howler';
 
+import SoundManager from '@shared/SoundManager';
 import NotificationContainer from '@public/components/notification/NotificationContainer';
 import UIState from '@ui/UIState';
 import UIHomeState from '@ui/states/UIHomeState';
@@ -9,56 +9,46 @@ import withUIManager from '@public/components/withUIManager/withUIManager';
 import CookiesConsent from '@public/components/cookies/cookies-consent';
 
 import UIService, { uiSvc } from './services/ui.service';
-import { notificationSvc } from '@shared/services/notification.service';
 import { translationSvc } from '@shared/services/translation.service';
 
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
-import { UI_STATES } from '@ui/enums/UIStates.enum';
-
-import Builder_Game_Item_Click_1 from '@sounds/Builder_Game_Item_Click_1.mp3';
+import { UIStates } from '@ui/enums/UIStates.enum';
 
 interface IUIManagerProps {
 
 }
 
 interface IUIManagerState {
-  currentUiStateID: UI_STATES;
+  currentUiStateID: UIStates;
   parameters: IUIManagerParameters;
 }
 
 class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   static readonly ENABLED: boolean = false;
 
-  private uiStates: Map<UI_STATES, UIState>;
+  private uiStates: Map<UIStates, UIState>;
   private uiSvc: UIService;
-
-  private clickSound: Howl;
 
   constructor(props: IUIManagerProps, state: IUIManagerState) {
     super(props, state);
 
     this.uiSvc = uiSvc;
-    this.uiStates = new Map<UI_STATES, UIState>();
+    this.uiStates = new Map<UIStates, UIState>();
 
     this.state = {
-      currentUiStateID: UI_STATES.HOME,
+      currentUiStateID: UIStates.HOME,
       parameters: {}
     };
 
-    this.clickSound = new Howl({
-      src: [Builder_Game_Item_Click_1],
-      volume: 0.5
-    });
-
     translationSvc.init();
 
-    this.addState(UI_STATES.HOME, new UIHomeState(null));
+    this.addState(UIStates.HOME, new UIHomeState(null));
 
     // ui click sound
     window.addEventListener('click', (e) => {
       if (e.srcElement.classList.contains('ui-click-sound')) {
-        this.clickSound.play();
+        SoundManager.play('click');
       }
     });
   }
@@ -73,12 +63,12 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
       duration: 5000
     });
     */
-    // this.switchState(UI_STATES.LOADING);
+    // this.switchState(UIStates.LOADING);
   }
 
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
-    if (this.state.currentUiStateID === UI_STATES.HOME) uiState.process(this);
+    if (this.state.currentUiStateID === UIStates.HOME) uiState.process(this);
 
     return (
       <>
@@ -93,7 +83,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     );
   }
 
-  switchState(state: UI_STATES, parameters?: any) {
+  switchState(state: UIStates, parameters?: any) {
     if (!this.uiStates.has(state)) this.addState(state);
 
     this.setState({
@@ -109,10 +99,10 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   }
 
   manageMenu(open: boolean) {
-    this.switchState(open ? UI_STATES.MENU : UI_STATES.GAME);
+    this.switchState(open ? UIStates.MENU : UIStates.GAME);
   }
 
-  private addState(key: UI_STATES, value?: UIState) {
+  private addState(key: UIStates, value?: UIState) {
     if (!this.uiStates.has(key)) {
       const uiState = value ? value : stateFactory(key);
       uiState.init();
