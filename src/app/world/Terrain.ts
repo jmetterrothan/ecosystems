@@ -285,6 +285,8 @@ class Terrain {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
 
     for (const intersection of intersections) {
+      const soundName = intersection.object === this.water ? 'splash' : 'set_down';
+
       // if water is disabled
       if (!biome.hasWater() && intersection.object === this.water) {
         continue;
@@ -317,7 +319,7 @@ class Terrain {
 
       setTimeout(() => {
         this.objectAnimated = false;
-        SoundManager.play('set_down');
+        SoundManager.play(soundName);
       }, Chunk.ANIMATION_DELAY + 200
       );
 

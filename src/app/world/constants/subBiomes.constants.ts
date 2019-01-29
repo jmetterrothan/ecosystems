@@ -90,7 +90,7 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.5,
+        weight: 0.4,
         name: 'reed',
         scarcity: 0.75,
         e: { low: Chunk.SEA_ELEVATION - 0.01, high: Chunk.SEA_ELEVATION + 0.125 },
@@ -105,6 +105,15 @@ export const SUB_BIOMES: IBiomes = {
         e: null,
         m: null,
         scale: { min: 0.75, max: 3 },
+        float: false,
+      },
+      {
+        weight: 0.1,
+        name: 'lilypad',
+        scarcity: 0.9,
+        e: { low: null, high: Chunk.SEA_ELEVATION - 0.05 },
+        m: { low: 0.5, high: null },
+        scale: { min: 0.75, max: 1.65 },
         float: false,
       },
     ]
@@ -211,7 +220,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.6,
         name: ['cactus1', 'cactus2', 'cactus3', 'cactus4'],
-        scarcity: 0.85,
+        scarcity: 0.875,
         e: { low: Chunk.SEA_ELEVATION + 0.15, high: null },
         m: { low: 0.0, high: 0.5 },
         scale: { min: 1.5, max: 2.5 },
@@ -220,7 +229,7 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.25,
         name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
-        scarcity: 0.9,
+        scarcity: 0.925,
         e: null,
         m: null,
         scale: { min: 0.5, max: 2.5 },
@@ -464,7 +473,7 @@ export const SUB_BIOMES: IBiomes = {
         name: 'lilypad',
         scarcity: 0.8,
         e: { low: null, high: Chunk.SEA_ELEVATION - 0.05 },
-        m: { low: 0.65, high: null },
+        m: { low: 0.5, high: null },
         scale: { min: 1.0, max: 1.65 },
         float: true,
       },

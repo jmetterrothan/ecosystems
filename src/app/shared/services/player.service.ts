@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
+import SoundManager from '@shared/SoundManager';
 
 import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
 import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
@@ -46,15 +47,19 @@ class PlayerService {
 
     // go underwater
     if (this.position.y < Chunk.SEA_LEVEL && !this.underwater && isWithinWorldBorders) {
-      this.underwater = true;
+      if (!this.underwater) {
+        this.underwater = true;
+        SoundManager.play('bubbles');
 
-      this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
-      this.monitoringSvc.sendEvent(this.monitoringSvc.categories.biome, this.monitoringSvc.actions.visited, PROGRESSION_COMMON_STORAGE_KEYS.going_underwater.value);
+        this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
+        this.monitoringSvc.sendEvent(this.monitoringSvc.categories.biome, this.monitoringSvc.actions.visited, PROGRESSION_COMMON_STORAGE_KEYS.going_underwater.value);
+      }
     }
 
     // terrestiral
     if ((this.position.y >= Chunk.SEA_LEVEL || !isWithinWorldBorders) && this.underwater) {
       this.underwater = false;
+      SoundManager.play('bubbles');
     }
   }
 
