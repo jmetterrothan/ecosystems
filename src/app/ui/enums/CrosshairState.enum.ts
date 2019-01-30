@@ -1,4 +1,4 @@
-export enum CrosshairState {
+export enum CROSSHAIR_STATES {
   DEFAULT,
   CAN_PLACE_OBJECT,
   CAN_INTERACT_WITH_OBJECT,

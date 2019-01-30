@@ -38,7 +38,6 @@ abstract class Biome {
     this.progressionSvc = progressionSvc;
 
     this.water = true;
-
     this.waterDistortion = true;
     this.waterDistortionFreq = 1.0;
     this.waterDistortionAmp = 1024.0;
@@ -125,7 +124,7 @@ abstract class Biome {
   getWaterDistortion(): boolean { return this.waterDistortion; }
   getWaterDistortionFreq(): number { return this.waterDistortionFreq; }
   getWaterDistortionAmp(): number { return this.waterDistortionAmp; }
-  getSound(): any { return this.sound;  }
+  getSound(): any { return this.sound; }
 }
 
 export default Biome;

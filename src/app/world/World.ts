@@ -4,6 +4,7 @@ import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
 import ConfigService, { configSvc } from '@shared/services/config.service';
+import { voiceSvc } from '@voice/services/voice.service';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
@@ -13,7 +14,7 @@ import Weather from '@world/Weather';
 import Player from '@app/Player';
 import MathUtils from '@utils/Math.utils';
 
-import { MouseTypes } from '@shared/enums/mouse.enum';
+import { INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
 
 class World {
@@ -100,6 +101,7 @@ class World {
 
     biome.init();
 
+    this.watchObjectPlacedWithVoice();
     this.scene.add(this.controls.getObject());
 
     if (configSvc.debug) {
@@ -178,7 +180,7 @@ class World {
   update(delta: number) {
     if (!this.initialized) return;
 
-    this.handleMouseInteraction(MouseTypes.MOVE);
+    this.handlePlayerInteraction(INTERACTION_TYPE.MOUSE_MOVE);
     this.camera.updateMatrixWorld(true);
 
     this.frustum.setFromMatrix(
@@ -198,7 +200,7 @@ class World {
    * Called each time the user has an interaction with his mouse
    * @param {MouseTypes} interactionType
    */
-  handleMouseInteraction(interactionType: MouseTypes) {
+  handlePlayerInteraction(interactionType: INTERACTION_TYPE) {
     const pos = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
     const mouse = new THREE.Vector2(
       (pos.x / window.innerWidth) * 2 - 1,
@@ -206,7 +208,7 @@ class World {
     );
 
     this.raycaster.setFromCamera(mouse, this.camera);
-    this.terrain.handleMouseInteraction(this.raycaster, interactionType);
+    this.terrain.handlePlayerInteraction(this.raycaster, interactionType);
   }
 
   /**
@@ -216,6 +218,10 @@ class World {
    */
   handleKeyboard(key: string, active: boolean) {
     this.player.handleKeyboard(key, active);
+  }
+
+  private watchObjectPlacedWithVoice() {
+    voiceSvc.wordDetection$.subscribe(() => this.handlePlayerInteraction(INTERACTION_TYPE.VOICE));
   }
 
   isInitialized(): boolean { return this.initialized; }

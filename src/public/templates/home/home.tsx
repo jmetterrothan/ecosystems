@@ -12,7 +12,6 @@ import { storageSvc } from '@shared/services/storage.service';
 
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
-import { UIStates } from '@ui/enums/UIStates.enum';
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
 
@@ -23,6 +22,8 @@ import previewImage2 from '@images/previews/world2.png';
 import previewImage3 from '@images/previews/world3.png';
 import previewImage4 from '@images/previews/world4.png';
 import previewImage5 from '@images/previews/world5.png';
+
+import { UI_STATES } from '@ui/enums/UIStates.enum';
 
 interface IHomeProps {
   uiManager: UIManager;
@@ -105,7 +106,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     const { seedValue, onlineMode, soundMode } = this.state;
     const { uiManager } = this.props;
 
-    uiManager.switchState(UIStates.LOADING, {
+    uiManager.switchState(UI_STATES.LOADING, {
       seed: seedValue.length ? seedValue.trim() : undefined,
       online: onlineMode,
       sound: soundMode

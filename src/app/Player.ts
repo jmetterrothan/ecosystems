@@ -1,10 +1,10 @@
 import * as THREE from 'three';
+import * as tf from '@tensorflow/tfjs';
 
 import 'three/examples/js/controls/PointerLockControls';
 
 import Chunk from '@world/Chunk';
 import Terrain from '@world/Terrain';
-import Model from '@voice/Model';
 import Voice from '@voice/Voice';
 
 import { multiplayerSvc } from '@online/services/multiplayer.service';
@@ -22,6 +22,8 @@ class Player {
   private moveRight: boolean;
   private moveUp: boolean;
   private moveDown: boolean;
+
+  private voice: Voice;
 
   private speed: THREE.Vector3;
   private velocity: THREE.Vector3;
@@ -62,15 +64,13 @@ class Player {
 
     playerSvc.setPosition(spawn);
 
-    // await this.initVoice();
+    await this.initVoice();
   }
 
   private async initVoice() {
-    this.voiceModel = new Model();
-    await this.voiceModel.train();
+    const voiceModel = await tf.loadModel('https://ecosystem-server.herokuapp.com/voicemodel.json');
 
-    // this.voice = new Voice(this.voiceModel);
-    // this.voice.listen();
+    this.voice = new Voice(voiceModel);
   }
 
   /**
@@ -156,7 +156,7 @@ class Player {
       case 'ArrowRight': case 'd': case 'D': this.moveRight = active; break;
       case '+': case 'a': case 'A': this.moveUp = active; break;
       case '-': case 'e': case 'E': this.moveDown = active; break;
-      case 'v': !this.voice.predictState ? this.voice.listen() : this.voice.stopListening();
+      case 'v': case 'V': this.voice.togglePredictState(); break;
     }
   }
 
