@@ -8,7 +8,7 @@ import Terrain from '@world/Terrain';
 
 import TerrainMesh from '@mesh/TerrainMesh';
 import WaterMesh from '@mesh/WaterMesh';
-import Stack from '@shared/Stack';
+import Fifo from '@app/shared/Fifo';
 
 import { IPick } from '@world/models/pick.model';
 import { IPlaceObject, IPickObject, IStackReference } from '@world/models/objectParameters.model';
@@ -255,7 +255,7 @@ class Chunk {
 
     // if object stack doesn't exist yet we create one
     if (!Chunk.CHUNK_OBJECT_STACK[item.n]) {
-      Chunk.CHUNK_OBJECT_STACK[item.n] = new Stack<THREE.Object3D>();
+      Chunk.CHUNK_OBJECT_STACK[item.n] = new Fifo<THREE.Object3D>();
     }
 
     // if the stack is empty, create a new object else pop an object from the stack

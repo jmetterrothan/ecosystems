@@ -56,7 +56,7 @@ class PlayerService {
       }
     }
 
-    // terrestiral
+    // terrestrial
     if ((this.position.y >= Chunk.SEA_LEVEL || !isWithinWorldBorders) && this.underwater) {
       this.underwater = false;
       SoundManager.play('bubbles');

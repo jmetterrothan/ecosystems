@@ -1,14 +1,14 @@
 import * as THREE from 'three';
 
 import BiomeGenerator from '@world/BiomeGenerator';
-import Stack from '@shared/Stack';
+import Fifo from '@shared/Fifo';
 
 import { IChunkParameters } from '@world/models/chunkParameters.model';
 
 import { MESH_TYPES } from '@mesh/enums/mesh.enum';
 
 abstract class Mesh {
-  static GEOMETRY_STACK = new Stack<THREE.Geometry>();
+  static GEOMETRY_STACK = new Fifo<THREE.Geometry>();
 
   readonly row: number;
   readonly col: number;

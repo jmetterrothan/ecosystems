@@ -1,4 +1,4 @@
-class Stack<T>
+class Fifo<T>
 {
   private list: T[];
   private size: number;
@@ -32,4 +32,4 @@ class Stack<T>
   }
 }
 
-export default Stack;
+export default Fifo;
