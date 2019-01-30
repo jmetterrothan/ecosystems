@@ -6,7 +6,7 @@ import { IUIState } from '@ui/models/UIState';
 
 import Loading from '@templates/loading/loading';
 
-import { UI_STATES } from '@ui/enums/UIStates.enum';
+import { UIStates } from '@ui/enums/UIStates.enum';
 
 class UILoadingState extends React.PureComponent implements IUIState {
   init() {
@@ -21,7 +21,7 @@ class UILoadingState extends React.PureComponent implements IUIState {
     const seed = await app.load(parameters.seed, parameters.online);
     app.run();
 
-    uiManager.switchState(UI_STATES.MENU, { seed });
+    uiManager.switchState(UIStates.MENU, { seed });
   }
 
   render() {
