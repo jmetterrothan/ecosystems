@@ -5,6 +5,7 @@ import Col from '@components/col/col';
 import UIManager from '@ui/UIManager';
 import CommonUtils from '@app/shared/utils/Common.utils';
 import MathUtils from '@app/shared/utils/Math.utils';
+import ImageWithLoading from '@shared/ImageWithLoading';
 
 import { configSvc } from '@app/shared/services/config.service';
 import { translationSvc } from '@app/shared/services/translation.service';
@@ -158,7 +159,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
           <h1 className='home__title'>{translationSvc.translate('UI.home.title')}</h1>
         </header>
         <div className='home__preview'>
-          <img src={image} alt='world' />
+          <ImageWithLoading src={image} alt='world preview' />
         </div>
         <form id='gameSetup' className='home__form form' onSubmit={this.handleSubmit} ref={el => this.form = el}>
           <Row suffix='-48'>
