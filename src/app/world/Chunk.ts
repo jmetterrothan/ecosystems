@@ -259,7 +259,7 @@ class Chunk {
     }
 
     // if the stack is empty, create a new object else pop an object from the stack
-    if (Chunk.CHUNK_OBJECT_STACK[item.n].empty) {
+    if (Chunk.CHUNK_OBJECT_STACK[item.n].isEmpty()) {
       object = World.LOADED_MODELS.get(item.n).clone();
     } else {
       object = Chunk.CHUNK_OBJECT_STACK[item.n].pop();

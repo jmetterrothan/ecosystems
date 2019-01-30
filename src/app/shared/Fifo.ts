@@ -11,6 +11,6 @@ class Fifo<T> extends Stack<T>
     this.size--;
     return this.list.pop();
   }
-}
+}}
 
 export default Fifo;
