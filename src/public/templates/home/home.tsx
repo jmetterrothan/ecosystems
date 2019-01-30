@@ -149,16 +149,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
   }
 
   render() {
-    const { seedValue, formValid, selectedQuality, debugMode, onlineMode, soundMode, image } = this.state;
-
-    const debugHtml = (
-      <div className='form__group mt-2'>
-        <input type='checkbox' id='debugMode' onChange={this.handleDebugChange} checked={debugMode === true} />
-        <label htmlFor='debugMode'>{translationSvc.translate('UI.home.debug')}</label>
-      </div>
-    );
-
-    const debugHtmlFinal = CommonUtils.isDev() ? debugHtml : null;
+    const { seedValue, formValid, selectedQuality, onlineMode, soundMode, image } = this.state;
 
     return (
       <section className='ui__state home p-2'>
@@ -220,7 +211,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
             </Col>
           </Row>
 
-          {debugHtmlFinal}
+          {this.renderDebugHtmlFinal()}
 
           <footer className='home__footer mt-3 mb-2-t mb-4-l'>
             <input form='gameSetup' type='submit' value={translationSvc.translate('UI.home.form.start_btn')} className='btn btn--magenta btn--expand-mobile ui-click-sound' disabled={!formValid} />
@@ -228,6 +219,19 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
         </form>
       </section>
     );
+  }
+
+  private renderDebugHtmlFinal(): JSX.Element {
+    const { debugMode } = this.state;
+
+    const debugHtml = (
+      <div className='form__group mt-2'>
+        <input type='checkbox' id='debugMode' onChange={this.handleDebugChange} checked={debugMode === true} />
+        <label htmlFor='debugMode'>{translationSvc.translate('UI.home.debug')}</label>
+      </div>
+    );
+
+    return CommonUtils.isDev() ? debugHtml : null;
   }
 }
 
