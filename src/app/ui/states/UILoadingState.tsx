@@ -27,7 +27,6 @@ class UILoadingState extends React.PureComponent implements IUIState {
   render() {
     return Loading;
   }
-
 }
 
 export default UILoadingState;

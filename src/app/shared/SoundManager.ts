@@ -33,6 +33,15 @@ class SoundManager {
   public static play(alias: string) {
     SoundManager.get(alias).play();
   }
+
+  public static playWithPromise(alias: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const sound = SoundManager.get(alias);
+      sound.once('playerror', reject);
+      sound.once('end', () => resolve(sound));
+      sound.play();
+    });
+  }
 }
 
 export default SoundManager;

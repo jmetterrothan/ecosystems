@@ -27,7 +27,7 @@ class Menu extends React.PureComponent<Props> {
     document.body.requestPointerLock();
   }
 
-  reload() {
+  reload = () => {
     window.location.reload();
   }
 

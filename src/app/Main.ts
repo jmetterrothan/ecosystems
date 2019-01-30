@@ -48,17 +48,6 @@ class Main {
       this.stats.dom.style.bottom = 0;
 
       document.body.appendChild(this.stats.dom);
-
-      /*
-      // reset
-      const resetStrorage = document.createElement('button');
-      resetStrorage.textContent = 'reset';
-      resetStrorage.classList.add('button', 'reset');
-      resetStrorage.addEventListener('click', () => {
-        storageSvc.clearAll();
-      }, false);
-      document.body.appendChild(resetStrorage);
-      */
     }
 
     this.scene = new THREE.Scene();

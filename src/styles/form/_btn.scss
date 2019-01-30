@@ -23,6 +23,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
+  span {
+    pointer-events: none;
+  }
+
   &--expand-mobile {
     width: 100%;
 
