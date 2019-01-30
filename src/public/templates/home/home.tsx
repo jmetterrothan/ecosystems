@@ -3,9 +3,8 @@ import React from 'react';
 import Row from '@components/row/row';
 import Col from '@components/col/col';
 import UIManager from '@ui/UIManager';
-import CommonUtils from '@shared/utils/Common.utils';
-import MathUtils from '@shared/utils/Math.utils';
-import ImageWithLoading from '@shared/ImageWithLoading';
+import CookiesConsent from '@public/components/cookies/cookies-consent';
+import ImageWithLoading from '@components/imageWithLoading/ImageWithLoading';
 import SoundManager from '@app/shared/SoundManager';
 
 import { coreSvc } from '@shared/services/core.service';
@@ -15,7 +14,6 @@ import { storageSvc } from '@shared/services/storage.service';
 
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
-import { UIStates } from '@ui/enums/UIStates.enum';
 import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
 
@@ -26,6 +24,11 @@ import previewImage2 from '@images/previews/world2.png';
 import previewImage3 from '@images/previews/world3.png';
 import previewImage4 from '@images/previews/world4.png';
 import previewImage5 from '@images/previews/world5.png';
+
+import { UIStates } from '@app/ui/enums/UIStates.enum';
+
+import MathUtils from '@shared/utils/Math.utils';
+import CommonUtils from '@shared/utils/Common.utils';
 
 interface IHomeProps {
   uiManager: UIManager;
@@ -171,98 +174,103 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     this.setState({ soundMode });
   }
 
-  getSubmitHTML(): any {
+  getSubmitHTML(): JSX.Element {
     const { busy, ready, formValid } = this.state;
     const coreSvcIsInitialized = ready && formValid;
 
-    return coreSvcIsInitialized ? (
-    <button form='gameSetup' type='submit' className='btn btn--magenta btn--expand-mobile' disabled={busy}>
-      {translationSvc.translate('UI.home.form.start_btn')}
-    </button>
-    ) : (
-    <span className='loading-text'>chargement...</span>
-    );
+    return coreSvcIsInitialized
+      ? (
+        <button form='gameSetup' type='submit' className='btn btn--magenta btn--expand-mobile' disabled={busy}>
+          {translationSvc.translate('UI.home.form.start_btn')}
+        </button>
+      )
+      : (
+        <span className='loading-text'>chargement...</span>
+      );
   }
 
   render() {
     const { seedValue, selectedQuality, onlineMode, soundMode, image } = this.state;
 
     return (
-      <section className='ui__state home p-2'>
-        <header className='home__header mt-2-t mt-4-l mb-2'>
-          <h2 className='home__subtitle mb-1'>{translationSvc.translate('UI.home.subtitle')}</h2>
-          <h1 className='home__title'>{translationSvc.translate('UI.home.title')}</h1>
-        </header>
-        <div className='home__preview'>
-          <ImageWithLoading src={image} alt='world preview' />
-        </div>
-        <form id='gameSetup' className='home__form form' onSubmit={this.handleSubmit} ref={el => this.form = el}>
-          <Row suffix='-48'>
-            <Col className='flexcol--24 flexcol--13-t mb-2 mb-0-t'>
-              <Row className='form__group mb-2'>
-                <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.seed')}</Col>
-                <Col className='flexcol--24'>
-                  <div className='tooltip'>
-                    <input type='text' name='seed' placeholder={translationSvc.translate('UI.home.form.seed_placeholder')} onChange={this.handleChange} value={seedValue} pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={1} ref={el => this.seedInput = el} />
-                    <div className='tooltip__content'>
-                      ?
-                      <div className='tooltip__text p-2'>
-                        <h4 className='mb-1'>{translationSvc.translate('UI.home.form.seed_tooltip_title')}</h4>
-                        <p>{translationSvc.translate('UI.home.form.seed_tooltip_text')}</p>
+      <>
+        <CookiesConsent />
+        <section className='ui__state home p-2'>
+          <header className='home__header mt-2-t mt-4-l mb-2'>
+            <h2 className='home__subtitle mb-1'>{translationSvc.translate('UI.home.subtitle')}</h2>
+            <h1 className='home__title'>{translationSvc.translate('UI.home.title')}</h1>
+          </header>
+          <div className='home__preview'>
+            <ImageWithLoading src={image} alt='world preview' />
+          </div>
+          <form id='gameSetup' className='home__form form' onSubmit={this.handleSubmit} ref={el => this.form = el}>
+            <Row suffix='-48'>
+              <Col className='flexcol--24 flexcol--13-t mb-2 mb-0-t'>
+                <Row className='form__group mb-2'>
+                  <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.seed')}</Col>
+                  <Col className='flexcol--24'>
+                    <div className='tooltip'>
+                      <input type='text' name='seed' placeholder={translationSvc.translate('UI.home.form.seed_placeholder')} onChange={this.handleChange} value={seedValue} pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={1} ref={el => this.seedInput = el} />
+                      <div className='tooltip__content'>
+                        ?
+                        <div className='tooltip__text p-2'>
+                          <h4 className='mb-1'>{translationSvc.translate('UI.home.form.seed_tooltip_title')}</h4>
+                          <p>{translationSvc.translate('UI.home.form.seed_tooltip_text')}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Col>
-              </Row>
-              <Row className='form__group test'>
-                <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.graphics')}</Col>
-                <Col className='flexcol--8'>
-                  <input type='radio' id='qualityLow' name='selectedQuality' onChange={this.handleQualityChange} value={GRAPHICS_QUALITY.LOW} checked={selectedQuality === GRAPHICS_QUALITY.LOW} />
-                  <label htmlFor='qualityLow' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.low_quality_option')}</label>
-                </Col>
-                <Col className='flexcol--8'>
-                  <input type='radio' id='qualityMedium' name='selectedQuality' onChange={this.handleQualityChange} value={GRAPHICS_QUALITY.MEDIUM} checked={selectedQuality === GRAPHICS_QUALITY.MEDIUM} />
-                  <label htmlFor='qualityMedium' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.medium_quality_option')}</label>
-                </Col>
-                <Col className='flexcol--8'>
-                  <input type='radio' id='qualityHigh' name='selectedQuality' onChange={this.handleQualityChange} value={GRAPHICS_QUALITY.HIGH} checked={selectedQuality === GRAPHICS_QUALITY.HIGH} />
-                  <label htmlFor='qualityHigh' className='ui-click-sound'>{translationSvc.translate('UI.home.form.high_quality_option')}</label>
-                </Col>
-              </Row>
-            </Col>
-            <Col className='flexcol--24 flexcol--11-t'>
-              <Row className='form__group mb-2'>
-                <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.gamemode')}</Col>
-                <Col className='flexcol--12'>
-                  <input type='radio' id='onlineModeOff' name='onlineMode' onChange={this.handleOnlineChange} value='0' checked={onlineMode === false} />
-                  <label htmlFor='onlineModeOff' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.singleplayer_option')}</label>
-                </Col>
-                <Col className='flexcol--12'>
-                  <input type='radio' id='onlineModeOn' name='onlineMode' onChange={this.handleOnlineChange} value='1' checked={onlineMode !== false} />
-                  <label htmlFor='onlineModeOn' className='ui-click-sound'>{translationSvc.translate('UI.home.form.multiplayer_option')}</label>
-                </Col>
-              </Row>
-              <Row className='form__group'>
-                <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.soundmode')}</Col>
-                <Col className='flexcol--12'>
-                  <input type='radio' id='soundOff' name='soundMode' onChange={this.handleSoundChange} value='0' checked={soundMode === false} />
-                  <label htmlFor='soundOff' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.sound_off_option')}</label>
-                </Col>
-                <Col className='flexcol--12'>
-                  <input type='radio' id='soundOn' name='soundMode' onChange={this.handleSoundChange} value='1' checked={soundMode !== false} />
-                  <label htmlFor='soundOn' className='ui-click-sound'>{translationSvc.translate('UI.home.form.sound_on_option')}</label>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+                  </Col>
+                </Row>
+                <Row className='form__group test'>
+                  <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.graphics')}</Col>
+                  <Col className='flexcol--8'>
+                    <input type='radio' id='qualityLow' name='selectedQuality' onChange={this.handleQualityChange} value={GRAPHICS_QUALITY.LOW} checked={selectedQuality === GRAPHICS_QUALITY.LOW} />
+                    <label htmlFor='qualityLow' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.low_quality_option')}</label>
+                  </Col>
+                  <Col className='flexcol--8'>
+                    <input type='radio' id='qualityMedium' name='selectedQuality' onChange={this.handleQualityChange} value={GRAPHICS_QUALITY.MEDIUM} checked={selectedQuality === GRAPHICS_QUALITY.MEDIUM} />
+                    <label htmlFor='qualityMedium' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.medium_quality_option')}</label>
+                  </Col>
+                  <Col className='flexcol--8'>
+                    <input type='radio' id='qualityHigh' name='selectedQuality' onChange={this.handleQualityChange} value={GRAPHICS_QUALITY.HIGH} checked={selectedQuality === GRAPHICS_QUALITY.HIGH} />
+                    <label htmlFor='qualityHigh' className='ui-click-sound'>{translationSvc.translate('UI.home.form.high_quality_option')}</label>
+                  </Col>
+                </Row>
+              </Col>
+              <Col className='flexcol--24 flexcol--11-t'>
+                <Row className='form__group mb-2'>
+                  <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.gamemode')}</Col>
+                  <Col className='flexcol--12'>
+                    <input type='radio' id='onlineModeOff' name='onlineMode' onChange={this.handleOnlineChange} value='0' checked={onlineMode === false} />
+                    <label htmlFor='onlineModeOff' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.singleplayer_option')}</label>
+                  </Col>
+                  <Col className='flexcol--12'>
+                    <input type='radio' id='onlineModeOn' name='onlineMode' onChange={this.handleOnlineChange} value='1' checked={onlineMode !== false} />
+                    <label htmlFor='onlineModeOn' className='ui-click-sound'>{translationSvc.translate('UI.home.form.multiplayer_option')}</label>
+                  </Col>
+                </Row>
+                <Row className='form__group'>
+                  <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.soundmode')}</Col>
+                  <Col className='flexcol--12'>
+                    <input type='radio' id='soundOff' name='soundMode' onChange={this.handleSoundChange} value='0' checked={soundMode === false} />
+                    <label htmlFor='soundOff' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.sound_off_option')}</label>
+                  </Col>
+                  <Col className='flexcol--12'>
+                    <input type='radio' id='soundOn' name='soundMode' onChange={this.handleSoundChange} value='1' checked={soundMode !== false} />
+                    <label htmlFor='soundOn' className='ui-click-sound'>{translationSvc.translate('UI.home.form.sound_on_option')}</label>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
 
-          {this.renderDebugHtmlFinal()}
+            {this.renderDebugHtmlFinal()}
 
-          <footer className='home__footer mt-3 mb-2-t mb-4-l'>
-            {this.getSubmitHTML()}
-          </footer>
-        </form>
-      </section>
+            <footer className='home__footer mt-3 mb-2-t mb-4-l'>
+              {this.getSubmitHTML()}
+            </footer>
+          </form>
+        </section>
+      </>
     );
   }
 

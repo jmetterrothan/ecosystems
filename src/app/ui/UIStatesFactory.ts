@@ -1,4 +1,4 @@
-import UIState from './UIState';
+import { IUIState } from '@ui/models/UIState';
 
 import UIHomeState from '@ui/states/UIHomeState';
 import UILoadingState from '@ui/states/UILoadingState';
@@ -7,7 +7,7 @@ import UIMenuState from '@ui/states/UIMenuState';
 
 import { UIStates } from '@ui/enums/UIStates.enum';
 
-const UIStateFactory = (state: UIStates): UIState => {
+const UIStateFactory = (state: UIStates): IUIState => {
   switch (state) {
     case UIStates.HOME: return new UIHomeState(null);
     case UIStates.LOADING: return new UILoadingState(null);

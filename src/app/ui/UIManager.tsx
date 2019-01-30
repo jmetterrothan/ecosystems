@@ -4,8 +4,7 @@ import SoundManager from '@shared/SoundManager';
 import NotificationContainer from '@public/components/notification/NotificationContainer';
 import UIHomeState from '@ui/states/UIHomeState';
 import stateFactory from '@ui/UIStatesFactory';
-import withUIManager from '@public/components/withUIManager/withUIManager';
-import CookiesConsent from '@public/components/cookies/cookies-consent';
+import withUIManager from '@components/withUIManager/withUIManager';
 
 import { uiSvc } from './services/ui.service';
 import { translationSvc } from '@shared/services/translation.service';
@@ -41,7 +40,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
     translationSvc.init();
 
-    this.addState(UIStates.HOME, new UIHomeState(null));
+    this.addState(UIStates.HOME);
 
     // ui click sound
     window.addEventListener('click', (e) => {
@@ -56,15 +55,12 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     if (this.state.currentUiStateID === UIStates.HOME) uiState.process(this);
 
     return (
-      <>
-        <CookiesConsent />
-        <div className='ui'>
-          <div className='ui__notifications p-2'>
-            <NotificationContainer />
-          </div>
-          {withUIManager(uiState.render())(this)}
+      <div className='ui'>
+        <div className='ui__notifications p-2'>
+          <NotificationContainer />
         </div>
-      </>
+        {withUIManager(uiState.render())(this)}
+      </div>
     );
   }
 
