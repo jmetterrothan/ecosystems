@@ -15,7 +15,7 @@ import CoreService, { coreSvc } from '@shared/services/core.service';
 import UIService, { uiSvc } from '@ui/services/ui.service';
 
 import { MouseTypes } from '@shared/enums/mouse.enum';
-import { UIStates } from '@ui/enums/UIStates.enum';
+import { UI_STATES } from '@ui/enums/UIStates.enum';
 import UIManager from '@ui/UIManager';
 
 class Main {
@@ -139,7 +139,7 @@ class Main {
 
       document.body.addEventListener('click', () => {
 
-        if (!uiSvc.isState(UIStates.GAME)) return;
+        if (!uiSvc.isState(UI_STATES.GAME)) return;
 
         document.body.requestPointerLock = document.body.requestPointerLock || document.body.mozRequestPointerLock || document.body.webkitRequestPointerLock;
         document.body.requestPointerLock();

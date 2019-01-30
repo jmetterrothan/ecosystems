@@ -4,8 +4,7 @@ import SoundManager from '@shared/SoundManager';
 import NotificationContainer from '@public/components/notification/NotificationContainer';
 import UIHomeState from '@ui/states/UIHomeState';
 import stateFactory from '@ui/UIStatesFactory';
-import withUIManager from '@public/components/withUIManager/withUIManager';
-import CookiesConsent from '@public/components/cookies/cookies-consent';
+import withUIManager from '@components/withUIManager/withUIManager';
 
 import { uiSvc } from './services/ui.service';
 import { translationSvc } from '@shared/services/translation.service';
@@ -13,35 +12,35 @@ import { translationSvc } from '@shared/services/translation.service';
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { IUIState } from '@ui/models/UIState';
-import { UIStates } from '@ui/enums/UIStates.enum';
+import { UI_STATES } from '@ui/enums/UIStates.enum';
 
 interface IUIManagerProps {
 
 }
 
 interface IUIManagerState {
-  currentUiStateID: UIStates;
+  currentUiStateID: UI_STATES;
   parameters: IUIManagerParameters;
 }
 
 class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   static readonly ENABLED: boolean = false;
 
-  private uiStates: Map<UIStates, IUIState>;
+  private uiStates: Map<UI_STATES, IUIState>;
 
   constructor(props: IUIManagerProps, state: IUIManagerState) {
     super(props, state);
 
-    this.uiStates = new Map<UIStates, IUIState>();
+    this.uiStates = new Map<UI_STATES, IUIState>();
 
     this.state = {
-      currentUiStateID: UIStates.HOME,
+      currentUiStateID: UI_STATES.HOME,
       parameters: {}
     };
 
     translationSvc.init();
 
-    this.addState(UIStates.HOME, new UIHomeState(null));
+    this.addState(UI_STATES.HOME);
 
     // ui click sound
     window.addEventListener('click', (e) => {
@@ -53,22 +52,19 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
-    if (this.state.currentUiStateID === UIStates.HOME) uiState.process(this);
+    if (this.state.currentUiStateID === UI_STATES.HOME) uiState.process(this);
 
     return (
-      <>
-        <CookiesConsent />
-        <div className='ui'>
-          <div className='ui__notifications p-2'>
-            <NotificationContainer />
-          </div>
-          {withUIManager(uiState.render())(this)}
+      <div className='ui'>
+        <div className='ui__notifications p-2'>
+          <NotificationContainer />
         </div>
-      </>
+        {withUIManager(uiState.render())(this)}
+      </div>
     );
   }
 
-  switchState(state: UIStates, parameters?: any) {
+  switchState(state: UI_STATES, parameters?: any) {
     if (!this.uiStates.has(state)) this.addState(state);
 
     this.setState({
@@ -84,10 +80,10 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   }
 
   manageMenu(open: boolean) {
-    this.switchState(open ? UIStates.MENU : UIStates.GAME);
+    this.switchState(open ? UI_STATES.MENU : UI_STATES.GAME);
   }
 
-  private addState(key: UIStates, value?: IUIState) {
+  private addState(key: UI_STATES, value?: IUIState) {
     if (!this.uiStates.has(key)) {
       const uiState = value ? value : stateFactory(key);
       uiState.init();

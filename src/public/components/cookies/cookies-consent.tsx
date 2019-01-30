@@ -11,11 +11,14 @@ interface ICookiesConsentState {
 }
 
 class CookiesConsent extends React.Component<any, ICookiesConsentState> {
+
+  static COOKIES_STORAGE_KEY: string = 'COOKIES';
+
   constructor(props) {
     super(props);
 
     this.state = {
-      show: storageSvc.get('COOKIES') === null
+      show: storageSvc.get(CookiesConsent.COOKIES_STORAGE_KEY) === null
     };
   }
 
@@ -24,7 +27,7 @@ class CookiesConsent extends React.Component<any, ICookiesConsentState> {
    * @param {boolean} b
    */
   consentCookies = (b: boolean) => {
-    storageSvc.set('COOKIES', b);
+    storageSvc.set(CookiesConsent.COOKIES_STORAGE_KEY, b);
     this.setState({
       show: false
     });
@@ -35,15 +38,15 @@ class CookiesConsent extends React.Component<any, ICookiesConsentState> {
     // <a href='#' className='link'>{translationSvc.translate('UI.cookies.more')}</a>
 
     return (
-        <Transition items={show} from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
-          {show => show && (props => <div style={props} className='cookies-consent p-2 pl-3 pr-3'>
-            <p className='cookies-consent__text mb-2'>{translationSvc.translate('UI.cookies.message')}</p>
-            <div className='cookies-consent__choices'>
-              <button onClick={() => this.consentCookies(false)} className='cookies-consent__btn cookies-consent__btn--decline mr-2 ui-click-sound'>{translationSvc.translate('UI.cookies.decline')}</button>
-              <button onClick={() => this.consentCookies(true)} className='cookies-consent__btn cookies-consent__btn--accept ui-click-sound'>{translationSvc.translate('UI.cookies.allow')}</button>
-            </div>
-          </div>)}
-        </Transition>
+      <Transition items={show} from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
+        {show => show && (props => <div style={props} className='cookies-consent p-2 pl-3 pr-3'>
+          <p className='cookies-consent__text mb-2'>{translationSvc.translate('UI.cookies.message')}</p>
+          <div className='cookies-consent__choices'>
+            <button onClick={() => this.consentCookies(false)} className='cookies-consent__btn cookies-consent__btn--decline mr-2 ui-click-sound'>{translationSvc.translate('UI.cookies.decline')}</button>
+            <button onClick={() => this.consentCookies(true)} className='cookies-consent__btn cookies-consent__btn--accept ui-click-sound'>{translationSvc.translate('UI.cookies.allow')}</button>
+          </div>
+        </div>)}
+      </Transition>
     );
   }
 }
