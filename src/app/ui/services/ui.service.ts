@@ -1,20 +1,20 @@
-import { UI_STATES } from '@ui/enums/UIStates.enum';
+import { UIStates } from '@ui/enums/UIStates.enum';
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 class UIService {
 
-  private currentState: UI_STATES;
+  private currentState: UIStates;
   private parameters: IUIManagerParameters = {};
 
-  isState(state: UI_STATES): boolean {
+  isState(state: UIStates): boolean {
     return state === this.currentState;
   }
 
-  getCurrentState(): UI_STATES {
+  getCurrentState(): UIStates {
     return this.currentState;
   }
 
-  switchState(state: UI_STATES, parameters: IUIManagerParameters = {}) {
+  switchState(state: UIStates, parameters: IUIManagerParameters = {}) {
     this.currentState = state;
     this.parameters = {
       ...this.parameters,

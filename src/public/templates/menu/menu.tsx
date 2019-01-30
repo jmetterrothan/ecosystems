@@ -3,7 +3,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Button from '@public/components/button/button';
 import UIManager from '@app/ui/UIManager';
-import { UI_STATES } from '@ui/enums/UIStates.enum';
+import { UIStates } from '@ui/enums/UIStates.enum';
 
 import Trophies from '@templates/menu/trophies/trophies';
 import Tutorial from '@templates/menu/tutorial/tutorial';
@@ -23,7 +23,7 @@ class Menu extends React.PureComponent<Props> {
   handleClick = () => {
     const { uiManager } = this.props;
 
-    uiManager.switchState(UI_STATES.GAME);
+    uiManager.switchState(UIStates.GAME);
     document.body.requestPointerLock();
   }
 

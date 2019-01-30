@@ -1,4 +1,4 @@
-export enum UI_STATES {
+export enum UIStates {
   HOME,
   LOADING,
   GAME,

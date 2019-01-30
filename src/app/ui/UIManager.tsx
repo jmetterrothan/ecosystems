@@ -19,7 +19,7 @@ interface IUIManagerProps {
 }
 
 interface IUIManagerState {
-  currentUiStateID: UI_STATES;
+  currentUiStateID: UIStates;
   parameters: IUIManagerParameters;
 }
 
@@ -34,7 +34,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     this.uiStates = new Map<UIStates, IUIState>();
 
     this.state = {
-      currentUiStateID: UI_STATES.HOME,
+      currentUiStateID: UIStates.HOME,
       parameters: {}
     };
 
@@ -52,7 +52,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
 
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
-    if (this.state.currentUiStateID === UI_STATES.HOME) uiState.process(this);
+    if (this.state.currentUiStateID === UIStates.HOME) uiState.process(this);
 
     return (
       <div className='ui'>
@@ -64,7 +64,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     );
   }
 
-  switchState(state: UI_STATES, parameters?: any) {
+  switchState(state: UIStates, parameters?: any) {
     if (!this.uiStates.has(state)) this.addState(state);
 
     this.setState({
@@ -80,7 +80,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   }
 
   manageMenu(open: boolean) {
-    this.switchState(open ? UI_STATES.MENU : UI_STATES.GAME);
+    this.switchState(open ? UIStates.MENU : UIStates.GAME);
   }
 
   private addState(key: UIStates, value?: IUIState) {
