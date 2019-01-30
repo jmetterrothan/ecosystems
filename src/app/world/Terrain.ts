@@ -326,6 +326,10 @@ class Terrain {
     const biome = this.generator.getBiome();
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
 
+    if (!this.previewObject) {
+      return;
+    }
+
     for (const intersection of intersections) {
       const soundName = intersection.object === this.water ? 'splash' : 'set_down';
 
