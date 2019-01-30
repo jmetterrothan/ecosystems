@@ -7,13 +7,13 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import { IChunkParameters } from '@world/models/chunkParameters.model';
 import { TERRAIN_MATERIAL } from '@materials/terrain.material';
 
-import { MESH_TYPES } from '@mesh/enums/mesh.enum';
+import { MeshTypes } from '@mesh/enums/mesh.enum';
 
 import MathUtils from '@shared/utils/Math.utils';
 
 class TerrainMesh extends Mesh {
   constructor(generator: BiomeGenerator, row: number, col: number) {
-    super(generator, row, col, MESH_TYPES.TERRAIN_MESH, <IChunkParameters>{
+    super(generator, row, col, MeshTypes.TERRAIN_MESH, <IChunkParameters>{
       maxChunkHeight: Chunk.HEIGHT,
       minChunkHeight: Chunk.HEIGHT,
       nRows: Chunk.NROWS,

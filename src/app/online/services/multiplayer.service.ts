@@ -22,8 +22,6 @@ class MultiplayerService {
   private scene: THREE.Scene;
   private used: boolean = false;
 
-  private progressionSvc: ProgressionService;
-
   private objectPlacedSource: Subject<IOnlineObject>;
   objectPlaced$: Observable<IOnlineObject>;
 
@@ -39,8 +37,6 @@ class MultiplayerService {
   onlineStatus$: Subject<IOnlineStatus>;
 
   constructor() {
-    this.progressionSvc = progressionSvc;
-
     this.objectPlacedSource = new Subject();
     this.objectPlaced$ = this.objectPlacedSource.asObservable();
 
@@ -114,7 +110,7 @@ class MultiplayerService {
     if (!this.userId && this.userId !== data.me) {
       this.userId = data.me;
 
-      if (data.usersConnected.length === 1) this.progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.create_game_online);
+      if (data.usersConnected.length === 1) progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.create_game_online);
 
       // place all objects already placed on this room
       data.allObjects.forEach((item: IPick) => {
@@ -126,7 +122,7 @@ class MultiplayerService {
     this.timeSource.next(data.startTime);
 
     if (data.usersConnected.length > 1) {
-      this.progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.join_game_online);
+      progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.join_game_online);
     }
 
     // init mesh for each new users

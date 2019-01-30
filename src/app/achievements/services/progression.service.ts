@@ -8,18 +8,12 @@ import { PROGRESSION_STORAGE, PROGRESSION_SHOWN } from '@achievements/constants/
 
 class ProgressionService {
 
-  private storageSvc: StorageService;
-  private achievementSvc: AchievementService;
-
   private storage: Object;
   private key: string;
 
   constructor() {
-    this.storageSvc = storageSvc;
-    this.achievementSvc = achievementSvc;
-
     this.key = STORAGES_KEY.progression;
-    this.storage = this.storageSvc.get<Object>(STORAGES_KEY.progression) || PROGRESSION_STORAGE;
+    this.storage = storageSvc.get<Object>(STORAGES_KEY.progression) || PROGRESSION_STORAGE;
   }
 
   /**
@@ -36,7 +30,7 @@ class ProgressionService {
     const keys = this.getProgressionShownKeys();
     return keys.map((item: IProgression) => (<IProgressionWithCount>{
       ...item,
-      count: this.storageSvc.get<Object>(STORAGES_KEY.progression)[item.value]
+      count: storageSvc.get<Object>(STORAGES_KEY.progression)[item.value]
     }));
   }
 
@@ -44,16 +38,16 @@ class ProgressionService {
    * Init service and local storage
    */
   init() {
-    if (!this.storageSvc.get<Object>(STORAGES_KEY.progression)) {
-      this.storageSvc.set<Object>(STORAGES_KEY.progression, this.storage);
+    if (!storageSvc.get<Object>(STORAGES_KEY.progression)) {
+      storageSvc.set<Object>(STORAGES_KEY.progression, this.storage);
     }
 
-    if (!this.storageSvc.get<Object>(STORAGES_KEY.trophies)) {
-      this.storageSvc.set<Object>(STORAGES_KEY.trophies, {});
+    if (!storageSvc.get<Object>(STORAGES_KEY.trophies)) {
+      storageSvc.set<Object>(STORAGES_KEY.trophies, {});
     }
 
-    if (!this.storageSvc.get<Object>(STORAGES_KEY.completed)) {
-      this.storageSvc.set<Object>(STORAGES_KEY.completed, []);
+    if (!storageSvc.get<Object>(STORAGES_KEY.completed)) {
+      storageSvc.set<Object>(STORAGES_KEY.completed, []);
     }
 
   }
@@ -66,9 +60,9 @@ class ProgressionService {
   setValue(progression: IProgression, value: number) {
     if (!this.storage.hasOwnProperty(progression.value)) return;
     this.storage[progression.value] = value;
-    this.storageSvc.set<Object>(this.key, this.storage);
+    storageSvc.set<Object>(this.key, this.storage);
 
-    this.achievementSvc.check(progression);
+    achievementSvc.check(progression);
   }
 
   /**
@@ -79,9 +73,9 @@ class ProgressionService {
   increment(progression: IProgression, value?: number) {
     if (!this.storage.hasOwnProperty(progression.value)) return;
     this.storage[progression.value] += value ? value : 1;
-    this.storageSvc.set<Object>(this.key, this.storage);
+    storageSvc.set<Object>(this.key, this.storage);
 
-    this.achievementSvc.check(progression);
+    achievementSvc.check(progression);
   }
 
   /**
@@ -91,7 +85,7 @@ class ProgressionService {
   decrement(progression: IProgression) {
     if (!this.storage.hasOwnProperty(progression.value)) return;
     this.storage[progression.value]--;
-    this.storageSvc.set<Object>(this.key, this.storage);
+    storageSvc.set<Object>(this.key, this.storage);
   }
 
 }

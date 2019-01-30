@@ -30,10 +30,6 @@ class Weather {
   private scene: THREE.Scene;
   private generator: BiomeGenerator;
 
-  private progressionSvc: ProgressionService;
-  private playerSvc: PlayerService;
-  private multiplayerSvc: MultiplayerService;
-
   private clouds: THREE.Group;
   private wind: THREE.Vector3;
 
@@ -65,10 +61,6 @@ class Weather {
   constructor(scene: THREE.Scene, generator: BiomeGenerator) {
     this.scene = scene;
     this.generator = generator;
-
-    this.playerSvc = playerSvc;
-    this.progressionSvc = progressionSvc;
-    this.multiplayerSvc = multiplayerSvc;
 
     this.startTime = window.performance.now();
 
@@ -293,7 +285,7 @@ class Weather {
     }
 
     this.starsSystem = new THREE.Points(stars, material);
-    this.starsSystem.position.copy(this.playerSvc.getPosition());
+    this.starsSystem.position.copy(playerSvc.getPosition());
     this.starsSystem.frustumCulled = false;
 
     this.scene.add(this.starsSystem);
@@ -337,7 +329,7 @@ class Weather {
   * @param {number} delta
   */
   private updateClouds(delta: number) {
-    const playerPosition = this.playerSvc.getPosition();
+    const playerPosition = playerSvc.getPosition();
 
     for (const cloud of this.clouds.children) {
       // move cloud
@@ -412,7 +404,7 @@ class Weather {
       // progression
       const playerPositionAtCloudElevation = new THREE.Vector3().copy(playerPosition).setY(Chunk.CLOUD_LEVEL + 500);
       if (rainData.isRaininig && MathUtils.between(playerPosition.y, Chunk.SEA_LEVEL, Chunk.CLOUD_LEVEL) && bbox.containsPoint(playerPositionAtCloudElevation)) {
-        this.progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.under_rain);
+        progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.under_rain);
       }
 
       rainData.particles.verticesNeedUpdate = true;
@@ -435,8 +427,8 @@ class Weather {
 
     const bbox: THREE.Box3 = new THREE.Box3().setFromObject(this.sun);
 
-    if (bbox.containsPoint(this.playerSvc.getPosition())) {
-      this.progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.in_sun);
+    if (bbox.containsPoint(playerSvc.getPosition())) {
+      progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.in_sun);
     }
 
     if (configSvc.debug) {
@@ -455,8 +447,8 @@ class Weather {
 
     const bbox: THREE.Box3 = new THREE.Box3().setFromObject(this.moon);
 
-    if (bbox.containsPoint(this.playerSvc.getPosition())) {
-      this.progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.in_moon);
+    if (bbox.containsPoint(playerSvc.getPosition())) {
+      progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.in_moon);
     }
   }
 
@@ -482,7 +474,7 @@ class Weather {
   }
 
   private updateStars() {
-    const position = this.playerSvc.getPosition();
+    const position = playerSvc.getPosition();
     this.starsSystem.position.copy(position);
   }
 
@@ -499,7 +491,7 @@ class Weather {
   }
 
   private watchStartTime() {
-    this.multiplayerSvc.time$.subscribe(time => this.startTime = time);
+    multiplayerSvc.time$.subscribe(time => this.startTime = time);
   }
 
   getClouds(): THREE.Group {

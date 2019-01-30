@@ -21,8 +21,6 @@ class Creature {
   private boidsBoundingBox: THREE.Vector3;
   private boidsOrigin: THREE.Vector3;
 
-  private playerSvc: PlayerService;
-
   constructor(models: string[], parameters: IBoidCreatureParameters) {
     const model = models[MathUtils.randomInt(0, models.length - 1)];
     this.model = World.LOADED_MODELS.get(model).clone();
@@ -33,8 +31,6 @@ class Creature {
 
     this.speed = parameters.speed;
     this.model.scale.multiplyScalar(parameters.scale);
-
-    this.playerSvc = playerSvc;
   }
 
   update(creatures: Creature[], generator: BiomeGenerator, delta: number) {
@@ -66,7 +62,7 @@ class Creature {
         this.position.x < this.boidsBoundingBox.x &&
         this.position.z < this.boidsBoundingBox.z) {
         // player repel
-        const repulse = this.calculateRepel(this.playerSvc.getPosition());
+        const repulse = this.calculateRepel(playerSvc.getPosition());
         this.velocity.add(repulse);
       }
     }

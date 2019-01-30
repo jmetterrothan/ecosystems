@@ -42,8 +42,6 @@ class World {
   private raycaster: THREE.Raycaster;
   private seed: string;
 
-  private configSvc: ConfigService;
-
   private initialized: boolean;
 
   private listener: THREE.AudioListener;

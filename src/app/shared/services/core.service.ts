@@ -11,14 +11,9 @@ import { OBJECTS } from '@shared/constants/object.constants';
 import { TEXTURES } from '@shared/constants/texture.constants';
 
 class CoreService {
-  private progressionSvc: ProgressionService;
-
-  constructor() {
-    this.progressionSvc = progressionSvc;
-  }
 
   async init() {
-    this.progressionSvc.init();
+    progressionSvc.init();
     await this.initModels();
     await this.initTextures();
   }

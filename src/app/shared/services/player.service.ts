@@ -12,9 +12,6 @@ import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progres
 
 class PlayerService {
 
-  private progressionSvc: ProgressionService;
-  private monitoringSvc: MonitoringService;
-
   private underwater: boolean;
   private sourceUnderwater: BehaviorSubject<boolean>;
   underwater$: Observable<boolean>;
@@ -24,9 +21,6 @@ class PlayerService {
   private totalDistance: number = 0;
 
   constructor() {
-    this.progressionSvc = progressionSvc;
-    this.monitoringSvc = monitoringSvc;
-
     this.underwater = false;
     this.sourceUnderwater = new BehaviorSubject<boolean>(this.underwater);
     this.underwater$ = this.sourceUnderwater.asObservable();
@@ -51,8 +45,8 @@ class PlayerService {
         this.underwater = true;
         SoundManager.play('bubbles');
 
-        this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
-        this.monitoringSvc.sendEvent(this.monitoringSvc.categories.biome, this.monitoringSvc.actions.visited, PROGRESSION_COMMON_STORAGE_KEYS.going_underwater.value);
+        progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.going_underwater);
+        monitoringSvc.sendEvent(monitoringSvc.categories.biome, monitoringSvc.actions.visited, PROGRESSION_COMMON_STORAGE_KEYS.going_underwater.value);
       }
     }
 
@@ -76,7 +70,7 @@ class PlayerService {
 
   private timer() {
     setInterval(() => {
-      this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled, this.totalDistance);
+      progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled, this.totalDistance);
       this.totalDistance = 0;
     }, 10000);
   }

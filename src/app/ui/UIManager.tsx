@@ -28,12 +28,10 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   static readonly ENABLED: boolean = false;
 
   private uiStates: Map<UIStates, UIState>;
-  private uiSvc: UIService;
 
   constructor(props: IUIManagerProps, state: IUIManagerState) {
     super(props, state);
 
-    this.uiSvc = uiSvc;
     this.uiStates = new Map<UIStates, UIState>();
 
     this.state = {
@@ -93,7 +91,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
         ...parameters
       }
     }, async () => {
-      this.uiSvc.switchState(state, parameters);
+      uiSvc.switchState(state, parameters);
       await this.uiStates.get(state).process(this);
     });
   }

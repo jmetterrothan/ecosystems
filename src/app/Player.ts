@@ -7,10 +7,10 @@ import Terrain from '@world/Terrain';
 import Model from '@voice/Model';
 import Voice from '@voice/Voice';
 
-import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
-import PlayerService, { playerSvc } from '@shared/services/player.service';
-import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
-import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
+import { multiplayerSvc } from '@online/services/multiplayer.service';
+import { playerSvc } from '@shared/services/player.service';
+import { monitoringSvc } from '@shared/services/monitoring.service';
+import { progressionSvc } from '@achievements/services/progression.service';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 
@@ -28,10 +28,7 @@ class Player {
 
   private voiceModel: Model;
 
-  private progressionSvc: ProgressionService;
-  private monitoringSvc: MonitoringService;
-  private playerSvc: PlayerService;
-  private multiplayerSvc: MultiplayerService;
+  private voice: any;
 
   /**
    * Player constructor
@@ -49,11 +46,6 @@ class Player {
 
     this.speed = new THREE.Vector3(40000, 40000, 40000);
     this.velocity = new THREE.Vector3(0, 0, 0);
-
-    this.progressionSvc = progressionSvc;
-    this.monitoringSvc = monitoringSvc;
-    this.playerSvc = playerSvc;
-    this.multiplayerSvc = multiplayerSvc;
   }
 
   /**
@@ -68,7 +60,7 @@ class Player {
     this.controls.getObject().children[0].rotateX(angle);
     this.position = spawn;
 
-    this.playerSvc.setPosition(spawn);
+    playerSvc.setPosition(spawn);
 
     // await this.initVoice();
   }
@@ -136,16 +128,16 @@ class Player {
    */
   update(terrain: Terrain, delta: number) {
     const position = this.move(delta);
-    this.playerSvc.setPosition(position);
+    playerSvc.setPosition(position);
 
-    if (this.multiplayerSvc.isUsed()) {
-      this.multiplayerSvc.sendPosition(position);
-      this.multiplayerSvc.checkStatus();
+    if (multiplayerSvc.isUsed()) {
+      multiplayerSvc.sendPosition(position);
+      multiplayerSvc.checkStatus();
     }
 
     const yMin = terrain.getHeightAt(position.x, position.z) + 5000;
 
-    if (this.playerSvc.isWithinWorldBorders() && position.y < yMin) {
+    if (playerSvc.isWithinWorldBorders() && position.y < yMin) {
       // collision with min ground dist
       this.positionY = yMin;
     }

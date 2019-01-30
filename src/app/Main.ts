@@ -33,23 +33,11 @@ class Main {
   private focused: boolean;
   private stats: statsJs;
 
-  private coreSvc: CoreService;
-  private playerSvc: PlayerService;
-  private multiplayerSvc: MultiplayerService;
-  private storageSvc: StorageService;
-  private uiSvc: UIService;
-
   private uiManager: UIManager;
 
   constructor() {
     this.containerElement = document.body;
     this.lastTime = window.performance.now();
-
-    this.coreSvc = coreSvc;
-    this.playerSvc = playerSvc;
-    this.multiplayerSvc = multiplayerSvc;
-    this.storageSvc = storageSvc;
-    this.uiSvc = uiSvc;
 
     if (configSvc.debug) {
       this.stats = new statsJs();
@@ -67,7 +55,7 @@ class Main {
       resetStrorage.textContent = 'reset';
       resetStrorage.classList.add('button', 'reset');
       resetStrorage.addEventListener('click', () => {
-        this.storageSvc.clearAll();
+        storageSvc.clearAll();
       }, false);
       document.body.appendChild(resetStrorage);
       */
@@ -89,9 +77,9 @@ class Main {
     this.initControls();
 
     this.world = new World(this.scene, this.camera, this.controls);
-    this.playerSvc.init();
+    playerSvc.init();
 
-    await this.coreSvc.init();
+    await coreSvc.init();
 
     this.initPointerLock();
     this.initRenderer();
@@ -102,7 +90,7 @@ class Main {
 
   async load(seed: string, online: boolean): Promise<string> {
     if (online === true) {
-      this.multiplayerSvc.init(this.scene, seed);
+      multiplayerSvc.init(this.scene, seed);
     }
     return await this.world.init(seed);
   }
@@ -164,7 +152,7 @@ class Main {
 
       document.body.addEventListener('click', () => {
 
-        if (!this.uiSvc.isState(UIStates.GAME)) return;
+        if (!uiSvc.isState(UIStates.GAME)) return;
 
         document.body.requestPointerLock = document.body.requestPointerLock || document.body.mozRequestPointerLock || document.body.webkitRequestPointerLock;
         document.body.requestPointerLock();
@@ -203,7 +191,7 @@ class Main {
     if (this.world.isInitialized()) {
       this.world.update(delta);
 
-      if (this.playerSvc.isUnderwater()) {
+      if (playerSvc.isUnderwater()) {
         this.postProcess.update();
       }
 
@@ -214,7 +202,7 @@ class Main {
       TWEEN.update();
 
       // switch render func if underwater
-      if (this.playerSvc.isUnderwater()) {
+      if (playerSvc.isUnderwater()) {
         this.postProcess.render(delta);
       } else {
         this.renderer.render(this.scene, this.camera);
