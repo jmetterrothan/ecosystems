@@ -49,6 +49,8 @@ export interface IUITranslationKeys {
       sound_on_option: string;
       sound_off_option: string;
       start_btn: string;
+      seed_tooltip_title: string;
+      seed_tooltip_text: string;
     }
   };
   progression: {

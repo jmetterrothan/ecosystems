@@ -120,10 +120,12 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
       return;
     }
 
+    // load world
     this.setState({
       busy: true
     }, () => {
       SoundManager.playWithPromise('click').then(() => {
+        // change state after sound has been played
         uiManager.switchState(UIStates.LOADING, {
           seed: seedValue.length ? seedValue.trim() : undefined,
           online: onlineMode,
@@ -200,7 +202,16 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
               <Row className='form__group mb-2'>
                 <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.seed')}</Col>
                 <Col className='flexcol--24'>
-                  <input type='text' name='seed' placeholder={translationSvc.translate('UI.home.form.seed_placeholder')} onChange={this.handleChange} value={seedValue} pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={1} ref={el => this.seedInput = el} />
+                  <div className='tooltip'>
+                    <input type='text' name='seed' placeholder={translationSvc.translate('UI.home.form.seed_placeholder')} onChange={this.handleChange} value={seedValue} pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={1} ref={el => this.seedInput = el} />
+                    <div className='tooltip__content'>
+                      ?
+                      <div className='tooltip__text p-2'>
+                        <h4 className='mb-1'>{translationSvc.translate('UI.home.form.seed_tooltip_title')}</h4>
+                        <p>{translationSvc.translate('UI.home.form.seed_tooltip_text')}</p>
+                      </div>
+                    </div>
+                  </div>
                 </Col>
               </Row>
               <Row className='form__group test'>

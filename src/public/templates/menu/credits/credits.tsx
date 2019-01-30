@@ -19,7 +19,8 @@ const collaborators: ICollaboratorProps[] = [
     links: [
       { url: 'https://jeremie.metter-rothan.fr', icon: Icons.Portfolio },
       { url: 'https://github.com/jmetterrothan', icon: Icons.Github },
-      { url: 'https://www.linkedin.com/in/jeremie-metter-rothan', icon: Icons.LinkedIn }
+      { url: 'https://www.linkedin.com/in/jeremie-metter-rothan', icon: Icons.LinkedIn },
+      { url: 'mailto:jeremie@metter-rothan.fr', icon: Icons.Email }
     ]
   },
   {

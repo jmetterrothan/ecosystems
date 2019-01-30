@@ -21,7 +21,9 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
       soundmode: 'Sound',
       sound_on_option: 'ON',
       sound_off_option: 'OFF',
-      start_btn: 'Start'
+      start_btn: 'Start',
+      seed_tooltip_title: 'What\'s a seed ?',
+      seed_tooltip_text: 'The seed can either be a number, a word or a phrase. It\'s used to generate a unique world.',
     }
   },
   progression: {

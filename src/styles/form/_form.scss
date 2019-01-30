@@ -73,3 +73,71 @@
     }
   }
 }
+
+.tooltip {
+  position: relative;
+
+  &__content {
+    position: absolute;
+    top: calc(0.75rem / 2);
+    right: 1rem;
+    width: 2rem;
+    height: 2rem;
+    line-height:2rem;
+    background: $color-darkblue;
+    color: $color-skyblue;
+    text-align: center;
+    font-family: $font;
+    font-weight: 700;
+    font-size: 1.25rem;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+      background: lighten($color-darkblue, 5%);
+    }
+  }
+
+  input[type=text], input[type=password] {
+    padding-right: 4rem;
+  }
+
+  &__text {
+    display: none;
+    position: absolute;
+    bottom: 3rem;
+    left: calc(-325px / 2 + 2rem);
+    width: 300px;
+    background: $color-skyblue;
+    color: $color-darkblue;
+    border-radius: 3px;
+
+    &:before {
+      content:'';
+      position: absolute;
+      top: 100%;
+      left: calc(325px / 2 - 1rem - 0.8rem);
+      display: block;
+      border: 0.8rem solid transparent;
+      border-top-color: $color-skyblue;
+    }
+
+    h4 {
+      font-weight: 700;
+      font-size: 1.5rem;
+      line-height:1.75rem;
+      text-align: left;
+    }
+
+    p {
+      font-weight: 300;
+      font-size: 1.0rem;
+      line-height:1.65rem;
+      text-align: left;
+    }
+  }
+
+  &__content:hover &__text {
+    display: block;
+  }
+}

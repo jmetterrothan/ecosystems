@@ -9,7 +9,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     subtitle: 'Une expérience 3d interactive',
     debug: 'Debug',
     form: {
-      seed: 'Choisir une graine',
+      seed: 'Choisir une seed',
       seed_placeholder: '',
       graphics: 'Options graphiques',
       high_quality_option: 'Élevé',
@@ -21,7 +21,9 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
       soundmode: 'Son',
       sound_on_option: 'Activé',
       sound_off_option: 'Désactivé',
-      start_btn: 'Lancer'
+      start_btn: 'Lancer',
+      seed_tooltip_title: 'Qu\'est ce qu\'une seed ?',
+      seed_tooltip_text: 'La seed peut être une nombre, un mot ou une phrase. Elle sert à générer aléatoirement un monde unique.',
     }
   },
   progression: {
