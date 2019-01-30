@@ -54,7 +54,10 @@ const collaborators: ICollaboratorProps[] = [
   {
     fullname: 'Christina Schinzel',
     description: 'UX/UI Designer.',
-    links: []
+    links: [
+      { url: 'http://www.christinaschinzel.com', icon: Icons.Portfolio },
+      { url: 'https://www.linkedin.com/in/christina-schinzel', icon: Icons.LinkedIn },
+    ]
   }
 ];
 
