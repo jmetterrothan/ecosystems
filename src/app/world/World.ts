@@ -15,7 +15,7 @@ import Player from '@app/Player';
 import MathUtils from '@utils/Math.utils';
 
 import { INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
-import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
+import { GraphicsQuality } from '@shared/enums/graphicsQuality.enum';
 
 class World {
   static readonly SEED: string | null = null;
@@ -108,7 +108,7 @@ class World {
       this.showAxesHelper();
 
       console.info(`SEED : ${this.seed}`);
-      console.info(`QUALITY : ${GRAPHICS_QUALITY[configSvc.quality]}`);
+      console.info(`QUALITY : ${GraphicsQuality[configSvc.quality]}`);
     }
 
     // configSvc.soundEnabled$.subscribe(() => { });

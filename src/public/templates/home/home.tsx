@@ -6,6 +6,8 @@ import UIManager from '@ui/UIManager';
 import CookiesConsent from '@public/components/cookies/cookies-consent';
 import ImageWithLoading from '@components/imageWithLoading/ImageWithLoading';
 import SoundManager from '@app/shared/SoundManager';
+import MathUtils from '@shared/utils/Math.utils';
+import CommonUtils from '@shared/utils/Common.utils';
 
 import { coreSvc } from '@shared/services/core.service';
 import { configSvc } from '@app/shared/services/config.service';
@@ -14,7 +16,8 @@ import { storageSvc } from '@shared/services/storage.service';
 
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
-import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
+import { GraphicsQuality } from '@shared/enums/graphicsQuality.enum';
+import { UIStates } from '@app/ui/enums/UIStates.enum';
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
 
 import './home.scss';
@@ -25,18 +28,13 @@ import previewImage3 from '@images/previews/world3.png';
 import previewImage4 from '@images/previews/world4.png';
 import previewImage5 from '@images/previews/world5.png';
 
-import { UIStates } from '@app/ui/enums/UIStates.enum';
-
-import MathUtils from '@shared/utils/Math.utils';
-import CommonUtils from '@shared/utils/Common.utils';
-
 interface IHomeProps {
   uiManager: UIManager;
 }
 
 interface IHomeState {
   seedValue: string;
-  selectedQuality: GRAPHICS_QUALITY;
+  selectedQuality: GraphicsQuality;
   debugMode: boolean;
   onlineMode: boolean;
   soundMode: boolean;
@@ -47,7 +45,7 @@ interface IHomeState {
 }
 
 interface IHomeParametersStorage {
-  quality: GRAPHICS_QUALITY;
+  quality: GraphicsQuality;
   debug: boolean;
   online: boolean;
   sound: boolean;
@@ -64,7 +62,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     super(props);
 
     this.storage = Object.assign({
-      quality: GRAPHICS_QUALITY.HIGH,
+      quality: GraphicsQuality.HIGH,
       debug: configSvc.debug,
       online: false,
       sound: false
@@ -174,6 +172,10 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     this.setState({ soundMode });
   }
 
+  /**
+   * Get submit button html element
+   * @return {JSX.Element}
+   */
   getSubmitHTML(): JSX.Element {
     const { busy, ready, formValid } = this.state;
     const coreSvcIsInitialized = ready && formValid;
@@ -224,15 +226,15 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
                 <Row className='form__group test'>
                   <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.graphics')}</Col>
                   <Col className='flexcol--8'>
-                    <input type='radio' id='qualityLow' name='selectedQuality' onChange={this.handleQualityChange} value={GRAPHICS_QUALITY.LOW} checked={selectedQuality === GRAPHICS_QUALITY.LOW} />
+                    <input type='radio' id='qualityLow' name='selectedQuality' onChange={this.handleQualityChange} value={GraphicsQuality.LOW} checked={selectedQuality === GraphicsQuality.LOW} />
                     <label htmlFor='qualityLow' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.low_quality_option')}</label>
                   </Col>
                   <Col className='flexcol--8'>
-                    <input type='radio' id='qualityMedium' name='selectedQuality' onChange={this.handleQualityChange} value={GRAPHICS_QUALITY.MEDIUM} checked={selectedQuality === GRAPHICS_QUALITY.MEDIUM} />
+                    <input type='radio' id='qualityMedium' name='selectedQuality' onChange={this.handleQualityChange} value={GraphicsQuality.MEDIUM} checked={selectedQuality === GraphicsQuality.MEDIUM} />
                     <label htmlFor='qualityMedium' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.medium_quality_option')}</label>
                   </Col>
                   <Col className='flexcol--8'>
-                    <input type='radio' id='qualityHigh' name='selectedQuality' onChange={this.handleQualityChange} value={GRAPHICS_QUALITY.HIGH} checked={selectedQuality === GRAPHICS_QUALITY.HIGH} />
+                    <input type='radio' id='qualityHigh' name='selectedQuality' onChange={this.handleQualityChange} value={GraphicsQuality.HIGH} checked={selectedQuality === GraphicsQuality.HIGH} />
                     <label htmlFor='qualityHigh' className='ui-click-sound'>{translationSvc.translate('UI.home.form.high_quality_option')}</label>
                   </Col>
                 </Row>
@@ -274,6 +276,10 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     );
   }
 
+  /**
+   * Get debug html element
+   * @return {JSX.Element}
+   */
   private renderDebugHtmlFinal(): JSX.Element {
     const { debugMode } = this.state;
 

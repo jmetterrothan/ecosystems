@@ -1,6 +1,6 @@
 import { Observable, Subject } from 'rxjs';
 import { Howler } from 'howler';
-import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
+import { GraphicsQuality } from '@shared/enums/graphicsQuality.enum';
 
 import { CONFIGS } from '@shared/constants/config.constants';
 import { IConfig } from '@shared/models/graphicsConfig.model';
@@ -9,7 +9,7 @@ import CommonUtils from '@shared/utils/Common.utils';
 
 class ConfigService {
   public soundEnabled$: Subject<boolean>;
-  private q: GRAPHICS_QUALITY = GRAPHICS_QUALITY.HIGH;
+  private q: GraphicsQuality = GraphicsQuality.HIGH;
   private d: boolean = CommonUtils.isDev();
   private s: boolean = false;
 
@@ -17,10 +17,10 @@ class ConfigService {
     this.soundEnabled$ = new Subject();
   }
 
-  set quality(q: GRAPHICS_QUALITY) {
+  set quality(q: GraphicsQuality) {
     this.q = q;
   }
-  get quality(): GRAPHICS_QUALITY {
+  get quality(): GraphicsQuality {
     return this.q;
   }
 

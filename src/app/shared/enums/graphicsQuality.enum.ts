@@ -1,4 +1,4 @@
-export enum GRAPHICS_QUALITY {
+export enum GraphicsQuality {
   LOW = 0,
   MEDIUM = 1,
   HIGH = 2

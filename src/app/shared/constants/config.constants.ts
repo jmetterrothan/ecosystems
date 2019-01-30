@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 import { IConfig } from '@shared/models/graphicsConfig.model';
 
-import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
+import { GraphicsQuality } from '@shared/enums/graphicsQuality.enum';
 
 export const LOW_CONFIG: IConfig = {
   MAX_VISIBLE_CHUNKS: 12,
@@ -41,7 +41,7 @@ export const HIGH_CONFIG: IConfig = {
 };
 
 export const CONFIGS = {
-  [GRAPHICS_QUALITY.LOW]: LOW_CONFIG,
-  [GRAPHICS_QUALITY.MEDIUM]: MEDIUM_CONFIG,
-  [GRAPHICS_QUALITY.HIGH]: HIGH_CONFIG,
+  [GraphicsQuality.LOW]: LOW_CONFIG,
+  [GraphicsQuality.MEDIUM]: MEDIUM_CONFIG,
+  [GraphicsQuality.HIGH]: HIGH_CONFIG,
 };
