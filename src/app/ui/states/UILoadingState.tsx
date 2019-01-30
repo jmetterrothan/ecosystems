@@ -7,6 +7,7 @@ import { IUIState } from '@ui/models/UIState';
 import Loading from '@templates/loading/loading';
 
 import { UIStates } from '@ui/enums/UIStates.enum';
+import { monitoringSvc } from '@app/shared/services/monitoring.service';
 
 class UILoadingState extends React.PureComponent implements IUIState {
   init() {
@@ -19,6 +20,9 @@ class UILoadingState extends React.PureComponent implements IUIState {
     const app = new Main();
     await app.init(uiManager);
     const seed = await app.load(parameters.seed, parameters.online);
+
+    monitoringSvc.sendEvent(monitoringSvc.categories.game, monitoringSvc.actions.played, seed);
+
     app.run();
 
     uiManager.switchState(UIStates.MENU, { seed });
