@@ -83,18 +83,18 @@
     right: 1rem;
     width: 2rem;
     height: 2rem;
-    line-height:2rem;
-    background: $color-darkblue;
-    color: $color-skyblue;
+    line-height: calc(2rem - 4px);
+    border: 2px solid $color-darkblue;
+    color: $color-darkblue;
     text-align: center;
     font-family: $font;
     font-weight: 700;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     border-radius: 50%;
     cursor: pointer;
 
     &:hover {
-      background: lighten($color-darkblue, 5%);
+      color: lighten($color-darkblue, 5%);
     }
   }
 

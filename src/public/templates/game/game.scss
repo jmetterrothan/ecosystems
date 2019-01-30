@@ -52,7 +52,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.45rem;
+    font-size: 2.5rem;
     color: #fff;
   }
 }
@@ -77,18 +77,28 @@
   }
 }
 
-
 .pastille {
   display: inline-block;
   width: 0.9rem;
   height: 0.9rem;
   border-radius: 50%;
 
-  &--red {
-    background: #C9463D;
+  &--darkblue {
+    background: $color-darkblue;
   }
-
+  &--red {
+    background: $color-red;
+  }
   &--green {
-    background: #02A676;
+    background: $color-green;
+  }
+  &--yellow {
+    background: $color-yellow;
+  }
+  &--purple {
+    background: $color-purple;
+  }
+  &--magenta {
+    background: $color-magenta;
   }
 }

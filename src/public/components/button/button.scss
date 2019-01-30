@@ -52,4 +52,40 @@
       background: lighten($color-darkblue, 10%);
     }
   }
+
+  &--red {
+    background: $color-red;
+    color:#ffffff;
+
+    &:hover {
+      background: lighten($color-red, 10%);
+    }
+  }
+
+  &--green {
+    background: $color-green;
+    color:#ffffff;
+
+    &:hover {
+      background: lighten($color-green, 10%);
+    }
+  }
+
+  &--yellow {
+    background: $color-yellow;
+    color:#ffffff;
+
+    &:hover {
+      background: lighten($color-yellow, 10%);
+    }
+  }
+
+  &--purple {
+    background: $color-purple;
+    color:#ffffff;
+
+    &:hover {
+      background: lighten($color-purple, 10%);
+    }
+  }
 }
