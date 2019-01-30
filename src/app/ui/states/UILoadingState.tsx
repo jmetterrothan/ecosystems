@@ -6,7 +6,7 @@ import { IUIState } from '@ui/models/UIState';
 
 import Loading from '@templates/loading/loading';
 
-import { UIStates } from '@ui/enums/UIStates.enum';
+import { UI_STATES } from '@ui/enums/UIStates.enum';
 
 class UILoadingState extends React.PureComponent implements IUIState {
   init() {
