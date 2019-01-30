@@ -1,9 +1,11 @@
-import UIState from '@ui/UIState';
+import React from 'react';
+
 import UIManager from '@ui/UIManager';
+import { IUIState } from '@ui/models/UIState';
 
 import Menu from '@templates/menu/menu';
 
-class UIMenuState extends UIState {
+class UIMenuState extends React.PureComponent implements IUIState {
 
   init() {
     console.info('INIT MENU');

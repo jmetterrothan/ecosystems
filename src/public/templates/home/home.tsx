@@ -3,10 +3,11 @@ import React from 'react';
 import Row from '@components/row/row';
 import Col from '@components/col/col';
 import UIManager from '@ui/UIManager';
-import CommonUtils from '@app/shared/utils/Common.utils';
-import MathUtils from '@app/shared/utils/Math.utils';
+import CommonUtils from '@shared/utils/Common.utils';
+import MathUtils from '@shared/utils/Math.utils';
 import ImageWithLoading from '@shared/ImageWithLoading';
 
+import { coreSvc } from '@shared/services/core.service';
 import { configSvc } from '@app/shared/services/config.service';
 import { translationSvc } from '@app/shared/services/translation.service';
 import { storageSvc } from '@shared/services/storage.service';
@@ -37,6 +38,7 @@ interface IHomeState {
   soundMode: boolean;
   formValid: boolean;
   image: string;
+  ready: boolean;
 }
 
 interface IHomeParametersStorage {
@@ -70,7 +72,8 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
       onlineMode: this.storage.online,
       soundMode: this.storage.sound,
       formValid: true,
-      image: imageList[Math.floor(Math.random() * imageList.length)]
+      image: imageList[Math.floor(Math.random() * imageList.length)],
+      ready: false
     };
   }
 
@@ -94,6 +97,10 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
 
   componentWillMount() {
     this.dispatchChanges();
+
+    coreSvc.init().then(() => {
+      this.setState({ ready: true });
+    });
   }
 
   componentDidUpdate() {
@@ -150,7 +157,8 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
   }
 
   render() {
-    const { seedValue, formValid, selectedQuality, onlineMode, soundMode, image } = this.state;
+    const { ready, seedValue, formValid, selectedQuality, onlineMode, soundMode, image } = this.state;
+    const coreSvcIsInitialized = ready && formValid;
 
     return (
       <section className='ui__state home p-2'>
@@ -215,7 +223,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
           {this.renderDebugHtmlFinal()}
 
           <footer className='home__footer mt-3 mb-2-t mb-4-l'>
-            <input form='gameSetup' type='submit' value={translationSvc.translate('UI.home.form.start_btn')} className='btn btn--magenta btn--expand-mobile ui-click-sound' disabled={!formValid} />
+            <input form='gameSetup' type='submit' value={translationSvc.translate('UI.home.form.start_btn')} className='btn btn--magenta btn--expand-mobile ui-click-sound' disabled={!coreSvcIsInitialized} />
           </footer>
         </form>
       </section>

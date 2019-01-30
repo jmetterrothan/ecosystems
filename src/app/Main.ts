@@ -79,8 +79,6 @@ class Main {
     this.world = new World(this.scene, this.camera, this.controls);
     playerSvc.init();
 
-    await coreSvc.init();
-
     this.initPointerLock();
     this.initRenderer();
 

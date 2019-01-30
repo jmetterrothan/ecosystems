@@ -2,17 +2,17 @@ import React from 'react';
 
 import SoundManager from '@shared/SoundManager';
 import NotificationContainer from '@public/components/notification/NotificationContainer';
-import UIState from '@ui/UIState';
 import UIHomeState from '@ui/states/UIHomeState';
 import stateFactory from '@ui/UIStatesFactory';
 import withUIManager from '@public/components/withUIManager/withUIManager';
 import CookiesConsent from '@public/components/cookies/cookies-consent';
 
-import UIService, { uiSvc } from './services/ui.service';
+import { uiSvc } from './services/ui.service';
 import { translationSvc } from '@shared/services/translation.service';
 
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
+import { IUIState } from '@ui/models/UIState';
 import { UIStates } from '@ui/enums/UIStates.enum';
 
 interface IUIManagerProps {
@@ -27,12 +27,12 @@ interface IUIManagerState {
 class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   static readonly ENABLED: boolean = false;
 
-  private uiStates: Map<UIStates, UIState>;
+  private uiStates: Map<UIStates, IUIState>;
 
   constructor(props: IUIManagerProps, state: IUIManagerState) {
     super(props, state);
 
-    this.uiStates = new Map<UIStates, UIState>();
+    this.uiStates = new Map<UIStates, IUIState>();
 
     this.state = {
       currentUiStateID: UIStates.HOME,
@@ -49,19 +49,6 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
         SoundManager.play('click');
       }
     });
-  }
-
-  componentDidMount() {
-    /*
-    notificationSvc.push({
-      id: '0',
-      icon: null,
-      label: 'label',
-      content: 'very long and awkward content',
-      duration: 5000
-    });
-    */
-    // this.switchState(UIStates.LOADING);
   }
 
   render() {
@@ -100,7 +87,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     this.switchState(open ? UIStates.MENU : UIStates.GAME);
   }
 
-  private addState(key: UIStates, value?: UIState) {
+  private addState(key: UIStates, value?: IUIState) {
     if (!this.uiStates.has(key)) {
       const uiState = value ? value : stateFactory(key);
       uiState.init();

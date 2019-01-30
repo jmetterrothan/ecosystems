@@ -1,10 +1,11 @@
-import Home from '@templates/home/home';
+import React from 'react';
 
-import UIState from '@ui/UIState';
+import Home from '@templates/home/home';
 import UIManager from '@ui/UIManager';
 
-class UIHomeState extends UIState {
+import { IUIState } from '@ui/models/UIState';
 
+class UIHomeState extends React.PureComponent implements IUIState {
   init() {
     console.info('INIT HOME');
   }

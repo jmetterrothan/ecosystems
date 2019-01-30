@@ -2,13 +2,13 @@ import React from 'react';
 
 import Main from '@app/Main';
 import UIManager from '@ui/UIManager';
-import UIState from '@ui/UIState';
+import { IUIState } from '@ui/models/UIState';
 
 import Loading from '@templates/loading/loading';
 
 import { UIStates } from '@ui/enums/UIStates.enum';
 
-class UILoadingState extends UIState {
+class UILoadingState extends React.PureComponent implements IUIState {
   init() {
     console.log('INIT LOADING');
   }
@@ -21,7 +21,7 @@ class UILoadingState extends UIState {
     const seed = await app.load(parameters.seed, parameters.online);
     app.run();
 
-    uiManager.switchState(UIStates.MENU, { seed, tab: 0 });
+    uiManager.switchState(UIStates.MENU, { seed });
   }
 
   render() {

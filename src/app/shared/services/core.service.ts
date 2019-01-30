@@ -12,7 +12,7 @@ import { TEXTURES } from '@shared/constants/texture.constants';
 
 class CoreService {
 
-  async init() {
+  async init(): Promise<any> {
     progressionSvc.init();
     await this.initModels();
     await this.initTextures();

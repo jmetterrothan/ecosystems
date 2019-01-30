@@ -1,22 +1,18 @@
 import React from 'react';
 
 import Game from '@templates/game/game';
-
-import UIState from '@ui/UIState';
 import UIManager from '@ui/UIManager';
 
-class UIGameState extends UIState {
+import { IUIState } from '@ui/models/UIState';
 
-  init() {
-
-  }
+class UIGameState extends React.PureComponent implements IUIState {
+  init() { }
 
   process(uiManager: UIManager) { }
 
   render() {
     return Game;
   }
-
 }
 
 export default UIGameState;
