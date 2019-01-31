@@ -23,11 +23,13 @@ interface IGameState {
   trophiesCount: number;
   onlineStatus: IOnlineStatus;
   soundEnabled: boolean;
+  voiceEnabled: boolean;
 }
 
 class Game extends React.PureComponent<IGameProps, IGameState> {
   private trophySubscription: Subscription;
   private configSoundSubscription: Subscription;
+  private configVoiceSubscription: Subscription;
   private onlineStatusSubscription: Subscription;
 
   constructor(props) {
@@ -38,6 +40,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
       trophiesCount: achievementSvc.getTrophiesCount(),
       onlineStatus: multiplayerSvc.getOnlineStatus(),
       soundEnabled: configSvc.soundEnabled,
+        /* voiceEnabled: configSvc.voiceEnabled,*/
     };
   }
 
@@ -48,6 +51,9 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     this.configSoundSubscription = configSvc.soundEnabled$.subscribe((b) => {
       this.setState({ soundEnabled: b });
     });
+    this.configVoiceSubscription = configSvc.voiceEnabled$.subscribe((v) => {
+      this.setState({ voiceEnabled: v });
+    });
     this.onlineStatusSubscription = multiplayerSvc.onlineStatus$.subscribe((status) => {
       this.setState({ onlineStatus: status });
     });
@@ -56,12 +62,13 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
   componentWillUnmount() {
     this.trophySubscription.unsubscribe();
     this.configSoundSubscription.unsubscribe();
+    this.configVoiceSubscription.unsubscribe();
     this.onlineStatusSubscription.unsubscribe();
   }
 
   render() {
     const { uiManager } = this.props;
-    const { soundEnabled, unlockedTrophiesCount, trophiesCount, onlineStatus } = this.state;
+    const { soundEnabled, voiceEnabled, unlockedTrophiesCount, trophiesCount, onlineStatus } = this.state;
 
     const trophiesProgression = unlockedTrophiesCount * 100 / trophiesCount;
 
@@ -81,8 +88,8 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     const iconSoundClass = soundEnabled ? 'icon-volume-high' : 'icon-volume-mute2';
     const iconSoundActiveClass = soundEnabled ? 'overlay-icon--active' : '';
 
-    const iconVoiceClass = true ? 'icon-radio-checked' : 'icon-radio-unchecked';
-    const iconVoiceActiveClass = true ? 'overlay-icon--active' : '';
+    const iconVoiceClass = voiceEnabled ? 'icon-radio-checked' : 'icon-radio-unchecked';
+    const iconVoiceActiveClass = voiceEnabled ? 'overlay-icon--active' : '';
 
     return (
       <section className='ui__state game'>
