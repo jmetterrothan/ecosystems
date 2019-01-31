@@ -12,6 +12,7 @@ import { translationSvc } from '@shared/services/translation.service';
 import { IOnlineStatus } from '@online/models/onlineStatus.model';
 
 import './game.scss';
+import { configSvc } from '@app/shared/services/config.service';
 
 interface IGameProps {
   uiManager: UIManager;
@@ -21,10 +22,12 @@ interface IGameState {
   unlockedTrophiesCount: number;
   trophiesCount: number;
   onlineStatus: IOnlineStatus;
+  soundEnabled: boolean;
 }
 
 class Game extends React.PureComponent<IGameProps, IGameState> {
   private trophySubscription: Subscription;
+  private configSoundSubscription: Subscription;
   private onlineStatusSubscription: Subscription;
 
   constructor(props) {
@@ -33,13 +36,17 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     this.state = {
       unlockedTrophiesCount: achievementSvc.getUnlockedTrophiesCount(),
       trophiesCount: achievementSvc.getTrophiesCount(),
-      onlineStatus: multiplayerSvc.getOnlineStatus()
+      onlineStatus: multiplayerSvc.getOnlineStatus(),
+      soundEnabled: configSvc.soundEnabled,
     };
   }
 
   componentWillMount() {
     this.trophySubscription = achievementSvc.trophy$.subscribe((count) => {
       this.setState({ unlockedTrophiesCount: count });
+    });
+    this.configSoundSubscription = configSvc.soundEnabled$.subscribe((b) => {
+      this.setState({ soundEnabled: b });
     });
     this.onlineStatusSubscription = multiplayerSvc.onlineStatus$.subscribe((status) => {
       this.setState({ onlineStatus: status });
@@ -48,12 +55,14 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
 
   componentWillUnmount() {
     this.trophySubscription.unsubscribe();
+    this.configSoundSubscription.unsubscribe();
     this.onlineStatusSubscription.unsubscribe();
   }
 
   render() {
     const { uiManager } = this.props;
-    const { unlockedTrophiesCount, trophiesCount, onlineStatus } = this.state;
+    const { soundEnabled, unlockedTrophiesCount, trophiesCount, onlineStatus } = this.state;
+
     const trophiesProgression = unlockedTrophiesCount * 100 / trophiesCount;
 
     // online
@@ -69,17 +78,33 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
       );
     }
 
+    const iconSoundClass = soundEnabled ? 'icon-volume-high' : 'icon-volume-mute2';
+    const iconSoundActiveClass = soundEnabled ? 'overlay-icon--active' : '';
+
+    const iconVoiceClass = true ? 'icon-radio-checked' : 'icon-radio-unchecked';
+    const iconVoiceActiveClass = true ? 'overlay-icon--active' : '';
+
     return (
       <section className='ui__state game'>
         <div className='game__overlay overlay'>
           <Crosshair />
-          <div className='overlay__trophies overlay-trophies'>
-            <div className='overlay-trophies__icon'><span className='icon-trophy' /></div>
-            <div className='overlay-trophies__counter counter'>
-              <span className='counter__current'>{unlockedTrophiesCount}</span> / <span className='counter__total'>{trophiesCount}</span>
+          <div className='overlay__trophies'>
+            <div className='overlay-trophies mb-3'>
+              <div className='overlay-trophies__icon'><span className='icon-trophy' /></div>
+              <div className='overlay-trophies__counter counter'>
+                <span className='counter__current'>{unlockedTrophiesCount}</span> / <span className='counter__total'>{trophiesCount}</span>
+              </div>
+              <div className='overlay-trophies__progression progression'>
+                <div className='progression__inner' style={{ width: `${trophiesProgression}%` }} />
+              </div>
             </div>
-            <div className='overlay-trophies__progression progression'>
-              <div className='progression__inner' style={{ width: `${trophiesProgression}%` }} />
+            <div className={classNames('overlay-icon overlay-icon--sound', iconSoundActiveClass)}>
+              <span className={classNames(iconSoundClass, 'overlay-icon__icon')} />
+              <span className='overlay-icon__key'>[ M ]</span>
+            </div>
+            <div className={classNames('overlay-icon overlay-icon--voice', iconVoiceActiveClass)}>
+            <span className={classNames(iconVoiceClass, 'overlay-icon__icon')} />
+              <span className='overlay-icon__key'>[ V ]</span>
             </div>
           </div>
           <div className='overlay__seed'>

@@ -4,10 +4,6 @@
   }
 }
 
-$color-bronze : #a88667;
-$color-gold : #FFB604;
-$color-diamond : #8BB7BF;
-
 .trophy {
   opacity: 0.25;
   display: flex;
@@ -39,9 +35,6 @@ $color-diamond : #8BB7BF;
   &--unlocked {
     opacity: 1;
 
-    .trophy__name{
-
-    }
     .trophy__icon{
       background: rgba($color-darkblue, 0.1);
     }

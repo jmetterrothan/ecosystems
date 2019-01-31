@@ -2,11 +2,10 @@ import React from 'react';
 
 import SoundManager from '@shared/SoundManager';
 import NotificationContainer from '@public/components/notification/NotificationContainer';
-import UIHomeState from '@ui/states/UIHomeState';
 import stateFactory from '@ui/UIStatesFactory';
 import withUIManager from '@components/withUIManager/withUIManager';
 
-import { uiSvc } from './services/ui.service';
+import { uiSvc } from '@ui/services/ui.service';
 import { translationSvc } from '@shared/services/translation.service';
 
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';

@@ -8,11 +8,9 @@ import World from '@world/World';
 import PostProcess from '@app/PostProcess';
 
 import { configSvc } from '@app/shared/services/config.service';
-import PlayerService, { playerSvc } from '@shared/services/player.service';
-import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
-import StorageService, { storageSvc } from '@shared/services/storage.service';
-import CoreService, { coreSvc } from '@shared/services/core.service';
-import UIService, { uiSvc } from '@ui/services/ui.service';
+import { playerSvc } from '@shared/services/player.service';
+import { multiplayerSvc } from '@online/services/multiplayer.service';
+import { uiSvc } from '@ui/services/ui.service';
 
 import { INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
 import { UIStates } from '@ui/enums/UIStates.enum';
@@ -125,7 +123,7 @@ class Main {
 
       const pointerlockchange = (e) => {
         this.controls.enabled = document.pointerLockElement === document.body || document.mozPointerLockElement === document.body || document.webkitPointerLockElement === document.body;
-        this.uiManager.manageMenu(!this.controls.enabled);
+        // this.uiManager.manageMenu(!this.controls.enabled);
       };
 
       const pointerlockerror = (e) => { };
@@ -138,7 +136,6 @@ class Main {
       document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
 
       document.body.addEventListener('click', () => {
-
         if (!uiSvc.isState(UIStates.GAME)) return;
 
         document.body.requestPointerLock = document.body.requestPointerLock || document.body.mozRequestPointerLock || document.body.webkitRequestPointerLock;
@@ -152,6 +149,12 @@ class Main {
 
       document.body.addEventListener('keydown', e => {
         if (e.key === 'v' || e.key === 'V') return;
+
+        if (e.key === 'm' || e.key === 'M') {
+          console.log(configSvc.soundEnabled);
+          configSvc.soundEnabled = !configSvc.soundEnabled;
+          return;
+        }
 
         if (this.world.isInitialized()) {
           this.world.handleKeyboard(e.key, true && this.controls.enabled);
