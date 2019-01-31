@@ -148,10 +148,11 @@ class Main {
       });
 
       document.body.addEventListener('keydown', e => {
-        if (e.key === 'v' || e.key === 'V') return;
+        if (e.key === 'v' || e.key === 'V') {
+          return;
+        }
 
         if (e.key === 'm' || e.key === 'M') {
-          console.log(configSvc.soundEnabled);
           configSvc.soundEnabled = !configSvc.soundEnabled;
           return;
         }

@@ -111,7 +111,6 @@ class World {
       console.info(`QUALITY : ${GraphicsQuality[configSvc.quality]}`);
     }
 
-    // configSvc.soundEnabled$.subscribe(() => { });
     this.initAudio();
 
     this.initialized = true;

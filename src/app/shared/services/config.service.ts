@@ -9,7 +9,8 @@ import CommonUtils from '@shared/utils/Common.utils';
 
 class ConfigService {
   public soundEnabled$: Subject<boolean>;
-  private voiceEnabled$: Subject<boolean>;
+  public voiceEnabled$: Subject<boolean>;
+
   private q: GraphicsQuality = GraphicsQuality.HIGH;
   private d: boolean = CommonUtils.isDev();
   private s: boolean = false;

@@ -40,7 +40,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
       trophiesCount: achievementSvc.getTrophiesCount(),
       onlineStatus: multiplayerSvc.getOnlineStatus(),
       soundEnabled: configSvc.soundEnabled,
-        /* voiceEnabled: configSvc.voiceEnabled,*/
+      voiceEnabled: configSvc.voiceEnabled
     };
   }
 
