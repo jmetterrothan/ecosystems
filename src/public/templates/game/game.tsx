@@ -100,11 +100,11 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
             </div>
             <div className={classNames('overlay-icon overlay-icon--sound', iconSoundActiveClass)}>
               <span className={classNames(iconSoundClass, 'overlay-icon__icon')} />
-              <span className='overlay-icon__key'>[ M ]</span>
+              <span className='overlay-icon__key'>M</span>
             </div>
             <div className={classNames('overlay-icon overlay-icon--voice', iconVoiceActiveClass)}>
             <span className={classNames(iconVoiceClass, 'overlay-icon__icon')} />
-              <span className='overlay-icon__key'>[ V ]</span>
+              <span className='overlay-icon__key'>V</span>
             </div>
           </div>
           <div className='overlay__seed'>
