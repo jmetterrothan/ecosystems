@@ -2,13 +2,13 @@ import * as tf from '@tensorflow/tfjs';
 import * as sc from '@tensorflow-models/speech-commands';
 
 import { voiceSvc } from '@voice/services/voice.service';
+import { configSvc } from '@app/shared/services/config.service';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { SAMPLES_CONFIG } from './constants/voice.constants';
 
 class Voice {
   private recognizer: sc.SpeeSpeechCommandRecognizer;
-  private predictState: boolean;
   private model: Model;
 
   constructor(model: Model) {
@@ -17,7 +17,6 @@ class Voice {
   }
 
   init() {
-    this.predictState = false;
     this.recognizer = sc.create('BROWSER_FFT');
     console.log('Voice system is ready to be use');
   }
@@ -27,13 +26,13 @@ class Voice {
   }
 
   stopListening() {
+    configSvc.voiceEnabled = false;
     this.recognizer.stopListening();
-    this.predictState = false;
     console.log('Voice system is not listening anymore');
   }
 
   togglePredictState() {
-    if (!this.predictState) {
+    if (!configSvc.voiceEnabled) {
       this.listen();
     } else {
       this.stopListening();
@@ -41,8 +40,8 @@ class Voice {
   }
 
   listen() {
+    configSvc.voiceEnabled = true;
     console.log('Voice system is currently listening');
-    this.predictState = true;
 
     this.recognizer.listen(async ({ spectrogram: { frameSize, data } }) => {
       const vals = MathUtils.normalize(

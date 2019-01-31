@@ -9,12 +9,15 @@ import CommonUtils from '@shared/utils/Common.utils';
 
 class ConfigService {
   public soundEnabled$: Subject<boolean>;
+  private voiceEnabled$: Subject<boolean>;
   private q: GraphicsQuality = GraphicsQuality.HIGH;
   private d: boolean = CommonUtils.isDev();
   private s: boolean = false;
+  private v: boolean = false;
 
   constructor() {
     this.soundEnabled$ = new Subject();
+    this.voiceEnabled$ = new Subject();
   }
 
   set quality(q: GraphicsQuality) {
@@ -38,8 +41,17 @@ class ConfigService {
     this.soundEnabled$.next(soundEnabled);
   }
 
+  set voiceEnabled (voiceEnabled) {
+    this.v = voiceEnabled;
+    this.voiceEnabled$.next(voiceEnabled);
+  }
+
   get soundEnabled(): boolean {
     return this.s;
+  }
+
+  get voiceEnabled(): boolean {
+    return this.v;
   }
 
   get config(): IConfig {
