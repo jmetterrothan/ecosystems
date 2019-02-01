@@ -52,28 +52,33 @@ class Tutorial extends React.Component {
           </p>
 
           <H4 className='mb-2'>Commandes</H4>
-          <H5 className='mt-2 mb-2'>Divers</H5>
-
-          <ul className='tutorial-keys'>
-            <li className='mb-1'>
-              <TutorialKey name='F5' text='Générer un nouveau monde' />
-            </li>
-          </ul>
-          <ul className='tutorial-keys'>
-            <li className='mb-1'>
-              <TutorialKey name='M' text='Activer/Désactiver le son' />
-            </li>
-            <li className='mb-1'>
-              <TutorialKey name='V' text='Activer/Désactiver les commandes vocales' />
-            </li>
-            <li className='mb-1'>
-              <TutorialKey name='Clic droit' text='Interagir' />
-            </li>
-            <li className='mb-1'>
-              <TutorialKey name='Echap' text='Retour au menu' />
-            </li>
-          </ul>
-          <H5 className='mt-2 mb-2'>Mouvements</H5>
+          <H5 className='mt-2 mb-2 align-left'>Divers</H5>
+          <Row>
+            <Col className='flexcol--12-t mb-2 mb-0-t'>
+              <ul className='tutorial-keys'>
+                <li className='mb-1'>
+                  <TutorialKey name='F5' text='Générer un nouveau monde' />
+                </li>
+                <li className='mb-1'>
+                  <TutorialKey name='M' text='Activer/Désactiver le son' />
+                </li>
+                <li className='mb-1'>
+                  <TutorialKey name='V' text='Activer/Désactiver les commandes vocales' />
+                </li>
+              </ul>
+            </Col>
+            <Col className='flexcol--12-t mb-2 mb-0-t'>
+              <ul className='tutorial-keys'>
+                <li className='mb-1'>
+                  <TutorialKey name='Clic droit' text='Interagir' />
+                </li>
+                <li className='mb-1'>
+                  <TutorialKey name='Echap' text='Retour au menu' />
+                </li>
+              </ul>
+            </Col>
+          </Row>
+          <H5 className='mt-2 mb-2 align-left'>Mouvements</H5>
           <Row>
             <Col className='flexcol--12-t mb-2 mb-0-t'>
               <ul className='tutorial-keys'>

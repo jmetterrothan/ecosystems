@@ -17,7 +17,7 @@
   flex-direction: column;
 }
 
-.tutorial-key {
+.article .tutorial-key {
   width: 100%;
   display: flex;
   justify-content: flex-start;
@@ -40,7 +40,8 @@
     background: #dadada;
   }
   &__text {
+    padding: 0.5rem 0;
     font-size: 1.1rem;
-    line-height: 2rem;
+    line-height: 1.75rem;
   }
 }
