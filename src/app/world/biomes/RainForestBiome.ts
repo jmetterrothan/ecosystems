@@ -1,8 +1,13 @@
+import * as THREE from 'three';
+import poissonDiskSampling from 'poisson-disk-sampling';
+
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
+import Boids from '@boids/Boids';
+import Butterfly from '@boids/creatures/Butterfly';
 
 import { IBiome } from '@world/models/biome.model';
 
@@ -12,6 +17,8 @@ import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progress
 import RainSFXMp3 from '@sounds/RainSFX.mp3';
 
 class RainForestBiome extends Biome {
+  private boids: Boids[];
+
   private a: number;
   private b: number;
   private c: number;
@@ -22,6 +29,8 @@ class RainForestBiome extends Biome {
 
   constructor(terrain: Terrain) {
     super('RAINFOREST', terrain);
+
+    this.boids = [];
 
     this.waterDistortion = true;
     this.waterDistortionFreq = 2.5;
@@ -38,6 +47,33 @@ class RainForestBiome extends Biome {
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.rainforest_visited);
     this.sound = RainSFXMp3;
+  }
+
+  init() {
+    const size = 75000;
+
+    const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
+    const points = pds.fill();
+
+    points.forEach((point: number[]) => {
+      const px = size / 2 + point.shift();
+      const pz = size / 2 + point.shift();
+
+      const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 6, Chunk.HEIGHT / 4);
+      const py = Math.max(Chunk.SEA_LEVEL + ySize / 2, this.generator.computeHeightAt(px, pz) + ySize / 3);
+
+      // butterflies
+      const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
+      for (let i = 0, n = MathUtils.randomInt(2, 4); i < n; i++) {
+        boids.addCreature(new Butterfly());
+      }
+
+      this.boids.push(boids);
+    });
+  }
+
+  update(delta: number) {
+    this.boids.forEach(boids => boids.update(this.generator, delta));
   }
 
   /**

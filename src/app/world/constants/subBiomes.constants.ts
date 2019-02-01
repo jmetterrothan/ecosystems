@@ -401,8 +401,8 @@ export const SUB_BIOMES: IBiomes = {
       },
       {
         weight: 0.50,
-        name: 'blue',
-        scarcity: 0.95,
+        name: ['blue', 'pink'],
+        scarcity: 0.945,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
         m: null,
         scale: { min: 1.00, max: 1.25 },

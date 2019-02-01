@@ -50,7 +50,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
   }
 
   componentDidMount() {
-    this.switchState(UIStates.MENU);
+    // this.switchState(UIStates.MENU);
   }
 
   render() {
