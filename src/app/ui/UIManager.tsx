@@ -49,6 +49,10 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     });
   }
 
+  componentDidMount() {
+    this.switchState(UIStates.MENU);
+  }
+
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
     if (this.state.currentUiStateID === UIStates.HOME) uiState.process(this);

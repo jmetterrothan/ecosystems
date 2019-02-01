@@ -18,7 +18,7 @@ interface Props {
 
 class Menu extends React.PureComponent<Props> {
 
-  static SELECTED_INDEX: number = 2;
+  static SELECTED_INDEX: number = 1;
 
   handleClick = () => {
     const { uiManager } = this.props;
@@ -37,12 +37,12 @@ class Menu extends React.PureComponent<Props> {
         <div className='menu__container'>
           <Tabs defaultIndex={Menu.SELECTED_INDEX} onSelect={tabIndex => Menu.SELECTED_INDEX = tabIndex}>
             <TabList>
-              <Tab>
+              {/* <Tab>
                 <div className='tab-menu ui-click-sound'>
                   <span className='tab-menu__icon icon-trophy mb-1'/>
                   <span className='tab-menu__text'>Trophées</span>
                 </div>
-              </Tab>
+              </Tab> */}
               <Tab>
                 <div className='tab-menu ui-click-sound'>
                   <span className='tab-menu__icon icon-meter mb-1'/>
@@ -63,13 +63,13 @@ class Menu extends React.PureComponent<Props> {
               </Tab>
             </TabList>
 
-            <TabPanel><div className='p-3'><Trophies /></div></TabPanel>
+            {/* <TabPanel><div className='p-3'><Trophies /></div></TabPanel> */}
             <TabPanel><div className='p-3'><Progress /></div></TabPanel>
             <TabPanel><div className='p-3'><Tutorial /></div></TabPanel>
             <TabPanel><div className='p-3'><Credits /></div></TabPanel>
           </Tabs>
           <footer className='menu__footer mb-3 mr-3'>
-            <Button className='btn btn--darkblue btn--expand-mobile mr-2 ui-click-sound' onClick={this.reload}>Nouveau monde</Button>
+            <Button className='btn btn--darkblue btn--expand-mobile mb-2 mb-0-t mr-2 ui-click-sound' onClick={this.reload}>Nouveau monde</Button>
             <Button className='btn btn--magenta btn--expand-mobile ui-click-sound' onClick={this.handleClick}>Continuer</Button>
           </footer>
         </div>
