@@ -5,7 +5,7 @@
   appearance: none;
   display: block;
   border: 2px solid transparent;
-  border-radius: 4px;
+  border-radius: 3px;
   padding: 0 1rem;
   line-height: calc(3rem - 4px);
   height: 3rem;
@@ -14,17 +14,24 @@
   text-transform: uppercase;
   font-family: $font;
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 700;
   text-align: center;
   outline: none;
   cursor: pointer;
   transition: all ease .4s;
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
 
   span {
     pointer-events: none;
+  }
+
+  &--big {
+    line-height: calc(4rem - 4px);
+    height: 4rem;
+    padding: 0 1.5rem;
+    font-size: 1.65rem;
+    border-radius: 6px;
   }
 
   &--expand-mobile {
@@ -37,10 +44,28 @@
 
   &--magenta {
     background: $color-magenta;
-    color:#ffffff;
+    color: #ffffff;
 
     &:hover {
       background: lighten($color-magenta, 10%);
+    }
+  }
+
+  &--turquoise {
+    background: $color-turquoise;
+    color: #ffffff;
+
+    &:hover {
+      background: darken($color-turquoise, 10%);
+    }
+  }
+
+  &--yellow {
+    background: $color-yellow;
+    color: #ffffff;
+
+    &:hover {
+      background: darken($color-yellow, 10%);
     }
   }
 
@@ -71,21 +96,21 @@
     }
   }
 
-  &--yellow {
-    background: $color-yellow;
-    color:#ffffff;
-
-    &:hover {
-      background: lighten($color-yellow, 10%);
-    }
-  }
-
   &--purple {
     background: $color-purple;
     color:#ffffff;
 
     &:hover {
       background: lighten($color-purple, 10%);
+    }
+  }
+
+  &--gold {
+    background: $color-gold;
+    color:$color-darkblue;
+
+    &:hover {
+      background: lighten($color-gold, 10%);
     }
   }
 }

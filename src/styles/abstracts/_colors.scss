@@ -7,10 +7,11 @@ $color-purple : #616dcb;
 $color-skyblue : #b3d7f2;
 $color-green: #02A676;
 $color-red: #e26259;
-$color-yellow : #f1d600;
+$color-yellow : #F2B134;
+$color-turquoise: #15a1a3;
 
 $color-bronze : #a88667;
 $color-gold : #FFB604;
 $color-diamond : #8BB7BF;
 
-$gradient : radial-gradient(rgba(255, 255, 255, 0.25) 5%, transparent), linear-gradient(0deg, $color-purple, $color-skyblue 75%);
+$gradient : radial-gradient(rgba(255, 255, 255, 0.25) 5%, transparent), linear-gradient(0deg, #4FB99F, $color-skyblue 75%);

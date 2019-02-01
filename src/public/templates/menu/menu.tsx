@@ -70,7 +70,7 @@ class Menu extends React.PureComponent<Props> {
           </Tabs>
           <footer className='menu__footer mb-3 mr-3'>
             <Button className='btn btn--darkblue btn--expand-mobile mb-2 mb-0-t mr-2 ui-click-sound' onClick={this.reload}>Nouveau monde</Button>
-            <Button className='btn btn--magenta btn--expand-mobile ui-click-sound' onClick={this.handleClick}>Continuer</Button>
+            <Button className='btn btn--turquoise btn--expand-mobile ui-click-sound' onClick={this.handleClick}>Continuer</Button>
           </footer>
         </div>
       </div >

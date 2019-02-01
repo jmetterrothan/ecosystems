@@ -43,7 +43,7 @@ class Tutorial extends React.Component {
         <H3 className='mb-3'>Tutoriel</H3>
         <Article>
           <H4 className='mb-2'>Le projet</H4>
-          <p>
+          <p className='mb-2'>
             Ecosystems est un projet réalisé par des étudiants <a className='link' href='https://www.ingenieur-imac.fr' target='_blank'>IMAC</a> dans le cadre du cours d'Intelligence Artificielle de 3ème année. Le but est de proposer une expérience web interactive dans un monde en 3d.
           </p>
           <p className='mb-3'>
