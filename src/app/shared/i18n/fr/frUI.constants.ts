@@ -27,7 +27,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     }
   },
   progression: {
-    game_played: 'Parties jouées: {{count}}',
+    game_played: 'Parties jouées : {{count}}',
     distance_travelled: 'Distance parcourue : {{count}}',
     going_underwater: 'Nombre de fois sous l\'eau : {{count}}',
     objects_placed: 'Objets placés : {{count}}',

@@ -37,16 +37,36 @@ class Menu extends React.PureComponent<Props> {
         <div className='menu__container'>
           <Tabs defaultIndex={Menu.SELECTED_INDEX} onSelect={tabIndex => Menu.SELECTED_INDEX = tabIndex}>
             <TabList>
-              <Tab><span className='ui-click-sound'>Trophées</span></Tab>
-              <Tab><span className='ui-click-sound'>Progression</span></Tab>
-              <Tab><span className='ui-click-sound'>Tutoriel</span></Tab>
-              <Tab><span className='ui-click-sound'>Crédits</span></Tab>
+              <Tab>
+                <div className='tab-menu ui-click-sound'>
+                  <span className='tab-menu__icon icon-trophy mb-1'/>
+                  <span className='tab-menu__text'>Trophées</span>
+                </div>
+              </Tab>
+              <Tab>
+                <div className='tab-menu ui-click-sound'>
+                  <span className='tab-menu__icon icon-meter mb-1'/>
+                  <span className='tab-menu__text'>Progression</span>
+                </div>
+              </Tab>
+              <Tab>
+                <div className='tab-menu ui-click-sound'>
+                  <span className='tab-menu__icon icon-lifebuoy mb-1'/>
+                  <span className='tab-menu__text'>Tutoriel</span>
+                </div>
+              </Tab>
+              <Tab>
+                <div className='tab-menu ui-click-sound'>
+                  <span className='tab-menu__icon icon-users mb-1'/>
+                  <span className='tab-menu__text'>Crédits</span>
+                </div>
+              </Tab>
             </TabList>
 
-            <TabPanel><Trophies /></TabPanel>
-            <TabPanel><Progress /></TabPanel>
-            <TabPanel><Tutorial /></TabPanel>
-            <TabPanel><Credits /></TabPanel>
+            <TabPanel><div className='p-3'><Trophies /></div></TabPanel>
+            <TabPanel><div className='p-3'><Progress /></div></TabPanel>
+            <TabPanel><div className='p-3'><Tutorial /></div></TabPanel>
+            <TabPanel><div className='p-3'><Credits /></div></TabPanel>
           </Tabs>
           <footer className='menu__footer mb-3 mr-3'>
             <Button className='btn btn--darkblue btn--expand-mobile mr-2 ui-click-sound' onClick={this.reload}>Nouveau monde</Button>

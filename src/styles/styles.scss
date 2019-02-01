@@ -13,3 +13,13 @@
 @import 'form/_tooltip';
 
 @import 'ui/_ui';
+
+.title {
+  font-family: $font;
+}
+
+h3.title {
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  font-weight: 700;
+}

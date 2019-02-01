@@ -6,14 +6,11 @@
   background: rgba(0, 0, 0, 0.25);
 
   &__container {
-    width: 50%;
+    width: 100%;
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
-    // max-width: 1024px;
-    background:#f1f1f1;
   }
 
   &__footer {
@@ -30,7 +27,70 @@
   }
 }
 
-.tab {
-  margin: 2rem;
-  height: calc(100% - 4rem);
+.react-tabs {
+  width: 100%;
+  max-width: 768px;
+  height: 100%;
+  background: #f1f1f1;
+  display: flex;
+
+  &__tab-list {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100px;
+    flex-shrink: 0;
+    flex-grow: 0;
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  &__tab-panel {
+    width: calc(100% - 100px);
+    flex-basis: calc(100% - 100px);
+    flex-shrink: 0;
+    flex-grow: 0;
+  }
+
+  &__tab {
+    width: 100%;
+    height: 100px;
+    border-radius: 0;
+    border-bottom: 1px solid #D2D3D4;
+
+    &:hover {
+      background: #D2D3D4;
+      transition: background ease 0.5s;
+    }
+
+    &--selected, &--selected:hover {
+      background: $color-darkblue;
+      color: $color-skyblue;
+    }
+
+    &:last-child {
+      border-bottom-color: transparent;
+    }
+
+    .tab-menu {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      outline: none;
+
+      &__icon {
+        font-size: 2rem;
+        pointer-events: none;
+      }
+
+      &__text {
+        font-size: 0.85rem;
+        line-height:1.5rem;
+        font-weight: 700;
+        pointer-events: none;
+      }
+    }
+  }
 }

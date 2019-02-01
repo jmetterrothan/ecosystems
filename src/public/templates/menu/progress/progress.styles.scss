@@ -1,5 +1,12 @@
 .tab {
   &--progress {
+    li {
+      background: rgba(0, 0, 0, 0.025);
+      line-height: 2rem;
 
+      &:nth-child(odd) {
+        background: transparent;
+      }
+    }
   }
 }

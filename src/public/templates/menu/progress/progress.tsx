@@ -24,8 +24,11 @@ class Progress extends React.Component<IProgressProps, IProgressState> {
   render() {
     return (
       <ul className='tab tab--progress'>
+        <h3 className='title mb-3'>Progression</h3>
         {this.state.progression.map((item: IProgressionWithCount, index: number) => (
-          <li key={index}>{translationSvc.translate(`UI.progression.${item.name}`, { count: item.count })}</li>
+          <li className='p-2 pt-1 pb-1' key={index}>
+            {translationSvc.translate(`UI.progression.${item.name}`, { count: item.count })}
+          </li>
         ))}
       </ul>
     );

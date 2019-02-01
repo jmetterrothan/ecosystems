@@ -3,7 +3,7 @@ export enum Icons {
   Github = 'github',
   LinkedIn = 'linkedin',
   StackOverflow = 'stackoverflow',
-  Email = 'envelop',
+  Email = 'mail2',
   Twitter = 'twitter'
 }
 

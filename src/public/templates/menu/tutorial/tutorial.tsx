@@ -8,6 +8,7 @@ class Tutorial extends React.Component {
   render() {
     return (
       <div className='tab tab--tutorial'>
+        <h3 className='title mb-3'>Tutoriel</h3>
         <Slider dots={true} infinite={false} speed={500} slidesToShow={1} slidesToScroll={1}>
           <div>Page 1</div>
           <div>Page 2</div>

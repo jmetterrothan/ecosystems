@@ -17,12 +17,13 @@
 
     @include breakpoint-tablet {
       flex-direction: row;
+      justify-content: space-between;
     }
   }
 
   &__fullname {
     font-weight: 700;
-    font-size: 1.35rem;
+    font-size: 1.2rem;
     line-height: 2rem;
     color: $color-darkblue;
   }
@@ -32,7 +33,7 @@
   }
 
   &__description {
-
+    font-size: 1.0rem;
   }
 
   &__link {
@@ -41,7 +42,8 @@
     color: $color-darkblue;
 
     &:hover {
-      color: lighten($color-darkblue, 10%);
+      color: lighten($color-darkblue, 25%);
+      transition: color ease 0.5s;
     }
   }
 }

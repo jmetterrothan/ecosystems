@@ -28,6 +28,7 @@ class Credits extends React.Component {
   render() {
     return (
       <div className='tab tab--credits'>
+        <h3 className='title mb-3'>Crédits</h3>
         <ul className='credits-tab__collaborators'>
           {collaborators.map((collaborator, i) => <li key={i}><Collaborator {...collaborator} /></li>)}
         </ul>
