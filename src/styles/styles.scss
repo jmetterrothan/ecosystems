@@ -45,39 +45,12 @@ h5.title {
   }
 }
 
-.key-info {
-  font-weight: bold;
-}
 
-.tutorial-keys {
-  display: flex;
-  flex-direction: column;
-}
+.link {
+  color: $color-darkblue;
+  text-decoration: underline;
 
-.tutorial-key {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-
-  &__name {
-    display: block;
-    align-self: flex-start;
-    flex-shrink: 0;
-    flex-grow: 0;
-    padding: 0 0.75rem;
-    min-width: 2.75rem;
-    height: 2.75rem;
-    line-height: 2.75rem;
-    text-align: center;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: $color-darkblue;
-    border-radius: 3px;
-    background: #dadada;
-  }
-  &__text {
-    font-size: 1.1rem;
-    line-height: 2rem;
+  &:hover {
+    color: lighten($color-darkblue, 25%);
   }
 }

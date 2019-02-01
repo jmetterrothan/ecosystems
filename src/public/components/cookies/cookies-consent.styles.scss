@@ -69,13 +69,14 @@
       }
     }
   }
-}
 
-.link {
-  color: $color-skyblue;
-  text-decoration: underline;
+  .link {
+    color: $color-skyblue;
+    text-decoration: underline;
 
-  &:hover {
-    color: darken($color-skyblue, 15%);
+    &:hover {
+      color: darken($color-skyblue, 15%);
+    }
   }
+
 }

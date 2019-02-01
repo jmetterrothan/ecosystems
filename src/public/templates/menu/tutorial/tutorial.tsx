@@ -44,14 +44,11 @@ class Tutorial extends React.Component {
         <Article>
           <H4 className='mb-2'>Le projet</H4>
           <p>
-            Ecosystems est un projet réalisé en 3ème année d'IMAC basé sur three.js et React.
-          </p>
-          <p className='mb-2'>
-            Le but est de proposer une expérience web interactive dans un monde en 3d.
-            Le projet est toujours en phase de développement notamment au niveau l'interface.
+            Ecosystems est un projet réalisé par des étudiants <a className='link' href='https://www.ingenieur-imac.fr' target='_blank'>IMAC</a> dans le cadre du cours d'Intelligence Artificielle de 3ème année. Le but est de proposer une expérience web interactive dans un monde en 3d.
           </p>
           <p className='mb-3'>
-            <i className='icon-chrome mr-2'/><i className='icon-firefox'/>
+            Le projet utilise three.js pour le rendu, React pour l'interface, et tensorflow pour pouvoir interagir en parlant avec le monde.
+            Certaines fonctionnalités sont toujours en phase de développement notamment au niveau de l'interface et certains éléments de gameplay.
           </p>
 
           <H4 className='mb-2'>Commandes</H4>
@@ -71,6 +68,9 @@ class Tutorial extends React.Component {
             </li>
             <li className='mb-1'>
               <TutorialKey name='Clic droit' text='Interagir' />
+            </li>
+            <li className='mb-1'>
+              <TutorialKey name='Echap' text='Retour au menu' />
             </li>
           </ul>
           <H5 className='mt-2 mb-2'>Mouvements</H5>
