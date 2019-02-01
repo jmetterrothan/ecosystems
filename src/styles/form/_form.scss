@@ -61,6 +61,11 @@
       transition: all ease .2s;
     }
 
+    &:disabled + label {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
     &:checked + label {
       background: $color-darkblue;
       color: #ffffff;
