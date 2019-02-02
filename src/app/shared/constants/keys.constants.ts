@@ -1,7 +1,7 @@
 export const Keys = {
   down: 'e',
   up: 'a',
-  right: 'r',
+  right: 'd',
   left: 'q',
   back: 's',
   front: 'z',
