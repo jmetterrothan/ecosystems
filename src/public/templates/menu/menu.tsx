@@ -18,7 +18,7 @@ interface Props {
 
 class Menu extends React.PureComponent<Props> {
 
-  static SELECTED_INDEX: number = 1;
+  static SELECTED_INDEX: number = 0;
 
   handleClick = () => {
     const { uiManager } = this.props;
@@ -45,14 +45,14 @@ class Menu extends React.PureComponent<Props> {
               </Tab> */}
               <Tab>
                 <div className='tab-menu ui-click-sound'>
-                  <span className='tab-menu__icon icon-meter mb-1'/>
-                  <span className='tab-menu__text'>Progression</span>
+                  <span className='tab-menu__icon icon-lifebuoy mb-1'/>
+                  <span className='tab-menu__text'>Tutoriel</span>
                 </div>
               </Tab>
               <Tab>
                 <div className='tab-menu ui-click-sound'>
-                  <span className='tab-menu__icon icon-lifebuoy mb-1'/>
-                  <span className='tab-menu__text'>Tutoriel</span>
+                  <span className='tab-menu__icon icon-meter mb-1'/>
+                  <span className='tab-menu__text'>Progression</span>
                 </div>
               </Tab>
               <Tab>
@@ -64,13 +64,13 @@ class Menu extends React.PureComponent<Props> {
             </TabList>
 
             {/* <TabPanel><div className='p-3'><Trophies /></div></TabPanel> */}
-            <TabPanel><div className='p-3'><Progress /></div></TabPanel>
             <TabPanel><div className='p-3'><Tutorial /></div></TabPanel>
+            <TabPanel><div className='p-3'><Progress /></div></TabPanel>
             <TabPanel><div className='p-3'><Credits /></div></TabPanel>
           </Tabs>
           <footer className='menu__footer mb-3 mr-3'>
             <Button className='btn btn--darkblue btn--expand-mobile mb-2 mb-0-t mr-2 ui-click-sound' onClick={this.reload}>Nouveau monde</Button>
-            <Button className='btn btn--turquoise btn--expand-mobile ui-click-sound' onClick={this.handleClick}>Continuer</Button>
+            <Button className='btn btn--magenta btn--expand-mobile ui-click-sound' onClick={this.handleClick}>Continuer</Button>
           </footer>
         </div>
       </div >

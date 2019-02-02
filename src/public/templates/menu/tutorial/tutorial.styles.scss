@@ -7,11 +7,6 @@
   }
 }
 
-
-.key-info {
-  font-weight: bold;
-}
-
 .tutorial-keys {
   display: flex;
   flex-direction: column;
@@ -43,5 +38,62 @@
     padding: 0.5rem 0;
     font-size: 1.1rem;
     line-height: 1.75rem;
+  }
+}
+
+
+.slick-dots {
+  top:  100%;
+  bottom: initial;
+
+  li {
+    width: 2rem;
+    height: 2rem;
+    margin: 0 1rem;
+
+    &.slick-active {
+      button:before {
+        background: $color-magenta;
+      }
+    }
+
+    button {
+      position: relative;
+      width: inherit;
+      height: inherit;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: calc((2rem -  0.75rem) / 2);
+        left: calc((2rem - 0.75rem) / 2);
+        width: 0.75rem;
+        height: 0.75rem;
+        background: $color-darkblue;
+        border-radius: 50%;
+      }
+    }
+  }
+}
+
+.slick-slider {
+  .slick-arrow {
+    z-index: 10;
+    top: 100%;
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    transform: none;
+
+    &:before {
+      color: $color-darkblue;
+    }
+
+    &.slick-prev {
+      left: 0;
+    }
+    &.slick-next {
+      right: 0;
+    }
   }
 }

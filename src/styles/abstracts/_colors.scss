@@ -1,7 +1,7 @@
 $debug-row: rgba(20, 20, 20, 0.4);
 $debug-col: rgba($debug-row, 0.4);
 
-$color-magenta : #c53974;
+$color-magenta : #FA5672;
 $color-darkblue : #2e3b49;
 $color-purple : #616dcb;
 $color-skyblue : #b3d7f2;
@@ -14,4 +14,43 @@ $color-bronze : #a88667;
 $color-gold : #FFB604;
 $color-diamond : #8BB7BF;
 
-$gradient : radial-gradient(rgba(255, 255, 255, 0.25) 5%, transparent), linear-gradient(0deg, #4FB99F, $color-skyblue 75%);
+$gradient : radial-gradient(rgba(255, 255, 255, 0.25) 5%, transparent), linear-gradient(0deg, #FAC4E2, $color-skyblue 75%);
+
+
+.color {
+  &-magenta {
+    color: $color-magenta;
+  }
+
+  &-turquoise {
+    color: $color-turquoise;
+  }
+
+  &-yellow {
+    color: $color-yellow;
+  }
+
+  &-darkblue {
+    color: $color-darkblue;
+  }
+
+  &-skyblue {
+    color: $color-skyblue;
+  }
+
+  &-red {
+    color: $color-red;
+  }
+
+  &-green {
+    color: $color-green;
+  }
+
+  &-purple {
+    color: $color-purple;
+  }
+
+  &-gold {
+    color: $color-gold;
+  }
+}

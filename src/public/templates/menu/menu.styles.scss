@@ -58,12 +58,12 @@
 
     &:hover {
       background: #D2D3D4;
-      transition: background ease 0.5s;
+      transition: all ease 0.5s;
     }
 
     &--selected, &--selected:hover {
       background: $color-darkblue;
-      color: $color-skyblue;
+      color: #D2D3D4;
     }
 
     &:last-child {
@@ -94,3 +94,4 @@
     }
   }
 }
+

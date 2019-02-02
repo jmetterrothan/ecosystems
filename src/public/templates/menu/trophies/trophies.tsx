@@ -39,7 +39,7 @@ class Trophies extends React.Component<ITrophiesProps, ITrophiesState> {
   render() {
     return (
       <div className='tab tab--trophies'>
-        <h3 className='title mb-3'>Trophées</h3>
+        <h3 className='title color-magenta mb-3'>Trophées</h3>
         {this.renderSelect()}
         <Row Tag='ul'>
           {this.state.allTrophies.map((trophy: ITrophy, index: number) => {

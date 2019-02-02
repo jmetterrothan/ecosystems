@@ -78,6 +78,15 @@
     }
   }
 
+  &--skyblue {
+    background: $color-skyblue;
+    color:$color-darkblue;
+
+    &:hover {
+      background: lighten($color-skyblue, 10%);
+    }
+  }
+
   &--red {
     background: $color-red;
     color:#ffffff;
