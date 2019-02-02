@@ -5,19 +5,10 @@ import classNames from 'classnames';
 import './tutorial.styles';
 import Row from '@public/components/row/row';
 import Col from '@public/components/col/col';
-import { BIOMES } from '@app/world/constants/biomes.constants';
+import { H1, H2, H3, H4, H5 } from '@public/components/hx/hx';
+
+import { Biomes } from '@app/world/constants/biomes.constants';
 import { achievementSvc } from '@app/achievements/services/achievement.service';
-
-type IHProps = {
-  children: any;
-  className?: string;
-};
-
-const H1: React.SFC<IHProps> = ({ children, className }) => (<h1 className={classNames('title', className)}>{children}</h1>);
-const H2: React.SFC<IHProps> = ({ children, className }) => (<h2 className={classNames('title', className)}>{children}</h2>);
-const H3: React.SFC<IHProps> = ({ children, className }) => (<h3 className={classNames('title', className)}>{children}</h3>);
-const H4: React.SFC<IHProps> = ({ children, className }) => (<h4 className={classNames('title', className)}>{children}</h4>);
-const H5: React.SFC<IHProps> = ({ children, className }) => (<h5 className={classNames('title', className)}>{children}</h5>);
 
 type IArticle = {
   children: any;
