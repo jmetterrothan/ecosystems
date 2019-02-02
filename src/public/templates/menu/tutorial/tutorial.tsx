@@ -6,6 +6,7 @@ import './tutorial.styles';
 import Row from '@public/components/row/row';
 import Col from '@public/components/col/col';
 import { BIOMES } from '@app/world/constants/biomes.constants';
+import { achievementSvc } from '@app/achievements/services/achievement.service';
 
 type IHProps = {
   children: any;
@@ -52,8 +53,12 @@ class Tutorial extends React.Component {
               Vous pouvez recharger la page ou appuyer sur <strong>"Nouveau monde"</strong> pour générer aléatoirement un nouveau monde unique. Il y a au total <strong>{BIOMES.length} types de monde différents</strong> à découvrir.
             </p>
             <p className='mb-3'>
+              Débloquer les <strong>{achievementSvc.getTrophiesCount()} trophées</strong> en parcourant et fouillant les mondes.
+            </p>
+            <H4 className='mb-2'>Les technologies utilisées</H4>
+            <p className='mb-3'>
               Le projet utilise three.js pour le rendu, React pour l'interface, et tensorflow pour pouvoir interagir en parlant avec le monde.
-              Certaines fonctionnalités sont toujours en phase de développement notamment au niveau de l'interface et certains éléments de gameplay.
+              Certaines fonctionnalités sont toujours en phase de développement, notamment au niveau de l'interface et certains éléments de gameplay.
             </p>
           </Article>
           <Article className='page page--2 pb-2'>

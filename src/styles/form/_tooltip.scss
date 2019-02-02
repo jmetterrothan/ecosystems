@@ -33,7 +33,7 @@
     bottom: 3rem;
     left: calc(-325px / 2 + 2rem);
     width: 300px;
-    background: $color-skyblue;
+    background: lighten($color-magenta, 15%);
     color: $color-darkblue;
     border-radius: 3px;
 
@@ -44,7 +44,7 @@
       left: calc(325px / 2 - 1rem - 0.8rem);
       display: block;
       border: 0.8rem solid transparent;
-      border-top-color: $color-skyblue;
+      border-top-color: lighten($color-magenta, 15%);
     }
 
     h4 {
@@ -52,6 +52,7 @@
       font-size: 1.5rem;
       line-height:1.75rem;
       text-align: left;
+      color: $color-darkblue;
     }
 
     p {

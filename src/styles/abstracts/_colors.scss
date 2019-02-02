@@ -14,7 +14,7 @@ $color-bronze : #a88667;
 $color-gold : #FFB604;
 $color-diamond : #8BB7BF;
 
-$gradient : radial-gradient(rgba(255, 255, 255, 0.25) 5%, transparent), linear-gradient(0deg, #FAC4E2, $color-skyblue 75%);
+$gradient : radial-gradient(rgba(255, 255, 255, 0.25) 5%, transparent), linear-gradient(0deg, lighten($color-magenta, 15%), $color-skyblue 75%);
 
 
 .color {
