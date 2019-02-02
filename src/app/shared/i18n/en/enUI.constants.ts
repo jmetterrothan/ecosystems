@@ -53,11 +53,11 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
     mouse_interaction: 'Interagir',
     mouse_interaction_name: 'Right click',
     article: {
-      p1: '',
-      p2: '',
-      p3: '',
-      p4: '',
-      p5: ''
+      p1: 'Ecosystems is a project developed by 3rd year IMAC students in the Artificial Intelligence course. The purpose of the project is to experience a 3d interactive world in a web browser.',
+      p2: 'You can reload the page anytime you want or click the "New world" button to generate a brand new and unique world. There is a total of {{count}} different biomes to discover.',
+      p3: 'Unlock all {{count}} trophies by roaming and searching the worlds.',
+      p4: 'The project uses three.js for the rendering, React for the user interface, and tensorflow for voice commands recognition. Some functionalities are still in development and prone to bugs.',
+      p5: 'Use a desktop version of Chrome or Firefox for an optimal experience.'
     }
   },
   credits: {

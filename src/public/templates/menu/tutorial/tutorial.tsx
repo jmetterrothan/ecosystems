@@ -46,7 +46,7 @@ class Tutorial extends React.Component {
   getSecondPanel() {
     return (
       <Article className='page page--2 pb-2'>
-        <H4 className='mb-3'>{translationSvc.translate('UI.tutorial.title_commands')}</H4>
+        <H4 className='mb-2'>{translationSvc.translate('UI.tutorial.title_commands')}</H4>
         <H5 className='mt-2 mb-2 align-left'>{translationSvc.translate('UI.tutorial.subtitle_misc')}</H5>
         <Row>
           <Col className='flexcol--12-t mb-2 mb-0-t'>
