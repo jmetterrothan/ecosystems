@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { Icons, ICollaboratorLink, ICollaboratorProps, collaborators } from './creditData';
+import { H1, H2, H3, H4, H5 } from '@public/components/hx/hx';
 
 import './credits.styles';
 
@@ -28,7 +29,7 @@ class Credits extends React.Component {
   render() {
     return (
       <div className='tab tab--credits'>
-        <h3 className='title color-magenta mb-3'>Crédits</h3>
+        <H3 className='title color-magenta mb-3'>Crédits</H3>
         <ul className='credits-tab__collaborators'>
           {collaborators.map((collaborator, i) => <li key={i}><Collaborator {...collaborator} /></li>)}
         </ul>

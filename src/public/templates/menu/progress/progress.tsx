@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { H1, H2, H3, H4, H5 } from '@public/components/hx/hx';
+
 import { progressionSvc } from '@achievements/services/progression.service';
 import { translationSvc } from '@shared/services/translation.service';
 
@@ -24,7 +26,7 @@ class Progress extends React.Component<IProgressProps, IProgressState> {
   render() {
     return (
       <ul className='tab tab--progress'>
-        <h3 className='title color-magenta mb-3'>Progression</h3>
+        <H3 className='title color-magenta mb-3'>Progression</H3>
         {this.state.progression.map((item: IProgressionWithCount, index: number) => (
           <li className='p-2 pt-1 pb-1' key={index}>
             {translationSvc.translate(`UI.progression.${item.name}`, { count: item.count })}

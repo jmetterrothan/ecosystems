@@ -1,6 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import Row from '@public/components/row/row';
+import Col from '@public/components/col/col';
+import { H1, H2, H3, H4, H5 } from '@public/components/hx/hx';
+
 import { translationSvc } from '@shared/services/translation.service';
 import { achievementSvc } from '@achievements/services/achievement.service';
 
@@ -10,8 +14,6 @@ import { TROPHIES } from '@achievements/constants/trophies.constants';
 import { TROPHY_SORT } from '@achievements/enums/trophySort.enum';
 
 import './trophies.styles.scss';
-import Row from '@public/components/row/row';
-import Col from '@public/components/col/col';
 
 interface ITrophiesProps {
 
@@ -39,7 +41,7 @@ class Trophies extends React.Component<ITrophiesProps, ITrophiesState> {
   render() {
     return (
       <div className='tab tab--trophies'>
-        <h3 className='title color-magenta mb-3'>Trophées</h3>
+        <H3 className='title color-magenta mb-3'>Trophées</H3>
         {this.renderSelect()}
         <Row Tag='ul'>
           {this.state.allTrophies.map((trophy: ITrophy, index: number) => {
@@ -49,7 +51,7 @@ class Trophies extends React.Component<ITrophiesProps, ITrophiesState> {
             return (<Col Tag='li' key={index} className='flexcol--12-t flexcol--8-l flexcol--6-d'>
               <div className={classNames('trophy', unlockedClass, difficultyClass, 'mb-3')}>
                 <div className='trophy__icon mb-1'><span className='icon-trophy' /></div>
-                <h4 className='trophy__name'>{translationSvc.translate(trophy.name.key, trophy.name.options)}</h4>
+                <H4 className='trophy__name'>{translationSvc.translate(trophy.name.key, trophy.name.options)}</H4>
               </div>
             </Col>);
           })}

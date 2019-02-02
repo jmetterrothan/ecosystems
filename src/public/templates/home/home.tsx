@@ -8,6 +8,7 @@ import ImageWithLoading from '@components/imageWithLoading/ImageWithLoading';
 import SoundManager from '@app/shared/SoundManager';
 import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@shared/utils/Common.utils';
+import { H1, H2, H3, H4, H5 } from '@public/components/hx/hx';
 
 import { coreSvc } from '@shared/services/core.service';
 import { configSvc } from '@app/shared/services/config.service';
@@ -199,8 +200,8 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
         <CookiesConsent />
         <section className='ui__state home p-2'>
           <header className='home__header mt-2-t mt-4-l mb-2'>
-            <h2 className='home__subtitle mb-1'>{translationSvc.translate('UI.home.subtitle')}</h2>
-            <h1 className='home__title'>{translationSvc.translate('UI.home.title')}</h1>
+            <H2 className='home__subtitle mb-1'>{translationSvc.translate('UI.home.subtitle')}</H2>
+            <H1 className='home__title'>{translationSvc.translate('UI.home.title')}</H1>
           </header>
           <div className='home__preview'>
             <ImageWithLoading src={image} alt='world preview' />
@@ -216,7 +217,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
                       <div className='tooltip__content'>
                         ?
                         <div className='tooltip__text p-2'>
-                          <h4 className='mb-1'>{translationSvc.translate('UI.home.form.seed_tooltip_title')}</h4>
+                          <H4 className='mb-1'>{translationSvc.translate('UI.home.form.seed_tooltip_title')}</H4>
                           <p>{translationSvc.translate('UI.home.form.seed_tooltip_text')}</p>
                         </div>
                       </div>

@@ -41,7 +41,7 @@ class Tutorial extends React.Component {
               Ecosystems est un projet réalisé par des étudiants <a className='link' href='https://www.ingenieur-imac.fr' target='_blank'><strong>IMAC</strong></a> dans le cadre du cours d'Intelligence Artificielle de 3ème année. Le but est de proposer une expérience web interactive dans un monde en 3d.
             </p>
             <p className='mb-2'>
-              Vous pouvez recharger la page ou appuyer sur <strong>"Nouveau monde"</strong> pour générer aléatoirement un nouveau monde unique. Il y a au total <strong>{BIOMES.length} types de monde différents</strong> à découvrir.
+              Vous pouvez recharger la page ou appuyer sur <strong>"Nouveau monde"</strong> pour générer aléatoirement un nouveau monde unique. Il y a au total <strong>{Biomes.length} types de monde différents</strong> à découvrir.
             </p>
             <p className='mb-3'>
               Débloquer les <strong>{achievementSvc.getTrophiesCount()} trophées</strong> en parcourant et fouillant tous les mondes.
