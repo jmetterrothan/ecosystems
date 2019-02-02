@@ -45,7 +45,7 @@
 
   &__tab-panel {
     width: calc(100% - 100px);
-    flex-basis: calc(100% - 100px);
+    // flex-basis: calc(100% - 100px);
     flex-shrink: 0;
     flex-grow: 0;
   }

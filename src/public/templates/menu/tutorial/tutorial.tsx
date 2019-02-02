@@ -53,7 +53,7 @@ class Tutorial extends React.Component {
               Vous pouvez recharger la page ou appuyer sur <strong>"Nouveau monde"</strong> pour générer aléatoirement un nouveau monde unique. Il y a au total <strong>{BIOMES.length} types de monde différents</strong> à découvrir.
             </p>
             <p className='mb-3'>
-              Débloquer les <strong>{achievementSvc.getTrophiesCount()} trophées</strong> en parcourant et fouillant les mondes.
+              Débloquer les <strong>{achievementSvc.getTrophiesCount()} trophées</strong> en parcourant et fouillant tous les mondes.
             </p>
             <H4 className='mb-2'>Les technologies utilisées</H4>
             <p className='mb-3'>
