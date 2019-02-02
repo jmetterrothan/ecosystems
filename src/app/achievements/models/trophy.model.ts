@@ -9,6 +9,7 @@ export interface ITrophy {
   difficulty: TROPHY_DIFFICULTY;
   type: TROPHY_TYPE;
   checklist: IChecklistOption[];
+  unlocked?: boolean;
 }
 
 export interface IChecklistOption {

@@ -55,6 +55,9 @@ class CommonUtils {
     return `object_${objectName}_placed`;
   }
 
+  static formatNumberWithSpaces(x): string {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
 }
 
 export default CommonUtils;

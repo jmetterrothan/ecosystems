@@ -28,9 +28,12 @@ export interface ITrophiesTranslationKeys {
 }
 
 export interface IUITranslationKeys {
-  trophies: string;
   online_count: string;
   trophy_unlocked: string;
+  menu: {
+    new_world_btn: string;
+    continue_btn: string;
+  };
   home: {
     title: string;
     subtitle: string;
@@ -53,7 +56,46 @@ export interface IUITranslationKeys {
       seed_tooltip_text: string;
     }
   };
+  trophies: {
+    title: string;
+  };
+  tutorial: {
+    title: string;
+    title_commands: string;
+    title_project: string;
+    title_tech: string;
+    subtitle_misc: string;
+    subtitle_mvt: string;
+    key_down: string;
+    key_up: string;
+    key_right: string;
+    key_left: string;
+    key_back: string;
+    key_front: string;
+    key_vocal: string;
+    key_reload: string;
+    key_mute: string;
+    key_menu: string;
+    key_menu_name: string;
+    mouse_interaction: string;
+    mouse_interaction_name: string;
+    article: {
+      p1: string;
+      p2: string;
+      p3: string;
+      p4: string;
+    }
+  };
+  credits: {
+    title: string;
+    description_jeremie: string;
+    description_florian: string;
+    description_lucas: string;
+    description_jordan: string;
+    description_christina: string;
+  };
   progression: {
+    title: string;
     game_played: string;
     distance_travelled: string;
     going_underwater: string;

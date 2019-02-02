@@ -56,8 +56,8 @@ class Tutorial extends React.Component {
           </Col>
           <Col className='flexcol--12-t mb-2 mb-0-t'>
             <div className='tutorial-keys'>
-              <TutorialKey className='mb-2' name='Clic droit' text={translationSvc.translate('UI.tutorial.mouse_interaction')} />
-              <TutorialKey className='mb-2' name={Keys.menu} text={translationSvc.translate('UI.tutorial.key_menu')} />
+              <TutorialKey className='mb-2' name={translationSvc.translate('UI.tutorial.mouse_interaction_name')} text={translationSvc.translate('UI.tutorial.mouse_interaction')} />
+              <TutorialKey className='mb-2' name={translationSvc.translate('UI.tutorial.key_menu_name')} text={translationSvc.translate('UI.tutorial.key_menu')} />
             </div>
           </Col>
           <Col className='flexcol--24'>
