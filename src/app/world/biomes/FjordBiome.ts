@@ -5,7 +5,7 @@ import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@world/models/biome.model';
 
-import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
+import { SubBiomes } from '@world/constants/subBiomes.constants';
 
 import ForestSFXMp3 from '@sounds/ForestSFX.mp3';
 
@@ -58,19 +58,19 @@ class FjordBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e > Chunk.CLOUD_ELEVATION + 0.02) {
-      if (m > 0.5) return SUB_BIOMES.FJORD_SNOW_CAP;
-      return SUB_BIOMES.MOUNTAIN;
+      if (m > 0.5) return SubBiomes.FJORD_SNOW_CAP;
+      return SubBiomes.MOUNTAIN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.15) {
-      return SUB_BIOMES.FJORD;
+      return SubBiomes.FJORD;
     }
 
     if (e > Chunk.SEA_ELEVATION - 0.05) {
-      return SUB_BIOMES.FJORD_BEACH;
+      return SubBiomes.FJORD_BEACH;
     }
 
-    return SUB_BIOMES.OCEAN;
+    return SubBiomes.OCEAN;
   }
 }
 

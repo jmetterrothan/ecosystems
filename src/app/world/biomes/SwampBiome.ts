@@ -10,7 +10,7 @@ import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@world/models/biome.model';
 
-import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
+import { SubBiomes } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
 import SwampSFXMp3 from '@sounds/SwampSFX.mp3';
@@ -96,20 +96,20 @@ class SwampBiome extends Biome {
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.116) {
       if (m > 0.25) {
-        return SUB_BIOMES.SWAMP_WATER;
+        return SubBiomes.SWAMP_WATER;
       }
-      return SUB_BIOMES.OCEAN;
+      return SubBiomes.OCEAN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.1) {
-      return SUB_BIOMES.GRASSLAND;
+      return SubBiomes.GRASSLAND;
     }
 
     if (m > 0.525) {
-      return SUB_BIOMES.SWAMP;
+      return SubBiomes.SWAMP;
     }
 
-    return SUB_BIOMES.BEACH;
+    return SubBiomes.BEACH;
   }
 }
 

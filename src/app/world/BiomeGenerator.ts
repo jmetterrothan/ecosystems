@@ -12,7 +12,7 @@ import { ILowHigh } from '@world/models/biomeWeightedObject.model';
 import { IPick } from '@world/models/pick.model';
 import { IPickObject } from '@world/models/objectParameters.model';
 
-import { BIOMES } from '@world/constants/biomes.constants';
+import { Biomes } from '@world/constants/biomes.constants';
 
 class BiomeGenerator {
   private simplex: simplexNoise;
@@ -32,7 +32,7 @@ class BiomeGenerator {
    */
   init(terrain: Terrain): Biome {
     if (World.BIOME === null) {
-      const biomeClass = BIOMES[MathUtils.randomInt(0, BIOMES.length - 1)];
+      const biomeClass = Biomes[MathUtils.randomInt(0, Biomes.length - 1)];
       this.biome = new biomeClass(terrain);
     } else {
       // @ts-ignore

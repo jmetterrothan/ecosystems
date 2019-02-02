@@ -6,7 +6,7 @@ import DesertBiome from '@world/biomes/DesertBiome';
 import SnowBiome from '@world/biomes/SnowBiome';
 import FjordBiome from '@world/biomes/FjordBiome';
 
-export const BIOMES = [
+export const Biomes = [
   RainForestBiome,
   HighlandBiome,
   OceanBiome,

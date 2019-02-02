@@ -3,7 +3,7 @@ import Terrain from '@world/Terrain';
 
 import { IBiome } from '@world/models/biome.model';
 
-import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
+import { SubBiomes } from '@world/constants/subBiomes.constants';
 
 import ForestSFXMp3 from '@sounds/ForestSFX.mp3';
 
@@ -28,7 +28,7 @@ class TestBiome extends Biome {
   }
 
   getParametersAt(e: number, m: number): IBiome {
-    return SUB_BIOMES.TEST;
+    return SubBiomes.TEST;
   }
 }
 

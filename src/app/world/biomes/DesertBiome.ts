@@ -6,7 +6,7 @@ import Chunk from '@world/Chunk';
 
 import { IBiome } from '@world/models/biome.model';
 
-import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
+import { SubBiomes } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
 import DesertSFXMp3 from '@sounds/DesertSFX.mp3';
@@ -76,14 +76,14 @@ class DesertBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.115) {
-      return SUB_BIOMES.OCEAN;
+      return SubBiomes.OCEAN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.1) {
-      return SUB_BIOMES.DESERT;
+      return SubBiomes.DESERT;
     }
 
-    return SUB_BIOMES.OASIS;
+    return SubBiomes.OASIS;
   }
 }
 
