@@ -18,6 +18,7 @@ export interface ITrophiesTranslationKeys {
   find_captain_treasure: string;
   find_scarecrow: string;
   add_carrot_snowmnan: string;
+  archaeology: string;
   going_under_rain: string;
   go_in_sun: string;
   go_in_moon: string;

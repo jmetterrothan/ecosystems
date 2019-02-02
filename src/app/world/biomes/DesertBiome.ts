@@ -1,3 +1,4 @@
+import { PROGRESSION_EXTRAS_STORAGE_KEYS } from './../../achievements/constants/progressionExtrasStorageKeys.constants';
 import * as THREE from 'three';
 
 import Terrain from '@world/Terrain';
@@ -12,7 +13,7 @@ import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progress
 import DesertSFXMp3 from '@sounds/DesertSFX.mp3';
 
 class DesertBiome extends Biome {
-  // private vulture: THREE.Object3D;
+  private skull: THREE.Object3D;
 
   constructor(terrain: Terrain) {
     super('DESERT', terrain);
@@ -31,7 +32,7 @@ class DesertBiome extends Biome {
     const sizeX = 8192;
     const sizeZ = 8192;
 
-    this.terrain.placeSpecialObject({ stackReference: 'skull', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+    this.skull = this.terrain.placeSpecialObject({ stackReference: 'skull', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
     this.terrain.placeSpecialObject({ stackReference: 'carcass', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
 
     // vulture
@@ -45,7 +46,13 @@ class DesertBiome extends Biome {
     // this.vulture.rotateOnAxis(new THREE.Vector3(0, 1, 0), THREE.Math.degToRad(0.4));
   }
 
-  handleClick(raycaster: THREE.Raycaster) { }
+  handleClick(raycaster: THREE.Raycaster) {
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.skull], true);
+
+    if (intersections.length) {
+      this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.archaeology);
+    }
+  }
 
   /**
    * Compute elevation

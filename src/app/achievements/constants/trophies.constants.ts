@@ -230,6 +230,16 @@ export const TROPHIES: ITrophy[] = [
       { name: 'find scarecrow', value: PROGRESSION_EXTRAS_STORAGE_KEYS.find_scarecrow.value }
     ]
   },
+  {
+    name: { key: 'TROPHIES.archaeology' },
+    value: 'archaeology',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.EXTRAS,
+    checklist: [
+      { name: 'archaeology', value: PROGRESSION_EXTRAS_STORAGE_KEYS.archaeology.value }
+    ]
+  },
   // ONLINE
   {
     name: { key: 'TROPHIES.create_game_online' },
