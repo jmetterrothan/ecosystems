@@ -1,9 +1,9 @@
 import React from 'react';
-import classNames from 'classnames';
 
 import Row from '@public/components/row/row';
 import Col from '@public/components/col/col';
 import { H1, H2, H3, H4, H5 } from '@public/components/hx/hx';
+import Trophy from './trophy/trophy';
 
 import { translationSvc } from '@shared/services/translation.service';
 import { achievementSvc } from '@achievements/services/achievement.service';
@@ -25,7 +25,6 @@ interface ITrophiesState {
 }
 
 class Trophies extends React.Component<ITrophiesProps, ITrophiesState> {
-
   static SORT_TYPE: TROPHY_SORT = TROPHY_SORT.TYPE;
 
   state = {
@@ -41,20 +40,14 @@ class Trophies extends React.Component<ITrophiesProps, ITrophiesState> {
   render() {
     return (
       <div className='tab tab--trophies'>
-        <H3 className='title color-magenta mb-3'>Trophées</H3>
+        <H3 className='color-theme mb-3'>{translationSvc.translate('UI.trophies.title')}</H3>
         {this.renderSelect()}
         <Row Tag='ul'>
-          {this.state.allTrophies.map((trophy: ITrophy, index: number) => {
-            const unlockedClass = this.state.unlockedTrophies.includes(trophy) ? 'trophy--unlocked' : null;
-            const difficultyClass = `trophy--difficulty-${trophy.difficulty}`;
-
-            return (<Col Tag='li' key={index} className='flexcol--12-t flexcol--8-l flexcol--6-d'>
-              <div className={classNames('trophy', unlockedClass, difficultyClass, 'mb-3')}>
-                <div className='trophy__icon mb-1'><span className='icon-trophy' /></div>
-                <H4 className='trophy__name'>{translationSvc.translate(trophy.name.key, trophy.name.options)}</H4>
-              </div>
-            </Col>);
-          })}
+          {this.state.allTrophies.map((trophy: ITrophy, index: number) => (
+          <Col Tag='li' key={index} className='flexcol--12-t flexcol--8-l flexcol--6-d'>
+              <Trophy {...trophy} unlocked={this.state.unlockedTrophies.includes(trophy)} />
+            </Col>
+          ))}
         </Row>
       </div>
     );
