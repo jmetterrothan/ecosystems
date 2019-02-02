@@ -19,7 +19,7 @@ class Tutorial extends React.Component {
   render() {
     return (
       <div className='tab tab--tutorial'>
-        <H3 className='color-theme mb-3'>{translationSvc.translate('UI.tutorial.title')}</H3>
+        <H3 className='color-theme mb-2'>{translationSvc.translate('UI.tutorial.title')}</H3>
         <Slider dots={true} infinite={false} speed={500} slidesToShow={1} slidesToScroll={1}>
           {this.getFirstPanel()}
           {this.getSecondPanel()}
@@ -37,7 +37,8 @@ class Tutorial extends React.Component {
         <p className='mb-3'>{translationSvc.translate('UI.tutorial.article.p3', { count: achievementSvc.getTrophiesCount() })}</p>
 
         <H4 className='mb-2'>{translationSvc.translate('UI.tutorial.title_tech')}</H4>
-        <p className='mb-3'>{translationSvc.translate('UI.tutorial.article.p4')}</p>
+        <p className='mb-2'>{translationSvc.translate('UI.tutorial.article.p4')}</p>
+        <p className='mb-3'>{translationSvc.translate('UI.tutorial.article.p5')}</p>
       </Article>
     );
   }

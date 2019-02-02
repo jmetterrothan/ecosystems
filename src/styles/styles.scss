@@ -25,12 +25,14 @@ strong {
 
 h3.title {
   font-size: 2rem;
+  line-height: 2.75rem;
   text-transform: uppercase;
   font-weight: 700;
 }
 
 h4.title {
   font-size: 1.5rem;
+  line-height: 2.25rem;
   text-transform: initial;
   font-weight: 700;
   color: $color-darkblue;
@@ -38,6 +40,7 @@ h4.title {
 
 h5.title {
   font-size: 1.1rem;
+  line-height: 1.85rem;
   font-weight: 700;
   color: lighten($color-darkblue, 15%);
 }

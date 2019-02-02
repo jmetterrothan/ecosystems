@@ -12,8 +12,11 @@ const Trophy: React.SFC<ITrophy> = ({ name, difficulty, unlocked }) => {
   const difficultyClass = `trophy--difficulty-${difficulty}`;
 
   return (
-    <div className={classNames('trophy', unlockedClass, difficultyClass, 'mb-3')}>
-      <div className='trophy__icon mb-1'><span className='icon-trophy' /></div>
+    <div className={classNames('trophy', unlockedClass, difficultyClass)}>
+      <div className='trophy__icon mb-1'>
+        <span className='icon-trophy' />
+        <span className='trophy__pastille'>{difficulty + 1}</span>
+      </div>
       <h4 className='trophy__name'>{translationSvc.translate(name.key, name.options)}</h4>
     </div>
   );

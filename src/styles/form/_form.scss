@@ -18,22 +18,35 @@
     font-weight: 400;
   }
 
-  input[type=text], input[type=password] {
+  input[type=text], input[type=password], select {
     appearance: none;
     display: block;
     width: 100%;
+    padding: 0 1rem;
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+    margin: 0;
     height: 2.75rem;
     line-height: calc(2.75rem - 2px);
-    padding: 0 1rem;
     border: 1px solid $color-darkblue;
-    color: $color-darkblue;
-    font-family: $font;
     font-size: 1.1rem;
     font-weight: 400;
-    background: transparent;
-    outline: none;
+    color: $color-darkblue;
+    font-family: $font;
+  }
+
+  option {
+    font-size: 1.1rem;
+    background: #f1f1f1;
+  }
+
+  input[type=text], input[type=password] {
     border-radius: 4px;
-    box-shadow: none;
+  }
+
+  select {
+    border-radius: 2px;
   }
 
   input[type=radio] {

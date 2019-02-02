@@ -56,7 +56,8 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
       p1: 'Ecosystems est un projet réalisé par des étudiants IMAC dans le cadre du cours d\'Intelligence Artificielle de 3ème année. Le but est de proposer une expérience web interactive dans un monde en 3d.',
       p2: 'Vous pouvez recharger la page ou appuyer sur "Nouveau monde" pour générer aléatoirement un nouveau monde unique. Il y a au total {{count}} types de monde différents à découvrir.',
       p3: 'Débloquer les {{count}} trophées en parcourant et fouillant tous les mondes.',
-      p4: 'Le projet utilise three.js pour le rendu, React pour l\'interface, et tensorflow pour pouvoir interagir en parlant avec le monde. Certaines fonctionnalités sont toujours en phase de développement, notamment au niveau de l\'interface et certains éléments de gameplay.'
+      p4: 'Le projet utilise three.js pour le rendu, React pour l\'interface, et tensorflow pour pouvoir interagir en parlant avec le monde. Certaines fonctionnalités sont toujours en phase de développement, notamment au niveau de l\'interface et certains éléments de gameplay.',
+      p5: 'Utiliser Chome ou Firefox pour une expérience optimale.'
     }
   },
   credits: {

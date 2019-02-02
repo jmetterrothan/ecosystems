@@ -40,15 +40,21 @@ class Trophies extends React.Component<ITrophiesProps, ITrophiesState> {
   render() {
     return (
       <div className='tab tab--trophies'>
-        <H3 className='color-theme mb-3'>{translationSvc.translate('UI.trophies.title')}</H3>
-        {this.renderSelect()}
-        <Row Tag='ul'>
-          {this.state.allTrophies.map((trophy: ITrophy, index: number) => (
-          <Col Tag='li' key={index} className='flexcol--12-t flexcol--8-l flexcol--6-d'>
+        <header className='tab__header mb-2'>
+        <Row suffix='-48'>
+          <Col className='flexcol--14-t mb-2 mb-0-t'><H3 className='color-theme'>{translationSvc.translate('UI.trophies.title')}</H3></Col>
+          <Col className='flexcol--10-t'>{this.renderSelect()}</Col>
+        </Row>
+        </header>
+        <div className='tab__list'>
+          <Row Tag='ul'>
+            {this.state.allTrophies.map((trophy: ITrophy, index: number) => (
+            <Col Tag='li' key={index} className='flexcol--12-t flexcol--8-l mb-3'>
               <Trophy {...trophy} unlocked={this.state.unlockedTrophies.includes(trophy)} />
             </Col>
-          ))}
-        </Row>
+            ))}
+          </Row>
+        </div>
       </div>
     );
   }
@@ -76,11 +82,13 @@ class Trophies extends React.Component<ITrophiesProps, ITrophiesState> {
   private renderSelect(): JSX.Element {
     const sort = Object.values(TROPHY_SORT);
     return (
-      <select onChange={this.handleSelectChange} value={Trophies.SORT_TYPE}>
-        {sort.map((option: string, index: number) => (
-          <option key={index} value={option}>{option}</option>
-        ))}
-      </select>
+      <div className='form'>
+        <select onChange={this.handleSelectChange} value={Trophies.SORT_TYPE}>
+          {sort.map((option: string, index: number) => (
+            <option key={index} value={option}>{option}</option>
+          ))}
+        </select>
+      </div>
     );
   }
 

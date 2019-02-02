@@ -84,6 +84,7 @@ export interface IUITranslationKeys {
       p2: string;
       p3: string;
       p4: string;
+      p5: string;
     }
   };
   credits: {

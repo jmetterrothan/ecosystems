@@ -1,5 +1,5 @@
 export enum TROPHY_SORT {
-  TYPE = 'By type',
-  COMPLETED = 'completed',
-  DIFFICULTY = 'by difficulty'
+  TYPE = 'sort by type',
+  COMPLETED = 'sort by completion status',
+  DIFFICULTY = 'sort by difficulty'
 }

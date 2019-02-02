@@ -56,7 +56,8 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
       p1: '',
       p2: '',
       p3: '',
-      p4: ''
+      p4: '',
+      p5: ''
     }
   },
   credits: {

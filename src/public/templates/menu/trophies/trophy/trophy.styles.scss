@@ -1,5 +1,4 @@
 .trophy {
-  opacity: 0.25;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -14,55 +13,57 @@
   }
 
   &__icon {
-    width: 4rem;
-    height: 4rem;
+    opacity: 0.25;
+    position: relative;
+    width: 5rem;
+    height: 5rem;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 2rem;
     text-align: center;
     color: $color-darkblue;
+    border-radius: 25%;
+    background: rgba($color-darkblue, 0.1);
+    border: 3px solid transparent;
+  }
+
+  &__pastille {
+    display: block;
+    position: absolute;
+    bottom: -0.75rem;
+    right: -0.75rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    text-align: center;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
     border-radius: 50%;
-    border: 2px solid $color-darkblue;
+    background: #757575;
   }
 
   &--unlocked {
-    opacity: 1;
-
-    .trophy__icon{
-      background: rgba($color-darkblue, 0.1);
+    .trophy__icon {
+      opacity: 1;
     }
 
     &.trophy--difficulty-0 {
-      .trophy__icon{
-        color: $color-bronze;
-        border-color: $color-bronze;
-        background: rgba($color-bronze, 0.1);
-      }
-      .trophy__name{
-        color: $color-bronze;
+      .trophy__pastille{
+        background: $color-bronze;
       }
     }
 
     &.trophy--difficulty-1 {
-      .trophy__icon{
-        color: $color-gold;
-        border-color: $color-gold;
-        background: rgba($color-gold, 0.1);
-      }
-      .trophy__name{
-        color: $color-gold;
+      .trophy__pastille{
+        background: $color-gold;
       }
     }
 
     &.trophy--difficulty-2 {
-      .trophy__icon{
-        color: $color-diamond;
-        border-color: $color-diamond;
-        background: rgba($color-diamond, 0.1);
-      }
-      .trophy__name{
-        color: $color-diamond;
+      .trophy__pastille{
+        background: $color-diamond;
       }
     }
   }

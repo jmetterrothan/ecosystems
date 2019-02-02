@@ -22,7 +22,7 @@ class Progress extends React.Component<any, IProgressState> {
   render() {
     return (
       <ul className='tab tab--progress'>
-        <H3 className='title color-theme mb-3'>{translationSvc.translate('UI.progression.title')}</H3>
+        <H3 className='title color-theme mb-2'>{translationSvc.translate('UI.progression.title')}</H3>
         {this.state.progression.map((item: IProgressionWithCount, index: number) => (
           <li className='p-2 pt-1 pb-1' key={index}>
             {translationSvc.translate(`UI.progression.${item.name}`, { count: CommonUtils.formatNumberWithSpaces(item.count) })}

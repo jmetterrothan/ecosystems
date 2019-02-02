@@ -7,10 +7,13 @@
 
   &__container {
     width: 100%;
-    height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    @include breakpoint-tablet {
+    }
   }
 
   &__footer {
@@ -20,10 +23,6 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-
-    @include breakpoint-tablet {
-      flex-direction: row;
-    }
   }
 }
 
@@ -31,22 +30,22 @@
   width: 100%;
   max-width: 768px;
   height: 100%;
-  background: #f1f1f1;
+  min-height: 100vh;
   display: flex;
+  background: #f1f1f1;
 
   &__tab-list {
+    background: rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
-    flex-basis: 100px;
+    margin: 0;
+    width: 100px;
     flex-shrink: 0;
     flex-grow: 0;
-    margin: 0;
-    background: rgba(0, 0, 0, 0.05);
   }
 
   &__tab-panel {
     width: calc(100% - 100px);
-    // flex-basis: calc(100% - 100px);
     flex-shrink: 0;
     flex-grow: 0;
   }

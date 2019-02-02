@@ -64,14 +64,14 @@ class Menu extends React.PureComponent<Props> {
               </Tab>
             </TabList>
 
-            <TabPanel><div className='p-3'><Tutorial /></div></TabPanel>
-            <TabPanel><div className='p-3'><Trophies /></div></TabPanel>
-            <TabPanel><div className='p-3'><Progress /></div></TabPanel>
-            <TabPanel><div className='p-3'><Credits /></div></TabPanel>
+            <TabPanel><div className='p-3 pb-9 pb-3-t'><Tutorial /></div></TabPanel>
+            <TabPanel><div className='p-3 pb-9 pb-3-t'><Trophies /></div></TabPanel>
+            <TabPanel><div className='p-3 pb-9 pb-3-t'><Progress /></div></TabPanel>
+            <TabPanel><div className='p-3 pb-9 pb-3-t'><Credits /></div></TabPanel>
           </Tabs>
           <footer className='menu__footer mb-3 mr-3'>
-            <Button className='btn--darkblue btn--expand-mobile mb-2 mb-0-t mr-2 ui-click-sound' onClick={this.reload}>{translationSvc.translate('UI.menu.new_world_btn')}</Button>
             <Button className='btn--theme btn--expand-mobile ui-click-sound' onClick={this.handleClick}>{translationSvc.translate('UI.menu.continue_btn')}</Button>
+            <Button className='btn--darkblue btn--expand-mobile mt-2 ui-click-sound' onClick={this.reload}>{translationSvc.translate('UI.menu.new_world_btn')}</Button>
           </footer>
         </div>
       </div >
