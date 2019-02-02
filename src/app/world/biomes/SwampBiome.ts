@@ -28,7 +28,6 @@ class SwampBiome extends Biome {
     this.waterDistortion = true;
     this.waterDistortionFreq = 1.25;
     this.waterDistortionAmp = 512.0;
-    this.waterColor1 = new THREE.Color(0x79A7A8);
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.swamp_visited);
     this.sound = SwampSFXMp3;
