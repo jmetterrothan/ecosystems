@@ -6,7 +6,9 @@ import 'seedrandom';
 
 import World from '@world/World';
 import PostProcess from '@app/PostProcess';
+import UIManager from '@ui/UIManager';
 
+import { Keys } from '@shared/constants/keys.constants';
 import { configSvc } from '@app/shared/services/config.service';
 import { playerSvc } from '@shared/services/player.service';
 import { multiplayerSvc } from '@online/services/multiplayer.service';
@@ -14,7 +16,6 @@ import { uiSvc } from '@ui/services/ui.service';
 
 import { INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
 import { UIStates } from '@ui/enums/UIStates.enum';
-import UIManager from '@ui/UIManager';
 
 class Main {
   private renderer: THREE.WebGLRenderer;
@@ -148,19 +149,11 @@ class Main {
       });
 
       document.body.addEventListener('keydown', e => {
-        if (e.key === 'v' || e.key === 'V') {
-          return;
-        }
-
-        if (e.key === 'm' || e.key === 'M') {
-          configSvc.soundEnabled = !configSvc.soundEnabled;
-          return;
-        }
-
         if (this.world.isInitialized()) {
           this.world.handleKeyboard(e.key, true && this.controls.enabled);
         }
       });
+
       document.body.addEventListener('keyup', e => {
         if (this.world.isInitialized()) {
           this.world.handleKeyboard(e.key, false);

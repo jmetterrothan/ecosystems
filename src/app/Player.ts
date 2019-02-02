@@ -1,3 +1,4 @@
+import { configSvc } from '@shared/services/config.service';
 import * as THREE from 'three';
 import * as tf from '@tensorflow/tfjs';
 
@@ -7,6 +8,7 @@ import Chunk from '@world/Chunk';
 import Terrain from '@world/Terrain';
 import Voice from '@voice/Voice';
 
+import { Keys } from '@shared/constants/keys.constants';
 import { multiplayerSvc } from '@online/services/multiplayer.service';
 import { playerSvc } from '@shared/services/player.service';
 import { monitoringSvc } from '@shared/services/monitoring.service';
@@ -150,13 +152,14 @@ class Player {
    */
   handleKeyboard(key: string, active: boolean) {
     switch (key) {
-      case 'ArrowUp': case 'z': case 'Z': this.moveForward = active; break;
-      case 'ArrowDown': case 's': case 'S': this.moveBackward = active; break;
-      case 'ArrowLeft': case 'q': case 'Q': this.moveLeft = active; break;
-      case 'ArrowRight': case 'd': case 'D': this.moveRight = active; break;
-      case '+': case 'a': case 'A': this.moveUp = active; break;
-      case '-': case 'e': case 'E': this.moveDown = active; break;
-      case 'v': case 'V': this.voice.togglePredictState(); break;
+      case Keys.front : this.moveForward = active; break;
+      case Keys.back: this.moveBackward = active; break;
+      case Keys.left: this.moveLeft = active; break;
+      case Keys.right: this.moveRight = active; break;
+      case Keys.up: this.moveUp = active; break;
+      case Keys.down: this.moveDown = active; break;
+      case Keys.vocal: if (active) this.voice.togglePredictState(); break;
+      case Keys.mute: if (active) configSvc.soundEnabled = !configSvc.soundEnabled; break;
     }
   }
 
