@@ -65,7 +65,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     description_jeremie: 'Chef de projet, développeur - three.js / React.',
     description_florian: 'Développeur - three.js / React / socket.io.',
     description_lucas: 'Développeur gameplay - commandes vocales avec tensorflow.',
-    description_jordan: 'Développeur - sons et ambiences sonores.',
+    description_jordan: 'Développeur - sons et ambiances sonores.',
     description_christina: 'UX/UI Designer.'
   },
   progression: {
