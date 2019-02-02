@@ -552,6 +552,20 @@ export const SUB_BIOMES: IBiomes = {
       },
     ]
   },
+  SWAMP_WATER: {
+    color: new THREE.Color(0xF1CFAE),
+    organisms: [
+      {
+        weight: 1,
+        name: 'lilypad',
+        scarcity: 0.85,
+        e: { low: null, high: Chunk.SEA_ELEVATION - 0.05 },
+        m: null,
+        scale: { min: 1.25, max: 1.75 },
+        float: true,
+      },
+    ]
+  },
   SWAMP: {
     color: new THREE.Color(0xbed69e),
     organisms: [

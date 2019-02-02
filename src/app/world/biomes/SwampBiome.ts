@@ -28,6 +28,7 @@ class SwampBiome extends Biome {
     this.waterDistortion = true;
     this.waterDistortionFreq = 1.25;
     this.waterDistortionAmp = 512.0;
+    this.waterColor1 = new THREE.Color(0x79A7A8);
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.swamp_visited);
     this.sound = SwampSFXMp3;
@@ -94,7 +95,10 @@ class SwampBiome extends Biome {
   }
 
   getParametersAt(e: number, m: number): IBiome {
-    if (e < Chunk.SEA_ELEVATION - 0.10 - 0.016) {
+    if (e < Chunk.SEA_ELEVATION - 0.116) {
+      if (m > 0.25) {
+        return SUB_BIOMES.SWAMP_WATER;
+      }
       return SUB_BIOMES.OCEAN;
     }
 
@@ -102,7 +106,7 @@ class SwampBiome extends Biome {
       return SUB_BIOMES.GRASSLAND;
     }
 
-    if (m > 0.5 + 0.025) {
+    if (m > 0.525) {
       return SUB_BIOMES.SWAMP;
     }
 
