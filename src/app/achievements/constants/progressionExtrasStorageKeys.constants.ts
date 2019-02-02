@@ -11,9 +11,9 @@ export const PROGRESSION_EXTRAS_STORAGE_KEYS: IProgressionExtrasStorageKeys = {
     value: 'repulse_butterflies',
     show: false
   },
-  kill_vulture: {
-    name: 'kill_vulture',
-    value: 'kill_vulture',
+  archaeology: {
+    name: 'archaeology',
+    value: 'archaeology',
     show: false
   },
   snowman_carrot: {

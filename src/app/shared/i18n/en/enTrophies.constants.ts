@@ -15,6 +15,7 @@ export const EN_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   find_captain_treasure: 'Find the captain\'s treasure',
   find_scarecrow: 'Find the scarecrow',
   add_carrot_snowmnan: 'Add a carrot to the snowman',
+  archaeology: 'archaeology',
   going_under_rain: 'Get caught in the rain',
   go_in_sun: 'Fly too close to the sun',
   go_in_moon: 'That\'s one small step for a man',
