@@ -183,7 +183,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
 
     return coreSvcIsInitialized
       ? (
-        <button form='gameSetup' type='submit' className='btn btn--magenta btn--expand-mobile btn--big' disabled={busy}>
+        <button form='gameSetup' type='submit' className='btn btn--theme btn--expand-mobile btn--big' disabled={busy}>
           {translationSvc.translate('UI.home.form.start_btn')}
         </button>
       )

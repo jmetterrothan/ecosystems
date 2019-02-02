@@ -28,8 +28,9 @@
     height: 2.75rem;
     line-height: 2.75rem;
     text-align: center;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-weight: 700;
+    text-transform: uppercase;
     color: $color-darkblue;
     border-radius: 3px;
     background: #dadada;
@@ -53,7 +54,7 @@
 
     &.slick-active {
       button:before {
-        background: $color-magenta;
+        background: $color-theme;
       }
     }
 

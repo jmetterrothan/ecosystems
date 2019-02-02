@@ -8,14 +8,15 @@ $color-skyblue : #b3d7f2;
 $color-green: #02A676;
 $color-red: #e26259;
 $color-yellow : #F2B134;
-$color-turquoise: #15a1a3;
+$color-turquoise: #19bcbe;
 
 $color-bronze : #a88667;
 $color-gold : #FFB604;
 $color-diamond : #8BB7BF;
 
-$gradient : radial-gradient(rgba(255, 255, 255, 0.25) 5%, transparent), linear-gradient(0deg, lighten($color-magenta, 15%), $color-skyblue 75%);
+$color-theme : $color-magenta;
 
+$gradient : radial-gradient(rgba(255, 255, 255, 0.25) 5%, transparent), linear-gradient(0deg, lighten($color-magenta, 15%), $color-skyblue 75%);
 
 .color {
   &-magenta {
@@ -52,5 +53,9 @@ $gradient : radial-gradient(rgba(255, 255, 255, 0.25) 5%, transparent), linear-g
 
   &-gold {
     color: $color-gold;
+  }
+
+  &-theme {
+    color: $color-theme;
   }
 }

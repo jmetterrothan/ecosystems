@@ -122,4 +122,13 @@
       background: lighten($color-gold, 10%);
     }
   }
+
+  &--theme {
+    background: $color-theme;
+    color:$color-darkblue;
+
+    &:hover {
+      background: lighten($color-theme, 10%);
+    }
+  }
 }
