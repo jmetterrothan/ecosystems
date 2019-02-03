@@ -1,4 +1,5 @@
 import React from 'react';
+import queryString from 'query-string';
 
 import Row from '@components/row/row';
 import Col from '@components/col/col';
@@ -64,19 +65,26 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
   constructor(props) {
     super(props);
 
-    this.storage = Object.assign({
+    // initialize state with local storage values
+    const storage = Object.assign({
       quality: GraphicsQuality.HIGH,
       debug: configSvc.debug,
       online: false,
       sound: false
     }, storageSvc.get<IHomeParametersStorage>(STORAGES_KEY.ui) || {});
 
+    // parse query string to detect share link's vars
+    const parsed = queryString.parse(location.search);
+    const seed = parsed.seed || MathUtils.randomUint32().toString();
+
+    storage.online = parsed.online != null ? parseInt(parsed.online, 10) === 1 : storage.online;
+
     this.state = {
-      seedValue: MathUtils.randomUint32().toString(),
-      selectedQuality: this.storage.quality,
-      debugMode: this.storage.debug,
-      onlineMode: this.storage.online,
-      soundMode: this.storage.sound,
+      seedValue: seed,
+      selectedQuality: storage.quality,
+      debugMode: storage.debug,
+      onlineMode: storage.online,
+      soundMode: storage.sound,
       formValid: true,
       image: imageList[Math.floor(Math.random() * imageList.length)],
       ready: false,
@@ -88,18 +96,16 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
    * Dispatch all UI changes to the storage or used services
    */
   dispatchChanges() {
-    this.storage = {
-      quality: this.state.selectedQuality,
-      online: this.state.onlineMode,
-      sound: this.state.soundMode,
-      debug: this.state.debugMode
-    };
-
     configSvc.quality = this.state.selectedQuality;
     configSvc.debug = this.state.debugMode;
     configSvc.soundEnabled = this.state.soundMode;
 
-    storageSvc.set<IHomeParametersStorage>(STORAGES_KEY.ui, this.storage);
+    storageSvc.set<IHomeParametersStorage>(STORAGES_KEY.ui, {
+      quality: this.state.selectedQuality,
+      online: this.state.onlineMode,
+      sound: this.state.soundMode,
+      debug: this.state.debugMode
+    });
   }
 
   componentWillMount() {

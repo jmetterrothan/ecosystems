@@ -67,6 +67,7 @@
     "js-yaml-loader": "^1.0.1",
     "poisson-disk-sampling": "^1.0.2",
     "prop-types": "^15.6.2",
+    "query-string": "^6.2.0",
     "react-perfect-scrollbar": "^1.4.4",
     "react-router-dom": "^4.3.1",
     "react-slick": "^0.23.2",
