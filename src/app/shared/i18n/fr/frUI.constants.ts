@@ -90,6 +90,15 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     message: 'En poursuivant votre navigation, vous acceptez l’utilisation de cookies d\'analyse d\'audience et de fréquentation.'
   },
   contact: {
-    title: 'Contact'
+    title: 'Contact',
+    email: 'Email',
+    subject: 'Sujet',
+    select: {
+      bug: 'Bug',
+      improvement: 'Amélioration',
+      other: 'Autre'
+    },
+    message: 'Message',
+    send: 'Envoyer'
   }
 };

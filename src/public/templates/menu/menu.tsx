@@ -44,31 +44,31 @@ class Menu extends React.PureComponent<Props> {
             <TabList>
               <Tab>
                 <div className='tab-menu ui-click-sound'>
-                  <span className='tab-menu__icon icon-lifebuoy mb-1'/>
+                  <span className='tab-menu__icon icon-lifebuoy mb-1' />
                   <span className='tab-menu__text'>{translationSvc.translate('UI.tutorial.title')}</span>
                 </div>
               </Tab>
               <Tab>
                 <div className='tab-menu ui-click-sound'>
-                  <span className='tab-menu__icon icon-trophy mb-1'/>
+                  <span className='tab-menu__icon icon-trophy mb-1' />
                   <span className='tab-menu__text'>{translationSvc.translate('UI.trophies.title')}</span>
                 </div>
               </Tab>
               <Tab>
                 <div className='tab-menu ui-click-sound'>
-                  <span className='tab-menu__icon icon-meter mb-1'/>
+                  <span className='tab-menu__icon icon-meter mb-1' />
                   <span className='tab-menu__text'>{translationSvc.translate('UI.progression.title')}</span>
                 </div>
               </Tab>
               <Tab>
                 <div className='tab-menu ui-click-sound'>
-                  <span className='tab-menu__icon icon-users mb-1'/>
+                  <span className='tab-menu__icon icon-users mb-1' />
                   <span className='tab-menu__text'>{translationSvc.translate('UI.credits.title')}</span>
                 </div>
               </Tab>
               <Tab>
                 <div className='tab-menu ui-click-sound'>
-                  <span className='tab-menu__icon icon-bug mb-1'/>
+                  <span className='tab-menu__icon icon-bug mb-1' />
                   <span className='tab-menu__text'>{translationSvc.translate('UI.contact.title')}</span>
                 </div>
               </Tab>
@@ -78,7 +78,7 @@ class Menu extends React.PureComponent<Props> {
             <TabPanel><div className='p-3 pb-9 pb-3-t'><Trophies /></div></TabPanel>
             <TabPanel><div className='p-3 pb-9 pb-3-t'><Progress /></div></TabPanel>
             <TabPanel><div className='p-3 pb-9 pb-3-t'><Credits /></div></TabPanel>
-            <TabPanel><div className='p-3 pb-9 pb-3-t'><Contact /></div></TabPanel>
+            <TabPanel><div className='p-3 pb-9 pb-3-t'><Contact {...this.props} /></div></TabPanel>
           </Tabs>
           <footer className='menu__footer mb-3 mr-3'>
             <Button className='btn--theme btn--expand-mobile ui-click-sound' onClick={this.handleClick}>{translationSvc.translate('UI.menu.continue_btn')}</Button>

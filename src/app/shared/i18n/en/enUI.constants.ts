@@ -90,6 +90,15 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
     message: 'We use cookies to measure how visitors interact with the website.'
   },
   contact: {
-    title: 'Contact'
+    title: 'Contact',
+    email: 'Email',
+    subject: 'Subject',
+    select: {
+      bug: 'Bug',
+      improvement: 'Improvement',
+      other: 'Other'
+    },
+    message: 'Message',
+    send: 'Send'
   }
 };
