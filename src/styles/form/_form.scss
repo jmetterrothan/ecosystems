@@ -18,7 +18,7 @@
     font-weight: 400;
   }
 
-  input[type=text], input[type=password], select {
+  .form__element {
     appearance: none;
     display: block;
     width: 100%;
@@ -34,22 +34,19 @@
     font-weight: 400;
     color: $color-darkblue;
     font-family: $font;
+    border-radius: 2px;
+
+    &--rounded {
+      border-radius: 4px;
+    }
   }
 
-  option {
+  select.form__element option {
     font-size: 1.1rem;
     background: #f1f1f1;
   }
 
-  input[type=text], input[type=password] {
-    border-radius: 4px;
-  }
-
-  select {
-    border-radius: 2px;
-  }
-
-  input[type=radio] {
+  input[type=radio].form__element {
     display: none;
 
     & + label {
@@ -72,6 +69,10 @@
       box-shadow: none;
       cursor: pointer;
       transition: all ease .2s;
+    }
+
+    &--rounded + label {
+      border-radius: 4px;
     }
 
     &:disabled + label {

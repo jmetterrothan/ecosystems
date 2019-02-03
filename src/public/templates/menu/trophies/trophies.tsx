@@ -102,7 +102,7 @@ class Trophies extends React.Component<ITrophiesProps, ITrophiesState> {
     const sort = Object.values(TROPHY_SORT);
     return (
       <div className='form'>
-        <select onChange={this.handleSelectChange} value={Trophies.SORT_TYPE}>
+        <select className='form__element' onChange={this.handleSelectChange} value={Trophies.SORT_TYPE}>
           {sort.map((option: string, index: number) => (
             <option key={index} value={option}>{translationSvc.translate(`UI.trophies.${option}`)}</option>
           ))}
