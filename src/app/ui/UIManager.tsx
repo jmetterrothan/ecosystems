@@ -1,5 +1,6 @@
 import React from 'react';
 
+import PointerLock from '@app/PointerLock';
 import SoundManager from '@shared/SoundManager';
 import NotificationContainer from '@public/components/notification/NotificationContainer';
 import stateFactory from '@ui/UIStatesFactory';
@@ -45,6 +46,24 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     window.addEventListener('click', (e) => {
       if (e.srcElement.classList.contains('ui-click-sound')) {
         SoundManager.play('click');
+      }
+    });
+
+    document.addEventListener('pointerlockchange', () => {
+      const enabled = PointerLock.enabled;
+
+      if (enabled && this.state.currentUiStateID !== UIStates.GAME) {
+        this.manageMenu(false);
+      }
+      if (!enabled && this.state.currentUiStateID !== UIStates.MENU) {
+        this.manageMenu(true);
+      }
+    });
+
+    document.body.addEventListener('keyup', e => {
+      if (e.key === 'Escape' && !PointerLock.enabled) {
+        PointerLock.request();
+        return;
       }
     });
   }

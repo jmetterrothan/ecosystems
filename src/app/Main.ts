@@ -4,6 +4,7 @@ import statsJs from 'stats.js';
 import 'three/examples/js/controls/PointerLockControls';
 import 'seedrandom';
 
+import PointerLock from '@app/PointerLock';
 import World from '@world/World';
 import PostProcess from '@app/PostProcess';
 import UIManager from '@ui/UIManager';
@@ -120,28 +121,19 @@ class Main {
 
   private initPointerLock() {
     // handle pointer lock authorization
-    if ('pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document) {
+    if (PointerLock.available) {
 
       const pointerlockchange = (e) => {
-        this.controls.enabled = document.pointerLockElement === document.body || document.mozPointerLockElement === document.body || document.webkitPointerLockElement === document.body;
-        this.uiManager.manageMenu(!this.controls.enabled);
+        this.controls.enabled = PointerLock.enabled;
       };
 
       const pointerlockerror = (e) => { };
 
-      document.addEventListener('pointerlockchange', pointerlockchange, false);
-      document.addEventListener('mozpointerlockchange', pointerlockchange, false);
-      document.addEventListener('webkitpointerlockchange', pointerlockchange, false);
-      document.addEventListener('pointerlockerror', pointerlockerror, false);
-      document.addEventListener('mozpointerlockerror', pointerlockerror, false);
-      document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
+      PointerLock.addEventListener('pointerlockchange', pointerlockchange, false);
+      PointerLock.addEventListener('pointerlockerror', pointerlockerror, false);
 
       document.body.addEventListener('click', () => {
         if (!uiSvc.isState(UIStates.GAME)) return;
-
-        document.body.requestPointerLock = document.body.requestPointerLock || document.body.mozRequestPointerLock || document.body.webkitRequestPointerLock;
-        document.body.requestPointerLock();
-
         if (!this.controls.enabled || !this.world.isInitialized()) { return; }
 
         // mouse position always in the center of the screen
@@ -155,6 +147,7 @@ class Main {
       });
 
       document.body.addEventListener('keyup', e => {
+        if (e.key === 'Escape') return;
         if (this.world.isInitialized()) {
           this.world.handleKeyboard(e.key, false);
         }

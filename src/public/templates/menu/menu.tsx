@@ -9,9 +9,11 @@ import Trophies from '@templates/menu/trophies/trophies';
 import Tutorial from '@templates/menu/tutorial/tutorial';
 import Credits from '@templates/menu/credits/credits';
 import Progress from '@templates/menu/progress/progress';
+import PointerLock from '@app/PointerLock';
+
+import { translationSvc } from '@app/shared/services/translation.service';
 
 import './menu.styles';
-import { translationSvc } from '@app/shared/services/translation.service';
 
 interface Props {
   uiManager: UIManager;
@@ -25,7 +27,7 @@ class Menu extends React.PureComponent<Props> {
     const { uiManager } = this.props;
 
     uiManager.switchState(UIStates.GAME);
-    document.body.requestPointerLock();
+    PointerLock.request();
   }
 
   reload = () => {
