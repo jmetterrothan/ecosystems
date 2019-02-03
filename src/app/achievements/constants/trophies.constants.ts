@@ -47,16 +47,6 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: 'TROPHIES.visit_all_biomes', options: { counter: 10 } },
-    value: 'visit_all_biomes_five_times',
-    img: '',
-    difficulty: TROPHY_DIFFICULTY.BRONZE,
-    type: TROPHY_TYPE.BIOMES,
-    checklist: [
-      ...Object.values(PROGRESSION_BIOME_STORAGE_KEYS).reduce((acc, item: IProgression) => acc.concat(<IChecklistOption>{ name: item.name, value: item.value, limit: 10 }), [])
-    ]
-  },
-  {
     name: { key: 'TROPHIES.going_underwater' },
     value: 'going_underwater',
     img: '',
