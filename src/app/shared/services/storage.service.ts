@@ -21,14 +21,6 @@ class StorageService {
   }
 
   /**
-   * get list of completed trophies in local storage
-   * @returns {string[]}
-   */
-  getTrophiesCompleted(): string[] {
-    return this.get(STORAGES_KEY.completed) as string[];
-  }
-
-  /**
    *  Set item in local storage
    * @param {string} - key
    * @param {string|Object} item

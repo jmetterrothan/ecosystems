@@ -62,8 +62,8 @@ class MathUtils {
     return c + (d - c) / (b - a) * (t - a);
   }
 
-  static percent(a: any[], b: any[]): number {
-    return Math.ceil((a.length / b.length) * 100);
+  static percent(a: number, b: number): number {
+    return Math.ceil((a / b) * 100);
   }
 
   /**
