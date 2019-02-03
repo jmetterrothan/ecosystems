@@ -51,6 +51,10 @@ class ProgressionService {
     }
   }
 
+  reset() {
+    this.storage = PROGRESSION_STORAGE;
+  }
+
   /**
    * Update progression in storage with value and check if trophy is unlock
    * @param {IProgression} - progression

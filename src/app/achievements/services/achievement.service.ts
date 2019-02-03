@@ -152,10 +152,11 @@ class AchievementService {
    * Reset completed trophies
    */
   reset() {
-    storageSvc.set(STORAGES_KEY.trophies, null);
-    storageSvc.set(STORAGES_KEY.progression, null);
-    storageSvc.set(STORAGES_KEY.completed, null);
+    storageSvc.remove(STORAGES_KEY.trophies);
+    storageSvc.remove(STORAGES_KEY.progression);
+    storageSvc.remove(STORAGES_KEY.completed);
 
+    progressionSvc.reset();
     progressionSvc.init();
 
     this.trophy$.next(this.getUnlockedTrophiesCount());
