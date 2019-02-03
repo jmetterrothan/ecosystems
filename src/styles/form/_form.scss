@@ -41,6 +41,14 @@
     }
   }
 
+  textarea.form__element {
+    width: 100%;
+    height: auto;
+    resize: none;
+    padding: 0.5rem 1rem;
+    line-height: calc(1.75rem - 2px);
+  }
+
   select.form__element option {
     font-size: 1.1rem;
     background: #f1f1f1;
