@@ -1,6 +1,8 @@
 import * as THREE from 'three';
+import { Howl } from 'howler';
 
 import World from '@world/World';
+import SoundManager from '@shared/SoundManager';
 
 import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
 
@@ -10,12 +12,34 @@ import { ITexture } from '@shared/models/texture.model';
 import { OBJECTS } from '@shared/constants/object.constants';
 import { TEXTURES } from '@shared/constants/texture.constants';
 
+import Builder_Game_Item_Click_1 from '@sounds/Builder_Game_Item_Click_1.mp3';
+import Unlock_level_Game_Sound from '@sounds/Unlock_level_Game_Sound.mp3';
+import Set_Down_Item_1 from '@sounds/Set_Down_Item_1.mp3';
+import Small_Splash from '@sounds/Small_Splash.mp3';
+import Bubbles from '@sounds/Bubbles.mp3';
+import Fairy_Meeting from '@sounds/Fairy_Meeting.mp3';
+
 class CoreService {
 
   async init(): Promise<any> {
     progressionSvc.init();
+
     await this.initModels();
+    await this.initSounds();
     await this.initTextures();
+
+    const sound = SoundManager.get('background_music');
+    sound.play();
+    sound.fade(0, sound.volume(), 5000);
+  }
+
+  private async initSounds(): Promise<any> {
+    await SoundManager.add('click', Builder_Game_Item_Click_1, { volume: 0.5 });
+    await SoundManager.add('trophy_unlock', Unlock_level_Game_Sound, { volume: 0.5 });
+    await SoundManager.add('set_down', Set_Down_Item_1, { volume: 0.5 });
+    await SoundManager.add('splash', Small_Splash, { volume: 0.5 });
+    await SoundManager.add('bubbles', Bubbles, { volume: 0.5 });
+    await SoundManager.add('background_music', Fairy_Meeting, { volume: 0.2, loop: true });
   }
 
   private async initModels(): Promise<any> {

@@ -1,26 +1,31 @@
 import { Howl } from 'howler';
 
 interface ISoundManagerOptions {
-  volume: number;
+  volume?: number;
+  autoplay?: boolean;
+  loop?: boolean;
 }
 
 class SoundManager {
   private static SOUNDS: Map<string, Howl> = new Map();
 
-  public static add(alias: string, path: string|string[], options: ISoundManagerOptions) {
-    if (SoundManager.SOUNDS.has(alias)) {
-      console.warn(`Sound "${alias}" already exists`);
-      return;
-    }
+  public static add(alias: string, path: string|string[], options: ISoundManagerOptions): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (SoundManager.SOUNDS.has(alias)) {
+        console.warn(`Sound "${alias}" already exists`);
+        reject();
+      }
 
-    const paths = typeof path === 'string' ? [path] : path;
-    const volume = options.volume | 1;
-    const sound = new Howl({
-      volume,
-      src: paths
+      const paths = typeof path === 'string' ? [path] : path;
+      const sound = new Howl({
+        ...options,
+        src: paths,
+        onload: () => resolve(),
+        onloaderror: () => reject()
+      });
+
+      SoundManager.SOUNDS.set(alias, sound);
     });
-
-    SoundManager.SOUNDS.set(alias, sound);
   }
 
   public static get(alias: string): Howl {
