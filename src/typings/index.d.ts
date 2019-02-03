@@ -2,12 +2,18 @@ interface Document {
   pointerLockElement?: any;
   mozPointerLockElement?: any;
   webkitPointerLockElement?: any;
+  exitPointerLock?: any;
+  mozExitPointerLock?: any;
+  webkitExitPointerLock?: any;
 }
 
 interface HTMLElement {
-  requestPointerLock?: any;
-  mozRequestPointerLock?: any;
-  webkitRequestPointerLock?: any;
+  pointerLockElement?: any;
+  mozPointerLockElement?: any;
+  webkitPointerLockElement?: any;
+  exitPointerLock?: any;
+  mozExitPointerLock?: any;
+  webkitExitPointerLock?: any;
 }
 
 interface Window {
