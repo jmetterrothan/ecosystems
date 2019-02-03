@@ -69,3 +69,14 @@ h5.title {
 .align-center {
   text-align: center;
 }
+
+
+.flex {
+  display: flex;
+}
+
+.justify-content {
+  &--end {
+    justify-content: flex-end;
+  }
+}

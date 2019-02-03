@@ -30,7 +30,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
       seed_tooltip_text: 'La seed peut être une nombre, un mot ou une phrase. Elle sert à générer aléatoirement un monde unique.',
     }
   },
-  trophies: {
+  'trophies-tab': {
     title: 'Trophées',
     sort_by_type: 'Trier par type',
     sort_by_completion_status: 'Trier par statut',
@@ -39,11 +39,9 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     reset_text: 'Vous pouvez réinitialiser les trophées débloqués en cliquant sur le bouton ci-dessous. Attention cette action est irréversible.',
     reset_btn: 'Effacer'
   },
-  tutorial: {
+  'tutorial-tab': {
     title: 'Tutoriel',
     title_commands: 'Commandes',
-    title_project: 'Le projet',
-    title_tech: 'Les technologies utilisées',
     subtitle_misc: 'Divers',
     subtitle_mvt: 'Déplacement',
     key_down: 'Descendre',
@@ -59,7 +57,12 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     key_menu_name: 'Echap',
     mouse_interaction: 'Interagir',
     mouse_interaction_name: 'Clic droit',
+  },
+  'home-tab': {
+    title: 'Ecosystems',
     article: {
+      title_project: 'Le projet',
+      title_tech: 'Les technologies utilisées',
       p1: 'Ecosystems est un projet réalisé par des étudiants IMAC dans le cadre du cours d\'Intelligence Artificielle de 3ème année. Le but est de proposer une expérience web interactive dans un monde en 3d.',
       p2: 'Vous pouvez recharger la page ou appuyer sur "Nouveau monde" pour générer aléatoirement un nouveau monde unique. Il y a au total {{count}} types de biomes différents à découvrir.',
       p3: 'Débloquer les {{count}} trophées en parcourant et fouillant tous les mondes.',
@@ -67,7 +70,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
       p5: 'Utiliser une version PC de Chome ou Firefox pour une expérience optimale.'
     }
   },
-  credits: {
+  'credits-tab': {
     title: 'Crédits',
     description_jeremie: 'Chef de projet, développeur - three.js / React.',
     description_florian: 'Développeur - three.js / React / socket.io.',
@@ -75,7 +78,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     description_jordan: 'Développeur - sons et ambiances sonores.',
     description_christina: 'UX/UI Designer.'
   },
-  progression: {
+  'progress-tab': {
     title: 'Progression',
     game_played: 'Parties jouées : {{count}}',
     distance_travelled: 'Distance parcourue : {{count}} m',
@@ -83,13 +86,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     objects_placed: 'Objets placés : {{count}}',
     unlock_trophies_percentage: 'Trophées débloqués : {{count}}%'
   },
-  cookies: {
-    more: 'Voir plus',
-    decline: 'Refuser',
-    allow: 'Accepter',
-    message: 'En poursuivant votre navigation, vous acceptez l’utilisation de cookies d\'analyse d\'audience et de fréquentation.'
-  },
-  contact: {
+  'contact-tab': {
     title: 'Contact',
     header: 'Un problème, une question ou une suggestion ? Vous pouvez nous contacter avec le formulaire ci-dessous. Nous vous répondrons dans les plus brefs délais.',
     email: 'Adresse email',
@@ -101,5 +98,11 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     },
     message: 'Message',
     send: 'Envoyer'
+  },
+  cookies: {
+    more: 'Voir plus',
+    decline: 'Refuser',
+    allow: 'Accepter',
+    message: 'En poursuivant votre navigation, vous acceptez l’utilisation de cookies d\'analyse d\'audience et de fréquentation.'
   }
 };

@@ -24,9 +24,7 @@
     width: 100%;
     flex-grow: 0;
     flex-shrink: 0;
-    color: $color-darkblue;
     text-align: center;
-    text-transform: uppercase;
     z-index: 2;
   }
 
@@ -72,11 +70,15 @@
 
   &__subtitle {
     font-size: 1.0rem;
+    text-transform: uppercase;
+    color: $color-darkblue;
   }
 
   &__title {
     font-size: 3rem;
     font-weight: 700;
+    text-transform: uppercase;
+    color: $color-darkblue;
   }
 
   @include breakpoint-tablet {

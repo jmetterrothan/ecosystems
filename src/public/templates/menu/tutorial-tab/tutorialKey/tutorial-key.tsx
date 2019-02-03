@@ -1,6 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import './tutorial-key.styles';
+
 type ITutorialKey = {
   name: string;
   text: string;

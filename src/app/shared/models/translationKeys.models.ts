@@ -58,7 +58,7 @@ export interface IUITranslationKeys {
       seed_tooltip_text: string;
     }
   };
-  trophies: {
+  'trophies-tab': {
     title: string;
     sort_by_type: string;
     sort_by_completion_status: string;
@@ -67,11 +67,9 @@ export interface IUITranslationKeys {
     reset_text: string;
     reset_btn: string;
   };
-  tutorial: {
+  'tutorial-tab': {
     title: string;
     title_commands: string;
-    title_project: string;
-    title_tech: string;
     subtitle_misc: string;
     subtitle_mvt: string;
     key_down: string;
@@ -87,7 +85,12 @@ export interface IUITranslationKeys {
     key_menu_name: string;
     mouse_interaction: string;
     mouse_interaction_name: string;
+  };
+  'home-tab': {
+    title: string;
     article: {
+      title_project: string;
+      title_tech: string;
       p1: string;
       p2: string;
       p3: string;
@@ -95,7 +98,7 @@ export interface IUITranslationKeys {
       p5: string;
     }
   };
-  credits: {
+  'credits-tab': {
     title: string;
     description_jeremie: string;
     description_florian: string;
@@ -103,7 +106,7 @@ export interface IUITranslationKeys {
     description_jordan: string;
     description_christina: string;
   };
-  progression: {
+  'progress-tab': {
     title: string;
     game_played: string;
     distance_travelled: string;
@@ -111,13 +114,7 @@ export interface IUITranslationKeys {
     objects_placed: string;
     unlock_trophies_percentage: string;
   };
-  cookies: {
-    more: string;
-    decline: string;
-    allow: string;
-    message: string;
-  };
-  contact: {
+  'contact-tab': {
     title: string;
     header: string;
     email: string;
@@ -129,5 +126,11 @@ export interface IUITranslationKeys {
     }
     message: string;
     send: string;
+  };
+  cookies: {
+    more: string;
+    decline: string;
+    allow: string;
+    message: string;
   };
 }

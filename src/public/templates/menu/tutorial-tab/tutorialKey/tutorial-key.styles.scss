@@ -1,0 +1,29 @@
+.tutorial-key {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  &__name {
+    display: block;
+    align-self: flex-start;
+    flex-shrink: 0;
+    flex-grow: 0;
+    padding: 0 0.75rem;
+    min-width: 2.75rem;
+    height: 2.75rem;
+    line-height: 2.75rem;
+    text-align: center;
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: $color-darkblue;
+    border-radius: 3px;
+    background: #dadada;
+  }
+  &__text {
+    padding: 0.5rem 0;
+    font-size: 1.1rem;
+    line-height: 1.75rem;
+  }
+}

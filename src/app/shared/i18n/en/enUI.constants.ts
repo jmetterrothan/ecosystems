@@ -30,7 +30,7 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
       seed_tooltip_text: 'The seed can either be a number, a word or a phrase. It\'s used to generate a unique world.',
     }
   },
-  trophies: {
+  'trophies-tab': {
     title: 'Trophies',
     sort_by_type: 'Sort by type',
     sort_by_completion_status: 'Sort by completion status',
@@ -39,11 +39,9 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
     reset_text: 'Your progression will be completely erased. You can start from scratch but you cannot go back.',
     reset_btn: 'Reset'
   },
-  tutorial: {
+  'tutorial-tab': {
     title: 'Tutoriel',
     title_commands: 'Keys',
-    title_project: 'Project',
-    title_tech: 'Technologies used',
     subtitle_misc: 'Misc.',
     subtitle_mvt: 'Movements',
     key_down: 'Descend',
@@ -59,7 +57,12 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
     key_menu_name: 'Escape',
     mouse_interaction: 'Interagir',
     mouse_interaction_name: 'Right click',
+  },
+  'home-tab': {
+    title: 'Ecosystems',
     article: {
+      title_project: 'The project',
+      title_tech: 'The technologies used',
       p1: 'Ecosystems is a project developed by 3rd year IMAC students in the Artificial Intelligence course. The purpose of the project is to experience a 3d interactive world in a web browser.',
       p2: 'You can reload the page anytime you want or click the "New world" button to generate a brand new and unique world. There is a total of {{count}} different biomes to discover.',
       p3: 'Unlock all {{count}} trophies by roaming and searching the worlds.',
@@ -67,7 +70,7 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
       p5: 'Use a desktop version of Chrome or Firefox for an optimal experience.'
     }
   },
-  credits: {
+  'credits-tab': {
     title: 'Credits',
     description_jeremie: 'Project manager, developer - three.js / React.',
     description_florian: 'Developer - three.js / React / socket.io.',
@@ -75,7 +78,7 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
     description_jordan: 'Developer - sounds.',
     description_christina: 'UX/UI Designer.'
   },
-  progression: {
+  'progress-tab': {
     title: 'Progression',
     game_played: 'Game played : {{count}}',
     distance_travelled: 'Distance travelled : {{count}} m',
@@ -83,13 +86,7 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
     objects_placed: 'Objects placed : {{count}}',
     unlock_trophies_percentage: 'Trophies unlocked : {{count}}%'
   },
-  cookies: {
-    more: 'Learn more',
-    decline: 'Decline',
-    allow: 'Allow cookies',
-    message: 'We use cookies to measure how visitors interact with the website.'
-  },
-  contact: {
+  'contact-tab': {
     title: 'Contact',
     header: 'A problem, a question or some feedback ? You can contact us with the form below. We will try to answer as quickly as possible.',
     email: 'Email',
@@ -101,5 +98,11 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
     },
     message: 'Message',
     send: 'Send'
+  },
+  cookies: {
+    more: 'Learn more',
+    decline: 'Decline',
+    allow: 'Allow cookies',
+    message: 'We use cookies to measure how visitors interact with the website.'
   }
 };

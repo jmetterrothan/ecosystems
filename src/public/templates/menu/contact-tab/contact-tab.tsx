@@ -8,9 +8,9 @@ import Button from '@public/components/button/button';
 
 import { translationSvc } from '@app/shared/services/translation.service';
 
-import './contact.styles.scss';
+import './contact-tab.styles.scss';
 
-class Contact extends React.PureComponent<any, any> {
+class ContactTab extends React.PureComponent<any, any> {
 
   constructor(props) {
     super(props);
@@ -20,42 +20,42 @@ class Contact extends React.PureComponent<any, any> {
     const { uiManager } = this.props;
 
     return (
-      <div className='tab tab--contact'>
+      <div className='tab contact-tab'>
         <header className='tab__header mb-2'>
-          <H3 className='color-theme'>{translationSvc.translate('UI.contact.title')}</H3>
+          <H3 className='color-theme'>{translationSvc.translate('UI.contact-tab.title')}</H3>
         </header>
         <div className='tab__content'>
           <form className='form' action='https://formspree.io/hello@3d-ecosystems.com' method='POST'>
             <header className='form__header'>
-              <p className='paragraph mb-2'>{translationSvc.translate('UI.contact.header')}</p>
+              <p className='paragraph mb-2'>{translationSvc.translate('UI.contact-tab.header')}</p>
             </header>
             <Row className='form__group mb-2'>
               <Col className='flexcol--24'>
-                <label className='form__label mb-1' htmlFor='email'>{translationSvc.translate('UI.contact.email')}</label>
+                <label className='form__label mb-1' htmlFor='email'>{translationSvc.translate('UI.contact-tab.email')}</label>
                 <input className='form__element' name='email' id='email' type='email' required />
               </Col>
             </Row>
             <Row className='form__group mb-2'>
               <Col className='flexcol--24'>
-                <label className='form__label mb-1' htmlFor='select'>{translationSvc.translate('UI.contact.subject')}</label>
+                <label className='form__label mb-1' htmlFor='select'>{translationSvc.translate('UI.contact-tab.subject')}</label>
                 <select className='form__element' name='subject' id='select' required>
-                  <option value='BUG'>{translationSvc.translate('UI.contact.select.bug')}</option>
-                  <option value='IMPROVEMENT'>{translationSvc.translate('UI.contact.select.improvement')}</option>
-                  <option value='OTHER'>{translationSvc.translate('UI.contact.select.other')}</option>
+                  <option value='BUG'>{translationSvc.translate('UI.contact-tab.select.bug')}</option>
+                  <option value='IMPROVEMENT'>{translationSvc.translate('UI.contact-tab.select.improvement')}</option>
+                  <option value='OTHER'>{translationSvc.translate('UI.contact-tab.select.other')}</option>
                 </select>
               </Col>
             </Row>
 
             <Row className='form__group mb-2'>
               <Col className='flexcol--24'>
-                <label className='form__label mb-1' htmlFor='message'>{translationSvc.translate('UI.contact.message')}</label>
+                <label className='form__label mb-1' htmlFor='message'>{translationSvc.translate('UI.contact-tab.message')}</label>
                 <textarea className='form__element' name='message' id='message' rows={8} required />
               </Col>
             </Row>
             <Row className='form__group mb-2'>
               <Col className='flexcol--24 flex justify-content--end'>
                 <input type='hidden' name='seed' value={uiManager.state.parameters.seed} />
-                <Button className='btn--theme' type='submit'>{translationSvc.translate('UI.contact.send')}</Button>
+                <Button className='btn--theme' type='submit'>{translationSvc.translate('UI.contact-tab.send')}</Button>
               </Col>
             </Row>
           </form>
@@ -65,4 +65,4 @@ class Contact extends React.PureComponent<any, any> {
   }
 }
 
-export default Contact;
+export default ContactTab;

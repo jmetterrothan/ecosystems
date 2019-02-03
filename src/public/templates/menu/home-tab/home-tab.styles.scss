@@ -1,0 +1,24 @@
+.home-tab {
+  &__subtitle {
+    font-size: 1.0rem;
+    text-transform: uppercase;
+    color: $color-darkblue;
+  }
+
+  &__title {
+    font-size: 3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: $color-darkblue;
+  }
+
+  @include breakpoint-tablet {
+    &__subtitle {
+      font-size: 1.15rem;
+    }
+
+    &__title {
+      font-size: 4.5rem;
+    }
+  }
+}

@@ -4,12 +4,15 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Button from '@public/components/button/button';
 import UIManager from '@app/ui/UIManager';
 import { UIStates } from '@ui/enums/UIStates.enum';
+import { H2, H1 } from '@public/components/hx/hx';
 
-import Trophies from '@templates/menu/trophies/trophies';
-import Tutorial from '@templates/menu/tutorial/tutorial';
-import Credits from '@templates/menu/credits/credits';
-import Progress from '@templates/menu/progress/progress';
-import Contact from './contact/contact';
+import TrophiesTab from '@templates/menu/trophies-tab/trophies-tab';
+import TutorialTab from '@templates/menu/tutorial-tab/tutorial-tab';
+import CreditsTab from '@templates/menu/credits-tab/credits-tab';
+import ProgressTab from '@templates/menu/progress-tab/progress-tab';
+import ContactTab from '@templates/menu/contact-tab/contact-tab';
+import HomeTab from '@templates/menu/home-tab/home-tab';
+
 import PointerLock from '@app/PointerLock';
 
 import { translationSvc } from '@app/shared/services/translation.service';
@@ -43,42 +46,49 @@ class Menu extends React.PureComponent<Props> {
           <Tabs defaultIndex={Menu.SELECTED_INDEX} onSelect={tabIndex => Menu.SELECTED_INDEX = tabIndex}>
             <TabList>
               <Tab>
-                <div className='tab-menu ui-click-sound'>
-                  <span className='tab-menu__icon icon-lifebuoy mb-1' />
-                  <span className='tab-menu__text'>{translationSvc.translate('UI.tutorial.title')}</span>
+                <div className='tabs-menu ui-click-sound'>
+                  <span className='tabs-menu__icon icon-leaf mb-1' />
+                  <span className='tabs-menu__text'>{translationSvc.translate('UI.home-tab.title')}</span>
                 </div>
               </Tab>
               <Tab>
-                <div className='tab-menu ui-click-sound'>
-                  <span className='tab-menu__icon icon-trophy mb-1' />
-                  <span className='tab-menu__text'>{translationSvc.translate('UI.trophies.title')}</span>
+                <div className='tabs-menu ui-click-sound'>
+                  <span className='tabs-menu__icon icon-lifebuoy mb-1' />
+                  <span className='tabs-menu__text'>{translationSvc.translate('UI.tutorial-tab.title')}</span>
                 </div>
               </Tab>
               <Tab>
-                <div className='tab-menu ui-click-sound'>
-                  <span className='tab-menu__icon icon-meter mb-1' />
-                  <span className='tab-menu__text'>{translationSvc.translate('UI.progression.title')}</span>
+                <div className='tabs-menu ui-click-sound'>
+                  <span className='tabs-menu__icon icon-trophy mb-1' />
+                  <span className='tabs-menu__text'>{translationSvc.translate('UI.trophies-tab.title')}</span>
                 </div>
               </Tab>
               <Tab>
-                <div className='tab-menu ui-click-sound'>
-                  <span className='tab-menu__icon icon-users mb-1' />
-                  <span className='tab-menu__text'>{translationSvc.translate('UI.credits.title')}</span>
+                <div className='tabs-menu ui-click-sound'>
+                  <span className='tabs-menu__icon icon-meter mb-1' />
+                  <span className='tabs-menu__text'>{translationSvc.translate('UI.progress-tab.title')}</span>
                 </div>
               </Tab>
               <Tab>
-                <div className='tab-menu ui-click-sound'>
-                  <span className='tab-menu__icon icon-bug mb-1' />
-                  <span className='tab-menu__text'>{translationSvc.translate('UI.contact.title')}</span>
+                <div className='tabs-menu ui-click-sound'>
+                  <span className='tabs-menu__icon icon-users mb-1' />
+                  <span className='tabs-menu__text'>{translationSvc.translate('UI.credits-tab.title')}</span>
+                </div>
+              </Tab>
+              <Tab>
+                <div className='tabs-menu ui-click-sound'>
+                  <span className='tabs-menu__icon icon-bug mb-1' />
+                  <span className='tabs-menu__text'>{translationSvc.translate('UI.contact-tab.title')}</span>
                 </div>
               </Tab>
             </TabList>
 
-            <TabPanel><div className='p-3 pb-9 pb-3-t'><Tutorial /></div></TabPanel>
-            <TabPanel><div className='p-3 pb-9 pb-3-t'><Trophies /></div></TabPanel>
-            <TabPanel><div className='p-3 pb-9 pb-3-t'><Progress /></div></TabPanel>
-            <TabPanel><div className='p-3 pb-9 pb-3-t'><Credits /></div></TabPanel>
-            <TabPanel><div className='p-3 pb-9 pb-3-t'><Contact {...this.props} /></div></TabPanel>
+            <TabPanel><div className='p-3 pb-9 pb-3-t'><HomeTab /></div></TabPanel>
+            <TabPanel><div className='p-3 pb-9 pb-3-t'><TutorialTab /></div></TabPanel>
+            <TabPanel><div className='p-3 pb-9 pb-3-t'><TrophiesTab /></div></TabPanel>
+            <TabPanel><div className='p-3 pb-9 pb-3-t'><ProgressTab /></div></TabPanel>
+            <TabPanel><div className='p-3 pb-9 pb-3-t'><CreditsTab /></div></TabPanel>
+            <TabPanel><div className='p-3 pb-9 pb-3-t'><ContactTab {...this.props} /></div></TabPanel>
           </Tabs>
           <footer className='menu__footer mb-3 mr-3'>
             <Button className='btn--theme btn--expand-mobile ui-click-sound' onClick={this.handleClick}>{translationSvc.translate('UI.menu.continue_btn')}</Button>
