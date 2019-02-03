@@ -62,7 +62,6 @@ module.exports = {
             options: {
               resources: [
                 path.join(PATHS.STYLES, 'abstracts', '_variables.scss'),
-                path.join(PATHS.STYLES, 'abstracts', '_colors.scss'),
               ]
             }
           }

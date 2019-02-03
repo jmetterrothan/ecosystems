@@ -3,16 +3,6 @@
   to { transform: scale(1); opacity: 1; }
 }
 
-@keyframes a2 {
-  from { transform: scale(0.5); opacity: 0.5; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-@keyframes a3 {
-  from { transform: scale(0.5); opacity: 0.5; }
-  to { transform: scale(1); opacity: 1; }
-}
-
 .loading {
   background-image: $gradient;
   display: flex;
@@ -55,11 +45,11 @@
         animation-name: a1;
       }
       &:nth-child(2) {
-        animation-name: a2;
+        animation-name: a1;
         animation-delay: 0.5s;
       }
       &:nth-child(3) {
-        animation-name: a3;
+        animation-name: a1;
         animation-delay: 1s;
       }
     }

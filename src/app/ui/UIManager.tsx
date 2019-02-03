@@ -49,7 +49,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
       }
     });
 
-    document.addEventListener('pointerlockchange', () => {
+    PointerLock.addEventListener('pointerlockchange', () => {
       const enabled = PointerLock.enabled;
 
       if (enabled && this.state.currentUiStateID !== UIStates.GAME) {
