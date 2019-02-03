@@ -70,6 +70,7 @@ export interface IUITranslationKeys {
   'tutorial-tab': {
     title: string;
     title_commands: string;
+    title_multiplayer: string;
     subtitle_misc: string;
     subtitle_mvt: string;
     key_down: string;

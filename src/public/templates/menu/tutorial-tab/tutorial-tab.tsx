@@ -27,7 +27,12 @@ class TutorialTab extends React.Component {
   }
 
   getSecondPanel() {
-    return (<div className='page page--2 pb-2'>...</div>);
+    return (
+    <Article className='page page--1 pb-2'>
+      <H4 className='mb-2'>{translationSvc.translate('UI.tutorial-tab.title_multiplayer')}</H4>
+      <p className='paragraph'>...</p>
+    </Article>
+    );
   }
 
   getFirstPanel() {

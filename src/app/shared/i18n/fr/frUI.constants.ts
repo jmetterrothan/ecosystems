@@ -42,6 +42,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
   'tutorial-tab': {
     title: 'Tutoriel',
     title_commands: 'Commandes',
+    title_multiplayer: 'Multijoueur',
     subtitle_misc: 'Divers',
     subtitle_mvt: 'Déplacement',
     key_down: 'Descendre',
