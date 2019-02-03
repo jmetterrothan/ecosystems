@@ -327,6 +327,7 @@ class Terrain {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
 
     if (!this.previewObject) {
+      crosshairSvc.shake(true);
       return;
     }
 
