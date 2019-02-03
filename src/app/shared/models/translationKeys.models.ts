@@ -38,6 +38,7 @@ export interface IUITranslationKeys {
     title: string;
     subtitle: string;
     debug: string;
+    loading: string;
     form: {
       seed: string;
       seed_placeholder: string;

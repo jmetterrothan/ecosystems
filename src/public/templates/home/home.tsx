@@ -189,7 +189,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
         </Button>
       )
       : (
-        <span className='loading-text'>chargement...</span>
+        <span className='loading-text'>{translationSvc.translate('UI.home.loading')}</span>
       );
   }
 
