@@ -85,7 +85,7 @@ class Trophies extends React.Component<ITrophiesProps, ITrophiesState> {
       <div className='form'>
         <select onChange={this.handleSelectChange} value={Trophies.SORT_TYPE}>
           {sort.map((option: string, index: number) => (
-            <option key={index} value={option}>{option}</option>
+            <option key={index} value={option}>{translationSvc.translate(`UI.trophies.${option}`)}</option>
           ))}
         </select>
       </div>

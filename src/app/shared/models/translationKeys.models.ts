@@ -59,6 +59,9 @@ export interface IUITranslationKeys {
   };
   trophies: {
     title: string;
+    sort_by_type: string;
+    sort_by_completion_status: string;
+    sort_by_difficulty: string;
   };
   tutorial: {
     title: string;

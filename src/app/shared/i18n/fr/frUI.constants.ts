@@ -31,7 +31,10 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     }
   },
   trophies: {
-    title: 'Trophées'
+    title: 'Trophées',
+    sort_by_type: 'Trier par type',
+    sort_by_completion_status: 'Trier par statut',
+    sort_by_difficulty: 'Trier par difficulté'
   },
   tutorial: {
     title: 'Tutoriel',
