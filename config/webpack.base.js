@@ -117,6 +117,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(PATHS.SRC, 'index.html'),
+      favicon: './src/public/assets/images/favicon.png',
       filename: 'index.html',
       inject: 'body',
       hash: true
