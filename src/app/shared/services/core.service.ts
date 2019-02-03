@@ -17,6 +17,7 @@ import Unlock_level_Game_Sound from '@sounds/Unlock_level_Game_Sound.mp3';
 import Set_Down_Item_1 from '@sounds/Set_Down_Item_1.mp3';
 import Small_Splash from '@sounds/Small_Splash.mp3';
 import Bubbles from '@sounds/Bubbles.mp3';
+import Hehe_Boi from '@sounds/Hehe_Boi.mp3';
 import Fairy_Meeting from '@sounds/Fairy_Meeting.mp3';
 
 class CoreService {
@@ -39,6 +40,7 @@ class CoreService {
     await SoundManager.add('set_down', Set_Down_Item_1, { volume: 0.5 });
     await SoundManager.add('splash', Small_Splash, { volume: 0.5 });
     await SoundManager.add('bubbles', Bubbles, { volume: 0.5 });
+    await SoundManager.add('hehe', Hehe_Boi, { volume: 0.5 });
     await SoundManager.add('background_music', Fairy_Meeting, { volume: 0.2, loop: true });
   }
 
