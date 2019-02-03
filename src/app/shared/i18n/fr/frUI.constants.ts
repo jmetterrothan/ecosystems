@@ -85,5 +85,8 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     decline: 'Refuser',
     allow: 'Accepter',
     message: 'En poursuivant votre navigation, vous acceptez l’utilisation de cookies d\'analyse d\'audience et de fréquentation.'
+  },
+  contact: {
+    title: 'Contact'
   }
 };

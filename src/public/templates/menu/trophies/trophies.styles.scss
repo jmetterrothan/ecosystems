@@ -10,7 +10,7 @@
       flex-shrink: 0;
     }
 
-    .tab__list {
+    .tab__content {
       @include breakpoint-tablet {
         height: calc(100vh - 125px);
         overflow-y: scroll;

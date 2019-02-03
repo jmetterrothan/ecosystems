@@ -85,5 +85,8 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
     decline: 'Decline',
     allow: 'Allow cookies',
     message: 'We use cookies to measure how visitors interact with the website.'
+  },
+  contact: {
+    title: 'Contact'
   }
 };

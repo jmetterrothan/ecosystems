@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './loading.scss';
+import './loading.styles.scss';
 
 const Loading = () => (
   <section className='ui__state loading'>

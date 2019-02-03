@@ -32,13 +32,13 @@ class Tutorial extends React.Component {
     return (
       <Article className='page page--1 pb-2'>
         <H4 className='mb-2'>{translationSvc.translate('UI.tutorial.title_project')}</H4>
-        <p className='mb-2'>{translationSvc.translate('UI.tutorial.article.p1')}</p>
-        <p className='mb-2'>{translationSvc.translate('UI.tutorial.article.p2', { count: Biomes.length })}</p>
-        <p className='mb-3'>{translationSvc.translate('UI.tutorial.article.p3', { count: achievementSvc.getTrophiesCount() })}</p>
+        <p className='paragraph mb-2'>{translationSvc.translate('UI.tutorial.article.p1')}</p>
+        <p className='paragraph mb-2'>{translationSvc.translate('UI.tutorial.article.p2', { count: Biomes.length })}</p>
+        <p className='paragraph mb-3'>{translationSvc.translate('UI.tutorial.article.p3', { count: achievementSvc.getTrophiesCount() })}</p>
 
         <H4 className='mb-2'>{translationSvc.translate('UI.tutorial.title_tech')}</H4>
-        <p className='mb-2'>{translationSvc.translate('UI.tutorial.article.p4')}</p>
-        <p className='mb-3'>{translationSvc.translate('UI.tutorial.article.p5')}</p>
+        <p className='paragraph mb-2'>{translationSvc.translate('UI.tutorial.article.p4')}</p>
+        <p className='paragraph mb-3'>{translationSvc.translate('UI.tutorial.article.p5')}</p>
       </Article>
     );
   }

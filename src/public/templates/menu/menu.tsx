@@ -9,6 +9,7 @@ import Trophies from '@templates/menu/trophies/trophies';
 import Tutorial from '@templates/menu/tutorial/tutorial';
 import Credits from '@templates/menu/credits/credits';
 import Progress from '@templates/menu/progress/progress';
+import Contact from './contact/contact';
 import PointerLock from '@app/PointerLock';
 
 import { translationSvc } from '@app/shared/services/translation.service';
@@ -64,12 +65,19 @@ class Menu extends React.PureComponent<Props> {
                   <span className='tab-menu__text'>{translationSvc.translate('UI.credits.title')}</span>
                 </div>
               </Tab>
+              <Tab>
+                <div className='tab-menu ui-click-sound'>
+                  <span className='tab-menu__icon icon-bug mb-1'/>
+                  <span className='tab-menu__text'>{translationSvc.translate('UI.contact.title')}</span>
+                </div>
+              </Tab>
             </TabList>
 
             <TabPanel><div className='p-3 pb-9 pb-3-t'><Tutorial /></div></TabPanel>
             <TabPanel><div className='p-3 pb-9 pb-3-t'><Trophies /></div></TabPanel>
             <TabPanel><div className='p-3 pb-9 pb-3-t'><Progress /></div></TabPanel>
             <TabPanel><div className='p-3 pb-9 pb-3-t'><Credits /></div></TabPanel>
+            <TabPanel><div className='p-3 pb-9 pb-3-t'><Contact /></div></TabPanel>
           </Tabs>
           <footer className='menu__footer mb-3 mr-3'>
             <Button className='btn--theme btn--expand-mobile ui-click-sound' onClick={this.handleClick}>{translationSvc.translate('UI.menu.continue_btn')}</Button>

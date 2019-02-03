@@ -22,7 +22,7 @@ import { GraphicsQuality } from '@shared/enums/graphicsQuality.enum';
 import { UIStates } from '@app/ui/enums/UIStates.enum';
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
 
-import './home.scss';
+import './home.styles.scss';
 
 import previewImage from '@images/previews/world.png';
 import previewImage2 from '@images/previews/world2.png';

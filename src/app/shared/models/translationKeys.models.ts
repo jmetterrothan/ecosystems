@@ -113,4 +113,7 @@ export interface IUITranslationKeys {
     allow: string;
     message: string;
   };
+  contact: {
+    title: string;
+  };
 }

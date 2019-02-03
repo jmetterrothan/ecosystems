@@ -46,7 +46,7 @@ class Trophies extends React.Component<ITrophiesProps, ITrophiesState> {
           <Col className='flexcol--10-t'>{this.renderSelect()}</Col>
         </Row>
         </header>
-        <div className='tab__list'>
+        <div className='tab__content'>
           <Row Tag='ul'>
             {this.state.allTrophies.map((trophy: ITrophy, index: number) => (
             <Col Tag='li' key={index} className='flexcol--12-t flexcol--8-l mb-3'>

@@ -46,14 +46,10 @@ h5.title {
   color: lighten($color-darkblue, 15%);
 }
 
-
-.article {
-  p {
-    font-size: 1.1rem;
-    line-height: 2rem;
-  }
+.paragraph {
+  font-size: 1.1rem;
+  line-height: 2rem;
 }
-
 
 .link {
   color: $color-darkblue;
