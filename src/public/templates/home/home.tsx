@@ -10,6 +10,7 @@ import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@shared/utils/Common.utils';
 import { H1, H2, H3, H4, H5 } from '@public/components/hx/hx';
 import Button from '@public/components/button/button';
+import Loader from '@public/components/loader/loader';
 
 import { coreSvc } from '@shared/services/core.service';
 import { configSvc } from '@app/shared/services/config.service';
@@ -188,9 +189,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
           {translationSvc.translate('UI.home.form.start_btn')}
         </Button>
       )
-      : (
-        <span className='loading-text'>{translationSvc.translate('UI.home.loading')}</span>
-      );
+      : <Loader />;
   }
 
   render() {

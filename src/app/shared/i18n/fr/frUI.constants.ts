@@ -11,7 +11,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     title: 'Ecosystems',
     subtitle: 'Une expérience 3d interactive',
     debug: 'Debug',
-    loading: 'chargement en cours...',
+    loading: 'Chargement en cours',
     form: {
       seed: 'Choisir une seed',
       seed_placeholder: '',

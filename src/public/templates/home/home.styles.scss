@@ -8,11 +8,6 @@
   to { transform: translateY(-8px); }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0.5; }
-  to { opacity: 1; }
-}
-
 .home{
   background-image: $gradient;
   display: flex;
@@ -109,16 +104,4 @@
       font-size: 7.5rem;
     }
   }
-}
-
-.loading-text{
-  color:$color-theme;
-  font-size: 1.15rem;
-  line-height: 4rem;
-
-  animation-name: fadeIn;
-  animation-duration: 1s;
-  animation-timing-function: ease-in-out;
-  animation-direction: alternate;
-  animation-iteration-count: infinite;
 }
