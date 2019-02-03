@@ -104,7 +104,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.OBJECTS,
     checklist: [
-      { name: 'place 100 objects', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed.value, limit: 100 }
+      { name: 'place 50 objects', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed.value, limit: 50 }
     ]
   },
   // DISTANCE
