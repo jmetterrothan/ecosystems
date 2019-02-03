@@ -1,9 +1,11 @@
 import React from 'react';
+import { Subscription } from 'rxjs';
 
 import Row from '@public/components/row/row';
 import Col from '@public/components/col/col';
 import { H1, H2, H3, H4, H5 } from '@public/components/hx/hx';
 import Trophy from './trophy/trophy';
+import Button from '@public/components/button/button';
 
 import { translationSvc } from '@shared/services/translation.service';
 import { achievementSvc } from '@achievements/services/achievement.service';
@@ -27,10 +29,22 @@ interface ITrophiesState {
 class Trophies extends React.Component<ITrophiesProps, ITrophiesState> {
   static SORT_TYPE: TROPHY_SORT = TROPHY_SORT.TYPE;
 
+  private trophySubscription: Subscription;
+
   state = {
     allTrophies: TROPHIES,
     unlockedTrophies: achievementSvc.getUnlockedTrophies()
   };
+
+  componentWillMount() {
+    this.trophySubscription = achievementSvc.trophy$.subscribe(() => {
+      this.setState({ unlockedTrophies: achievementSvc.getUnlockedTrophies() });
+    });
+  }
+
+  componentWillUnmount() {
+    this.trophySubscription.unsubscribe();
+  }
 
   handleSelectChange = ev => {
     Trophies.SORT_TYPE = ev.target.value;
@@ -54,6 +68,11 @@ class Trophies extends React.Component<ITrophiesProps, ITrophiesState> {
             </Col>
             ))}
           </Row>
+          <footer className='tab__footer progression-reset'>
+            <H4 className='mt-3 mb-2'>{translationSvc.translate('UI.trophies.reset_title')}</H4>
+            <p className='paragraph mb-1'>{translationSvc.translate('UI.trophies.reset_text')}</p>
+            <Button className='btn--darkblue btn--expand-mobile' onClick={() => achievementSvc.reset()}>{translationSvc.translate('UI.trophies.reset_btn')}</Button>
+          </footer>
         </div>
       </div>
     );

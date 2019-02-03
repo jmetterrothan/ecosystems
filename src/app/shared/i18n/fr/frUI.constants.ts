@@ -34,7 +34,10 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     title: 'Trophées',
     sort_by_type: 'Trier par type',
     sort_by_completion_status: 'Trier par statut',
-    sort_by_difficulty: 'Trier par difficulté'
+    sort_by_difficulty: 'Trier par difficulté',
+    reset_title: 'Réinitialiser la progression',
+    reset_text: 'Vous pouvez réinitialiser les trophées débloqués en cliquant sur le bouton ci-dessous. Attention cette action est irréversible.',
+    reset_btn: 'Effacer'
   },
   tutorial: {
     title: 'Tutoriel',

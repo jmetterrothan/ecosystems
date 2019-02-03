@@ -62,6 +62,9 @@ export interface IUITranslationKeys {
     sort_by_type: string;
     sort_by_completion_status: string;
     sort_by_difficulty: string;
+    reset_title: string;
+    reset_text: string;
+    reset_btn: string;
   };
   tutorial: {
     title: string;

@@ -65,4 +65,5 @@ class StorageService {
 }
 
 export const storageSvc = new StorageService();
+
 export default StorageService;

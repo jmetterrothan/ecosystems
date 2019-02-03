@@ -147,6 +147,19 @@ class AchievementService {
     // notify unlocked count change
     this.trophy$.next(this.getUnlockedTrophiesCount());
   }
+
+  /**
+   * Reset completed trophies
+   */
+  reset() {
+    storageSvc.set(STORAGES_KEY.trophies, null);
+    storageSvc.set(STORAGES_KEY.progression, null);
+    storageSvc.set(STORAGES_KEY.completed, null);
+
+    progressionSvc.init();
+
+    this.trophy$.next(this.getUnlockedTrophiesCount());
+  }
 }
 
 export const achievementSvc = new AchievementService();

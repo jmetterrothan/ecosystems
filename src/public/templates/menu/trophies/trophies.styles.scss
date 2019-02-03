@@ -19,3 +19,12 @@
     }
   }
 }
+
+.progression-reset {
+  display: flex;
+  flex-direction: column;
+
+  .btn {
+    align-self: flex-end;
+  }
+}

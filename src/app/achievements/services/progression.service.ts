@@ -49,7 +49,6 @@ class ProgressionService {
     if (!storageSvc.get<Object>(STORAGES_KEY.completed)) {
       storageSvc.set<Object>(STORAGES_KEY.completed, []);
     }
-
   }
 
   /**

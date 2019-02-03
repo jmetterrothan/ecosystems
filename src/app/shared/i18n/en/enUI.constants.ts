@@ -34,7 +34,10 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
     title: 'Trophies',
     sort_by_type: 'Sort by type',
     sort_by_completion_status: 'Sort by completion status',
-    sort_by_difficulty: 'Sort by difficulty'
+    sort_by_difficulty: 'Sort by difficulty',
+    reset_title: 'Reset your progression',
+    reset_text: 'Your progression will be completely erased. You can start from scratch but you cannot go back.',
+    reset_btn: 'Reset'
   },
   tutorial: {
     title: 'Tutoriel',
