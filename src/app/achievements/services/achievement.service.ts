@@ -3,6 +3,7 @@ import uniqid from 'uniqid';
 
 import MathUtils from '@shared/utils/Math.utils';
 import SoundManager from '@shared/SoundManager';
+import CommonUtils from '@app/shared/utils/Common.utils';
 
 import { storageSvc } from '@shared/services/storage.service';
 import { monitoringSvc } from '@shared/services/monitoring.service';
@@ -123,6 +124,11 @@ class AchievementService {
     const completedArray = storageSvc.get<Object>(STORAGES_KEY.completed);
     (<string[]>completedArray).push(trophy.value);
     storageSvc.set<Object>(STORAGES_KEY.completed, completedArray);
+
+    // format value
+    if (trophy.name.options && trophy.name.options.counter) {
+      trophy.name.options.counter =  CommonUtils.formatNumberWithSpaces(trophy.name.options.counter);
+    }
 
     // send notification
     notificationSvc.push({
