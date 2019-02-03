@@ -96,10 +96,12 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
    * Dispatch all UI changes to the storage or used services
    */
   dispatchChanges() {
+    // dispatch changes to config service
     configSvc.quality = this.state.selectedQuality;
     configSvc.debug = this.state.debugMode;
     configSvc.soundEnabled = this.state.soundMode;
 
+    // save changes to local storage
     storageSvc.set<IHomeParametersStorage>(STORAGES_KEY.ui, {
       quality: this.state.selectedQuality,
       online: this.state.onlineMode,
@@ -216,7 +218,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
             <Row suffix='-48'>
               <Col className='flexcol--24 flexcol--13-t mb-2 mb-0-t'>
                 <Row className='form__group mb-2'>
-                  <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.seed')}</Col>
+                  <Col Tag='label' className='form__label flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.seed')}</Col>
                   <Col className='flexcol--24'>
                     <div className='tooltip'>
                       <input className='form__element form__element--rounded' type='text' name='seed' placeholder={translationSvc.translate('UI.home.form.seed_placeholder')} onChange={this.handleChange} value={seedValue} pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={1} ref={el => this.seedInput = el} />
@@ -231,7 +233,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
                   </Col>
                 </Row>
                 <Row className='form__group test'>
-                  <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.graphics')}</Col>
+                  <Col Tag='label' className='form__label flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.graphics')}</Col>
                   <Col className='flexcol--8'>
                     <input className='form__element form__element--rounded' type='radio' id='qualityLow' name='selectedQuality' onChange={this.handleQualityChange} value={GraphicsQuality.LOW} checked={selectedQuality === GraphicsQuality.LOW} />
                     <label htmlFor='qualityLow' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.low_quality_option')}</label>
@@ -248,7 +250,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
               </Col>
               <Col className='flexcol--24 flexcol--11-t'>
                 <Row className='form__group mb-2'>
-                  <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.gamemode')}</Col>
+                  <Col Tag='label' className='form__label flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.gamemode')}</Col>
                   <Col className='flexcol--12'>
                     <input className='form__element form__element--rounded' type='radio' id='onlineModeOff' name='onlineMode' onChange={this.handleOnlineChange} value='0' checked={onlineMode === false} />
                     <label htmlFor='onlineModeOff' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.singleplayer_option')}</label>
@@ -259,7 +261,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
                   </Col>
                 </Row>
                 <Row className='form__group'>
-                  <Col Tag='h4' className='flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.soundmode')}</Col>
+                  <Col Tag='label' className='form__label flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.soundmode')}</Col>
                   <Col className='flexcol--12'>
                     <input className='form__element form__element--rounded' type='radio' id='soundOff' name='soundMode' onChange={this.handleSoundChange} value='0' checked={soundMode === false} />
                     <label htmlFor='soundOff' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.sound_off_option')}</label>

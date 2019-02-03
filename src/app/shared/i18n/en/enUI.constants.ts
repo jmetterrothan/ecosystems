@@ -91,6 +91,7 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
   },
   contact: {
     title: 'Contact',
+    header: 'A problem, a question or some feedback ? You can contact us with the form below. We will try to answer as quickly as possible.',
     email: 'Email',
     subject: 'Subject',
     select: {

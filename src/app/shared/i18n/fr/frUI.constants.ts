@@ -91,11 +91,12 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
   },
   contact: {
     title: 'Contact',
-    email: 'Email',
-    subject: 'Sujet',
+    header: 'Un problème, une question ou une suggestion ? Vous pouvez nous contacter avec le formulaire ci-dessous. Nous vous répondrons dans les plus brefs délais.',
+    email: 'Adresse email',
+    subject: 'Sujet du message',
     select: {
-      bug: 'Bug',
-      improvement: 'Amélioration',
+      bug: 'Signaler un bug',
+      improvement: 'Suggérer une amélioration',
       other: 'Autre'
     },
     message: 'Message',

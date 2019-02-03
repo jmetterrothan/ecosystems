@@ -12,13 +12,20 @@
     color: $color-darkblue;
   }
 
-  h4 {
+  &__group {
+
+  }
+
+  &__label {
+    width: 100%;
+    display: block;
     color: $color-darkblue;
     font-size: 1.2rem;
+    line-height: 1.5rem;
     font-weight: 400;
   }
 
-  .form__element {
+  &__element {
     appearance: none;
     display: block;
     width: 100%;
@@ -98,5 +105,15 @@
       border-color: transparent;
       transition: background ease .4s, border-color ease .2s;
     }
+  }
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-content {
+  &--end {
+    justify-content: flex-end;
   }
 }
