@@ -301,5 +301,5 @@ export const TROPHIES: ITrophy[] = [
     checklist: [
       { name: 'unlock 100 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage.value, limit: 100 }
     ]
-  }
+  },
 ];
