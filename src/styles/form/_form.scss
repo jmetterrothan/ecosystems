@@ -12,13 +12,20 @@
     color: $color-darkblue;
   }
 
-  h4 {
+  &__group {
+
+  }
+
+  &__label {
+    width: 100%;
+    display: block;
     color: $color-darkblue;
     font-size: 1.2rem;
+    line-height: 1.5rem;
     font-weight: 400;
   }
 
-  input[type=text], input[type=password], select {
+  &__element {
     appearance: none;
     display: block;
     width: 100%;
@@ -34,22 +41,27 @@
     font-weight: 400;
     color: $color-darkblue;
     font-family: $font;
+    border-radius: 2px;
+
+    &--rounded {
+      border-radius: 4px;
+    }
   }
 
-  option {
+  textarea.form__element {
+    width: 100%;
+    height: auto;
+    resize: none;
+    padding: 0.5rem 1rem;
+    line-height: calc(1.75rem - 2px);
+  }
+
+  select.form__element option {
     font-size: 1.1rem;
     background: #f1f1f1;
   }
 
-  input[type=text], input[type=password] {
-    border-radius: 4px;
-  }
-
-  select {
-    border-radius: 2px;
-  }
-
-  input[type=radio] {
+  input[type=radio].form__element {
     display: none;
 
     & + label {
@@ -72,6 +84,10 @@
       box-shadow: none;
       cursor: pointer;
       transition: all ease .2s;
+    }
+
+    &--rounded + label {
+      border-radius: 4px;
     }
 
     &:disabled + label {

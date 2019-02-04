@@ -74,7 +74,6 @@ class PlayerService {
       this.totalDistance = 0;
     }, 10000);
   }
-
 }
 
 export const playerSvc = new PlayerService();

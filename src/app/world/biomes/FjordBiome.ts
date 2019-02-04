@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 import Biome from '@world/Biome';
 import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
@@ -20,7 +22,7 @@ class FjordBiome extends Biome {
     this.waterDistortionAmp = 1024.0;
     this.waterColor1 = new THREE.Color(0x79A7A8);
 
-    this.e = MathUtils.randomFloat(2, 3);
+    this.e = MathUtils.randomFloat(1.85, 2.5);
     this.sound = ForestSFXMp3;
   }
 

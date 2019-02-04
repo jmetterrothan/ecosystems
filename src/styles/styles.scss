@@ -15,6 +15,11 @@
 
 @import 'ui/_ui';
 
+@include breakpoint-tablet {
+  html {
+    overflow: hidden;
+  }
+}
 
 strong {
   font-weight: 700;
@@ -46,14 +51,10 @@ h5.title {
   color: lighten($color-darkblue, 15%);
 }
 
-
-.article {
-  p {
-    font-size: 1.1rem;
-    line-height: 2rem;
-  }
+.paragraph {
+  font-size: 1.1rem;
+  line-height: 2rem;
 }
-
 
 .link {
   color: $color-darkblue;
@@ -72,4 +73,15 @@ h5.title {
 }
 .align-center {
   text-align: center;
+}
+
+
+.flex {
+  display: flex;
+}
+
+.justify-content {
+  &--end {
+    justify-content: flex-end;
+  }
 }

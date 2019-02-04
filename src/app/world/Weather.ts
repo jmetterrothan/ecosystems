@@ -259,7 +259,7 @@ class Weather {
   }
 
   initStars() {
-    const starsCount: number = 1000;
+    const starsCount: number = 1024;
     const stars = new THREE.Geometry();
 
     const material = new THREE.PointsMaterial({

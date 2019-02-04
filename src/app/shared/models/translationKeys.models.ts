@@ -18,6 +18,7 @@ export interface ITrophiesTranslationKeys {
   find_captain_treasure: string;
   find_scarecrow: string;
   add_carrot_snowmnan: string;
+  archaeology: string;
   going_under_rain: string;
   go_in_sun: string;
   go_in_moon: string;
@@ -57,14 +58,19 @@ export interface IUITranslationKeys {
       seed_tooltip_text: string;
     }
   };
-  trophies: {
+  'trophies-tab': {
     title: string;
+    sort_by_type: string;
+    sort_by_completion_status: string;
+    sort_by_difficulty: string;
+    reset_title: string;
+    reset_text: string;
+    reset_btn: string;
   };
-  tutorial: {
+  'tutorial-tab': {
     title: string;
     title_commands: string;
-    title_project: string;
-    title_tech: string;
+    title_multiplayer: string;
     subtitle_misc: string;
     subtitle_mvt: string;
     key_down: string;
@@ -80,7 +86,12 @@ export interface IUITranslationKeys {
     key_menu_name: string;
     mouse_interaction: string;
     mouse_interaction_name: string;
+  };
+  'home-tab': {
+    title: string;
     article: {
+      title_project: string;
+      title_tech: string;
       p1: string;
       p2: string;
       p3: string;
@@ -88,7 +99,7 @@ export interface IUITranslationKeys {
       p5: string;
     }
   };
-  credits: {
+  'credits-tab': {
     title: string;
     description_jeremie: string;
     description_florian: string;
@@ -96,13 +107,26 @@ export interface IUITranslationKeys {
     description_jordan: string;
     description_christina: string;
   };
-  progression: {
+  'progress-tab': {
     title: string;
     game_played: string;
     distance_travelled: string;
     going_underwater: string;
     objects_placed: string;
     unlock_trophies_percentage: string;
+  };
+  'contact-tab': {
+    title: string;
+    header: string;
+    email: string;
+    subject: string;
+    select: {
+      bug: string;
+      improvement: string;
+      other: string;
+    }
+    message: string;
+    send: string;
   };
   cookies: {
     more: string;

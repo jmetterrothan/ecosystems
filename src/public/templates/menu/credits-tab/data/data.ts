@@ -21,7 +21,7 @@ export interface ICollaboratorProps {
 export const collaborators: ICollaboratorProps[] = [
   {
     fullname: 'Jérémie Metter-Rothan',
-    description: 'UI.credits.description_jeremie',
+    description: 'UI.credits-tab.description_jeremie',
     links: [
       { url: 'https://jeremie.metter-rothan.fr', icon: Icons.Portfolio },
       { url: 'https://github.com/jmetterrothan', icon: Icons.Github },
@@ -31,7 +31,7 @@ export const collaborators: ICollaboratorProps[] = [
   },
   {
     fullname: 'Florian Zobèle',
-    description: 'UI.credits.description_florian',
+    description: 'UI.credits-tab.description_florian',
     links: [
       { url: 'https://florianzobele.fr', icon: Icons.Portfolio },
       { url: 'https://github.com/Ghuntheur', icon: Icons.Github },
@@ -42,7 +42,7 @@ export const collaborators: ICollaboratorProps[] = [
   },
   {
     fullname: 'Lucas Dussouchaud',
-    description: 'UI.credits.description_lucas',
+    description: 'UI.credits-tab.description_lucas',
     links: [
       { url: 'http://noisiv.fr', icon: Icons.Portfolio },
       { url: 'https://www.linkedin.com/in/lucas-dussouchaud-67b492166/', icon: Icons.LinkedIn }
@@ -50,7 +50,7 @@ export const collaborators: ICollaboratorProps[] = [
   },
   {
     fullname: 'Jordan Vilsaint',
-    description: 'UI.credits.description_jordan',
+    description: 'UI.credits-tab.description_jordan',
     links: [
       { url: 'http://jovsn.alwaysdata.net', icon: Icons.Portfolio },
       { url: 'https://github.com/jovsn', icon: Icons.Github },
@@ -59,7 +59,7 @@ export const collaborators: ICollaboratorProps[] = [
   },
   {
     fullname: 'Christina Schinzel',
-    description: 'UI.credits.description_christina',
+    description: 'UI.credits-tab.description_christina',
     links: [
       { url: 'http://www.christinaschinzel.com', icon: Icons.Portfolio },
       { url: 'https://www.linkedin.com/in/christina-schinzel', icon: Icons.LinkedIn },

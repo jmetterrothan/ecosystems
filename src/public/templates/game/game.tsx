@@ -11,7 +11,7 @@ import { translationSvc } from '@shared/services/translation.service';
 
 import { IOnlineStatus } from '@online/models/onlineStatus.model';
 
-import './game.scss';
+import './game.styles.scss';
 import { configSvc } from '@app/shared/services/config.service';
 
 interface IGameProps {

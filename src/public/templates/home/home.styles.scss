@@ -8,11 +8,6 @@
   to { transform: translateY(-8px); }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0.5; }
-  to { opacity: 1; }
-}
-
 .home{
   background-image: $gradient;
   display: flex;
@@ -29,9 +24,7 @@
     width: 100%;
     flex-grow: 0;
     flex-shrink: 0;
-    color: $color-darkblue;
     text-align: center;
-    text-transform: uppercase;
     z-index: 2;
   }
 
@@ -77,11 +70,15 @@
 
   &__subtitle {
     font-size: 1.0rem;
+    text-transform: uppercase;
+    color: $color-darkblue;
   }
 
   &__title {
     font-size: 3rem;
     font-weight: 700;
+    text-transform: uppercase;
+    color: $color-darkblue;
   }
 
   @include breakpoint-tablet {
@@ -109,16 +106,4 @@
       font-size: 7.5rem;
     }
   }
-}
-
-.loading-text{
-  color:$color-darkblue;
-  font-size: 1.15rem;
-  line-height: 4rem;
-
-  animation-name: fadeIn;
-  animation-duration: 1s;
-  animation-timing-function: ease-in-out;
-  animation-direction: alternate;
-  animation-iteration-count: infinite;
 }

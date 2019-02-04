@@ -2,6 +2,9 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 import { Spring, Transition } from 'react-spring';
 
+import Lifo from '@app/shared/Lifo';
+import SoundManager from '@app/shared/SoundManager';
+
 import Notification from '@public/components/notification/Notification';
 import { notificationSvc } from '@shared/services/notification.service';
 
@@ -13,9 +16,16 @@ interface INotificationContainerState {
 
 class NotificationContainer extends React.Component<any, INotificationContainerState> {
   private subscription: Subscription;
+  private queue: Lifo<INotification>;
+  private time: number;
+  private timer: any;
 
   constructor(props) {
     super(props);
+
+    this.queue = new Lifo<INotification>();
+    this.time = -1;
+    this.timer = null;
 
     this.state = {
       list: []
@@ -23,7 +33,7 @@ class NotificationContainer extends React.Component<any, INotificationContainerS
   }
 
   componentWillMount() {
-    this.subscription = notificationSvc.notifications$.subscribe((notification) => this.add(notification));
+    this.subscription = notificationSvc.notifications$.subscribe((notification) => this.schedule(notification));
   }
 
   componentWillUnmount() {
@@ -34,12 +44,40 @@ class NotificationContainer extends React.Component<any, INotificationContainerS
     const { list } = this.state;
     list.push(notification);
 
+    // schedule removal
     setTimeout(() => {
       const newList = this.state.list.filter(n => n !== notification);
       this.setState({ list: newList });
     }, notification.duration);
 
-    this.setState({ list });
+    // add to active notification list
+    this.setState({ list }, () => {
+      SoundManager.play(Math.random() > 0.05 ? 'trophy_unlock' : 'hehe');
+    });
+  }
+
+  private schedule(notification: INotification) {
+    const now = window.performance.now();
+
+    if (this.time === -1 || now >= this.time) {
+      // notification list is clear or enough time has passed
+      this.time = now + notification.duration / 2;
+      this.add(notification);
+    } else {
+      // queue notification if the last notification was sent too recently & try again in 500 ms
+      this.queue.push(notification);
+
+      this.timer = setTimeout(() => {
+        this.updateQueue();
+      }, 500);
+    }
+  }
+
+  private updateQueue() {
+    if (!this.queue.isEmpty()) {
+      const obj = this.queue.pop();
+      this.schedule(obj);
+    }
   }
 
   render() {

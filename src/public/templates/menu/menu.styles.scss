@@ -3,6 +3,15 @@
 .menu {
   background: rgba(0, 0, 0, 0.2);
 
+  &__share {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
   &__container {
     width: 100%;
     height: 100%;
@@ -69,7 +78,7 @@
       border-bottom-color: transparent;
     }
 
-    .tab-menu {
+    .tabs-menu {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -94,3 +103,22 @@
   }
 }
 
+.tab {
+  display: flex;
+  flex-direction: column;
+
+  .tab__header {
+    display: flex;
+    align-items: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  .tab__content {
+    @include breakpoint-tablet {
+      height: calc(100vh - 125px);
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+  }
+}

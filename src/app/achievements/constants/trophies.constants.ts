@@ -47,16 +47,6 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: 'TROPHIES.visit_all_biomes', options: { counter: 10 } },
-    value: 'visit_all_biomes_five_times',
-    img: '',
-    difficulty: TROPHY_DIFFICULTY.BRONZE,
-    type: TROPHY_TYPE.BIOMES,
-    checklist: [
-      ...Object.values(PROGRESSION_BIOME_STORAGE_KEYS).reduce((acc, item: IProgression) => acc.concat(<IChecklistOption>{ name: item.name, value: item.value, limit: 10 }), [])
-    ]
-  },
-  {
     name: { key: 'TROPHIES.going_underwater' },
     value: 'going_underwater',
     img: '',
@@ -114,7 +104,7 @@ export const TROPHIES: ITrophy[] = [
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.OBJECTS,
     checklist: [
-      { name: 'place 100 objects', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed.value, limit: 100 }
+      { name: 'place 50 objects', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed.value, limit: 50 }
     ]
   },
   // DISTANCE
@@ -228,6 +218,16 @@ export const TROPHIES: ITrophy[] = [
     type: TROPHY_TYPE.EXTRAS,
     checklist: [
       { name: 'find scarecrow', value: PROGRESSION_EXTRAS_STORAGE_KEYS.find_scarecrow.value }
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.archaeology' },
+    value: 'archaeology',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.EXTRAS,
+    checklist: [
+      { name: 'archaeology', value: PROGRESSION_EXTRAS_STORAGE_KEYS.archaeology.value }
     ]
   },
   // ONLINE

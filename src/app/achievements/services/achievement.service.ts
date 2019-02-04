@@ -3,6 +3,7 @@ import uniqid from 'uniqid';
 
 import MathUtils from '@shared/utils/Math.utils';
 import SoundManager from '@shared/SoundManager';
+import CommonUtils from '@app/shared/utils/Common.utils';
 
 import { storageSvc } from '@shared/services/storage.service';
 import { monitoringSvc } from '@shared/services/monitoring.service';
@@ -41,11 +42,11 @@ class AchievementService {
   }
 
   getUnlockedTrophiesCount(): number {
-    return (<string[]>storageSvc.get<Object>(STORAGES_KEY.completed)).length;
+    return storageSvc.get<string[]>(STORAGES_KEY.completed).length;
   }
 
   getUnlockedTrophies(): ITrophy[] {
-    const unlocked: string[] = (<string[]>storageSvc.get<Object>(STORAGES_KEY.completed));
+    const unlocked: string[] = storageSvc.get<string[]>(STORAGES_KEY.completed);
     return TROPHIES.filter((trophy: ITrophy) => unlocked.includes(trophy.value));
   }
 
@@ -124,6 +125,11 @@ class AchievementService {
     (<string[]>completedArray).push(trophy.value);
     storageSvc.set<Object>(STORAGES_KEY.completed, completedArray);
 
+    // format value
+    if (trophy.name.options && trophy.name.options.counter) {
+      trophy.name.options.counter =  CommonUtils.formatNumberWithSpaces(trophy.name.options.counter);
+    }
+
     // send notification
     notificationSvc.push({
       id: uniqid(),
@@ -133,18 +139,30 @@ class AchievementService {
       duration: 5000
     });
 
-    SoundManager.play(Math.random() > 0.05 ? 'trophy_unlock' : 'hehe');
-
     // send event to google analytics
     monitoringSvc.sendEvent(monitoringSvc.categories.trophy, monitoringSvc.actions.completed, trophy.value);
 
     // update trophy progression
     progressionSvc.setValue(
       PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage,
-      MathUtils.percent(storageSvc.getTrophiesCompleted(), this.trophies.filter((trophy: ITrophy) => trophy.type !== TROPHY_TYPE.TROPHY))
+      MathUtils.percent(this.getUnlockedTrophiesCount(), this.trophies.filter((trophy: ITrophy) => trophy.type !== TROPHY_TYPE.TROPHY).length)
     );
 
     // notify unlocked count change
+    this.trophy$.next(this.getUnlockedTrophiesCount());
+  }
+
+  /**
+   * Reset completed trophies
+   */
+  reset() {
+    storageSvc.remove(STORAGES_KEY.trophies);
+    storageSvc.remove(STORAGES_KEY.progression);
+    storageSvc.remove(STORAGES_KEY.completed);
+
+    progressionSvc.reset();
+    progressionSvc.init();
+
     this.trophy$.next(this.getUnlockedTrophiesCount());
   }
 }
