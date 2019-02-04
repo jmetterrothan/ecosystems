@@ -210,7 +210,7 @@ class Weather {
 
   private initSunlight() {
     const d = 250000;
-    this.sunlight = new THREE.DirectionalLight(0xffffff, 0.225);
+    this.sunlight = new THREE.DirectionalLight(0xffffff, 0.2);
 
     this.sunlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.sunlight.target.updateMatrixWorld(true);
