@@ -61,7 +61,7 @@ class NotificationContainer extends React.Component<any, INotificationContainerS
 
     if (this.time === -1 || now >= this.time) {
       // notification list is clear or enough time has passed
-      this.time = now + notification.duration / 2;
+      this.time = now + 1000;
       this.add(notification);
     } else {
       // queue notification if the last notification was sent too recently & try again in 500 ms
