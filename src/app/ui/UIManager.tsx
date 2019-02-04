@@ -61,15 +61,15 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     });
 
     document.body.addEventListener('keyup', e => {
+      if (this.state.currentUiStateID !== UIStates.GAME && this.state.currentUiStateID !== UIStates.MENU) {
+        return false;
+      }
+
       if (e.key === 'Escape' && !PointerLock.enabled) {
         PointerLock.request();
         return;
       }
     });
-  }
-
-  componentDidMount() {
-    // this.switchState(UIStates.MENU);
   }
 
   render() {
