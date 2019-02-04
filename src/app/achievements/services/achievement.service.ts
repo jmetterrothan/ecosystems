@@ -139,8 +139,6 @@ class AchievementService {
       duration: 5000
     });
 
-    SoundManager.play(Math.random() > 0.05 ? 'trophy_unlock' : 'hehe');
-
     // send event to google analytics
     monitoringSvc.sendEvent(monitoringSvc.categories.trophy, monitoringSvc.actions.completed, trophy.value);
 
