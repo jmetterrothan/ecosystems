@@ -15,6 +15,11 @@
 
 @import 'ui/_ui';
 
+@include breakpoint-tablet {
+  html {
+    overflow: hidden;
+  }
+}
 
 strong {
   font-weight: 700;
