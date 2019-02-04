@@ -20,8 +20,8 @@ class SnowBiome extends Biome {
 
     this.waterDistortion = false;
 
-    this.waterColor1 = new THREE.Color(0x6fb6c4);
-    this.waterColor2 = new THREE.Color(0x2c6ab0);
+    this.waterColor1 = new THREE.Color(0x84cbe8);
+    this.waterColor2 = new THREE.Color(0x78ced3);
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.snow_visited);
     this.sound = SnowWindSFXMp3;

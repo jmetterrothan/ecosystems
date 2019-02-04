@@ -150,7 +150,7 @@ class Weather {
     target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.scene.add(target);
 
-    this.hemisphereLight = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.75);
+    this.hemisphereLight = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.5);
     this.hemisphereLight.position.set(0, Chunk.SEA_LEVEL, 0);
     this.hemisphereLight.castShadow = false;
     this.scene.add(this.hemisphereLight);
@@ -210,7 +210,7 @@ class Weather {
 
   private initSunlight() {
     const d = 250000;
-    this.sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
+    this.sunlight = new THREE.DirectionalLight(0xffffff, 0.225);
 
     this.sunlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.sunlight.target.updateMatrixWorld(true);
@@ -235,7 +235,7 @@ class Weather {
 
   private initMoonlight() {
     const d = 250000;
-    this.moonlight = new THREE.DirectionalLight(0x5fc2eb, 0.15);
+    this.moonlight = new THREE.DirectionalLight(0x5fc2eb, 0.125);
 
     this.moonlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.moonlight.target.updateMatrixWorld(true);
