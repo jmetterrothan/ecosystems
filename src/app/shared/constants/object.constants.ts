@@ -46,11 +46,6 @@ import spruceMtl from '@objmodels/tree/spruce.mtl';
 import spruce2Obj from '@objmodels/tree/spruce2.obj';
 import spruce2Mtl from '@objmodels/tree/spruce2.mtl';
 
-import red_mushroomObj from '@objmodels/mushroom/red_mushroom.obj';
-import red_mushroomMtl from '@objmodels/mushroom/red_mushroom.mtl';
-import brown_mushroomObj from '@objmodels/mushroom/brown_mushroom.obj';
-import brown_mushroomMtl from '@objmodels/mushroom/brown_mushroom.mtl';
-
 import cactus1Obj from '@objmodels/cactus/cactus1.obj';
 import cactus1Mtl from '@objmodels/cactus/cactus1.mtl';
 import cactus2Obj from '@objmodels/cactus/cactus2.obj';
@@ -131,11 +126,6 @@ import highlands_tree2Mtl from '@objmodels/tree/highlands_tree2.mtl';
 import birchObj from '@objmodels/tree/birch.obj';
 import birchMtl from '@objmodels/tree/birch.mtl';
 
-import blue_mushroomObj from '@objmodels/mushroom/blue_mushroom.obj';
-import blue_mushroomMtl from '@objmodels/mushroom/blue_mushroom.mtl';
-import pink_mushroomObj from '@objmodels/mushroom/pink_mushroom.obj';
-import pink_mushroomMtl from '@objmodels/mushroom/pink_mushroom.mtl';
-
 import cloud1Obj from '@objmodels/cloud/cloud1.obj';
 import cloud1Mtl from '@objmodels/cloud/cloud1.mtl';
 import cloud2Obj from '@objmodels/cloud/cloud2.obj';
@@ -197,7 +187,68 @@ import snowRock5Mtl from '@objmodels/rock/snow_rock5.mtl';
 import snowRock6Obj from '@objmodels/rock/snow_rock6.obj';
 import snowRock6Mtl from '@objmodels/rock/snow_rock6.mtl';
 
+import mushroomclusterObj from '@objmodels/mushroom/cluster.obj';
+import mushroomclusterMtl from '@objmodels/mushroom/cluster.mtl';
+import fatMushroomObj from '@objmodels/mushroom/fatmushroom.obj';
+import fatMushroomMtl from '@objmodels/mushroom/fatmushroom.mtl';
+import fatMushroom2Obj from '@objmodels/mushroom/fatmushroom2.obj';
+import fatMushroom2Mtl from '@objmodels/mushroom/fatmushroom2.mtl';
+import mushroomg4Obj from '@objmodels/mushroom/mushroomg4.obj';
+import mushroomg4Mtl from '@objmodels/mushroom/mushroomg4.mtl';
+import mushroomg3Obj from '@objmodels/mushroom/mushroomg3.obj';
+import mushroomg3Mtl from '@objmodels/mushroom/mushroomg3.mtl';
+import thinmushroomg2Obj from '@objmodels/mushroom/thinmushroomg2.obj';
+import thinmushroomg2Mtl from '@objmodels/mushroom/thinmushroomg2.mtl';
+import thinmushroomg1Obj from '@objmodels/mushroom/thinmushroomg1.obj';
+import thinmushroomg1Mtl from '@objmodels/mushroom/thinmushroomg1.mtl';
+import pinkmushroomObj from '@objmodels/mushroom/pinkmushroom.obj';
+import pinkmushroomMtl from '@objmodels/mushroom/pinkmushroom.mtl';
+import bluemushroomObj from '@objmodels/mushroom/bluemushroom.obj';
+import bluemushroomMtl from '@objmodels/mushroom/bluemushroom.mtl';
+import redmushroomObj from '@objmodels/mushroom/redmushroom.obj';
+import redmushroomMtl from '@objmodels/mushroom/redmushroom.mtl';
+import brownmushroomObj from '@objmodels/mushroom/brownmushroom.obj';
+import brownmushroomMtl from '@objmodels/mushroom/brownmushroom.mtl';
+import smallmushroom1Obj from '@objmodels/mushroom/smallmushroom1.obj';
+import smallmushroom1Mtl from '@objmodels/mushroom/smallmushroom1.mtl';
+import smallmushroom2Obj from '@objmodels/mushroom/smallmushroom2.obj';
+import smallmushroom2Mtl from '@objmodels/mushroom/smallmushroom2.mtl';
+import smallmushroom3Obj from '@objmodels/mushroom/smallmushroom3.obj';
+import smallmushroom3Mtl from '@objmodels/mushroom/smallmushroom3.mtl';
+import tubeclusterObj from '@objmodels/mushroom/tubecluster.obj';
+import tubeclusterMtl from '@objmodels/mushroom/tubecluster.mtl';
+import tubecluster2Obj from '@objmodels/mushroom/tubecluster2.obj';
+import tubecluster2Mtl from '@objmodels/mushroom/tubecluster2.mtl';
+import tubecluster3Obj from '@objmodels/mushroom/tubecluster3.obj';
+import tubecluster3Mtl from '@objmodels/mushroom/tubecluster3.mtl';
+import mushroomarrowObj from '@objmodels/mushroom/mushroomarrow.obj';
+import mushroomarrowMtl from '@objmodels/mushroom/mushroomarrow.mtl';
+import mushroomclassicObj from '@objmodels/mushroom/mushroomclassic.obj';
+import mushroomclassicMtl from '@objmodels/mushroom/mushroomclassic.mtl';
+import wallmushroomsObj from '@objmodels/mushroom/wallmushrooms.obj';
+import wallmushroomsMtl from '@objmodels/mushroom/wallmushrooms.mtl';
+
 export const OBJECTS: IObject[] = [
+  { name: 'mushroomcluster', type: OBJ_TYPE.MUSHROOM, obj: mushroomclusterObj, mtl: mushroomclusterMtl },
+  { name: 'fat_mushroom', type: OBJ_TYPE.MUSHROOM, obj: fatMushroomObj, mtl: fatMushroomMtl },
+  { name: 'fat_mushroom2', type: OBJ_TYPE.MUSHROOM, obj: fatMushroom2Obj, mtl: fatMushroom2Mtl },
+  { name: 'mushroomg4', type: OBJ_TYPE.MUSHROOM, obj: mushroomg4Obj, mtl: mushroomg4Mtl },
+  { name: 'mushroomg3', type: OBJ_TYPE.MUSHROOM, obj: mushroomg3Obj, mtl: mushroomg3Mtl },
+  { name: 'thin_mushroomg2', type: OBJ_TYPE.MUSHROOM, obj: thinmushroomg2Obj, mtl: thinmushroomg2Mtl },
+  { name: 'thin_mushroomg1', type: OBJ_TYPE.MUSHROOM, obj: thinmushroomg1Obj, mtl: thinmushroomg1Mtl },
+  { name: 'pink_mushroom', type: OBJ_TYPE.MUSHROOM, obj: pinkmushroomObj, mtl: pinkmushroomMtl },
+  { name: 'blue_mushroom', type: OBJ_TYPE.MUSHROOM, obj: bluemushroomObj, mtl:bluemushroomMtl  },
+  { name: 'red_mushroom', type: OBJ_TYPE.MUSHROOM, obj: redmushroomObj, mtl: redmushroomMtl },
+  { name: 'brown_mushroom', type: OBJ_TYPE.MUSHROOM, obj: brownmushroomObj, mtl: brownmushroomMtl },
+  { name: 'small_mushroom1', type: OBJ_TYPE.MUSHROOM, obj: smallmushroom1Obj, mtl: smallmushroom1Mtl },
+  { name: 'small_mushroom2', type: OBJ_TYPE.MUSHROOM, obj: smallmushroom2Obj, mtl: smallmushroom2Mtl },
+  { name: 'small_mushroom3', type: OBJ_TYPE.MUSHROOM, obj: smallmushroom3Obj, mtl: smallmushroom3Mtl },
+  { name: 'tube_cluster', type: OBJ_TYPE.MUSHROOM, obj: tubeclusterObj, mtl: tubeclusterMtl },
+  { name: 'tube_cluster2', type: OBJ_TYPE.MUSHROOM, obj: tubecluster2Obj, mtl: tubecluster2Mtl },
+  { name: 'tube_cluster3', type: OBJ_TYPE.MUSHROOM, obj: tubecluster3Obj, mtl: tubecluster3Mtl },
+  { name: 'mushroom_arrow', type: OBJ_TYPE.MUSHROOM, obj: mushroomarrowObj, mtl: mushroomarrowMtl },
+  { name: 'mushroom_classic', type: OBJ_TYPE.MUSHROOM, obj: mushroomclassicObj, mtl: mushroomclassicMtl },
+  { name: 'wall_mushrooms', type: OBJ_TYPE.MUSHROOM, obj: wallmushroomsObj, mtl: wallmushroomsMtl },
   { name: 'simple_tree', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: simple_treeObj, mtl: simple_treeMtl },
   { name: 'yellow_tree', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: yellow_treeObj, mtl: yellow_treeMtl },
   { name: 'bush3', type: OBJ_TYPE.PLANT, obj: bush3Obj, mtl: bush3Mtl },
@@ -223,8 +274,6 @@ export const OBJECTS: IObject[] = [
   { name: 'cloud2', type: OBJ_TYPE.MISC, obj: cloud2Obj, mtl: cloud2Mtl },
   { name: 'cloud3', type: OBJ_TYPE.MISC, obj: cloud3Obj, mtl: cloud3Mtl },
   { name: 'cloud4', type: OBJ_TYPE.MISC, obj: cloud4Obj, mtl: cloud4Mtl },
-  { name: 'pink_mushroom', type: OBJ_TYPE.MUSHROOM, obj: pink_mushroomObj, mtl: pink_mushroomMtl },
-  { name: 'blue_mushroom', type: OBJ_TYPE.MUSHROOM, obj: blue_mushroomObj, mtl: blue_mushroomMtl },
   { name: 'birch', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: birchObj, mtl: birchMtl },
   { name: 'highlands_tree', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: highlands_treeObj, mtl: highlands_treeMtl },
   { name: 'highlands_tree2', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: highlands_tree2Obj, mtl: highlands_tree2Mtl },
@@ -250,8 +299,6 @@ export const OBJECTS: IObject[] = [
   { name: 'jungle_tree', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE],  obj: jungle_treeObj, mtl: jungle_treeMtl },
   { name: 'jungle_tree2', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: jungle_tree2Obj, mtl: jungle_tree2Mtl },
   { name: 'mangrove', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: mangroveObj, mtl: mangroveMtl, doubleSide: true },
-  { name: 'red_mushroom', type: OBJ_TYPE.MUSHROOM, obj: red_mushroomObj, mtl: red_mushroomMtl },
-  { name: 'brown_mushroom', type: OBJ_TYPE.MUSHROOM, obj: brown_mushroomObj, mtl: brown_mushroomMtl },
   { name: 'cactus1', type: [OBJ_TYPE.PLANT, OBJ_TYPE.CACTUS], obj: cactus1Obj, mtl: cactus1Mtl },
   { name: 'cactus2', type: [OBJ_TYPE.PLANT, OBJ_TYPE.CACTUS], obj: cactus2Obj, mtl: cactus2Mtl },
   { name: 'cactus3', type: [OBJ_TYPE.PLANT, OBJ_TYPE.CACTUS], obj: cactus3Obj, mtl: cactus3Mtl },
@@ -272,5 +319,5 @@ export const OBJECTS: IObject[] = [
   { name: 'snow_rock6', type: OBJ_TYPE.ROCK, obj: snowRock6Obj, mtl: snowRock6Mtl },
   { name: 'iceberg1', type: OBJ_TYPE.MISC, obj: iceberg1Obj, mtl: iceberg1Mtl },
   { name: 'iceberg2', type: OBJ_TYPE.MISC, obj: iceberg2Obj, mtl: iceberg2Mtl },
-  { name: 'lilypad', type: OBJ_TYPE.PLANT, obj: lilypadObj, mtl: lilypadMtl, doubleSide: true  }
+  { name: 'lilypad', type: OBJ_TYPE.PLANT, obj: lilypadObj, mtl: lilypadMtl, doubleSide: true  },
 ];
