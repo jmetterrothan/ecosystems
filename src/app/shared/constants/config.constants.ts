@@ -5,8 +5,8 @@ import { IConfig } from '@shared/models/graphicsConfig.model';
 import { GraphicsQuality } from '@shared/enums/graphicsQuality.enum';
 
 export const LOW_CONFIG: IConfig = {
-  MAX_VISIBLE_CHUNKS: 12,
-  MAX_RENDERABLE_CHUNKS: 16,
+  MAX_VISIBLE_CHUNKS: 10,
+  MAX_RENDERABLE_CHUNKS: 14,
 
   ENABLE_WATER_EFFECTS: false,
   ENABLE_WEATHER_EFFECTS: false,
