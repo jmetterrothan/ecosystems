@@ -46,6 +46,7 @@ interface IHomeState {
   image: string;
   ready: boolean;
   busy: boolean;
+  autostart: boolean;
 }
 
 interface IHomeParametersStorage {
@@ -76,10 +77,12 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     // parse query string to detect share link's vars
     const parsed = queryString.parse(location.search);
     const seed = parsed.seed || MathUtils.randomUint32().toString();
+    const autostart = parseInt(parsed.autostart, 10) === 1 || false;
 
     storage.online = parsed.online != null ? parseInt(parsed.online, 10) === 1 : storage.online;
 
     this.state = {
+      autostart,
       seedValue: seed,
       selectedQuality: storage.quality,
       debugMode: storage.debug,
@@ -88,7 +91,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
       formValid: true,
       image: imageList[Math.floor(Math.random() * imageList.length)],
       ready: false,
-      busy: false
+      busy: autostart
     };
   }
 
@@ -114,7 +117,11 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     this.dispatchChanges();
 
     coreSvc.init().then(() => {
-      this.setState({ ready: true });
+      this.setState({ ready: true }, () => {
+        if (this.state.autostart) {
+          this.goToLoading();
+        }
+      });
     });
   }
 
@@ -125,8 +132,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
   handleSubmit = ev => {
     ev.preventDefault();
 
-    const { busy, ready, formValid, seedValue, onlineMode, soundMode } = this.state;
-    const { uiManager } = this.props;
+    const { busy, ready, formValid } = this.state;
 
     if (busy || !ready || !formValid) {
       return;
@@ -138,13 +144,20 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     }, () => {
       SoundManager.playWithPromise('click').then(() => {
         // change state after sound has been played
-        uiManager.switchState(UIStates.LOADING, {
-          seed: seedValue.length ? seedValue.trim() : undefined,
-          online: onlineMode,
-          sound: soundMode
-        } as IUIManagerParameters);
+        this.goToLoading();
       });
     });
+  }
+
+  private goToLoading() {
+    const { seedValue, onlineMode, soundMode } = this.state;
+    const { uiManager } = this.props;
+
+    uiManager.switchState(UIStates.LOADING, {
+      seed: seedValue.length ? seedValue.trim() : undefined,
+      online: onlineMode,
+      sound: soundMode
+    } as IUIManagerParameters);
   }
 
   handleChange = (e) => {
@@ -201,7 +214,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
   }
 
   render() {
-    const { seedValue, selectedQuality, onlineMode, soundMode, image } = this.state;
+    const { busy, seedValue, selectedQuality, onlineMode, soundMode, image } = this.state;
 
     return (
       <>
@@ -221,7 +234,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
                   <Col Tag='label' className='form__label flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.seed')}</Col>
                   <Col className='flexcol--24'>
                     <div className='tooltip'>
-                      <input className='form__element form__element--rounded' type='text' name='seed' placeholder={translationSvc.translate('UI.home.form.seed_placeholder')} onChange={this.handleChange} value={seedValue} pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={1} ref={el => this.seedInput = el} />
+                      <input  disabled={busy} className='form__element form__element--rounded' type='text' name='seed' placeholder={translationSvc.translate('UI.home.form.seed_placeholder')} onChange={this.handleChange} value={seedValue} pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={1} ref={el => this.seedInput = el} />
                       <div className='tooltip__content'>
                         ?
                         <div className='tooltip__text p-2'>
@@ -235,15 +248,15 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
                 <Row className='form__group test'>
                   <Col Tag='label' className='form__label flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.graphics')}</Col>
                   <Col className='flexcol--8'>
-                    <input className='form__element form__element--rounded' type='radio' id='qualityLow' name='selectedQuality' onChange={this.handleQualityChange} value={GraphicsQuality.LOW} checked={selectedQuality === GraphicsQuality.LOW} />
+                    <input disabled={busy} className='form__element form__element--rounded' type='radio' id='qualityLow' name='selectedQuality' onChange={this.handleQualityChange} value={GraphicsQuality.LOW} checked={selectedQuality === GraphicsQuality.LOW} />
                     <label htmlFor='qualityLow' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.low_quality_option')}</label>
                   </Col>
                   <Col className='flexcol--8'>
-                    <input className='form__element form__element--rounded' type='radio' id='qualityMedium' name='selectedQuality' onChange={this.handleQualityChange} value={GraphicsQuality.MEDIUM} checked={selectedQuality === GraphicsQuality.MEDIUM} />
+                    <input disabled={busy} className='form__element form__element--rounded' type='radio' id='qualityMedium' name='selectedQuality' onChange={this.handleQualityChange} value={GraphicsQuality.MEDIUM} checked={selectedQuality === GraphicsQuality.MEDIUM} />
                     <label htmlFor='qualityMedium' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.medium_quality_option')}</label>
                   </Col>
                   <Col className='flexcol--8'>
-                    <input className='form__element form__element--rounded' type='radio' id='qualityHigh' name='selectedQuality' onChange={this.handleQualityChange} value={GraphicsQuality.HIGH} checked={selectedQuality === GraphicsQuality.HIGH} />
+                    <input disabled={busy} className='form__element form__element--rounded' type='radio' id='qualityHigh' name='selectedQuality' onChange={this.handleQualityChange} value={GraphicsQuality.HIGH} checked={selectedQuality === GraphicsQuality.HIGH} />
                     <label htmlFor='qualityHigh' className='ui-click-sound'>{translationSvc.translate('UI.home.form.high_quality_option')}</label>
                   </Col>
                 </Row>
@@ -252,22 +265,22 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
                 <Row className='form__group mb-2'>
                   <Col Tag='label' className='form__label flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.gamemode')}</Col>
                   <Col className='flexcol--12'>
-                    <input className='form__element form__element--rounded' type='radio' id='onlineModeOff' name='onlineMode' onChange={this.handleOnlineChange} value='0' checked={onlineMode === false} />
+                    <input disabled={busy} className='form__element form__element--rounded' type='radio' id='onlineModeOff' name='onlineMode' onChange={this.handleOnlineChange} value='0' checked={onlineMode === false} />
                     <label htmlFor='onlineModeOff' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.singleplayer_option')}</label>
                   </Col>
                   <Col className='flexcol--12'>
-                    <input className='form__element form__element--rounded' type='radio' disabled={true} id='onlineModeOn' name='onlineMode' onChange={this.handleOnlineChange} value='1' checked={onlineMode !== false} />
+                    <input disabled={true} className='form__element form__element--rounded' type='radio' id='onlineModeOn' name='onlineMode' onChange={this.handleOnlineChange} value='1' checked={onlineMode !== false} />
                     <label htmlFor='onlineModeOn' className='ui-click-sound'>{translationSvc.translate('UI.home.form.multiplayer_option')}</label>
                   </Col>
                 </Row>
                 <Row className='form__group'>
                   <Col Tag='label' className='form__label flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.soundmode')}</Col>
                   <Col className='flexcol--12'>
-                    <input className='form__element form__element--rounded' type='radio' id='soundOff' name='soundMode' onChange={this.handleSoundChange} value='0' checked={soundMode === false} />
+                    <input disabled={busy} className='form__element form__element--rounded' type='radio' id='soundOff' name='soundMode' onChange={this.handleSoundChange} value='0' checked={soundMode === false} />
                     <label htmlFor='soundOff' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.sound_off_option')}</label>
                   </Col>
                   <Col className='flexcol--12'>
-                    <input className='form__element form__element--rounded' type='radio' id='soundOn' name='soundMode' onChange={this.handleSoundChange} value='1' checked={soundMode !== false} />
+                    <input disabled={busy} className='form__element form__element--rounded' type='radio' id='soundOn' name='soundMode' onChange={this.handleSoundChange} value='1' checked={soundMode !== false} />
                     <label htmlFor='soundOn' className='ui-click-sound'>{translationSvc.translate('UI.home.form.sound_on_option')}</label>
                   </Col>
                 </Row>
@@ -290,11 +303,11 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
    * @return {JSX.Element}
    */
   private renderDebugHtmlFinal(): JSX.Element {
-    const { debugMode } = this.state;
+    const { busy, debugMode } = this.state;
 
     const debugHtml = (
       <div className='form__group mt-2'>
-        <input type='checkbox' id='debugMode' onChange={this.handleDebugChange} checked={debugMode === true} />
+        <input disabled={busy} type='checkbox' id='debugMode' onChange={this.handleDebugChange} checked={debugMode === true} />
         <label htmlFor='debugMode'>{translationSvc.translate('UI.home.debug')}</label>
       </div>
     );
