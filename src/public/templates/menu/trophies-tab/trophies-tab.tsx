@@ -44,6 +44,10 @@ class TrophiesTab extends React.Component<ITrophiesTabProps, ITrophiesTabState> 
     this.trophySubscription.unsubscribe();
   }
 
+  componentDidMount() {
+    this.sortBy();
+  }
+
   handleSelectChange = ev => {
     TrophiesTab.SORT_TYPE = ev.target.value;
     this.sortBy();
