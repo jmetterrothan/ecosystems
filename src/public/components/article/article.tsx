@@ -1,6 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import './article.styles';
+
 type IArticle = {
   children: any;
   className?: string;
