@@ -100,6 +100,9 @@ class CoreService {
             }
           });
 
+          object.userData.stackReference = element.name;
+          object.userData.type = element.type;
+
           World.LOADED_MODELS.set(element.name, object);
           // const box = new THREE.Box3().setFromObject(object);
           // const size = box.getSize(new THREE.Vector3(0, 0, 0));

@@ -1,4 +1,5 @@
 import { ILowHigh } from './biomeWeightedObject.model';
+import { OBJ_TYPE } from '@app/shared/enums/objectTypes.enum';
 
 export interface IPlaceObject {
   animate?: boolean;
@@ -13,6 +14,7 @@ export interface IPickObject {
 export interface IStackReference {
   float: boolean;
   stackReference: string;
+  type: OBJ_TYPE;
 }
 
 export interface ISpecialObject {
