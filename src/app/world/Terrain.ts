@@ -31,8 +31,8 @@ import { INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
 import { CROSSHAIR_STATES } from '@ui/enums/CrosshairState.enum';
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 12;
-  static readonly NCHUNKS_Z: number = 12;
+  static readonly NCHUNKS_X: number = 16;
+  static readonly NCHUNKS_Z: number = 16;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
