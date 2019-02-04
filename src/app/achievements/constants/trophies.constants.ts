@@ -122,7 +122,7 @@ export const TROPHIES: ITrophy[] = [
     name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 10000000 } },
     value: 'travelled_10000000',
     img: '',
-    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.DISTANCE,
     checklist: [
       { name: 'parcourir 10000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.value, limit: 10000000, comparison: COMPARISON_TYPE.SUPERIOR }
@@ -132,7 +132,7 @@ export const TROPHIES: ITrophy[] = [
     name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 100000000 } },
     value: 'travelled_100000000',
     img: '',
-    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    difficulty: TROPHY_DIFFICULTY.DIAMOND,
     type: TROPHY_TYPE.DISTANCE,
     checklist: [
       { name: 'parcourir 100000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.value, limit: 100000000, comparison: COMPARISON_TYPE.SUPERIOR }
@@ -153,7 +153,7 @@ export const TROPHIES: ITrophy[] = [
     name: { key: 'TROPHIES.go_in_sun' },
     value: 'go_in_sun',
     img: '',
-    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.WEATHER,
     checklist: [
       { name: 'go in sun', value: PROGRESSION_WEATHER_STORAGE_KEYS.in_sun.value }
@@ -163,7 +163,7 @@ export const TROPHIES: ITrophy[] = [
     name: { key: 'TROPHIES.go_in_moon' },
     value: 'go_in_moon',
     img: '',
-    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.WEATHER,
     checklist: [
       { name: 'go in moon', value: PROGRESSION_WEATHER_STORAGE_KEYS.in_moon.value }
@@ -245,7 +245,7 @@ export const TROPHIES: ITrophy[] = [
     name: { key: 'TROPHIES.join_game_online' },
     value: 'join_game_online',
     img: '',
-    difficulty: TROPHY_DIFFICULTY.GOLD,
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.ONLINE,
     checklist: [
       { name: 'join game online', value: PROGRESSION_ONLINE_STORAGE_KEYS.join_game_online.value }
