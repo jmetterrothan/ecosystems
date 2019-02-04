@@ -26,6 +26,8 @@ export interface ITrophiesTranslationKeys {
   create_game_online: string;
   join_game_online: string;
   place_object_online: string;
+  place_all_mushrooms: string;
+  place_all_flowers: string;
 }
 
 export interface IUITranslationKeys {

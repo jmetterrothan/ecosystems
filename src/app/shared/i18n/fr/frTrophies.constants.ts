@@ -22,5 +22,7 @@ export const FR_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   unlock_trophy_percentage: 'Vous avez débloqué {{counter}}% des trophées',
   create_game_online: 'Créer une parte en ligne',
   join_game_online: 'Rejoindre une partie en ligne',
-  place_object_online: 'Placer un object en ligne'
+  place_object_online: 'Placer un object en ligne',
+  place_all_mushrooms: 'Une bonne soupe de champignons',
+  place_all_flowers: 'Il est pour moi ce bouquet ?'
 };

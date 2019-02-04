@@ -302,4 +302,28 @@ export const TROPHIES: ITrophy[] = [
       { name: 'unlock 100 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage.value, limit: 100 }
     ]
   },
+  {
+    name: { key: 'TROPHIES.place_all_mushrooms' },
+    value: 'place_all_mushrooms',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.GOLD,
+    type: TROPHY_TYPE.OBJECTS,
+    checklist: [
+      { name: 'place blue mushroom', value: 'object_blue_mushroom_placed' },
+      { name: 'place pink mushroom', value: 'object_pink_mushroom_placed' },
+      { name: 'place brown mushroom', value: 'object_brown_mushroom_placed' },
+      { name: 'place red mushroom', value: 'object_red_mushroom_placed' },
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.place_all_flowers' },
+    value: 'place_all_flowers',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.GOLD,
+    type: TROPHY_TYPE.OBJECTS,
+    checklist: [
+      { name: 'place tulip', value: 'object_tulip_placed' },
+      { name: 'place daisy', value: 'object_daisy_placed' },
+    ]
+  },
 ];
