@@ -256,9 +256,19 @@ export const TROPHIES: ITrophy[] = [
     value: 'mushrooms_soup',
     img: '',
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
-    type: TROPHY_TYPE.EXTRAS,
+    type: TROPHY_TYPE.OBJECTS,
     checklist: [
       ...getProgressionKeysFromObjectsOfType(OBJ_TYPE.MUSHROOM).map((progression: IProgression) => <IChecklistOption>{ name: progression.name, value: progression.value })
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.bunch_of_flowers' },
+    value: 'bunch_of_flowers',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.DIAMOND,
+    type: TROPHY_TYPE.OBJECTS,
+    checklist: [
+      ...getProgressionKeysFromObjectsOfType(OBJ_TYPE.FLOWER).map((progression: IProgression) => <IChecklistOption>{ name: progression.name, value: progression.value })
     ]
   },
   // ONLINE

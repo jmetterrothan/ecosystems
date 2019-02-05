@@ -51,11 +51,6 @@ class CommonUtils {
     return Object.values(obj).includes(value);
   }
 
-  static intersectArrays(a: any[], b: any[], key?: string): any[] {
-    console.log('b', [...new Set(b)]);
-    return [...new Set(a)].filter(x => new Set(b).has(x));
-  }
-
   static getObjectPlacedNameForAchievement(objectName: string): string {
     return `object_${objectName}_placed`;
   }

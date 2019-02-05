@@ -27,5 +27,6 @@ export const EN_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   place_all_mushrooms: 'A delicious mushroom stew',
   place_all_flowers: 'Are those flowers for me?',
   woodcutter: 'Woodcutter',
-  mushrooms_soup: 'Mushrooms soup'
+  mushrooms_soup: 'Mushrooms soup',
+  bunch_of_flowers: 'Bunch of flowers'
 };

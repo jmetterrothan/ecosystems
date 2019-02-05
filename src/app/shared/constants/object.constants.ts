@@ -309,5 +309,7 @@ export const OBJECTS: IObject[] = [
 ];
 
 export const getObjectsOfType = (type: OBJ_TYPE): IObject[] => {
-  return OBJECTS.filter((obj: IObject) => obj.type === type);
+  return OBJECTS.filter((obj: IObject) => Array.isArray(obj.type)
+    ? obj.type.includes(type)
+    : obj.type === type);
 };
