@@ -240,6 +240,16 @@ export const TROPHIES: ITrophy[] = [
       { name: 'archaeology', value: PROGRESSION_EXTRAS_STORAGE_KEYS.archaeology.value }
     ]
   },
+  {
+    name: { key: 'TROPHIES.woodcutter' },
+    value: 'woodcutter',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.EXTRAS,
+    checklist: [
+      { name: 'woodcutter', value: PROGRESSION_EXTRAS_STORAGE_KEYS.woodcutter.value }
+    ]
+  },
   // ONLINE
   {
     name: { key: 'TROPHIES.create_game_online' },

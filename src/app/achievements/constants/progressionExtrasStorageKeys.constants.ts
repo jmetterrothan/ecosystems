@@ -30,5 +30,10 @@ export const PROGRESSION_EXTRAS_STORAGE_KEYS: IProgressionExtrasStorageKeys = {
     name: 'find_scarecrow',
     value: 'find_scarecrow',
     show: false
+  },
+  woodcutter: {
+    name: 'woodcutter',
+    value: 'woodcutter',
+    show: false
   }
 };

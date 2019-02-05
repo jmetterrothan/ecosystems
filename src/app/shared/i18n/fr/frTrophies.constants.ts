@@ -25,5 +25,6 @@ export const FR_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   join_game_online: 'Rejoindre une partie en ligne',
   place_object_online: 'Placer un object en ligne',
   place_all_mushrooms: 'Une bonne soupe de champignons',
-  place_all_flowers: 'Il est pour moi ce bouquet ?'
+  place_all_flowers: 'Il est pour moi ce bouquet ?',
+  woodcutter: 'Apprenti bûcheron'
 };

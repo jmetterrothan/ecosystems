@@ -29,6 +29,7 @@ export interface ITrophiesTranslationKeys {
   place_object_online: string;
   place_all_mushrooms: string;
   place_all_flowers: string;
+  woodcutter: string;
 }
 
 export interface IUITranslationKeys {
