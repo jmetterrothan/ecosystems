@@ -308,12 +308,7 @@ export const TROPHIES: ITrophy[] = [
     img: '',
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.OBJECTS,
-    checklist: [
-      { name: 'place blue mushroom', value: 'object_blue_mushroom_placed' },
-      { name: 'place pink mushroom', value: 'object_pink_mushroom_placed' },
-      { name: 'place brown mushroom', value: 'object_brown_mushroom_placed' },
-      { name: 'place red mushroom', value: 'object_red_mushroom_placed' },
-    ]
+    checklist: []
   },
   {
     name: { key: 'TROPHIES.place_all_flowers' },
@@ -321,9 +316,6 @@ export const TROPHIES: ITrophy[] = [
     img: '',
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.OBJECTS,
-    checklist: [
-      { name: 'place tulip', value: 'object_tulip_placed' },
-      { name: 'place daisy', value: 'object_daisy_placed' },
-    ]
+    checklist: []
   },
 ];

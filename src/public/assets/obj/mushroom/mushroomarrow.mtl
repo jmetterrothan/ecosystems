@@ -14,6 +14,14 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.45 0.45 0.45
 Ns 6.00
+newmtl pasted__mushroomfleshSG
+illum 4
+Kd 1.00 0.90 0.76
+Ka 0.34 0.34 0.34
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
 newmtl pasted__pasted__phong1SG1
 illum 4
 Kd 1.00 0.01 0.03
@@ -38,6 +46,14 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.51 0.51 0.51
 Ns 6.00
+newmtl pasted__pasted__wallmushroomsfleshSG
+illum 4
+Kd 0.56 0.94 0.80
+Ka 0.34 0.34 0.34
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
 newmtl pasted__phong3SG
 illum 4
 Kd 0.25 0.17 0.11
@@ -48,9 +64,17 @@ Ks 0.52 0.52 0.52
 Ns 6.00
 newmtl pasted__pink_mushroom_capSG
 illum 4
-Kd 0.98 0.44 0.46
-Ka 0.27 0.27 0.27
+Kd 0.34 0.57 0.76
+Ka 0.48 0.48 0.48
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.51 0.51 0.51
+Ns 6.00
+newmtl pasted__wallmushroomsfleshSG
+illum 4
+Kd 0.87 0.53 0.43
+Ka 0.57 0.57 0.57
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
 Ns 6.00

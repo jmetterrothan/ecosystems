@@ -54,3 +54,11 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.51 0.51 0.51
 Ns 6.00
+newmtl wallmushroomsfleshSG
+illum 4
+Kd 0.90 0.76 0.46
+Ka 0.34 0.34 0.34
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
