@@ -9,7 +9,6 @@ import World from '@world/World';
 import PostProcess from '@app/PostProcess';
 import UIManager from '@ui/UIManager';
 
-import { Keys } from '@shared/constants/keys.constants';
 import { configSvc } from '@app/shared/services/config.service';
 import { playerSvc } from '@shared/services/player.service';
 import { multiplayerSvc } from '@online/services/multiplayer.service';
@@ -32,8 +31,6 @@ class Main {
   private lastTime: number;
   private focused: boolean;
   private stats: statsJs;
-
-  private uiManager: UIManager;
 
   constructor() {
     this.containerElement = document.body;
@@ -61,8 +58,7 @@ class Main {
     this.focused = true;
   }
 
-  async init(uiManager: UIManager) {
-    this.uiManager = uiManager;
+  async init() {
     this.initControls();
 
     this.world = new World(this.scene, this.camera, this.controls);
