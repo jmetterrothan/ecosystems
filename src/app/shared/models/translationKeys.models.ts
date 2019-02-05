@@ -11,6 +11,7 @@ export interface ITrophiesTranslationKeys {
   going_underwater_counter: string;
   place_all_objects: string;
   place_object: string;
+  place_object_submarine: string;
   place_objects_counter: string;
   travelled_distance_counter: string;
   repulse_fishes: string;

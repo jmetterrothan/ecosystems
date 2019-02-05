@@ -88,6 +88,16 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
+    name: { key: 'TROPHIES.place_object_submarine' },
+    value: 'place_object_submarine',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.OBJECTS,
+    checklist: [
+      { name: 'place 1 submarine object', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_submarine.value }
+    ]
+  },
+  {
     name: { key: 'TROPHIES.place_objects_counter', options: { counter: 10 } },
     value: 'place_10_objects',
     img: '',

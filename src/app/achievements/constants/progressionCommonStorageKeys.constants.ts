@@ -21,4 +21,9 @@ export const PROGRESSION_COMMON_STORAGE_KEYS: IProgressionCommonStorageKeys = {
     value: 'objects_placed',
     show: true
   },
+  objects_placed_submarine: {
+    name: 'objects_placed_submarine',
+    value: 'objects_placed_submarine',
+    show: false
+  }
 };

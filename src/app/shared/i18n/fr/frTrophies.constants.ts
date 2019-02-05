@@ -8,6 +8,7 @@ export const FR_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   going_underwater_counter: 'Vers les profondeurs et l\'au-delà',
   place_all_objects: 'Placer tous les objets',
   place_object: 'Placer un objet',
+  place_object_submarine: 'Placer un objet sous l\'eau',
   place_objects_counter: 'Placer {{counter}} objets',
   travelled_distance_counter: 'Parcourir {{counter}} mètres',
   repulse_fishes: 'Effrayer les poissons',
