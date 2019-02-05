@@ -64,6 +64,11 @@
     border: 0;
     border-bottom: 1px solid #D2D3D4;
 
+
+    &::after {
+      display: none !important;
+    }
+
     &:hover {
       background: #D2D3D4;
       transition: all ease 0.5s;
