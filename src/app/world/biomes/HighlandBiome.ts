@@ -42,7 +42,7 @@ class HighlandBiome extends Biome {
     this.b = MathUtils.randomFloat(0.5, 0.750); // best around 0.80, makes multiple hills even when low
     this.c = MathUtils.randomFloat(0.85, 1.00); // best around 0.85;
 
-    this.spread = MathUtils.randomFloat(1.1, 1.5); // expand over the map (higher values means more space available for water)
+    this.spread = MathUtils.randomFloat(1.0, 2); // expand over the map (higher values means more space available for water)
     this.f = MathUtils.randomFloat(0.95, 3);
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.highland_visited);
