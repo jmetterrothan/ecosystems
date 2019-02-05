@@ -118,6 +118,26 @@ export const TROPHIES: ITrophy[] = [
       { name: 'place 50 objects', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed.value, limit: 50 }
     ]
   },
+  {
+    name: { key: 'TROPHIES.mushrooms_soup' },
+    value: 'mushrooms_soup',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.DIAMOND,
+    type: TROPHY_TYPE.OBJECTS,
+    checklist: [
+      ...getProgressionKeysFromObjectsOfType(OBJ_TYPE.MUSHROOM).map((progression: IProgression) => <IChecklistOption>{ name: progression.name, value: progression.value })
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.bunch_of_flowers' },
+    value: 'bunch_of_flowers',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.DIAMOND,
+    type: TROPHY_TYPE.OBJECTS,
+    checklist: [
+      ...getProgressionKeysFromObjectsOfType(OBJ_TYPE.FLOWER).map((progression: IProgression) => <IChecklistOption>{ name: progression.name, value: progression.value })
+    ]
+  },
   // DISTANCE
   {
     name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 1000000 } },
@@ -249,26 +269,6 @@ export const TROPHIES: ITrophy[] = [
     type: TROPHY_TYPE.EXTRAS,
     checklist: [
       { name: 'woodcutter', value: PROGRESSION_EXTRAS_STORAGE_KEYS.woodcutter.value }
-    ]
-  },
-  {
-    name: { key: 'TROPHIES.mushrooms_soup' },
-    value: 'mushrooms_soup',
-    img: '',
-    difficulty: TROPHY_DIFFICULTY.DIAMOND,
-    type: TROPHY_TYPE.OBJECTS,
-    checklist: [
-      ...getProgressionKeysFromObjectsOfType(OBJ_TYPE.MUSHROOM).map((progression: IProgression) => <IChecklistOption>{ name: progression.name, value: progression.value })
-    ]
-  },
-  {
-    name: { key: 'TROPHIES.bunch_of_flowers' },
-    value: 'bunch_of_flowers',
-    img: '',
-    difficulty: TROPHY_DIFFICULTY.DIAMOND,
-    type: TROPHY_TYPE.OBJECTS,
-    checklist: [
-      ...getProgressionKeysFromObjectsOfType(OBJ_TYPE.FLOWER).map((progression: IProgression) => <IChecklistOption>{ name: progression.name, value: progression.value })
     ]
   },
   // ONLINE
