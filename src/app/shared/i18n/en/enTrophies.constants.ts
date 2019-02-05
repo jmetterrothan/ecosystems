@@ -26,5 +26,6 @@ export const EN_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   place_object_online: 'Place object online',
   place_all_mushrooms: 'A delicious mushroom stew',
   place_all_flowers: 'Are those flowers for me?',
-  woodcutter: 'Woodcutter'
+  woodcutter: 'Woodcutter',
+  mushrooms_soup: 'Mushrooms soup'
 };

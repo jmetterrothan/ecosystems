@@ -30,6 +30,7 @@ export interface ITrophiesTranslationKeys {
   place_all_mushrooms: string;
   place_all_flowers: string;
   woodcutter: string;
+  mushrooms_soup: string;
 }
 
 export interface IUITranslationKeys {

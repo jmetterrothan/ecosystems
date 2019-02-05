@@ -307,3 +307,7 @@ export const OBJECTS: IObject[] = [
   { name: 'iceberg2', type: OBJ_TYPE.MISC, obj: iceberg2Obj, mtl: iceberg2Mtl },
   { name: 'lilypad', type: OBJ_TYPE.PLANT, obj: lilypadObj, mtl: lilypadMtl, doubleSide: true },
 ];
+
+export const getObjectsOfType = (type: OBJ_TYPE): IObject[] => {
+  return OBJECTS.filter((obj: IObject) => obj.type === type);
+};
