@@ -1,11 +1,3 @@
-newmtl aquatic_flower_ySG
-illum 4
-Kd 1.00 0.89 0.53
-Ka 0.39 0.39 0.39
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.00 0.00 0.00
-Ns 0.00
 newmtl blueSG
 illum 4
 Kd 0.06 0.55 0.47
@@ -130,34 +122,10 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
 Ns 6.00
-newmtl pasted__lilypad1SG
-illum 4
-Kd 0.37 0.55 0.18
-Ka 0.29 0.29 0.29
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.50 0.50 0.50
-Ns 6.00
-newmtl pasted__lilypad1SG1
-illum 4
-Kd 0.18 0.59 0.35
-Ka 0.29 0.29 0.29
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.50 0.50 0.50
-Ns 6.00
 newmtl pasted__lilypad1SG2
 illum 4
 Kd 0.62 0.70 0.45
 Ka 0.17 0.13 0.08
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.50 0.50 0.50
-Ns 6.00
-newmtl pasted__liypad_flowerSG
-illum 4
-Kd 1.00 1.00 1.00
-Ka 0.26 0.26 0.26
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
@@ -182,14 +150,6 @@ newmtl pasted__pasted__lilypad1SG2
 illum 4
 Kd 0.12 0.51 0.32
 Ka 0.29 0.29 0.29
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.50 0.50 0.50
-Ns 6.00
-newmtl pasted__pasted__phong2SG3
-illum 4
-Kd 1.00 0.90 0.76
-Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
@@ -241,14 +201,6 @@ Ka 0.37 0.50 0.28
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
-Ns 6.00
-newmtl pasted__phong1SG1
-illum 4
-Kd 1.00 0.01 0.03
-Ka 0.00 0.00 0.00
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.27 0.27 0.27
 Ns 6.00
 newmtl pasted__phong1SG3
 illum 4
@@ -330,14 +282,6 @@ Tf 0.66 0.66 0.66
 Ni 1.00
 Ks 0.17 0.39 0.58
 Ns 6.00
-newmtl pasted__plain_foliageSG1
-illum 4
-Kd 0.17 0.70 0.15
-Ka 0.19 0.79 0.17
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.00 0.00 0.00
-Ns 6.00
 newmtl pasted__spruce_woodSG
 illum 4
 Kd 0.66 0.43 0.33
@@ -386,22 +330,6 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.27 0.27 0.27
 Ns 6.00
-newmtl phong7SG
-illum 4
-Kd 0.95 0.73 0.45
-Ka 0.17 0.12 0.07
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.50 0.50 0.50
-Ns 6.00
-newmtl phong15SG
-illum 4
-Kd 1.00 0.48 0.00
-Ka 0.35 0.09 0.00
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 1.00 1.00 1.00
-Ns 21.84
 newmtl phong16SG
 illum 4
 Kd 1.00 1.00 1.00
@@ -542,14 +470,6 @@ Ka 0.46 0.46 0.46
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.70 0.70 0.70
-Ns 6.00
-newmtl plain_foliageSG
-illum 4
-Kd 0.17 0.70 0.15
-Ka 0.19 0.79 0.17
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.00 0.00 0.00
 Ns 6.00
 newmtl scarecrow_hatSG
 illum 4
