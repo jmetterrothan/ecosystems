@@ -119,8 +119,9 @@ class Chunk {
       const p3 = this.generator.computeHeightAt(this.col * Chunk.WIDTH, this.row * Chunk.DEPTH + Chunk.DEPTH);
       const p4 = this.generator.computeHeightAt(this.col * Chunk.WIDTH + Chunk.WIDTH, this.row * Chunk.DEPTH + Chunk.DEPTH);
       const p5 = this.generator.computeHeightAt(this.col * Chunk.WIDTH + Chunk.WIDTH / 2, this.row * Chunk.DEPTH + Chunk.DEPTH / 2);
+      const level = Chunk.SEA_LEVEL + 1024;
 
-      if (p1 <= Chunk.SEA_LEVEL || p2 <= Chunk.SEA_LEVEL || p3 <= Chunk.SEA_LEVEL || p4 <= Chunk.SEA_LEVEL || p5 <= Chunk.SEA_LEVEL) {
+      if (p1 <= level || p2 <= level || p3 <= level || p4 <= level || p5 <= level) {
         const waterMesh = this.waterBlueprint.generate();
 
         (<THREE.Geometry>terrain.water.geometry).mergeMesh(waterMesh);
@@ -269,7 +270,7 @@ class Chunk {
     object.rotation.copy(item.r);
     object.scale.copy(item.s);
     object.position.copy(item.p);
-    object.userData = <IStackReference>{ stackReference: item.n, float: item.f, type: item.t, initialPosition: item.p.clone() };
+    object.userData = <IStackReference>{ stackReference: item.n, float: item.f, type: object.userData.type, initialPosition: item.p.clone() };
     object.visible = true;
 
     return object;
