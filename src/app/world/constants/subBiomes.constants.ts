@@ -100,7 +100,7 @@ export const SubBiomes: IBiomes = {
         scarcity: 0.8,
         e: { low: Chunk.SEA_ELEVATION - 0.01, high: Chunk.SEA_ELEVATION + 0.125 },
         m: null,
-        scale: { min: 1.25, max: 1.75 },
+        scale: { min: 1.0, max: 1.25 },
         float: false,
       },
       {
@@ -132,7 +132,7 @@ export const SubBiomes: IBiomes = {
         scarcity: 0.0,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
         m: null,
-        scale: { min: 1.5, max: 2 },
+        scale: { min: 1.0, max: 1.25 },
         float: false,
       },
       {
@@ -337,7 +337,7 @@ export const SubBiomes: IBiomes = {
         scarcity: 0.9,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
         m: null,
-        scale: { min: 1.0, max: 1.5 },
+        scale: { min: 1.0, max: 1.25 },
         float: false,
       },
     ]
