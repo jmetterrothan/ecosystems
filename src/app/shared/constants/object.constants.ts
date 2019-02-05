@@ -62,6 +62,8 @@ import iceberg2Mtl from '@objmodels/rock/iceberg2.mtl';
 
 import lilypadObj from '@objmodels/flower/lilypad.obj';
 import lilypadMtl from '@objmodels/flower/lilypad.mtl';
+import lilypad2Obj from '@objmodels/flower/lilypad2.obj';
+import lilypad2Mtl from '@objmodels/flower/lilypad2.mtl';
 
 import mangroveObj from '@objmodels/tree/mangrove.obj';
 import mangroveMtl from '@objmodels/tree/mangrove.mtl';
@@ -71,19 +73,36 @@ import jungle_treeMtl from '@objmodels/tree/jungle_tree.mtl';
 import jungle_tree2Obj from '@objmodels/tree/jungle_tree2.obj';
 import jungle_tree2Mtl from '@objmodels/tree/jungle_tree2.mtl';
 
-import tulipObj from '@objmodels/flower/tulip.obj';
-import tulipMtl from '@objmodels/flower/tulip.mtl';
-
-import daisyObj from '@objmodels/flower/daisy.obj';
-import daisyMtl from '@objmodels/flower/daisy.mtl';
+import big_flower1Obj from '@objmodels/flower/big_flower1.obj';
+import big_flower1Mtl from '@objmodels/flower/big_flower1.mtl';
+import big_flower2Obj from '@objmodels/flower/big_flower2.obj';
+import big_flower2Mtl from '@objmodels/flower/big_flower2.mtl';
+import blue_flower1Obj from '@objmodels/flower/blue_flower1.obj';
+import blue_flower1Mtl from '@objmodels/flower/blue_flower1.mtl';
+import pink_flower1Obj from '@objmodels/flower/pink_flower1.obj';
+import pink_flower1Mtl from '@objmodels/flower/pink_flower1.mtl';
+import pink_flower4Obj from '@objmodels/flower/pink_flower4.obj';
+import pink_flower4Mtl from '@objmodels/flower/pink_flower4.mtl';
+import red_flower1Obj from '@objmodels/flower/red_flower1.obj';
+import red_flower1Mtl from '@objmodels/flower/red_flower1.mtl';
+import white_flower1Obj from '@objmodels/flower/white_flower1.obj';
+import white_flower1Mtl from '@objmodels/flower/white_flower1.mtl';
+import white_flower2Obj from '@objmodels/flower/white_flower2.obj';
+import white_flower2Mtl from '@objmodels/flower/white_flower2.mtl';
 
 import palm_treeObj from '@objmodels/tree/palm_tree.obj';
 import palm_treeMtl from '@objmodels/tree/palm_tree.mtl';
-import palm_tree_groupObj from '@objmodels/tree/palm_tree_group.obj';
-import palm_tree_groupMtl from '@objmodels/tree/palm_tree_group.mtl';
+import palm_tree2Obj from '@objmodels/tree/palm_tree2.obj';
+import palm_tree2Mtl from '@objmodels/tree/palm_tree2.mtl';
+import palm_tree3Obj from '@objmodels/tree/palm_tree3.obj';
+import palm_tree3Mtl from '@objmodels/tree/palm_tree3.mtl';
+import palm_tree4Obj from '@objmodels/tree/palm_tree4.obj';
+import palm_tree4Mtl from '@objmodels/tree/palm_tree4.mtl';
 
 import banana_treeObj from '@objmodels/tree/banana_tree.obj';
 import banana_treeMtl from '@objmodels/tree/banana_tree.mtl';
+import banana_tree2Obj from '@objmodels/tree/banana_tree2.obj';
+import banana_tree2Mtl from '@objmodels/tree/banana_tree2.mtl';
 
 import bushObj from '@objmodels/tree/bush.obj';
 import bushMtl from '@objmodels/tree/bush.mtl';
@@ -110,6 +129,8 @@ import shellMtl from '@objmodels/misc/shell.mtl';
 
 import reedObj from '@objmodels/flower/reed.obj';
 import reedMtl from '@objmodels/flower/reed.mtl';
+import reed2Obj from '@objmodels/flower/reed2.obj';
+import reed2Mtl from '@objmodels/flower/reed2.mtl';
 
 import highlands_treeObj from '@objmodels/tree/highlands_tree.obj';
 import highlands_treeMtl from '@objmodels/tree/highlands_tree.mtl';
@@ -218,9 +239,16 @@ import sea_urchinMtl from '@objmodels/fauna/sea_urchin.mtl';
 
 import desert_shrubObj from '@objmodels/shrub/desert_shrub.obj';
 import desert_shrubMtl from '@objmodels/shrub/desert_shrub.mtl';
+import desert_shrub2Obj from '@objmodels/shrub/desert_shrub2.obj';
+import desert_shrub2Mtl from '@objmodels/shrub/desert_shrub2.mtl';
+
+import desert_treeObj from '@objmodels/tree/desert_tree.obj';
+import desert_treeMtl from '@objmodels/tree/desert_tree.mtl';
 
 export const OBJECTS: IObject[] = [
+  { name: 'desert_tree', type: OBJ_TYPE.PLANT, obj: desert_treeObj, mtl: desert_treeMtl },
   { name: 'desert_shrub1', type: OBJ_TYPE.PLANT, obj: desert_shrubObj, mtl: desert_shrubMtl },
+  { name: 'desert_shrub2', type: OBJ_TYPE.PLANT, obj: desert_shrub2Obj, mtl: desert_shrub2Mtl },
   { name: 'sea_urchin', type: OBJ_TYPE.MISC, obj: sea_urchinObj, mtl: sea_urchinMtl },
   { name: 'mushroom_cluster', type: OBJ_TYPE.MUSHROOM, obj: mushroomclusterObj, mtl: mushroomclusterMtl },
   { name: 'fat_mushroom', type: OBJ_TYPE.MUSHROOM, obj: fatMushroomObj, mtl: fatMushroomMtl },
@@ -269,17 +297,27 @@ export const OBJECTS: IObject[] = [
   { name: 'star', type: OBJ_TYPE.MISC, obj: starObj, mtl: starMtl },
   { name: 'shell', type: OBJ_TYPE.MISC, obj: shellObj, mtl: shellMtl },
   { name: 'reed', type: OBJ_TYPE.PLANT, obj: reedObj, mtl: reedMtl, doubleSide: true },
+  { name: 'reed2', type: OBJ_TYPE.PLANT, obj: reed2Obj, mtl: reed2Mtl, doubleSide: true },
   { name: 'diamond', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: diamondObj, mtl: diamondMtl },
   { name: 'blue', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: blueObj, mtl: blueMtl },
   { name: 'pink', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: pinkObj, mtl: pinkMtl },
   { name: 'stack', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: stackObj, mtl: stackMtl },
   { name: 'bush', type: OBJ_TYPE.PLANT, obj: bushObj, mtl: bushMtl },
   { name: 'banana_tree', type: OBJ_TYPE.PLANT, obj: banana_treeObj, mtl: banana_treeMtl, doubleSide: true },
+  { name: 'banana_tree2', type: OBJ_TYPE.PLANT, obj: banana_tree2Obj, mtl: banana_tree2Mtl, doubleSide: true },
   { name: 'palm_tree', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: palm_treeObj, mtl: palm_treeMtl, doubleSide: true },
-  { name: 'palm_tree_group', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: palm_tree_groupObj, mtl: palm_tree_groupMtl, doubleSide: true },
+  { name: 'palm_tree2', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: palm_tree2Obj, mtl: palm_tree2Mtl, doubleSide: true },
+  { name: 'palm_tree3', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: palm_tree3Obj, mtl: palm_tree3Mtl, doubleSide: true },
+  { name: 'palm_tree4', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: palm_tree4Obj, mtl: palm_tree4Mtl, doubleSide: true },
   { name: 'savanna_tree', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: savanna_treeObj, mtl: savanna_treeMtl },
-  { name: 'daisy', type: [OBJ_TYPE.PLANT, OBJ_TYPE.FLOWER], obj: daisyObj, mtl: daisyMtl },
-  { name: 'tulip', type: [OBJ_TYPE.PLANT, OBJ_TYPE.FLOWER], obj: tulipObj, mtl: tulipMtl },
+  { name: 'big_flower1', type: [OBJ_TYPE.PLANT, OBJ_TYPE.FLOWER], obj: big_flower1Obj, mtl: big_flower1Mtl, doubleSide: true },
+  { name: 'big_flower2', type: [OBJ_TYPE.PLANT, OBJ_TYPE.FLOWER], obj: big_flower2Obj, mtl: big_flower2Mtl, doubleSide: true },
+  { name: 'blue_flower1', type: [OBJ_TYPE.PLANT, OBJ_TYPE.FLOWER], obj: blue_flower1Obj, mtl: blue_flower1Mtl, doubleSide: true },
+  { name: 'pink_flower1', type: [OBJ_TYPE.PLANT, OBJ_TYPE.FLOWER], obj: pink_flower1Obj, mtl: pink_flower1Mtl, doubleSide: true },
+  { name: 'pink_flower4', type: [OBJ_TYPE.PLANT, OBJ_TYPE.FLOWER], obj: pink_flower4Obj, mtl: pink_flower4Mtl, doubleSide: true },
+  { name: 'red_flower1', type: [OBJ_TYPE.PLANT, OBJ_TYPE.FLOWER], obj: red_flower1Obj, mtl: red_flower1Mtl, doubleSide: true },
+  { name: 'white_flower1', type: [OBJ_TYPE.PLANT, OBJ_TYPE.FLOWER], obj: white_flower1Obj, mtl: white_flower1Mtl, doubleSide: true },
+  { name: 'white_flower2', type: [OBJ_TYPE.PLANT, OBJ_TYPE.FLOWER], obj: white_flower2Obj, mtl: white_flower2Mtl, doubleSide: true },
   { name: 'spruce', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: spruceObj, mtl: spruceMtl },
   { name: 'spruce2', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: spruce2Obj, mtl: spruce2Mtl },
   { name: 'jungle_tree', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE],  obj: jungle_treeObj, mtl: jungle_treeMtl },
@@ -306,4 +344,5 @@ export const OBJECTS: IObject[] = [
   { name: 'iceberg1', type: OBJ_TYPE.MISC, obj: iceberg1Obj, mtl: iceberg1Mtl },
   { name: 'iceberg2', type: OBJ_TYPE.MISC, obj: iceberg2Obj, mtl: iceberg2Mtl },
   { name: 'lilypad', type: OBJ_TYPE.PLANT, obj: lilypadObj, mtl: lilypadMtl, doubleSide: true  },
+  { name: 'lilypad2', type: OBJ_TYPE.PLANT, obj: lilypad2Obj, mtl: lilypad2Mtl, doubleSide: true  },
 ];
