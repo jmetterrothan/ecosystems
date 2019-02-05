@@ -1,7 +1,7 @@
 import { ITrophiesTranslationKeys } from '@shared/models/translationKeys.models';
 
 export const EN_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
-  play_games_counter: 'Visit {{counter}} different worlds',
+  play_games_counter: 'Play {{counter}} games',
   visit_all_biomes: 'Visit all biomes',
   visit_all_biomes_counter: 'Visit all biomes {{counter}} times',
   going_underwater: 'Plunge underwater',
