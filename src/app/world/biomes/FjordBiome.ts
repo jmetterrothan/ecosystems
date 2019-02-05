@@ -44,7 +44,7 @@ class FjordBiome extends Biome {
     const nx = (x - Terrain.SIZE_X / 2) / (2048 * 64);
     const nz = (z - Terrain.SIZE_Z / 2) / (2048 * 64);
 
-    let e = 1.0 * this.generator.noise(0.85 * nx, 0.85 * nz);
+    let e = 1.00 * this.generator.noise(0.75 * nx, 0.75 * nz);
     e += 0.1 * this.generator.noise2(nx * 4, nz * 4);
     e += 0.035 * this.generator.ridgeNoise(nx * 8, nz * 8);
     e += 0.005 * this.generator.ridgeNoise(nx * 32, nz * 32);
@@ -53,7 +53,7 @@ class FjordBiome extends Biome {
     e += 0.01 * this.generator.ridgeNoise2(nx * 32, nz * 32);
     e += 0.05 * this.generator.noise(nx * 8, nz * 8);
 
-    e /= 0.935 + 0.1 + 0.05 + 0.01 + 0.01 + 0.05;
+    e /= 0.9 + 0.1 + 0.05 + 0.01 + 0.01 + 0.05;
 
     return (e ** this.e * 1.65) - 0.2;
   }
