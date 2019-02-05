@@ -7,4 +7,5 @@ export interface IProgressionExtrasStorageKeys {
   snowman_carrot: IProgression;
   find_captain_treasure: IProgression;
   find_scarecrow: IProgression;
+  woodcutter: IProgression;
 }

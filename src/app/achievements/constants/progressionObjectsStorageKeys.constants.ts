@@ -1,8 +1,12 @@
 import { IProgressionObjectsStorageKeys } from '@achievements/models/progressionObjectsStorageKeys.model';
 
 import { IProgression } from '@achievements/models/progression.model';
+import { IObject } from '@app/shared/models/object.model';
 
 import { SubBiomes } from '@world/constants/subBiomes.constants';
+import { getObjectsOfType } from '@shared/constants/object.constants';
+
+import { OBJ_TYPE } from '@app/shared/enums/objectTypes.enum';
 
 import CommonUtils from '@shared/utils/Common.utils';
 
@@ -15,3 +19,9 @@ export const PROGRESSION_OBJECTS_STORAGE_KEYS: IProgressionObjectsStorageKeys =
       acc[name] = progression;
       return acc;
     }, {});
+
+export const getProgressionKeysFromObjectsOfType = (type: OBJ_TYPE) => {
+  return getObjectsOfType(type)
+    .map((obj: IObject) => PROGRESSION_OBJECTS_STORAGE_KEYS[CommonUtils.getObjectPlacedNameForAchievement(obj.name)])
+    .filter(res => res !== undefined);
+};

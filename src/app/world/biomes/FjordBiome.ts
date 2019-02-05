@@ -8,11 +8,14 @@ import MathUtils from '@shared/utils/Math.utils';
 import { IBiome } from '@world/models/biome.model';
 
 import { SubBiomes } from '@world/constants/subBiomes.constants';
+import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
 import ForestSFXMp3 from '@sounds/ForestSFX.mp3';
 
 class FjordBiome extends Biome {
   private e: number;
+
+  private oldLog: THREE.Object3D;
 
   constructor(terrain: Terrain) {
     super('FJORD', terrain);
@@ -27,12 +30,18 @@ class FjordBiome extends Biome {
   }
 
   init() {
-    this.terrain.placeSpecialObject({ stackReference: 'old_log', float: false, underwater: false, e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 } });
+    this.oldLog = this.terrain.placeSpecialObject({ stackReference: 'old_log', float: false, underwater: false, e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 } });
   }
 
   update(delta: number) { }
 
-  handleClick(raycaster: THREE.Raycaster) { }
+  handleClick(raycaster: THREE.Raycaster) {
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.oldLog], true);
+
+    if (intersections.length) {
+      this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.woodcutter);
+    }
+  }
 
   /**
    * Compute elevation

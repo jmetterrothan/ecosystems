@@ -258,7 +258,7 @@ export const OBJECTS: IObject[] = [
   { name: 'thin_mushroomg2', type: OBJ_TYPE.MUSHROOM, obj: thinmushroomg2Obj, mtl: thinmushroomg2Mtl },
   { name: 'thin_mushroomg1', type: OBJ_TYPE.MUSHROOM, obj: thinmushroomg1Obj, mtl: thinmushroomg1Mtl },
   { name: 'pink_mushroom', type: OBJ_TYPE.MUSHROOM, obj: pinkmushroomObj, mtl: pinkmushroomMtl },
-  { name: 'blue_mushroom', type: OBJ_TYPE.MUSHROOM, obj: bluemushroomObj, mtl:bluemushroomMtl  },
+  { name: 'blue_mushroom', type: OBJ_TYPE.MUSHROOM, obj: bluemushroomObj, mtl: bluemushroomMtl },
   { name: 'red_mushroom', type: OBJ_TYPE.MUSHROOM, obj: redmushroomObj, mtl: redmushroomMtl },
   { name: 'small_mushroom1', type: OBJ_TYPE.MUSHROOM, obj: smallmushroom1Obj, mtl: smallmushroom1Mtl },
   { name: 'small_mushroom2', type: OBJ_TYPE.MUSHROOM, obj: smallmushroom2Obj, mtl: smallmushroom2Mtl },
@@ -320,7 +320,7 @@ export const OBJECTS: IObject[] = [
   { name: 'white_flower2', type: [OBJ_TYPE.PLANT, OBJ_TYPE.FLOWER], obj: white_flower2Obj, mtl: white_flower2Mtl, doubleSide: true },
   { name: 'spruce', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: spruceObj, mtl: spruceMtl },
   { name: 'spruce2', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: spruce2Obj, mtl: spruce2Mtl },
-  { name: 'jungle_tree', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE],  obj: jungle_treeObj, mtl: jungle_treeMtl },
+  { name: 'jungle_tree', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: jungle_treeObj, mtl: jungle_treeMtl },
   { name: 'jungle_tree2', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: jungle_tree2Obj, mtl: jungle_tree2Mtl },
   { name: 'mangrove', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: mangroveObj, mtl: mangroveMtl, doubleSide: true },
   { name: 'cactus1', type: [OBJ_TYPE.PLANT, OBJ_TYPE.CACTUS], obj: cactus1Obj, mtl: cactus1Mtl },
@@ -346,3 +346,9 @@ export const OBJECTS: IObject[] = [
   { name: 'lilypad', type: OBJ_TYPE.PLANT, obj: lilypadObj, mtl: lilypadMtl, doubleSide: true  },
   { name: 'lilypad2', type: OBJ_TYPE.PLANT, obj: lilypad2Obj, mtl: lilypad2Mtl, doubleSide: true  },
 ];
+
+export const getObjectsOfType = (type: OBJ_TYPE): IObject[] => {
+  return OBJECTS.filter((obj: IObject) => Array.isArray(obj.type)
+    ? obj.type.includes(type)
+    : obj.type === type);
+};

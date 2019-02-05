@@ -2,7 +2,7 @@ import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
 import { IProgression } from '@achievements/models/progression.model';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
-import { PROGRESSION_OBJECTS_STORAGE_KEYS } from '@achievements/constants/progressionObjectsStorageKeys.constants';
+import { PROGRESSION_OBJECTS_STORAGE_KEYS, getProgressionKeysFromObjectsOfType } from '@achievements/constants/progressionObjectsStorageKeys.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 import { PROGRESSION_TROPHIES_STORAG_KEYS } from '@achievements/constants/progressionTrophiesStorageKeys.constants';
@@ -12,6 +12,7 @@ import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progres
 import { TROPHY_DIFFICULTY } from '@achievements/enums/trophyDIfficulty.enum';
 import { TROPHY_TYPE } from '@achievements/enums/trophyType.enum';
 import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
+import { OBJ_TYPE } from '@app/shared/enums/objectTypes.enum';
 
 export const TROPHIES: ITrophy[] = [
   // GAME
@@ -88,6 +89,16 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
+    name: { key: 'TROPHIES.place_object_submarine' },
+    value: 'place_object_submarine',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.OBJECTS,
+    checklist: [
+      { name: 'place 1 submarine object', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_submarine.value }
+    ]
+  },
+  {
     name: { key: 'TROPHIES.place_objects_counter', options: { counter: 10 } },
     value: 'place_10_objects',
     img: '',
@@ -105,6 +116,26 @@ export const TROPHIES: ITrophy[] = [
     type: TROPHY_TYPE.OBJECTS,
     checklist: [
       { name: 'place 50 objects', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed.value, limit: 50 }
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.mushrooms_soup' },
+    value: 'mushrooms_soup',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.DIAMOND,
+    type: TROPHY_TYPE.OBJECTS,
+    checklist: [
+      ...getProgressionKeysFromObjectsOfType(OBJ_TYPE.MUSHROOM).map((progression: IProgression) => <IChecklistOption>{ name: progression.name, value: progression.value })
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.bunch_of_flowers' },
+    value: 'bunch_of_flowers',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.DIAMOND,
+    type: TROPHY_TYPE.OBJECTS,
+    checklist: [
+      ...getProgressionKeysFromObjectsOfType(OBJ_TYPE.FLOWER).map((progression: IProgression) => <IChecklistOption>{ name: progression.name, value: progression.value })
     ]
   },
   // DISTANCE
@@ -230,6 +261,16 @@ export const TROPHIES: ITrophy[] = [
       { name: 'archaeology', value: PROGRESSION_EXTRAS_STORAGE_KEYS.archaeology.value }
     ]
   },
+  {
+    name: { key: 'TROPHIES.woodcutter' },
+    value: 'woodcutter',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.EXTRAS,
+    checklist: [
+      { name: 'woodcutter', value: PROGRESSION_EXTRAS_STORAGE_KEYS.woodcutter.value }
+    ]
+  },
   // ONLINE
   {
     name: { key: 'TROPHIES.create_game_online' },
@@ -301,21 +342,5 @@ export const TROPHIES: ITrophy[] = [
     checklist: [
       { name: 'unlock 100 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage.value, limit: 100 }
     ]
-  },
-  {
-    name: { key: 'TROPHIES.place_all_mushrooms' },
-    value: 'place_all_mushrooms',
-    img: '',
-    difficulty: TROPHY_DIFFICULTY.GOLD,
-    type: TROPHY_TYPE.OBJECTS,
-    checklist: []
-  },
-  {
-    name: { key: 'TROPHIES.place_all_flowers' },
-    value: 'place_all_flowers',
-    img: '',
-    difficulty: TROPHY_DIFFICULTY.GOLD,
-    type: TROPHY_TYPE.OBJECTS,
-    checklist: []
-  },
+  }
 ];

@@ -1,13 +1,14 @@
 import { ITrophiesTranslationKeys } from '@shared/models/translationKeys.models';
 
 export const EN_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
-  play_games_counter: 'Visit {{counter}} different worlds',
+  play_games_counter: 'Play {{counter}} games',
   visit_all_biomes: 'Visit all biomes',
   visit_all_biomes_counter: 'Visit all biomes {{counter}} times',
   going_underwater: 'Plunge underwater',
   going_underwater_counter: 'Plunge underwater {{counter}} times',
   place_all_objects: 'Place all objects of the world',
   place_object: 'Place an object',
+  place_object_submarine: 'Place a submarine object',
   place_objects_counter: '{{counter}} objects placed',
   travelled_distance_counter: 'Travelled {{counter}} meters',
   repulse_fishes: 'Scare off the fishes',
@@ -24,5 +25,8 @@ export const EN_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   join_game_online: 'Join an online game',
   place_object_online: 'Place object online',
   place_all_mushrooms: 'A delicious mushroom stew',
-  place_all_flowers: 'Are those flowers for me?'
+  place_all_flowers: 'Are those flowers for me?',
+  woodcutter: 'Woodcutter',
+  mushrooms_soup: 'Mushrooms soup',
+  bunch_of_flowers: 'Bunch of flowers'
 };

@@ -5,4 +5,5 @@ export interface IProgressionCommonStorageKeys {
   distance_travelled: IProgression;
   going_underwater: IProgression;
   objects_placed: IProgression;
+  objects_placed_submarine: IProgression;
 }

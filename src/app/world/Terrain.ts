@@ -11,6 +11,7 @@ import { crosshairSvc } from '@ui/services/crosshair.service';
 import { multiplayerSvc } from '@online/services/multiplayer.service';
 import { progressionSvc } from '@achievements/services/progression.service';
 import { configSvc } from '@shared/services/config.service';
+import { playerSvc } from '@shared/services/player.service';
 
 import { WATER_MATERIAL } from '@materials/water.material';
 import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.material';
@@ -363,8 +364,9 @@ class Terrain {
         progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.place_object_online);
       }
 
+      // increment progression
       progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed);
-
+      if (playerSvc.isUnderwater()) progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_submarine);
       progressionSvc.increment({
         name: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
         value: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),

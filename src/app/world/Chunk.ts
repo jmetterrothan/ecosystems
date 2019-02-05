@@ -329,7 +329,7 @@ class Chunk {
     const ref = (<IStackReference>object.userData).stackReference;
 
     if (ref && Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
-        // collect unused objects
+      // collect unused objects
       object.visible = false;
       Chunk.CHUNK_OBJECT_STACK[ref].push(object);
     } else {
@@ -358,7 +358,7 @@ class Chunk {
    * @param {number} z
    * @param {IPickObject} parameters
    */
-  pick(x: number, z: number, parameters: IPickObject = {}, useWeights: boolean) : IPick | null {
+  pick(x: number, z: number, parameters: IPickObject = {}, useWeights: boolean): IPick | null {
     return this.generator.pick(x, z, parameters, useWeights);
   }
 
@@ -366,24 +366,24 @@ class Chunk {
    * Chunk objects are visible in frustum if true
    * @return {boolean}
    */
-  isVisible() : boolean { return this.visible; }
+  isVisible(): boolean { return this.visible; }
 
   /**
    * Chunk population need to be regenerated if true
    * @return {boolean}
    */
-  isDirty() : boolean { return this.dirty; }
+  isDirty(): boolean { return this.dirty; }
 
   /**
    * Chunk has been merged to the terrain if true
    * @return {boolean}
    */
-  isMerged() : boolean { return this.merged; }
+  isMerged(): boolean { return this.merged; }
 
   /**
    * @return {THREE.Box3}
    */
-  getBbox() : THREE.Box3 { return this.bbox; }
+  getBbox(): THREE.Box3 { return this.bbox; }
 
   private placeObjectWithAnimation(object: THREE.Object3D) {
     const scaleSaved = object.scale.clone();
@@ -404,7 +404,7 @@ class Chunk {
    * @param {number} col
    * @return {THREE.Box3}
    */
-  static createBoundingBox(row: number, col: number) : THREE.Box3 {
+  static createBoundingBox(row: number, col: number): THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
       new THREE.Vector3(
         col * Chunk.WIDTH + Chunk.WIDTH / 2,
@@ -423,7 +423,7 @@ class Chunk {
    * @param {bbTHREE.Box3ox} bbox
    * @return {THREE.Box3Helper}
    */
-  static createBoundingBoxHelper(bbox: THREE.Box3) : THREE.Box3Helper {
+  static createBoundingBoxHelper(bbox: THREE.Box3): THREE.Box3Helper {
     return new THREE.Box3Helper(bbox, 0xffff00);
   }
 
@@ -433,7 +433,7 @@ class Chunk {
    * @param {number} col
    * @return {THREE.Box3Helper}
    */
-  static createBoundingBoxHelperFromCoords(row: number, col: number) : THREE.Box3Helper {
+  static createBoundingBoxHelperFromCoords(row: number, col: number): THREE.Box3Helper {
     return new THREE.Box3Helper(Chunk.createBoundingBox(row, col), 0xffff00);
   }
 
@@ -442,7 +442,7 @@ class Chunk {
    * @param {THREE.Object3D} object
    * @return {IPick}
    */
-  static convertObjectToPick(object: THREE.Object3D) : IPick {
+  static convertObjectToPick(object: THREE.Object3D): IPick {
     const translation = new THREE.Vector3();
     const rotationQ = new THREE.Quaternion();
     const scale = new THREE.Vector3();

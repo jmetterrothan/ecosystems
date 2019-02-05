@@ -11,6 +11,7 @@ export interface ITrophiesTranslationKeys {
   going_underwater_counter: string;
   place_all_objects: string;
   place_object: string;
+  place_object_submarine: string;
   place_objects_counter: string;
   travelled_distance_counter: string;
   repulse_fishes: string;
@@ -28,6 +29,9 @@ export interface ITrophiesTranslationKeys {
   place_object_online: string;
   place_all_mushrooms: string;
   place_all_flowers: string;
+  woodcutter: string;
+  mushrooms_soup: string;
+  bunch_of_flowers: string;
 }
 
 export interface IUITranslationKeys {

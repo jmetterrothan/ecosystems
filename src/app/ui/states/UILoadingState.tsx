@@ -18,7 +18,7 @@ class UILoadingState extends React.PureComponent implements IUIState {
     const { parameters } = uiManager.state;
 
     const app = new Main();
-    await app.init(uiManager);
+    await app.init();
     const seed = await app.load(parameters.seed, parameters.online);
 
     monitoringSvc.sendEvent(monitoringSvc.categories.game, monitoringSvc.actions.played, seed);
