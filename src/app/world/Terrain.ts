@@ -346,7 +346,7 @@ class Terrain {
    * @param {THREE.Raycaster} raycaster
    */
   placeObject(raycaster: THREE.Raycaster) {
-    if (!this.previewObject.visible) {
+    if (!this.previewObject || !this.previewObject.visible) {
       if (crosshairSvc.status.state === CROSSHAIR_STATES.DEFAULT) {
         crosshairSvc.shake(true);
       }
@@ -516,14 +516,15 @@ class Terrain {
       this.resetPreview();
 
       this.currentSubBiome = biome;
-      this.picksAvailable = Terrain.PICKS.get(this.currentSubBiome.name);
       this.intersectionSurface = intersection.object;
+      this.picksAvailable = Terrain.PICKS.get(this.currentSubBiome.name)
+        .filter(pick => this.intersectionSurface === this.water ? pick.f : !pick.f);
 
-      // retrieve current preview object
-      const item = chunk.pick(intersection.point.x, intersection.point.z, {
-        force: true,
-        float: (this.intersectionSurface === this.water)
-      }, false);
+      // // retrieve current preview object
+      // const item = chunk.pick(intersection.point.x, intersection.point.z, {
+      //   force: true,
+      //   float: (this.intersectionSurface === this.water)
+      // }, false);
 
       if (!this.picksAvailable.length) {
         // bail out if no item gets picked
@@ -533,7 +534,6 @@ class Terrain {
 
       this.previewItem = this.picksAvailable[0];
       this.previewItem.p.copy(intersection.point);
-      console.log(this.previewItem);
       this.previewObject = chunk.getObject(this.previewItem);
       this.scene.add(this.previewObject);
     }
