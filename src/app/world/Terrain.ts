@@ -326,11 +326,11 @@ class Terrain {
         break;
 
       case INTERACTION_TYPE.MOUSE_WHEEL_DOWN:
-        this.changeObjectPreview(INTERACTION_TYPE.MOUSE_WHEEL_DOWN);
+        this.changeObjectPreview(raycaster, INTERACTION_TYPE.MOUSE_WHEEL_DOWN);
         break;
 
       case INTERACTION_TYPE.MOUSE_WHEEL_UP:
-        this.changeObjectPreview(INTERACTION_TYPE.MOUSE_WHEEL_UP);
+        this.changeObjectPreview(raycaster, INTERACTION_TYPE.MOUSE_WHEEL_UP);
         break;
 
       case INTERACTION_TYPE.VOICE:
@@ -535,6 +535,8 @@ class Terrain {
         return;
       }
 
+      if (this.pickIndex >= this.picksAvailable.length) this.pickIndex = Math.floor(Math.random() * this.picksAvailable.length);
+
       this.previewItem = this.picksAvailable[this.pickIndex];
       this.previewItem.p.copy(intersection.point);
       this.previewObject = chunk.getObject(this.previewItem);
@@ -553,8 +555,27 @@ class Terrain {
     this.previewObject.position.copy(intersection.point);
   }
 
-  changeObjectPreview(type: INTERACTION_TYPE) {
+  changeObjectPreview(raycaster: THREE.Raycaster, type: INTERACTION_TYPE) {
+    if (!this.picksAvailable || !this.picksAvailable.length) return;
 
+    const intersection = this.getPlayerInteractionIntersection(raycaster, [this.water, this.terrain]);
+    const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
+
+    switch (type) {
+      case INTERACTION_TYPE.MOUSE_WHEEL_DOWN:
+        this.pickIndex++;
+        if (this.pickIndex >= this.picksAvailable.length) this.pickIndex = 0;
+        break;
+
+      case INTERACTION_TYPE.MOUSE_WHEEL_UP:
+        this.pickIndex--;
+        if (this.pickIndex < 0) this.pickIndex = this.picksAvailable.length - 1;
+        break;
+
+      default:
+        break;
+    }
+    this.resetPreview();
   }
 
   /**
