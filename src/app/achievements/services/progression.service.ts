@@ -53,6 +53,10 @@ class ProgressionService {
 
   reset() {
     this.storage = PROGRESSION_STORAGE;
+
+    storageSvc.set<Object>(STORAGES_KEY.progression, this.storage);
+    storageSvc.set<Object>(STORAGES_KEY.trophies, {});
+    storageSvc.set<Object>(STORAGES_KEY.completed, []);
   }
 
   /**
