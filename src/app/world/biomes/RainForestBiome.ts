@@ -11,7 +11,7 @@ import Butterfly from '@boids/creatures/Butterfly';
 
 import { IBiome } from '@world/models/biome.model';
 
-import { SubBiomes } from '@world/constants/subBiomes.constants';
+import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
 import RainSFXMp3 from '@sounds/RainSFX.mp3';
@@ -113,20 +113,20 @@ class RainForestBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.1) {
-      return SubBiomes.OCEAN;
+      return SUB_BIOMES.OCEAN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.2) {
       if (m > 0.695) {
-        return SubBiomes.RAINFOREST;
+        return SUB_BIOMES.RAINFOREST;
       }
-      return SubBiomes.RAINFOREST_HILLS;
+      return SUB_BIOMES.RAINFOREST_HILLS;
     }
 
     if (m > 0.625) {
-      return SubBiomes.RAINFOREST_SWAMPS;
+      return SUB_BIOMES.RAINFOREST_SWAMPS;
     }
-    return SubBiomes.BEACH;
+    return SUB_BIOMES.BEACH;
   }
 }
 

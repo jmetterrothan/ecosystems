@@ -4,7 +4,7 @@ import Chunk from '@world/Chunk';
 
 import { IBiomes } from '@world/models/biomes.model';
 
-export const SubBiomes: IBiomes = {
+export const SUB_BIOMES: IBiomes = {
   FROZEN_GRASSLAND: {
     color: new THREE.Color(0x96c47b),
     organisms: [

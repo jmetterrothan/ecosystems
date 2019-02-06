@@ -1,4 +1,4 @@
-import { PROGRESSION_EXTRAS_STORAGE_KEYS } from './../../achievements/constants/progressionExtrasStorageKeys.constants';
+import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 import * as THREE from 'three';
 
 import Terrain from '@world/Terrain';
@@ -7,7 +7,7 @@ import Chunk from '@world/Chunk';
 
 import { IBiome } from '@world/models/biome.model';
 
-import { SubBiomes } from '@world/constants/subBiomes.constants';
+import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
 import DesertSFXMp3 from '@sounds/DesertSFX.mp3';
@@ -83,14 +83,14 @@ class DesertBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.115) {
-      return SubBiomes.OCEAN;
+      return SUB_BIOMES.OCEAN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.1) {
-      return SubBiomes.DESERT;
+      return SUB_BIOMES.DESERT;
     }
 
-    return SubBiomes.OASIS;
+    return SUB_BIOMES.OASIS;
   }
 }
 

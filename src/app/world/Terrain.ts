@@ -24,6 +24,7 @@ import { ILowHigh, IBiomeWeightedObject } from './models/biomeWeightedObject.mod
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
+import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 
 import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@shared/utils/Common.utils';
@@ -46,6 +47,8 @@ class Terrain {
 
   static readonly OFFSET_X: number = Terrain.SIZE_X / 2;
   static readonly OFFSET_Z: number = Terrain.SIZE_Z / 2;
+
+  static PICKS: Map<string, IPick[]> = new Map<string, IPick[]>();
 
   private chunks: Map<string, Chunk>;
   private visibleChunks: Chunk[];
@@ -100,6 +103,7 @@ class Terrain {
 
   init() {
     this.initMeshes();
+    this.initPicks();
     if (multiplayerSvc.isUsed()) this.watchObjectPlaced();
   }
 
@@ -801,6 +805,30 @@ class Terrain {
     if (configSvc.debug) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
 
     this.scene.add(this.layers);
+  }
+
+  private initPicks() {
+    Object.entries(SUB_BIOMES).forEach(subBiome => {
+      const key = subBiome[0];
+      const organisms = subBiome[1].organisms;
+
+      const picks: IPick[] = [];
+
+      for (const subBiomeOrganisms of organisms) {
+        const scale = subBiomeOrganisms.scale ? MathUtils.randomFloat(subBiomeOrganisms.scale.min, subBiomeOrganisms.scale.max) : 1 * World.OBJ_INITIAL_SCALE;
+        subBiomeOrganisms.name.forEach(organism => {
+          picks.push({
+            r: new THREE.Euler().setFromVector3(new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0)),
+            p: new THREE.Vector3(),
+            n: organism,
+            f: subBiomeOrganisms.float,
+            s: new THREE.Vector3(scale, scale, scale)
+          });
+        });
+      }
+
+      Terrain.PICKS.set(key, CommonUtils.shuffleArray(picks));
+    });
   }
 
   private watchObjectPlaced() {
