@@ -364,39 +364,36 @@ class Terrain {
     }
 
     const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
-      chunk.placeObject(this.previewObject, { animate: true, save: true });
+    chunk.placeObject(this.previewObject, { animate: true, save: true });
 
-      this.previewItem = {
-        ...this.previewItem,
-        p: this.previewObject.position
-      };
+    this.previewItem = {
+      ...this.previewItem,
+      p: this.previewObject.position
+    };
 
-      if (multiplayerSvc.isUsed()) {
-        multiplayerSvc.placeObject(this.previewItem);
-        progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.place_object_online);
-      }
-
-      // increment progression
-      progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed);
-      if (playerSvc.isUnderwater()) progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_submarine);
-      progressionSvc.increment({
-        name: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
-        value: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
-        show: false
-      });
-
-      this.objectAnimated = true;
-
-      this.resetPreview();
-
-      setTimeout(() => {
-        this.objectAnimated = false;
-        SoundManager.play(soundName);
-      }, Chunk.ANIMATION_DELAY + 200
-      );
-
-      break;
+    if (multiplayerSvc.isUsed()) {
+      multiplayerSvc.placeObject(this.previewItem);
+      progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.place_object_online);
     }
+
+    // increment progression
+    progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed);
+    if (playerSvc.isUnderwater()) progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_submarine);
+    progressionSvc.increment({
+      name: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
+      value: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
+      show: false
+    });
+
+    this.objectAnimated = true;
+
+    this.resetPreview();
+
+    setTimeout(() => {
+      this.objectAnimated = false;
+      SoundManager.play(soundName);
+    }, Chunk.ANIMATION_DELAY + 200
+    );
   }
 
   placeSpecialObject(
@@ -543,9 +540,11 @@ class Terrain {
 
     if (!chunk.canPlaceObject(this.previewObject)) {
       // bail out if the item cannot be placed at the current location
-      this.resetPreview();
+      this.previewObject.visible = false;
+      crosshairSvc.switch(CROSSHAIR_STATES.DEFAULT);
       return;
     }
+    this.previewObject.visible = true;
 
     crosshairSvc.switch(CROSSHAIR_STATES.CAN_PLACE_OBJECT);
     this.previewObject.position.copy(intersection.point);
@@ -812,7 +811,7 @@ class Terrain {
     Object.values(SUB_BIOMES).forEach(subBiome => {
       const picks: IPick[] = [];
       for (const subBiomeOrganisms of subBiome.organisms) {
-        const scale = subBiomeOrganisms.scale ? MathUtils.randomFloat(subBiomeOrganisms.scale.min, subBiomeOrganisms.scale.max) : 1 * World.OBJ_INITIAL_SCALE;
+        const scale = subBiomeOrganisms.scale ? MathUtils.randomFloat(subBiomeOrganisms.scale.min, subBiomeOrganisms.scale.max) * World.OBJ_INITIAL_SCALE : 1 * World.OBJ_INITIAL_SCALE;
         subBiomeOrganisms.name.forEach(organism => {
           picks.push({
             r: new THREE.Euler().setFromVector3(new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0)),
