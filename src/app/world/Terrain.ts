@@ -346,25 +346,24 @@ class Terrain {
    * @param {THREE.Raycaster} raycaster
    */
   placeObject(raycaster: THREE.Raycaster) {
-    const biome = this.generator.getBiome();
-    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
-
-    if (!this.previewObject) {
+    if (!this.previewObject.visible) {
       if (crosshairSvc.status.state === CROSSHAIR_STATES.DEFAULT) {
         crosshairSvc.shake(true);
       }
       return;
     }
 
-    for (const intersection of intersections) {
-      const soundName = intersection.object === this.water ? 'splash' : 'set_down';
+    const biome = this.generator.getBiome();
+    const intersection = this.getPlayerInteractionIntersection(raycaster, [this.water, this.terrain], false);
 
-      // if water is disabled
-      if (!biome.hasWater() && intersection.object === this.water) {
-        continue;
-      }
+    const soundName = intersection.object === this.water ? 'splash' : 'set_down';
 
-      const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
+    // if water is disabled
+    if (!biome.hasWater() && intersection.object === this.water) {
+      return;
+    }
+
+    const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
       chunk.placeObject(this.previewObject, { animate: true, save: true });
 
       this.previewItem = {
