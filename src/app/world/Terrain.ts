@@ -73,6 +73,7 @@ class Terrain {
   private previewObject: THREE.Object3D;
   private currentSubBiome: IBiome;
   private picksAvailable: IPick[];
+  private pickIndex: number = 0;
   private intersectionSurface: THREE.Object3D;
   private objectAnimated: boolean;
 
@@ -378,12 +379,14 @@ class Terrain {
 
     // increment progression
     progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed);
-    if (playerSvc.isUnderwater()) progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_submarine);
     progressionSvc.increment({
       name: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
       value: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
       show: false
     });
+    if (playerSvc.isUnderwater()) progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_submarine);
+
+    this.picksAvailable[this.pickIndex].r.y = MathUtils.randomFloat(0, Math.PI * 2);
 
     this.objectAnimated = true;
 
@@ -392,8 +395,7 @@ class Terrain {
     setTimeout(() => {
       this.objectAnimated = false;
       SoundManager.play(soundName);
-    }, Chunk.ANIMATION_DELAY + 200
-    );
+    }, Chunk.ANIMATION_DELAY + 200);
   }
 
   placeSpecialObject(
@@ -532,7 +534,7 @@ class Terrain {
         return;
       }
 
-      this.previewItem = this.picksAvailable[0];
+      this.previewItem = this.picksAvailable[this.pickIndex];
       this.previewItem.p.copy(intersection.point);
       this.previewObject = chunk.getObject(this.previewItem);
       this.scene.add(this.previewObject);
