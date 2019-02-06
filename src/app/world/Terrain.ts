@@ -72,7 +72,7 @@ class Terrain {
   private previewItem: IPick;
   private previewObject: THREE.Object3D;
   private currentSubBiome: IBiome;
-  private subBiomeOrganisms: IBiomeWeightedObject[];
+  private picksAvailable: IPick[];
   private intersectionSurface: THREE.Object3D;
   private objectAnimated: boolean;
 
@@ -516,14 +516,12 @@ class Terrain {
     );
 
     // if user fly over another biome or if preview item does not exist
-    if (!this.previewItem || this.currentSubBiome !== biome || this.intersectionSurface !== intersection.object) {
+    if (this.currentSubBiome !== biome || !this.previewItem || this.intersectionSurface !== intersection.object) {
       this.resetPreview();
 
       this.currentSubBiome = biome;
-      this.subBiomeOrganisms = CommonUtils.shuffleArray(this.currentSubBiome.organisms);
+      this.picksAvailable = Terrain.PICKS.get(this.currentSubBiome.name);
       this.intersectionSurface = intersection.object;
-
-      console.log(this.subBiomeOrganisms);
 
       // retrieve current preview object
       const item = chunk.pick(intersection.point.x, intersection.point.z, {
@@ -531,15 +529,16 @@ class Terrain {
         float: (this.intersectionSurface === this.water)
       }, false);
 
-      if (!item) {
+      if (!this.picksAvailable.length) {
         // bail out if no item gets picked
         this.resetPreview();
         return;
       }
 
-      this.previewItem = item;
+      this.previewItem = this.picksAvailable[0];
+      this.previewItem.p.copy(intersection.point);
+      console.log(this.previewItem);
       this.previewObject = chunk.getObject(this.previewItem);
-
       this.scene.add(this.previewObject);
     }
 
@@ -550,7 +549,7 @@ class Terrain {
     }
 
     crosshairSvc.switch(CROSSHAIR_STATES.CAN_PLACE_OBJECT);
-    this.previewObject.position.set(intersection.point.x, intersection.point.y, intersection.point.z);
+    this.previewObject.position.copy(intersection.point);
   }
 
   changeObjectPreview(type: INTERACTION_TYPE) {
@@ -811,13 +810,9 @@ class Terrain {
   }
 
   private initPicks() {
-    Object.entries(SUB_BIOMES).forEach(subBiome => {
-      const key = subBiome[0];
-      const organisms = subBiome[1].organisms;
-
+    Object.values(SUB_BIOMES).forEach(subBiome => {
       const picks: IPick[] = [];
-
-      for (const subBiomeOrganisms of organisms) {
+      for (const subBiomeOrganisms of subBiome.organisms) {
         const scale = subBiomeOrganisms.scale ? MathUtils.randomFloat(subBiomeOrganisms.scale.min, subBiomeOrganisms.scale.max) : 1 * World.OBJ_INITIAL_SCALE;
         subBiomeOrganisms.name.forEach(organism => {
           picks.push({
@@ -830,7 +825,7 @@ class Terrain {
         });
       }
 
-      Terrain.PICKS.set(key, CommonUtils.shuffleArray(picks));
+      Terrain.PICKS.set(subBiome.name, CommonUtils.shuffleArray(picks));
     });
   }
 

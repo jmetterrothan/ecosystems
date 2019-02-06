@@ -6,6 +6,7 @@ import { IBiomes } from '@world/models/biomes.model';
 
 export const SUB_BIOMES: IBiomes = {
   FROZEN_GRASSLAND: {
+    name: 'FROZEN_GRASSLAND',
     color: new THREE.Color(0x96c47b),
     organisms: [
       {
@@ -47,6 +48,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   FJORD: {
+    name: 'FJORD',
     color: new THREE.Color(0x648277),
     organisms: [
       {
@@ -70,10 +72,12 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   FJORD_SNOW_CAP: {
+    name: 'FJORD_SNOW_CAP',
     color: new THREE.Color(0xffffff),
     organisms: []
   },
   FJORD_BEACH: {
+    name: 'FJORD_BEACH',
     color: new THREE.Color(0x87a194),
     organisms: [
       {
@@ -124,6 +128,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   GRASSLAND: {
+    name: 'GRASSLAND',
     color: new THREE.Color(0x93c54b),
     organisms: [
       {
@@ -165,6 +170,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   TAIGA: {
+    name: 'TAIGA',
     color: new THREE.Color(0x298c2d),
     organisms: [
       {
@@ -188,6 +194,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   OASIS: {
+    name: 'OASIS',
     color: new THREE.Color(0xf0e68c),
     organisms: [
       {
@@ -211,6 +218,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   DESERT: {
+    name: 'DESERT',
     color: new THREE.Color(0xe6cf87),
     organisms: [
       {
@@ -261,6 +269,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   TUNDRA: {
+    name: 'TUNDRA',
     color: new THREE.Color(0xe8d587),
     organisms: [
       {
@@ -302,10 +311,12 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   MOUNTAIN: {
+    name: 'MOUNTAIN',
     color: new THREE.Color(0x8eada0),
     organisms: []
   },
   CORAL_REEF: {
+    name: 'CORAL_REEF',
     color: new THREE.Color(0xeacd73),
     organisms: [
       {
@@ -320,6 +331,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   RAINFOREST: {
+    name: 'RAINFOREST',
     color: new THREE.Color(0x3ead68),
     organisms: [
       {
@@ -343,6 +355,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   RAINFOREST_HILLS: {
+    name: 'RAINFOREST_HILLS',
     color: new THREE.Color(0x3ead52),
     organisms: [
       {
@@ -375,6 +388,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   RAINFOREST_SWAMPS: {
+    name: 'RAINFOREST_SWAMPS',
     color: new THREE.Color(0xbed69e),
     organisms: [
       {
@@ -407,6 +421,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   BEACH: {
+    name: 'BEACH',
     color: new THREE.Color(0xf0e68c),
     organisms: [
       {
@@ -439,6 +454,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   FROZEN_BEACH: {
+    name: 'FROZEN_BEACH',
     color: new THREE.Color(0xe0dcb8),
     organisms: [
       {
@@ -462,6 +478,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   OCEAN: {
+    name: 'OCEAN',
     color: new THREE.Color(0xf1c176),
     organisms: [
       {
@@ -512,6 +529,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   FROZEN_OCEAN: {
+    name: 'FROZEN_OCEAN',
     color: new THREE.Color(0xcdba97),
     organisms: [
       {
@@ -544,6 +562,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   SNOW: {
+    name: 'SNOW',
     color: new THREE.Color(0xf1f1f1),
     organisms: [
       {
@@ -585,6 +604,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   SWAMP_WATER: {
+    name: 'SWAMP_WATER',
     color: new THREE.Color(0xF1CFAE),
     organisms: [
       {
@@ -599,6 +619,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   SWAMP: {
+    name: 'SWAMP',
     color: new THREE.Color(0xbed69e),
     organisms: [
       {
@@ -658,6 +679,7 @@ export const SUB_BIOMES: IBiomes = {
     ]
   },
   TEST: {
+    name: 'TEST',
     color: new THREE.Color('gray'),
     organisms: []
   }
