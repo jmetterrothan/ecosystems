@@ -127,7 +127,7 @@ class AchievementService {
 
     // format value
     if (trophy.name.options && trophy.name.options.counter) {
-      trophy.name.options.counter =  CommonUtils.formatNumberWithSpaces(trophy.name.options.counter);
+      trophy.name.options.counter = CommonUtils.formatNumberWithSpaces(trophy.name.options.counter);
     }
 
     // send notification
@@ -149,19 +149,6 @@ class AchievementService {
     );
 
     // notify unlocked count change
-    this.trophy$.next(this.getUnlockedTrophiesCount());
-  }
-
-  /**
-   * Reset completed trophies
-   */
-  reset() {
-    storageSvc.remove(STORAGES_KEY.trophies);
-    storageSvc.remove(STORAGES_KEY.progression);
-    storageSvc.remove(STORAGES_KEY.completed);
-
-    progressionSvc.reset();
-
     this.trophy$.next(this.getUnlockedTrophiesCount());
   }
 }
