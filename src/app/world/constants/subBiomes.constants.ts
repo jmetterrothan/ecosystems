@@ -242,7 +242,7 @@ export const SubBiomes: IBiomes = {
       },
       {
         weight: 0.1,
-        name: 'desert_tree',
+        name: ['desert_tree'],
         scarcity: 0.925,
         e: { low: 0.20, high: null },
         m: { low: 0.35, high: null },
@@ -379,7 +379,7 @@ export const SubBiomes: IBiomes = {
     organisms: [
       {
         weight: 0.45,
-        name: 'mangrove',
+        name: ['mangrove'],
         scarcity: 0.95,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
         m: null,
@@ -621,7 +621,7 @@ export const SubBiomes: IBiomes = {
       },
       {
         weight: 0.15,
-        name: 'mangrove',
+        name: ['mangrove'],
         scarcity: 0.85,
         e: { low: Chunk.SEA_ELEVATION - 0.035, high: Chunk.SEA_ELEVATION + 0.1 },
         m: null,

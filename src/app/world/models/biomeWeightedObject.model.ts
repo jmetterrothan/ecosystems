@@ -10,7 +10,7 @@ export interface ILowHigh {
 
 export interface IBiomeWeightedObject {
   weight: number;
-  name: string | string[];
+  name: string[];
   scarcity: number;
   scale: IMinMax;
   e: number | ILowHigh;

@@ -20,7 +20,7 @@ import { IBiome } from '@world/models/biome.model';
 import { IPick } from '@world/models/pick.model';
 import { IOnlineObject } from '@online/models/onlineObjects.model';
 import { ISpecialObject } from '@world/models/objectParameters.model';
-import { ILowHigh } from './models/biomeWeightedObject.model';
+import { ILowHigh, IBiomeWeightedObject } from './models/biomeWeightedObject.model';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
@@ -69,6 +69,7 @@ class Terrain {
   private previewItem: IPick;
   private previewObject: THREE.Object3D;
   private currentSubBiome: IBiome;
+  private subBiomeOrganisms: IBiomeWeightedObject[];
   private intersectionSurface: THREE.Object3D;
   private objectAnimated: boolean;
 
@@ -319,6 +320,14 @@ class Terrain {
         this.generator.getBiome().handleClick(raycaster);
         break;
 
+      case INTERACTION_TYPE.MOUSE_WHEEL_DOWN:
+        this.changeObjectPreview(INTERACTION_TYPE.MOUSE_WHEEL_DOWN);
+        break;
+
+      case INTERACTION_TYPE.MOUSE_WHEEL_UP:
+        this.changeObjectPreview(INTERACTION_TYPE.MOUSE_WHEEL_UP);
+        break;
+
       case INTERACTION_TYPE.VOICE:
         this.placeObject(raycaster);
         break;
@@ -503,11 +512,14 @@ class Terrain {
     );
 
     // if user fly over another biome or if preview item does not exist
-    if (this.currentSubBiome !== biome || !this.previewItem || this.intersectionSurface !== intersection.object) {
+    if (!this.previewItem || this.currentSubBiome !== biome || this.intersectionSurface !== intersection.object) {
       this.resetPreview();
 
       this.currentSubBiome = biome;
+      this.subBiomeOrganisms = CommonUtils.shuffleArray(this.currentSubBiome.organisms);
       this.intersectionSurface = intersection.object;
+
+      console.log(this.subBiomeOrganisms);
 
       // retrieve current preview object
       const item = chunk.pick(intersection.point.x, intersection.point.z, {
@@ -535,6 +547,10 @@ class Terrain {
 
     crosshairSvc.switch(CROSSHAIR_STATES.CAN_PLACE_OBJECT);
     this.previewObject.position.set(intersection.point.x, intersection.point.y, intersection.point.z);
+  }
+
+  changeObjectPreview(type: INTERACTION_TYPE) {
+
   }
 
   /**
