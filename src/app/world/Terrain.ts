@@ -387,6 +387,7 @@ class Terrain {
     if (playerSvc.isUnderwater()) progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_submarine);
 
     this.picksAvailable[this.pickIndex].r.y = MathUtils.randomFloat(0, Math.PI * 2);
+    this.pickIndex = Math.floor(Math.random() * this.picksAvailable.length);
 
     this.objectAnimated = true;
 
