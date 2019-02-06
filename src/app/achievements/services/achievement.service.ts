@@ -161,7 +161,6 @@ class AchievementService {
     storageSvc.remove(STORAGES_KEY.completed);
 
     progressionSvc.reset();
-    progressionSvc.init();
 
     this.trophy$.next(this.getUnlockedTrophiesCount());
   }
