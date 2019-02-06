@@ -23,13 +23,13 @@ export const PROGRESSION_STORAGE_KEYS: IProgressionStorageKeys = {
 
 const tmp = Object.values(PROGRESSION_STORAGE_KEYS);
 
-export const PROGRESSION_STORAGE = {
+export const getProgressionStorage = () => ({
   ...CommonUtils.arrayToObject([
     ...tmp
       .reduce((acc, item) => acc.concat(CommonUtils.objectToArray(item)), [])
       .reduce((acc, item) => acc.concat(item.value), [])
   ], 0)
-};
+});
 
 export const PROGRESSION_SHOWN: IProgression[] = tmp
   .reduce((acc, item) => acc.concat(CommonUtils.objectToArray(item)), [])
