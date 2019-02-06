@@ -544,7 +544,10 @@ class Terrain {
   updateObjectPreview(raycaster: THREE.Raycaster) {
     if (this.previewObject) {
       const intersection = this.getPlayerInteractionIntersection(raycaster, [this.water, this.terrain]);
-      this.previewObject.position.copy(intersection.point);
+
+      if (intersection !== null) {
+        this.previewObject.position.copy(intersection.point);
+      }
     }
   }
 
