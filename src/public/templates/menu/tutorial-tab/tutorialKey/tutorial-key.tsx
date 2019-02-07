@@ -7,9 +7,10 @@ type ITutorialKey = {
   name: string;
   text: string;
   className?: string
+  canEdit?: boolean;
 };
 
-const TutorialKey: React.SFC<ITutorialKey> = ({ className, name, text }) => (
+const TutorialKey: React.SFC<ITutorialKey> = ({ className, name, text, canEdit }) => (
   <div className={classNames('tutorial-key', className)}>
     <span className='tutorial-key__name'>{name}</span>
     <p className='tutorial-key__text ml-2'>{text}</p>

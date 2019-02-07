@@ -14,6 +14,7 @@ import { playerSvc } from '@shared/services/player.service';
 import { monitoringSvc } from '@shared/services/monitoring.service';
 import { progressionSvc } from '@achievements/services/progression.service';
 
+import { KeyAction } from './shared/constants/keys.constants';
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 
 class Player {
@@ -152,14 +153,14 @@ class Player {
    */
   handleKeyboard(key: string, active: boolean) {
     switch (key) {
-      case Keys.front : this.moveForward = active; break;
-      case Keys.back: this.moveBackward = active; break;
-      case Keys.left: this.moveLeft = active; break;
-      case Keys.right: this.moveRight = active; break;
-      case Keys.up: this.moveUp = active; break;
-      case Keys.down: this.moveDown = active; break;
-      case Keys.vocal: if (active) this.voice.togglePredictState(); break;
-      case Keys.mute: if (active) configSvc.soundEnabled = !configSvc.soundEnabled; break;
+      case Keys[KeyAction.MOVE_FRONT] : this.moveForward = active; break;
+      case Keys[KeyAction.MOVE_BACK]: this.moveBackward = active; break;
+      case Keys[KeyAction.MOVE_LEFT]: this.moveLeft = active; break;
+      case Keys[KeyAction.MOVE_RIGHT]: this.moveRight = active; break;
+      case Keys[KeyAction.MOVE_UP]: this.moveUp = active; break;
+      case Keys[KeyAction.MOVE_DOWN]: this.moveDown = active; break;
+      case Keys[KeyAction.VOCAL]: if (active) this.voice.togglePredictState(); break;
+      case Keys[KeyAction.MUTE]: if (active) configSvc.soundEnabled = !configSvc.soundEnabled; break;
     }
   }
 
