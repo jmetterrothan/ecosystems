@@ -104,13 +104,13 @@ class Player {
       if (this.velocity.x < 0) { this.velocity.x = 0; }
     }
 
-    if (this.moveDown) {
+    if (this.moveUp) {
       this.velocity.y = this.speed.y;
     } else {
       if (this.velocity.y > 0) { this.velocity.y = 0; }
     }
 
-    if (this.moveUp) {
+    if (this.moveDown) {
       this.velocity.y = -this.speed.y;
     } else {
       if (this.velocity.y < 0) { this.velocity.y = 0; }
