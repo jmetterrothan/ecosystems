@@ -28,5 +28,6 @@ export const EN_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   place_all_flowers: 'Are those flowers for me?',
   woodcutter: 'Woodcutter',
   mushrooms_soup: 'Mushrooms soup',
-  bunch_of_flowers: 'Bunch of flowers'
+  bunch_of_flowers: 'Bunch of flowers',
+  under_map: 'What are you doing here ?'
 };

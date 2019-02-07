@@ -8,4 +8,5 @@ export interface IProgressionExtrasStorageKeys {
   find_captain_treasure: IProgression;
   find_scarecrow: IProgression;
   woodcutter: IProgression;
+  under_map: IProgression;
 }

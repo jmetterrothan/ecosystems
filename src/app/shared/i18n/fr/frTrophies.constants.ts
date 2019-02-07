@@ -28,5 +28,6 @@ export const FR_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   place_all_flowers: 'Il est pour moi ce bouquet ?',
   woodcutter: 'Apprenti bûcheron',
   mushrooms_soup: 'Une bonne soupe de champignons',
-  bunch_of_flowers: 'Il est pour moi ce bouquet ?'
+  bunch_of_flowers: 'Il est pour moi ce bouquet ?',
+  under_map: 'Tu fais quoi ici ?!'
 };
