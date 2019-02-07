@@ -8,14 +8,10 @@ import Chunk from '@world/Chunk';
 import Terrain from '@world/Terrain';
 import Voice from '@voice/Voice';
 
-import { Keys } from '@shared/constants/keys.constants';
 import { multiplayerSvc } from '@online/services/multiplayer.service';
 import { playerSvc } from '@shared/services/player.service';
-import { monitoringSvc } from '@shared/services/monitoring.service';
-import { progressionSvc } from '@achievements/services/progression.service';
 
-import { KeyAction } from './shared/constants/keys.constants';
-import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
+import { KeyAction, Keys } from '@shared/constants/keys.constants';
 
 class Player {
   private controls: THREE.PointerLockControls;

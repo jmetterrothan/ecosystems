@@ -13,6 +13,7 @@ enum TutorialActionKeyMode {
 
 type ITutorialActionKeyProps = {
   action: KeyAction,
+  onKeyChange: Function;
   size?: number;
   className?: string
   canEdit?: boolean;
@@ -49,11 +50,9 @@ class TutorialActionKey extends React.Component<ITutorialActionKeyProps, ITutori
 
   changeKey = (e: KeyboardEvent) => {
     e.preventDefault();
-    const { action } = this.props;
+    const { onKeyChange, action } = this.props;
 
-    this.setState({ key: e.key });
-    Keys[action] = e.key;
-    return false;
+    onKeyChange(action, e.key);
   }
 
   render() {
@@ -67,14 +66,14 @@ class TutorialActionKey extends React.Component<ITutorialActionKeyProps, ITutori
     const editMode = <input
       autoComplete='off'
       autoCorrect='off'
-      spellCheck='off'
+      spellCheck={false}
       className={classNames('tutorial-action__input', `tutorial-action__input--size${size}x`)}
       ref={this.inputRef}
       onKeyDown={this.changeKey}
       onChange={e => e.preventDefault()}
       onBlur={() => this.changeMode(TutorialActionKeyMode.VIEW)}
       type='text'
-      value={this.state.key || name} />;
+      value={name} />;
 
     return (
       <div className={classNames('tutorial-action', canEdit && 'tutorial-action--can-edit', className)}>

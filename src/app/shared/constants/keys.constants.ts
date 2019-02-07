@@ -1,3 +1,6 @@
+import { storageSvc } from '@shared/services/storage.service';
+import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
+
 export enum MouseAction {
   LEFT_CLICK = 'left_click',
   RIGHT_CLICK = 'right_click',
@@ -17,7 +20,7 @@ export enum KeyAction {
   RELOAD = 'reload',
 }
 
-export const Keys = {
+const KeysTmp = {
   [KeyAction.MOVE_DOWN]: 'e',
   [KeyAction.MOVE_UP]: 'a',
   [KeyAction.MOVE_RIGHT]: 'd',
@@ -29,3 +32,5 @@ export const Keys = {
   [KeyAction.MENU]: 'Escape',
   [KeyAction.RELOAD]: 'F5',
 };
+
+export const Keys = storageSvc.get(STORAGES_KEY.keyboard) || KeysTmp;

@@ -4,4 +4,5 @@ export interface IStorageKey {
   progression: string;
   completed: string;
   ui: string;
+  keyboard: string;
 }

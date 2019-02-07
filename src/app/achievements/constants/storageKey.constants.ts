@@ -4,5 +4,6 @@ export const STORAGES_KEY: IStorageKey = {
   trophies: 'TROPHIES',
   progression: 'PROGRESSION',
   completed: 'COMPLETED',
-  ui: 'UI'
+  ui: 'UI',
+  keyboard: 'KEYBOARD'
 };

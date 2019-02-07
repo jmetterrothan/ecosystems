@@ -51,7 +51,7 @@ class StorageService {
    * @returns {boolean}
    */
   isInStorage(storageKey: string, value: string): boolean {
-    return (<string[]>this.get(storageKey)).includes(value);
+    return (this.get<string[]>(storageKey)).includes(value);
   }
 
 }
