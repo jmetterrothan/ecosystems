@@ -1,4 +1,5 @@
 import { IProgressionCommonStorageKeys } from '@achievements/models/progressionCommonStorgeKeys.model';
+import { TROPHY_TYPE } from '@achievements/enums/trophyType.enum';
 
 export const PROGRESSION_COMMON_STORAGE_KEYS: IProgressionCommonStorageKeys = {
   game_played: {
@@ -9,7 +10,8 @@ export const PROGRESSION_COMMON_STORAGE_KEYS: IProgressionCommonStorageKeys = {
   distance_travelled: {
     name: 'distance_travelled',
     value: 'distance_travelled',
-    show: true
+    show: true,
+    type: TROPHY_TYPE.DISTANCE
   },
   going_underwater: {
     name: 'going_underwater',

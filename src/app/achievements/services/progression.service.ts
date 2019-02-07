@@ -1,10 +1,11 @@
-import AchievementService, { achievementSvc } from '@achievements/services/achievement.service';
-import StorageService, { storageSvc } from '@shared/services/storage.service';
+import { achievementSvc } from '@achievements/services/achievement.service';
+import { storageSvc } from '@shared/services/storage.service';
 
 import { IProgression, IProgressionWithCount } from '@achievements/models/progression.model';
 
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
 import { getProgressionStorage, PROGRESSION_SHOWN } from '@achievements/constants/progressionStorageKeys.constants';
+import { TROPHY_TYPE } from '@achievements/enums/trophyType.enum';
 
 class ProgressionService {
 
@@ -28,10 +29,13 @@ class ProgressionService {
 
   getProgressionShown(): IProgressionWithCount[] {
     const keys = this.getProgressionShownKeys();
-    return keys.map((item: IProgression) => (<IProgressionWithCount>{
-      ...item,
-      count: storageSvc.get<Object>(STORAGES_KEY.progression)[item.value]
-    }));
+    return keys.map((item: IProgression) => {
+      const count = storageSvc.get<Object>(STORAGES_KEY.progression)[item.value];
+      return {
+        ...item,
+        count: (item.type && item.type === TROPHY_TYPE.DISTANCE) ? +(count / 1000000).toFixed(2) : 1
+      };
+    });
   }
 
   /**

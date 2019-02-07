@@ -82,7 +82,7 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
   'progress-tab': {
     title: 'Progression',
     game_played: 'Game played : {{count}}',
-    distance_travelled: 'Distance travelled : {{count}} m',
+    distance_travelled: 'Distance travelled : {{count}} miles',
     going_underwater: 'Underwater : {{count}}',
     objects_placed: 'Objects placed : {{count}}',
     unlock_trophies_percentage: 'Trophies unlocked : {{count}}%'
