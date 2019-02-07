@@ -5,7 +5,6 @@ import { IProgression, IProgressionWithCount } from '@achievements/models/progre
 
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
 import { getProgressionStorage, PROGRESSION_SHOWN } from '@achievements/constants/progressionStorageKeys.constants';
-import { TROPHY_TYPE } from '@achievements/enums/trophyType.enum';
 
 class ProgressionService {
 
@@ -33,7 +32,7 @@ class ProgressionService {
       const count = storageSvc.get<Object>(STORAGES_KEY.progression)[item.value];
       return {
         ...item,
-        count: (item.type && item.type === TROPHY_TYPE.DISTANCE) ? +(count / 1000000).toFixed(2) : 1
+        count: item.callback ? item.callback(count) : count
       };
     });
   }

@@ -11,7 +11,7 @@ export const PROGRESSION_COMMON_STORAGE_KEYS: IProgressionCommonStorageKeys = {
     name: 'distance_travelled',
     value: 'distance_travelled',
     show: true,
-    type: TROPHY_TYPE.DISTANCE
+    callback: value => +(value / 1000000).toFixed(2)
   },
   going_underwater: {
     name: 'going_underwater',
