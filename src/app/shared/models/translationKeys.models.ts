@@ -76,9 +76,8 @@ export interface IUITranslationKeys {
   'tutorial-tab': {
     title: string;
     title_commands: string;
-    title_multiplayer: string;
-    subtitle_misc: string;
-    subtitle_mvt: string;
+    subtitle_keyboard: string;
+    subtitle_mouse: string;
     key_down: string;
     key_up: string;
     key_right: string;
@@ -90,8 +89,12 @@ export interface IUITranslationKeys {
     key_mute: string;
     key_menu: string;
     key_menu_name: string;
-    mouse_interaction: string;
-    mouse_interaction_name: string;
+    'mouse_left-click': string;
+    'mouse_left-click_name': string;
+    'mouse_right-click': string;
+    'mouse_right-click_name': string;
+    mouse_scroll: string;
+    mouse_scroll_name: string;
   };
   'home-tab': {
     title: string;
@@ -120,6 +123,7 @@ export interface IUITranslationKeys {
     going_underwater: string;
     objects_placed: string;
     unlock_trophies_percentage: string;
+    objects_placed_submarine: string;
   };
   'contact-tab': {
     title: string;

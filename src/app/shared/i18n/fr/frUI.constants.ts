@@ -40,11 +40,10 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     reset_btn: 'Effacer'
   },
   'tutorial-tab': {
-    title: 'Tutoriel',
+    title: 'Aide',
     title_commands: 'Commandes',
-    title_multiplayer: 'Multijoueur',
-    subtitle_misc: 'Divers',
-    subtitle_mvt: 'Déplacement',
+    subtitle_keyboard: 'Clavier',
+    subtitle_mouse: 'Souris',
     key_down: 'Descendre',
     key_up: 'Monter',
     key_right: 'Aller à droite',
@@ -56,8 +55,12 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     key_mute: 'Activer/Désactiver le son',
     key_menu: 'Retour au menu',
     key_menu_name: 'Echap',
-    mouse_interaction: 'Interagir',
-    mouse_interaction_name: 'Clic droit',
+    'mouse_left-click': 'Poser un objet',
+    'mouse_left-click_name': 'Clic gauche',
+    'mouse_right-click': 'Supprimer un objet',
+    'mouse_right-click_name': 'Clic droit',
+    mouse_scroll: 'Changer d\'objet',
+    mouse_scroll_name: 'Scroll',
   },
   'home-tab': {
     title: 'Ecosystems',
@@ -85,7 +88,8 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     distance_travelled: 'Distance parcourue : {{count}} m',
     going_underwater: 'Nombre de fois sous l\'eau : {{count}}',
     objects_placed: 'Objets placés : {{count}}',
-    unlock_trophies_percentage: 'Trophées débloqués : {{count}}%'
+    objects_placed_submarine: 'Objets placés sous l\'eau : {{count}}',
+    unlock_trophies_percentage: 'Trophées débloqués : {{count}}%',
   },
   'contact-tab': {
     title: 'Contact',
