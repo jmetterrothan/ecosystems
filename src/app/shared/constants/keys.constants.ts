@@ -1,14 +1,20 @@
+export enum MouseAction {
+  LEFT_CLICK = 'left_click',
+  RIGHT_CLICK = 'right_click',
+  SCROLL = 'scroll',
+}
+
 export enum KeyAction {
-  MOVE_DOWN,
-  MOVE_UP,
-  MOVE_RIGHT,
-  MOVE_LEFT,
-  MOVE_BACK,
-  MOVE_FRONT,
-  VOCAL,
-  MUTE,
-  MENU,
-  RELOAD,
+  MOVE_DOWN = 'down',
+  MOVE_UP = 'up',
+  MOVE_RIGHT = 'right',
+  MOVE_LEFT = 'left',
+  MOVE_BACK = 'back',
+  MOVE_FRONT = 'front',
+  VOCAL = 'vocal',
+  MUTE = 'mute',
+  MENU = 'menu',
+  RELOAD = 'reload',
 }
 
 export const Keys = {

@@ -1,14 +1,14 @@
 import React from 'react';
 import Slider from 'react-slick';
-import classNames from 'classnames';
 
 import Row from '@public/components/row/row';
 import Col from '@public/components/col/col';
 import { H1, H2, H3, H4, H5 } from '@public/components/hx/hx';
 import Article from '@components/article/article';
-import TutorialKey from './tutorialKey/tutorial-key';
+import TutorialAction from './tutorial-action/tutorial-action';
+import TutorialActionKey from './tutorial-action-key/tutorial-action-key';
 
-import { Keys, KeyAction } from '@shared/constants/keys.constants';
+import { KeyAction } from '@shared/constants/keys.constants';
 import { translationSvc } from '@app/shared/services/translation.service';
 
 import './tutorial-tab.styles';
@@ -32,8 +32,8 @@ class TutorialTab extends React.Component {
         <Row>
           <Col className='flexcol--12-t mb-2 mb-0-t'>
             <div className='tutorial-keys'>
-              <TutorialKey className='mb-2' name={translationSvc.translate('UI.tutorial-tab.mouse_left-click_name')} text={translationSvc.translate('UI.tutorial-tab.mouse_left-click')} canEdit={false} />
-              <TutorialKey className='' name={translationSvc.translate('UI.tutorial-tab.mouse_scroll_name')} text={translationSvc.translate('UI.tutorial-tab.mouse_scroll')} canEdit={false} />
+              <TutorialAction size={2} actionName={translationSvc.translate('UI.tutorial-tab.mouse_left-click_name')} text={translationSvc.translate('UI.tutorial-tab.mouse_left-click')} className='mb-2' />
+              <TutorialAction size={2} actionName={translationSvc.translate('UI.tutorial-tab.mouse_scroll_name')} text={translationSvc.translate('UI.tutorial-tab.mouse_scroll')} className='mb-2' />
             </div>
           </Col>
         </Row>
@@ -42,42 +42,42 @@ class TutorialTab extends React.Component {
         <Row>
           <Col className='flexcol--8-t mb-2 mb-0-t'>
             <div className='tutorial-keys'>
-              <TutorialKey className='mb-2' name={Keys[KeyAction.MOVE_UP]} text={translationSvc.translate('UI.tutorial-tab.key_up')} canEdit={true} />
+              <TutorialActionKey className='mb-2' action={KeyAction.MOVE_UP} canEdit={true} />
             </div>
           </Col>
           <Col className='flexcol--8-t mb-2 mb-0-t'>
             <div className='tutorial-keys'>
-              <TutorialKey className='mb-2' name={Keys[KeyAction.MOVE_FRONT]} text={translationSvc.translate('UI.tutorial-tab.key_front')} canEdit={true} />
+              <TutorialActionKey className='mb-2' action={KeyAction.MOVE_FRONT} canEdit={true} />
             </div>
           </Col>
           <Col className='flexcol--8-t'>
             <div className='tutorial-keys'>
-              <TutorialKey className='mb-2' name={Keys[KeyAction.MOVE_DOWN]} text={translationSvc.translate('UI.tutorial-tab.key_down')} canEdit={true} />
+              <TutorialActionKey className='mb-2' action={KeyAction.MOVE_DOWN} canEdit={true} />
             </div>
           </Col>
           <Col className='flexcol--8-t mb-2 mb-0-t'>
             <div className='tutorial-keys'>
-              <TutorialKey className='mb-2' name={Keys[KeyAction.MOVE_LEFT]} text={translationSvc.translate('UI.tutorial-tab.key_left')} canEdit={true} />
+              <TutorialActionKey className='mb-2' action={KeyAction.MOVE_LEFT} canEdit={true} />
             </div>
           </Col>
           <Col className='flexcol--8-t mb-2 mb-0-t'>
             <div className='tutorial-keys'>
-              <TutorialKey className='mb-2' name={Keys[KeyAction.MOVE_BACK]} text={translationSvc.translate('UI.tutorial-tab.key_back')} canEdit={true} />
+              <TutorialActionKey className='mb-2' action={KeyAction.MOVE_BACK} canEdit={true} />
             </div>
           </Col>
           <Col className='flexcol--8-t'>
             <div className='tutorial-keys'>
-              <TutorialKey className='mb-3' name={Keys[KeyAction.MOVE_RIGHT]} text={translationSvc.translate('UI.tutorial-tab.key_right')}  canEdit={true}/>
+              <TutorialActionKey className='mb-3' action={KeyAction.MOVE_RIGHT} canEdit={true}/>
             </div>
           </Col>
         </Row>
         <Row>
           <Col className='flexcol--24'>
             <div className='tutorial-keys'>
-              <TutorialKey className='mb-3' name={Keys[KeyAction.MENU]} text={translationSvc.translate('UI.tutorial-tab.key_menu')} canEdit={true} />
-              <TutorialKey className='mb-2' name={Keys[KeyAction.RELOAD]} text={translationSvc.translate('UI.tutorial-tab.key_reload')} canEdit={false} />
-              <TutorialKey className='mb-2' name={Keys[KeyAction.VOCAL]} text={translationSvc.translate('UI.tutorial-tab.key_vocal')} canEdit={true} />
-              <TutorialKey className='' name={Keys[KeyAction.MUTE]} text={translationSvc.translate('UI.tutorial-tab.key_mute')} canEdit={true} />
+              <TutorialActionKey className='mb-3' size={2} action={KeyAction.MENU} canEdit={false} />
+              <TutorialActionKey className='mb-2' action={KeyAction.RELOAD} canEdit={false} />
+              <TutorialActionKey className='mb-2' action={KeyAction.VOCAL} canEdit={true} />
+              <TutorialActionKey className='' action={KeyAction.MUTE} canEdit={true} />
             </div>
           </Col>
         </Row>
