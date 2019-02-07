@@ -52,7 +52,7 @@ export const SUB_BIOMES: IBiomes = {
     color: new THREE.Color(0x648277),
     organisms: [
       {
-        weight: 0.75,
+        weight: 0.85,
         name: ['spruce', 'spruce2'],
         scarcity: 0.25,
         e: { low: Chunk.SEA_ELEVATION + 0.25, high: null },
@@ -61,9 +61,9 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.25,
+        weight: 0.15,
         name: ['dead_tree', 'dead_tree2'],
-        scarcity: 0.95,
+        scarcity: 0.975,
         e: { low: Chunk.SEA_ELEVATION + 0.035, high: Chunk.SEA_ELEVATION + 0.5 },
         m: null,
         scale: { min: 2.00, max: 2.75 },
@@ -335,7 +335,7 @@ export const SUB_BIOMES: IBiomes = {
     color: new THREE.Color(0x3ead68),
     organisms: [
       {
-        weight: 0.8,
+        weight: 0.6,
         name: ['jungle_tree', 'jungle_tree2'],
         scarcity: 0.7,
         e: null,
@@ -345,11 +345,20 @@ export const SUB_BIOMES: IBiomes = {
       },
       {
         weight: 0.2,
-        name: ['pink_flower1', 'pink_flower4', 'red_flower1', 'white_flower1'],
+        name: ['pink_flower1', 'blue_flower1', 'pink_flower4', 'red_flower1', 'white_flower1'],
         scarcity: 0.9,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
         m: null,
         scale: { min: 1.0, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.2,
+        name: ['thin_mushroomg1', 'thin_mushroomg2'], // MUSHROOM
+        scarcity: 0.5,
+        e: { low: Chunk.SEA_ELEVATION + 0.025, high: null },
+        m: null,
+        scale: { min: 1.5, max: 2 },
         float: false,
       },
     ]
