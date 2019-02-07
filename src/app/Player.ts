@@ -153,12 +153,30 @@ class Player {
    */
   handleKeyboard(key: string, active: boolean) {
     switch (key) {
-      case Keys[KeyAction.MOVE_FRONT] : this.moveForward = active; break;
-      case Keys[KeyAction.MOVE_BACK]: this.moveBackward = active; break;
-      case Keys[KeyAction.MOVE_LEFT]: this.moveLeft = active; break;
-      case Keys[KeyAction.MOVE_RIGHT]: this.moveRight = active; break;
-      case Keys[KeyAction.MOVE_UP]: this.moveUp = active; break;
-      case Keys[KeyAction.MOVE_DOWN]: this.moveDown = active; break;
+      case Keys[KeyAction.MOVE_FRONT].toLowerCase():
+      case Keys[KeyAction.MOVE_FRONT].toUpperCase():
+        this.moveForward = active; break;
+
+      case Keys[KeyAction.MOVE_BACK].toLowerCase():
+      case Keys[KeyAction.MOVE_BACK].toUpperCase():
+        this.moveBackward = active; break;
+
+      case Keys[KeyAction.MOVE_LEFT].toLowerCase():
+      case Keys[KeyAction.MOVE_LEFT].toUpperCase():
+        this.moveLeft = active; break;
+
+      case Keys[KeyAction.MOVE_RIGHT].toLowerCase():
+      case Keys[KeyAction.MOVE_RIGHT].toUpperCase():
+        this.moveRight = active; break;
+
+      case Keys[KeyAction.MOVE_UP].toLowerCase():
+      case Keys[KeyAction.MOVE_UP].toUpperCase():
+        this.moveUp = active; break;
+
+      case Keys[KeyAction.MOVE_DOWN].toLowerCase():
+      case Keys[KeyAction.MOVE_DOWN].toUpperCase():
+        this.moveDown = active; break;
+
       case Keys[KeyAction.VOCAL]: if (active) this.voice.togglePredictState(); break;
       case Keys[KeyAction.MUTE]: if (active) configSvc.soundEnabled = !configSvc.soundEnabled; break;
     }

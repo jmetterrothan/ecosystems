@@ -23,7 +23,7 @@ type ITutorialActionKeyState = {
 };
 
 class TutorialActionKey extends React.Component<ITutorialActionKeyProps, ITutorialActionKeyState> {
-  private inputRef : React.RefObject<HTMLInputElement>;
+  private inputRef: React.RefObject<HTMLInputElement>;
 
   constructor(props) {
     super(props);
@@ -49,7 +49,10 @@ class TutorialActionKey extends React.Component<ITutorialActionKeyProps, ITutori
 
   changeKey = (e: KeyboardEvent) => {
     e.preventDefault();
-    console.log(e.key); // change key here
+    const { action } = this.props;
+
+    this.setState({ key: e.key });
+    Keys[action] = e.key;
     return false;
   }
 
@@ -61,7 +64,17 @@ class TutorialActionKey extends React.Component<ITutorialActionKeyProps, ITutori
     const text = translationSvc.translate(`UI.tutorial-tab.actionkey.${action.toLowerCase()}`);
 
     const viewMode = <span onClick={() => this.changeMode(TutorialActionKeyMode.EDIT)} className={classNames('tutorial-action__name', `tutorial-action__name--size${size}x`)}>{name}</span>;
-    const editMode = <input className={classNames('tutorial-action__input', `tutorial-action__input--size${size}x`)} ref={this.inputRef} onKeyDown={this.changeKey} onBlur={() => this.changeMode(TutorialActionKeyMode.VIEW)} type='text' defaultValue={name} />;
+    const editMode = <input
+      autoComplete='off'
+      autoCorrect='off'
+      spellCheck='off'
+      className={classNames('tutorial-action__input', `tutorial-action__input--size${size}x`)}
+      ref={this.inputRef}
+      onKeyDown={this.changeKey}
+      onChange={e => e.preventDefault()}
+      onBlur={() => this.changeMode(TutorialActionKeyMode.VIEW)}
+      type='text'
+      value={this.state.key || name} />;
 
     return (
       <div className={classNames('tutorial-action', canEdit && 'tutorial-action--can-edit', className)}>
