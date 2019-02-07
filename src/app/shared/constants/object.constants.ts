@@ -343,8 +343,8 @@ export const OBJECTS: IObject[] = [
   { name: 'snow_rock6', type: OBJ_TYPE.ROCK, obj: snowRock6Obj, mtl: snowRock6Mtl },
   { name: 'iceberg1', type: OBJ_TYPE.MISC, obj: iceberg1Obj, mtl: iceberg1Mtl },
   { name: 'iceberg2', type: OBJ_TYPE.MISC, obj: iceberg2Obj, mtl: iceberg2Mtl },
-  { name: 'lilypad', type: OBJ_TYPE.PLANT, obj: lilypadObj, mtl: lilypadMtl, doubleSide: true  },
-  { name: 'lilypad2', type: OBJ_TYPE.PLANT, obj: lilypad2Obj, mtl: lilypad2Mtl, doubleSide: true  },
+  { name: 'lilypad', type: OBJ_TYPE.PLANT, obj: lilypadObj, mtl: lilypadMtl, doubleSide: true },
+  { name: 'lilypad2', type: OBJ_TYPE.PLANT, obj: lilypad2Obj, mtl: lilypad2Mtl, doubleSide: true },
 ];
 
 export const getObjectsOfType = (type: OBJ_TYPE): IObject[] => {
