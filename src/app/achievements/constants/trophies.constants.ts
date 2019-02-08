@@ -58,13 +58,13 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: 'TROPHIES.going_underwater_counter', options: { counter: 20 } },
+    name: { key: 'TROPHIES.going_underwater_counter', options: { counter: 10 } },
     value: 'going_underwater_twenty_times',
     img: '',
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.BIOMES,
     checklist: [
-      { name: 'underwater', value: PROGRESSION_COMMON_STORAGE_KEYS.going_underwater.value, limit: 20 }
+      { name: 'underwater', value: PROGRESSION_COMMON_STORAGE_KEYS.going_underwater.value, limit: 10 }
     ]
   },
   // OBJECTS

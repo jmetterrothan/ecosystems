@@ -5,7 +5,7 @@ export const FR_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   visit_all_biomes: 'Visiter tous les biomes',
   visit_all_biomes_counter: 'Visiter {{counter}} fois tous les biomes',
   going_underwater: 'Le grand bain',
-  going_underwater_counter: 'Vers les profondeurs et l\'au-delà',
+  going_underwater_counter: 'Vers les profondeurs et l\'eau-delà',
   place_all_objects: 'Placer tous les objets',
   place_object: 'Placer un objet',
   place_object_submarine: 'Placer un objet sous l\'eau',
