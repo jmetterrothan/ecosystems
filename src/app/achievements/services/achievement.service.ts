@@ -116,7 +116,9 @@ class AchievementService {
    * @param {string[]} list
    */
   private checkTrophyCompleted(trophy: ITrophy, list: string[]): boolean {
-    return trophy.checklist.length === list.length;
+    return trophy.percentage
+      ? MathUtils.percent(list.length, trophy.checklist.length) >= trophy.percentage
+      : trophy.checklist.length === list.length;
   }
 
   /**

@@ -74,6 +74,7 @@ export const TROPHIES: ITrophy[] = [
     img: '',
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
     type: TROPHY_TYPE.OBJECTS,
+    percentage: 50,
     checklist: [
       ...Object.values(PROGRESSION_OBJECTS_STORAGE_KEYS).reduce((acc, item: IProgression) => acc.concat(<IChecklistOption>{ name: item.name, value: item.value }), [])
     ]
@@ -134,6 +135,7 @@ export const TROPHIES: ITrophy[] = [
     img: '',
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
     type: TROPHY_TYPE.OBJECTS,
+
     checklist: [
       ...getProgressionKeysFromObjectsOfType(OBJ_TYPE.FLOWER).map((progression: IProgression) => <IChecklistOption>{ name: progression.name, value: progression.value })
     ]

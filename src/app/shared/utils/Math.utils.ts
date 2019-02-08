@@ -63,7 +63,7 @@ class MathUtils {
   }
 
   static percent(a: number, b: number): number {
-    return Math.ceil((a / b) * 100);
+    return (a / b) * 100;
   }
 
   /**
