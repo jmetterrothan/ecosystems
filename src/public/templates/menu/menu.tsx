@@ -41,7 +41,6 @@ class Menu extends React.PureComponent<Props> {
   render() {
     return (
       <div className='ui__state menu'>
-        <div className='menu__share'>...</div>
         <div className='menu__container'>
           <Tabs defaultIndex={Menu.SELECTED_INDEX} onSelect={tabIndex => Menu.SELECTED_INDEX = tabIndex}>
             <TabList>
