@@ -75,6 +75,8 @@ export interface IUITranslationKeys {
   };
   'tutorial-tab': {
     title: string;
+    reset_btn: string;
+    howto: string;
     title_commands: string;
     subtitle_keyboard: string;
     subtitle_mouse: string;

@@ -41,14 +41,16 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
   },
   'tutorial-tab': {
     title: 'Aide',
+    reset_btn: 'Réinitialiser',
+    howto: 'Vous pouvez modifier certaines commandes en cliquant sur le bouton associé puis en appuyant sur la touche souhaitée.',
     title_commands: 'Commandes',
     subtitle_keyboard: 'Clavier',
     subtitle_mouse: 'Souris',
     actionkey: {
       down: 'Descendre',
       up: 'Monter',
-      right: 'Aller à droite',
-      left: 'Aller à gauche',
+      right: 'Droite',
+      left: 'Gauche',
       back: 'Reculer',
       front: 'Avancer',
       vocal: 'Activer/Désactiver les commandes vocales',

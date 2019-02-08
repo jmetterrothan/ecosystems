@@ -2,7 +2,8 @@
   width: 100%;
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
 
   &--can-edit {
     cursor: pointer;
@@ -18,9 +19,10 @@
     align-self: flex-start;
     flex-shrink: 0;
     flex-grow: 0;
-    padding: 0 0.75rem;
+    padding: 0 0.5rem;
     border: none;
-    width: 3.5rem;
+    width: 100%;
+    max-width: 3rem * 3;
     height: 2.75rem;
     line-height: 2.75rem;
     text-align: center;
@@ -37,10 +39,6 @@
     white-space: nowrap;
     overflow: hidden;
 
-    &--size2x {
-      width: 7.5rem;
-    }
-
     &:focus {
       background: $color-darkblue;
       color: transparent;
@@ -50,8 +48,9 @@
   }
 
   &__text {
-    padding: 0.5rem 0;
-    font-size: 1.1rem;
+    padding: 0;
+    font-size: 1rem;
     line-height: 1.75rem;
+    color: #505050;
   }
 }

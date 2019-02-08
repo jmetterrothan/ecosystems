@@ -41,6 +41,8 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
   },
   'tutorial-tab': {
     title: 'Help',
+    reset_btn: 'Reset',
+    howto: 'You can modify some of the key bindings by clicking on the associated button then on the desired key on your keyboard.',
     title_commands: 'Keys',
     subtitle_keyboard: 'Keyboard',
     subtitle_mouse: 'Mouse',

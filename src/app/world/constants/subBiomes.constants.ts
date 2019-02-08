@@ -355,10 +355,10 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.2,
         name: ['thin_mushroomg1', 'thin_mushroomg2'], // MUSHROOM
-        scarcity: 0.5,
+        scarcity: 0.9,
         e: { low: Chunk.SEA_ELEVATION + 0.025, high: null },
         m: null,
-        scale: { min: 1.5, max: 2 },
+        scale: { min: 0.75, max: 1.25 },
         float: false,
       },
     ]

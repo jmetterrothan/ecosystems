@@ -20,9 +20,9 @@ export enum KeyAction {
   RELOAD = 'reload',
 }
 
-const KeysTmp = {
-  [KeyAction.MOVE_DOWN]: 'e',
-  [KeyAction.MOVE_UP]: 'a',
+export const KeysTmp = {
+  [KeyAction.MOVE_DOWN]: 'a',
+  [KeyAction.MOVE_UP]: 'e',
   [KeyAction.MOVE_RIGHT]: 'd',
   [KeyAction.MOVE_LEFT]: 'q',
   [KeyAction.MOVE_BACK]: 's',
@@ -33,4 +33,4 @@ const KeysTmp = {
   [KeyAction.RELOAD]: 'F5',
 };
 
-export const Keys = storageSvc.get(STORAGES_KEY.keyboard) || KeysTmp;
+export const Keys = storageSvc.get(STORAGES_KEY.keyboard) || Object.assign({}, KeysTmp);

@@ -14,7 +14,6 @@ enum TutorialActionKeyMode {
 type ITutorialActionKeyProps = {
   action: KeyAction,
   onKeyChange: Function;
-  size?: number;
   className?: string
   canEdit?: boolean;
 };
@@ -56,10 +55,11 @@ class TutorialActionKey extends React.Component<ITutorialActionKeyProps, ITutori
   }
 
   render() {
-    const { className, action, size = 1, canEdit } = this.props;
+    const { className, action, canEdit } = this.props;
     const { mode } = this.state;
 
     const name = Keys[action];
+    const size = Math.min(Math.max(name.length, 1), 3);
     const text = translationSvc.translate(`UI.tutorial-tab.actionkey.${action.toLowerCase()}`);
 
     const viewMode = <span onClick={() => this.changeMode(TutorialActionKeyMode.EDIT)} className={classNames('tutorial-action__name', `tutorial-action__name--size${size}x`)}>{name}</span>;
@@ -78,7 +78,7 @@ class TutorialActionKey extends React.Component<ITutorialActionKeyProps, ITutori
     return (
       <div className={classNames('tutorial-action', canEdit && 'tutorial-action--can-edit', className)}>
         {mode === TutorialActionKeyMode.EDIT ? editMode : viewMode}
-        <p className='tutorial-action__text ml-2'>{text}</p>
+        <p className={classNames('tutorial-action__text')}>{text}</p>
       </div>
     );
   }

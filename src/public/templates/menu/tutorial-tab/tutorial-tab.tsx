@@ -7,24 +7,21 @@ import { H1, H2, H3, H4, H5 } from '@public/components/hx/hx';
 import Article from '@components/article/article';
 import TutorialAction from './tutorial-action/tutorial-action';
 import TutorialActionKey from './tutorial-action-key/tutorial-action-key';
+import Button from '@public/components/button/button';
 
 import { translationSvc } from '@shared/services/translation.service';
 import { storageSvc } from '@shared/services/storage.service';
 
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
-import { KeyAction, Keys } from '@shared/constants/keys.constants';
+import { KeyAction, Keys, KeysTmp } from '@shared/constants/keys.constants';
 
 import './tutorial-tab.styles';
-
-type ITutorialTabsProps = {
-
-};
 
 type ITutorialTabsState = {
   storage: Object;
 };
 
-class TutorialTab extends React.Component<ITutorialTabsProps, ITutorialTabsState> {
+class TutorialTab extends React.Component<any, ITutorialTabsState> {
 
   constructor(props) {
     super(props);
@@ -52,20 +49,39 @@ class TutorialTab extends React.Component<ITutorialTabsProps, ITutorialTabsState
     );
   }
 
+  reset = () => {
+    const originalKeys = Object.assign({}, KeysTmp);
+
+    for (const keyName in Keys) {
+      if (originalKeys.hasOwnProperty(keyName)) {
+        Keys[keyName] = originalKeys[keyName];
+      }
+    }
+
+    this.setState({ storage: originalKeys }, () => {
+      storageSvc.set(STORAGES_KEY.keyboard, this.state.storage);
+    });
+  }
+
   getFirstPanel() {
     return (
       <Article className='page page--1 pb-2'>
+        <p className='paragraph mb-3'>{translationSvc.translate('UI.tutorial-tab.howto')}</p>
         <H4 className='mb-2 align-left'>{translationSvc.translate('UI.tutorial-tab.subtitle_mouse')}</H4>
         <Row>
-          <Col className='flexcol--12-t mb-2 mb-0-t'>
+          <Col className='flexcol--8-t mb-2 mb-0-t'>
             <div className='tutorial-keys'>
-              <TutorialAction size={2} actionName={translationSvc.translate('UI.tutorial-tab.mouse_left-click_name')} text={translationSvc.translate('UI.tutorial-tab.mouse_left-click')} className='mb-2' />
-              <TutorialAction size={2} actionName={translationSvc.translate('UI.tutorial-tab.mouse_scroll_name')} text={translationSvc.translate('UI.tutorial-tab.mouse_scroll')} className='mb-2' />
+              <TutorialAction actionName={translationSvc.translate('UI.tutorial-tab.mouse_left-click_name')} text={translationSvc.translate('UI.tutorial-tab.mouse_left-click')} className='mb-2' />
+            </div>
+          </Col>
+          <Col className='flexcol--8-t mb-2 mb-0-t'>
+            <div className='tutorial-keys'>
+              <TutorialAction actionName={translationSvc.translate('UI.tutorial-tab.mouse_scroll_name')} text={translationSvc.translate('UI.tutorial-tab.mouse_scroll')} className='mb-2' />
             </div>
           </Col>
         </Row>
 
-        <H4 className='mt-3 mb-2 align-left'>{translationSvc.translate('UI.tutorial-tab.subtitle_keyboard')}</H4>
+        <H4 className='mt-2 mb-2 align-left'>{translationSvc.translate('UI.tutorial-tab.subtitle_keyboard')}</H4>
         <Row>
           <Col className='flexcol--8-t mb-2 mb-0-t'>
             <div className='tutorial-keys'>
@@ -74,7 +90,7 @@ class TutorialTab extends React.Component<ITutorialTabsProps, ITutorialTabsState
           </Col>
           <Col className='flexcol--8-t mb-2 mb-0-t'>
             <div className='tutorial-keys'>
-              <TutorialActionKey className='mb-2' action={KeyAction.MOVE_FRONT} onKeyChange={this.handleKeyChange} canEdit={true} />
+              <TutorialActionKey className='mb-1' action={KeyAction.MOVE_FRONT} onKeyChange={this.handleKeyChange} canEdit={true} />
             </div>
           </Col>
           <Col className='flexcol--8-t'>
@@ -94,18 +110,28 @@ class TutorialTab extends React.Component<ITutorialTabsProps, ITutorialTabsState
           </Col>
           <Col className='flexcol--8-t'>
             <div className='tutorial-keys'>
-              <TutorialActionKey className='mb-3' action={KeyAction.MOVE_RIGHT} onKeyChange={this.handleKeyChange} canEdit={true} />
+              <TutorialActionKey className='mb-2' action={KeyAction.MOVE_RIGHT} onKeyChange={this.handleKeyChange} canEdit={true} />
             </div>
           </Col>
         </Row>
-        <Row>
-          <Col className='flexcol--24'>
+        <Row className='mt-3'>
+          <Col className='flexcol--8-t mb-2 mb-0-t'>
             <div className='tutorial-keys'>
-              <TutorialActionKey className='mb-3' size={2} action={KeyAction.MENU} onKeyChange={this.handleKeyChange} canEdit={false} />
+              <TutorialActionKey className='mb-2' action={KeyAction.MENU} onKeyChange={this.handleKeyChange} canEdit={false} />
               <TutorialActionKey className='mb-2' action={KeyAction.RELOAD} onKeyChange={this.handleKeyChange} canEdit={false} />
+            </div>
+          </Col>
+          <Col className='flexcol--16-t mb-2 mb-0-t'>
+            <div className='tutorial-keys'>
               <TutorialActionKey className='mb-2' action={KeyAction.VOCAL} onKeyChange={this.handleKeyChange} canEdit={true} />
               <TutorialActionKey className='' action={KeyAction.MUTE} onKeyChange={this.handleKeyChange} canEdit={true} />
             </div>
+          </Col>
+        </Row>
+
+        <Row className='mt-3'>
+          <Col className='flexcol--24 flex justify-content--end'>
+            <Button className='btn--darkblue btn--expand-mobile' onClick={this.reset}>{translationSvc.translate('UI.tutorial-tab.reset_btn')}</Button>
           </Col>
         </Row>
       </Article>
