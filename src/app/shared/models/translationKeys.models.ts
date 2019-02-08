@@ -119,6 +119,7 @@ export interface IUITranslationKeys {
     description_lucas: string;
     description_jordan: string;
     description_christina: string;
+    description_ugo: string;
   };
   'progress-tab': {
     title: string;

@@ -83,7 +83,8 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
     description_florian: 'Developer - three.js / React / socket.io.',
     description_lucas: 'Gameplay developer - vocal commands with tensorflow.',
     description_jordan: 'Developer - sounds.',
-    description_christina: 'UX/UI Designer.'
+    description_christina: 'UX/UI Designer.',
+    description_ugo: 'Tester'
   },
   'progress-tab': {
     title: 'Progression',

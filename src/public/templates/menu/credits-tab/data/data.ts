@@ -64,5 +64,14 @@ export const collaborators: ICollaboratorProps[] = [
       { url: 'http://www.christinaschinzel.com', icon: Icons.Portfolio },
       { url: 'https://www.linkedin.com/in/christina-schinzel', icon: Icons.LinkedIn },
     ]
+  },
+  {
+    fullname: 'Ugo Bouveron',
+    description: 'UI.credits-tab.description_ugo',
+    links: [
+      { url: 'https://twitter.com/ubouveron', icon: Icons.Twitter },
+      { url: 'https://www.ugobouveron.com/', icon: Icons.Portfolio },
+      { url: 'https://www.linkedin.com/in/ugobouveron', icon: Icons.LinkedIn },
+    ]
   }
 ];
