@@ -354,9 +354,13 @@ class Terrain {
       return;
     }
 
-    const biome = this.generator.getBiome();
     const intersection = this.getPlayerInteractionIntersection(raycaster, [this.water, this.terrain], false);
 
+    if (intersection === null) {
+      return;
+    }
+
+    const biome = this.generator.getBiome();
     const soundName = intersection.object === this.water ? 'splash' : 'set_down';
 
     // if water is disabled
