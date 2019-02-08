@@ -242,10 +242,10 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.05,
         name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
-        scarcity: 0.975,
+        scarcity: 0.985,
         e: null,
         m: null,
-        scale: { min: 2.0, max: 4.0 },
+        scale: { min: 2.0, max: 3.5 },
         float: false,
       },
       {
