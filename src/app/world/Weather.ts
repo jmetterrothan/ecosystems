@@ -23,7 +23,7 @@ class Weather {
   private static RAIN_SPEED: number = 200;
   private static FOG_COLOR1: string = '#212C37';
   private static FOG_COLOR2: string = '#B1D8FF';
-  private static TICK_RATIO_DIV: number = 50000;
+  private static TICK_RATIO_DIV: number = 64000;
 
   private static SOLAR_SYSTEM_RADIUS: number = Math.max(Terrain.SIZE_X, Terrain.SIZE_Z) * 1.2;
 
