@@ -31,8 +31,8 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
     };
   }
 
-  handleKeyChange = (action, key) => {
-    Keys[action] = key;
+  handleKeyChange = (action: string, key: string) => {
+    Keys[action] = key.toUpperCase();
     this.setState({ storage: Keys }, () => {
       storageSvc.set(STORAGES_KEY.keyboard, this.state.storage);
     });

@@ -21,15 +21,15 @@ export enum KeyAction {
 }
 
 export const KeysTmp = {
-  [KeyAction.MOVE_DOWN]: 'a',
-  [KeyAction.MOVE_UP]: 'e',
-  [KeyAction.MOVE_RIGHT]: 'd',
-  [KeyAction.MOVE_LEFT]: 'q',
-  [KeyAction.MOVE_BACK]: 's',
-  [KeyAction.MOVE_FRONT]: 'z',
-  [KeyAction.VOCAL]: 'v',
-  [KeyAction.MUTE]: 'm',
-  [KeyAction.MENU]: 'Escape',
+  [KeyAction.MOVE_DOWN]: 'SHIFT',
+  [KeyAction.MOVE_UP]: ' ',
+  [KeyAction.MOVE_RIGHT]: 'D',
+  [KeyAction.MOVE_LEFT]: 'Q',
+  [KeyAction.MOVE_BACK]: 'S',
+  [KeyAction.MOVE_FRONT]: 'Z',
+  [KeyAction.VOCAL]: 'V',
+  [KeyAction.MUTE]: 'M',
+  [KeyAction.MENU]: 'ESCAPE',
   [KeyAction.RELOAD]: 'F5',
 };
 

@@ -148,7 +148,7 @@ class Player {
    * @param {boolean} active
    */
   handleKeyboard(key: string, active: boolean) {
-    switch (key) {
+    switch (key.toUpperCase()) {
       case Keys[KeyAction.MOVE_FRONT]:
         this.moveForward = active; break;
 
