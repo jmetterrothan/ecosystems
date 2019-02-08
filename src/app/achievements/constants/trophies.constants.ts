@@ -74,6 +74,7 @@ export const TROPHIES: ITrophy[] = [
     img: '',
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
     type: TROPHY_TYPE.OBJECTS,
+    percentage: 85,
     checklist: [
       ...Object.values(PROGRESSION_OBJECTS_STORAGE_KEYS).reduce((acc, item: IProgression) => acc.concat(<IChecklistOption>{ name: item.name, value: item.value }), [])
     ]
@@ -124,6 +125,7 @@ export const TROPHIES: ITrophy[] = [
     img: '',
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
     type: TROPHY_TYPE.OBJECTS,
+    percentage: 80,
     checklist: [
       ...getProgressionKeysFromObjectsOfType(OBJ_TYPE.MUSHROOM).map((progression: IProgression) => <IChecklistOption>{ name: progression.name, value: progression.value })
     ]
@@ -134,39 +136,40 @@ export const TROPHIES: ITrophy[] = [
     img: '',
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
     type: TROPHY_TYPE.OBJECTS,
+    percentage: 80,
     checklist: [
       ...getProgressionKeysFromObjectsOfType(OBJ_TYPE.FLOWER).map((progression: IProgression) => <IChecklistOption>{ name: progression.name, value: progression.value })
     ]
   },
   // DISTANCE
   {
-    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 1 } },
+    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 2 } },
     value: 'travelled_1000000',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.DISTANCE,
     checklist: [
-      { name: 'parcourir 1000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.value, limit: 1000000, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'parcourir 2000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.value, limit: 2000000, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   },
   {
-    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 10 } },
-    value: 'travelled_10000000',
+    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 25 } },
+    value: 'travelled_25000000',
     img: '',
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.DISTANCE,
     checklist: [
-      { name: 'parcourir 10000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.value, limit: 10000000, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'parcourir 10000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.value, limit: 25000000, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   },
   {
-    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 100 } },
-    value: 'travelled_100000000',
+    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 50 } },
+    value: 'travelled_50000000',
     img: '',
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
     type: TROPHY_TYPE.DISTANCE,
     checklist: [
-      { name: 'parcourir 100000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.value, limit: 100000000, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'parcourir 50000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.value, limit: 50000000, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   },
   // WEATHER
