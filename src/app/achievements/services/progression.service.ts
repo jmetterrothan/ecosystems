@@ -1,5 +1,5 @@
-import AchievementService, { achievementSvc } from '@achievements/services/achievement.service';
-import StorageService, { storageSvc } from '@shared/services/storage.service';
+import { achievementSvc } from '@achievements/services/achievement.service';
+import { storageSvc } from '@shared/services/storage.service';
 
 import { IProgression, IProgressionWithCount } from '@achievements/models/progression.model';
 
@@ -28,10 +28,13 @@ class ProgressionService {
 
   getProgressionShown(): IProgressionWithCount[] {
     const keys = this.getProgressionShownKeys();
-    return keys.map((item: IProgression) => (<IProgressionWithCount>{
-      ...item,
-      count: storageSvc.get<Object>(STORAGES_KEY.progression)[item.value]
-    }));
+    return keys.map((item: IProgression) => {
+      const count = storageSvc.get<Object>(STORAGES_KEY.progression)[item.value];
+      return {
+        ...item,
+        count: item.callback ? item.callback(count) : count
+      };
+    });
   }
 
   /**

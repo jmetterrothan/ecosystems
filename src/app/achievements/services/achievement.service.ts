@@ -9,7 +9,7 @@ import { storageSvc } from '@shared/services/storage.service';
 import { monitoringSvc } from '@shared/services/monitoring.service';
 import { notificationSvc } from '@shared/services/notification.service';
 import { progressionSvc } from '@achievements/services/progression.service';
-import TranslationService, { translationSvc } from '@shared/services/translation.service';
+import { translationSvc } from '@shared/services/translation.service';
 
 import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
 import { IProgression } from '@achievements/models/progression.model';
@@ -48,6 +48,10 @@ class AchievementService {
   getUnlockedTrophies(): ITrophy[] {
     const unlocked: string[] = storageSvc.get<string[]>(STORAGES_KEY.completed);
     return TROPHIES.filter((trophy: ITrophy) => unlocked.includes(trophy.value));
+  }
+
+  reset() {
+    this.storage = {};
   }
 
   /**
@@ -151,6 +155,7 @@ class AchievementService {
     // notify unlocked count change
     this.trophy$.next(this.getUnlockedTrophiesCount());
   }
+
 }
 
 export const achievementSvc = new AchievementService();
