@@ -123,7 +123,7 @@ export const SUB_BIOMES: IBiomes = {
         e: { low: null, high: Chunk.SEA_ELEVATION - 0.05 },
         m: { low: 0.5, high: null },
         scale: { min: 0.75, max: 1.65 },
-        float: false,
+        float: true,
       },
     ]
   },
@@ -440,7 +440,7 @@ export const SUB_BIOMES: IBiomes = {
         e: { low: null, high: Chunk.SEA_ELEVATION - 0.05 },
         m: { low: 0.5, high: null },
         scale: { min: 0.75, max: 1.65 },
-        float: false,
+        float: true,
       },
       {
         weight: 0.25,
