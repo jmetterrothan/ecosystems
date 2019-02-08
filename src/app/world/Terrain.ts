@@ -20,10 +20,11 @@ import { IBiome } from '@world/models/biome.model';
 import { IPick } from '@world/models/pick.model';
 import { IOnlineObject } from '@online/models/onlineObjects.model';
 import { ISpecialObject } from '@world/models/objectParameters.model';
-import { ILowHigh } from './models/biomeWeightedObject.model';
+import { ILowHigh, IBiomeWeightedObject } from './models/biomeWeightedObject.model';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
+import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 
 import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@shared/utils/Common.utils';
@@ -47,6 +48,8 @@ class Terrain {
   static readonly OFFSET_X: number = Terrain.SIZE_X / 2;
   static readonly OFFSET_Z: number = Terrain.SIZE_Z / 2;
 
+  static PICKS: Map<string, IPick[]> = new Map<string, IPick[]>();
+
   private chunks: Map<string, Chunk>;
   private visibleChunks: Chunk[];
 
@@ -69,6 +72,8 @@ class Terrain {
   private previewItem: IPick;
   private previewObject: THREE.Object3D;
   private currentSubBiome: IBiome;
+  private picksAvailable: IPick[];
+  private pickIndex: number = 0;
   private intersectionSurface: THREE.Object3D;
   private objectAnimated: boolean;
 
@@ -99,6 +104,7 @@ class Terrain {
 
   init() {
     this.initMeshes();
+    this.initPicks();
     if (multiplayerSvc.isUsed()) this.watchObjectPlaced();
   }
 
@@ -319,6 +325,14 @@ class Terrain {
         this.generator.getBiome().handleClick(raycaster);
         break;
 
+      case INTERACTION_TYPE.MOUSE_WHEEL_DOWN:
+        this.changeObjectPreview(raycaster, INTERACTION_TYPE.MOUSE_WHEEL_DOWN);
+        break;
+
+      case INTERACTION_TYPE.MOUSE_WHEEL_UP:
+        this.changeObjectPreview(raycaster, INTERACTION_TYPE.MOUSE_WHEEL_UP);
+        break;
+
       case INTERACTION_TYPE.VOICE:
         this.placeObject(raycaster);
         break;
@@ -333,58 +347,56 @@ class Terrain {
    * @param {THREE.Raycaster} raycaster
    */
   placeObject(raycaster: THREE.Raycaster) {
-    const biome = this.generator.getBiome();
-    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.water, this.terrain], false);
-
-    if (!this.previewObject) {
+    if (!this.previewObject || !this.previewObject.visible) {
       if (crosshairSvc.status.state === CROSSHAIR_STATES.DEFAULT) {
         crosshairSvc.shake(true);
       }
       return;
     }
 
-    for (const intersection of intersections) {
-      const soundName = intersection.object === this.water ? 'splash' : 'set_down';
+    const biome = this.generator.getBiome();
+    const intersection = this.getPlayerInteractionIntersection(raycaster, [this.water, this.terrain], false);
 
-      // if water is disabled
-      if (!biome.hasWater() && intersection.object === this.water) {
-        continue;
-      }
+    const soundName = intersection.object === this.water ? 'splash' : 'set_down';
 
-      const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
-      chunk.placeObject(this.previewObject, { animate: true, save: true });
-
-      this.previewItem = {
-        ...this.previewItem,
-        p: this.previewObject.position
-      };
-
-      if (multiplayerSvc.isUsed()) {
-        multiplayerSvc.placeObject(this.previewItem);
-        progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.place_object_online);
-      }
-
-      // increment progression
-      progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed);
-      if (playerSvc.isUnderwater()) progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_submarine);
-      progressionSvc.increment({
-        name: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
-        value: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
-        show: false
-      });
-
-      this.objectAnimated = true;
-
-      this.resetPreview();
-
-      setTimeout(() => {
-        this.objectAnimated = false;
-        SoundManager.play(soundName);
-      }, Chunk.ANIMATION_DELAY + 200
-      );
-
-      break;
+    // if water is disabled
+    if (!biome.hasWater() && intersection.object === this.water) {
+      return;
     }
+
+    const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
+    chunk.placeObject(this.previewObject, { animate: true, save: true });
+
+    this.previewItem = {
+      ...this.previewItem,
+      p: this.previewObject.position
+    };
+
+    if (multiplayerSvc.isUsed()) {
+      multiplayerSvc.placeObject(this.previewItem);
+      progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.place_object_online);
+    }
+
+    // increment progression
+    progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed);
+    progressionSvc.increment({
+      name: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
+      value: CommonUtils.getObjectPlacedNameForAchievement(this.previewItem.n),
+      show: false
+    });
+    if (playerSvc.isUnderwater()) progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_submarine);
+
+    this.picksAvailable[this.pickIndex].r.y = MathUtils.randomFloat(0, Math.PI * 2);
+    this.pickIndex = Math.floor(Math.random() * this.picksAvailable.length);
+
+    this.objectAnimated = true;
+
+    this.resetPreview();
+
+    setTimeout(() => {
+      this.objectAnimated = false;
+      SoundManager.play(soundName);
+    }, Chunk.ANIMATION_DELAY + 200);
   }
 
   placeSpecialObject(
@@ -508,33 +520,62 @@ class Terrain {
 
       this.currentSubBiome = biome;
       this.intersectionSurface = intersection.object;
+      this.picksAvailable = Terrain.PICKS.get(this.currentSubBiome.name)
+        .filter(pick => this.intersectionSurface === this.water ? pick.f : !pick.f);
 
-      // retrieve current preview object
-      const item = chunk.pick(intersection.point.x, intersection.point.z, {
-        force: true,
-        float: (this.intersectionSurface === this.water)
-      }, false);
+      // // retrieve current preview object
+      // const item = chunk.pick(intersection.point.x, intersection.point.z, {
+      //   force: true,
+      //   float: (this.intersectionSurface === this.water)
+      // }, false);
 
-      if (!item) {
+      if (!this.picksAvailable.length) {
         // bail out if no item gets picked
         this.resetPreview();
         return;
       }
 
-      this.previewItem = item;
-      this.previewObject = chunk.getObject(this.previewItem);
+      if (this.pickIndex >= this.picksAvailable.length) this.pickIndex = Math.floor(Math.random() * this.picksAvailable.length);
 
+      this.previewItem = this.picksAvailable[this.pickIndex];
+      this.previewItem.p.copy(intersection.point);
+      this.previewObject = chunk.getObject(this.previewItem);
       this.scene.add(this.previewObject);
     }
 
     if (!chunk.canPlaceObject(this.previewObject)) {
       // bail out if the item cannot be placed at the current location
-      this.resetPreview();
+      this.previewObject.visible = false;
+      crosshairSvc.switch(CROSSHAIR_STATES.DEFAULT);
       return;
     }
+    this.previewObject.visible = true;
 
     crosshairSvc.switch(CROSSHAIR_STATES.CAN_PLACE_OBJECT);
-    this.previewObject.position.set(intersection.point.x, intersection.point.y, intersection.point.z);
+    this.previewObject.position.copy(intersection.point);
+  }
+
+  changeObjectPreview(raycaster: THREE.Raycaster, type: INTERACTION_TYPE) {
+    if (!this.picksAvailable || !this.picksAvailable.length) return;
+
+    const intersection = this.getPlayerInteractionIntersection(raycaster, [this.water, this.terrain]);
+    const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
+
+    switch (type) {
+      case INTERACTION_TYPE.MOUSE_WHEEL_DOWN:
+        this.pickIndex++;
+        if (this.pickIndex >= this.picksAvailable.length) this.pickIndex = 0;
+        break;
+
+      case INTERACTION_TYPE.MOUSE_WHEEL_UP:
+        this.pickIndex--;
+        if (this.pickIndex < 0) this.pickIndex = this.picksAvailable.length - 1;
+        break;
+
+      default:
+        break;
+    }
+    this.resetPreview();
   }
 
   /**
@@ -788,6 +829,26 @@ class Terrain {
     if (configSvc.debug) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
 
     this.scene.add(this.layers);
+  }
+
+  private initPicks() {
+    Object.values(SUB_BIOMES).forEach(subBiome => {
+      const picks: IPick[] = [];
+      for (const subBiomeOrganisms of subBiome.organisms) {
+        const scale = subBiomeOrganisms.scale ? MathUtils.randomFloat(subBiomeOrganisms.scale.min, subBiomeOrganisms.scale.max) * World.OBJ_INITIAL_SCALE : 1 * World.OBJ_INITIAL_SCALE;
+        subBiomeOrganisms.name.forEach(organism => {
+          picks.push({
+            r: new THREE.Euler().setFromVector3(new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0)),
+            p: new THREE.Vector3(),
+            n: organism,
+            f: subBiomeOrganisms.float,
+            s: new THREE.Vector3(scale, scale, scale)
+          });
+        });
+      }
+
+      Terrain.PICKS.set(subBiome.name, CommonUtils.shuffleArray(picks));
+    });
   }
 
   private watchObjectPlaced() {

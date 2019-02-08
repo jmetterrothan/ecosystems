@@ -9,7 +9,7 @@ import { storageSvc } from '@shared/services/storage.service';
 import { monitoringSvc } from '@shared/services/monitoring.service';
 import { notificationSvc } from '@shared/services/notification.service';
 import { progressionSvc } from '@achievements/services/progression.service';
-import TranslationService, { translationSvc } from '@shared/services/translation.service';
+import { translationSvc } from '@shared/services/translation.service';
 
 import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
 import { IProgression } from '@achievements/models/progression.model';
@@ -48,6 +48,10 @@ class AchievementService {
   getUnlockedTrophies(): ITrophy[] {
     const unlocked: string[] = storageSvc.get<string[]>(STORAGES_KEY.completed);
     return TROPHIES.filter((trophy: ITrophy) => unlocked.includes(trophy.value));
+  }
+
+  reset() {
+    this.storage = {};
   }
 
   /**
@@ -127,7 +131,7 @@ class AchievementService {
 
     // format value
     if (trophy.name.options && trophy.name.options.counter) {
-      trophy.name.options.counter =  CommonUtils.formatNumberWithSpaces(trophy.name.options.counter);
+      trophy.name.options.counter = CommonUtils.formatNumberWithSpaces(trophy.name.options.counter);
     }
 
     // send notification
@@ -152,18 +156,6 @@ class AchievementService {
     this.trophy$.next(this.getUnlockedTrophiesCount());
   }
 
-  /**
-   * Reset completed trophies
-   */
-  reset() {
-    storageSvc.remove(STORAGES_KEY.trophies);
-    storageSvc.remove(STORAGES_KEY.progression);
-    storageSvc.remove(STORAGES_KEY.completed);
-
-    progressionSvc.reset();
-
-    this.trophy$.next(this.getUnlockedTrophiesCount());
-  }
 }
 
 export const achievementSvc = new AchievementService();

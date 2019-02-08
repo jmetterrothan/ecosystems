@@ -1,10 +1,10 @@
-import AchievementService, { achievementSvc } from '@achievements/services/achievement.service';
-import StorageService, { storageSvc } from '@shared/services/storage.service';
+import { achievementSvc } from '@achievements/services/achievement.service';
+import { storageSvc } from '@shared/services/storage.service';
 
 import { IProgression, IProgressionWithCount } from '@achievements/models/progression.model';
 
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
-import { PROGRESSION_STORAGE, PROGRESSION_SHOWN } from '@achievements/constants/progressionStorageKeys.constants';
+import { getProgressionStorage, PROGRESSION_SHOWN } from '@achievements/constants/progressionStorageKeys.constants';
 
 class ProgressionService {
 
@@ -13,7 +13,7 @@ class ProgressionService {
 
   constructor() {
     this.key = STORAGES_KEY.progression;
-    this.storage = storageSvc.get<Object>(STORAGES_KEY.progression) || PROGRESSION_STORAGE;
+    this.storage = storageSvc.get<Object>(STORAGES_KEY.progression) || getProgressionStorage();
   }
 
   /**
@@ -28,10 +28,13 @@ class ProgressionService {
 
   getProgressionShown(): IProgressionWithCount[] {
     const keys = this.getProgressionShownKeys();
-    return keys.map((item: IProgression) => (<IProgressionWithCount>{
-      ...item,
-      count: storageSvc.get<Object>(STORAGES_KEY.progression)[item.value]
-    }));
+    return keys.map((item: IProgression) => {
+      const count = storageSvc.get<Object>(STORAGES_KEY.progression)[item.value];
+      return {
+        ...item,
+        count: item.callback ? item.callback(count) : count
+      };
+    });
   }
 
   /**
@@ -39,6 +42,7 @@ class ProgressionService {
    */
   init() {
     if (!storageSvc.get<Object>(STORAGES_KEY.progression)) {
+      this.storage = getProgressionStorage();
       storageSvc.set<Object>(STORAGES_KEY.progression, this.storage);
     }
 
@@ -52,11 +56,11 @@ class ProgressionService {
   }
 
   reset() {
-    this.storage = PROGRESSION_STORAGE;
+    this.storage = null;
 
-    storageSvc.set<Object>(STORAGES_KEY.progression, this.storage);
-    storageSvc.set<Object>(STORAGES_KEY.trophies, {});
-    storageSvc.set<Object>(STORAGES_KEY.completed, []);
+    storageSvc.remove(STORAGES_KEY.progression);
+    storageSvc.remove(STORAGES_KEY.trophies);
+    storageSvc.remove(STORAGES_KEY.completed);
   }
 
   /**

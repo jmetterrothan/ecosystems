@@ -140,7 +140,7 @@ export const TROPHIES: ITrophy[] = [
   },
   // DISTANCE
   {
-    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 1000000 } },
+    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 1 } },
     value: 'travelled_1000000',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
@@ -150,7 +150,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 10000000 } },
+    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 10 } },
     value: 'travelled_10000000',
     img: '',
     difficulty: TROPHY_DIFFICULTY.GOLD,
@@ -160,7 +160,7 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
-    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 100000000 } },
+    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 100 } },
     value: 'travelled_100000000',
     img: '',
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
@@ -269,6 +269,16 @@ export const TROPHIES: ITrophy[] = [
     type: TROPHY_TYPE.EXTRAS,
     checklist: [
       { name: 'woodcutter', value: PROGRESSION_EXTRAS_STORAGE_KEYS.woodcutter.value }
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.under_map' },
+    value: 'under_map',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.EXTRAS,
+    checklist: [
+      { name: 'under map', value: PROGRESSION_EXTRAS_STORAGE_KEYS.under_map.value }
     ]
   },
   // ONLINE

@@ -4,8 +4,9 @@ import Chunk from '@world/Chunk';
 
 import { IBiomes } from '@world/models/biomes.model';
 
-export const SubBiomes: IBiomes = {
+export const SUB_BIOMES: IBiomes = {
   FROZEN_GRASSLAND: {
+    name: 'FROZEN_GRASSLAND',
     color: new THREE.Color(0x96c47b),
     organisms: [
       {
@@ -47,10 +48,11 @@ export const SubBiomes: IBiomes = {
     ]
   },
   FJORD: {
+    name: 'FJORD',
     color: new THREE.Color(0x648277),
     organisms: [
       {
-        weight: 0.75,
+        weight: 0.85,
         name: ['spruce', 'spruce2'],
         scarcity: 0.25,
         e: { low: Chunk.SEA_ELEVATION + 0.25, high: null },
@@ -59,9 +61,9 @@ export const SubBiomes: IBiomes = {
         float: false,
       },
       {
-        weight: 0.25,
+        weight: 0.15,
         name: ['dead_tree', 'dead_tree2'],
-        scarcity: 0.95,
+        scarcity: 0.975,
         e: { low: Chunk.SEA_ELEVATION + 0.035, high: Chunk.SEA_ELEVATION + 0.5 },
         m: null,
         scale: { min: 2.00, max: 2.75 },
@@ -70,10 +72,12 @@ export const SubBiomes: IBiomes = {
     ]
   },
   FJORD_SNOW_CAP: {
+    name: 'FJORD_SNOW_CAP',
     color: new THREE.Color(0xffffff),
     organisms: []
   },
   FJORD_BEACH: {
+    name: 'FJORD_BEACH',
     color: new THREE.Color(0x87a194),
     organisms: [
       {
@@ -124,6 +128,7 @@ export const SubBiomes: IBiomes = {
     ]
   },
   GRASSLAND: {
+    name: 'GRASSLAND',
     color: new THREE.Color(0x93c54b),
     organisms: [
       {
@@ -165,6 +170,7 @@ export const SubBiomes: IBiomes = {
     ]
   },
   TAIGA: {
+    name: 'TAIGA',
     color: new THREE.Color(0x298c2d),
     organisms: [
       {
@@ -188,6 +194,7 @@ export const SubBiomes: IBiomes = {
     ]
   },
   OASIS: {
+    name: 'OASIS',
     color: new THREE.Color(0xf0e68c),
     organisms: [
       {
@@ -211,6 +218,7 @@ export const SubBiomes: IBiomes = {
     ]
   },
   DESERT: {
+    name: 'DESERT',
     color: new THREE.Color(0xe6cf87),
     organisms: [
       {
@@ -242,7 +250,7 @@ export const SubBiomes: IBiomes = {
       },
       {
         weight: 0.1,
-        name: 'desert_tree',
+        name: ['desert_tree'],
         scarcity: 0.925,
         e: { low: 0.20, high: null },
         m: { low: 0.35, high: null },
@@ -261,6 +269,7 @@ export const SubBiomes: IBiomes = {
     ]
   },
   TUNDRA: {
+    name: 'TUNDRA',
     color: new THREE.Color(0xe8d587),
     organisms: [
       {
@@ -302,10 +311,12 @@ export const SubBiomes: IBiomes = {
     ]
   },
   MOUNTAIN: {
+    name: 'MOUNTAIN',
     color: new THREE.Color(0x8eada0),
     organisms: []
   },
   CORAL_REEF: {
+    name: 'CORAL_REEF',
     color: new THREE.Color(0xeacd73),
     organisms: [
       {
@@ -320,10 +331,11 @@ export const SubBiomes: IBiomes = {
     ]
   },
   RAINFOREST: {
+    name: 'RAINFOREST',
     color: new THREE.Color(0x3ead68),
     organisms: [
       {
-        weight: 0.8,
+        weight: 0.6,
         name: ['jungle_tree', 'jungle_tree2'],
         scarcity: 0.7,
         e: null,
@@ -333,16 +345,26 @@ export const SubBiomes: IBiomes = {
       },
       {
         weight: 0.2,
-        name: ['pink_flower1', 'pink_flower4', 'red_flower1', 'white_flower1'],
+        name: ['pink_flower1', 'blue_flower1', 'pink_flower4', 'red_flower1', 'white_flower1'],
         scarcity: 0.9,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
         m: null,
         scale: { min: 1.0, max: 1.25 },
         float: false,
       },
+      {
+        weight: 0.2,
+        name: ['thin_mushroomg1', 'thin_mushroomg2'], // MUSHROOM
+        scarcity: 0.9,
+        e: { low: Chunk.SEA_ELEVATION + 0.025, high: null },
+        m: null,
+        scale: { min: 0.75, max: 1.25 },
+        float: false,
+      },
     ]
   },
   RAINFOREST_HILLS: {
+    name: 'RAINFOREST_HILLS',
     color: new THREE.Color(0x3ead52),
     organisms: [
       {
@@ -375,11 +397,12 @@ export const SubBiomes: IBiomes = {
     ]
   },
   RAINFOREST_SWAMPS: {
+    name: 'RAINFOREST_SWAMPS',
     color: new THREE.Color(0xbed69e),
     organisms: [
       {
         weight: 0.45,
-        name: 'mangrove',
+        name: ['mangrove'],
         scarcity: 0.95,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
         m: null,
@@ -407,6 +430,7 @@ export const SubBiomes: IBiomes = {
     ]
   },
   BEACH: {
+    name: 'BEACH',
     color: new THREE.Color(0xf0e68c),
     organisms: [
       {
@@ -439,6 +463,7 @@ export const SubBiomes: IBiomes = {
     ]
   },
   FROZEN_BEACH: {
+    name: 'FROZEN_BEACH',
     color: new THREE.Color(0xe0dcb8),
     organisms: [
       {
@@ -462,6 +487,7 @@ export const SubBiomes: IBiomes = {
     ]
   },
   OCEAN: {
+    name: 'OCEAN',
     color: new THREE.Color(0xf1c176),
     organisms: [
       {
@@ -512,6 +538,7 @@ export const SubBiomes: IBiomes = {
     ]
   },
   FROZEN_OCEAN: {
+    name: 'FROZEN_OCEAN',
     color: new THREE.Color(0xcdba97),
     organisms: [
       {
@@ -544,6 +571,7 @@ export const SubBiomes: IBiomes = {
     ]
   },
   SNOW: {
+    name: 'SNOW',
     color: new THREE.Color(0xf1f1f1),
     organisms: [
       {
@@ -585,6 +613,7 @@ export const SubBiomes: IBiomes = {
     ]
   },
   SWAMP_WATER: {
+    name: 'SWAMP_WATER',
     color: new THREE.Color(0xF1CFAE),
     organisms: [
       {
@@ -599,6 +628,7 @@ export const SubBiomes: IBiomes = {
     ]
   },
   SWAMP: {
+    name: 'SWAMP',
     color: new THREE.Color(0xbed69e),
     organisms: [
       {
@@ -621,7 +651,7 @@ export const SubBiomes: IBiomes = {
       },
       {
         weight: 0.15,
-        name: 'mangrove',
+        name: ['mangrove'],
         scarcity: 0.85,
         e: { low: Chunk.SEA_ELEVATION - 0.035, high: Chunk.SEA_ELEVATION + 0.1 },
         m: null,
@@ -658,6 +688,7 @@ export const SubBiomes: IBiomes = {
     ]
   },
   TEST: {
+    name: 'TEST',
     color: new THREE.Color('gray'),
     organisms: []
   }

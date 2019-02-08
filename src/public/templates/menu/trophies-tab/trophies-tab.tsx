@@ -9,6 +9,7 @@ import Button from '@public/components/button/button';
 
 import { translationSvc } from '@shared/services/translation.service';
 import { achievementSvc } from '@achievements/services/achievement.service';
+import { progressionSvc } from '@achievements/services/progression.service';
 
 import { ITrophy } from '@achievements/models/trophy.model';
 
@@ -53,21 +54,30 @@ class TrophiesTab extends React.Component<ITrophiesTabProps, ITrophiesTabState> 
     this.sortBy();
   }
 
+  resetProgression = () => {
+    progressionSvc.reset();
+    progressionSvc.init();
+
+    achievementSvc.reset();
+
+    achievementSvc.trophy$.next(achievementSvc.getUnlockedTrophiesCount());
+  }
+
   render() {
     return (
       <div className='tab trophies-tab'>
         <header className='tab__header mb-2'>
-        <Row suffix='-48'>
-          <Col className='flexcol--14-t mb-2 mb-0-t'><H3 className='color-theme'>{translationSvc.translate('UI.trophies-tab.title')}</H3></Col>
-          <Col className='flexcol--10-t'>{this.renderSelect()}</Col>
-        </Row>
+          <Row suffix='-48'>
+            <Col className='flexcol--14-t mb-2 mb-0-t'><H3 className='color-theme'>{translationSvc.translate('UI.trophies-tab.title')}</H3></Col>
+            <Col className='flexcol--10-t'>{this.renderSelect()}</Col>
+          </Row>
         </header>
         <div className='tab__content'>
           <Row Tag='ul'>
             {this.state.allTrophies.map((trophy: ITrophy, index: number) => (
-            <Col Tag='li' key={index} className='flexcol--12-t flexcol--8-l mb-3'>
-              <Trophy {...trophy} unlocked={this.state.unlockedTrophies.includes(trophy)} />
-            </Col>
+              <Col Tag='li' key={index} className='flexcol--12-t flexcol--8-l mb-3'>
+                <Trophy {...trophy} unlocked={this.state.unlockedTrophies.includes(trophy)} />
+              </Col>
             ))}
           </Row>
           <footer className='tab__footer progression-reset'>
@@ -77,7 +87,7 @@ class TrophiesTab extends React.Component<ITrophiesTabProps, ITrophiesTabState> 
                 <p className='paragraph mb-2'>{translationSvc.translate('UI.trophies-tab.reset_text')}</p>
               </Col>
               <Col className='flexcol--24 flex justify-content--end'>
-                <Button className='btn--darkblue btn--expand-mobile' onClick={() => achievementSvc.reset()}>{translationSvc.translate('UI.trophies-tab.reset_btn')}</Button>
+                <Button className='btn--darkblue btn--expand-mobile' onClick={this.resetProgression}>{translationSvc.translate('UI.trophies-tab.reset_btn')}</Button>
               </Col>
             </Row>
           </footer>

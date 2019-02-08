@@ -6,8 +6,8 @@ import Creature from '@boids/Creatures/Creature';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { configSvc } from '@app/shared/services/config.service';
-import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
-import PlayerService, { playerSvc } from '@shared/services/player.service';
+import { progressionSvc } from '@achievements/services/progression.service';
+import { playerSvc } from '@shared/services/player.service';
 
 import { IBoidCreatureParameters } from '@boids/models/boidCreatureParameters.model';
 

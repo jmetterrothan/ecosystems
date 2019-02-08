@@ -32,6 +32,7 @@ export interface ITrophiesTranslationKeys {
   woodcutter: string;
   mushrooms_soup: string;
   bunch_of_flowers: string;
+  under_map: string;
 }
 
 export interface IUITranslationKeys {
@@ -75,23 +76,29 @@ export interface IUITranslationKeys {
   };
   'tutorial-tab': {
     title: string;
+    reset_btn: string;
+    howto: string;
     title_commands: string;
-    title_multiplayer: string;
-    subtitle_misc: string;
-    subtitle_mvt: string;
-    key_down: string;
-    key_up: string;
-    key_right: string;
-    key_left: string;
-    key_back: string;
-    key_front: string;
-    key_vocal: string;
-    key_reload: string;
-    key_mute: string;
-    key_menu: string;
-    key_menu_name: string;
-    mouse_interaction: string;
-    mouse_interaction_name: string;
+    subtitle_keyboard: string;
+    subtitle_mouse: string;
+    actionkey: {
+      down: string;
+      up: string;
+      right: string;
+      left: string;
+      back: string;
+      front: string;
+      vocal: string;
+      reload: string;
+      mute: string;
+      menu: string;
+    };
+    'mouse_left-click': string;
+    'mouse_left-click_name': string;
+    'mouse_right-click': string;
+    'mouse_right-click_name': string;
+    mouse_scroll: string;
+    mouse_scroll_name: string;
   };
   'home-tab': {
     title: string;
@@ -120,6 +127,7 @@ export interface IUITranslationKeys {
     going_underwater: string;
     objects_placed: string;
     unlock_trophies_percentage: string;
+    objects_placed_submarine: string;
   };
   'contact-tab': {
     title: string;

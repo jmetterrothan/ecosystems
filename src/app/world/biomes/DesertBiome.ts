@@ -1,4 +1,4 @@
-import { PROGRESSION_EXTRAS_STORAGE_KEYS } from './../../achievements/constants/progressionExtrasStorageKeys.constants';
+import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 import * as THREE from 'three';
 
 import Terrain from '@world/Terrain';
@@ -7,13 +7,14 @@ import Chunk from '@world/Chunk';
 
 import { IBiome } from '@world/models/biome.model';
 
-import { SubBiomes } from '@world/constants/subBiomes.constants';
+import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
 import DesertSFXMp3 from '@sounds/DesertSFX.mp3';
 
 class DesertBiome extends Biome {
   private skull: THREE.Object3D;
+  private carcass: THREE.Object3D;
 
   constructor(terrain: Terrain) {
     super('DESERT', terrain);
@@ -33,7 +34,7 @@ class DesertBiome extends Biome {
     const sizeZ = 8192;
 
     this.skull = this.terrain.placeSpecialObject({ stackReference: 'skull', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
-    this.terrain.placeSpecialObject({ stackReference: 'carcass', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+    this.carcass = this.terrain.placeSpecialObject({ stackReference: 'carcass', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
 
     // vulture
     // this.vulture = chunk.getObject({ ...corpseItem });
@@ -47,7 +48,7 @@ class DesertBiome extends Biome {
   }
 
   handleClick(raycaster: THREE.Raycaster) {
-    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.skull], true);
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.skull, this.carcass], true);
 
     if (intersections.length) {
       this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.archaeology);
@@ -78,19 +79,19 @@ class DesertBiome extends Biome {
     const value = super.computeMoistureAt(x, z);
 
     // bias towards low humidity because it's a desert
-    return Math.max(value - 0.325, 0.0);
+    return Math.max(value - 0.25, 0.0);
   }
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.115) {
-      return SubBiomes.OCEAN;
+      return SUB_BIOMES.OCEAN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.1) {
-      return SubBiomes.DESERT;
+      return SUB_BIOMES.DESERT;
     }
 
-    return SubBiomes.OASIS;
+    return SUB_BIOMES.OASIS;
   }
 }
 

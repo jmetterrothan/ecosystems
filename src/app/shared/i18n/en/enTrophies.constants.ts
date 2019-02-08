@@ -10,7 +10,7 @@ export const EN_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   place_object: 'Place an object',
   place_object_submarine: 'Place a submarine object',
   place_objects_counter: '{{counter}} objects placed',
-  travelled_distance_counter: 'Travelled {{counter}} meters',
+  travelled_distance_counter: 'Travelled {{counter}} miles',
   repulse_fishes: 'Scare off the fishes',
   repulse_butterflies: 'Scare off the butterflies',
   find_captain_treasure: 'Find the captain\'s treasure',
@@ -28,5 +28,6 @@ export const EN_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   place_all_flowers: 'Are those flowers for me?',
   woodcutter: 'Woodcutter',
   mushrooms_soup: 'Mushrooms soup',
-  bunch_of_flowers: 'Bunch of flowers'
+  bunch_of_flowers: 'Bunch of flowers',
+  under_map: 'What are you doing here ?'
 };

@@ -11,7 +11,7 @@ import SalmonFish from '@boids/creatures/SalmonFish';
 
 import { IBiome } from '@world/models/biome.model';
 
-import { SubBiomes } from '@world/constants/subBiomes.constants';
+import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
@@ -153,10 +153,10 @@ class OceanBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (m < 0.4) {
-      return SubBiomes.CORAL_REEF;
+      return SUB_BIOMES.CORAL_REEF;
     }
 
-    return SubBiomes.OCEAN;
+    return SUB_BIOMES.OCEAN;
   }
 }
 

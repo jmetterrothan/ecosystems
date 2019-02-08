@@ -7,7 +7,7 @@ import Chunk from '@world/Chunk';
 
 import { IBiome } from '@world/models/biome.model';
 
-import { SubBiomes } from '@world/constants/subBiomes.constants';
+import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 import SnowWindSFXMp3 from '@sounds/SnowWindSFX.mp3';
@@ -76,16 +76,16 @@ class SnowBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.15) {
-      return SubBiomes.FROZEN_OCEAN;
+      return SUB_BIOMES.FROZEN_OCEAN;
     }
     if (e < Chunk.SEA_ELEVATION + 0.15) {
-      return SubBiomes.FROZEN_BEACH;
+      return SUB_BIOMES.FROZEN_BEACH;
     }
     if (e < Chunk.SEA_ELEVATION + 0.225) {
-      return SubBiomes.FROZEN_GRASSLAND;
+      return SUB_BIOMES.FROZEN_GRASSLAND;
     }
 
-    return SubBiomes.SNOW;
+    return SUB_BIOMES.SNOW;
   }
 }
 

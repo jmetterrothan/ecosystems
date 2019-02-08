@@ -11,7 +11,7 @@ import Butterfly from '@boids/creatures/Butterfly';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@world/models/biome.model';
-import { SubBiomes } from '@world/constants/subBiomes.constants';
+import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
@@ -142,21 +142,21 @@ class HighlandBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.05) {
-      return SubBiomes.OCEAN;
+      return SUB_BIOMES.OCEAN;
     }
 
     if (e > Chunk.CLOUD_ELEVATION + 0.075) {
-      return SubBiomes.MOUNTAIN;
+      return SUB_BIOMES.MOUNTAIN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.15) {
       if (e > Chunk.SEA_ELEVATION + 0.25 && m > 0.925) {
-        return SubBiomes.GRASSLAND;
+        return SUB_BIOMES.GRASSLAND;
       }
-      return SubBiomes.TUNDRA;
+      return SUB_BIOMES.TUNDRA;
     }
 
-    return SubBiomes.SWAMP;
+    return SUB_BIOMES.SWAMP;
   }
 }
 

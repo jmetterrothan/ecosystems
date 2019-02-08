@@ -149,8 +149,14 @@ class Main {
         }
       });
 
+      document.body.addEventListener('wheel', e => {
+        if (!this.controls.enabled || !this.world.isInitialized()) { return; }
+        this.world.handlePlayerInteraction(e.wheelDelta > 0 ? INTERACTION_TYPE.MOUSE_WHEEL_UP : INTERACTION_TYPE.MOUSE_WHEEL_DOWN);
+      });
+
       window.addEventListener('blur', () => { this.focused = false; });
       window.addEventListener('focus', () => { this.focused = true; });
+
     }
   }
 

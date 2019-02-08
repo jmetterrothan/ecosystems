@@ -5,10 +5,11 @@ import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
 import SoundManager from '@shared/SoundManager';
 
-import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
-import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
+import { progressionSvc } from '@achievements/services/progression.service';
+import { monitoringSvc } from '@shared/services/monitoring.service';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
+import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
 class PlayerService {
 
@@ -55,6 +56,11 @@ class PlayerService {
       this.underwater = false;
       SoundManager.play('bubbles');
     }
+
+    if (this.position.y <= -Chunk.HEIGHT / 2 && this.isInsideWorldBoudingBox()) {
+      progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.under_map);
+    }
+
   }
 
   isUnderwater(): boolean { return this.underwater; }
@@ -65,7 +71,12 @@ class PlayerService {
 
   isWithinWorldBorders(): boolean {
     const position = this.position;
-    return !(position.x < 0 || position.x > Terrain.SIZE_X || position.z < 0 || position.z > Terrain.SIZE_Z || position.y < -Terrain.SIZE_Y / 2);
+    return this.isInsideWorldBoudingBox() && !(position.y < -Terrain.SIZE_Y / 2);
+  }
+
+  isInsideWorldBoudingBox(): boolean {
+    const position = this.position;
+    return !(position.x < 0 || position.x > Terrain.SIZE_X || position.z < 0 || position.z > Terrain.SIZE_Z);
   }
 
   private timer() {

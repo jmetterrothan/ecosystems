@@ -10,7 +10,7 @@ export const FR_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   place_object: 'Placer un objet',
   place_object_submarine: 'Placer un objet sous l\'eau',
   place_objects_counter: 'Placer {{counter}} objets',
-  travelled_distance_counter: 'Parcourir {{counter}} mètres',
+  travelled_distance_counter: 'Parcourir {{counter}} km',
   repulse_fishes: 'Effrayer les poissons',
   repulse_butterflies: 'Faire peur aux papillons',
   find_captain_treasure: 'Trouver le trésor du capitaine',
@@ -28,5 +28,6 @@ export const FR_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   place_all_flowers: 'Il est pour moi ce bouquet ?',
   woodcutter: 'Apprenti bûcheron',
   mushrooms_soup: 'Une bonne soupe de champignons',
-  bunch_of_flowers: 'Il est pour moi ce bouquet ?'
+  bunch_of_flowers: 'Il est pour moi ce bouquet ?',
+  under_map: 'Tu fais quoi ici ?!'
 };
