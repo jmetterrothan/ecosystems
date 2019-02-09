@@ -73,7 +73,7 @@ class Terrain {
   private previewItem: IPick;
   private previewObject: THREE.Object3D;
   private currentSubBiome: IBiome;
-  private picksAvailable: IPick[];
+  private picksAvailable: IPickAndOrganism[];
   private pickIndex: number = 0;
   private intersectionSurface: THREE.Object3D;
   private objectAnimated: boolean;
@@ -391,7 +391,14 @@ class Terrain {
     });
     if (playerSvc.isUnderwater()) progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_submarine);
 
-    this.picksAvailable[this.pickIndex].r.y = MathUtils.randomFloat(0, Math.PI * 2);
+    // update current pick values
+    const selectedItem = this.picksAvailable[this.pickIndex];
+    const scale = (selectedItem.organism.scale ? MathUtils.randomFloat(selectedItem.organism.scale.min, selectedItem.organism.scale.max) : 1) * World.OBJ_INITIAL_SCALE;
+
+    selectedItem.pick.r.y = MathUtils.randomFloat(0, Math.PI * 2);
+    selectedItem.pick.s.set(scale, scale, scale);
+
+    // randomize index
     this.pickIndex = Math.floor(Math.random() * this.picksAvailable.length);
 
     this.objectAnimated = true;
@@ -530,8 +537,7 @@ class Terrain {
       this.picksAvailable = Terrain.PICKS
         .get(this.currentSubBiome.name)
         .filter((item: IPickAndOrganism) => this.generator.checkCanPick(item.organism, e, m, true))
-        .map((item: IPickAndOrganism) => item.pick)
-        .filter((pick: IPick) => (this.intersectionSurface === this.water) === pick.f);
+        .filter((item: IPickAndOrganism) => (this.intersectionSurface === this.water) === item.pick.f);
 
       if (!this.picksAvailable.length) {
         // bail out if no item gets picked
@@ -543,7 +549,7 @@ class Terrain {
         this.pickIndex = Math.floor(Math.random() * this.picksAvailable.length);
       }
 
-      this.previewItem = this.picksAvailable[this.pickIndex];
+      this.previewItem = this.picksAvailable[this.pickIndex].pick;
       this.previewItem.p.copy(intersection.point);
       this.previewObject = chunk.getObject(this.previewItem);
       this.scene.add(this.previewObject);
@@ -561,11 +567,13 @@ class Terrain {
     this.previewObject.position.copy(intersection.point);
   }
 
+  /**
+   * Modify preview index
+   * @param {THREE.Raycaster} raycaster
+   * @param {INTERACTION_TYPE} type
+   */
   changeObjectPreview(raycaster: THREE.Raycaster, type: INTERACTION_TYPE) {
     if (!this.picksAvailable || !this.picksAvailable.length) return;
-
-    const intersection = this.getPlayerInteractionIntersection(raycaster, [this.water, this.terrain]);
-    const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
 
     switch (type) {
       case INTERACTION_TYPE.MOUSE_WHEEL_DOWN:

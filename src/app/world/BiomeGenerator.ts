@@ -79,6 +79,7 @@ class BiomeGenerator {
           // get a random variant name
           const scale = (organism.scale ? MathUtils.randomFloat(organism.scale.min, organism.scale.max) : 1) * World.OBJ_INITIAL_SCALE;
 
+          // if the object floats on water
           if (organism.float === true) {
             // sample 4 points and take the highest one to prevent (as much as possible) clipping into the water
             const p1 = this.computeWaterHeightAt(x - 1024, z);
