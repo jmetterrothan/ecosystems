@@ -49,6 +49,7 @@ class Player {
     this.speed = new THREE.Vector3(40000, 40000, 40000);
     this.velocity = new THREE.Vector3(0, 0, 0);
 
+    // fix bug when player is moving and pointer lock is lost
     PointerLock.addEventListener('pointerlockchange', () => {
       if (!PointerLock.enabled) {
         this.moveForward = false;

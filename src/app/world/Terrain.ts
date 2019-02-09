@@ -823,7 +823,7 @@ class Terrain {
     // main terrain with borders
     this.terrain = new THREE.Mesh(new THREE.Geometry(), TERRAIN_MATERIAL);
     this.terrain.frustumCulled = true;
-    this.terrain.castShadow = false;
+    this.terrain.castShadow = true;
     this.terrain.receiveShadow = true;
     this.layers.add(this.terrain);
 
