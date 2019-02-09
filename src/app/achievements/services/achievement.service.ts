@@ -151,7 +151,7 @@ class AchievementService {
     // update trophy progression
     progressionSvc.setValue(
       PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage,
-      MathUtils.percent(this.getUnlockedTrophiesCount(), this.trophies.filter((trophy: ITrophy) => trophy.type !== TROPHY_TYPE.TROPHY).length)
+      MathUtils.percent(this.getUnlockedTrophiesCount(), this.trophies.filter((trophy: ITrophy) => trophy.type !== TROPHY_TYPE.TROPHY).length, true)
     );
 
     // notify unlocked count change
