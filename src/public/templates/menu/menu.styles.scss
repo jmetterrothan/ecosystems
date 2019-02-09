@@ -64,7 +64,6 @@
     border: 0;
     border-bottom: 1px solid #D2D3D4;
 
-
     &::after {
       display: none !important;
     }
@@ -122,7 +121,7 @@
   .tab__content {
     @include breakpoint-tablet {
       height: calc(100vh - 125px);
-      overflow-y: scroll;
+      overflow-y: auto;
       overflow-x: hidden;
     }
   }

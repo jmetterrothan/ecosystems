@@ -41,10 +41,14 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
   render() {
     return (
       <div className='tab tutorial-tab'>
-        <H3 className='color-theme mb-2'>{translationSvc.translate('UI.tutorial-tab.title')}</H3>
-        <Slider dots={true} infinite={false} speed={500} slidesToShow={1} slidesToScroll={1}>
-          {this.getFirstPanel()}
-        </Slider>
+        <header className='tab__header'>
+          <H3 className='color-theme mb-2'>{translationSvc.translate('UI.tutorial-tab.title')}</H3>
+        </header>
+        <div className='tab__content'>
+          <Slider dots={true} infinite={false} speed={500} slidesToShow={1} slidesToScroll={1}>
+            {this.getFirstPanel()}
+          </Slider>
+        </div>
       </div>
     );
   }
