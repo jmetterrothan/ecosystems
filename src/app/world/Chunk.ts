@@ -17,6 +17,10 @@ import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
 import MathUtils from '@utils/Math.utils';
 
+interface ISamplingParameters {
+  isOnWater: boolean;
+}
+
 class Chunk {
   static readonly SHOW_HELPER: boolean = false;
   static readonly NROWS: number = 8;
@@ -167,7 +171,8 @@ class Chunk {
     }
 
     if (!World.EMPTY) {
-      this.loadPopulation();
+      this.loadPopulation({ isOnWater: false });
+      this.loadPopulation({ isOnWater: true });
     }
 
     this.merged = true;
@@ -177,7 +182,7 @@ class Chunk {
   /**
    * Poisson disk sampling
    */
-  loadPopulation() {
+  private loadPopulation(parameters: ISamplingParameters) {
     const padding = World.OBJ_INITIAL_SCALE + 4096; // object bounding box size / 2
     const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding * 2, padding * 2, 30, MathUtils.rng);
     const points = pds.fill();
@@ -187,7 +192,7 @@ class Chunk {
       const z = padding + this.row * Chunk.DEPTH + point.shift();
 
       // select an organism based on the current biome
-      const item = this.generator.pick(x, z);
+      const item = this.generator.pick(x, z, parameters);
 
       if (item !== null) {
         this.savePick(item);
