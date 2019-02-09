@@ -23,21 +23,21 @@ export const collaborators: ICollaboratorProps[] = [
     fullname: 'Jérémie Metter-Rothan',
     description: 'UI.credits-tab.description_jeremie',
     links: [
-      { url: 'https://jeremie.metter-rothan.fr', icon: Icons.Portfolio },
+      { url: 'mailto:jeremie@metter-rothan.fr', icon: Icons.Email },
       { url: 'https://github.com/jmetterrothan', icon: Icons.Github },
+      { url: 'https://jeremie.metter-rothan.fr', icon: Icons.Portfolio },
       { url: 'https://www.linkedin.com/in/jeremie-metter-rothan', icon: Icons.LinkedIn },
-      { url: 'mailto:jeremie@metter-rothan.fr', icon: Icons.Email }
     ]
   },
   {
     fullname: 'Florian Zobèle',
     description: 'UI.credits-tab.description_florian',
     links: [
-      { url: 'https://florianzobele.fr', icon: Icons.Portfolio },
-      { url: 'https://github.com/Ghuntheur', icon: Icons.Github },
-      { url: 'https://www.linkedin.com/in/florianzobele', icon: Icons.LinkedIn },
       { url: 'https://stackoverflow.com/users/9239242/ghuntheur', icon: Icons.StackOverflow },
-      { url: 'mailto:hello@florianzobele.fr', icon: Icons.Email }
+      { url: 'mailto:hello@florianzobele.fr', icon: Icons.Email },
+      { url: 'https://github.com/Ghuntheur', icon: Icons.Github },
+      { url: 'https://florianzobele.fr', icon: Icons.Portfolio },
+      { url: 'https://www.linkedin.com/in/florianzobele', icon: Icons.LinkedIn },
     ]
   },
   {
@@ -52,8 +52,8 @@ export const collaborators: ICollaboratorProps[] = [
     fullname: 'Jordan Vilsaint',
     description: 'UI.credits-tab.description_jordan',
     links: [
-      { url: 'http://jovsn.alwaysdata.net', icon: Icons.Portfolio },
       { url: 'https://github.com/jovsn', icon: Icons.Github },
+      { url: 'http://jovsn.alwaysdata.net', icon: Icons.Portfolio },
       { url: 'https://linkedin.com/in/jordan-v-7b7734b0', icon: Icons.LinkedIn },
     ]
   },
