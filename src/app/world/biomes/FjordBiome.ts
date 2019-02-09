@@ -84,6 +84,9 @@ class FjordBiome extends Biome {
       return SUB_BIOMES.FJORD_BEACH;
     }
 
+    if (m > 0.625) {
+      return SUB_BIOMES.SWAMP_WATER;
+    }
     return SUB_BIOMES.OCEAN;
   }
 }

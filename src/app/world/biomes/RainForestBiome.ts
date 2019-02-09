@@ -113,6 +113,9 @@ class RainForestBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.1) {
+      if (m > 0.625) {
+        return SUB_BIOMES.SWAMP_WATER;
+      }
       return SUB_BIOMES.OCEAN;
     }
 
