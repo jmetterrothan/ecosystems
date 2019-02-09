@@ -8,7 +8,7 @@ import Terrain from '@world/Terrain';
 import MathUtils from '@utils/Math.utils';
 
 import { IBiome } from '@world/models/biome.model';
-import { ILowHigh } from '@world/models/biomeWeightedObject.model';
+import { ILowHigh, IBiomeWeightedObject } from '@world/models/biomeWeightedObject.model';
 import { IPick } from '@world/models/pick.model';
 import { IPickObject } from '@world/models/objectParameters.model';
 
@@ -55,10 +55,14 @@ class BiomeGenerator {
     const biome = this.biome.getParametersAt(e, m);
 
     let temp = 0;
-    const rand = MathUtils.rng(); // random float bewteen 0 - 1 included (sum of weights must be = 1)
 
-    const isOnWater = (<IPickObject>parameters).hasOwnProperty('isOnWater');
-    const organisms = biome.organisms.filter(object => object.float === isOnWater);
+    const isOnWater = (<IPickObject>parameters).hasOwnProperty('isOnWater') && parameters.isOnWater;
+    const organisms = biome.organisms.filter(object => isOnWater === object.float);
+
+    // use sum of selected organisms weights to calculate a random value
+    const sumOfWeights = organisms.reduce((acc, item: IBiomeWeightedObject) => acc + item.weight, 0);
+    // random float bewteen 0 - 1 included (sum of weights must be = 1)
+    const rand = MathUtils.randomFloat(0, sumOfWeights);
 
     for (let i = 0, n = organisms.length; i < n; i++) {
       let y = e * Chunk.MAX_TERRAIN_HEIGHT;
