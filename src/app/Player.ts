@@ -1,15 +1,16 @@
-import { configSvc } from '@shared/services/config.service';
 import * as THREE from 'three';
 import * as tf from '@tensorflow/tfjs';
 
 import 'three/examples/js/controls/PointerLockControls';
 
 import Chunk from '@world/Chunk';
+import PointerLock from '@app/PointerLock';
 import Terrain from '@world/Terrain';
 import Voice from '@voice/Voice';
 
 import { multiplayerSvc } from '@online/services/multiplayer.service';
 import { playerSvc } from '@shared/services/player.service';
+import { configSvc } from '@shared/services/config.service';
 
 import { KeyAction, Keys } from '@shared/constants/keys.constants';
 
@@ -47,6 +48,17 @@ class Player {
 
     this.speed = new THREE.Vector3(40000, 40000, 40000);
     this.velocity = new THREE.Vector3(0, 0, 0);
+
+    PointerLock.addEventListener('pointerlockchange', () => {
+      if (!PointerLock.enabled) {
+        this.moveForward = false;
+        this.moveBackward = false;
+        this.moveLeft = false;
+        this.moveRight = false;
+        this.moveUp = false;
+        this.moveDown = false;
+      }
+    });
   }
 
   /**
