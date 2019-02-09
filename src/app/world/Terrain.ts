@@ -450,7 +450,9 @@ class Terrain {
 
       chunk = this.getChunkAt(x, z);
 
-      if (special.underwater === false && y <= Chunk.SEA_LEVEL) { continue; }
+      if (special.underwater === false && y < Chunk.SEA_LEVEL) { continue; }
+      if (special.underwater === true && y > Chunk.SEA_LEVEL) { continue; }
+
       if ((lowE !== null && e < lowE) ||
         (highE !== null && e > highE) ||
         (lowM !== null && m < lowM) ||
