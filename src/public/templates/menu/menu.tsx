@@ -46,7 +46,7 @@ class Menu extends React.PureComponent<Props> {
             <TabList>
               <Tab>
                 <div className='tabs-menu ui-click-sound'>
-                  <span className='tabs-menu__icon icon-leaf mb-1' />
+                  <span className='tabs-menu__icon icon-bullhorn mb-1' />
                   <span className='tabs-menu__text'>{translationSvc.translate('UI.home-tab.title')}</span>
                 </div>
               </Tab>
