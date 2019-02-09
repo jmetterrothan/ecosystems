@@ -128,12 +128,12 @@ class Main {
       PointerLock.addEventListener('pointerlockchange', pointerlockchange, false);
       PointerLock.addEventListener('pointerlockerror', pointerlockerror, false);
 
-      document.body.addEventListener('click', () => {
+      document.body.addEventListener('click', e => {
         if (!uiSvc.isState(UIStates.GAME)) return;
-        if (!this.controls.enabled || !this.world.isInitialized()) { return; }
+        if (!this.controls.enabled || !this.world.isInitialized() || !(e.which === 1 || e.which === 3)) { return; }
 
         // mouse position always in the center of the screen
-        this.world.handlePlayerInteraction(INTERACTION_TYPE.MOUSE_CLICK);
+        this.world.handlePlayerInteraction(e.which === 1 ? INTERACTION_TYPE.MOUSE_LEFT_CLICK : INTERACTION_TYPE.MOUSE_RIGHT_CLICK);
       });
 
       document.body.addEventListener('keydown', e => {

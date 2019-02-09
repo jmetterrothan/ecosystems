@@ -321,9 +321,14 @@ class Terrain {
         }
         break;
 
-      case INTERACTION_TYPE.MOUSE_CLICK:
+      case INTERACTION_TYPE.MOUSE_LEFT_CLICK:
         this.placeObject(raycaster);
         this.generator.getBiome().handleClick(raycaster);
+        break;
+
+      case INTERACTION_TYPE.MOUSE_RIGHT_CLICK:
+        // TODO: delete obj
+        console.log('right click');
         break;
 
       case INTERACTION_TYPE.MOUSE_WHEEL_DOWN:
