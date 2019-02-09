@@ -75,7 +75,7 @@ module.exports = {
             options: {
               name: webpackMode.isProduction
                 ? '/images/[name]_[hash:8].[ext]'
-                : '[name].[ext]'
+                : '[name]_[hash:8].[ext]'
             }
           }
         ]

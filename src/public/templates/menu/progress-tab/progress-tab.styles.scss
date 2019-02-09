@@ -1,11 +1,44 @@
 .progress-tab {
-  li {
-    background: rgba(0, 0, 0, 0.025);
-    line-height: 2rem;
-    font-size: 1.1rem;
+  .overall-progress {
+    li {
+      background: rgba(0, 0, 0, 0.025);
+      line-height: 2rem;
+      font-size: 1.1rem;
 
-    &:nth-child(odd) {
-      background: transparent;
+      &:nth-child(odd) {
+        background: transparent;
+      }
+    }
+  }
+}
+
+.biome-progress {
+  h4 {
+    font-size: 1.1rem;
+    line-height: 2rem;
+    font-weight: 700;
+    color: $color-darkblue;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  img {
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+    height: 100px;
+    max-width: 100px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 auto;
+    background: #dadada;
+    filter: grayscale(100%);
+  }
+
+  &--unlocked {
+    img {
+      filter: grayscale(0);
     }
   }
 }
