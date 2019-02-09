@@ -356,7 +356,7 @@ export const SUB_BIOMES: IBiomes = {
         weight: 0.2,
         name: ['thin_mushroomg1', 'thin_mushroomg2'], // MUSHROOM
         scarcity: 0.9,
-        e: { low: Chunk.SEA_ELEVATION + 0.025, high: null },
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
         m: null,
         scale: { min: 0.75, max: 1.25 },
         float: false,
@@ -422,7 +422,7 @@ export const SUB_BIOMES: IBiomes = {
         weight: 0.2,
         name: ['mushroom_arrow', 'small_mushroom1', 'small_mushroom2', 'small_mushroom3'], // MUSHROOM
         scarcity: 0.9,
-        e: { low: Chunk.SEA_ELEVATION, high: null },
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
         m: null,
         scale: { min: 1.0, max: 2.0 },
         float: false,
@@ -518,18 +518,9 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.1,
+        weight: 0.15,
         name: ['star', 'shell'],
         scarcity: 0.975,
-        e: null,
-        m: null,
-        scale: { min: 0.75, max: 1.15 },
-        float: false,
-      },
-      {
-        weight: 0.05,
-        name: ['sea_urchin'],
-        scarcity: 0.995,
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.15 },
@@ -635,7 +626,7 @@ export const SUB_BIOMES: IBiomes = {
         weight: 0.025,
         name: ['mushroom_cluster', 'mushroomg4', 'blue_mushroom'], // MUSHROOM
         scarcity: 0.85,
-        e: { low: Chunk.SEA_ELEVATION + 0.01, high: Chunk.SEA_ELEVATION + 0.65 },
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.65 },
         m: null,
         scale: { min: 1.0, max: 1.25 },
         float: false,
@@ -644,7 +635,7 @@ export const SUB_BIOMES: IBiomes = {
         weight: 0.125,
         name: ['pink_mushroom', 'mushroomg3'], // MUSHROOM
         scarcity: 0.25,
-        e: { low: Chunk.SEA_ELEVATION + 0.01, high: Chunk.SEA_ELEVATION + 0.65 },
+        e: { low: Chunk.SEA_ELEVATION + 0.025, high: Chunk.SEA_ELEVATION + 0.65 },
         m: null,
         scale: { min: 1.0, max: 1.25 },
         float: false,
