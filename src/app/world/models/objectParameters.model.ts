@@ -8,7 +8,7 @@ export interface IPlaceObject {
 
 export interface IPickObject {
   force?: boolean; // bypass scarcity test
-  float?: boolean;
+  isOnWater?: boolean;
 }
 
 export interface IStackReference {

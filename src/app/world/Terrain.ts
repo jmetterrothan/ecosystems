@@ -524,14 +524,13 @@ class Terrain {
 
       this.currentSubBiome = biome;
       this.intersectionSurface = intersection.object;
-      this.picksAvailable = Terrain.PICKS.get(this.currentSubBiome.name)
-        .filter(pick => this.intersectionSurface === this.water ? pick.f : !pick.f);
+      this.picksAvailable = Terrain.PICKS.get(this.currentSubBiome.name);
 
       // // retrieve current preview object
       // const item = chunk.pick(intersection.point.x, intersection.point.z, {
       //   force: true,
       //   float: (this.intersectionSurface === this.water)
-      // }, false);
+      // });
 
       if (!this.picksAvailable.length) {
         // bail out if no item gets picked
@@ -539,7 +538,9 @@ class Terrain {
         return;
       }
 
-      if (this.pickIndex >= this.picksAvailable.length) this.pickIndex = Math.floor(Math.random() * this.picksAvailable.length);
+      if (this.pickIndex >= this.picksAvailable.length) {
+        this.pickIndex = Math.floor(Math.random() * this.picksAvailable.length);
+      }
 
       this.previewItem = this.picksAvailable[this.pickIndex];
       this.previewItem.p.copy(intersection.point);
