@@ -107,6 +107,13 @@ class BiomeGenerator {
     return null;
   }
 
+  /**
+   * Check if an organism can be picked @ the given location
+   * @param {IBiomeWeightedObject} organism
+   * @param {number} e
+   * @param {number} m
+   * @param {boolean} force Force scarcity test
+   */
   checkCanPick(organism: IBiomeWeightedObject, e: number, m: number, force: boolean = false): boolean {
     const lowM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).low : null;
     const highM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).high : null;
