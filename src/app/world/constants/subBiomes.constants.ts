@@ -491,16 +491,7 @@ export const SUB_BIOMES: IBiomes = {
     color: new THREE.Color(0xf1c176),
     organisms: [
       {
-        weight: 0.5,
-        name: ['lilypad', 'lilypad2'],
-        scarcity: 0.8,
-        e: { low: null, high: Chunk.SEA_ELEVATION - 0.05 },
-        m: { low: 0.5, high: null },
-        scale: { min: 1.0, max: 1.65 },
-        float: true,
-      },
-      {
-        weight: 0.35,
+        weight: 0.8,
         name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
         scarcity: 0.9,
         e: null,
