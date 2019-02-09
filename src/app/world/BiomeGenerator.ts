@@ -54,8 +54,6 @@ class BiomeGenerator {
 
     const biome = this.biome.getParametersAt(e, m);
 
-    let temp = 0;
-
     const isOnWater = (<IPickObject>parameters).hasOwnProperty('isOnWater') && parameters.isOnWater;
     const organisms = biome.organisms.filter(object => isOnWater === object.float);
 
@@ -64,9 +62,9 @@ class BiomeGenerator {
     // random float bewteen 0 - 1 included (sum of weights must be = 1)
     const rand = MathUtils.randomFloat(0, sumOfWeights);
 
-    for (let i = 0, n = organisms.length; i < n; i++) {
-      let y = e * Chunk.MAX_TERRAIN_HEIGHT;
+    let temp = 0;
 
+    for (let i = 0, n = organisms.length; i < n; i++) {
       temp += organisms[i].weight;
 
       if (rand <= temp) {
@@ -74,38 +72,27 @@ class BiomeGenerator {
 
         if (organism.float && !this.biome.hasWater()) { return null; } // prevent placing objects on water if it's disabled
 
-        const lowM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).low : null;
-        const highM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).high : null;
-
-        const lowE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).low : null;
-        const highE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).high : null;
-
-        const scale = (organism.scale ? MathUtils.randomFloat(organism.scale.min, organism.scale.max) : 1) * World.OBJ_INITIAL_SCALE;
-        const r = new THREE.Vector3();
-
-        if (organism.float === true) {
-          // sample 4 points and take the highest one to prevent (as much as possible) clipping into the water
-          const p1 = this.computeWaterHeightAt(x - 1024, z);
-          const p2 = this.computeWaterHeightAt(x + 1024, z);
-          const p3 = this.computeWaterHeightAt(x, z + 1024);
-          const p4 = this.computeWaterHeightAt(x, z + 1024);
-
-          const p = Math.max(p1, p2, p3, p4);
-          y = Math.max(y, p);
-        }
-
-        r.y = MathUtils.randomFloat(0, Math.PI * 2);
-
-        const rand = MathUtils.rng();
-        // get a random variant name
-        const modelVariantName = typeof organism.name === 'string' ? organism.name : organism.name[MathUtils.randomInt(0, organism.name.length - 1)];
-
         // test for scarcity and ground elevation criteria
-        if ((parameters.force || rand >= organism.scarcity) &&
-          (lowE === null || e >= lowE) &&
-          (highE === null || e <= highE) &&
-          (lowM === null || m >= lowM) &&
-          (highM === null || m <= highM)) {
+        if (this.checkCanPick(organism, e, m, parameters.force)) {
+          let y = e * Chunk.MAX_TERRAIN_HEIGHT;
+
+          // get a random variant name
+          const scale = (organism.scale ? MathUtils.randomFloat(organism.scale.min, organism.scale.max) : 1) * World.OBJ_INITIAL_SCALE;
+
+          if (organism.float === true) {
+            // sample 4 points and take the highest one to prevent (as much as possible) clipping into the water
+            const p1 = this.computeWaterHeightAt(x - 1024, z);
+            const p2 = this.computeWaterHeightAt(x + 1024, z);
+            const p3 = this.computeWaterHeightAt(x, z + 1024);
+            const p4 = this.computeWaterHeightAt(x, z + 1024);
+
+            const p = Math.max(p1, p2, p3, p4);
+            y = Math.max(y, p);
+          }
+
+          const r = new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0);
+          const modelVariantName = organism.name[MathUtils.randomInt(0, organism.name.length - 1)];
+
           return (<IPick>{
             r: new THREE.Euler().setFromVector3(r),
             p: new THREE.Vector3(x, y, z),
@@ -118,6 +105,22 @@ class BiomeGenerator {
     }
 
     return null;
+  }
+
+  checkCanPick(organism: IBiomeWeightedObject, e: number, m: number, force: boolean = false): boolean {
+    const lowM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).low : null;
+    const highM = organism.m !== null && organism.m !== undefined ? (<ILowHigh>organism.m).high : null;
+
+    const lowE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).low : null;
+    const highE = organism.e !== null && organism.e !== undefined ? (<ILowHigh>organism.e).high : null;
+
+    const rand = MathUtils.rng();
+
+    return ((force || rand >= organism.scarcity) &&
+      (lowE === null || e >= lowE) &&
+      (highE === null || e <= highE) &&
+      (lowM === null || m >= lowM) &&
+      (highM === null || m <= highM));
   }
 
   /**
