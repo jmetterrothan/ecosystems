@@ -1,4 +1,5 @@
 import React from 'react';
+import queryString from 'query-string';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Button from '@public/components/button/button';
@@ -35,7 +36,9 @@ class Menu extends React.PureComponent<Props> {
   }
 
   reload = () => {
-    window.location.reload();
+    const parsed = queryString.parse(location.search);
+    parsed.seed = '';
+    window.location.search = queryString.stringify(parsed);
   }
 
   render() {
