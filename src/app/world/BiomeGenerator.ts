@@ -1,6 +1,15 @@
 import * as THREE from 'three';
 import simplexNoise from 'simplex-noise';
 
+import FjordBiome from '@world/biomes/FjordBiome';
+import SnowBiome from '@world/biomes/SnowBiome';
+import DesertBiome from '@world/biomes/DesertBiome';
+import SwampBiome from '@world/biomes/SwampBiome';
+import OceanBiome from '@world/biomes/OceanBiome';
+import HighlandBiome from '@world/biomes/HighlandBiome';
+import RainForestBiome from './biomes/RainForestBiome';
+import DesertIslandBiome from './biomes/DesertIslandBiome';
+
 import World from '@world/World';
 import Chunk from '@world/Chunk';
 import Biome from '@world/Biome';
@@ -31,9 +40,37 @@ class BiomeGenerator {
    * @param {Terrain} terrain
    */
   init(terrain: Terrain): Biome {
-    const biomeClass = Biomes[MathUtils.randomInt(0, Biomes.length - 1)];
-    this.biome = new biomeClass(terrain);
+    switch (terrain.getWorld().getSeed().toLowerCase()) {
+      case 'forest':
+        this.biome = new RainForestBiome(terrain);
+        break;
+      case 'highland':
+        this.biome = new HighlandBiome(terrain);
+        break;
+      case 'ocean':
+        this.biome = new OceanBiome(terrain);
+        break;
+      case 'swamp':
+        this.biome = new SwampBiome(terrain);
+        break;
+      case 'desert':
+        this.biome = new DesertBiome(terrain);
+        break;
+      case 'snow':
+        this.biome = new SnowBiome(terrain);
+        break;
+      case 'fjord':
+        this.biome = new FjordBiome(terrain);
+        break;
+      case 'island':
+        this.biome = new DesertIslandBiome(terrain);
+        break;
+      default:
+        const biomeClass = Biomes[MathUtils.randomInt(0, Biomes.length - 1)];
+        this.biome = new biomeClass(terrain);
+        break;
 
+    }
     return this.biome;
   }
 
