@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
+import { monitoringSvc } from '@shared/services/monitoring.service';
 import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
 
 import BiomeGenerator from '@world/BiomeGenerator';
@@ -27,17 +27,17 @@ abstract class Biome {
   protected waterColor2: THREE.Color;
 
   protected progressionSvc: ProgressionService;
-  protected monitoringSvc: MonitoringService;
+
+  protected sound: any;
 
   constructor(name: string, terrain: Terrain) {
     this.name = name;
     this.terrain = terrain;
     this.generator = terrain.getBiomeGenerator();
 
-    this.water = true;
     this.progressionSvc = progressionSvc;
-    this.monitoringSvc = monitoringSvc;
 
+    this.water = true;
     this.waterDistortion = true;
     this.waterDistortionFreq = 1.0;
     this.waterDistortionAmp = 1024.0;
@@ -45,8 +45,8 @@ abstract class Biome {
     this.waterColor1 = WATER_CONSTANTS.WATER_COLOR_A;
     this.waterColor2 = WATER_CONSTANTS.WATER_COLOR_B;
 
-    this.progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.game_played);
-    this.monitoringSvc.sendEvent(this.monitoringSvc.categories.game, this.monitoringSvc.actions.played, 'game_played');
+    progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.game_played);
+    monitoringSvc.sendEvent(monitoringSvc.categories.game, monitoringSvc.actions.played, 'game_played');
   }
 
   /**
@@ -124,6 +124,7 @@ abstract class Biome {
   getWaterDistortion(): boolean { return this.waterDistortion; }
   getWaterDistortionFreq(): number { return this.waterDistortionFreq; }
   getWaterDistortionAmp(): number { return this.waterDistortionAmp; }
+  getSound(): any { return this.sound; }
 }
 
 export default Biome;

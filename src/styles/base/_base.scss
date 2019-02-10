@@ -7,8 +7,13 @@
 html {
   font-size: 14px;
   font-family: $font;
+  overflow-x:hidden;
+  max-width: 100vw;
+  min-height: 100%;
 }
 
-body {
-  overflow:hidden;
+@media screen and (min-device-width: 1024px) {
+  .ui__state {
+    min-width: 480px;
+  }
 }

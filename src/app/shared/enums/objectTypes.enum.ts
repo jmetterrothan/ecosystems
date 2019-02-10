@@ -1,0 +1,11 @@
+export enum OBJ_TYPE {
+  FLOWER,
+  MUSHROOM,
+  TREE,
+  CACTUS,
+  ROCK,
+  PLANT,
+  INSECT,
+  FISH,
+  MISC
+}

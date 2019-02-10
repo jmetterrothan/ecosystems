@@ -1,23 +1,23 @@
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
+import { configSvc } from './config.service';
 
 class StorageService {
 
   /**
    * Return string or object in local storage with key
    * @param {string} - key
-   * @returns {string|Object}
+   * @returns {T}
    */
-  get(key: string): string | Object {
+  get<T>(key: string): T {
     const value: any = localStorage.getItem(key);
-    return typeof value === 'string' ? JSON.parse(value) : value;
-  }
-
-  /**
-   * get list of completed trophies in local storage
-   * @returns {string[]}
-   */
-  getTrophiesCompleted(): string[] {
-    return this.get(STORAGES_KEY.completed) as string[];
+    try {
+      return JSON.parse(value);
+    } catch (e) {
+      if (configSvc.debug) {
+        console.warn(`Failed to parse storage key ${key}`);
+      }
+    }
+    return value;
   }
 
   /**
@@ -25,8 +25,8 @@ class StorageService {
    * @param {string} - key
    * @param {string|Object} item
    */
-  set(key: string, item: string | Object) {
-    localStorage.setItem(key, typeof item === 'object' ? JSON.stringify(item) : item);
+  set<T>(key: string, item: T) {
+    localStorage.setItem(key, typeof item === 'string' ? item : JSON.stringify(item));
   }
 
   /**
@@ -45,16 +45,17 @@ class StorageService {
   }
 
   /**
-   * Return if storage at ket contains value
+   * Return if storage at key contains value
    * @param {string} - storageKey
    * @param {string} - value
    * @returns {boolean}
    */
   isInStorage(storageKey: string, value: string): boolean {
-    return (<string[]>this.get(storageKey)).includes(value);
+    return (this.get<string[]>(storageKey)).includes(value);
   }
 
 }
 
 export const storageSvc = new StorageService();
+
 export default StorageService;

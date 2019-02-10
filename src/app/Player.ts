@@ -1,18 +1,18 @@
 import * as THREE from 'three';
+import * as tf from '@tensorflow/tfjs';
 
 import 'three/examples/js/controls/PointerLockControls';
 
 import Chunk from '@world/Chunk';
+import PointerLock from '@app/PointerLock';
 import Terrain from '@world/Terrain';
-import Model from '@voice/Model';
 import Voice from '@voice/Voice';
 
-import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
-import PlayerService, { playerSvc } from '@shared/services/player.service';
-import MonitoringService, { monitoringSvc } from '@shared/services/monitoring.service';
-import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
+import { multiplayerSvc } from '@online/services/multiplayer.service';
+import { playerSvc } from '@shared/services/player.service';
+import { configSvc } from '@shared/services/config.service';
 
-import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
+import { KeyAction, Keys } from '@shared/constants/keys.constants';
 
 class Player {
   private controls: THREE.PointerLockControls;
@@ -23,15 +23,14 @@ class Player {
   private moveUp: boolean;
   private moveDown: boolean;
 
+  private voice: Voice;
+
   private speed: THREE.Vector3;
   private velocity: THREE.Vector3;
 
   private voiceModel: Model;
 
-  private progressionSvc: ProgressionService;
-  private monitoringSvc: MonitoringService;
-  private playerSvc: PlayerService;
-  private multiplayerSvc: MultiplayerService;
+  private voice: any;
 
   /**
    * Player constructor
@@ -50,10 +49,17 @@ class Player {
     this.speed = new THREE.Vector3(40000, 40000, 40000);
     this.velocity = new THREE.Vector3(0, 0, 0);
 
-    this.progressionSvc = progressionSvc;
-    this.monitoringSvc = monitoringSvc;
-    this.playerSvc = playerSvc;
-    this.multiplayerSvc = multiplayerSvc;
+    // fix bug when player is moving and pointer lock is lost
+    PointerLock.addEventListener('pointerlockchange', () => {
+      if (!PointerLock.enabled) {
+        this.moveForward = false;
+        this.moveBackward = false;
+        this.moveLeft = false;
+        this.moveRight = false;
+        this.moveUp = false;
+        this.moveDown = false;
+      }
+    });
   }
 
   /**
@@ -68,17 +74,15 @@ class Player {
     this.controls.getObject().children[0].rotateX(angle);
     this.position = spawn;
 
-    this.playerSvc.setPosition(spawn);
+    playerSvc.setPosition(spawn);
 
-    // await this.initVoice();
+    await this.initVoice();
   }
 
   private async initVoice() {
-    this.voiceModel = new Model();
-    await this.voiceModel.train();
+    const voiceModel = await tf.loadModel('https://ecosystem-server.herokuapp.com/voicemodel.json');
 
-    // this.voice = new Voice(this.voiceModel);
-    // this.voice.listen();
+    this.voice = new Voice(voiceModel);
   }
 
   /**
@@ -110,13 +114,13 @@ class Player {
       if (this.velocity.x < 0) { this.velocity.x = 0; }
     }
 
-    if (this.moveDown) {
+    if (this.moveUp) {
       this.velocity.y = this.speed.y;
     } else {
       if (this.velocity.y > 0) { this.velocity.y = 0; }
     }
 
-    if (this.moveUp) {
+    if (this.moveDown) {
       this.velocity.y = -this.speed.y;
     } else {
       if (this.velocity.y < 0) { this.velocity.y = 0; }
@@ -136,16 +140,16 @@ class Player {
    */
   update(terrain: Terrain, delta: number) {
     const position = this.move(delta);
-    this.playerSvc.setPosition(position);
+    playerSvc.setPosition(position);
 
-    if (this.multiplayerSvc.isUsed()) {
-      this.multiplayerSvc.sendPosition(position);
-      this.multiplayerSvc.checkStatus();
+    if (multiplayerSvc.isUsed()) {
+      multiplayerSvc.sendPosition(position);
+      multiplayerSvc.checkStatus();
     }
 
     const yMin = terrain.getHeightAt(position.x, position.z) + 5000;
 
-    if (this.playerSvc.isWithinWorldBorders() && position.y < yMin) {
+    if (playerSvc.isWithinWorldBorders() && position.y < yMin) {
       // collision with min ground dist
       this.positionY = yMin;
     }
@@ -157,14 +161,27 @@ class Player {
    * @param {boolean} active
    */
   handleKeyboard(key: string, active: boolean) {
-    switch (key) {
-      case 'ArrowUp': case 'z': case 'Z': this.moveForward = active; break;
-      case 'ArrowDown': case 's': case 'S': this.moveBackward = active; break;
-      case 'ArrowLeft': case 'q': case 'Q': this.moveLeft = active; break;
-      case 'ArrowRight': case 'd': case 'D': this.moveRight = active; break;
-      case '+': case 'a': case 'A': this.moveUp = active; break;
-      case '-': case 'e': case 'E': this.moveDown = active; break;
-      case 'v': !this.voice.predictState ? this.voice.listen() : this.voice.stopListening();
+    switch (key.toUpperCase()) {
+      case Keys[KeyAction.MOVE_FRONT]:
+        this.moveForward = active; break;
+
+      case Keys[KeyAction.MOVE_BACK]:
+        this.moveBackward = active; break;
+
+      case Keys[KeyAction.MOVE_LEFT]:
+        this.moveLeft = active; break;
+
+      case Keys[KeyAction.MOVE_RIGHT]:
+        this.moveRight = active; break;
+
+      case Keys[KeyAction.MOVE_UP]:
+        this.moveUp = active; break;
+
+      case Keys[KeyAction.MOVE_DOWN]:
+        this.moveDown = active; break;
+
+      case Keys[KeyAction.VOCAL]: if (active) this.voice.togglePredictState(); break;
+      case Keys[KeyAction.MUTE]: if (active) configSvc.soundEnabled = !configSvc.soundEnabled; break;
     }
   }
 

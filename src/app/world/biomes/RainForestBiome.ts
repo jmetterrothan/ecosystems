@@ -1,15 +1,24 @@
+import * as THREE from 'three';
+import poissonDiskSampling from 'poisson-disk-sampling';
+
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
+import Boids from '@boids/Boids';
+import Butterfly from '@boids/creatures/Butterfly';
 
 import { IBiome } from '@world/models/biome.model';
 
 import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
+import RainSFXMp3 from '@sounds/RainSFX.mp3';
+
 class RainForestBiome extends Biome {
+  private boids: Boids[];
+
   private a: number;
   private b: number;
   private c: number;
@@ -21,6 +30,8 @@ class RainForestBiome extends Biome {
   constructor(terrain: Terrain) {
     super('RAINFOREST', terrain);
 
+    this.boids = [];
+
     this.waterDistortion = true;
     this.waterDistortionFreq = 2.5;
     this.waterDistortionAmp = 1024.0;
@@ -30,11 +41,39 @@ class RainForestBiome extends Biome {
     this.c = MathUtils.randomFloat(0.85, 1.5); // best around 0.85;
 
     this.amplified = MathUtils.rng() >= 0.25; // magnify everything
-    this.spread = MathUtils.randomFloat(1.15, 2.00); // expand over the map (higher values means more space available for water)
+    this.spread = MathUtils.randomFloat(1.75, 2.00); // expand over the map (higher values means more space available for water)
 
     this.ridges = MathUtils.randomFloat(0.225, 0.35); // makes ridges more prevalent
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.rainforest_visited);
+    this.sound = RainSFXMp3;
+  }
+
+  init() {
+    const size = 75000;
+
+    const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
+    const points = pds.fill();
+
+    points.forEach((point: number[]) => {
+      const px = size / 2 + point.shift();
+      const pz = size / 2 + point.shift();
+
+      const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 6, Chunk.HEIGHT / 4);
+      const py = Math.max(Chunk.SEA_LEVEL + ySize / 2, this.generator.computeHeightAt(px, pz) + ySize / 3);
+
+      // butterflies
+      const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
+      for (let i = 0, n = MathUtils.randomInt(2, 4); i < n; i++) {
+        boids.addCreature(new Butterfly());
+      }
+
+      this.boids.push(boids);
+    });
+  }
+
+  update(delta: number) {
+    this.boids.forEach(boids => boids.update(this.generator, delta));
   }
 
   /**
@@ -46,6 +85,8 @@ class RainForestBiome extends Biome {
   computeElevationAt(x: number, z: number): number {
     const nx = (x - Terrain.SIZE_X / 2) / (1024 * 128);
     const nz = (z - Terrain.SIZE_Z / 2) / (1024 * 128);
+
+    // const m = this.computeMoistureAt(x, z);
 
     let e = (0.50 * this.generator.noise(1 * nx, 1 * nz)
       + 1.00 * this.generator.noise(2 * nx, 2 * nz)
@@ -60,7 +101,7 @@ class RainForestBiome extends Biome {
     const d = this.spread * BiomeGenerator.getEuclideanDistance(nx, nz);
     const ne = BiomeGenerator.islandAddMethod(this.a, this.b, this.c, d, e);
 
-    return this.amplified ? (e + ne) / 1.5 : ne;
+    return this.amplified ? (e + ne) / 1.15 : ne;
   }
 
   computeMoistureAt(x: number, z: number): number {
@@ -72,6 +113,9 @@ class RainForestBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.1) {
+      if (m > 0.625) {
+        return SUB_BIOMES.SWAMP_WATER;
+      }
       return SUB_BIOMES.OCEAN;
     }
 

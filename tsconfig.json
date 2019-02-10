@@ -11,71 +11,27 @@
     "forceConsistentCasingInFileNames": false,
     "jsx": "react",
     "paths": {
-      "@app/*": [
-        "src/app/*"
-      ],
-      "@shared/*": [
-        "src/app/shared/*"
-      ],
-      "@utils/*": [
-        "src/app/shared/utils/*"
-      ],
-      "@world/*": [
-        "src/app/world/*"
-      ],
-      "@objmodels/*": [
-        "src/public/assets/obj/*"
-      ],
-      "@images/*": [
-        "src/public/assets/images/*"
-      ],
-      "@mesh/*": [
-        "src/app/mesh/*"
-      ],
-      "@materials/*": [
-        "src/app/shared/materials/*"
-      ],
-      "@boids/*": [
-        "src/app/boids/*"
-      ],
-      "@public/*": [
-        "src/public/*"
-      ],
-      "@achievements/*": [
-        "src/app/achievements/*"
-      ],
-      "@ui/*": [
-        "src/app/ui/*"
-      ],
-      "@voice/*": [
-        "src/app/voice/*"
-      ],
-      "@online/*": [
-        "src/app/online/*"
-      ],
-      "@components/*": [
-        "src/public/components/*"
-      ],
-      "@templates/*": [
-        "src/public/templates/*"
-      ]
+      "@app/*": ["src/app/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@utils/*": ["src/app/shared/utils/*"],
+      "@world/*": ["src/app/world/*"],
+      "@objmodels/*": ["src/public/assets/obj/*"],
+      "@images/*": ["src/public/assets/images/*"],
+      "@mesh/*": ["src/app/mesh/*"],
+      "@materials/*": ["src/app/shared/materials/*"],
+      "@boids/*": ["src/app/boids/*"],
+      "@public/*": ["src/public/*"],
+      "@achievements/*": ["src/app/achievements/*"],
+      "@ui/*": ["src/app/ui/*"],
+      "@voice/*": ["src/app/voice/*"],
+      "@online/*": ["src/app/online/*"],
+      "@components/*": ["src/public/components/*"],
+      "@templates/*": ["src/public/templates/*"],
+      "@sounds/*": ["src/public/assets/sounds/*"]
     },
-    "typeRoots": [
-      "./src/typings/",
-      "./node_modules/@types/"
-    ],
-    "lib": [
-      "dom",
-      "es2017",
-      "es6",
-      "es7"
-    ]
+    "typeRoots": ["./src/typings/", "./node_modules/@types/"],
+    "lib": ["dom", "es2017", "es6", "es7"]
   },
-  "include": [
-    "./src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

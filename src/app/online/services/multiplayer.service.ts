@@ -4,12 +4,15 @@ import { Observable, Subject } from 'rxjs';
 
 import World from '@app/world/World';
 
+import { progressionSvc } from '@achievements/services/progression.service';
+
 import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded } from '@online/models/socketData.model';
 import { IPick } from '@world/models/pick.model';
 import { IOnlineStatus } from '@online/models/onlineStatus.model';
 import { IOnlineObject } from '@online/models/onlineObjects.model';
 
 import { SOCKET_EVENTS } from '@online/constants/socketEvents.constants';
+import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
 
 import { ENV } from '@shared/env/env';
 
@@ -107,6 +110,7 @@ class MultiplayerService {
     if (!this.userId && this.userId !== data.me) {
       this.userId = data.me;
 
+      if (data.usersConnected.length === 1) progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.create_game_online);
       // place all objects already placed on this room
       data.allObjects.forEach((item: IPick) => {
         this.objectPlacedSource.next(<IOnlineObject>{ item, animate: false });
@@ -115,6 +119,10 @@ class MultiplayerService {
 
     // share time
     this.timeSource.next(data.startTime);
+
+    if (this.userId === data.me && data.usersConnected.length > 1) {
+      progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.join_game_online);
+    }
 
     // init mesh for each new users
     data.usersConnected.forEach((user: string) => {
@@ -127,6 +135,7 @@ class MultiplayerService {
         this.onlineStatus$.next(this.getOnlineStatus());
       }
     });
+
   }
 
   private onPositionupdated(data: ISocketDataPositionUpdated) {
@@ -155,11 +164,11 @@ class MultiplayerService {
     return user;
   }
 
-  getOnlineUsersCount() : number {
+  getOnlineUsersCount(): number {
     return this.onlineUsers.size + 1;
   }
 
-  getOnlineStatus() : IOnlineStatus {
+  getOnlineStatus(): IOnlineStatus {
     return {
       alive: this.alive,
       online: this.getOnlineUsersCount()

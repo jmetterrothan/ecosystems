@@ -62,8 +62,10 @@ class MathUtils {
     return c + (d - c) / (b - a) * (t - a);
   }
 
-  static percent(a: any[], b: any[]): number {
-    return Math.ceil((a.length / b.length) * 100);
+  static percent(a: number, b: number, ceil: boolean = false): number {
+    return ceil
+      ? Math.ceil((a / b) * 100)
+      : (a / b) * 100;
   }
 
   /**
@@ -73,7 +75,7 @@ class MathUtils {
    * @param {number} t
    * @return {number}
    */
-  static lerp(a, b, t) {
+  static lerp(a: number, b: number, t: number) {
     return (1 - t) * a + t * b;
   }
 
@@ -83,10 +85,9 @@ class MathUtils {
    * @param {number} std
    * @return {array}
    */
-  static normalize(x, mean, std) {
-    return x.map(x => (x - mean) / std);
+  static normalize(x: any[], mean: number, std: number): any[] {
+    return x.map((x: any) => (x - mean) / std);
   }
-
 }
 
 export default MathUtils;

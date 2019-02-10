@@ -1,0 +1,68 @@
+
+// crosshair
+$crosshair-size: 12px;
+$crosshair-thickness: 3px;
+$crosshair-gap: 3px;
+$crosshair-dot: hidden;
+$crosshair-opacity: 0.6;
+
+.crosshair.crosshair--default {
+  $w : $crosshair-size * 2 + $crosshair-thickness + $crosshair-gap * 2;
+  left: calc(50vw - #{$w / 2});
+  top: calc(50vh - #{$w / 2});
+  width: $w;
+  height: $w;
+  opacity: $crosshair-opacity;
+
+  span {
+    display: block;
+    position: absolute;
+    background: #1c242c;
+
+    &:nth-child(1) {
+      top: $crosshair-size + $crosshair-gap;
+      left: 0;
+      width: $crosshair-size;
+      height: $crosshair-thickness;
+    }
+
+    &:nth-child(2) {
+      top: $crosshair-size + $crosshair-gap;
+      left: $crosshair-size + $crosshair-gap * 2 + $crosshair-thickness;
+      width: $crosshair-size;
+      height: $crosshair-thickness;
+    }
+
+    &:nth-child(3) {
+      top: 0;
+      left: $crosshair-size + $crosshair-gap;
+      width:$crosshair-thickness;
+      height:$crosshair-size;
+    }
+
+    &:nth-child(4) {
+      top: $crosshair-size + $crosshair-gap * 2 + $crosshair-thickness;
+      left: $crosshair-size + $crosshair-gap;
+      width:$crosshair-thickness;
+      height:$crosshair-size;
+    }
+
+    &:nth-child(5) {
+      top: $crosshair-size + $crosshair-gap;
+      left: $crosshair-size + $crosshair-gap;
+      width:$crosshair-thickness;
+      height:$crosshair-thickness;
+      visibility: $crosshair-dot;
+    }
+  }
+
+  &.crosshair--can-place-object {
+    span { background: $color-green; }
+  }
+  &.crosshair--can-interact{
+    span { background: $color-purple; }
+  }
+  &.crosshair--no-action {
+    span { background: $color-red; }
+  }
+}

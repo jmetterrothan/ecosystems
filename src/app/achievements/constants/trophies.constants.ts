@@ -1,233 +1,359 @@
 import { ITrophy, IChecklistOption } from '@achievements/models/trophy.model';
+import { IProgression } from '@achievements/models/progression.model';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
-import { PROGRESSION_OBJECTS_STORAGE_KEYS } from '@achievements/constants/progressionObjectsStorageKeys.constants';
+import { PROGRESSION_OBJECTS_STORAGE_KEYS, getProgressionKeysFromObjectsOfType } from '@achievements/constants/progressionObjectsStorageKeys.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 import { PROGRESSION_TROPHIES_STORAG_KEYS } from '@achievements/constants/progressionTrophiesStorageKeys.constants';
 import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
+import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
 
 import { TROPHY_DIFFICULTY } from '@achievements/enums/trophyDIfficulty.enum';
 import { TROPHY_TYPE } from '@achievements/enums/trophyType.enum';
 import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
+import { OBJ_TYPE } from '@app/shared/enums/objectTypes.enum';
 
 export const TROPHIES: ITrophy[] = [
   // GAME
   {
     name: { key: 'TROPHIES.play_games_counter', options: { counter: 2 } },
-    value: 'play ten games',
+    value: 'play_two_games',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.GAME,
     checklist: [
-      { name: 'jouer 2 fois', value: PROGRESSION_COMMON_STORAGE_KEYS.game_played, limit: 2 }
+      { name: 'jouer 2 fois', value: PROGRESSION_COMMON_STORAGE_KEYS.game_played.value, limit: 2 }
     ]
   },
   {
     name: { key: 'TROPHIES.play_games_counter', options: { counter: 10 } },
-    value: 'play ten games',
+    value: 'play_ten_games',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.GAME,
     checklist: [
-      { name: 'jouer 10 fois', value: PROGRESSION_COMMON_STORAGE_KEYS.game_played, limit: 10 }
+      { name: 'jouer 10 fois', value: PROGRESSION_COMMON_STORAGE_KEYS.game_played.value, limit: 10 }
     ]
   },
   // BIOMES
   {
     name: { key: 'TROPHIES.visit_all_biomes' },
-    value: 'visit all biomes',
+    value: 'visit_all_biomes',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.BIOMES,
     checklist: [
-      ...Object.values(PROGRESSION_BIOME_STORAGE_KEYS).reduce((acc, name) => acc.concat(<IChecklistOption>{ name, value: name }), [])
-    ]
-  },
-  {
-    name: { key: 'TROPHIES.visit_all_biomes', options: { counter: 10 } },
-    value: 'visit all biomes five times',
-    img: '',
-    difficulty: TROPHY_DIFFICULTY.BRONZE,
-    checklist: [
-      ...Object.values(PROGRESSION_BIOME_STORAGE_KEYS).reduce((acc, name) => acc.concat(<IChecklistOption>{ name, value: name, limit: 10 }), [])
+      ...Object.values(PROGRESSION_BIOME_STORAGE_KEYS).reduce((acc, item: IProgression) => acc.concat(<IChecklistOption>{ name: item.name, value: item.value }), [])
     ]
   },
   {
     name: { key: 'TROPHIES.going_underwater' },
-    value: 'going underwater',
+    value: 'going_underwater',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.BIOMES,
     checklist: [
-      { name: 'underwater', value: PROGRESSION_COMMON_STORAGE_KEYS.going_underwater }
+      { name: 'underwater', value: PROGRESSION_COMMON_STORAGE_KEYS.going_underwater.value }
     ]
   },
   {
-    name: { key: 'TROPHIES.going_underwater_counter', options: { counter: 20 } },
-    value: 'going underwater twenty times',
+    name: { key: 'TROPHIES.going_underwater_counter', options: { counter: 10 } },
+    value: 'going_underwater_twenty_times',
     img: '',
     difficulty: TROPHY_DIFFICULTY.GOLD,
+    type: TROPHY_TYPE.BIOMES,
     checklist: [
-      { name: 'underwater', value: PROGRESSION_COMMON_STORAGE_KEYS.going_underwater, limit: 20 }
+      { name: 'underwater', value: PROGRESSION_COMMON_STORAGE_KEYS.going_underwater.value, limit: 10 }
     ]
   },
   // OBJECTS
   {
     name: { key: 'TROPHIES.place_all_objects' },
-    value: 'place all objects',
+    value: 'place_all_objects',
     img: '',
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
+    type: TROPHY_TYPE.OBJECTS,
+    percentage: 85,
     checklist: [
-      ...Object.values(PROGRESSION_OBJECTS_STORAGE_KEYS).reduce((acc, name) => acc.concat(<IChecklistOption>{ name, value: name }), [])
+      ...Object.values(PROGRESSION_OBJECTS_STORAGE_KEYS).reduce((acc, item: IProgression) => acc.concat(<IChecklistOption>{ name: item.name, value: item.value }), [])
     ]
   },
   {
     name: { key: 'TROPHIES.place_object' },
-    value: 'place 1 object',
+    value: 'place_1_object',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.OBJECTS,
     checklist: [
-      { name: 'place 1 object', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed }
+      { name: 'place 1 object', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed.value }
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.place_object_submarine' },
+    value: 'place_object_submarine',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.OBJECTS,
+    checklist: [
+      { name: 'place 1 submarine object', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_submarine.value }
     ]
   },
   {
     name: { key: 'TROPHIES.place_objects_counter', options: { counter: 10 } },
-    value: 'place 10 objects',
+    value: 'place_10_objects',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.OBJECTS,
     checklist: [
-      { name: 'place 10 objects', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed, limit: 10 }
+      { name: 'place 10 objects', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed.value, limit: 10 }
     ]
   },
   {
     name: { key: 'TROPHIES.place_objects_counter', options: { counter: 50 } },
-    value: 'place 50 objects',
+    value: 'place_50_objects',
     img: '',
     difficulty: TROPHY_DIFFICULTY.GOLD,
+    type: TROPHY_TYPE.OBJECTS,
     checklist: [
-      { name: 'place 100 objects', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed, limit: 100 }
+      { name: 'place 50 objects', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed.value, limit: 50 }
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.mushrooms_soup' },
+    value: 'mushrooms_soup',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.DIAMOND,
+    type: TROPHY_TYPE.OBJECTS,
+    percentage: 80,
+    checklist: [
+      ...getProgressionKeysFromObjectsOfType(OBJ_TYPE.MUSHROOM).map((progression: IProgression) => <IChecklistOption>{ name: progression.name, value: progression.value })
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.bunch_of_flowers' },
+    value: 'bunch_of_flowers',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.DIAMOND,
+    type: TROPHY_TYPE.OBJECTS,
+    percentage: 80,
+    checklist: [
+      ...getProgressionKeysFromObjectsOfType(OBJ_TYPE.FLOWER).map((progression: IProgression) => <IChecklistOption>{ name: progression.name, value: progression.value })
     ]
   },
   // DISTANCE
   {
-    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 1000000 } },
+    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 2 } },
     value: 'travelled_1000000',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.DISTANCE,
     checklist: [
-      { name: 'parcourir 1000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled, limit: 1000000, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'parcourir 2000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.value, limit: 2000000, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   },
   {
-    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 10000000 } },
-    value: 'travelled_10000000',
+    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 25 } },
+    value: 'travelled_25000000',
     img: '',
-    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    difficulty: TROPHY_DIFFICULTY.GOLD,
+    type: TROPHY_TYPE.DISTANCE,
     checklist: [
-      { name: 'parcourir 10000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled, limit: 10000000, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'parcourir 10000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.value, limit: 25000000, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   },
   {
-    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 100000000 } },
-    value: 'travelled_100000000',
+    name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 50 } },
+    value: 'travelled_50000000',
     img: '',
-    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    difficulty: TROPHY_DIFFICULTY.DIAMOND,
+    type: TROPHY_TYPE.DISTANCE,
     checklist: [
-      { name: 'parcourir 100000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled, limit: 100000000, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'parcourir 50000000 unites', value: PROGRESSION_COMMON_STORAGE_KEYS.distance_travelled.value, limit: 50000000, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   },
   // WEATHER
   {
     name: { key: 'TROPHIES.going_under_rain' },
-    value: 'going under rain',
+    value: 'going_under_rain',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.WEATHER,
     checklist: [
-      { name: 'going under rain', value: PROGRESSION_WEATHER_STORAGE_KEYS.under_rain }
+      { name: 'going under rain', value: PROGRESSION_WEATHER_STORAGE_KEYS.under_rain.value }
     ]
   },
   {
     name: { key: 'TROPHIES.go_in_sun' },
-    value: 'go in sun',
+    value: 'go_in_sun',
     img: '',
-    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    difficulty: TROPHY_DIFFICULTY.GOLD,
+    type: TROPHY_TYPE.WEATHER,
     checklist: [
-      { name: 'go in sun', value: PROGRESSION_WEATHER_STORAGE_KEYS.in_sun }
+      { name: 'go in sun', value: PROGRESSION_WEATHER_STORAGE_KEYS.in_sun.value }
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.go_in_moon' },
+    value: 'go_in_moon',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.GOLD,
+    type: TROPHY_TYPE.WEATHER,
+    checklist: [
+      { name: 'go in moon', value: PROGRESSION_WEATHER_STORAGE_KEYS.in_moon.value }
     ]
   },
   // EXTRAS
   {
     name: { key: 'TROPHIES.repulse_fishes' },
-    value: 'repulse fishes',
+    value: 'repulse_fishes',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.EXTRAS,
     checklist: [
-      { name: 'repulse fishes', value: PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_fishes }
+      { name: 'repulse fishes', value: PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_fishes.value }
     ]
   },
   {
     name: { key: 'TROPHIES.repulse_butterflies' },
-    value: 'repulse butterflies',
+    value: 'repulse_butterflies',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.EXTRAS,
     checklist: [
-      { name: 'repulse butterflies', value: PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_butterflies }
+      { name: 'repulse butterflies', value: PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_butterflies.value }
     ]
   },
   {
     name: { key: 'TROPHIES.find_captain_treasure' },
-    value: 'find captain treasure',
+    value: 'find_captain_treasure',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.EXTRAS,
     checklist: [
-      { name: 'find captain treasure', value: PROGRESSION_EXTRAS_STORAGE_KEYS.find_captain_treasure }
+      { name: 'find captain treasure', value: PROGRESSION_EXTRAS_STORAGE_KEYS.find_captain_treasure.value }
     ]
   },
   {
     name: { key: 'TROPHIES.add_carrot_snowmnan' },
-    value: 'add carrot snowman',
+    value: 'add_carrot_snowman',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.EXTRAS,
     checklist: [
-      { name: 'add carrot snowman', value: PROGRESSION_EXTRAS_STORAGE_KEYS.snowman_carrot }
+      { name: 'add carrot snowman', value: PROGRESSION_EXTRAS_STORAGE_KEYS.snowman_carrot.value }
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.find_scarecrow' },
+    value: 'find_scarecrow',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.EXTRAS,
+    checklist: [
+      { name: 'find scarecrow', value: PROGRESSION_EXTRAS_STORAGE_KEYS.find_scarecrow.value }
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.archaeology' },
+    value: 'archaeology',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.EXTRAS,
+    checklist: [
+      { name: 'archaeology', value: PROGRESSION_EXTRAS_STORAGE_KEYS.archaeology.value }
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.woodcutter' },
+    value: 'woodcutter',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.EXTRAS,
+    checklist: [
+      { name: 'woodcutter', value: PROGRESSION_EXTRAS_STORAGE_KEYS.woodcutter.value }
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.under_map' },
+    value: 'under_map',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.EXTRAS,
+    checklist: [
+      { name: 'under map', value: PROGRESSION_EXTRAS_STORAGE_KEYS.under_map.value }
+    ]
+  },
+  // ONLINE
+  {
+    name: { key: 'TROPHIES.create_game_online' },
+    value: 'create_game_online',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.GOLD,
+    type: TROPHY_TYPE.ONLINE,
+    checklist: [
+      { name: 'create game online', value: PROGRESSION_ONLINE_STORAGE_KEYS.create_game_online.value }
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.join_game_online' },
+    value: 'join_game_online',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.ONLINE,
+    checklist: [
+      { name: 'join game online', value: PROGRESSION_ONLINE_STORAGE_KEYS.join_game_online.value }
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.place_object_online' },
+    value: 'place_object_online',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.GOLD,
+    type: TROPHY_TYPE.ONLINE,
+    checklist: [
+      { name: 'place object online', value: PROGRESSION_ONLINE_STORAGE_KEYS.place_object_online.value }
     ]
   },
   // TROPHIES
   {
     name: { key: 'TROPHIES.unlock_trophy_percentage', options: { counter: 25 } },
-    value: 'unlock 25 percent trophies',
+    value: 'unlock_25_percent_trophies',
     img: '',
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.TROPHY,
     checklist: [
-      { name: 'unlock 25 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage, limit: 25, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'unlock 25 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage.value, limit: 25, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   },
   {
     name: { key: 'TROPHIES.unlock_trophy_percentage', options: { counter: 50 } },
-    value: 'unlock 50 percent trophies',
+    value: 'unlock_50_percent_trophies',
     img: '',
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.TROPHY,
     checklist: [
-      { name: 'unlock 50 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage, limit: 50, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'unlock 50 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage.value, limit: 50, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   },
   {
     name: { key: 'TROPHIES.unlock_trophy_percentage', options: { counter: 75 } },
-    value: 'unlock 75 percent trophies',
+    value: 'unlock_75_percent_trophies',
     img: '',
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.TROPHY,
     checklist: [
-      { name: 'unlock 75 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage, limit: 75, comparison: COMPARISON_TYPE.SUPERIOR }
+      { name: 'unlock 75 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage.value, limit: 75, comparison: COMPARISON_TYPE.SUPERIOR }
     ]
   },
   {
     name: { key: 'TROPHIES.unlock_trophy_percentage', options: { counter: 100 } },
-    value: 'unlock 100 percent trophies',
+    value: 'unlock_100_percent_trophies',
     img: '',
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
     type: TROPHY_TYPE.TROPHY,
     checklist: [
-      { name: 'unlock 100 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage, limit: 100 }
+      { name: 'unlock 100 percent', value: PROGRESSION_TROPHIES_STORAG_KEYS.unlock_trophies_percentage.value, limit: 100 }
     ]
   }
 ];

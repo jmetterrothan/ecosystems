@@ -2,12 +2,24 @@ interface Document {
   pointerLockElement?: any;
   mozPointerLockElement?: any;
   webkitPointerLockElement?: any;
-}
-
-interface HTMLElement {
   requestPointerLock?: any;
   mozRequestPointerLock?: any;
   webkitRequestPointerLock?: any;
+  exitPointerLock?: any;
+  mozExitPointerLock?: any;
+  webkitExitPointerLock?: any;
+}
+
+interface HTMLElement {
+  pointerLockElement?: any;
+  mozPointerLockElement?: any;
+  webkitPointerLockElement?: any;
+  requestPointerLock?: any;
+  mozRequestPointerLock?: any;
+  webkitRequestPointerLock?: any;
+  exitPointerLock?: any;
+  mozExitPointerLock?: any;
+  webkitExitPointerLock?: any;
 }
 
 interface Window {
@@ -23,7 +35,3 @@ interface Math {
   seedrandom(): void;
 }
 
-interface Sample {
-  vals: number[];
-  label: string;
-}

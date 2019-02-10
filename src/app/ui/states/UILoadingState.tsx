@@ -2,13 +2,14 @@ import React from 'react';
 
 import Main from '@app/Main';
 import UIManager from '@ui/UIManager';
-import UIState from '@ui/UIState';
+import { IUIState } from '@ui/models/UIState';
 
-import Loading from '@templates/Loading/loading';
+import Loading from '@templates/loading/loading';
 
-import { UI_STATES } from '@ui/enums/UIStates.enum';
+import { UIStates } from '@ui/enums/UIStates.enum';
+import { monitoringSvc } from '@app/shared/services/monitoring.service';
 
-class UILoadingState extends UIState {
+class UILoadingState extends React.PureComponent implements IUIState {
   init() {
     console.log('INIT LOADING');
   }
@@ -17,17 +18,19 @@ class UILoadingState extends UIState {
     const { parameters } = uiManager.state;
 
     const app = new Main();
-    await app.init(uiManager);
+    await app.init();
     const seed = await app.load(parameters.seed, parameters.online);
+
+    monitoringSvc.sendEvent(monitoringSvc.categories.game, monitoringSvc.actions.played, seed);
+
     app.run();
 
-    uiManager.switchState(UI_STATES.GAME, { seed });
+    uiManager.switchState(UIStates.MENU, { seed });
   }
 
   render() {
     return Loading;
   }
-
 }
 
 export default UILoadingState;

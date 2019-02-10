@@ -1,10 +1,12 @@
+import { IProgression } from '@achievements/models/progression.model';
+
 export interface IProgressionBiomesStorageKeys {
-  desert_visited: string;
-  greenland_visited: string;
-  highland_visited: string;
-  ocean_visited: string;
-  rainforest_visited: string;
-  snow_visited: string;
-  swamp_visited: string;
-  fjord_visited: string;
+  desert_visited: IProgression;
+  highland_visited: IProgression;
+  ocean_visited: IProgression;
+  rainforest_visited: IProgression;
+  snow_visited: IProgression;
+  swamp_visited: IProgression;
+  fjord_visited: IProgression;
+  desert_island_visited: IProgression;
 }

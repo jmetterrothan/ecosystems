@@ -1,0 +1,12 @@
+@keyframes a1 {
+  from { transform: scale(0.5); opacity: 0.5; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.loading {
+  background-image: $gradient;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

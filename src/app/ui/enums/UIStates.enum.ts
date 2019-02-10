@@ -1,10 +1,6 @@
-export enum UI_STATES {
+export enum UIStates {
   HOME,
   LOADING,
   GAME,
-  TUTORIAL,
-  PAUSE,
-  TROPHIES,
-  PROGRESSION,
-  CREDITS
+  MENU
 }

@@ -51,10 +51,20 @@ class CommonUtils {
     return Object.values(obj).includes(value);
   }
 
+  static shuffleArray(arr: any[]): any[] {
+    return arr
+      .map(a => [Math.random(), a])
+      .sort((a, b) => a[0] - b[0])
+      .map(a => a[1]);
+  }
+
   static getObjectPlacedNameForAchievement(objectName: string): string {
     return `object_${objectName}_placed`;
   }
 
+  static formatNumberWithSpaces(x): string {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
 }
 
 export default CommonUtils;

@@ -1,7 +1,12 @@
+import { IProgression } from '@achievements/models/progression.model';
+
 export interface IProgressionExtrasStorageKeys {
-  repulse_fishes: string;
-  repulse_butterflies: string;
-  kill_vulture: string;
-  snowman_carrot: string;
-  find_captain_treasure: string;
+  repulse_fishes: IProgression;
+  repulse_butterflies: IProgression;
+  archaeology: IProgression;
+  snowman_carrot: IProgression;
+  find_captain_treasure: IProgression;
+  find_scarecrow: IProgression;
+  woodcutter: IProgression;
+  under_map: IProgression;
 }

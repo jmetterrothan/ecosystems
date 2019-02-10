@@ -1,3 +1,10 @@
 export enum TROPHY_TYPE {
+  GAME,
+  BIOMES,
+  OBJECTS,
+  DISTANCE,
+  WEATHER,
+  EXTRAS,
+  ONLINE,
   TROPHY
 }

@@ -1,0 +1,72 @@
+newmtl clusterSG
+illum 4
+Kd 0.80 0.80 0.80
+Ka 0.20 0.20 0.20
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 18.00
+newmtl pasted__blue_mushroom1SG
+illum 4
+Kd 0.13 0.86 0.70
+Ka 0.33 0.33 0.33
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.45 0.45 0.45
+Ns 6.00
+newmtl pasted__pasted__phong1SG1
+illum 4
+Kd 1.00 0.01 0.03
+Ka 0.30 0.30 0.30
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.52 0.52 0.52
+Ns 6.00
+newmtl pasted__pasted__phong2SG3
+illum 4
+Kd 1.00 0.90 0.76
+Ka 0.34 0.34 0.34
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
+newmtl pasted__pasted__phong3SG1
+illum 4
+Kd 0.46 0.31 0.20
+Ka 0.33 0.33 0.33
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.51 0.51 0.51
+Ns 6.00
+newmtl pasted__phong3SG
+illum 4
+Kd 0.25 0.17 0.11
+Ka 0.32 0.32 0.32
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.52 0.52 0.52
+Ns 6.00
+newmtl pasted__pink_mushroom_capSG
+illum 4
+Kd 0.98 0.44 0.46
+Ka 0.27 0.27 0.27
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.51 0.51 0.51
+Ns 6.00
+newmtl pasted__wallmushroomsfleshSG
+illum 4
+Kd 0.90 0.80 1.00
+Ka 0.46 0.46 0.46
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
+newmtl wallmushroomsfleshSG
+illum 4
+Kd 0.90 0.76 0.46
+Ka 0.34 0.34 0.34
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00

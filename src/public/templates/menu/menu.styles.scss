@@ -1,0 +1,128 @@
+@import '~react-tabs/style/react-tabs.css';
+
+.menu {
+  background: rgba(0, 0, 0, 0.2);
+
+  &__share {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    @include breakpoint-tablet {
+    }
+  }
+
+  &__footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+.react-tabs {
+  width: 100%;
+  max-width: 768px;
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  background: #f1f1f1;
+
+  &__tab-list {
+    background: rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    width: 100px;
+    flex-shrink: 0;
+    flex-grow: 0;
+  }
+
+  &__tab-panel {
+    width: calc(100% - 100px);
+    flex-shrink: 0;
+    flex-grow: 0;
+  }
+
+  &__tab {
+    width: 100%;
+    height: 100px;
+    border-radius: 0;
+    border: 0;
+    border-bottom: 1px solid #D2D3D4;
+
+    &::after {
+      display: none !important;
+    }
+
+    &:hover {
+      background: #D2D3D4;
+      transition: all ease 0.5s;
+    }
+
+    &--selected, &--selected:hover {
+      background: $color-darkblue;
+      color: #D2D3D4;
+    }
+
+    &:last-child {
+      border-bottom-color: transparent;
+    }
+
+    .tabs-menu {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      outline: none;
+
+      &__icon {
+        font-size: 2rem;
+        pointer-events: none;
+      }
+
+      &__text {
+        font-size: 0.85rem;
+        line-height:1.5rem;
+        font-weight: 700;
+        pointer-events: none;
+      }
+    }
+  }
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+
+  .tab__header {
+    display: flex;
+    align-items: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  .tab__content {
+    @include breakpoint-tablet {
+      height: calc(100vh - 125px);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+  }
+}

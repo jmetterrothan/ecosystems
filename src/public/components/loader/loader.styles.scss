@@ -1,0 +1,48 @@
+
+.loader {
+  height: 4rem;
+
+  &__text {
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $color-darkblue;
+  }
+
+  &__animation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    li {
+      width: 10px;
+      height: 10px;
+      transform: scale(0.5);
+      opacity: 0.5;
+      margin-right: 16px;
+      border-radius: 100%;
+      background: $color-darkblue;
+
+      animation-duration: 1s;
+      animation-timing-function: ease-in-out;
+      animation-direction: alternate;
+      animation-iteration-count: infinite;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &:nth-child(1) {
+        animation-name: a1;
+      }
+      &:nth-child(2) {
+        animation-name: a1;
+        animation-delay: 0.5s;
+      }
+      &:nth-child(3) {
+        animation-name: a1;
+        animation-delay: 1s;
+      }
+    }
+  }
+}

@@ -1,0 +1,131 @@
+.btn {
+  appearance: none;
+  display: block;
+  border: 2px solid transparent;
+  border-radius: 3px;
+  padding: 0 1rem;
+  line-height: calc(3rem - 4px);
+  height: 3rem;
+  min-width: 150px;
+  max-width: 100%;
+  text-transform: uppercase;
+  font-family: $font;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+  transition: all ease .4s;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  span {
+    pointer-events: none;
+  }
+
+  &--big {
+    line-height: calc(4rem - 4px);
+    height: 4rem;
+    padding: 0 1.5rem;
+    font-size: 1.65rem;
+    border-radius: 6px;
+  }
+
+  &--expand-mobile {
+    width: 100%;
+
+    @include breakpoint-tablet {
+      width: initial;
+    }
+  }
+
+  &--magenta {
+    background: $color-magenta;
+    color: #ffffff;
+
+    &:hover {
+      background: lighten($color-magenta, 10%);
+    }
+  }
+
+  &--turquoise {
+    background: $color-turquoise;
+    color: #ffffff;
+
+    &:hover {
+      background: darken($color-turquoise, 10%);
+    }
+  }
+
+  &--yellow {
+    background: $color-yellow;
+    color: #ffffff;
+
+    &:hover {
+      background: darken($color-yellow, 10%);
+    }
+  }
+
+  &--darkblue {
+    background: $color-darkblue;
+    color:#ffffff;
+
+    &:hover {
+      background: lighten($color-darkblue, 10%);
+    }
+  }
+
+  &--skyblue {
+    background: $color-skyblue;
+    color:$color-darkblue;
+
+    &:hover {
+      background: lighten($color-skyblue, 10%);
+    }
+  }
+
+  &--red {
+    background: $color-red;
+    color:#ffffff;
+
+    &:hover {
+      background: lighten($color-red, 10%);
+    }
+  }
+
+  &--green {
+    background: $color-green;
+    color:#ffffff;
+
+    &:hover {
+      background: lighten($color-green, 10%);
+    }
+  }
+
+  &--purple {
+    background: $color-purple;
+    color:#ffffff;
+
+    &:hover {
+      background: lighten($color-purple, 10%);
+    }
+  }
+
+  &--gold {
+    background: $color-gold;
+    color:$color-darkblue;
+
+    &:hover {
+      background: lighten($color-gold, 10%);
+    }
+  }
+
+  &--theme {
+    background: $color-theme;
+    color:$color-darkblue;
+
+    &:hover {
+      background: lighten($color-theme, 10%);
+    }
+  }
+}

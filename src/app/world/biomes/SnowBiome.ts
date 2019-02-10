@@ -10,6 +10,8 @@ import { IBiome } from '@world/models/biome.model';
 import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
+import SnowWindSFXMp3 from '@sounds/SnowWindSFX.mp3';
+import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
 
 class SnowBiome extends Biome {
   private snowmanObject: THREE.Object3D;
@@ -19,15 +21,20 @@ class SnowBiome extends Biome {
 
     this.waterDistortion = false;
 
-    this.waterColor1 = new THREE.Color(0xc0dade);
-    this.waterColor2 = new THREE.Color(0xacd2e5);
+    this.waterColor1 = new THREE.Color(0x84cbe8);
+    this.waterColor2 = new THREE.Color(0x78ced3);
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.snow_visited);
+    this.sound = SnowWindSFXMp3;
   }
 
   init() {
     // snowman
-    this.snowmanObject = this.terrain.placeSpecialObject({ stackReference: 'snowman_no_carrot', float: false, underwater: false });
+    this.snowmanObject = this.terrain.placeSpecialObject({
+      stackReference: 'snowman_no_carrot',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.LAND
+    });
   }
 
   update(delta: number) { }

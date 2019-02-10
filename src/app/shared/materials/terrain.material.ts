@@ -2,9 +2,9 @@ import * as THREE from 'three';
 
 const PARAMETERS = {
   wireframe: false,
-  emissive: 0x505050,
+  emissive: 0xdddddd,
   emissiveIntensity: 0.05,
-  specular: 0x353535,
+  specular: 0x505050,
   shininess: 3,
   reflectivity: 0.2,
   flatShading: true,
@@ -15,7 +15,7 @@ export const TERRAIN_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMate
 
 export const TERRAIN_SIDE_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
   ...PARAMETERS,
-  side: THREE.DoubleSide,
+  side: THREE.DoubleSide
 });
 
 export const TERRAIN_MATERIAL_WIREFRAME: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({

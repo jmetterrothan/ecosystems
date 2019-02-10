@@ -6,8 +6,8 @@ import Creature from '@boids/Creatures/Creature';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { configSvc } from '@app/shared/services/config.service';
-import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
-import PlayerService, { playerSvc } from '@shared/services/player.service';
+import { progressionSvc } from '@achievements/services/progression.service';
+import { playerSvc } from '@shared/services/player.service';
 
 import { IBoidCreatureParameters } from '@boids/models/boidCreatureParameters.model';
 
@@ -21,9 +21,6 @@ class Boids {
 
   private scene: THREE.Scene;
 
-  private playerSvc: PlayerService;
-  private progressionSvc: ProgressionService;
-
   /**
    * Boids constructor
    * @param {THREE.Scene} scene
@@ -34,9 +31,6 @@ class Boids {
     this.scene = scene;
     this.boudingBox = boudingBox;
     this.origin = origin;
-
-    this.playerSvc = playerSvc;
-    this.progressionSvc = progressionSvc;
 
     if (configSvc.debug) {
       const mesh = new THREE.Box3().setFromCenterAndSize(
@@ -74,9 +68,9 @@ class Boids {
       creature.update(this.creatures, generator, delta);
     });
 
-    const someCreaturesRepulsed = this.creatures.some((creature: Creature) => creature.getModelPosition().distanceTo(this.playerSvc.getPosition()) < creature.getMinRepulseDistance());
+    const someCreaturesRepulsed = this.creatures.some((creature: Creature) => creature.getModelPosition().distanceTo(playerSvc.getPosition()) < creature.getMinRepulseDistance());
     if (someCreaturesRepulsed) {
-      this.progressionSvc.increment(this.creatures[0].getParameters().underwater
+      progressionSvc.increment(this.creatures[0].getParameters().underwater
         ? PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_fishes
         : PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_butterflies);
     }

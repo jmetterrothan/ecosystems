@@ -1,3 +1,6 @@
+import { ILowHigh } from './biomeWeightedObject.model';
+import { OBJ_TYPE } from '@app/shared/enums/objectTypes.enum';
+
 export interface IPlaceObject {
   animate?: boolean;
   save?: boolean;
@@ -5,16 +8,25 @@ export interface IPlaceObject {
 
 export interface IPickObject {
   force?: boolean; // bypass scarcity test
-  float?: boolean;
+  isOnWater?: boolean;
 }
 
 export interface IStackReference {
   float: boolean;
   stackReference: string;
+  type: OBJ_TYPE;
+}
+
+export enum ISpecialObjectCanPlaceIn {
+  LAND,
+  WATER,
+  BOTH
 }
 
 export interface ISpecialObject {
-  underwater: boolean;
+  underwater: ISpecialObjectCanPlaceIn;
   float: boolean;
   stackReference: string;
+  e?: ILowHigh;
+  m?: ILowHigh;
 }

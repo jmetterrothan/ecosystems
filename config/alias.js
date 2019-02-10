@@ -9,6 +9,7 @@ module.exports = {
   "@shaders": path.resolve(PATHS.PUBLIC, 'shaders'),
   "@objmodels": path.resolve(PATHS.PUBLIC, 'assets', 'obj'),
   "@utils": path.resolve(PATHS.APP, 'shared', 'utils'),
+  "@sounds": path.resolve(PATHS.PUBLIC, 'assets', 'sounds'),
   "@world": path.resolve(PATHS.APP, 'world'),
   "@mesh": path.resolve(PATHS.APP, 'mesh'),
   "@materials": path.resolve(PATHS.APP, 'shared', 'materials'),

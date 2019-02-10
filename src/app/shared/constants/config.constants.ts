@@ -2,18 +2,20 @@ import * as THREE from 'three';
 
 import { IConfig } from '@shared/models/graphicsConfig.model';
 
-import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
+import { GraphicsQuality } from '@shared/enums/graphicsQuality.enum';
 
 export const LOW_CONFIG: IConfig = {
-  MAX_VISIBLE_CHUNKS: 12,
-  MAX_RENDERABLE_CHUNKS: 16,
+  MAX_VISIBLE_CHUNKS: 10,
+  MAX_RENDERABLE_CHUNKS: 14,
 
   ENABLE_WATER_EFFECTS: false,
   ENABLE_WEATHER_EFFECTS: false,
   ENABLE_AA: false,
   ENABLE_SHADOWS: false,
   SHADOW_MAP_SIZE: 2048 * 10,
-  SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap
+  SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap,
+
+  SPAWN: new THREE.Vector3(10000, 0, 10000)
 };
 
 export const MEDIUM_CONFIG: IConfig = {
@@ -25,11 +27,13 @@ export const MEDIUM_CONFIG: IConfig = {
   ENABLE_AA: true,
   ENABLE_SHADOWS: false,
   SHADOW_MAP_SIZE: 2048 * 10,
-  SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap
+  SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap,
+
+  SPAWN: new THREE.Vector3(34000, 24000, 34000)
 };
 
 export const HIGH_CONFIG: IConfig = {
-  MAX_VISIBLE_CHUNKS: 22,
+  MAX_VISIBLE_CHUNKS: 24,
   MAX_RENDERABLE_CHUNKS: 30,
 
   ENABLE_WATER_EFFECTS: true,
@@ -37,11 +41,13 @@ export const HIGH_CONFIG: IConfig = {
   ENABLE_AA: true,
   ENABLE_SHADOWS: true,
   SHADOW_MAP_SIZE: 2048 * 10,
-  SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap
+  SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap,
+
+  SPAWN: new THREE.Vector3(65000, 48000, 65000)
 };
 
 export const CONFIGS = {
-  [GRAPHICS_QUALITY.LOW]: LOW_CONFIG,
-  [GRAPHICS_QUALITY.MEDIUM]: MEDIUM_CONFIG,
-  [GRAPHICS_QUALITY.HIGH]: HIGH_CONFIG,
+  [GraphicsQuality.LOW]: LOW_CONFIG,
+  [GraphicsQuality.MEDIUM]: MEDIUM_CONFIG,
+  [GraphicsQuality.HIGH]: HIGH_CONFIG,
 };

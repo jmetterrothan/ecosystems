@@ -12,7 +12,7 @@ class DiscusFish extends Creature {
       viewAngle: 8,
       underwater: true,
       minRepulseDistance: 30000,
-      scale: MathUtils.randomFloat(0.65, 1.25)
+      scale: MathUtils.randomFloat(0.5, 1.25)
     });
   }
 }

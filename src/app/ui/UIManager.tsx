@@ -1,81 +1,94 @@
 import React from 'react';
 
-import NotificationContainer from '@public/components/Notification/NotificationContainer';
-import UIState from '@ui/UIState';
-import UIHomeState from '@ui/states/UIHomeState';
+import PointerLock from '@app/PointerLock';
+import SoundManager from '@shared/SoundManager';
+import NotificationContainer from '@public/components/notification/NotificationContainer';
 import stateFactory from '@ui/UIStatesFactory';
-import withUIManager from '@public/components/withUIManager/withUIManager';
+import withUIManager from '@components/withUIManager/withUIManager';
 
-import UIService, { uiSvc } from './services/ui.service';
-import { notificationSvc } from '@shared/services/notification.service';
+import { uiSvc } from '@ui/services/ui.service';
 import { translationSvc } from '@shared/services/translation.service';
 
-import { IUIServices } from './models/services.model';
 import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
-import { UI_STATES } from '@ui/enums/UIStates.enum';
+import { IUIState } from '@ui/models/UIState';
+import { UIStates } from '@ui/enums/UIStates.enum';
 
 interface IUIManagerProps {
 
 }
 
 interface IUIManagerState {
-  currentUiStateID: UI_STATES;
+  currentUiStateID: UIStates;
   parameters: IUIManagerParameters;
 }
 
 class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
-  static readonly ENABLED: boolean = true;
+  static readonly ENABLED: boolean = false;
 
-  private uiStates: Map<UI_STATES, UIState>;
-  private uiSvc: UIService;
-  private trophiesPageOpen: boolean = false;
+  private uiStates: Map<UIStates, IUIState>;
 
   constructor(props: IUIManagerProps, state: IUIManagerState) {
     super(props, state);
 
-    this.uiSvc = uiSvc;
-    this.uiStates = new Map<UI_STATES, UIState>();
+    this.uiStates = new Map<UIStates, IUIState>();
 
     this.state = {
-      currentUiStateID: UI_STATES.HOME,
+      currentUiStateID: UIStates.HOME,
       parameters: {}
     };
 
     translationSvc.init();
 
-    this.addState(UI_STATES.HOME, new UIHomeState());
-  }
+    this.addState(UIStates.HOME);
 
-  /*
-  componentDidMount() {
-    notificationSvc.push({
-      icon: null,
-      label: 'Trophy unlocked',
-      content: 'This is a test notification',
-      duration: 500000
+    // ui click sound
+    window.addEventListener('click', (e) => {
+      if (e.srcElement.classList.contains('ui-click-sound')) {
+        SoundManager.play('click');
+      }
+    });
+
+    PointerLock.addEventListener('pointerlockchange', () => {
+      const enabled = PointerLock.enabled;
+
+      if (enabled && this.state.currentUiStateID !== UIStates.GAME) {
+        this.manageMenu(false);
+      }
+      if (!enabled && this.state.currentUiStateID !== UIStates.MENU) {
+        this.manageMenu(true);
+      }
+    });
+
+    document.body.addEventListener('keyup', e => {
+      if (this.state.currentUiStateID !== UIStates.GAME && this.state.currentUiStateID !== UIStates.MENU) {
+        return false;
+      }
+
+      if (e.key === 'Escape' && !PointerLock.enabled) {
+        PointerLock.request();
+        return;
+      }
     });
   }
-  */
 
   render() {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
-    if (this.state.currentUiStateID === UI_STATES.HOME) uiState.process(this);
+    if (this.state.currentUiStateID === UIStates.HOME) uiState.process(this);
 
     return (
       <div className='ui'>
-        <div className='ui__notifications pl-2 pt-2'>
+        <div className='ui__notifications p-2'>
           <NotificationContainer />
         </div>
-        <div className='ui__state'>
-          {withUIManager(uiState.render())(this)}
-        </div>
+        {withUIManager(uiState.render())(this)}
       </div>
     );
   }
 
-  switchState(state: UI_STATES, parameters: IUIManagerParameters = {}) {
+  switchState(state: UIStates, parameters?: any) {
     if (!this.uiStates.has(state)) this.addState(state);
+
     this.setState({
       currentUiStateID: state,
       parameters: {
@@ -83,23 +96,16 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
         ...parameters
       }
     }, async () => {
-      this.uiSvc.switchState(state, parameters);
+      uiSvc.switchState(state, parameters);
       await this.uiStates.get(state).process(this);
     });
   }
 
-  handleKeyboard(key: string) {
-    switch (key) {
-      case 't': case 'T': this.manageTrophiesPage();
-    }
+  manageMenu(open: boolean) {
+    this.switchState(open ? UIStates.MENU : UIStates.GAME);
   }
 
-  private manageTrophiesPage() {
-    this.switchState(!this.trophiesPageOpen ? UI_STATES.TROPHIES : UI_STATES.GAME);
-    this.trophiesPageOpen = !this.trophiesPageOpen;
-  }
-
-  private addState(key: UI_STATES, value?: UIState) {
+  private addState(key: UIStates, value?: IUIState) {
     if (!this.uiStates.has(key)) {
       const uiState = value ? value : stateFactory(key);
       uiState.init();

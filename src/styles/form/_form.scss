@@ -12,30 +12,56 @@
     color: $color-darkblue;
   }
 
-  h4 {
+  &__group {
+
+  }
+
+  &__label {
+    width: 100%;
+    display: block;
     color: $color-darkblue;
     font-size: 1.2rem;
+    line-height: 1.5rem;
     font-weight: 400;
   }
 
-  input[type=text], input[type=password] {
+  &__element {
+    appearance: none;
     display: block;
     width: 100%;
+    padding: 0 1rem;
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+    margin: 0;
     height: 2.75rem;
     line-height: calc(2.75rem - 2px);
-    padding: 0 1rem;
     border: 1px solid $color-darkblue;
-    color: $color-darkblue;
-    font-family: $font;
     font-size: 1.1rem;
     font-weight: 400;
-    background: transparent;
-    outline: none;
-    border-radius: 4px;
-    box-shadow: none;
+    color: $color-darkblue;
+    font-family: $font;
+    border-radius: 2px;
+
+    &--rounded {
+      border-radius: 4px;
+    }
   }
 
-  input[type=radio] {
+  textarea.form__element {
+    width: 100%;
+    height: auto;
+    resize: none;
+    padding: 0.5rem 1rem;
+    line-height: calc(1.75rem - 2px);
+  }
+
+  select.form__element option {
+    font-size: 1.1rem;
+    background: #f1f1f1;
+  }
+
+  input[type=radio].form__element {
     display: none;
 
     & + label {
@@ -60,15 +86,24 @@
       transition: all ease .2s;
     }
 
+    &--rounded + label {
+      border-radius: 4px;
+    }
+
+    &:disabled + label {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
     &:checked + label {
       background: $color-darkblue;
       color: #ffffff;
     }
 
     &:not(:checked) + label:hover {
-      background: #608d9f;
-      border-color: #608d9f;
-      transition: all ease .4s;
+      background: rgba($color-darkblue, 0.25);
+      border-color: transparent;
+      transition: background ease .4s, border-color ease .2s;
     }
   }
 }

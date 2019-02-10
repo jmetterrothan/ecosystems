@@ -4,6 +4,7 @@ import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
 import ConfigService, { configSvc } from '@shared/services/config.service';
+import { voiceSvc } from '@voice/services/voice.service';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
@@ -13,14 +14,11 @@ import Weather from '@world/Weather';
 import Player from '@app/Player';
 import MathUtils from '@utils/Math.utils';
 
-import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
-import { GRAPHICS_QUALITY } from '@shared/enums/graphicsQuality.enum';
-
-import TestBiome from '@world/biomes/TestBiome';
+import { INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
+import { GraphicsQuality } from '@shared/enums/graphicsQuality.enum';
 
 class World {
   static readonly SEED: string | null = null;
-  static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
   static readonly EMPTY: boolean = false;
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
@@ -44,9 +42,12 @@ class World {
   private raycaster: THREE.Raycaster;
   private seed: string;
 
-  private configSvc: ConfigService;
-
   private initialized: boolean;
+
+  private listener: THREE.AudioListener;
+  private zSound: THREE.PositionalAudio;
+  private audioLoader: THREE.AudioLoader;
+  private volume: number;
 
   /**
    * World constructor
@@ -63,13 +64,18 @@ class World {
     this.raycaster = new THREE.Raycaster();
 
     this.initialized = false;
+    this.listener = new THREE.AudioListener();
+    this.camera.add(this.listener);
+    this.zSound = new THREE.PositionalAudio(this.listener);
+    this.volume = 1;
+    this.audioLoader = new THREE.AudioLoader();
   }
 
   init(seed: string = MathUtils.randomUint32().toString()): string {
     this.initSeed(seed);
 
     // entities
-    const spawn = new THREE.Vector3(-24000, Terrain.SIZE_Y, Terrain.SIZE_Z + 24000);
+    const spawn = new THREE.Vector3(-configSvc.config.SPAWN.x, Terrain.SIZE_Y + configSvc.config.SPAWN.y, Terrain.SIZE_Z + configSvc.config.SPAWN.z);
     const target = new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
 
     this.player = new Player(this.controls);
@@ -94,14 +100,17 @@ class World {
 
     biome.init();
 
+    this.watchObjectPlacedWithVoice();
     this.scene.add(this.controls.getObject());
 
     if (configSvc.debug) {
       this.showAxesHelper();
 
       console.info(`SEED : ${this.seed}`);
-      console.info(`QUALITY : ${GRAPHICS_QUALITY[configSvc.quality]}`);
+      console.info(`QUALITY : ${GraphicsQuality[configSvc.quality]}`);
     }
+
+    this.initAudio();
 
     this.initialized = true;
 
@@ -129,13 +138,47 @@ class World {
     }
   }
 
+  private initAudio() {
+    let volume = this.volume;
+
+    if (!configSvc.soundEnabled) {
+      volume = 0;
+    }
+    const mySound = this.generator.getBiome().getSound();
+    this.audioLoader.load(mySound, (buffer) => {
+      this.zSound.setBuffer(buffer);
+      this.zSound.setRefDistance(5000);
+      this.zSound.setLoop(true);
+      this.zSound.setVolume(volume);
+      this.zSound.play();
+    }, () => { }, () => { });
+
+    // create an object for the sound to play from
+    let object: THREE.Object3D;
+
+    if (configSvc.debug) {
+      const sphere = new THREE.SphereGeometry(500, 8, 8);
+      const material = new THREE.MeshPhongMaterial({ color: 0xff2200 });
+
+      object = new THREE.Mesh(sphere, material);
+    } else {
+      object = new THREE.Object3D();
+    }
+
+    this.scene.add(object);
+
+    // finally add the sound to the mesh
+    object.add(this.zSound);
+    object.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
+  }
+
   /**
    * @param {number} delta
    */
   update(delta: number) {
     if (!this.initialized) return;
 
-    this.handleMouseInteraction(MOUSE_TYPES.MOVE);
+    this.handlePlayerInteraction(INTERACTION_TYPE.MOUSE_MOVE);
     this.camera.updateMatrixWorld(true);
 
     this.frustum.setFromMatrix(
@@ -153,9 +196,9 @@ class World {
 
   /**
    * Called each time the user has an interaction with his mouse
-   * @param {MOUSE_TYPES} interactionType
+   * @param {MouseTypes} interactionType
    */
-  handleMouseInteraction(interactionType: MOUSE_TYPES) {
+  handlePlayerInteraction(interactionType: INTERACTION_TYPE) {
     const pos = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
     const mouse = new THREE.Vector2(
       (pos.x / window.innerWidth) * 2 - 1,
@@ -163,7 +206,7 @@ class World {
     );
 
     this.raycaster.setFromCamera(mouse, this.camera);
-    this.terrain.handleMouseInteraction(this.raycaster, interactionType);
+    this.terrain.handlePlayerInteraction(this.raycaster, interactionType);
   }
 
   /**
@@ -173,6 +216,10 @@ class World {
    */
   handleKeyboard(key: string, active: boolean) {
     this.player.handleKeyboard(key, active);
+  }
+
+  private watchObjectPlacedWithVoice() {
+    voiceSvc.wordDetection$.subscribe(() => this.handlePlayerInteraction(INTERACTION_TYPE.VOICE));
   }
 
   isInitialized(): boolean { return this.initialized; }

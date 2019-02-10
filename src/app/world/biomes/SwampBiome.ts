@@ -13,19 +13,24 @@ import { IBiome } from '@world/models/biome.model';
 import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
+import SwampSFXMp3 from '@sounds/SwampSFX.mp3';
+
 class SwampBiome extends Biome {
   private boids: Boids[];
+  private flat: boolean;
 
   constructor(terrain: Terrain) {
     super('SWAMPS', terrain);
 
     this.boids = [];
+    this.flat = MathUtils.rng() >= 0.5;
 
     this.waterDistortion = true;
     this.waterDistortionFreq = 1.25;
     this.waterDistortionAmp = 512.0;
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.swamp_visited);
+    this.sound = SwampSFXMp3;
   }
 
   init() {
@@ -67,6 +72,8 @@ class SwampBiome extends Biome {
     const nx = (x - Terrain.SIZE_X / 2) / (1024 * 128);
     const nz = (z - Terrain.SIZE_Z / 2) / (1024 * 128);
 
+    const m = this.computeMoistureAt(x, z);
+
     let e = -0.2 * this.generator.noise2(0.35 * nx, 0.35 * nz);
     e += 0.2 * this.generator.noise3(2 * nx, 2 * nz);
     e += 0.15 * this.generator.ridgeNoise2(1 * nx, 1 * nz);
@@ -76,7 +83,7 @@ class SwampBiome extends Biome {
     e += 0.0095 * this.generator.noise2(32 * nx, 32 * nz);
     e += 0.0095 * this.generator.ridgeNoise(64 * nx, 64 * nz);
 
-    return e - 0.25;
+    return e - 0.275;
   }
 
   computeMoistureAt(x: number, z: number): number {
@@ -87,7 +94,10 @@ class SwampBiome extends Biome {
   }
 
   getParametersAt(e: number, m: number): IBiome {
-    if (e < Chunk.SEA_ELEVATION - 0.10 - 0.016) {
+    if (e < Chunk.SEA_ELEVATION - 0.116) {
+      if (m > 0.25) {
+        return SUB_BIOMES.SWAMP_WATER;
+      }
       return SUB_BIOMES.OCEAN;
     }
 
@@ -95,7 +105,7 @@ class SwampBiome extends Biome {
       return SUB_BIOMES.GRASSLAND;
     }
 
-    if (m > 0.5 + 0.025) {
+    if (m > 0.525) {
       return SUB_BIOMES.SWAMP;
     }
 

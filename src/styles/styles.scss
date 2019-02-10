@@ -2,13 +2,86 @@
 
 @import url('https://fonts.googleapis.com/css?family=Karla:400,700');
 
+@import 'icomoon/style.css';
+
 @import 'base/_base';
 
+@import 'base/_colors';
 @import 'base/_grid';
 @import 'base/_spacing';
 
 @import 'form/_form';
-@import 'form/_btn';
+@import 'form/_tooltip';
 
 @import 'ui/_ui';
-@import 'ui/_crosshair';
+
+@include breakpoint-tablet {
+  html {
+    overflow: hidden;
+  }
+}
+
+strong {
+  font-weight: 700;
+}
+
+.title {
+  font-family: $font;
+}
+
+h3.title {
+  font-size: 2rem;
+  line-height: 2.75rem;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+h4.title {
+  font-size: 1.5rem;
+  line-height: 2.25rem;
+  text-transform: initial;
+  font-weight: 700;
+  color: $color-darkblue;
+}
+
+h5.title {
+  font-size: 1.1rem;
+  line-height: 1.85rem;
+  font-weight: 700;
+  color: lighten($color-darkblue, 15%);
+}
+
+.paragraph {
+  font-size: 1.1rem;
+  line-height: 2rem;
+}
+
+.link {
+  color: $color-darkblue;
+  text-decoration: underline;
+
+  &:hover {
+    color: lighten($color-darkblue, 25%);
+  }
+}
+
+.align-left {
+  text-align: left;
+}
+.align-right {
+  text-align: right;
+}
+.align-center {
+  text-align: center;
+}
+
+
+.flex {
+  display: flex;
+}
+
+.justify-content {
+  &--end {
+    justify-content: flex-end;
+  }
+}

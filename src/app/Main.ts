@@ -4,20 +4,18 @@ import statsJs from 'stats.js';
 import 'three/examples/js/controls/PointerLockControls';
 import 'seedrandom';
 
+import PointerLock from '@app/PointerLock';
 import World from '@world/World';
-import Crosshair from '@ui/Crosshair';
 import PostProcess from '@app/PostProcess';
+import UIManager from '@ui/UIManager';
 
 import { configSvc } from '@app/shared/services/config.service';
-import PlayerService, { playerSvc } from '@shared/services/player.service';
-import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
-import StorageService, { storageSvc } from '@shared/services/storage.service';
-import CoreService, { coreSvc } from '@shared/services/core.service';
-import UIService, { uiSvc } from '@ui/services/ui.service';
+import { playerSvc } from '@shared/services/player.service';
+import { multiplayerSvc } from '@online/services/multiplayer.service';
+import { uiSvc } from '@ui/services/ui.service';
 
-import { MOUSE_TYPES } from '@shared/enums/mouse.enum';
-import { UI_STATES } from '@ui/enums/UIStates.enum';
-import UIManager from '@ui/UIManager';
+import { INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
+import { UIStates } from '@ui/enums/UIStates.enum';
 
 class Main {
   private renderer: THREE.WebGLRenderer;
@@ -34,39 +32,19 @@ class Main {
   private focused: boolean;
   private stats: statsJs;
 
-  private coreSvc: CoreService;
-  private playerSvc: PlayerService;
-  private multiplayerSvc: MultiplayerService;
-  private storageSvc: StorageService;
-  private uiSvc: UIService;
-
-  private uiManager: UIManager;
-
   constructor() {
     this.containerElement = document.body;
     this.lastTime = window.performance.now();
 
-    this.coreSvc = coreSvc;
-    this.playerSvc = playerSvc;
-    this.multiplayerSvc = multiplayerSvc;
-    this.storageSvc = storageSvc;
-    this.uiSvc = uiSvc;
-
     if (configSvc.debug) {
       this.stats = new statsJs();
       this.stats.showPanel(0);
-      document.body.appendChild(this.stats.dom);
+      this.stats.dom.style.left = 'unset';
+      this.stats.dom.style.top = 'unset';
+      this.stats.dom.style.right = 0;
+      this.stats.dom.style.bottom = 0;
 
-      /*
-      // reset
-      const resetStrorage = document.createElement('button');
-      resetStrorage.textContent = 'reset';
-      resetStrorage.classList.add('button', 'reset');
-      resetStrorage.addEventListener('click', () => {
-        this.storageSvc.clearAll();
-      }, false);
-      document.body.appendChild(resetStrorage);
-      */
+      document.body.appendChild(this.stats.dom);
     }
 
     this.scene = new THREE.Scene();
@@ -80,13 +58,11 @@ class Main {
     this.focused = true;
   }
 
-  async init(uiManager: UIManager) {
-    this.uiManager = uiManager;
+  async init() {
     this.initControls();
 
     this.world = new World(this.scene, this.camera, this.controls);
-
-    await this.coreSvc.init();
+    playerSvc.init();
 
     this.initPointerLock();
     this.initRenderer();
@@ -97,16 +73,13 @@ class Main {
 
   async load(seed: string, online: boolean): Promise<string> {
     if (online === true) {
-      this.multiplayerSvc.init(this.scene, seed);
+      multiplayerSvc.init(this.scene, seed);
     }
-
     return await this.world.init(seed);
   }
 
   private initControls() {
     this.controls = new THREE.PointerLockControls(this.camera);
-
-    new Crosshair();
   }
 
   private initRenderer() {
@@ -144,48 +117,46 @@ class Main {
 
   private initPointerLock() {
     // handle pointer lock authorization
-    if ('pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document) {
+    if (PointerLock.available) {
 
       const pointerlockchange = (e) => {
-        this.controls.enabled = document.pointerLockElement === document.body || document.mozPointerLockElement === document.body || document.webkitPointerLockElement === document.body;
+        this.controls.enabled = PointerLock.enabled;
       };
 
       const pointerlockerror = (e) => { };
 
-      document.addEventListener('pointerlockchange', pointerlockchange, false);
-      document.addEventListener('mozpointerlockchange', pointerlockchange, false);
-      document.addEventListener('webkitpointerlockchange', pointerlockchange, false);
-      document.addEventListener('pointerlockerror', pointerlockerror, false);
-      document.addEventListener('mozpointerlockerror', pointerlockerror, false);
-      document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
+      PointerLock.addEventListener('pointerlockchange', pointerlockchange, false);
+      PointerLock.addEventListener('pointerlockerror', pointerlockerror, false);
 
-      document.body.addEventListener('click', () => {
-
-        if (!this.uiSvc.isState(UI_STATES.GAME)) return;
-
-        document.body.requestPointerLock = document.body.requestPointerLock || document.body.mozRequestPointerLock || document.body.webkitRequestPointerLock;
-        document.body.requestPointerLock();
-
-        if (!this.controls.enabled || !this.world.isInitialized()) { return; }
+      document.body.addEventListener('click', e => {
+        if (!uiSvc.isState(UIStates.GAME)) return;
+        if (!this.controls.enabled || !this.world.isInitialized() || !(e.which === 1 || e.which === 3)) { return; }
 
         // mouse position always in the center of the screen
-        this.world.handleMouseInteraction(MOUSE_TYPES.CLICK);
+        this.world.handlePlayerInteraction(e.which === 1 ? INTERACTION_TYPE.MOUSE_LEFT_CLICK : INTERACTION_TYPE.MOUSE_RIGHT_CLICK);
       });
 
       document.body.addEventListener('keydown', e => {
         if (this.world.isInitialized()) {
           this.world.handleKeyboard(e.key, true && this.controls.enabled);
-          this.uiManager.handleKeyboard(e.key);
         }
       });
+
       document.body.addEventListener('keyup', e => {
+        if (e.key === 'Escape') return;
         if (this.world.isInitialized()) {
           this.world.handleKeyboard(e.key, false);
         }
       });
 
+      document.body.addEventListener('wheel', e => {
+        if (!this.controls.enabled || !this.world.isInitialized()) { return; }
+        this.world.handlePlayerInteraction(e.wheelDelta > 0 ? INTERACTION_TYPE.MOUSE_WHEEL_UP : INTERACTION_TYPE.MOUSE_WHEEL_DOWN);
+      });
+
       window.addEventListener('blur', () => { this.focused = false; });
       window.addEventListener('focus', () => { this.focused = true; });
+
     }
   }
 
@@ -201,7 +172,7 @@ class Main {
     if (this.world.isInitialized()) {
       this.world.update(delta);
 
-      if (this.playerSvc.isUnderwater()) {
+      if (playerSvc.isUnderwater()) {
         this.postProcess.update();
       }
 
@@ -212,7 +183,7 @@ class Main {
       TWEEN.update();
 
       // switch render func if underwater
-      if (this.playerSvc.isUnderwater()) {
+      if (playerSvc.isUnderwater()) {
         this.postProcess.render(delta);
       } else {
         this.renderer.render(this.scene, this.camera);

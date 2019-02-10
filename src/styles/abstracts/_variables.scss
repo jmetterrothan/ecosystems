@@ -1,1 +1,24 @@
+@import '~jmetterrothan-flexgrid/src/assets/sass/vars.scss';
+@import '~jmetterrothan-flexgrid/src/assets/sass/breakpoints.scss';
+
 $font: 'Karla', Arial, sans-serif;
+
+$debug-row: rgba(20, 20, 20, 0.4);
+$debug-col: rgba($debug-row, 0.4);
+
+$color-magenta : #FA5672;
+$color-darkblue : rgb(46, 59, 73);
+$color-purple : #616dcb;
+$color-skyblue : #b3d7f2;
+$color-green: #02A676;
+$color-red: #e26259;
+$color-yellow : #F2B134;
+$color-turquoise: #19bcbe;
+
+$color-bronze : #19bcbe;
+$color-gold : #FFB604;
+$color-diamond : #8BB7BF;
+
+$color-theme : $color-turquoise;
+
+$gradient : radial-gradient(rgba(255, 255, 255, 0.25) 5%, transparent), linear-gradient(0deg, lighten($color-magenta, 15%), $color-skyblue 75%);

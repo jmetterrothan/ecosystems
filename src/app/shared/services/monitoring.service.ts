@@ -1,8 +1,11 @@
-import { configSvc } from './config.service';
-
 import { IEventAction, IEventCategory } from '@shared/models/monitoring.model';
 
 import { EVENT_CATEGORY, EVENT_ACTION } from '@shared/constants/monitoring.constants';
+import { storageSvc } from './storage.service';
+
+import CookiesConsent from '@components/cookies/cookies-consent';
+
+import CommonUtils from '@utils/Common.utils';
 
 class MonitoringService {
 
@@ -15,8 +18,10 @@ class MonitoringService {
   }
 
   sendEvent(category: string, action: string, label?: string, numericValue?: number) {
-    ga('send', 'event', category, action, label, numericValue);
-    // if (configSvc.debug) console.log(`event ${category} ${action} sent (${label})`);
+    if (storageSvc.get(CookiesConsent.COOKIES_STORAGE_KEY)) {
+      ga('send', 'event', category, action, label, numericValue);
+      if (CommonUtils.isDev()) console.log(`event ${category} ${action} sent (${label})`);
+    }
   }
 
 }

@@ -8,7 +8,7 @@ import Terrain from '@world/Terrain';
 
 import TerrainMesh from '@mesh/TerrainMesh';
 import WaterMesh from '@mesh/WaterMesh';
-import Stack from '@shared/Stack';
+import Fifo from '@app/shared/Fifo';
 
 import { IPick } from '@world/models/pick.model';
 import { IPlaceObject, IPickObject, IStackReference } from '@world/models/objectParameters.model';
@@ -16,6 +16,10 @@ import { IPlaceObject, IPickObject, IStackReference } from '@world/models/object
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
 import MathUtils from '@utils/Math.utils';
+
+interface ISamplingParameters {
+  isOnWater: boolean;
+}
 
 class Chunk {
   static readonly SHOW_HELPER: boolean = false;
@@ -39,6 +43,7 @@ class Chunk {
   static readonly CHUNK_OBJECT_STACK = {};
 
   static readonly INTERACTION_DISTANCE: number = 60000;
+  static readonly SO_INTERACTION_DISTANCE: number = 40000;
   static readonly ANIMATION_DELAY: number = 200;
 
   private generator: BiomeGenerator;
@@ -118,8 +123,9 @@ class Chunk {
       const p3 = this.generator.computeHeightAt(this.col * Chunk.WIDTH, this.row * Chunk.DEPTH + Chunk.DEPTH);
       const p4 = this.generator.computeHeightAt(this.col * Chunk.WIDTH + Chunk.WIDTH, this.row * Chunk.DEPTH + Chunk.DEPTH);
       const p5 = this.generator.computeHeightAt(this.col * Chunk.WIDTH + Chunk.WIDTH / 2, this.row * Chunk.DEPTH + Chunk.DEPTH / 2);
+      const level = Chunk.SEA_LEVEL + 1024;
 
-      if (p1 <= Chunk.SEA_LEVEL || p2 <= Chunk.SEA_LEVEL || p3 <= Chunk.SEA_LEVEL || p4 <= Chunk.SEA_LEVEL || p5 <= Chunk.SEA_LEVEL) {
+      if (p1 <= level || p2 <= level || p3 <= level || p4 <= level || p5 <= level) {
         const waterMesh = this.waterBlueprint.generate();
 
         (<THREE.Geometry>terrain.water.geometry).mergeMesh(waterMesh);
@@ -165,7 +171,8 @@ class Chunk {
     }
 
     if (!World.EMPTY) {
-      this.loadPopulation();
+      this.loadPopulation({ isOnWater: false });
+      this.loadPopulation({ isOnWater: true });
     }
 
     this.merged = true;
@@ -175,8 +182,8 @@ class Chunk {
   /**
    * Poisson disk sampling
    */
-  loadPopulation() {
-    const padding = World.OBJ_INITIAL_SCALE + 3072; // object bounding box size / 2
+  private loadPopulation(parameters: ISamplingParameters) {
+    const padding = World.OBJ_INITIAL_SCALE + 4096; // object bounding box size / 2
     const pds = new poissonDiskSampling([Chunk.WIDTH - padding, Chunk.DEPTH - padding], padding * 2, padding * 2, 30, MathUtils.rng);
     const points = pds.fill();
 
@@ -185,7 +192,7 @@ class Chunk {
       const z = padding + this.row * Chunk.DEPTH + point.shift();
 
       // select an organism based on the current biome
-      const item = this.generator.pick(x, z);
+      const item = this.generator.pick(x, z, parameters);
 
       if (item !== null) {
         this.savePick(item);
@@ -226,6 +233,24 @@ class Chunk {
     this.dirty = false;
   }
 
+  update() {
+    /*
+    const time = window.performance.now() / 1000;
+    const biome = this.generator.getBiome();
+
+    this.objects.traverse(object => {
+      if (object.userData.stackReference === 'lilypad') {
+        const ax = (time + object.userData.initialPosition.x) * biome.getWaterDistortionFreq();
+        const az = (time + object.userData.initialPosition.z) * biome.getWaterDistortionFreq();
+
+        const dy = Math.cos(ax) * biome.getWaterDistortionAmp() + Math.sin(az) * biome.getWaterDistortionAmp();
+
+        object.position.setY(object.userData.initialPosition.y + dy);
+      }
+    });
+    */
+  }
+
   /**
    * Recovers an object from the pool and prepares the Object3D
    * @param {IPick} item
@@ -236,11 +261,11 @@ class Chunk {
 
     // if object stack doesn't exist yet we create one
     if (!Chunk.CHUNK_OBJECT_STACK[item.n]) {
-      Chunk.CHUNK_OBJECT_STACK[item.n] = new Stack<THREE.Object3D>();
+      Chunk.CHUNK_OBJECT_STACK[item.n] = new Fifo<THREE.Object3D>();
     }
 
     // if the stack is empty, create a new object else pop an object from the stack
-    if (Chunk.CHUNK_OBJECT_STACK[item.n].empty) {
+    if (Chunk.CHUNK_OBJECT_STACK[item.n].isEmpty()) {
       object = World.LOADED_MODELS.get(item.n).clone();
     } else {
       object = Chunk.CHUNK_OBJECT_STACK[item.n].pop();
@@ -250,7 +275,7 @@ class Chunk {
     object.rotation.copy(item.r);
     object.scale.copy(item.s);
     object.position.copy(item.p);
-    object.userData = <IStackReference>{ stackReference: item.n, float: item.f };
+    object.userData = <IStackReference>{ stackReference: item.n, float: item.f, type: object.userData.type, initialPosition: item.p.clone() };
     object.visible = true;
 
     return object;
@@ -359,15 +384,6 @@ class Chunk {
    * @return {boolean}
    */
   isMerged(): boolean { return this.merged; }
-
-  /**
-   * User distance valid to place an objecct if true
-   * @param {number} distance
-   * @return {boolean}
-   */
-  checkInteractionDistance(distance: number): boolean {
-    return distance <= Chunk.INTERACTION_DISTANCE;
-  }
 
   /**
    * @return {THREE.Box3}

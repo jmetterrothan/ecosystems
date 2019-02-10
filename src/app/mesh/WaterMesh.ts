@@ -8,11 +8,11 @@ import Mesh from '@mesh/Mesh';
 import { IChunkParameters } from '@world/models/chunkParameters.model';
 import { WATER_MATERIAL } from '@materials/water.material';
 
-import { MESH_TYPES } from '@mesh/enums/mesh.enum';
+import { MeshTypes } from '@mesh/enums/mesh.enum';
 
 class WaterMesh extends Mesh {
   constructor(generator: BiomeGenerator, row: number, col: number) {
-    super(generator, row, col, MESH_TYPES.WATER_MESH, <IChunkParameters>{
+    super(generator, row, col, MeshTypes.WATER_MESH, <IChunkParameters>{
       nRows: 4,
       nCols: 4,
       cellSizeX: Chunk.WIDTH / 4,

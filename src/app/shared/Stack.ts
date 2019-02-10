@@ -1,7 +1,6 @@
-class Stack<T>
-{
-  private list: T[];
-  private size: number;
+abstract class Stack<T> {
+  protected list: T[];
+  protected size: number;
 
   constructor() {
     this.list = [];
@@ -11,23 +10,17 @@ class Stack<T>
   /**
    * @param {T} item
    */
-  push(item: T) {
-    this.size++;
-    this.list.push(item);
-  }
+  abstract push(item: T);
 
   /**
    * @return {T}
    */
-  pop(): T {
-    this.size--;
-    return this.list.pop();
-  }
+  abstract pop(): T;
 
   /**
    * @return {boolean}
    */
-  get empty(): boolean {
+  isEmpty(): boolean {
     return this.size === 0;
   }
 }

@@ -18,7 +18,7 @@ module.exports = {
   },
   resolve: {
     modules: ['node_modules', PATHS.SRC],
-    extensions: ['.ts', '.js', '.jsx', '.tsx', '.json', '.scss', '.css', '.yml'],
+    extensions: ['.ts', '.js', '.jsx', '.tsx', '.json', '.scss', '.css', '.yml', '.mp3'],
     alias: {
       ...alias,
       three$: 'three/build/three.min.js',
@@ -62,7 +62,6 @@ module.exports = {
             options: {
               resources: [
                 path.join(PATHS.STYLES, 'abstracts', '_variables.scss'),
-                path.join(PATHS.STYLES, 'abstracts', '_colors.scss'),
               ]
             }
           }
@@ -76,7 +75,7 @@ module.exports = {
             options: {
               name: webpackMode.isProduction
                 ? '/images/[name]_[hash:8].[ext]'
-                : '[name].[ext]'
+                : '[name]_[hash:8].[ext]'
             }
           }
         ]
@@ -103,12 +102,21 @@ module.exports = {
             outputPath: 'fonts/'
           }
         }]
-    }
+      },
+      {
+        test: /\.ya?ml$/,
+        use: 'js-yaml-loader',
+      },
+      {
+        test: /\.mp3$/,
+        loader: 'file-loader'
+      }
     ]
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(PATHS.SRC, 'index.html'),
+      favicon: './src/public/assets/images/favicon.png',
       filename: 'index.html',
       inject: 'body',
       hash: true

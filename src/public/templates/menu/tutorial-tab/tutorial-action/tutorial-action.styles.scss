@@ -1,0 +1,56 @@
+.tutorial-action {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+
+  &--can-edit {
+    cursor: pointer;
+
+    .tutorial-action__name:hover {
+      background: darken(#dadada, 10%);
+    }
+  }
+
+  &__name, &__input {
+    appearance: none;
+    display: block;
+    align-self: flex-start;
+    flex-shrink: 0;
+    flex-grow: 0;
+    padding: 0 0.5rem;
+    border: none;
+    width: 100%;
+    max-width: 3rem * 3;
+    height: 2.75rem;
+    line-height: 2.75rem;
+    text-align: center;
+    font-size: 1.1rem;
+    font-family: $font;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: $color-darkblue;
+    border-radius: 3px;
+    background: #dadada;
+    box-shadow: none;
+    outline: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    &:focus {
+      background: $color-darkblue;
+      color: transparent;
+      text-shadow: 0 0 0 #dadada;
+      box-shadow: inset 0px 0px 1rem rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  &__text {
+    padding: 0;
+    font-size: 1rem;
+    line-height: 1.75rem;
+    color: #505050;
+  }
+}

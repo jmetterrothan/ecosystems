@@ -3,7 +3,4 @@ import ReactDOM from 'react-dom';
 
 import UIManager from '@ui/UIManager';
 
-ReactDOM.render(
-  <UIManager />,
-  document.getElementById('root')
-);
+ReactDOM.render(<UIManager />, document.getElementById('root'));

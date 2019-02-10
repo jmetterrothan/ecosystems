@@ -1,0 +1,6 @@
+.col {
+  &.debug {
+    background: $debug-col;
+    border: solid 1px darken($debug-col, 20);
+  }
+}
