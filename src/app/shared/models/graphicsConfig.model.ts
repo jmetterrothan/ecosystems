@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 export interface IConfig {
   MAX_VISIBLE_CHUNKS: number;
   MAX_RENDERABLE_CHUNKS: number;
@@ -9,4 +11,6 @@ export interface IConfig {
 
   SHADOW_MAP_SIZE: number;
   SHADOW_MAP_TYPE: THREE.ShadowMapType;
+
+  SPAWN: THREE.Vector3;
 }
