@@ -6,6 +6,7 @@ import Biome from '@world/Biome';
 import Chunk from '@world/Chunk';
 
 import { IBiome } from '@world/models/biome.model';
+import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
 
 import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
@@ -33,8 +34,17 @@ class DesertBiome extends Biome {
     const sizeX = 8192;
     const sizeZ = 8192;
 
-    this.skull = this.terrain.placeSpecialObject({ stackReference: 'skull', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
-    this.carcass = this.terrain.placeSpecialObject({ stackReference: 'carcass', float: false, underwater: false }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+    this.skull = this.terrain.placeSpecialObject({
+      stackReference: 'skull',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.LAND
+    }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+
+    this.carcass = this.terrain.placeSpecialObject({
+      stackReference: 'carcass',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.LAND
+    }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
 
     // vulture
     // this.vulture = chunk.getObject({ ...corpseItem });

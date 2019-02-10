@@ -19,7 +19,7 @@ import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.mate
 import { IBiome } from '@world/models/biome.model';
 import { IPick } from '@world/models/pick.model';
 import { IOnlineObject } from '@online/models/onlineObjects.model';
-import { ISpecialObject } from '@world/models/objectParameters.model';
+import { ISpecialObject, ISpecialObjectCanPlaceIn } from '@world/models/objectParameters.model';
 import { ILowHigh, IBiomeWeightedObject } from '@world/models/biomeWeightedObject.model';
 import { IPickAndOrganism } from '@world/models/pickAndOrganism.model';
 
@@ -450,8 +450,10 @@ class Terrain {
 
       chunk = this.getChunkAt(x, z);
 
-      if (special.underwater === false && y < Chunk.SEA_LEVEL) { continue; }
-      if (special.underwater === true && y > Chunk.SEA_LEVEL) { continue; }
+      if (special.underwater !== ISpecialObjectCanPlaceIn.BOTH) {
+        if (special.underwater === ISpecialObjectCanPlaceIn.WATER && y > Chunk.SEA_LEVEL) { continue; }
+        if (special.underwater === ISpecialObjectCanPlaceIn.LAND && y < Chunk.SEA_LEVEL) { continue; }
+      }
 
       if ((lowE !== null && e < lowE) ||
         (highE !== null && e > highE) ||

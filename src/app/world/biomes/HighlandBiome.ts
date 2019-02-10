@@ -11,8 +11,9 @@ import Butterfly from '@boids/creatures/Butterfly';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@world/models/biome.model';
-import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
+import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
 
+import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
@@ -77,7 +78,7 @@ class HighlandBiome extends Biome {
     this.scarecrow = this.terrain.placeSpecialObject({
       stackReference: 'scarecrow',
       float: false,
-      underwater: false,
+      underwater: ISpecialObjectCanPlaceIn.LAND,
       e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.3 }
     });
   }

@@ -17,8 +17,14 @@ export interface IStackReference {
   type: OBJ_TYPE;
 }
 
+export enum ISpecialObjectCanPlaceIn {
+  LAND,
+  WATER,
+  BOTH
+}
+
 export interface ISpecialObject {
-  underwater: boolean;
+  underwater: ISpecialObjectCanPlaceIn;
   float: boolean;
   stackReference: string;
   e?: ILowHigh;

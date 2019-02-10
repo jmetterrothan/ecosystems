@@ -217,6 +217,36 @@ export const SUB_BIOMES: IBiomes = {
       }
     ]
   },
+  TROPICAL_FOREST: {
+    name: 'TROPICAL_FOREST',
+    color: new THREE.Color(0x93c54b),
+    organisms: [
+      {
+        weight: 1,
+        name: ['palm_tree', 'palm_tree2', 'palm_tree3', 'palm_tree4'],
+        scarcity: 0.25,
+        e: { low: Chunk.SEA_ELEVATION + 0.15, high: null },
+        m: null,
+        scale: { min: 1.1, max: 1.5 },
+        float: false,
+      },
+    ]
+  },
+  TROPICAL_BEACH: {
+    name: 'TROPICAL_BEACH',
+    color: new THREE.Color(0xe6cf87),
+    organisms: [
+      {
+        weight: 1,
+        name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
+        scarcity: 0.975,
+        e: null,
+        m: null,
+        scale: { min: 0.5, max: 2 },
+        float: false,
+      },
+    ]
+  },
   DESERT: {
     name: 'DESERT',
     color: new THREE.Color(0xe6cf87),

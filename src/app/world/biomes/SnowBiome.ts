@@ -11,6 +11,7 @@ import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 import SnowWindSFXMp3 from '@sounds/SnowWindSFX.mp3';
+import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
 
 class SnowBiome extends Biome {
   private snowmanObject: THREE.Object3D;
@@ -29,7 +30,11 @@ class SnowBiome extends Biome {
 
   init() {
     // snowman
-    this.snowmanObject = this.terrain.placeSpecialObject({ stackReference: 'snowman_no_carrot', float: false, underwater: false });
+    this.snowmanObject = this.terrain.placeSpecialObject({
+      stackReference: 'snowman_no_carrot',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.LAND
+    });
   }
 
   update(delta: number) { }
