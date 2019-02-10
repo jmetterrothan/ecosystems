@@ -1,6 +1,6 @@
 import { ITexture } from '@shared/models/texture.model';
 
-import raindropPng from '@images/raindrop.png';
+import raindropPng from '@images/textures/raindrop.png';
 
 export const TEXTURES: ITexture[] = [
   {

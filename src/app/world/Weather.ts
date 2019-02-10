@@ -19,13 +19,14 @@ import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progre
 
 class Weather {
   private static FOG_COLORS: Map<number, THREE.Color> = new Map<number, THREE.Color>();
+  private static FOR_COLOR_VARIANTS: number = 360;
 
   private static RAIN_SPEED: number = 200;
   private static FOG_COLOR1: string = '#212C37';
   private static FOG_COLOR2: string = '#B1D8FF';
-  private static TICK_RATIO_DIV: number = 50000;
+  private static TICK_RATIO_DIV: number = 64000;
 
-  private static SOLAR_SYSTEM_RADIUS: number = Math.max(Terrain.SIZE_X, Terrain.SIZE_Z) * 1.2;
+  private static SOLAR_SYSTEM_RADIUS: number = Math.floor(Math.max(Terrain.SIZE_X, Terrain.SIZE_Z) * 1.2);
 
   private scene: THREE.Scene;
   private generator: BiomeGenerator;
@@ -65,11 +66,6 @@ class Weather {
     this.startTime = window.performance.now();
 
     this.watchStartTime();
-
-    // precalculate fog colors
-    for (let i = 1; i < Weather.SOLAR_SYSTEM_RADIUS; i++) {
-      this.computeFogColor(i);
-    }
   }
 
   /**
@@ -459,12 +455,10 @@ class Weather {
     // this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.2, 0.35);
     this.sunlight.intensity = MathUtils.mapInterval(y, 0, Weather.SOLAR_SYSTEM_RADIUS, 0.0, 0.25);
 
-    if (y > 0) {
-      const c: THREE.Color = this.computeFogColor(y);
+    const c: THREE.Color = this.computeFogColor(y);
 
-      this.ambientLight.color = c;
-      this.fogColor = c;
-    }
+    this.ambientLight.color = c;
+    this.fogColor = c;
 
     if (y >= -Weather.SOLAR_SYSTEM_RADIUS / 4) {
       this.sunBoundLight.intensity = MathUtils.mapInterval(y, -Weather.SOLAR_SYSTEM_RADIUS / 4, Weather.SOLAR_SYSTEM_RADIUS, 1.0, 0);
@@ -478,16 +472,23 @@ class Weather {
     this.starsSystem.position.copy(position);
   }
 
-  private computeFogColor(y: number): THREE.Color {
-    const t = Math.floor(y / Weather.SOLAR_SYSTEM_RADIUS * 360) / 360;
+  private computeDayFogColor(y: number): THREE.Color {
+    const t = Math.floor(MathUtils.mapInterval(y, 0, Weather.SOLAR_SYSTEM_RADIUS, 0, Weather.FOR_COLOR_VARIANTS));
 
     if (!Weather.FOG_COLORS.has(t)) {
-      const color = new THREE.Color(CommonUtils.lerpColor(Weather.FOG_COLOR1, Weather.FOG_COLOR2, t));
+      const color = new THREE.Color(CommonUtils.lerpColor(Weather.FOG_COLOR1, Weather.FOG_COLOR2, t / Weather.FOR_COLOR_VARIANTS));
       Weather.FOG_COLORS.set(t, color);
 
       return color;
     }
     return Weather.FOG_COLORS.get(t);
+  }
+
+  private computeFogColor(y: number): THREE.Color {
+    if (y < 0) {
+      return this.computeDayFogColor(0);
+    }
+    return this.computeDayFogColor(y);
   }
 
   private watchStartTime() {

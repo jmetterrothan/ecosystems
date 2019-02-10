@@ -5,6 +5,7 @@ import SwampBiome from '@world/biomes/SwampBiome';
 import DesertBiome from '@world/biomes/DesertBiome';
 import SnowBiome from '@world/biomes/SnowBiome';
 import FjordBiome from '@world/biomes/FjordBiome';
+import DesertIslandBiome from '../biomes/DesertIslandBiome';
 
 export const Biomes = [
   RainForestBiome,
@@ -13,5 +14,6 @@ export const Biomes = [
   SwampBiome,
   DesertBiome,
   SnowBiome,
-  FjordBiome
+  FjordBiome,
+  DesertIslandBiome
 ];

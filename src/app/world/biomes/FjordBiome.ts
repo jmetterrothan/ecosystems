@@ -6,6 +6,7 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@world/models/biome.model';
+import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
 
 import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
@@ -33,7 +34,12 @@ class FjordBiome extends Biome {
   }
 
   init() {
-    this.oldLog = this.terrain.placeSpecialObject({ stackReference: 'old_log', float: false, underwater: false, e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 } });
+    this.oldLog = this.terrain.placeSpecialObject({
+      stackReference: 'old_log',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.LAND,
+      e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 }
+    });
   }
 
   update(delta: number) { }
@@ -84,6 +90,9 @@ class FjordBiome extends Biome {
       return SUB_BIOMES.FJORD_BEACH;
     }
 
+    if (m > 0.625) {
+      return SUB_BIOMES.SWAMP_WATER;
+    }
     return SUB_BIOMES.OCEAN;
   }
 }

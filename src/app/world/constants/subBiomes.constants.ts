@@ -123,7 +123,7 @@ export const SUB_BIOMES: IBiomes = {
         e: { low: null, high: Chunk.SEA_ELEVATION - 0.05 },
         m: { low: 0.5, high: null },
         scale: { min: 0.75, max: 1.65 },
-        float: false,
+        float: true,
       },
     ]
   },
@@ -215,6 +215,36 @@ export const SUB_BIOMES: IBiomes = {
         scale: { min: 1.1, max: 1.5 },
         float: false,
       }
+    ]
+  },
+  TROPICAL_FOREST: {
+    name: 'TROPICAL_FOREST',
+    color: new THREE.Color(0x93c54b),
+    organisms: [
+      {
+        weight: 1,
+        name: ['palm_tree', 'palm_tree2', 'palm_tree3', 'palm_tree4'],
+        scarcity: 0.25,
+        e: { low: Chunk.SEA_ELEVATION + 0.15, high: null },
+        m: null,
+        scale: { min: 1.1, max: 1.5 },
+        float: false,
+      },
+    ]
+  },
+  TROPICAL_BEACH: {
+    name: 'TROPICAL_BEACH',
+    color: new THREE.Color(0xe6cf87),
+    organisms: [
+      {
+        weight: 1,
+        name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
+        scarcity: 0.975,
+        e: null,
+        m: null,
+        scale: { min: 0.5, max: 2 },
+        float: false,
+      },
     ]
   },
   DESERT: {
@@ -335,30 +365,30 @@ export const SUB_BIOMES: IBiomes = {
     color: new THREE.Color(0x3ead68),
     organisms: [
       {
-        weight: 0.6,
+        weight: 0.10,
+        name: ['plains_rock1', 'plains_rock2', 'plains_rock3', 'plains_rock4', 'plains_rock5', 'plains_rock6'],
+        scarcity: 0.85,
+        e: null,
+        m: null,
+        scale: { min: 0.75, max: 2.5 },
+        float: false,
+      },
+      {
+        weight: 0.5,
         name: ['jungle_tree', 'jungle_tree2'],
-        scarcity: 0.7,
+        scarcity: 0.6,
         e: null,
         m: null,
         scale: { min: 1.25, max: 1.75 },
         float: false,
       },
       {
-        weight: 0.2,
-        name: ['pink_flower1', 'blue_flower1', 'pink_flower4', 'red_flower1', 'white_flower1'],
-        scarcity: 0.9,
-        e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
+        weight: 0.40,
+        name: ['banana_tree', 'banana_tree2'],
+        scarcity: 0.5,
+        e: null,
         m: null,
         scale: { min: 1.0, max: 1.25 },
-        float: false,
-      },
-      {
-        weight: 0.2,
-        name: ['thin_mushroomg1', 'thin_mushroomg2'], // MUSHROOM
-        scarcity: 0.9,
-        e: { low: Chunk.SEA_ELEVATION + 0.025, high: null },
-        m: null,
-        scale: { min: 0.75, max: 1.25 },
         float: false,
       },
     ]
@@ -377,7 +407,7 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.6,
+        weight: 0.3,
         name: ['jungle_tree', 'jungle_tree2'],
         scarcity: 0.6,
         e: null,
@@ -386,12 +416,30 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.30,
+        weight: 0.20,
         name: ['banana_tree', 'banana_tree2'],
         scarcity: 0.5,
         e: null,
         m: null,
         scale: { min: 1.0, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.2,
+        name: ['pink_flower1', 'blue_flower1', 'pink_flower4', 'red_flower1', 'white_flower1'],
+        scarcity: 0.9,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
+        m: null,
+        scale: { min: 1.0, max: 1.25 },
+        float: false,
+      },
+      {
+        weight: 0.2,
+        name: ['thin_mushroomg1', 'thin_mushroomg2'], // MUSHROOM
+        scarcity: 0.9,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
+        m: null,
+        scale: { min: 0.75, max: 1.25 },
         float: false,
       },
     ]
@@ -422,7 +470,7 @@ export const SUB_BIOMES: IBiomes = {
         weight: 0.2,
         name: ['mushroom_arrow', 'small_mushroom1', 'small_mushroom2', 'small_mushroom3'], // MUSHROOM
         scarcity: 0.9,
-        e: { low: Chunk.SEA_ELEVATION, high: null },
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
         m: null,
         scale: { min: 1.0, max: 2.0 },
         float: false,
@@ -440,7 +488,7 @@ export const SUB_BIOMES: IBiomes = {
         e: { low: null, high: Chunk.SEA_ELEVATION - 0.05 },
         m: { low: 0.5, high: null },
         scale: { min: 0.75, max: 1.65 },
-        float: false,
+        float: true,
       },
       {
         weight: 0.25,
@@ -491,18 +539,9 @@ export const SUB_BIOMES: IBiomes = {
     color: new THREE.Color(0xf1c176),
     organisms: [
       {
-        weight: 0.5,
-        name: ['lilypad', 'lilypad2'],
-        scarcity: 0.8,
-        e: { low: null, high: Chunk.SEA_ELEVATION - 0.05 },
-        m: { low: 0.5, high: null },
-        scale: { min: 1.0, max: 1.65 },
-        float: true,
-      },
-      {
-        weight: 0.35,
+        weight: 0.8,
         name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
-        scarcity: 0.925,
+        scarcity: 0.9,
         e: null,
         m: null,
         scale: { min: 0.5, max: 1.5 },
@@ -511,25 +550,16 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.05,
         name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
-        scarcity: 0.9975,
+        scarcity: 0.9925,
         e: null,
         m: null,
         scale: { min: 2.5, max: 4.5 },
         float: false,
       },
       {
-        weight: 0.1,
+        weight: 0.15,
         name: ['star', 'shell'],
         scarcity: 0.975,
-        e: null,
-        m: null,
-        scale: { min: 0.75, max: 1.15 },
-        float: false,
-      },
-      {
-        weight: 0.05,
-        name: ['sea_urchin'],
-        scarcity: 0.995,
         e: null,
         m: null,
         scale: { min: 0.75, max: 1.15 },
@@ -617,13 +647,22 @@ export const SUB_BIOMES: IBiomes = {
     color: new THREE.Color(0xF1CFAE),
     organisms: [
       {
-        weight: 1,
+        weight: 0.9,
         name: ['lilypad', 'lilypad2'],
         scarcity: 0.85,
         e: { low: null, high: Chunk.SEA_ELEVATION - 0.05 },
         m: null,
         scale: { min: 1.25, max: 1.75 },
         float: true,
+      },
+      {
+        weight: 0.1,
+        name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
+        scarcity: 0.9925,
+        e: null,
+        m: null,
+        scale: { min: 1.0, max: 4.5 },
+        float: false,
       },
     ]
   },
@@ -635,7 +674,7 @@ export const SUB_BIOMES: IBiomes = {
         weight: 0.025,
         name: ['mushroom_cluster', 'mushroomg4', 'blue_mushroom'], // MUSHROOM
         scarcity: 0.85,
-        e: { low: Chunk.SEA_ELEVATION + 0.01, high: Chunk.SEA_ELEVATION + 0.65 },
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.65 },
         m: null,
         scale: { min: 1.0, max: 1.25 },
         float: false,
@@ -644,7 +683,7 @@ export const SUB_BIOMES: IBiomes = {
         weight: 0.125,
         name: ['pink_mushroom', 'mushroomg3'], // MUSHROOM
         scarcity: 0.25,
-        e: { low: Chunk.SEA_ELEVATION + 0.01, high: Chunk.SEA_ELEVATION + 0.65 },
+        e: { low: Chunk.SEA_ELEVATION + 0.025, high: Chunk.SEA_ELEVATION + 0.65 },
         m: null,
         scale: { min: 1.0, max: 1.25 },
         float: false,

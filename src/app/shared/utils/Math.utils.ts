@@ -88,7 +88,6 @@ class MathUtils {
   static normalize(x: any[], mean: number, std: number): any[] {
     return x.map((x: any) => (x - mean) / std);
   }
-
 }
 
 export default MathUtils;

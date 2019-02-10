@@ -41,13 +41,12 @@ class Menu extends React.PureComponent<Props> {
   render() {
     return (
       <div className='ui__state menu'>
-        <div className='menu__share'>...</div>
         <div className='menu__container'>
           <Tabs defaultIndex={Menu.SELECTED_INDEX} onSelect={tabIndex => Menu.SELECTED_INDEX = tabIndex}>
             <TabList>
               <Tab>
                 <div className='tabs-menu ui-click-sound'>
-                  <span className='tabs-menu__icon icon-leaf mb-1' />
+                  <span className='tabs-menu__icon icon-bullhorn mb-1' />
                   <span className='tabs-menu__text'>{translationSvc.translate('UI.home-tab.title')}</span>
                 </div>
               </Tab>

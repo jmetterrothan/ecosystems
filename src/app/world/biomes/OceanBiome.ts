@@ -10,6 +10,7 @@ import DiscusFish from '@boids/creatures/DiscusFish';
 import SalmonFish from '@boids/creatures/SalmonFish';
 
 import { IBiome } from '@world/models/biome.model';
+import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
 
 import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
@@ -78,7 +79,11 @@ class OceanBiome extends Biome {
     const sizeX = 8192;
     const sizeZ = 8192;
 
-    this.chest = this.terrain.placeSpecialObject({ stackReference: 'chest', float: false, underwater: true }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+    this.chest = this.terrain.placeSpecialObject({
+      stackReference: 'chest',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.WATER
+    }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
   }
 
   update(delta: number) {

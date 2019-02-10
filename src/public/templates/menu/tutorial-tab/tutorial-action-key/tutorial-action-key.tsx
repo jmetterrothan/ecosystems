@@ -59,10 +59,16 @@ class TutorialActionKey extends React.Component<ITutorialActionKeyProps, ITutori
     const { mode } = this.state;
 
     const name = Keys[action];
+
+    let displayName = name;
+    if (name === ' ') {
+      displayName = 'SPACE';
+    }
+
     const size = Math.min(Math.max(name.length, 1), 3);
     const text = translationSvc.translate(`UI.tutorial-tab.actionkey.${action.toLowerCase()}`);
 
-    const viewMode = <span onClick={() => this.changeMode(TutorialActionKeyMode.EDIT)} className={classNames('tutorial-action__name', `tutorial-action__name--size${size}x`)}>{name}</span>;
+    const viewMode = <span onClick={() => this.changeMode(TutorialActionKeyMode.EDIT)} className={classNames('tutorial-action__name', `tutorial-action__name--size${size}x`)}>{displayName}</span>;
     const editMode = <input
       autoComplete='off'
       autoCorrect='off'

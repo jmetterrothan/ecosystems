@@ -19,7 +19,6 @@ import { GraphicsQuality } from '@shared/enums/graphicsQuality.enum';
 
 class World {
   static readonly SEED: string | null = null;
-  static readonly BIOME: Biome | null = null; // lock a specific biome here, if null a biome is selected randomly
   static readonly EMPTY: boolean = false;
 
   static readonly OBJ_INITIAL_SCALE: number = 1000;
@@ -76,7 +75,7 @@ class World {
     this.initSeed(seed);
 
     // entities
-    const spawn = new THREE.Vector3(-24000, Terrain.SIZE_Y, Terrain.SIZE_Z + 24000);
+    const spawn = new THREE.Vector3(-65000, Terrain.SIZE_Y + 48000, Terrain.SIZE_Z + 65000);
     const target = new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
 
     this.player = new Player(this.controls);

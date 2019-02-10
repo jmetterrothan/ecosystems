@@ -19,8 +19,9 @@ import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.mate
 import { IBiome } from '@world/models/biome.model';
 import { IPick } from '@world/models/pick.model';
 import { IOnlineObject } from '@online/models/onlineObjects.model';
-import { ISpecialObject } from '@world/models/objectParameters.model';
-import { ILowHigh, IBiomeWeightedObject } from './models/biomeWeightedObject.model';
+import { ISpecialObject, ISpecialObjectCanPlaceIn } from '@world/models/objectParameters.model';
+import { ILowHigh, IBiomeWeightedObject } from '@world/models/biomeWeightedObject.model';
+import { IPickAndOrganism } from '@world/models/pickAndOrganism.model';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';
 import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
@@ -48,7 +49,7 @@ class Terrain {
   static readonly OFFSET_X: number = Terrain.SIZE_X / 2;
   static readonly OFFSET_Z: number = Terrain.SIZE_Z / 2;
 
-  static PICKS: Map<string, IPick[]> = new Map<string, IPick[]>();
+  static PICKS: Map<string, IPickAndOrganism[]> = new Map<string, IPickAndOrganism[]>();
 
   private chunks: Map<string, Chunk>;
   private visibleChunks: Chunk[];
@@ -72,7 +73,7 @@ class Terrain {
   private previewItem: IPick;
   private previewObject: THREE.Object3D;
   private currentSubBiome: IBiome;
-  private picksAvailable: IPick[];
+  private picksAvailable: IPickAndOrganism[];
   private pickIndex: number = 0;
   private intersectionSurface: THREE.Object3D;
   private objectAnimated: boolean;
@@ -320,9 +321,14 @@ class Terrain {
         }
         break;
 
-      case INTERACTION_TYPE.MOUSE_CLICK:
+      case INTERACTION_TYPE.MOUSE_LEFT_CLICK:
         this.placeObject(raycaster);
         this.generator.getBiome().handleClick(raycaster);
+        break;
+
+      case INTERACTION_TYPE.MOUSE_RIGHT_CLICK:
+        // TODO: delete obj
+        console.log('right click');
         break;
 
       case INTERACTION_TYPE.MOUSE_WHEEL_DOWN:
@@ -354,9 +360,13 @@ class Terrain {
       return;
     }
 
-    const biome = this.generator.getBiome();
     const intersection = this.getPlayerInteractionIntersection(raycaster, [this.water, this.terrain], false);
 
+    if (intersection === null) {
+      return;
+    }
+
+    const biome = this.generator.getBiome();
     const soundName = intersection.object === this.water ? 'splash' : 'set_down';
 
     // if water is disabled
@@ -386,7 +396,14 @@ class Terrain {
     });
     if (playerSvc.isUnderwater()) progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_submarine);
 
-    this.picksAvailable[this.pickIndex].r.y = MathUtils.randomFloat(0, Math.PI * 2);
+    // update current pick values
+    const selectedItem = this.picksAvailable[this.pickIndex];
+    const scale = (selectedItem.organism.scale ? MathUtils.randomFloat(selectedItem.organism.scale.min, selectedItem.organism.scale.max) : 1) * World.OBJ_INITIAL_SCALE;
+
+    selectedItem.pick.r.y = MathUtils.randomFloat(0, Math.PI * 2);
+    selectedItem.pick.s.set(scale, scale, scale);
+
+    // randomize index
     this.pickIndex = Math.floor(Math.random() * this.picksAvailable.length);
 
     this.objectAnimated = true;
@@ -438,7 +455,11 @@ class Terrain {
 
       chunk = this.getChunkAt(x, z);
 
-      if (special.underwater === false && y <= Chunk.SEA_LEVEL) { continue; }
+      if (special.underwater !== ISpecialObjectCanPlaceIn.BOTH) {
+        if (special.underwater === ISpecialObjectCanPlaceIn.WATER && y > Chunk.SEA_LEVEL) { continue; }
+        if (special.underwater === ISpecialObjectCanPlaceIn.LAND && y < Chunk.SEA_LEVEL) { continue; }
+      }
+
       if ((lowE !== null && e < lowE) ||
         (highE !== null && e > highE) ||
         (lowM !== null && m < lowM) ||
@@ -509,10 +530,10 @@ class Terrain {
       return;
     }
 
-    const biome = this.generator.getSubBiome(
-      this.generator.computeElevationAt(intersection.point.x, intersection.point.z),
-      this.generator.computeMoistureAt(intersection.point.x, intersection.point.z)
-    );
+    const e = this.generator.computeElevationAt(intersection.point.x, intersection.point.z);
+    const m = this.generator.computeMoistureAt(intersection.point.x, intersection.point.z);
+
+    const biome = this.generator.getSubBiome(e, m);
 
     // if user fly over another biome or if preview item does not exist
     if (this.currentSubBiome !== biome || !this.previewItem || this.intersectionSurface !== intersection.object) {
@@ -520,14 +541,12 @@ class Terrain {
 
       this.currentSubBiome = biome;
       this.intersectionSurface = intersection.object;
-      this.picksAvailable = Terrain.PICKS.get(this.currentSubBiome.name)
-        .filter(pick => this.intersectionSurface === this.water ? pick.f : !pick.f);
 
-      // // retrieve current preview object
-      // const item = chunk.pick(intersection.point.x, intersection.point.z, {
-      //   force: true,
-      //   float: (this.intersectionSurface === this.water)
-      // }, false);
+      // retrieve all available picks
+      this.picksAvailable = Terrain.PICKS
+        .get(this.currentSubBiome.name)
+        .filter((item: IPickAndOrganism) => this.generator.checkCanPick(item.organism, e, m, true))
+        .filter((item: IPickAndOrganism) => (this.intersectionSurface === this.water) === item.pick.f);
 
       if (!this.picksAvailable.length) {
         // bail out if no item gets picked
@@ -535,9 +554,11 @@ class Terrain {
         return;
       }
 
-      if (this.pickIndex >= this.picksAvailable.length) this.pickIndex = Math.floor(Math.random() * this.picksAvailable.length);
+      if (this.pickIndex >= this.picksAvailable.length) {
+        this.pickIndex = Math.floor(Math.random() * this.picksAvailable.length);
+      }
 
-      this.previewItem = this.picksAvailable[this.pickIndex];
+      this.previewItem = this.picksAvailable[this.pickIndex].pick;
       this.previewItem.p.copy(intersection.point);
       this.previewObject = chunk.getObject(this.previewItem);
       this.scene.add(this.previewObject);
@@ -555,11 +576,13 @@ class Terrain {
     this.previewObject.position.copy(intersection.point);
   }
 
+  /**
+   * Modify preview index
+   * @param {THREE.Raycaster} raycaster
+   * @param {INTERACTION_TYPE} type
+   */
   changeObjectPreview(raycaster: THREE.Raycaster, type: INTERACTION_TYPE) {
     if (!this.picksAvailable || !this.picksAvailable.length) return;
-
-    const intersection = this.getPlayerInteractionIntersection(raycaster, [this.water, this.terrain]);
-    const chunk = this.getChunkAt(intersection.point.x, intersection.point.z);
 
     switch (type) {
       case INTERACTION_TYPE.MOUSE_WHEEL_DOWN:
@@ -809,7 +832,7 @@ class Terrain {
     // main terrain with borders
     this.terrain = new THREE.Mesh(new THREE.Geometry(), TERRAIN_MATERIAL);
     this.terrain.frustumCulled = true;
-    this.terrain.castShadow = false;
+    this.terrain.castShadow = true;
     this.terrain.receiveShadow = true;
     this.layers.add(this.terrain);
 
@@ -833,16 +856,20 @@ class Terrain {
 
   private initPicks() {
     Object.values(SUB_BIOMES).forEach(subBiome => {
-      const picks: IPick[] = [];
+      const picks: IPickAndOrganism[] = [];
       for (const subBiomeOrganisms of subBiome.organisms) {
         const scale = subBiomeOrganisms.scale ? MathUtils.randomFloat(subBiomeOrganisms.scale.min, subBiomeOrganisms.scale.max) * World.OBJ_INITIAL_SCALE : 1 * World.OBJ_INITIAL_SCALE;
-        subBiomeOrganisms.name.forEach(organism => {
-          picks.push({
-            r: new THREE.Euler().setFromVector3(new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0)),
-            p: new THREE.Vector3(),
-            n: organism,
-            f: subBiomeOrganisms.float,
-            s: new THREE.Vector3(scale, scale, scale)
+
+        subBiomeOrganisms.name.forEach(name => {
+          picks.push(<IPickAndOrganism>{
+            organism: subBiomeOrganisms,
+            pick: {
+              r: new THREE.Euler().setFromVector3(new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0)),
+              p: new THREE.Vector3(),
+              n: name,
+              f: subBiomeOrganisms.float,
+              s: new THREE.Vector3(scale, scale, scale)
+            }
           });
         });
       }

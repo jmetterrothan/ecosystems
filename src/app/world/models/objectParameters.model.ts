@@ -8,7 +8,7 @@ export interface IPlaceObject {
 
 export interface IPickObject {
   force?: boolean; // bypass scarcity test
-  float?: boolean;
+  isOnWater?: boolean;
 }
 
 export interface IStackReference {
@@ -17,8 +17,14 @@ export interface IStackReference {
   type: OBJ_TYPE;
 }
 
+export enum ISpecialObjectCanPlaceIn {
+  LAND,
+  WATER,
+  BOTH
+}
+
 export interface ISpecialObject {
-  underwater: boolean;
+  underwater: ISpecialObjectCanPlaceIn;
   float: boolean;
   stackReference: string;
   e?: ILowHigh;

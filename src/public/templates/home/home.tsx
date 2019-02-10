@@ -80,6 +80,9 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     const autostart = parseInt(parsed.autostart, 10) === 1 || false;
 
     storage.online = parsed.online != null ? parseInt(parsed.online, 10) === 1 : storage.online;
+    storage.debug = parsed.debug != null ? parseInt(parsed.debug, 10) === 1 : storage.debug;
+    storage.sound = parsed.sound != null ? parseInt(parsed.sound, 10) === 1 : storage.sound;
+    storage.quality = parsed.quality != null ? parseInt(parsed.quality, 10) : storage.quality;
 
     this.state = {
       autostart,

@@ -86,7 +86,7 @@ class RainForestBiome extends Biome {
     const nx = (x - Terrain.SIZE_X / 2) / (1024 * 128);
     const nz = (z - Terrain.SIZE_Z / 2) / (1024 * 128);
 
-    const m = this.computeMoistureAt(x, z);
+    // const m = this.computeMoistureAt(x, z);
 
     let e = (0.50 * this.generator.noise(1 * nx, 1 * nz)
       + 1.00 * this.generator.noise(2 * nx, 2 * nz)
@@ -113,6 +113,9 @@ class RainForestBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.1) {
+      if (m > 0.625) {
+        return SUB_BIOMES.SWAMP_WATER;
+      }
       return SUB_BIOMES.OCEAN;
     }
 
