@@ -13,7 +13,6 @@ import { IPick } from '@world/models/pick.model';
 import { IPickObject } from '@world/models/objectParameters.model';
 
 import { Biomes } from '@world/constants/biomes.constants';
-import DesertIslandBiome from './biomes/DesertIslandBiome';
 
 class BiomeGenerator {
   private simplex: simplexNoise;
@@ -32,7 +31,7 @@ class BiomeGenerator {
    * @param {Terrain} terrain
    */
   init(terrain: Terrain): Biome {
-    const biomeClass = DesertIslandBiome; // Biomes[MathUtils.randomInt(0, Biomes.length - 1)];
+    const biomeClass = Biomes[MathUtils.randomInt(0, Biomes.length - 1)];
     this.biome = new biomeClass(terrain);
 
     return this.biome;

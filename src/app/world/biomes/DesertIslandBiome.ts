@@ -36,7 +36,7 @@ class DesertIslandBiome extends Biome {
     this.b = MathUtils.randomFloat(2.75, 3.25); // best around 3, makes multiple hills even when low
     this.c = MathUtils.randomFloat(1.25, 1.75); // best around 1.5 makes it round
 
-    // this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.desert_island_visited);
+    this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.desert_island_visited);
     this.sound = OceanSFXMp3;
   }
 
@@ -87,7 +87,7 @@ class DesertIslandBiome extends Biome {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.chest], true);
 
     if (intersections.length) {
-      // this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.archaeology);
+      this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.find_captain_treasure);
     }
   }
 
