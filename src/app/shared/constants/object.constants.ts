@@ -19,8 +19,8 @@ import snowmanNoCarrotMtl from '@objmodels/misc/snowman_no_carrot.mtl';
 import chestObj from '@objmodels/misc/chest.obj';
 import chestMtl from '@objmodels/misc/chest.mtl';
 
-import round_treeObj from '@objmodels/tree/round_tree.obj';
-import round_treeMtl from '@objmodels/tree/round_tree.mtl';
+import tree_blossomObj from '@objmodels/tree/tree_blossom.obj';
+import tree_blossomMtl from '@objmodels/tree/tree_blossom.mtl';
 
 import bush2Obj from '@objmodels/tree/bush2.obj';
 import bush2Mtl from '@objmodels/tree/bush2.mtl';
@@ -45,6 +45,10 @@ import spruceObj from '@objmodels/tree/spruce.obj';
 import spruceMtl from '@objmodels/tree/spruce.mtl';
 import spruce2Obj from '@objmodels/tree/spruce2.obj';
 import spruce2Mtl from '@objmodels/tree/spruce2.mtl';
+import spruce3Obj from '@objmodels/tree/spruce3.obj';
+import spruce3Mtl from '@objmodels/tree/spruce3.mtl';
+import spruce4Obj from '@objmodels/tree/spruce4.obj';
+import spruce4Mtl from '@objmodels/tree/spruce4.mtl';
 
 import cactus1Obj from '@objmodels/cactus/cactus1.obj';
 import cactus1Mtl from '@objmodels/cactus/cactus1.mtl';
@@ -67,6 +71,8 @@ import lilypad2Mtl from '@objmodels/flower/lilypad2.mtl';
 
 import mangroveObj from '@objmodels/tree/mangrove.obj';
 import mangroveMtl from '@objmodels/tree/mangrove.mtl';
+import mangrove2Obj from '@objmodels/tree/mangrove2.obj';
+import mangrove2Mtl from '@objmodels/tree/mangrove2.mtl';
 
 import jungle_treeObj from '@objmodels/tree/jungle_tree.obj';
 import jungle_treeMtl from '@objmodels/tree/jungle_tree.mtl';
@@ -282,7 +288,7 @@ export const OBJECTS: IObject[] = [
   { name: 'bush2', type: OBJ_TYPE.PLANT, obj: bush2Obj, mtl: bush2Mtl },
   { name: 'dead_tree', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: dead_treeObj, mtl: dead_treeMtl },
   { name: 'dead_tree2', type: OBJ_TYPE.TREE, obj: dead_tree2Obj, mtl: dead_tree2Mtl },
-  // { name: 'round_tree', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: round_treeObj, mtl: round_treeMtl },
+  { name: 'tree_blossom', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: tree_blossomObj, mtl: tree_blossomMtl },
   { name: 'skull', type: OBJ_TYPE.MISC, obj: skullObj, mtl: skullMtl },
   { name: 'carcass', type: OBJ_TYPE.MISC, obj: carcassObj, mtl: carcassMtl },
   { name: 'fish2', type: OBJ_TYPE.MISC, obj: fish2Obj, mtl: fish2Mtl, doubleSide: true },
@@ -320,9 +326,12 @@ export const OBJECTS: IObject[] = [
   { name: 'white_flower2', type: [OBJ_TYPE.PLANT, OBJ_TYPE.FLOWER], obj: white_flower2Obj, mtl: white_flower2Mtl, doubleSide: true },
   { name: 'spruce', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: spruceObj, mtl: spruceMtl },
   { name: 'spruce2', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: spruce2Obj, mtl: spruce2Mtl },
+  { name: 'spruce3', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: spruce3Obj, mtl: spruce3Mtl },
+  { name: 'spruce4', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: spruce4Obj, mtl: spruce4Mtl },
   { name: 'jungle_tree', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: jungle_treeObj, mtl: jungle_treeMtl },
   { name: 'jungle_tree2', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: jungle_tree2Obj, mtl: jungle_tree2Mtl },
   { name: 'mangrove', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: mangroveObj, mtl: mangroveMtl, doubleSide: true },
+  { name: 'mangrove2', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: mangrove2Obj, mtl: mangrove2Mtl },
   { name: 'cactus1', type: [OBJ_TYPE.PLANT, OBJ_TYPE.CACTUS], obj: cactus1Obj, mtl: cactus1Mtl },
   { name: 'cactus2', type: [OBJ_TYPE.PLANT, OBJ_TYPE.CACTUS], obj: cactus2Obj, mtl: cactus2Mtl },
   { name: 'cactus3', type: [OBJ_TYPE.PLANT, OBJ_TYPE.CACTUS], obj: cactus3Obj, mtl: cactus3Mtl },
