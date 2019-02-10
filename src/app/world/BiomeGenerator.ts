@@ -41,28 +41,28 @@ class BiomeGenerator {
    */
   init(terrain: Terrain): Biome {
     switch (terrain.getWorld().getSeed().toLowerCase()) {
-      case 'forest':
+      case 'rainforest':
         this.biome = new RainForestBiome(terrain);
         break;
-      case 'highland':
+      case 'highlands':
         this.biome = new HighlandBiome(terrain);
         break;
       case 'ocean':
         this.biome = new OceanBiome(terrain);
         break;
-      case 'swamp':
+      case 'swamps':
         this.biome = new SwampBiome(terrain);
         break;
       case 'desert':
         this.biome = new DesertBiome(terrain);
         break;
-      case 'snow':
+      case 'snowy_hills':
         this.biome = new SnowBiome(terrain);
         break;
       case 'fjord':
         this.biome = new FjordBiome(terrain);
         break;
-      case 'island':
+      case 'desert_island':
         this.biome = new DesertIslandBiome(terrain);
         break;
       default:
