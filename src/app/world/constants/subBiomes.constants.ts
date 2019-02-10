@@ -173,30 +173,6 @@ export const SUB_BIOMES: IBiomes = {
       },
     ]
   },
-  TAIGA: {
-    name: 'TAIGA',
-    color: new THREE.Color(0x298c2d),
-    organisms: [
-      {
-        weight: 0.85,
-        name: ['spruce', 'spruce2', 'spruce3', 'spruce4'],
-        scarcity: 0.975,
-        e: null,
-        m: null,
-        scale: { min: 0.75, max: 1.25 },
-        float: false,
-      },
-      {
-        weight: 0.15,
-        name: ['thin_mushroomg1', 'thin_mushroomg2', 'red_mushroom', 'mushroom_classic'], // MUSHROOM
-        scarcity: 0.995,
-        e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
-        m: null,
-        scale: { min: 0.75, max: 1.25 },
-        float: false,
-      }
-    ]
-  },
   OASIS: {
     name: 'OASIS',
     color: new THREE.Color(0xf0e68c),
