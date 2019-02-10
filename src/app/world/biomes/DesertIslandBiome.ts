@@ -52,7 +52,7 @@ class DesertIslandBiome extends Biome {
 
   initFishBoids() {
     // boids
-    const size = 50000;
+    const size = 40000;
 
     const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 60, MathUtils.rng);
     const points = pds.fill();
