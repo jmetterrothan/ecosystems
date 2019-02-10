@@ -20,6 +20,7 @@ import SwampPic from '@images/biomes/swamp/preview_001.png';
 import DesertPic from '@images/biomes/desert/preview_001.png';
 import SnowyHillsPic from '@images/biomes/snowy_hills/preview_001.png';
 import HighlandsPic from '@images/biomes/highlands/preview_001.png';
+import DesertIslandPic from '@images/biomes/desert_island/preview_001.png';
 
 type IBiomeProgress = {
   name: string;
@@ -62,6 +63,7 @@ class ProgressTab extends React.Component<any, IProgressTabState> {
             <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'><BiomeProgress name='Swamps' image={SwampPic} unlocked={progression.swamp_visited} /></li>
             <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'><BiomeProgress name='Snowy hills' image={SnowyHillsPic} unlocked={progression.snow_visited} /></li>
             <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'><BiomeProgress name='Fjords' image={FjordPic} unlocked={progression.fjord_visited} /></li>
+            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'><BiomeProgress name='Desert Island' image={DesertIslandPic} unlocked={progression.desert_island_visited} /></li>
           </Row>
           <ul className='overall-progress'>
           {this.state.progression.map((item: IProgressionWithCount, index: number) => (

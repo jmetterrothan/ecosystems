@@ -33,11 +33,13 @@
     overflow: hidden;
     margin: 0 auto;
     background: #dadada;
+    opacity: 0.5;
     filter: grayscale(100%);
   }
 
   &--unlocked {
     img {
+      opacity: 1;
       filter: grayscale(0);
     }
   }
