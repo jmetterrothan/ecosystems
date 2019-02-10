@@ -214,8 +214,8 @@ class Weather {
     this.sunlight.position.set(Terrain.SIZE_X / 2, Weather.SOLAR_SYSTEM_RADIUS, Terrain.SIZE_Z / 2);
 
     this.sunlight.castShadow = true;
-    this.sunlight.shadow.mapSize.width = 1024;
-    this.sunlight.shadow.mapSize.height = 1024;
+    this.sunlight.shadow.mapSize.width = configSvc.config.SHADOW_MAP_SIZE;
+    this.sunlight.shadow.mapSize.height = configSvc.config.SHADOW_MAP_SIZE;
     this.sunlight.shadow.camera.visible = false;
     this.sunlight.shadow.camera.castShadow = false;
     this.sunlight.shadow.bias = 0.0001;
@@ -239,8 +239,8 @@ class Weather {
     this.moonlight.position.set(Terrain.SIZE_X / 2, Weather.SOLAR_SYSTEM_RADIUS, Terrain.SIZE_Z / 2);
 
     this.moonlight.castShadow = true;
-    this.moonlight.shadow.mapSize.width = 1024;
-    this.moonlight.shadow.mapSize.height = 1024;
+    this.moonlight.shadow.mapSize.width = configSvc.config.SHADOW_MAP_SIZE; // 25000
+    this.moonlight.shadow.mapSize.height = configSvc.config.SHADOW_MAP_SIZE;
     this.moonlight.shadow.camera.visible = false;
     this.moonlight.shadow.camera.castShadow = false;
     this.moonlight.shadow.bias = 0.0001;
