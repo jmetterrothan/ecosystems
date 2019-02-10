@@ -8,6 +8,7 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 import Boids from '@boids/Boids';
 import Butterfly from '@boids/creatures/Butterfly';
+import DiscusFish from '@boids/creatures/DiscusFish';
 
 import { IBiome } from '@world/models/biome.model';
 
@@ -50,7 +51,12 @@ class RainForestBiome extends Biome {
   }
 
   init() {
-    const size = 75000;
+    this.initButterflyBoids();
+    this.initFishBoids();
+  }
+
+  initButterflyBoids() {
+    const size = 85000;
 
     const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
     const points = pds.fill();
@@ -66,6 +72,39 @@ class RainForestBiome extends Biome {
       const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
       for (let i = 0, n = MathUtils.randomInt(2, 4); i < n; i++) {
         boids.addCreature(new Butterfly());
+      }
+
+      this.boids.push(boids);
+    });
+  }
+
+  initFishBoids() {
+    // boids
+    const size = 50000;
+
+    const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 60, MathUtils.rng);
+    const points = pds.fill();
+
+    points.forEach((point: number[]) => {
+      const n = MathUtils.randomInt(2, 4);
+      const px = point.shift() + size / 2;
+      const pz = point.shift() + size / 2;
+
+      const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 3.75, Chunk.HEIGHT / 3) - 3072;
+      const py = Chunk.SEA_LEVEL - 3072 - ySize / 2;
+
+      const minSize = size - 1000;
+      if (this.generator.computeHeightAt(px - minSize / 2, pz - minSize / 2) >= py + ySize / 2) return;
+      if (this.generator.computeHeightAt(px - minSize / 2, pz - minSize / 2) >= py - ySize / 2) return;
+      if (this.generator.computeHeightAt(px + minSize / 2, pz - minSize / 2) >= py + ySize / 2) return;
+      if (this.generator.computeHeightAt(px + minSize / 2, pz - minSize / 2) >= py - ySize / 2) return;
+      if (this.generator.computeHeightAt(px + minSize / 2, pz + minSize / 2) >= py + ySize / 2) return;
+      if (this.generator.computeHeightAt(px + minSize / 2, pz + minSize / 2) >= py - ySize / 2) return;
+
+      // fishs
+      const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
+      for (let i = 0; i < n; i++) {
+        boids.addCreature(new DiscusFish());
       }
 
       this.boids.push(boids);

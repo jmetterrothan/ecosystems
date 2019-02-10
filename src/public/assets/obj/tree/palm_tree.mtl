@@ -30,14 +30,6 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.20 0.20 0.20
 Ns 18.00
-newmtl DesertTree_5SG
-illum 4
-Kd 0.80 0.80 0.80
-Ka 0.20 0.20 0.20
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.20 0.20 0.20
-Ns 18.00
 newmtl FirTree_01SG
 illum 4
 Kd 0.80 0.80 0.80
@@ -198,54 +190,6 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.20 0.20 0.20
 Ns 18.00
-newmtl Flower3D_03SG
-illum 4
-Kd 0.80 0.80 0.80
-Ka 0.20 0.20 0.20
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.20 0.20 0.20
-Ns 18.00
-newmtl Flower3D_04SG
-illum 4
-Kd 0.80 0.80 0.80
-Ka 0.20 0.20 0.20
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.20 0.20 0.20
-Ns 18.00
-newmtl Flower3D_05SG
-illum 4
-Kd 0.80 0.80 0.80
-Ka 0.20 0.20 0.20
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.20 0.20 0.20
-Ns 18.00
-newmtl Flower3D_06SG
-illum 4
-Kd 0.80 0.80 0.80
-Ka 0.20 0.20 0.20
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.20 0.20 0.20
-Ns 18.00
-newmtl Flower3D_07SG
-illum 4
-Kd 0.80 0.80 0.80
-Ka 0.20 0.20 0.20
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.20 0.20 0.20
-Ns 18.00
-newmtl Flower3D_08SG
-illum 4
-Kd 0.80 0.80 0.80
-Ka 0.20 0.20 0.20
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.20 0.20 0.20
-Ns 18.00
 newmtl Flower3D_10SG
 illum 4
 Kd 0.80 0.80 0.80
@@ -255,14 +199,6 @@ Ni 1.00
 Ks 0.20 0.20 0.20
 Ns 18.00
 newmtl Flower3D_11SG
-illum 4
-Kd 0.80 0.80 0.80
-Ka 0.20 0.20 0.20
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.20 0.20 0.20
-Ns 18.00
-newmtl Flower3D_13SG
 illum 4
 Kd 0.80 0.80 0.80
 Ka 0.20 0.20 0.20
@@ -415,14 +351,6 @@ Ni 1.00
 Ks 0.20 0.20 0.20
 Ns 18.00
 newmtl PalmType3_4SG
-illum 4
-Kd 0.80 0.80 0.80
-Ka 0.20 0.20 0.20
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.20 0.20 0.20
-Ns 18.00
-newmtl PalmType3_5SG
 illum 4
 Kd 0.80 0.80 0.80
 Ka 0.20 0.20 0.20
@@ -1030,16 +958,42 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.20 0.20 0.20
 Ns 18.00
-newmtl initialShadingGroup
+newmtl pasted__blueSG
 illum 4
-Kd 0.50 0.50 0.50
-Ka 0.00 0.00 0.00
+Kd 0.06 0.55 0.47
+Ka 0.09 0.19 0.28
 Tf 1.00 1.00 1.00
 Ni 1.00
+Ks 0.27 0.27 0.27
+Ns 6.00
 newmtl pasted__pasted__lilypad1SG
 illum 4
 Kd 0.37 0.55 0.18
 Ka 0.29 0.29 0.29
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
+newmtl pasted__pasted__lilypad1SG1
+illum 4
+Kd 0.18 0.59 0.35
+Ka 0.29 0.29 0.29
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
+newmtl pasted__pasted__liypad_flowerSG
+illum 4
+Kd 1.00 1.00 1.00
+Ka 0.26 0.26 0.26
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
+newmtl pasted__pasted__palm_tree1SG
+illum 4
+Kd 0.53 0.63 0.34
+Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.50 0.50 0.50
@@ -1051,6 +1005,46 @@ Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.26 0.26 0.26
+Ns 6.00
+newmtl pasted__pasted__phong5SG
+illum 4
+Kd 1.00 0.77 0.05
+Ka 0.39 0.39 0.39
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 1.00 0.77 0.05
+Ns 0.00
+newmtl pasted__pasted__pinkSG
+illum 4
+Kd 1.00 0.40 0.31
+Ka 1.00 0.04 0.13
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.27 0.27 0.27
+Ns 6.00
+newmtl pasted__pasted__spruce_woodSG
+illum 4
+Kd 0.66 0.43 0.33
+Ka 0.42 0.42 0.42
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
+newmtl pasted__phong1SG
+illum 4
+Kd 0.25 0.16 0.09
+Ka 0.18 0.18 0.18
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
+newmtl pasted__phong6SG
+illum 4
+Kd 1.00 0.61 0.60
+Ka 1.00 0.21 0.21
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.27 0.27 0.27
 Ns 6.00
 newmtl pasted__phong7SG
 illum 4
