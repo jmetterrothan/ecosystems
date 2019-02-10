@@ -75,7 +75,7 @@ class World {
     this.initSeed(seed);
 
     // entities
-    const spawn = new THREE.Vector3(-65000, Terrain.SIZE_Y + 48000, Terrain.SIZE_Z + 65000);
+    const spawn = new THREE.Vector3(-configSvc.config.SPAWN.x, Terrain.SIZE_Y + configSvc.config.SPAWN.y, Terrain.SIZE_Z + configSvc.config.SPAWN.z);
     const target = new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
 
     this.player = new Player(this.controls);
