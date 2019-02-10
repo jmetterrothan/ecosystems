@@ -47,6 +47,10 @@ class DesertIslandBiome extends Biome {
       underwater: ISpecialObjectCanPlaceIn.BOTH
     });
 
+    this.initFishBoids();
+  }
+
+  initFishBoids() {
     // boids
     const size = 50000;
 
