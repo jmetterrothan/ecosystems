@@ -37,13 +37,13 @@ class DesertBiome extends Biome {
     this.skull = this.terrain.placeSpecialObject({
       stackReference: 'skull',
       float: false,
-      underwater: ISpecialObjectCanPlaceIn.LAND
+      underwater: ISpecialObjectCanPlaceIn.BOTH
     }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
 
     this.carcass = this.terrain.placeSpecialObject({
       stackReference: 'carcass',
       float: false,
-      underwater: ISpecialObjectCanPlaceIn.LAND
+      underwater: ISpecialObjectCanPlaceIn.BOTH
     }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
 
     // vulture
