@@ -13,6 +13,7 @@ import { IPick } from '@world/models/pick.model';
 import { IPickObject } from '@world/models/objectParameters.model';
 
 import { Biomes } from '@world/constants/biomes.constants';
+import DesertIslandBiome from './biomes/DesertIslandBiome';
 
 class BiomeGenerator {
   private simplex: simplexNoise;
@@ -31,13 +32,8 @@ class BiomeGenerator {
    * @param {Terrain} terrain
    */
   init(terrain: Terrain): Biome {
-    if (World.BIOME === null) {
-      const biomeClass = Biomes[MathUtils.randomInt(0, Biomes.length - 1)];
-      this.biome = new biomeClass(terrain);
-    } else {
-      // @ts-ignore
-      this.biome = new World.BIOME(terrain);
-    }
+    const biomeClass = DesertIslandBiome; // Biomes[MathUtils.randomInt(0, Biomes.length - 1)];
+    this.biome = new biomeClass(terrain);
 
     return this.biome;
   }
@@ -160,7 +156,20 @@ class BiomeGenerator {
 
     // clamp to a minimum elevation
     const minElevation = -(Chunk.HEIGHT / 2) / Chunk.MAX_TERRAIN_HEIGHT + 0.1;
-    if (e < minElevation) { e = minElevation; }
+
+    if (e < minElevation) {
+      // default ground fallback
+      const nx = x / (1024 * 128);
+      const nz = z / (1024 * 128);
+
+      e = minElevation;
+
+      e += 0.025 * this.noise(2 * nx, 2 * nz);
+      e += 0.01 * this.noise2(4 * nx, 4 * nz);
+      e += 0.005 * this.ridgeNoise(16 * nx, 16 * nz);
+      e += 0.00275 * this.ridgeNoise(32 * nx, 32 * nz);
+      e += 0.008 * this.noise2(64 * nx, 64 * nz);
+    }
 
     return e;
   }
