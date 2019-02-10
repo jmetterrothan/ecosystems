@@ -36,15 +36,24 @@ class SoundManager {
   }
 
   public static play(alias: string) {
-    SoundManager.get(alias).play();
+    try {
+      SoundManager.get(alias).play();
+    } catch (e) {
+      console.warn(`Could not play sound "${alias}"`);
+    }
   }
 
   public static playWithPromise(alias: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      const sound = SoundManager.get(alias);
-      sound.once('playerror', reject);
-      sound.once('end', () => resolve(sound));
-      sound.play();
+      try {
+        const sound = SoundManager.get(alias);
+        sound.once('playerror', reject);
+        sound.once('end', () => resolve(sound));
+        sound.play();
+      } catch (e) {
+        console.warn(`Could not play sound "${alias}"`);
+        reject();
+      }
     });
   }
 }
