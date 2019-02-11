@@ -3,7 +3,7 @@ import Creature from '@boids/creatures/Creature';
 
 class Butterfly extends Creature {
   constructor() {
-    super(['butterfly'], {
+    super(['butterfly', 'butterfly2', 'butterfly3', 'butterfly4'], {
       speed: 7500,
       neighbourRadius: 6000,
       alignmentWeighting: 0.005,

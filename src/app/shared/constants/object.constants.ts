@@ -5,11 +5,14 @@ import { OBJ_TYPE } from '@shared/enums/objectTypes.enum';
 import scarecrowObj from '@objmodels/misc/scarecrow.obj';
 import scarecrowMtl from '@objmodels/misc/scarecrow.mtl';
 
-import carrotObj from '@objmodels/vegetables/carrot.obj';
-import carrotMtl from '@objmodels/vegetables/carrot.mtl';
-
 import butterflyObj from '@objmodels/fauna/butterfly.obj';
 import butterflyMtl from '@objmodels/fauna/butterfly.mtl';
+import butterfly2Obj from '@objmodels/fauna/butterfly2.obj';
+import butterfly2Mtl from '@objmodels/fauna/butterfly2.mtl';
+import butterfly3Obj from '@objmodels/fauna/butterfly3.obj';
+import butterfly3Mtl from '@objmodels/fauna/butterfly3.mtl';
+import butterfly4Obj from '@objmodels/fauna/butterfly4.obj';
+import butterfly4Mtl from '@objmodels/fauna/butterfly4.mtl';
 
 import snowmanObj from '@objmodels/misc/snowman.obj';
 import snowmanMtl from '@objmodels/misc/snowman.mtl';
@@ -237,11 +240,6 @@ import mushroomarrowObj from '@objmodels/mushroom/mushroomarrow.obj';
 import mushroomarrowMtl from '@objmodels/mushroom/mushroomarrow.mtl';
 import mushroomclassicObj from '@objmodels/mushroom/mushroomclassic.obj';
 import mushroomclassicMtl from '@objmodels/mushroom/mushroomclassic.mtl';
-import wallmushroomsObj from '@objmodels/mushroom/wallmushrooms.obj';
-import wallmushroomsMtl from '@objmodels/mushroom/wallmushrooms.mtl';
-
-import sea_urchinObj from '@objmodels/fauna/sea_urchin.obj';
-import sea_urchinMtl from '@objmodels/fauna/sea_urchin.mtl';
 
 import desert_shrubObj from '@objmodels/shrub/desert_shrub.obj';
 import desert_shrubMtl from '@objmodels/shrub/desert_shrub.mtl';
@@ -255,7 +253,6 @@ export const OBJECTS: IObject[] = [
   { name: 'desert_tree', type: OBJ_TYPE.PLANT, obj: desert_treeObj, mtl: desert_treeMtl },
   { name: 'desert_shrub1', type: OBJ_TYPE.PLANT, obj: desert_shrubObj, mtl: desert_shrubMtl },
   { name: 'desert_shrub2', type: OBJ_TYPE.PLANT, obj: desert_shrub2Obj, mtl: desert_shrub2Mtl },
-  { name: 'sea_urchin', type: OBJ_TYPE.MISC, obj: sea_urchinObj, mtl: sea_urchinMtl },
   { name: 'mushroom_cluster', type: OBJ_TYPE.MUSHROOM, obj: mushroomclusterObj, mtl: mushroomclusterMtl },
   { name: 'fat_mushroom', type: OBJ_TYPE.MUSHROOM, obj: fatMushroomObj, mtl: fatMushroomMtl },
   { name: 'fat_mushroom2', type: OBJ_TYPE.MUSHROOM, obj: fatMushroom2Obj, mtl: fatMushroom2Mtl },
@@ -271,7 +268,6 @@ export const OBJECTS: IObject[] = [
   { name: 'small_mushroom3', type: OBJ_TYPE.MUSHROOM, obj: smallmushroom3Obj, mtl: smallmushroom3Mtl },
   { name: 'mushroom_arrow', type: OBJ_TYPE.MUSHROOM, obj: mushroomarrowObj, mtl: mushroomarrowMtl },
   { name: 'mushroom_classic', type: OBJ_TYPE.MUSHROOM, obj: mushroomclassicObj, mtl: mushroomclassicMtl },
-  { name: 'wall_mushrooms', type: OBJ_TYPE.MUSHROOM, obj: wallmushroomsObj, mtl: wallmushroomsMtl },
   { name: 'simple_tree', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: simple_treeObj, mtl: simple_treeMtl },
   { name: 'yellow_tree', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: yellow_treeObj, mtl: yellow_treeMtl },
   { name: 'bush3', type: OBJ_TYPE.PLANT, obj: bush3Obj, mtl: bush3Mtl },
@@ -280,8 +276,10 @@ export const OBJECTS: IObject[] = [
   { name: 'scarecrow', type: OBJ_TYPE.MISC, obj: scarecrowObj, mtl: scarecrowMtl, doubleSide: true },
   { name: 'sun', type: OBJ_TYPE.MISC, obj: sunObj, mtl: sunMtl, doubleSide: true },
   { name: 'moon', type: OBJ_TYPE.MISC, obj: moonObj, mtl: moonMtl, doubleSide: true },
-  { name: 'carrot', type: OBJ_TYPE.MISC, obj: carrotObj, mtl: carrotMtl, doubleSide: true },
   { name: 'butterfly', type: OBJ_TYPE.INSECT, obj: butterflyObj, mtl: butterflyMtl, doubleSide: true },
+  { name: 'butterfly2', type: OBJ_TYPE.INSECT, obj: butterfly2Obj, mtl: butterfly2Mtl, doubleSide: true },
+  { name: 'butterfly3', type: OBJ_TYPE.INSECT, obj: butterfly3Obj, mtl: butterfly3Mtl, doubleSide: true },
+  { name: 'butterfly4', type: OBJ_TYPE.INSECT, obj: butterfly4Obj, mtl: butterfly4Mtl, doubleSide: true },
   { name: 'snowman', type: OBJ_TYPE.MISC, obj: snowmanObj, mtl: snowmanMtl },
   { name: 'snowman_no_carrot', type: OBJ_TYPE.MISC, obj: snowmanNoCarrotObj, mtl: snowmanNoCarrotMtl },
   { name: 'chest', type: OBJ_TYPE.MISC, obj: chestObj, mtl: chestMtl },
