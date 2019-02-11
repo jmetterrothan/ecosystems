@@ -20,7 +20,7 @@ import { IBiome } from '@world/models/biome.model';
 import { IPick } from '@world/models/pick.model';
 import { IOnlineObject } from '@online/models/onlineObjects.model';
 import { ISpecialObject, ISpecialObjectCanPlaceIn } from '@world/models/objectParameters.model';
-import { ILowHigh, IBiomeWeightedObject } from '@world/models/biomeWeightedObject.model';
+import { ILowHigh } from '@world/models/biomeWeightedObject.model';
 import { IPickAndOrganism } from '@world/models/pickAndOrganism.model';
 
 import { PROGRESSION_COMMON_STORAGE_KEYS } from '@achievements/constants/progressionCommonStorageKeys.constants';

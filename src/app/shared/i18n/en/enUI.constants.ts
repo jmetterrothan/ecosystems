@@ -51,29 +51,36 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
   },
   'tutorial-tab': {
     title: 'Help',
-    reset_btn: 'Reset',
-    howto: 'You can modify some of the key bindings by clicking on the associated button then on the desired key on your keyboard.',
-    title_commands: 'Keys',
-    subtitle_keyboard: 'Keyboard',
-    subtitle_mouse: 'Mouse',
-    actionkey: {
-      down: 'Descend',
-      up: 'Ascend',
-      right: 'Right',
-      left: 'Left',
-      back: 'Backwards',
-      front: 'Forwards',
-      vocal: 'Enable/Disable vocal commands',
-      reload: 'Generate a new world',
-      mute: 'Enable/Disable sound',
-      menu: 'Menu',
+    tab1: {
+      reset_btn: 'Reset',
+      intro: 'You can modify some of the key bindings by clicking on the associated button then on the desired key on your keyboard.',
+      title_commands: 'Keys',
+      subtitle_keyboard: 'Keyboard',
+      subtitle_mouse: 'Mouse',
+      actionkey: {
+        down: 'Descend',
+        up: 'Ascend',
+        right: 'Right',
+        left: 'Left',
+        back: 'Backwards',
+        front: 'Forwards',
+        vocal: 'Enable/Disable vocal commands',
+        reload: 'Generate a new world',
+        mute: 'Enable/Disable sound',
+        menu: 'Menu',
+      },
+      'mouse_left-click': 'Put an object down',
+      'mouse_left-click_name': 'Left click',
+      'mouse_right-click': 'Delete an object',
+      'mouse_right-click_name': 'Right click',
+      mouse_scroll: 'Changer current object',
+      mouse_scroll_name: 'Scroll',
     },
-    'mouse_left-click': 'Put an object down',
-    'mouse_left-click_name': 'Left click',
-    'mouse_right-click': 'Delete an object',
-    'mouse_right-click_name': 'Right click',
-    mouse_scroll: 'Changer current object',
-    mouse_scroll_name: 'Scroll',
+    tab2: {
+      intro: 'You can place objects using your voice. Don\'t forget to give the application access to your microphone.',
+      subtitle: 'Place an object with your voice',
+      text: '...'
+    }
   },
   'home-tab': {
     title: 'Ecosystems',
@@ -94,7 +101,7 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
     description_lucas: 'Gameplay developer - vocal commands with tensorflow.',
     description_jordan: 'Developer - sounds.',
     description_christina: 'UX/UI Designer.',
-    description_ugo: 'Tester'
+    description_ugo: 'Tester.'
   },
   'progress-tab': {
     title: 'Progression',

@@ -22,6 +22,10 @@ interface HTMLElement {
   webkitExitPointerLock?: any;
 }
 
+interface WheelEvent {
+  wheelDelta: number;
+}
+
 interface Window {
   player: THREE.Object3D;
 }
@@ -30,8 +34,6 @@ interface Math {
   seedrandom(seed?: string): void;
 }
 
-
 interface Math {
   seedrandom(): void;
 }
-

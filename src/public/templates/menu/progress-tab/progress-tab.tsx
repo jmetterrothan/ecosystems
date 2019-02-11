@@ -9,18 +9,17 @@ import { progressionSvc } from '@achievements/services/progression.service';
 import { translationSvc } from '@shared/services/translation.service';
 
 import { IProgressionWithCount } from '@achievements/models/progression.model';
-import { IProgressionBiomesStorageKeys } from '@app/achievements/models/progressionBiomesStorageKeys.model';
 
 import './progress-tab.styles';
 
-import FjordPic from '@images/biomes/fjord/preview_001.png';
-import OceanPic from '@images/biomes/ocean/preview_001.png';
-import RainforestPic from '@images/biomes/rainforest/preview_001.png';
-import SwampPic from '@images/biomes/swamp/preview_001.png';
-import DesertPic from '@images/biomes/desert/preview_001.png';
-import SnowyHillsPic from '@images/biomes/snowy_hills/preview_001.png';
-import HighlandsPic from '@images/biomes/highlands/preview_001.png';
-import DesertIslandPic from '@images/biomes/desert_island/preview_001.png';
+import FjordPic from '@images/biomes/thumbs/fjord/thumb_001.png';
+import OceanPic from '@images/biomes/thumbs/ocean/thumb_001.png';
+import RainforestPic from '@images/biomes/thumbs/rainforest/thumb_001.png';
+import SwampPic from '@images/biomes/thumbs/swamp/thumb_001.png';
+import DesertPic from '@images/biomes/thumbs/desert/thumb_001.png';
+import SnowyHillsPic from '@images/biomes/thumbs/snowy_hills/thumb_001.png';
+import HighlandsPic from '@images/biomes/thumbs/highlands/thumb_001.png';
+import DesertIslandPic from '@images/biomes/thumbs/desert_island/thumb_001.png';
 
 type IBiomeProgress = {
   name: string;

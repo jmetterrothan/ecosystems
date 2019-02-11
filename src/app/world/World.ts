@@ -3,11 +3,10 @@ import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
-import ConfigService, { configSvc } from '@shared/services/config.service';
+import { configSvc } from '@shared/services/config.service';
 import { voiceSvc } from '@voice/services/voice.service';
 
 import Terrain from '@world/Terrain';
-import Biome from '@world/Biome';
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Weather from '@world/Weather';
@@ -47,7 +46,6 @@ class World {
   private listener: THREE.AudioListener;
   private zSound: THREE.PositionalAudio;
   private audioLoader: THREE.AudioLoader;
-  private volume: number;
 
   /**
    * World constructor
@@ -67,7 +65,6 @@ class World {
     this.listener = new THREE.AudioListener();
     this.camera.add(this.listener);
     this.zSound = new THREE.PositionalAudio(this.listener);
-    this.volume = 1;
     this.audioLoader = new THREE.AudioLoader();
   }
 
@@ -139,17 +136,14 @@ class World {
   }
 
   private initAudio() {
-    let volume = this.volume;
+    // ambient
+    const ambientSoundPath = this.generator.getBiome().getSound();
 
-    if (!configSvc.soundEnabled) {
-      volume = 0;
-    }
-    const mySound = this.generator.getBiome().getSound();
-    this.audioLoader.load(mySound, (buffer) => {
+    this.audioLoader.load(ambientSoundPath, (buffer) => {
       this.zSound.setBuffer(buffer);
-      this.zSound.setRefDistance(5000);
+      this.zSound.setRefDistance(10000);
       this.zSound.setLoop(true);
-      this.zSound.setVolume(volume);
+      this.zSound.setVolume(0.35);
       this.zSound.play();
     }, () => { }, () => { });
 
