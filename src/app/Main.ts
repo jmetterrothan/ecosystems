@@ -1,13 +1,13 @@
 import * as THREE from 'three';
 import * as TWEEN from '@tweenjs/tween.js';
 import statsJs from 'stats.js';
-import 'three/examples/js/controls/PointerLockControls';
 import 'seedrandom';
+
+import 'three/examples/js/controls/PointerLockControls';
 
 import PointerLock from '@app/PointerLock';
 import World from '@world/World';
 import PostProcess from '@app/PostProcess';
-import UIManager from '@ui/UIManager';
 
 import { configSvc } from '@app/shared/services/config.service';
 import { playerSvc } from '@shared/services/player.service';

@@ -45,8 +45,9 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
           <H3 className='color-theme mb-2'>{translationSvc.translate('UI.tutorial-tab.title')}</H3>
         </header>
         <div className='tab__content'>
-          <Slider dots={true} infinite={false} speed={500} slidesToShow={1} slidesToScroll={1}>
+          <Slider dots={true} vertical={false} infinite={false} speed={500} slidesToShow={1} slidesToScroll={1}>
             {this.getFirstPanel()}
+            {this.getSecondPanel()}
           </Slider>
         </div>
       </div>
@@ -70,22 +71,22 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
   getFirstPanel() {
     return (
       <Article className='page page--1 pb-2'>
-        <p className='paragraph mb-3'>{translationSvc.translate('UI.tutorial-tab.howto')}</p>
-        <H4 className='mb-2 align-left'>{translationSvc.translate('UI.tutorial-tab.subtitle_mouse')}</H4>
+        <p className='paragraph mb-3'>{translationSvc.translate('UI.tutorial-tab.tab1.intro')}</p>
+        <H4 className='mb-2 align-left'>{translationSvc.translate('UI.tutorial-tab.tab1.subtitle_mouse')}</H4>
         <Row>
           <Col className='flexcol--8-t mb-2 mb-0-t'>
             <div className='tutorial-keys'>
-              <TutorialAction actionName={translationSvc.translate('UI.tutorial-tab.mouse_left-click_name')} text={translationSvc.translate('UI.tutorial-tab.mouse_left-click')} className='mb-2' />
+              <TutorialAction actionName={translationSvc.translate('UI.tutorial-tab.tab1.mouse_left-click_name')} text={translationSvc.translate('UI.tutorial-tab.tab1.mouse_left-click')} className='mb-2' />
             </div>
           </Col>
           <Col className='flexcol--8-t mb-2 mb-0-t'>
             <div className='tutorial-keys'>
-              <TutorialAction actionName={translationSvc.translate('UI.tutorial-tab.mouse_scroll_name')} text={translationSvc.translate('UI.tutorial-tab.mouse_scroll')} className='mb-2' />
+              <TutorialAction actionName={translationSvc.translate('UI.tutorial-tab.tab1.mouse_scroll_name')} text={translationSvc.translate('UI.tutorial-tab.tab1.mouse_scroll')} className='mb-2' />
             </div>
           </Col>
         </Row>
 
-        <H4 className='mt-2 mb-2 align-left'>{translationSvc.translate('UI.tutorial-tab.subtitle_keyboard')}</H4>
+        <H4 className='mt-2 mb-2 align-left'>{translationSvc.translate('UI.tutorial-tab.tab1.subtitle_keyboard')}</H4>
         <Row>
           <Col className='flexcol--8-t mb-2 mb-0-t'>
             <div className='tutorial-keys'>
@@ -133,11 +134,21 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
           </Col>
         </Row>
 
-        <Row className='mt-3'>
+        <Row className='mt-3 mb-2'>
           <Col className='flexcol--24 flex justify-content--end'>
-            <Button className='btn--darkblue btn--expand-mobile' onClick={this.reset}>{translationSvc.translate('UI.tutorial-tab.reset_btn')}</Button>
+            <Button className='btn--darkblue btn--expand-mobile' onClick={this.reset}>{translationSvc.translate('UI.tutorial-tab.tab1.reset_btn')}</Button>
           </Col>
         </Row>
+      </Article>
+    );
+  }
+
+  getSecondPanel() {
+    return (
+      <Article className='page page--2 pb-2'>
+        <p className='paragraph mb-3'>{translationSvc.translate('UI.tutorial-tab.tab2.intro')}</p>
+        <H4 className='mb-2 align-left'>{translationSvc.translate('UI.tutorial-tab.tab2.subtitle')}</H4>
+        <p className='paragraph mb-2'>{translationSvc.translate('UI.tutorial-tab.tab2.text')}</p>
       </Article>
     );
   }
