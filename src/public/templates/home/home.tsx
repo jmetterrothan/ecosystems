@@ -224,8 +224,8 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
         <CookiesConsent />
         <section className='ui__state home p-2 pt-4 pb-4 pt-2-t pb-2-t'>
           <header className='home__header mt-2-t mt-4-l mb-2'>
-            <H2 className='home__subtitle mb-1'>{translationSvc.translate('UI.home.subtitle')}</H2>
-            <H1 className='home__title'>{translationSvc.translate('UI.home.title')}</H1>
+            <h2 className='home__subtitle mb-1'>{translationSvc.translate('UI.home.subtitle')}</h2>
+            <h1 className='home__title'>{translationSvc.translate('UI.home.title')}</h1>
           </header>
           <div className='home__preview'>
             <ImageWithLoading src={image} alt='world preview' />

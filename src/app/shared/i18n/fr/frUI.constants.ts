@@ -12,7 +12,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     highlands: 'Highlands',
     ocean: 'Océan',
     rainforest: 'Forêt humide',
-    snowy_hills: 'Montagnes enneigées',
+    snowy_hills: 'Terres enneigées',
     swamps: 'Marais',
   },
   online_count: 'En ligne {{count}}',
