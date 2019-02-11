@@ -86,29 +86,36 @@ export interface IUITranslationKeys {
   };
   'tutorial-tab': {
     title: string;
-    reset_btn: string;
-    howto: string;
-    title_commands: string;
-    subtitle_keyboard: string;
-    subtitle_mouse: string;
-    actionkey: {
-      down: string;
-      up: string;
-      right: string;
-      left: string;
-      back: string;
-      front: string;
-      vocal: string;
-      reload: string;
-      mute: string;
-      menu: string;
+    tab1: {
+      reset_btn: string;
+      intro: string;
+      title_commands: string;
+      subtitle_keyboard: string;
+      subtitle_mouse: string;
+      actionkey: {
+        down: string;
+        up: string;
+        right: string;
+        left: string;
+        back: string;
+        front: string;
+        vocal: string;
+        reload: string;
+        mute: string;
+        menu: string;
+      };
+      'mouse_left-click': string;
+      'mouse_left-click_name': string;
+      'mouse_right-click': string;
+      'mouse_right-click_name': string;
+      mouse_scroll: string;
+      mouse_scroll_name: string;
     };
-    'mouse_left-click': string;
-    'mouse_left-click_name': string;
-    'mouse_right-click': string;
-    'mouse_right-click_name': string;
-    mouse_scroll: string;
-    mouse_scroll_name: string;
+    tab2: {
+      intro: string;
+      subtitle: string;
+      text: string;
+    };
   };
   'home-tab': {
     title: string;
