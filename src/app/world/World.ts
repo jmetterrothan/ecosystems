@@ -1,3 +1,4 @@
+import SoundManager from '@app/shared/SoundManager';
 import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
@@ -67,7 +68,6 @@ class World {
     this.listener = new THREE.AudioListener();
     this.camera.add(this.listener);
     this.zSound = new THREE.PositionalAudio(this.listener);
-    this.volume = 1;
     this.audioLoader = new THREE.AudioLoader();
   }
 
@@ -139,17 +139,14 @@ class World {
   }
 
   private initAudio() {
-    let volume = this.volume;
+    // ambient
+    const ambientSoundPath = this.generator.getBiome().getSound();
 
-    if (!configSvc.soundEnabled) {
-      volume = 0;
-    }
-    const mySound = this.generator.getBiome().getSound();
-    this.audioLoader.load(mySound, (buffer) => {
+    this.audioLoader.load(ambientSoundPath, (buffer) => {
       this.zSound.setBuffer(buffer);
-      this.zSound.setRefDistance(5000);
+      this.zSound.setRefDistance(10000);
       this.zSound.setLoop(true);
-      this.zSound.setVolume(volume);
+      this.zSound.setVolume(0.35);
       this.zSound.play();
     }, () => { }, () => { });
 

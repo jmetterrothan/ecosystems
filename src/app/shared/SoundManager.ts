@@ -20,7 +20,7 @@ class SoundManager {
       const sound = new Howl({
         ...options,
         src: paths,
-        onload: () => resolve(),
+        onload: () => resolve(sound),
         onloaderror: () => reject()
       });
 
