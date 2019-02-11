@@ -56,14 +56,30 @@ class ProgressTab extends React.Component<any, IProgressTabState> {
         </header>
         <div className='tab__content'>
           <Row Tag='ul' className='biome-progress mb-2'>
-            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'><BiomeProgress name='Desert' image={DesertPic} unlocked={progression.desert_visited} /></li>
-            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'><BiomeProgress name='Highlands' image={HighlandsPic} unlocked={progression.highland_visited} /></li>
-            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'><BiomeProgress name='Ocean' image={OceanPic} unlocked={progression.ocean_visited} /></li>
-            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'><BiomeProgress name='Rainforest' image={RainforestPic} unlocked={progression.rainforest_visited} /></li>
-            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'><BiomeProgress name='Swamps' image={SwampPic} unlocked={progression.swamp_visited} /></li>
-            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'><BiomeProgress name='Snowy hills' image={SnowyHillsPic} unlocked={progression.snow_visited} /></li>
-            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'><BiomeProgress name='Fjords' image={FjordPic} unlocked={progression.fjord_visited} /></li>
-            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'><BiomeProgress name='Desert Island' image={DesertIslandPic} unlocked={progression.desert_island_visited} /></li>
+            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'>
+              <BiomeProgress name={translationSvc.translate('UI.biomes.desert')} image={DesertPic} unlocked={progression.desert_visited} />
+            </li>
+            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'>
+              <BiomeProgress name={translationSvc.translate('UI.biomes.desert_island')} image={DesertIslandPic} unlocked={progression.desert_island_visited} />
+            </li>
+            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'>
+              <BiomeProgress name={translationSvc.translate('UI.biomes.fjords')} image={FjordPic} unlocked={progression.fjord_visited} />
+            </li>
+            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'>
+              <BiomeProgress name={translationSvc.translate('UI.biomes.highlands')} image={HighlandsPic} unlocked={progression.highland_visited} />
+            </li>
+            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'>
+              <BiomeProgress name={translationSvc.translate('UI.biomes.ocean')} image={OceanPic} unlocked={progression.ocean_visited} />
+            </li>
+            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'>
+              <BiomeProgress name={translationSvc.translate('UI.biomes.rainforest')} image={RainforestPic} unlocked={progression.rainforest_visited} />
+            </li>
+            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'>
+              <BiomeProgress name={translationSvc.translate('UI.biomes.snowy_hills')} image={SnowyHillsPic} unlocked={progression.snow_visited} />
+            </li>
+            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'>
+              <BiomeProgress name={translationSvc.translate('UI.biomes.swamps')} image={SwampPic} unlocked={progression.swamp_visited} />
+            </li>
           </Row>
           <ul className='overall-progress'>
           {this.state.progression.map((item: IProgressionWithCount, index: number) => (

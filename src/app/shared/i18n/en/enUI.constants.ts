@@ -5,6 +5,16 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
     new_world_btn: 'New world',
     continue_btn: 'Continue',
   },
+  biomes: {
+    desert: 'Desert',
+    desert_island: 'Desert Island',
+    fjords: 'Fjords',
+    highlands: 'Highlands',
+    ocean: 'Ocean',
+    rainforest: 'Rainforest',
+    snowy_hills: 'Snowy Hills',
+    swamps: 'Swamps',
+  },
   online_count: 'Online {{count}}',
   trophy_unlocked: 'Trophy unlocked',
   home: {
