@@ -38,6 +38,16 @@ export interface ITrophiesTranslationKeys {
 export interface IUITranslationKeys {
   online_count: string;
   trophy_unlocked: string;
+  biomes: {
+    desert: string;
+    desert_island: string;
+    fjords: string;
+    highlands: string;
+    ocean: string;
+    rainforest: string;
+    snowy_hills: string;
+    swamps: string;
+  };
   menu: {
     new_world_btn: string;
     continue_btn: string;

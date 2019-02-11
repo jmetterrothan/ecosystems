@@ -29,6 +29,18 @@ strong {
   font-family: $font;
 }
 
+h1.title {
+  font-size: 4rem;
+  line-height: 5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+
+  @include breakpoint-tablet-landscape {
+    font-size: 5.5rem;
+    line-height: 6.5rem;
+  }
+}
+
 h3.title {
   font-size: 2rem;
   line-height: 2.75rem;

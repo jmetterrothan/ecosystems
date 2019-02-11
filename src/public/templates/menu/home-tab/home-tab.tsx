@@ -14,7 +14,7 @@ class HomeTab extends React.Component<any, any> {
     return (
       <div className='tab home-tab'>
         <header className='tab__header'>
-          <H3 className='color-theme mb-2'>{translationSvc.translate('UI.home-tab.title')}</H3>
+          <H1 className='color-theme mb-2'>{translationSvc.translate('UI.home-tab.title')}</H1>
         </header>
         <div className='tab__content'>
           <Article>

@@ -52,8 +52,8 @@ export const SUB_BIOMES: IBiomes = {
     color: new THREE.Color(0x648277),
     organisms: [
       {
-        weight: 0.85,
-        name: ['spruce', 'spruce2'],
+        weight: 0.75,
+        name: ['spruce', 'spruce2', 'spruce3', 'spruce4'],
         scarcity: 0.25,
         e: { low: Chunk.SEA_ELEVATION + 0.25, high: null },
         m: { low: null, high: 0.35 },
@@ -66,15 +66,19 @@ export const SUB_BIOMES: IBiomes = {
         scarcity: 0.975,
         e: { low: Chunk.SEA_ELEVATION + 0.035, high: Chunk.SEA_ELEVATION + 0.5 },
         m: null,
-        scale: { min: 2.00, max: 2.75 },
+        scale: { min: 1.75, max: 2.25 },
         float: false,
       },
+      {
+        weight: 0.1,
+        name: ['tree_blossom'],
+        scarcity: 0.9,
+        e: { low: Chunk.SEA_ELEVATION + 0.01, high: Chunk.SEA_ELEVATION + 0.325 },
+        m: null,
+        scale: { min: 0.9, max: 1.75 },
+        float: false,
+      }
     ]
-  },
-  FJORD_SNOW_CAP: {
-    name: 'FJORD_SNOW_CAP',
-    color: new THREE.Color(0xffffff),
-    organisms: []
   },
   FJORD_BEACH: {
     name: 'FJORD_BEACH',
@@ -167,30 +171,6 @@ export const SUB_BIOMES: IBiomes = {
         scale: { min: 1.25, max: 2.0 },
         float: false,
       },
-    ]
-  },
-  TAIGA: {
-    name: 'TAIGA',
-    color: new THREE.Color(0x298c2d),
-    organisms: [
-      {
-        weight: 0.85,
-        name: ['spruce', 'spruce2'],
-        scarcity: 0.975,
-        e: null,
-        m: null,
-        scale: { min: 0.75, max: 1.25 },
-        float: false,
-      },
-      {
-        weight: 0.15,
-        name: ['thin_mushroomg1', 'thin_mushroomg2', 'red_mushroom', 'mushroom_classic'], // MUSHROOM
-        scarcity: 0.995,
-        e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
-        m: null,
-        scale: { min: 0.75, max: 1.25 },
-        float: false,
-      }
     ]
   },
   OASIS: {
@@ -450,7 +430,7 @@ export const SUB_BIOMES: IBiomes = {
     organisms: [
       {
         weight: 0.45,
-        name: ['mangrove'],
+        name: ['mangrove', 'mangrove2'],
         scarcity: 0.95,
         e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
         m: null,
@@ -690,7 +670,7 @@ export const SUB_BIOMES: IBiomes = {
       },
       {
         weight: 0.15,
-        name: ['mangrove'],
+        name: ['mangrove', 'mangrove2'],
         scarcity: 0.85,
         e: { low: Chunk.SEA_ELEVATION - 0.035, high: Chunk.SEA_ELEVATION + 0.1 },
         m: null,

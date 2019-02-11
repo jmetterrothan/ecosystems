@@ -78,7 +78,6 @@ class FjordBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e > Chunk.CLOUD_ELEVATION + 0.02) {
-      if (m > 0.5) return SUB_BIOMES.FJORD_SNOW_CAP;
       return SUB_BIOMES.MOUNTAIN;
     }
 
