@@ -8,10 +8,10 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import MathUtils from '@utils/Math.utils';
 import CommonUtils from '@utils/Common.utils';
 
-import ConfigService, { configSvc } from '@app/shared/services/config.service';
-import PlayerService, { playerSvc } from '@shared/services/player.service';
-import ProgressionService, { progressionSvc } from '@achievements/services/progression.service';
-import MultiplayerService, { multiplayerSvc } from '@online/services/multiplayer.service';
+import { configSvc } from '@app/shared/services/config.service';
+import { playerSvc } from '@shared/services/player.service';
+import { progressionSvc } from '@achievements/services/progression.service';
+import { multiplayerSvc } from '@online/services/multiplayer.service';
 
 import { ICloudData } from '@world/models/cloudData.model';
 

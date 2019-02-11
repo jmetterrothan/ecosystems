@@ -1,14 +1,12 @@
-import SoundManager from '@app/shared/SoundManager';
 import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
-import ConfigService, { configSvc } from '@shared/services/config.service';
+import { configSvc } from '@shared/services/config.service';
 import { voiceSvc } from '@voice/services/voice.service';
 
 import Terrain from '@world/Terrain';
-import Biome from '@world/Biome';
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Weather from '@world/Weather';
@@ -48,7 +46,6 @@ class World {
   private listener: THREE.AudioListener;
   private zSound: THREE.PositionalAudio;
   private audioLoader: THREE.AudioLoader;
-  private volume: number;
 
   /**
    * World constructor

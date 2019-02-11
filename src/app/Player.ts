@@ -3,7 +3,6 @@ import * as tf from '@tensorflow/tfjs';
 
 import 'three/examples/js/controls/PointerLockControls';
 
-import Chunk from '@world/Chunk';
 import PointerLock from '@app/PointerLock';
 import Terrain from '@world/Terrain';
 import Voice from '@voice/Voice';
@@ -27,10 +26,6 @@ class Player {
 
   private speed: THREE.Vector3;
   private velocity: THREE.Vector3;
-
-  private voiceModel: Model;
-
-  private voice: any;
 
   /**
    * Player constructor
