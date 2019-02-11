@@ -80,13 +80,13 @@ class CoreService {
 
           object.castShadow = true;
           object.receiveShadow = false;
-          object.frustumCulled = false;
+          object.frustumCulled = true;
 
           object.traverse((child) => {
             if (child instanceof THREE.Mesh) {
               child.castShadow = true;
               child.receiveShadow = false;
-              child.frustumCulled = false;
+              child.frustumCulled = true;
 
               if (!(child.material instanceof THREE.Material)) {
                 child.material.forEach(material => {
