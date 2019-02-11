@@ -26,11 +26,7 @@ import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
 
 import './home.styles.scss';
 
-import previewImage from '@images/previews/world.png';
-import previewImage2 from '@images/previews/world2.png';
-import previewImage3 from '@images/previews/world3.png';
-import previewImage4 from '@images/previews/world4.png';
-import previewImage5 from '@images/previews/world5.png';
+import splashScreenImg from '@images/splash.png';
 
 interface IHomeProps {
   uiManager: UIManager;
@@ -55,8 +51,6 @@ interface IHomeParametersStorage {
   online: boolean;
   sound: boolean;
 }
-
-const imageList = [previewImage, previewImage2, previewImage3, previewImage4, previewImage5];
 
 class Home extends React.PureComponent<IHomeProps, IHomeState> {
   form: HTMLFormElement;
@@ -92,7 +86,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
       onlineMode: storage.online,
       soundMode: storage.sound,
       formValid: true,
-      image: imageList[Math.floor(Math.random() * imageList.length)],
+      image: splashScreenImg,
       ready: false,
       busy: autostart
     };
@@ -224,8 +218,8 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
         <CookiesConsent />
         <section className='ui__state home p-2 pt-4 pb-4 pt-2-t pb-2-t'>
           <header className='home__header mt-2-t mt-4-l mb-2'>
-            <H2 className='home__subtitle mb-1'>{translationSvc.translate('UI.home.subtitle')}</H2>
-            <H1 className='home__title'>{translationSvc.translate('UI.home.title')}</H1>
+            <h2 className='home__subtitle mb-1'>{translationSvc.translate('UI.home.subtitle')}</h2>
+            <h1 className='home__title'>{translationSvc.translate('UI.home.title')}</h1>
           </header>
           <div className='home__preview'>
             <ImageWithLoading src={image} alt='world preview' />
