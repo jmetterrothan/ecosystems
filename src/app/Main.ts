@@ -84,7 +84,13 @@ class Main {
 
   private initRenderer() {
     // renderer setup
-    this.renderer = new THREE.WebGLRenderer({ antialias: configSvc.config.ENABLE_AA, logarithmicDepthBuffer: true, alpha: true });
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: configSvc.config.ENABLE_AA,
+      logarithmicDepthBuffer: true,
+      alpha: true,
+      powerPreference: 'high-performance'
+    });
+
     this.renderer.domElement.style.position = 'fixed';
     this.renderer.domElement.style.top = '0';
     this.renderer.domElement.style.left = '0';
@@ -94,6 +100,9 @@ class Main {
 
     this.renderer.shadowMap.enabled = configSvc.config.ENABLE_SHADOWS;
     this.renderer.shadowMap.type = configSvc.config.SHADOW_MAP_TYPE;
+
+    // this.renderer.shadowMap.autoUpdate = false;
+    // this.renderer.shadowMap.needsUpdate = true;
 
     this.renderer.setClearColor(new THREE.Color(0x000000));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -176,11 +185,11 @@ class Main {
         this.postProcess.update();
       }
 
+      TWEEN.update();
+
       const color: THREE.Color = this.world.getWeather().getFogColor();
       this.scene.background = color;
       this.scene.fog.color = color;
-
-      TWEEN.update();
 
       // switch render func if underwater
       if (playerSvc.isUnderwater()) {
@@ -191,12 +200,10 @@ class Main {
     }
 
     if (configSvc.debug) this.stats.end();
-
-    window.requestAnimationFrame(this.render.bind(this));
   }
 
   public run() {
-    window.requestAnimationFrame(this.render.bind(this));
+    this.renderer.setAnimationLoop(this.render.bind(this));
   }
 }
 
