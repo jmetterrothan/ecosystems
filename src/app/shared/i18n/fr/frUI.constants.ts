@@ -94,7 +94,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     description_lucas: 'Développeur gameplay - commandes vocales avec tensorflow.',
     description_jordan: 'Développeur - sons et ambiances sonores.',
     description_christina: 'UX/UI Designer.',
-    description_ugo: 'Testeur' },
+    description_ugo: 'Testeur.' },
   'progress-tab': {
     title: 'Progression',
     game_played: 'Parties jouées : {{count}}',
