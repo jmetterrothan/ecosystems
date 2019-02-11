@@ -109,7 +109,16 @@ module.exports = {
       },
       {
         test: /\.mp3$/,
-        loader: 'file-loader'
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: webpackMode.isProduction
+                ? '/sounds/[name]_[hash:8].[ext]'
+                : '[name]_[hash:8].[ext]'
+            }
+          }
+        ]
       }
     ]
   },
