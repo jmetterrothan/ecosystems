@@ -25,6 +25,8 @@ class World {
   static readonly SHOW_FOG: boolean = true;
   static readonly FOG_COLOR: number = 0xb1d8ff;
 
+  static readonly AMBIANT_SOUND_VOLUME: number = 0.35;
+
   static LOADED_MODELS = new Map<string, THREE.Object3D>();
   static LOADED_TEXTURES = new Map<string, THREE.Texture>();
 
@@ -135,7 +137,7 @@ class World {
     }
   }
 
-  private initAudio() {
+  private async initAudio() {
     // ambient
     const ambientSoundPath = this.generator.getBiome().getSound();
 
@@ -143,9 +145,10 @@ class World {
       this.zSound.setBuffer(buffer);
       this.zSound.setRefDistance(10000);
       this.zSound.setLoop(true);
-      this.zSound.setVolume(0.35);
+      this.zSound.setVolume(configSvc.soundEnabled ? World.AMBIANT_SOUND_VOLUME : 0);
       this.zSound.play();
     }, () => { }, () => { });
+    configSvc.soundEnabled$.subscribe(enabled => this.zSound.setVolume(enabled ? World.AMBIANT_SOUND_VOLUME : 0));
 
     // create an object for the sound to play from
     let object: THREE.Object3D;
