@@ -56,9 +56,9 @@ class TrophiesTab extends React.Component<ITrophiesTabProps, ITrophiesTabState> 
 
   resetProgression = () => {
     progressionSvc.reset();
-    progressionSvc.init();
-
     achievementSvc.reset();
+
+    progressionSvc.init();
 
     achievementSvc.trophy$.next(achievementSvc.getUnlockedTrophiesCount());
   }

@@ -5,4 +5,5 @@ export interface IStorageKey {
   completed: string;
   ui: string;
   keyboard: string;
+  version: string;
 }
