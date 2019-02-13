@@ -5,5 +5,6 @@ export const STORAGES_KEY: IStorageKey = {
   progression: 'PROGRESSION',
   completed: 'COMPLETED',
   ui: 'UI',
-  keyboard: 'KEYBOARD'
+  keyboard: 'KEYBOARD',
+  version: 'VERSION'
 };
