@@ -33,10 +33,10 @@ export const collaborators: ICollaboratorProps[] = [
     fullname: 'Florian Zobèle',
     description: 'UI.credits-tab.description_florian',
     links: [
-      { url: 'https://stackoverflow.com/users/9239242/ghuntheur', icon: Icons.StackOverflow },
+      { url: 'bit.ly/2N4sFlB', icon: Icons.StackOverflow },
       { url: 'mailto:hello@florianzobele.fr', icon: Icons.Email },
-      { url: 'https://github.com/Ghuntheur', icon: Icons.Github },
-      { url: 'https://florianzobele.fr', icon: Icons.Portfolio },
+      { url: 'bit.ly/2E9dqFo', icon: Icons.Github },
+      { url: 'bit.ly/2Sz5LZT', icon: Icons.Portfolio },
       { url: 'https://www.linkedin.com/in/florianzobele', icon: Icons.LinkedIn },
     ]
   },
