@@ -20,7 +20,7 @@ import Bubbles from '@sounds/Bubbles.mp3';
 import Hehe_Boi from '@sounds/Hehe_Boi.mp3';
 import Fairy_Meeting from '@sounds/Fairy_Meeting.mp3';
 
-import { VERSION } from '@app/Version';
+import { VERSION_STORAGE } from '@app/Version';
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
 import { storageSvc } from '@shared/services/storage.service';
 
@@ -28,11 +28,11 @@ class CoreService {
 
   async init(): Promise<any> {
     const storageVersion = storageSvc.get(STORAGES_KEY.version);
-    if (storageVersion !== VERSION) {
+    if (storageVersion !== VERSION_STORAGE) {
       progressionSvc.reset();
       achievementSvc.reset();
 
-      storageSvc.set(STORAGES_KEY.version, VERSION);
+      storageSvc.set(STORAGES_KEY.version, VERSION_STORAGE);
     }
 
     progressionSvc.init();
