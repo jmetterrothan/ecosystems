@@ -70,8 +70,10 @@ class RainForestBiome extends Biome {
 
       // butterflies
       const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
+      const variant = Butterfly.getButterflyVariant();
+
       for (let i = 0, n = MathUtils.randomInt(2, 4); i < n; i++) {
-        boids.addCreature(new Butterfly());
+        boids.addCreature(new Butterfly(variant));
       }
 
       this.boids.push(boids);

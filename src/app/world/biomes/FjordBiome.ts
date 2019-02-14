@@ -1,9 +1,11 @@
 import * as THREE from 'three';
+import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Biome from '@world/Biome';
 import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
+import Boids from '@app/boids/Boids';
 
 import { IBiome } from '@world/models/biome.model';
 import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
@@ -13,14 +15,17 @@ import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progres
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
 import ForestSFXMp3 from '@sounds/ForestSFX.mp3';
+import Butterfly from '@app/boids/creatures/Butterfly';
 
 class FjordBiome extends Biome {
   private e: number;
-
+  private boids: Boids[];
   private oldLog: THREE.Object3D;
 
   constructor(terrain: Terrain) {
     super('FJORD', terrain);
+
+    this.boids = [];
 
     this.waterDistortion = true;
     this.waterDistortionFreq = 2.25;
@@ -40,9 +45,42 @@ class FjordBiome extends Biome {
       underwater: ISpecialObjectCanPlaceIn.LAND,
       e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 }
     });
+
+    const size = 32500;
+
+    const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 60, MathUtils.rng);
+    const points = pds.fill();
+
+    points.forEach((point: number[]) => {
+      const n = MathUtils.randomInt(2, 5);
+      const px = point.shift() + size / 2;
+      const pz = point.shift() + size / 2;
+
+      const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 3.75, Chunk.HEIGHT / 3) - 3072;
+      const py = ySize / 2;
+
+      const minSize = size - 1000;
+      if (this.generator.computeHeightAt(px - minSize / 2, pz - minSize / 2) >= py + ySize / 2) return;
+      if (this.generator.computeHeightAt(px - minSize / 2, pz - minSize / 2) >= py - ySize / 2) return;
+      if (this.generator.computeHeightAt(px + minSize / 2, pz - minSize / 2) >= py + ySize / 2) return;
+      if (this.generator.computeHeightAt(px + minSize / 2, pz - minSize / 2) >= py - ySize / 2) return;
+      if (this.generator.computeHeightAt(px + minSize / 2, pz + minSize / 2) >= py + ySize / 2) return;
+      if (this.generator.computeHeightAt(px + minSize / 2, pz + minSize / 2) >= py - ySize / 2) return;
+
+      // fishs
+      const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
+      const variant = Butterfly.getButterflyVariant();
+      for (let i = 0; i < n; i++) {
+        boids.addCreature(new Butterfly(variant));
+      }
+
+      this.boids.push(boids);
+    });
   }
 
-  update(delta: number) { }
+  update(delta: number) {
+    this.boids.forEach(boids => boids.update(this.generator, delta));
+  }
 
   handleClick(raycaster: THREE.Raycaster) {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.oldLog], true);
