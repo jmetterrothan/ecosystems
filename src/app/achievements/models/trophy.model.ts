@@ -10,6 +10,7 @@ export interface ITrophy {
   type: TROPHY_TYPE;
   checklist: IChecklistOption[];
   percentage?: number;
+  unlocked?: boolean;
 }
 
 export interface IChecklistOption {
