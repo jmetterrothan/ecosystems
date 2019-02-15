@@ -12,6 +12,7 @@ import { SAMPLES_CONFIG } from './constants/voice.constants';
 class Voice {
   private recognizer: sc.SpeeSpeechCommandRecognizer;
   private model: Model;
+  private toggle: Boolean;
 
   constructor(model: Model) {
     this.model = model;
@@ -19,8 +20,10 @@ class Voice {
   }
 
   init() {
+    this.toggle = true;
     this.recognizer = sc.create('BROWSER_FFT');
     if (CommonUtils.isDev()) console.log('Voice system is ready to be use');
+    this.listen();
   }
 
   async ensureModelLoaded() {
@@ -33,16 +36,14 @@ class Voice {
     if (CommonUtils.isDev()) console.log('Voice system is not listening anymore');
   }
 
-  togglePredictState() {
-    if (!configSvc.voiceEnabled) {
-      this.listen();
-    } else {
-      this.stopListening();
+  togglePredictState(active) {
+    if (active === this.toggle) {
+      this.toggle = !this.toggle;
+      configSvc.voiceEnabled = !configSvc.voiceEnabled;
     }
   }
 
   listen() {
-    configSvc.voiceEnabled = true;
     if (CommonUtils.isDev()) console.log('Voice system is currently listening');
 
     this.recognizer.listen(async ({ spectrogram: { frameSize, data } }) => {
@@ -54,7 +55,11 @@ class Voice {
       const input = tf.tensor(vals, [1, ...SAMPLES_CONFIG.INPUT_SHAPE]);
       const probs = this.model.predict(input);
       const predLabel = probs.argMax(1);
-      await this.getPredictionLabel(predLabel);
+
+      if(configSvc.voiceEnabled) {
+        await this.getPredictionLabel(predLabel);
+      }
+
       tf.dispose([input, probs, predLabel]);
     }, {
       overlapFactor: 0.999,

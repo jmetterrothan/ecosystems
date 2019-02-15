@@ -175,7 +175,7 @@ class Player {
       case Keys[KeyAction.MOVE_DOWN]:
         this.moveDown = active; break;
 
-      case Keys[KeyAction.VOCAL]: if (active) this.voice.togglePredictState(); break;
+      case Keys[KeyAction.VOCAL]: this.voice.togglePredictState(active); break;
       case Keys[KeyAction.MUTE]: if (active) configSvc.soundEnabled = !configSvc.soundEnabled; break;
     }
   }
