@@ -17,39 +17,10 @@ import { ICloudData } from '@world/models/cloudData.model';
 
 import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
 
-const createStar = (color: string) => {
-  const canvas = document.createElement('canvas');
-  canvas.width = 32;
-  canvas.height = 32;
-  const ctx = canvas.getContext('2d');
-  ctx.beginPath();
-  ctx.fillStyle = color;
-  ctx.translate(16, 16);
-  ctx.rotate(45 * Math.PI / 180);
-  ctx.translate(-16, -16);
-  ctx.fillRect(16 - 8, 16 - 8, 16, 16);
-  return new THREE.CanvasTexture(canvas);
-};
-
-const createSnowFlake = (color: string) => {
-  return createStar(color);
-};
-
-const createRainDrop = (color: string) => {
-  const canvas = document.createElement('canvas');
-  canvas.width = 32;
-  canvas.height = 32;
-  const ctx = canvas.getContext('2d');
-  ctx.beginPath();
-  ctx.fillStyle = color;
-  ctx.fillRect(16 - 4, 0, 8, 32);
-  return new THREE.CanvasTexture(canvas);
-};
-
 const SNOW = {
   material: new THREE.PointsMaterial({
     size: 2048,
-    map: createSnowFlake('#FFFFFF'),
+    map: CommonUtils.createSnowFlakeTexture('#FFFFFF'),
     blending: THREE.AdditiveBlending,
     depthTest: true,
     transparent: true,
@@ -62,7 +33,7 @@ const SNOW = {
 const RAIN = {
   material: new THREE.PointsMaterial({
     size: 2048,
-    map: createRainDrop('#92D4F4'),
+    map: CommonUtils.createRainDropTexture('#92D4F4'),
     blending: THREE.AdditiveBlending,
     depthTest: true,
     transparent: true,
@@ -314,7 +285,7 @@ class Weather {
 
     const material = new THREE.PointsMaterial({
       size: 4096,
-      map: createStar('#fefdef'),
+      map: CommonUtils.createStarTexture('#fefdef'),
       transparent: true,
       depthTest: true,
       opacity: 0.75,

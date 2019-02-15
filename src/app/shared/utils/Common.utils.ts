@@ -1,5 +1,6 @@
-class CommonUtils {
+import * as THREE from 'three';
 
+class CommonUtils {
   static isDev(): boolean {
     return process.env.NODE_ENV === 'development';
   }
@@ -64,6 +65,35 @@ class CommonUtils {
 
   static formatNumberWithSpaces(x): string {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+
+  static createStarTexture = (color: string) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 32;
+    canvas.height = 32;
+    const ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.fillStyle = color;
+    ctx.translate(16, 16);
+    ctx.rotate(45 * Math.PI / 180);
+    ctx.translate(-16, -16);
+    ctx.fillRect(16 - 8, 16 - 8, 16, 16);
+    return new THREE.CanvasTexture(canvas);
+  }
+
+  static createSnowFlakeTexture = (color: string) => {
+    return CommonUtils.createStarTexture(color);
+  }
+
+  static createRainDropTexture = (color: string) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 32;
+    canvas.height = 32;
+    const ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.fillStyle = color;
+    ctx.fillRect(16 - 4, 0, 8, 32);
+    return new THREE.CanvasTexture(canvas);
   }
 }
 
