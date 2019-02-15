@@ -17,6 +17,7 @@ abstract class Biome {
 
   private name: string;
   protected terrain: Terrain;
+  protected temperature: number;
   protected generator: BiomeGenerator;
 
   protected water: boolean;
@@ -33,6 +34,8 @@ abstract class Biome {
   constructor(name: string, terrain: Terrain) {
     this.name = name;
     this.terrain = terrain;
+
+    this.temperature = 20;
     this.generator = terrain.getBiomeGenerator();
 
     this.progressionSvc = progressionSvc;
@@ -124,7 +127,8 @@ abstract class Biome {
   getWaterDistortion(): boolean { return this.waterDistortion; }
   getWaterDistortionFreq(): number { return this.waterDistortionFreq; }
   getWaterDistortionAmp(): number { return this.waterDistortionAmp; }
-  getSound(): any { return this.sound; }
+  getSound(): string { return this.sound; }
+  getTemperature(): number { return this.temperature; }
 }
 
 export default Biome;

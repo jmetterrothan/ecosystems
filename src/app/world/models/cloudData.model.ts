@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 export interface ICloudData {
+  precipitationType: any;
   particles: THREE.Geometry;
   particleMaterial: THREE.PointsMaterial;
   particleSystem: THREE.Points;

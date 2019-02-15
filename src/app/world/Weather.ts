@@ -17,11 +17,57 @@ import { ICloudData } from '@world/models/cloudData.model';
 
 import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
 
+const createSnowFlake = (color: string) => {
+  const canvas = document.createElement('canvas');
+  canvas.width = 32;
+  canvas.height = 32;
+  const ctx = canvas.getContext('2d');
+  ctx.beginPath();
+  ctx.arc(32, 32, 32, 0, Math.PI * 2);
+  ctx.fillStyle = color;
+  ctx.fill();
+  return new THREE.CanvasTexture(canvas);
+};
+
+const createRainDrop = (color: string) => {
+  const canvas = document.createElement('canvas');
+  canvas.width = 32;
+  canvas.height = 32;
+  const ctx = canvas.getContext('2d');
+  ctx.beginPath();
+  ctx.fillStyle = color;
+  ctx.fillRect(16 - 4, 0, 8, 32);
+  return new THREE.CanvasTexture(canvas);
+};
+
+const SNOW = {
+  material: new THREE.PointsMaterial({
+    size: 1024,
+    map: createSnowFlake('#FFFFFF'),
+    blending: THREE.AdditiveBlending,
+    depthTest: true,
+    transparent: true,
+    opacity: 0.45
+  }),
+  speed: 100
+};
+
+const RAIN = {
+  material: new THREE.PointsMaterial({
+    size: 2048,
+    map: createRainDrop('#92D4F4'),
+    blending: THREE.AdditiveBlending,
+    depthTest: true,
+    transparent: true,
+    opacity: 0.45
+  }),
+  speed: 200
+};
+
 class Weather {
   private static FOG_COLORS: Map<number, THREE.Color> = new Map<number, THREE.Color>();
   private static FOR_COLOR_VARIANTS: number = 360;
 
-  private static RAIN_SPEED: number = 200;
   private static FOG_COLOR1: string = '#212C37';
   private static FOG_COLOR2: string = '#B1D8FF';
   private static TICK_RATIO_DIV: number = 64000;
@@ -115,24 +161,18 @@ class Weather {
         ));
       }
 
-      // material
-      const material = new THREE.PointsMaterial({
-        size: 1024,
-        map: World.LOADED_TEXTURES.get('raindrop'),
-        blending: THREE.AdditiveBlending,
-        depthTest: true,
-        transparent: true,
-        opacity: 0.50
-      });
+      // precipitations
+      const precipitationType = this.generator.getBiome().getTemperature() > 0 ? RAIN : SNOW;
 
       const data: ICloudData = {
+        precipitationType,
         particles,
-        particleMaterial: material,
-        particleSystem: new THREE.Points(particles, material),
+        particleMaterial: precipitationType.material,
+        particleSystem: new THREE.Points(particles, precipitationType.material),
         isRaininig: false,
         allParticlesDropped: false,
         scale: cloud.scale.clone(),
-        animating: false
+        animating: false,
       };
 
       this.scene.add(data.particleSystem);
@@ -385,11 +425,11 @@ class Weather {
         if (position.y <= Chunk.SEA_ELEVATION) position.y = Chunk.CLOUD_LEVEL - size.y / 2;
         if (rainData.isRaininig) {
           rainData.particleMaterial.visible = true;
-          position.y -= Weather.RAIN_SPEED;
+          position.y -= rainData.precipitationType.speed;
         } else {
           // rain stop
           if (position.y < Chunk.CLOUD_LEVEL - 1000) {
-            position.y -= Weather.RAIN_SPEED;
+            position.y -= rainData.precipitationType.speed;
           } else {
             position.set(cloud.position.x, Chunk.CLOUD_LEVEL - size.y / 2, cloud.position.z);
           }
