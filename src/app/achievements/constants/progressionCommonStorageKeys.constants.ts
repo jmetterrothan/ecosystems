@@ -31,6 +31,6 @@ export const PROGRESSION_COMMON_STORAGE_KEYS: IProgressionCommonStorageKeys = {
   objects_placed_voice: {
     name: 'objects_placed_voice',
     value: 'objects_placed_voice',
-    show: true
+    show: false
   }
 };
