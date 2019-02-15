@@ -8,6 +8,7 @@ import MathUtils from '@shared/utils/Math.utils';
 import Boids from '@boids/Boids';
 import DiscusFish from '@boids/creatures/DiscusFish';
 import SalmonFish from '@boids/creatures/SalmonFish';
+import BubbleEmitter from '@world/biomes/particles/BubbleEmitter';
 
 import { IBiome } from '@world/models/biome.model';
 import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
@@ -27,10 +28,13 @@ class OceanBiome extends Biome {
 
   private chest: THREE.Object3D;
 
+  private bubbleEmitter: BubbleEmitter;
+
   constructor(terrain: Terrain) {
     super('OCEAN', terrain);
 
     this.boids = [];
+    this.bubbleEmitter = new BubbleEmitter();
 
     this.spike = MathUtils.randomFloat(0.025, 0.125);
     this.depth = 1.425;
@@ -45,6 +49,24 @@ class OceanBiome extends Biome {
   }
 
   init() {
+    this.initFishBoids();
+    this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
+
+    // chest
+    const centerX = Terrain.SIZE_X / 2;
+    const centerZ = Terrain.SIZE_Z / 2;
+
+    const sizeX = 8192;
+    const sizeZ = 8192;
+
+    this.chest = this.terrain.placeSpecialObject({
+      stackReference: 'chest',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.WATER
+    }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+  }
+
+  private initFishBoids() {
     const minSize = 90000;
     const maxSize = 150000;
     const size = MathUtils.randomFloat(minSize, maxSize);
@@ -71,22 +93,14 @@ class OceanBiome extends Biome {
 
       this.boids.push(boids);
     });
-
-    // chest
-    const centerX = Terrain.SIZE_X / 2;
-    const centerZ = Terrain.SIZE_Z / 2;
-
-    const sizeX = 8192;
-    const sizeZ = 8192;
-
-    this.chest = this.terrain.placeSpecialObject({
-      stackReference: 'chest',
-      float: false,
-      underwater: ISpecialObjectCanPlaceIn.WATER
-    }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
   }
 
   update(delta: number) {
+    this.updateFishBoids(delta);
+    this.bubbleEmitter.update(delta);
+  }
+
+  private updateFishBoids(delta: number) {
     this.boids.forEach(boids => boids.update(this.generator, delta));
   }
 

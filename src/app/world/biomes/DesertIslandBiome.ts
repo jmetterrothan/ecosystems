@@ -8,6 +8,7 @@ import MathUtils from '@shared/utils/Math.utils';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Boids from '@boids/Boids';
 import DiscusFish from '@boids/creatures/DiscusFish';
+import BubbleEmitter from '@world/biomes/particles/BubbleEmitter';
 
 import { IBiome } from '@world/models/biome.model';
 import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
@@ -27,10 +28,13 @@ class DesertIslandBiome extends Biome {
 
   private chest: THREE.Object3D;
 
+  private bubbleEmitter: BubbleEmitter;
+
   constructor(terrain: Terrain) {
     super('DESERT_ISLAND', terrain);
 
     this.boids = [];
+    this.bubbleEmitter = new BubbleEmitter();
 
     this.a = MathUtils.randomFloat(0.02, 0.06); // best around 0.04, size of the island
     this.b = MathUtils.randomFloat(2.75, 3.25); // best around 3, makes multiple hills even when low
@@ -48,6 +52,7 @@ class DesertIslandBiome extends Biome {
     });
 
     this.initFishBoids();
+    this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
   }
 
   initFishBoids() {
@@ -85,6 +90,7 @@ class DesertIslandBiome extends Biome {
 
   update(delta: number) {
     this.boids.forEach(boids => boids.update(this.generator, delta));
+    this.bubbleEmitter.update(delta);
   }
 
   handleClick(raycaster: THREE.Raycaster) {

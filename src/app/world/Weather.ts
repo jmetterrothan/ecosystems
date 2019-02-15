@@ -420,7 +420,6 @@ class Weather {
           } else {
             position.set(cloud.position.x, Chunk.CLOUD_LEVEL - size.y / 2, cloud.position.z);
           }
-
         }
       });
 

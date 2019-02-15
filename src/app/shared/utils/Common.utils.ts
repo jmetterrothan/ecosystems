@@ -67,17 +67,47 @@ class CommonUtils {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   }
 
-  static createStarTexture = (color: string) => {
+  static createBubbleTexture = (color: string) => {
+    const width = 1024;
+    const height = 1024;
+    const radius = 128;
+
     const canvas = document.createElement('canvas');
-    canvas.width = 32;
-    canvas.height = 32;
+    canvas.width = width;
+    canvas.height = height;
+
     const ctx = canvas.getContext('2d');
     ctx.beginPath();
     ctx.fillStyle = color;
-    ctx.translate(16, 16);
+    ctx.beginPath();
+    ctx.arc(width / 2 - radius, height / 2 - radius, radius, 0, 2 * Math.PI);
+    ctx.closePath();
+    ctx.fill();
+
+    return new THREE.CanvasTexture(canvas);
+  }
+
+  static createStarTexture = (color: string) => {
+    const cw = 512;
+    const ch = 512;
+    const ox = cw / 2;
+    const oy = ch / 2;
+    const w = 256;
+    const h = 256;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = cw;
+    canvas.height = ch;
+
+    const ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.fillStyle = color;
+    ctx.translate(ox, oy);
     ctx.rotate(45 * Math.PI / 180);
-    ctx.translate(-16, -16);
-    ctx.fillRect(16 - 8, 16 - 8, 16, 16);
+    ctx.translate(-ox, -oy);
+    ctx.fillRect(ox - w / 2, oy - h / 2, w, h);
+    ctx.closePath();
+
     return new THREE.CanvasTexture(canvas);
   }
 
@@ -86,13 +116,23 @@ class CommonUtils {
   }
 
   static createRainDropTexture = (color: string) => {
+    const cw = 512;
+    const ch = 512;
+    const ox = cw / 2;
+    const oy = ch / 2;
+    const w = 128;
+    const h = 512;
+
     const canvas = document.createElement('canvas');
-    canvas.width = 32;
-    canvas.height = 32;
+    canvas.width = cw;
+    canvas.height = ch;
+
     const ctx = canvas.getContext('2d');
     ctx.beginPath();
     ctx.fillStyle = color;
-    ctx.fillRect(16 - 4, 0, 8, 32);
+    ctx.fillRect(ox - w / 2, oy - h / 2, w, h);
+    ctx.closePath();
+
     return new THREE.CanvasTexture(canvas);
   }
 }
