@@ -17,11 +17,36 @@ import { ICloudData } from '@world/models/cloudData.model';
 
 import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
 
+const SNOW = {
+  material: new THREE.PointsMaterial({
+    size: 2048,
+    map: CommonUtils.createSnowFlakeTexture('#FFFFFF'),
+    blending: THREE.AdditiveBlending,
+    depthTest: true,
+    transparent: true,
+    opacity: 0.4,
+    alphaTest: 0.15
+  }),
+  speed: 5000
+};
+
+const RAIN = {
+  material: new THREE.PointsMaterial({
+    size: 2048,
+    map: CommonUtils.createRainDropTexture('#92D4F4'),
+    blending: THREE.AdditiveBlending,
+    depthTest: true,
+    transparent: true,
+    opacity: 0.3,
+    alphaTest: 0.15
+  }),
+  speed: 17500
+};
+
 class Weather {
   private static FOG_COLORS: Map<number, THREE.Color> = new Map<number, THREE.Color>();
   private static FOR_COLOR_VARIANTS: number = 360;
 
-  private static RAIN_SPEED: number = 200;
   private static FOG_COLOR1: string = '#212C37';
   private static FOG_COLOR2: string = '#B1D8FF';
   private static TICK_RATIO_DIV: number = 64000;
@@ -99,13 +124,20 @@ class Weather {
   initRain() {
     if (!configSvc.config.ENABLE_WEATHER_EFFECTS) { return; }
 
+    const temperature = this.generator.getBiome().getTemperature();
+
     this.clouds.children.forEach((cloud: THREE.Mesh) => {
       cloud.updateMatrixWorld(true);
 
       // particles
       const size = new THREE.Box3().setFromObject(cloud).getSize(new THREE.Vector3());
       const particles = new THREE.Geometry();
-      const particleCount = (size.x * size.y * size.z) / 250000000000; // calculate the amount of rain drops from cloud volume
+
+      let particleCount = (size.x * size.y * size.z) / 250000000000; // calculate the amount of rain drops from cloud volume
+
+      if (temperature > 40) {
+        particleCount = 0;
+      }
 
       for (let i = 0; i < particleCount; i++) {
         particles.vertices.push(new THREE.Vector3(
@@ -115,28 +147,21 @@ class Weather {
         ));
       }
 
-      // material
-      const material = new THREE.PointsMaterial({
-        size: 1024,
-        map: World.LOADED_TEXTURES.get('raindrop'),
-        blending: THREE.AdditiveBlending,
-        depthTest: true,
-        transparent: true,
-        opacity: 0.50
-      });
+      // precipitations
+      const precipitationType = temperature > 0 ? RAIN : SNOW;
 
       const data: ICloudData = {
+        precipitationType,
         particles,
-        particleMaterial: material,
-        particleSystem: new THREE.Points(particles, material),
+        particleMaterial: precipitationType.material,
+        particleSystem: new THREE.Points(particles, precipitationType.material),
         isRaininig: false,
         allParticlesDropped: false,
         scale: cloud.scale.clone(),
-        animating: false
+        animating: false,
       };
 
       this.scene.add(data.particleSystem);
-
       cloud.userData = data;
     });
   }
@@ -259,9 +284,10 @@ class Weather {
     const stars = new THREE.Geometry();
 
     const material = new THREE.PointsMaterial({
-      size: 1500,
-      color: '#fefdef',
+      size: 4096,
+      map: CommonUtils.createStarTexture('#fefdef'),
       transparent: true,
+      depthTest: true,
       opacity: 0.75,
       fog: false,
     });
@@ -365,9 +391,10 @@ class Weather {
 
       // rain
       const rainData = cloud.userData as ICloudData;
-
       rainData.isRaininig = this.generator.computeWaterMoistureAt(cloud.position.x, cloud.position.z) >= 0.65;
+
       if (!rainData.isRaininig) rainData.allParticlesDropped = rainData.particles.vertices.every(position => position.y === Chunk.CLOUD_LEVEL);
+
       if (rainData.allParticlesDropped) {
         rainData.particleMaterial.visible = false;
         rainData.particles.vertices.forEach(position => position.set(
@@ -385,15 +412,14 @@ class Weather {
         if (position.y <= Chunk.SEA_ELEVATION) position.y = Chunk.CLOUD_LEVEL - size.y / 2;
         if (rainData.isRaininig) {
           rainData.particleMaterial.visible = true;
-          position.y -= Weather.RAIN_SPEED;
+          position.y -= rainData.precipitationType.speed * delta;
         } else {
           // rain stop
           if (position.y < Chunk.CLOUD_LEVEL - 1000) {
-            position.y -= Weather.RAIN_SPEED;
+            position.y -= rainData.precipitationType.speed * delta;
           } else {
             position.set(cloud.position.x, Chunk.CLOUD_LEVEL - size.y / 2, cloud.position.z);
           }
-
         }
       });
 

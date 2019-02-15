@@ -5,7 +5,7 @@ const PARAMETERS = {
   emissive: 0xdddddd,
   emissiveIntensity: 0.05,
   specular: 0x505050,
-  shininess: 3,
+  shininess: 6,
   reflectivity: 0.2,
   flatShading: true,
   vertexColors: THREE.FaceColors,

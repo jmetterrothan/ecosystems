@@ -44,12 +44,14 @@ class BiomeGenerator {
       case 'rainforest':
         this.biome = new RainForestBiome(terrain);
         break;
+      case 'highland':
       case 'highlands':
         this.biome = new HighlandBiome(terrain);
         break;
       case 'ocean':
         this.biome = new OceanBiome(terrain);
         break;
+      case 'swamp':
       case 'swamps':
         this.biome = new SwampBiome(terrain);
         break;
@@ -57,11 +59,15 @@ class BiomeGenerator {
         this.biome = new DesertBiome(terrain);
         break;
       case 'snowy_hills':
+      case 'snowy hills':
+      case 'snow':
         this.biome = new SnowBiome(terrain);
         break;
       case 'fjord':
+      case 'fjords':
         this.biome = new FjordBiome(terrain);
         break;
+      case 'desert island':
       case 'desert_island':
         this.biome = new DesertIslandBiome(terrain);
         break;
