@@ -73,7 +73,7 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
       'mouse_left-click_name': 'Left click',
       'mouse_right-click': 'Delete an object',
       'mouse_right-click_name': 'Right click',
-      mouse_scroll: 'Changer current object',
+      mouse_scroll: 'Change current object',
       mouse_scroll_name: 'Scroll',
     },
     tab2: {
