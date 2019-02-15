@@ -22,7 +22,7 @@ interface ISamplingParameters {
 }
 
 class Chunk {
-  static readonly SHOW_HELPER: boolean = true;
+  static readonly SHOW_HELPER: boolean = false;
   static readonly NROWS: number = 8;
   static readonly NCOLS: number = 8;
 
@@ -214,6 +214,16 @@ class Chunk {
    */
   savePick(pick: IPick) {
     this.objectsBlueprint.push(pick);
+  }
+
+  /**
+   * Remove an object to blueprint and scene
+   * @param {THREE.Object3D} object
+   */
+  removeObject(object: THREE.Object3D) {
+    const pick = Chunk.convertObjectToPick(object.parent);
+    this.objectsBlueprint = this.objectsBlueprint.filter(p => !pick.p.equals(p.p));
+    this.objects.remove(object.parent);
   }
 
   /**

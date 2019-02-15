@@ -424,11 +424,9 @@ class Terrain {
 
     const intersectedObject = intersection.object;
     const chunk = this.visibleChunks.find(chunk => chunk.getObjects().children.some(child => child.children.includes(intersectedObject)));
-    const chunkObjects = chunk.getObjects();
 
-    chunkObjects.remove(intersectedObject.parent);
+    chunk.removeObject(intersectedObject);
 
-    console.log(chunk, chunkObjects, intersectedObject);
   }
 
   placeSpecialObject(
