@@ -64,7 +64,7 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
         left: 'Left',
         back: 'Backwards',
         front: 'Forwards',
-        vocal: 'Enable/Disable vocal commands',
+        vocal: 'Hold to enable/disable vocal',
         reload: 'Generate a new world',
         mute: 'Enable/Disable sound',
         menu: 'Menu',

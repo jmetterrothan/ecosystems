@@ -56,7 +56,7 @@ class Voice {
       const probs = this.model.predict(input);
       const predLabel = probs.argMax(1);
 
-      if(configSvc.voiceEnabled) {
+      if (configSvc.voiceEnabled) {
         await this.getPredictionLabel(predLabel);
       }
 

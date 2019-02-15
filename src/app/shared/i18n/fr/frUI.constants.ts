@@ -64,7 +64,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
         left: 'Gauche',
         back: 'Reculer',
         front: 'Avancer',
-        vocal: 'Activer/Désactiver les commandes vocales',
+        vocal: 'Maintenir pour Activer/Désactiver la voix',
         reload: 'Générer un nouveau monde',
         mute: 'Activer/Désactiver le son',
         menu: 'Retour au menu',
