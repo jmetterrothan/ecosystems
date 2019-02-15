@@ -17,16 +17,22 @@ import { ICloudData } from '@world/models/cloudData.model';
 
 import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
 
-const createSnowFlake = (color: string) => {
+const createStar = (color: string) => {
   const canvas = document.createElement('canvas');
   canvas.width = 32;
   canvas.height = 32;
   const ctx = canvas.getContext('2d');
   ctx.beginPath();
-  ctx.arc(32, 32, 32, 0, Math.PI * 2);
   ctx.fillStyle = color;
-  ctx.fill();
+  ctx.translate(16, 16);
+  ctx.rotate(45 * Math.PI / 180);
+  ctx.translate(-16, -16);
+  ctx.fillRect(16 - 8, 16 - 8, 16, 16);
   return new THREE.CanvasTexture(canvas);
+};
+
+const createSnowFlake = (color: string) => {
+  return createStar(color);
 };
 
 const createRainDrop = (color: string) => {
@@ -42,14 +48,15 @@ const createRainDrop = (color: string) => {
 
 const SNOW = {
   material: new THREE.PointsMaterial({
-    size: 1024,
+    size: 2048,
     map: createSnowFlake('#FFFFFF'),
     blending: THREE.AdditiveBlending,
     depthTest: true,
     transparent: true,
-    opacity: 0.45
+    opacity: 0.4,
+    alphaTest: 0.15
   }),
-  speed: 100
+  speed: 5000
 };
 
 const RAIN = {
@@ -59,9 +66,10 @@ const RAIN = {
     blending: THREE.AdditiveBlending,
     depthTest: true,
     transparent: true,
-    opacity: 0.45
+    opacity: 0.3,
+    alphaTest: 0.15
   }),
-  speed: 200
+  speed: 17500
 };
 
 class Weather {
@@ -145,13 +153,20 @@ class Weather {
   initRain() {
     if (!configSvc.config.ENABLE_WEATHER_EFFECTS) { return; }
 
+    const temperature = this.generator.getBiome().getTemperature();
+
     this.clouds.children.forEach((cloud: THREE.Mesh) => {
       cloud.updateMatrixWorld(true);
 
       // particles
       const size = new THREE.Box3().setFromObject(cloud).getSize(new THREE.Vector3());
       const particles = new THREE.Geometry();
-      const particleCount = (size.x * size.y * size.z) / 250000000000; // calculate the amount of rain drops from cloud volume
+
+      let particleCount = (size.x * size.y * size.z) / 250000000000; // calculate the amount of rain drops from cloud volume
+
+      if (temperature > 40) {
+        particleCount = 0;
+      }
 
       for (let i = 0; i < particleCount; i++) {
         particles.vertices.push(new THREE.Vector3(
@@ -162,7 +177,7 @@ class Weather {
       }
 
       // precipitations
-      const precipitationType = this.generator.getBiome().getTemperature() > 0 ? RAIN : SNOW;
+      const precipitationType = temperature > 0 ? RAIN : SNOW;
 
       const data: ICloudData = {
         precipitationType,
@@ -176,7 +191,6 @@ class Weather {
       };
 
       this.scene.add(data.particleSystem);
-
       cloud.userData = data;
     });
   }
@@ -299,9 +313,10 @@ class Weather {
     const stars = new THREE.Geometry();
 
     const material = new THREE.PointsMaterial({
-      size: 1500,
-      color: '#fefdef',
+      size: 4096,
+      map: createStar('#fefdef'),
       transparent: true,
+      depthTest: true,
       opacity: 0.75,
       fog: false,
     });
@@ -405,9 +420,10 @@ class Weather {
 
       // rain
       const rainData = cloud.userData as ICloudData;
-
       rainData.isRaininig = this.generator.computeWaterMoistureAt(cloud.position.x, cloud.position.z) >= 0.65;
+
       if (!rainData.isRaininig) rainData.allParticlesDropped = rainData.particles.vertices.every(position => position.y === Chunk.CLOUD_LEVEL);
+
       if (rainData.allParticlesDropped) {
         rainData.particleMaterial.visible = false;
         rainData.particles.vertices.forEach(position => position.set(
@@ -425,11 +441,11 @@ class Weather {
         if (position.y <= Chunk.SEA_ELEVATION) position.y = Chunk.CLOUD_LEVEL - size.y / 2;
         if (rainData.isRaininig) {
           rainData.particleMaterial.visible = true;
-          position.y -= rainData.precipitationType.speed;
+          position.y -= rainData.precipitationType.speed * delta;
         } else {
           // rain stop
           if (position.y < Chunk.CLOUD_LEVEL - 1000) {
-            position.y -= rainData.precipitationType.speed;
+            position.y -= rainData.precipitationType.speed * delta;
           } else {
             position.set(cloud.position.x, Chunk.CLOUD_LEVEL - size.y / 2, cloud.position.z);
           }

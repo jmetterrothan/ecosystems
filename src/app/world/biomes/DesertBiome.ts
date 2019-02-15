@@ -20,6 +20,8 @@ class DesertBiome extends Biome {
   constructor(terrain: Terrain) {
     super('DESERT', terrain);
 
+    this.temperature = 45;
+
     this.waterDistortion = false;
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.desert_visited);
