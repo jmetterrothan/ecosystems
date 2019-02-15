@@ -340,6 +340,7 @@ class Terrain {
         break;
 
       case INTERACTION_TYPE.VOICE:
+        progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_voice);
         this.placeObject(raycaster);
         break;
 

@@ -24,6 +24,7 @@ export const EN_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   create_game_online: 'Create an online game',
   join_game_online: 'Join an online game',
   place_object_online: 'Place object online',
+  place_object_voice: 'Place object with voice',
   place_all_mushrooms: 'A delicious mushroom stew',
   place_all_flowers: 'Are those flowers for me?',
   woodcutter: 'Woodcutter',
