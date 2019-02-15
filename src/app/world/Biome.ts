@@ -82,6 +82,8 @@ abstract class Biome {
    */
   abstract computeElevationAt(x: number, z: number): number;
 
+  abstract getSpecialObjects(): THREE.Object3D[] | null;
+
   /**
    * Retrieve moisture value (0 - 1)
    * @param {number} x

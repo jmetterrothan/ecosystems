@@ -79,6 +79,10 @@ class SnowBiome extends Biome {
     return ne;
   }
 
+  getSpecialObjects(): THREE.Object3D[] | null {
+    return [this.snowmanObject];
+  }
+
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.15) {
       return SUB_BIOMES.FROZEN_OCEAN;

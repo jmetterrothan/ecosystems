@@ -423,10 +423,16 @@ class Terrain {
     if (intersection === null) return;
 
     const intersectedObject = intersection.object;
+    // const chunk = this.visibleChunks.find(chunh )
     const chunk = this.visibleChunks.find(chunk => chunk.getObjects().children.some(child => child.children.includes(intersectedObject)));
 
-    chunk.removeObject(intersectedObject);
+    const specialObjects = this.generator.getBiome().getSpecialObjects();
 
+    console.log(intersectedObject, specialObjects);
+
+    if (specialObjects === null || specialObjects.includes(intersectedObject.parent)) return;
+
+    chunk.removeObject(intersectedObject);
   }
 
   placeSpecialObject(

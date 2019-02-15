@@ -27,6 +27,10 @@ class TestBiome extends Biome {
     return 0.0;
   }
 
+  getSpecialObjects(): THREE.Object3D[] | null {
+    return null;
+  }
+
   getParametersAt(e: number, m: number): IBiome {
     return SUB_BIOMES.TEST;
   }

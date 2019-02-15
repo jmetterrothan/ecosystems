@@ -141,6 +141,10 @@ class HighlandBiome extends Biome {
     return Math.min(value + 0.2, 1.0);
   }
 
+  getSpecialObjects(): THREE.Object3D[] | null {
+    return [this.scarecrow];
+  }
+
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.05) {
       if (m > 0.625) {

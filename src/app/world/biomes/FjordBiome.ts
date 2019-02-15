@@ -76,6 +76,10 @@ class FjordBiome extends Biome {
     return (e ** this.e * 1.65) - 0.2;
   }
 
+  getSpecialObjects(): THREE.Object3D[] | null {
+    return [this.oldLog];
+  }
+
   getParametersAt(e: number, m: number): IBiome {
     if (e > Chunk.CLOUD_ELEVATION + 0.02) {
       return SUB_BIOMES.MOUNTAIN;

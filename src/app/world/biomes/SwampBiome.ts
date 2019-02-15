@@ -93,6 +93,10 @@ class SwampBiome extends Biome {
     return Math.min(value + 0.35, 1.0);
   }
 
+  getSpecialObjects(): THREE.Object3D[] | null {
+    return null;
+  }
+
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.116) {
       if (m > 0.25) {

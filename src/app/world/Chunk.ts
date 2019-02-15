@@ -222,6 +222,7 @@ class Chunk {
    */
   removeObject(object: THREE.Object3D) {
     const pick = Chunk.convertObjectToPick(object.parent);
+    console.log(this.generator.getBiome());
     this.objectsBlueprint = this.objectsBlueprint.filter(p => !pick.p.equals(p.p));
     this.objects.remove(object.parent);
   }

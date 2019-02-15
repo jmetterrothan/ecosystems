@@ -92,6 +92,10 @@ class DesertBiome extends Biome {
     return Math.max(value - 0.25, 0.0);
   }
 
+  getSpecialObjectss(): THREE.Object3D[] | null {
+    return [this.carcass, this.skull];
+  }
+
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.115) {
       return SUB_BIOMES.OCEAN;

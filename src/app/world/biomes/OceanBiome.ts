@@ -156,6 +156,10 @@ class OceanBiome extends Biome {
     return Math.round(this.generator.noise2(nx, nz) * 100) / 100;
   }
 
+  getSpecialObjects(): THREE.Object3D[] | null {
+    return [this.chest];
+  }
+
   getParametersAt(e: number, m: number): IBiome {
     if (m < 0.4) {
       return SUB_BIOMES.CORAL_REEF;
