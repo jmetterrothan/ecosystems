@@ -22,7 +22,7 @@ interface ISamplingParameters {
 }
 
 class Chunk {
-  static readonly SHOW_HELPER: boolean = false;
+  static readonly SHOW_HELPER: boolean = true;
   static readonly NROWS: number = 8;
   static readonly NCOLS: number = 8;
 
@@ -389,6 +389,8 @@ class Chunk {
    * @return {THREE.Box3}
    */
   getBbox(): THREE.Box3 { return this.bbox; }
+
+  getObjects(): THREE.Group { return this.objects; }
 
   private placeObjectWithAnimation(object: THREE.Object3D) {
     const scaleSaved = object.scale.clone();

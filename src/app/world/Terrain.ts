@@ -327,8 +327,7 @@ class Terrain {
         break;
 
       case INTERACTION_TYPE.MOUSE_RIGHT_CLICK:
-        // TODO: delete obj
-        console.log('right click');
+        this.removeObject(raycaster);
         break;
 
       case INTERACTION_TYPE.MOUSE_WHEEL_DOWN:
@@ -415,6 +414,21 @@ class Terrain {
       this.objectAnimated = false;
       SoundManager.play(soundName);
     }, Chunk.ANIMATION_DELAY + 200);
+  }
+
+  removeObject(raycaster: THREE.Raycaster) {
+    const allObjects = this.visibleChunks.reduce((acc, chunk) => acc.concat(chunk.getObjects().children), []);
+
+    const intersection = this.getPlayerInteractionIntersection(raycaster, allObjects, true);
+    if (intersection === null) return;
+
+    const intersectedObject = intersection.object;
+    const chunk = this.visibleChunks.find(chunk => chunk.getObjects().children.some(child => child.children.includes(intersectedObject)));
+    const chunkObjects = chunk.getObjects();
+
+    chunkObjects.remove(intersectedObject.parent);
+
+    console.log(chunk, chunkObjects, intersectedObject);
   }
 
   placeSpecialObject(
