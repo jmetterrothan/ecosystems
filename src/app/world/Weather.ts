@@ -79,6 +79,9 @@ class Weather {
   private moon: THREE.Object3D;
 
   private fogColor: THREE.Color = new THREE.Color();
+
+  private canUpdate: boolean;
+
   /**
   * Weather constructor
   * @param {THREE.Scene} scene
@@ -91,17 +94,30 @@ class Weather {
     this.startTime = window.performance.now();
 
     this.watchStartTime();
+
+    this.canUpdate = true;
+
+    window.addEventListener('blur', () => {
+      this.canUpdate = false;
+    });
+
+    window.addEventListener('focus', () => {
+      this.canUpdate = true;
+    });
   }
 
   /**
   * @param {number} delta
   */
   update(delta: number) {
-    this.updateClouds(delta);
     this.updateSun();
     this.updateMoon();
-    this.updateLights();
-    this.updateStars();
+
+    if (this.canUpdate) {
+      this.updateClouds(delta);
+      this.updateLights();
+      this.updateStars();
+    }
   }
 
   initClouds() {
