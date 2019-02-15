@@ -393,10 +393,13 @@ class Weather {
       const rainData = cloud.userData as ICloudData;
       rainData.isRaininig = this.generator.computeWaterMoistureAt(cloud.position.x, cloud.position.z) >= 0.65;
 
-      if (!rainData.isRaininig) rainData.allParticlesDropped = rainData.particles.vertices.every(position => position.y === Chunk.CLOUD_LEVEL);
+      if (!rainData.isRaininig) {
+        rainData.allParticlesDropped = rainData.particles.vertices.every(position => position.y === Chunk.CLOUD_LEVEL);
+      }
 
       if (rainData.allParticlesDropped) {
         rainData.particleMaterial.visible = false;
+
         rainData.particles.vertices.forEach(position => position.set(
           MathUtils.randomInt(-size.x / 3, size.x / 3),
           MathUtils.randomInt(Chunk.SEA_LEVEL, Chunk.CLOUD_LEVEL),
@@ -409,17 +412,11 @@ class Weather {
       rainData.particleSystem.position.setZ(cloud.position.z);
 
       rainData.particles.vertices.forEach(position => {
-        if (position.y <= Chunk.SEA_ELEVATION) position.y = Chunk.CLOUD_LEVEL - size.y / 2;
-        if (rainData.isRaininig) {
-          rainData.particleMaterial.visible = true;
-          position.y -= rainData.precipitationType.speed * delta;
-        } else {
-          // rain stop
-          if (position.y < Chunk.CLOUD_LEVEL - 1000) {
-            position.y -= rainData.precipitationType.speed * delta;
-          } else {
-            position.set(cloud.position.x, Chunk.CLOUD_LEVEL - size.y / 2, cloud.position.z);
-          }
+        rainData.particleMaterial.visible = rainData.isRaininig;
+        position.y -= rainData.precipitationType.speed * delta;
+
+        if (position.y <= Chunk.SEA_LEVEL) {
+          position.y = Chunk.CLOUD_LEVEL - size.y / 2;
         }
       });
 
