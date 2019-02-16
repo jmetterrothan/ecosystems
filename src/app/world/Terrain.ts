@@ -428,11 +428,7 @@ class Terrain {
     const intersectedObject = intersection.object;
     const chunk = this.visibleChunks.find(chunk => chunk.getObjects().children.includes(intersectedObject.parent));
 
-    const specialObjects = this.generator.getBiome().getSpecialObjects();
-
-    console.log(chunk, chunk.getObjects());
-
-    if (specialObjects === null || specialObjects.includes(intersectedObject.parent)) return;
+    if (this.specialObjectList.includes(intersectedObject.parent)) return;
 
     chunk.removeObject(intersectedObject);
   }

@@ -124,10 +124,6 @@ class DesertIslandBiome extends Biome {
     return BiomeGenerator.islandAddMethod(this.a, this.b, this.c, d, e);
   }
 
-  getSpecialObjectss(): THREE.Object3D[] | null {
-    return [this.chest];
-  }
-
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.115) {
       return SUB_BIOMES.OCEAN;
