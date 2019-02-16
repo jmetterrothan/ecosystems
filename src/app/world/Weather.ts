@@ -27,7 +27,7 @@ const SNOW = {
     opacity: 0.4,
     alphaTest: 0.15
   }),
-  speed: 5000
+  speed: 4000
 };
 
 const RAIN = {
@@ -407,7 +407,7 @@ class Weather {
 
       // rain
       const rainData = cloud.userData as ICloudData;
-      rainData.isRaininig = this.generator.computeWaterMoistureAt(cloud.position.x, cloud.position.z) >= 0.65;
+      rainData.isRaininig = this.generator.computeWaterMoistureAt(cloud.position.x, cloud.position.z) >= 0.6;
 
       if (!rainData.isRaininig) {
         rainData.allParticlesDropped = rainData.particles.vertices.every(position => position.y === Chunk.CLOUD_LEVEL);
