@@ -62,10 +62,10 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
 
     // initialize state with local storage values
     const storage = Object.assign({
-      quality: GraphicsQuality.HIGH,
+      quality: GraphicsQuality.MEDIUM,
       debug: configSvc.debug,
       online: false,
-      sound: false
+      sound: true
     }, storageSvc.get<IHomeParametersStorage>(STORAGES_KEY.ui) || {});
 
     // parse query string to detect share link's vars
