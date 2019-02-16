@@ -236,7 +236,7 @@ class Weather {
   }
 
   private initSunlight() {
-    const d = 250000;
+    const d = 500000;
     this.sunlight = new THREE.DirectionalLight(0xffffff, 0.2);
 
     this.sunlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
@@ -255,13 +255,13 @@ class Weather {
     this.sunlight.shadow.camera.top = d;
     this.sunlight.shadow.camera.bottom = -d;
     this.sunlight.shadow.camera.near = 150;
-    this.sunlight.shadow.camera.far = 500000;
+    this.sunlight.shadow.camera.far = 400000;
 
     this.scene.add(this.sunlight);
   }
 
   private initMoonlight() {
-    const d = 250000;
+    const d = 500000;
     this.moonlight = new THREE.DirectionalLight(0x5fc2eb, 0.125);
 
     this.moonlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
@@ -269,10 +269,11 @@ class Weather {
 
     this.moonlight.position.set(Terrain.SIZE_X / 2, Weather.SOLAR_SYSTEM_RADIUS, Terrain.SIZE_Z / 2);
 
-    this.moonlight.castShadow = true;
+    this.moonlight.castShadow = false;
+    /*
     this.moonlight.shadow.mapSize.width = configSvc.config.SHADOW_MAP_SIZE; // 25000
     this.moonlight.shadow.mapSize.height = configSvc.config.SHADOW_MAP_SIZE;
-    this.moonlight.shadow.camera.visible = false;
+    this.moonlight.shadow.camera.visible = true;
     this.moonlight.shadow.camera.castShadow = false;
     this.moonlight.shadow.bias = 0.0001;
     this.moonlight.shadow.camera.left = -d;
@@ -280,7 +281,8 @@ class Weather {
     this.moonlight.shadow.camera.top = d;
     this.moonlight.shadow.camera.bottom = -d;
     this.moonlight.shadow.camera.near = 150;
-    this.moonlight.shadow.camera.far = 500000;
+    this.moonlight.shadow.camera.far = 350000;
+    */
 
     this.scene.add(this.moonlight);
   }
@@ -447,7 +449,7 @@ class Weather {
     this.sunlight.position.setY(y);
 
     this.sun.position.copy(this.sunlight.position);
-    this.sunlight.shadow.camera.updateProjectionMatrix();
+    // this.sunlight.shadow.camera.updateProjectionMatrix();
 
     this.sunBoundLight.position.copy(this.sunlight.position);
 
@@ -467,7 +469,7 @@ class Weather {
     this.moonlight.position.set(Terrain.SIZE_X - this.sun.position.x, -this.sun.position.y, this.sun.position.z);
 
     this.moon.position.copy(this.moonlight.position);
-    this.moonlight.shadow.camera.updateProjectionMatrix();
+    // this.moonlight.shadow.camera.updateProjectionMatrix();
 
     this.moonBoundLight.position.copy(this.moonlight.position);
 
