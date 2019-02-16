@@ -422,13 +422,15 @@ class Terrain {
     const intersection = this.getPlayerInteractionIntersection(raycaster, allObjects, true);
     if (intersection === null) return;
 
+    const validDistance = intersection.distance <= Chunk.INTERACTION_DISTANCE;
+    if (!validDistance) return;
+
     const intersectedObject = intersection.object;
-    // const chunk = this.visibleChunks.find(chunh )
-    const chunk = this.visibleChunks.find(chunk => chunk.getObjects().children.some(child => child.children.includes(intersectedObject)));
+    const chunk = this.visibleChunks.find(chunk => chunk.getObjects().children.includes(intersectedObject.parent));
 
     const specialObjects = this.generator.getBiome().getSpecialObjects();
 
-    console.log(intersectedObject, specialObjects);
+    console.log(chunk, chunk.getObjects());
 
     if (specialObjects === null || specialObjects.includes(intersectedObject.parent)) return;
 
