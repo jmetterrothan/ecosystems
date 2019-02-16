@@ -8,6 +8,8 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@app/shared/utils/Common.utils';
 
+import { configSvc } from '@app/shared/services/config.service';
+
 class BubbleEmitter {
   private emitters: THREE.Points[];
 
@@ -23,7 +25,7 @@ class BubbleEmitter {
   init(scene: THREE.Scene, generator: BiomeGenerator) {
     const biome = generator.getBiome();
 
-    if (!biome.hasWater()) {
+    if (!biome.hasWater() || !configSvc.config.ENABLE_WATER_EFFECTS) {
       return;
     }
 
@@ -48,7 +50,7 @@ class BubbleEmitter {
    * @param {number} delta
    */
   update(delta: number) {
-    if (!window.isFocused) return;
+    if (!window.isFocused || !configSvc.config.ENABLE_WATER_EFFECTS) return;
 
     this.emitters.forEach(system => {
       const geo = (<THREE.Geometry>system.geometry);
