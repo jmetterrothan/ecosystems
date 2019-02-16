@@ -19,6 +19,7 @@ import Small_Splash from '@sounds/Small_Splash.mp3';
 import Bubbles from '@sounds/Bubbles.mp3';
 import Hehe_Boi from '@sounds/Hehe_Boi.mp3';
 import Fairy_Meeting from '@sounds/Fairy_Meeting.mp3';
+import Underwater from '@sounds/underwater.mp3';
 
 import { VERSION_STORAGE } from '@app/Version';
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
@@ -47,13 +48,14 @@ class CoreService {
   }
 
   private async initSounds(): Promise<any> {
-    await SoundManager.add('click', Builder_Game_Item_Click_1, { volume: 0.5 });
-    await SoundManager.add('trophy_unlock', Unlock_level_Game_Sound, { volume: 0.5 });
-    await SoundManager.add('set_down', Set_Down_Item_1, { volume: 0.5 });
-    await SoundManager.add('splash', Small_Splash, { volume: 0.5 });
-    await SoundManager.add('bubbles', Bubbles, { volume: 0.5 });
-    await SoundManager.add('hehe', Hehe_Boi, { volume: 0.5 });
-    await SoundManager.add('background_music', Fairy_Meeting, { volume: 0.2, loop: true });
+    await SoundManager.add('click', Builder_Game_Item_Click_1, { volume: 1.0 });
+    await SoundManager.add('trophy_unlock', Unlock_level_Game_Sound, { volume: 1.0 });
+    await SoundManager.add('set_down', Set_Down_Item_1, { volume: 1.0 });
+    await SoundManager.add('splash', Small_Splash, { volume: 1.0 });
+    await SoundManager.add('bubbles', Bubbles, { volume: 1.0 });
+    await SoundManager.add('hehe', Hehe_Boi, { volume: 1.0 });
+    await SoundManager.add('background_music', Fairy_Meeting, { volume: 0.25, loop: true });
+    await SoundManager.add('underwater', Underwater, { volume: 0.5, loop: true });
   }
 
   private async initModels(): Promise<any> {

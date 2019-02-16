@@ -1,3 +1,4 @@
+import { Howl } from 'howler';
 import * as THREE from 'three';
 import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
@@ -12,9 +13,11 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import Weather from '@world/Weather';
 import Player from '@app/Player';
 import MathUtils from '@utils/Math.utils';
+import SoundManager from '@app/shared/SoundManager';
 
 import { INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
 import { GraphicsQuality } from '@shared/enums/graphicsQuality.enum';
+import { playerSvc } from '@app/shared/services/player.service';
 
 class World {
   static readonly SEED: string | null = null;
@@ -48,6 +51,8 @@ class World {
   private listener: THREE.AudioListener;
   private zSound: THREE.PositionalAudio;
   private audioLoader: THREE.AudioLoader;
+
+  private underwaterAmbient: Howl;
 
   /**
    * World constructor
@@ -167,6 +172,10 @@ class World {
     // finally add the sound to the mesh
     object.add(this.zSound);
     object.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
+
+    this.underwaterAmbient = SoundManager.get('underwater');
+    this.underwaterAmbient.volume(0);
+    this.underwaterAmbient.play();
   }
 
   /**
@@ -189,6 +198,8 @@ class World {
     this.player.update(this.terrain, delta);
     this.weather.update(delta);
     this.generator.getBiome().update(delta);
+
+    this.underwaterAmbient.volume(playerSvc.isUnderwater() ? 0.5 : 0);
   }
 
   /**
