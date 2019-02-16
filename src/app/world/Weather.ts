@@ -25,7 +25,8 @@ const SNOW = {
     depthTest: true,
     transparent: true,
     opacity: 0.4,
-    alphaTest: 0.15
+    alphaTest: 0.15,
+    fog: true,
   }),
   speed: 4000
 };
@@ -38,7 +39,8 @@ const RAIN = {
     depthTest: true,
     transparent: true,
     opacity: 0.3,
-    alphaTest: 0.15
+    alphaTest: 0.15,
+    fog: true,
   }),
   speed: 17500
 };
@@ -293,6 +295,7 @@ class Weather {
       transparent: true,
       depthTest: true,
       opacity: 0.75,
+      alphaTest: 0.15,
       fog: false,
     });
 
