@@ -525,6 +525,9 @@ class Terrain {
       return;
     }
 
+    const allObjects = this.visibleChunks.reduce((acc, chunk) => acc.concat(chunk.getObjects().children), []);
+    const objectsIntersection = this.getPlayerInteractionIntersection(raycaster, allObjects, true);
+
     // terrain/water interaction
     const intersection = this.getPlayerInteractionIntersection(raycaster, [this.water, this.terrain]);
 
@@ -532,6 +535,13 @@ class Terrain {
       // player is looking obviously outside of range
       crosshairSvc.show(false);
       this.resetPreview();
+      return;
+    }
+
+    // TODO: improve this detection
+    if (objectsIntersection && objectsIntersection.distance < intersection.distance) {
+      this.resetPreview();
+      crosshairSvc.switch(CROSSHAIR_STATES.CAN_REMOVE_OBJECT);
       return;
     }
 

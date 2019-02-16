@@ -15,8 +15,11 @@ $crosshair-opacity : 0.95;
   &.crosshair--can-place-object {
     border-color: $color-green;
   }
-  &.crosshair--can-interact{
+  &.crosshair--can-interact {
     border-color: $color-purple;
+  }
+  &.crosshair--can-remove-object {
+    border-color: $color-yellow;
   }
   &.crosshair--no-action {
     border-color: $color-red;
