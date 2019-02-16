@@ -10,6 +10,8 @@ export const FR_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   place_object: 'Placer un objet',
   place_object_submarine: 'Placer un objet sous l\'eau',
   place_objects_counter: 'Placer {{counter}} objets',
+  remove_object: 'Supprimer un objet',
+  remove_objects_counter: 'Supprimer {{counter}} objets',
   travelled_distance_counter: 'Parcourir {{counter}} km',
   repulse_fishes: 'Effrayer les poissons',
   repulse_butterflies: 'Faire peur aux papillons',

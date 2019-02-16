@@ -111,6 +111,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     objects_placed: 'Objets placés : {{count}}',
     objects_placed_submarine: 'Objets placés sous l\'eau : {{count}}',
     objects_placed_voice: 'Objets placés à la voix : {{count}}',
+    objects_removed: 'Objects supprimés : {{count}}',
     unlock_trophies_percentage: 'Trophées débloqués : {{count}}%',
   },
   'contact-tab': {

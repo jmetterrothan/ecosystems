@@ -10,6 +10,8 @@ export const EN_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   place_object: 'Place an object',
   place_object_submarine: 'Place a submarine object',
   place_objects_counter: '{{counter}} objects placed',
+  remove_object: 'Remove an object',
+  remove_objects_counter: 'Remove {{counter}} objects',
   travelled_distance_counter: 'Travelled {{counter}} miles',
   repulse_fishes: 'Scare off the fishes',
   repulse_butterflies: 'Scare off the butterflies',

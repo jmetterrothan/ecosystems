@@ -431,6 +431,8 @@ class Terrain {
     if (this.specialObjectList.includes(intersectedObject.parent)) return;
 
     chunk.removeObject(intersectedObject);
+
+    progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_removed);
   }
 
   placeSpecialObject(
