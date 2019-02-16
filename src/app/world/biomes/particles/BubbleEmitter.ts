@@ -48,6 +48,8 @@ class BubbleEmitter {
    * @param {number} delta
    */
   update(delta: number) {
+    if (!window.isFocused) return;
+
     this.emitters.forEach(system => {
       const geo = (<THREE.Geometry>system.geometry);
       geo.vertices.forEach(position => {
@@ -80,9 +82,9 @@ class BubbleEmitter {
       map: CommonUtils.createBubbleTexture('#ffffff'),
       transparent: true,
       depthTest: true,
-      opacity: 0.2,
+      opacity: 0.25,
       fog: false,
-      alphaTest: 0.1
+      alphaTest: 0.15
     });
 
     for (let i = 0; i < count; i++) {

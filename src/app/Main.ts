@@ -61,6 +61,16 @@ class Main {
   async init() {
     this.initControls();
 
+    window.isFocused = true;
+
+    window.addEventListener('blur', () => {
+      window.isFocused = false;
+    });
+
+    window.addEventListener('focus', () => {
+      window.isFocused = true;
+    });
+
     this.world = new World(this.scene, this.camera, this.controls);
     playerSvc.init();
 

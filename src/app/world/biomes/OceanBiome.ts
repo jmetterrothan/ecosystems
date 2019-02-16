@@ -160,7 +160,7 @@ class OceanBiome extends Biome {
 
     e /= 0.2 + 0.25 + 0.0035 + 0.05;
 
-    return Math.round(e * 100) / 100;
+    return e;
   }
 
   computeWaterMoistureAt(x: number, z: number): number {
