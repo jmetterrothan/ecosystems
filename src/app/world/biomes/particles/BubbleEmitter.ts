@@ -76,7 +76,7 @@ class BubbleEmitter {
     const geo = new THREE.Geometry();
 
     const material = new THREE.PointsMaterial({
-      size: 7168,
+      size: 7000,
       map: CommonUtils.createBubbleTexture('#ffffff'),
       transparent: true,
       depthTest: true,
