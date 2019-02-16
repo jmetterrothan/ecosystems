@@ -82,9 +82,9 @@ class BubbleEmitter {
       map: CommonUtils.createBubbleTexture('#ffffff'),
       transparent: true,
       depthTest: true,
-      opacity: 0.25,
-      fog: false,
-      alphaTest: 0.15
+      opacity: 0.225,
+      alphaTest: 0.15,
+      fog: true,
     });
 
     for (let i = 0; i < count; i++) {
