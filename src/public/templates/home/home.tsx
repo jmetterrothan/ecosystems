@@ -231,7 +231,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
                   <Col Tag='label' className='form__label flexcol--24 mb-1'>{translationSvc.translate('UI.home.form.seed')}</Col>
                   <Col className='flexcol--24'>
                     <div className='tooltip'>
-                      <input  disabled={busy} className='form__element form__element--rounded' type='text' name='seed' placeholder={translationSvc.translate('UI.home.form.seed_placeholder')} onChange={this.handleChange} value={seedValue} pattern='^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$' minLength={1} ref={el => this.seedInput = el} />
+                      <input disabled={busy} className='form__element form__element--rounded' type='text' name='seed' placeholder={translationSvc.translate('UI.home.form.seed_placeholder')} onChange={this.handleChange} value={seedValue} minLength={1} ref={el => this.seedInput = el} />
                       <div className='tooltip__content'>
                         ?
                         <div className='tooltip__text p-2'>
