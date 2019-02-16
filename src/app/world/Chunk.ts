@@ -290,7 +290,7 @@ class Chunk {
     object.rotation.copy(item.r);
     object.scale.copy(item.s);
     object.position.copy(item.p);
-    object.userData = <IStackReference>{ stackReference: item.n, float: item.f, type: object.userData.type, initialPosition: item.p.clone() };
+    object.userData = <IStackReference>{ stackReference: item.n, float: item.f, type: object.userData.type, initialPosition: new THREE.Vector3().copy(item.p) };
     object.visible = true;
 
     return object;
