@@ -139,7 +139,7 @@ class AchievementService {
     // send notification
     notificationSvc.push({
       id: uniqid(),
-      icon: null,
+      Icon: trophy.Icon,
       label: translationSvc.translate('UI.trophy_unlocked'),
       content: translationSvc.translate(trophy.name.key, trophy.name.options),
       duration: 5000

@@ -5,7 +5,7 @@ import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
 export interface ITrophy {
   name: { key: string, options?: { [key: string]: number | string } };
   value: string;
-  img: string;
+  Icon: any;
   difficulty: TROPHY_DIFFICULTY;
   type: TROPHY_TYPE;
   checklist: IChecklistOption[];

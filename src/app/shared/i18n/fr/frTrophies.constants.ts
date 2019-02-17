@@ -4,7 +4,7 @@ export const FR_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   play_games_counter: 'Jouer {{counter}} parties',
   visit_all_biomes: 'Visiter tous les biomes',
   visit_all_biomes_counter: 'Visiter {{counter}} fois tous les biomes',
-  going_underwater: 'Le grand bain',
+  going_underwater: 'Mouiller le maillot',
   going_underwater_counter: 'Vers les profondeurs et l\'eau-delà',
   place_all_objects: 'Placer tous les objets',
   place_object: 'Placer un objet',
@@ -14,10 +14,10 @@ export const FR_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   repulse_fishes: 'Effrayer les poissons',
   repulse_butterflies: 'Faire peur aux papillons',
   find_captain_treasure: 'Trouver le trésor du capitaine',
-  find_scarecrow: 'Effrayer l\'épouvantail',
-  add_carrot_snowmnan: 'J\'ai pas d\'nez',
+  find_scarecrow: 'Battre l\'épouvantail',
+  add_carrot_snowmnan: 'Terminer un travail inachevé',
   archaeology: 'Fouilles archéologiques',
-  going_under_rain: 'Passer sous la pluie',
+  going_under_rain: 'Braver les éléments',
   go_in_sun: 'Voler trop près du soleil',
   go_in_moon: 'C\'est un petit pas pour l\'homme',
   unlock_trophy_percentage: 'Vous avez débloqué {{counter}}% des trophées',
@@ -30,5 +30,5 @@ export const FR_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   woodcutter: 'Apprenti bûcheron',
   mushrooms_soup: 'Une bonne soupe de champignons',
   bunch_of_flowers: 'Il est pour moi ce bouquet ?',
-  under_map: 'Tu fais quoi ici ?!'
+  under_map: 'Tu fais quoi ici ?'
 };
