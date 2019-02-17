@@ -13,7 +13,7 @@ class StorageService {
     try {
       return JSON.parse(value);
     } catch (e) {
-      if (configSvc.debug) {
+      if (configSvc.debug && typeof value !== 'string') {
         console.warn(`Failed to parse storage key ${key}`);
       }
     }

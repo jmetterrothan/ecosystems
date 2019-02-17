@@ -175,6 +175,26 @@ export const TROPHIES: ITrophy[] = [
       ...getProgressionKeysFromObjectsOfType(OBJ_TYPE.FLOWER).map((progression: IProgression) => <IChecklistOption>{ name: progression.name, value: progression.value })
     ]
   },
+  {
+    name: { key: 'TROPHIES.remove_object' },
+    value: 'remove_1_object',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.OBJECTS,
+    checklist: [
+      { name: 'remove one object', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_removed.value }
+    ]
+  },
+  {
+    name: { key: 'TROPHIES.remove_objects_counter', options: { counter: 10 } },
+    value: 'remove_10_objects',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.GOLD,
+    type: TROPHY_TYPE.OBJECTS,
+    checklist: [
+      { name: 'remove 10 objects', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_removed.value, limit: 10 }
+    ]
+  },
   // DISTANCE
   {
     name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 2 } },

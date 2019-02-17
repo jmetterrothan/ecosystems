@@ -7,4 +7,5 @@ export interface IProgressionCommonStorageKeys {
   objects_placed: IProgression;
   objects_placed_submarine: IProgression;
   objects_placed_voice: IProgression;
+  objects_removed: IProgression;
 }

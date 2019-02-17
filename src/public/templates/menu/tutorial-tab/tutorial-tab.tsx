@@ -92,6 +92,11 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
               <TutorialAction actionName={translationSvc.translate('UI.tutorial-tab.tab1.mouse_scroll_name')} text={translationSvc.translate('UI.tutorial-tab.tab1.mouse_scroll')} className='mb-2' />
             </div>
           </Col>
+          <Col className='flexcol--8-t mb-2 mb-0-t'>
+            <div className='tutorial-keys'>
+              <TutorialAction actionName={translationSvc.translate('UI.tutorial-tab.tab1.mouse_right-click_name')} text={translationSvc.translate('UI.tutorial-tab.tab1.mouse_right-click')} className='mb-2' />
+            </div>
+          </Col>
         </Row>
 
         <H4 className='mt-2 mb-2 align-left'>{translationSvc.translate('UI.tutorial-tab.tab1.subtitle_keyboard')}</H4>

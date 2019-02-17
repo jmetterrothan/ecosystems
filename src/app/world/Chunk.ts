@@ -217,6 +217,21 @@ class Chunk {
   }
 
   /**
+   * Remove an object to blueprint and scene
+   * @param {THREE.Object3D} object
+   */
+  removeObject(object: THREE.Object3D) {
+    const pick = Chunk.convertObjectToPick(object.parent);
+    this.objectsBlueprint = this.objectsBlueprint.filter(p => !pick.p.equals(p.p));
+
+    new TWEEN.Tween(object.scale)
+      .to(new THREE.Vector3(0.000001, 0.000001, 0.000001), 400)
+      .easing(TWEEN.Easing.Cubic.In)
+      .start()
+      .onComplete(() => this.objects.remove(object.parent));
+  }
+
+  /**
    * Populate the world with pre-computed object parameters
    * @param scene
    */
@@ -275,7 +290,7 @@ class Chunk {
     object.rotation.copy(item.r);
     object.scale.copy(item.s);
     object.position.copy(item.p);
-    object.userData = <IStackReference>{ stackReference: item.n, float: item.f, type: object.userData.type, initialPosition: item.p.clone() };
+    object.userData = <IStackReference>{ stackReference: item.n, float: item.f, type: object.userData.type, initialPosition: new THREE.Vector3().copy(item.p) };
     object.visible = true;
 
     return object;
@@ -389,6 +404,8 @@ class Chunk {
    * @return {THREE.Box3}
    */
   getBbox(): THREE.Box3 { return this.bbox; }
+
+  getObjects(): THREE.Group { return this.objects; }
 
   private placeObjectWithAnimation(object: THREE.Object3D) {
     const scaleSaved = object.scale.clone();

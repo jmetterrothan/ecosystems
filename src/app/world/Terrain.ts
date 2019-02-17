@@ -327,8 +327,7 @@ class Terrain {
         break;
 
       case INTERACTION_TYPE.MOUSE_RIGHT_CLICK:
-        // TODO: delete obj
-        console.log('right click');
+        this.removeObject(raycaster);
         break;
 
       case INTERACTION_TYPE.MOUSE_WHEEL_DOWN:
@@ -415,6 +414,36 @@ class Terrain {
       this.objectAnimated = false;
       SoundManager.play(soundName);
     }, Chunk.ANIMATION_DELAY + 200);
+  }
+
+  /**
+   * Test raycaster intersections for an object to delete
+   * @param {THREE.Raycaster}
+   */
+  removeObject(raycaster: THREE.Raycaster) {
+    const intersections = raycaster.intersectObjects(this.scene.children, true);
+
+    for (const intersection of intersections) {
+      // if object has no stackReference it should not be deletable
+      if (intersection.object.parent.userData.stackReference && intersection.object.parent !== this.previewObject) {
+        const intersectedObject = intersection.object.parent;
+        const validDistance = intersection.distance <= Chunk.INTERACTION_DISTANCE;
+
+        if (!validDistance) return;
+        if (this.specialObjectList.includes(intersectedObject)) return;
+
+        const chunk = this.getChunkAt(intersectedObject.position.x, intersectedObject.position.z);
+
+        if (chunk) {
+          chunk.removeObject(intersectedObject);
+
+          progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_removed);
+        }
+
+        break;
+      }
+    }
+
   }
 
   placeSpecialObject(
@@ -516,6 +545,15 @@ class Terrain {
       // player is looking obviously outside of range
       crosshairSvc.show(false);
       this.resetPreview();
+      return;
+    }
+
+    const objectsIntersections = raycaster.intersectObjects(this.scene.children, true);
+    const objectToDeleteIntersection = objectsIntersections.find(intersection => intersection.object.parent.userData.stackReference && intersection.object.parent !== this.previewObject);
+
+    if (objectToDeleteIntersection !== undefined && objectToDeleteIntersection.distance < intersection.distance) {
+      this.resetPreview();
+      crosshairSvc.switch(CROSSHAIR_STATES.CAN_REMOVE_OBJECT);
       return;
     }
 
