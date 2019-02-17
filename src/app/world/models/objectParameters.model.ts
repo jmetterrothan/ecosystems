@@ -27,6 +27,8 @@ export interface ISpecialObject {
   underwater: ISpecialObjectCanPlaceIn;
   float: boolean;
   stackReference: string;
+  rotation?: THREE.Vector3;
+  position?: THREE.Vector3;
   e?: ILowHigh;
   m?: ILowHigh;
 }

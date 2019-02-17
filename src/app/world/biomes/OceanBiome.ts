@@ -26,7 +26,8 @@ class OceanBiome extends Biome {
 
   private boids: Boids[];
 
-  private chest: THREE.Object3D;
+  private chestBottom: THREE.Object3D;
+  private chestTop: THREE.Object3D;
 
   private bubbleEmitter: BubbleEmitter;
 
@@ -59,11 +60,25 @@ class OceanBiome extends Biome {
     const sizeX = 8192;
     const sizeZ = 8192;
 
-    this.chest = this.terrain.placeSpecialObject({
-      stackReference: 'chest',
+    const rotation = new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0);
+
+    this.chestBottom = this.terrain.placeSpecialObject({
+      rotation,
+      stackReference: 'chest_part2',
       float: false,
       underwater: ISpecialObjectCanPlaceIn.WATER
     }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+
+    console.log(this.chestBottom);
+
+    this.chestTop = this.terrain.placeSpecialObject({
+      rotation,
+      position: this.chestBottom.position.clone(),
+      stackReference: 'chest_part1',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.WATER
+    }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+
   }
 
   private initFishBoids() {
@@ -105,7 +120,7 @@ class OceanBiome extends Biome {
   }
 
   handleClick(raycaster: THREE.Raycaster) {
-    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.chest], true);
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.chestBottom, this.chestTop], true);
 
     if (intersections.length) {
       this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.find_captain_treasure);
