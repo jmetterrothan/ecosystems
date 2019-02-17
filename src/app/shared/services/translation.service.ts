@@ -38,10 +38,13 @@ class TranslationService {
     return null;
   }
 
-  switchLanguage(language: string) {
-    i18next.changeLanguage(language);
+  async switchLanguage(language: string) {
+    await i18next.changeLanguage(language);
   }
 
+  getCurrentLanguage(): string {
+    return i18next.language;
+  }
 }
 
 export const translationSvc = new TranslationService();

@@ -42,8 +42,8 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
   }
 
   changeLanguage = async () => {
-    await i18next.changeLanguage(this.state.currentLanguage === 'fr' ? 'en' : 'fr');
-    this.setState({ currentLanguage: i18next.language });
+    await translationSvc.switchLanguage(this.state.currentLanguage === 'fr' ? 'en' : 'fr');
+    this.setState({ currentLanguage: translationSvc.getCurrentLanguage() });
   }
 
   render() {
@@ -142,13 +142,6 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
           </Col>
         </Row>
 
-        <H4 className='mb-2 align-left'>{translationSvc.translate('UI.tutorial-tab.tab1.subtitle_mouse')}</H4>
-        <Row>
-          <Col>
-            <button onClick={this.changeLanguage}>change</button>
-          </Col>
-        </Row>
-
         <Row className='mt-3 mb-2'>
           <Col className='flexcol--24 flex justify-content--end'>
             <Button className='btn--darkblue btn--expand-mobile' onClick={this.reset}>{translationSvc.translate('UI.tutorial-tab.tab1.reset_btn')}</Button>
@@ -165,6 +158,14 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
         <H4 className='mb-2 align-left'>{translationSvc.translate('UI.tutorial-tab.tab2.subtitle')}</H4>
         <p className='paragraph mb-2'>{translationSvc.translate('UI.tutorial-tab.tab2.text')}</p>
       </Article>
+    );
+  }
+
+  getThirdPanel() {
+    return (
+    <>
+      <button onClick={this.changeLanguage}>change</button>
+    </>
     );
   }
 }
