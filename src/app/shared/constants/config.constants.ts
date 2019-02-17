@@ -41,7 +41,7 @@ export const HIGH_CONFIG: IConfig = {
   ENABLE_AA: true,
   ENABLE_SHADOWS: true,
   SHADOW_MAP_SIZE: 8192,
-  SHADOW_MAP_TYPE: THREE.PCFShadowMap,
+  SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap,
 
   SPAWN: new THREE.Vector3(65000, 48000, 65000)
 };
