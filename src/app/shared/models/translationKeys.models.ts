@@ -27,6 +27,7 @@ export interface ITrophiesTranslationKeys {
   create_game_online: string;
   join_game_online: string;
   place_object_online: string;
+  place_object_voice: string;
   place_all_mushrooms: string;
   place_all_flowers: string;
   woodcutter: string;
@@ -146,6 +147,7 @@ export interface IUITranslationKeys {
     objects_placed: string;
     unlock_trophies_percentage: string;
     objects_placed_submarine: string;
+    objects_placed_voice: string;
   };
   'contact-tab': {
     title: string;

@@ -100,6 +100,16 @@ export const TROPHIES: ITrophy[] = [
     ]
   },
   {
+    name: { key: 'TROPHIES.place_object_voice' },
+    value: 'place_object_voice',
+    img: '',
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.OBJECTS,
+    checklist: [
+      { name: 'place 1 object with voice', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_voice.value }
+    ]
+  },
+  {
     name: { key: 'TROPHIES.place_objects_counter', options: { counter: 10 } },
     value: 'place_10_objects',
     img: '',
