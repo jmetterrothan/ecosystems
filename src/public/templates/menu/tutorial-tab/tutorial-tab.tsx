@@ -1,5 +1,6 @@
 import React from 'react';
 import Slider from 'react-slick';
+import i18next from 'i18next';
 
 import Row from '@public/components/row/row';
 import Col from '@public/components/col/col';
@@ -19,6 +20,7 @@ import './tutorial-tab.styles';
 
 type ITutorialTabsState = {
   storage: Object;
+  currentLanguage: string;
 };
 
 class TutorialTab extends React.Component<any, ITutorialTabsState> {
@@ -27,7 +29,8 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
     super(props);
 
     this.state = {
-      storage: Keys
+      storage: Keys,
+      currentLanguage: i18next.language
     };
   }
 
@@ -36,6 +39,11 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
     this.setState({ storage: Keys }, () => {
       storageSvc.set(STORAGES_KEY.keyboard, this.state.storage);
     });
+  }
+
+  changeLanguage = async () => {
+    await i18next.changeLanguage(this.state.currentLanguage === 'fr' ? 'en' : 'fr');
+    this.setState({ currentLanguage: i18next.language });
   }
 
   render() {
@@ -131,6 +139,13 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
               <TutorialActionKey className='mb-2' action={KeyAction.VOCAL} onKeyChange={this.handleKeyChange} canEdit={true} />
               <TutorialActionKey className='' action={KeyAction.MUTE} onKeyChange={this.handleKeyChange} canEdit={true} />
             </div>
+          </Col>
+        </Row>
+
+        <H4 className='mb-2 align-left'>{translationSvc.translate('UI.tutorial-tab.tab1.subtitle_mouse')}</H4>
+        <Row>
+          <Col>
+            <button onClick={this.changeLanguage}>change</button>
           </Col>
         </Row>
 
