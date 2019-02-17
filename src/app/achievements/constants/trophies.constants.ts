@@ -14,12 +14,36 @@ import { TROPHY_TYPE } from '@achievements/enums/trophyType.enum';
 import { COMPARISON_TYPE } from '@shared/enums/comparaison.enum';
 import { OBJ_TYPE } from '@app/shared/enums/objectTypes.enum';
 
+import IconTrophyBiomes from '!svg-react-loader!@images/icon_set_optimized/icon01.svg';
+import IconTrophyObject from '!svg-react-loader!@images/icon_set_optimized/icon02.svg';
+import IconTrophyMap from '!svg-react-loader!@images/icon_set_optimized/icon03.svg';
+import IconTrophyChest from '!svg-react-loader!@images/icon_set_optimized/icon04.svg';
+import IconTrophyObjectUnderwater from '!svg-react-loader!@images/icon_set_optimized/icon05.svg';
+import IconTrophyDive from '!svg-react-loader!@images/icon_set_optimized/icon06.svg';
+import IconTrophyScarecrow from '!svg-react-loader!@images/icon_set_optimized/icon07.svg';
+import IconTrophySnowman from '!svg-react-loader!@images/icon_set_optimized/icon08.svg';
+import IconTrophyFishs from '!svg-react-loader!@images/icon_set_optimized/icon09.svg';
+import IconTrophyButterflies from '!svg-react-loader!@images/icon_set_optimized/icon10.svg';
+import IconTrophySun from '!svg-react-loader!@images/icon_set_optimized/icon11.svg';
+import IconTrophyBones from '!svg-react-loader!@images/icon_set_optimized/icon12.svg';
+import IconTrophy from '!svg-react-loader!@images/icon_set_optimized/icon13.svg';
+import IconTrophy25 from '!svg-react-loader!@images/icon_set_optimized/icon14.svg';
+import IconTrophy50 from '!svg-react-loader!@images/icon_set_optimized/icon15.svg';
+import IconTrophy75 from '!svg-react-loader!@images/icon_set_optimized/icon16.svg';
+import IconTrophy100 from '!svg-react-loader!@images/icon_set_optimized/icon17.svg';
+import IconTrophyOnline from '!svg-react-loader!@images/icon_set_optimized/icon18.svg';
+import IconTrophyRain from '!svg-react-loader!@images/icon_set_optimized/icon19.svg';
+import IconTrophyMoon from '!svg-react-loader!@images/icon_set_optimized/icon20.svg';
+import IconTrophyWoodcutter from '!svg-react-loader!@images/icon_set_optimized/icon21.svg';
+import IconTrophyFlowers from '!svg-react-loader!@images/icon_set_optimized/icon22.svg';
+import IconTrophyMushrooms from '!svg-react-loader!@images/icon_set_optimized/icon23.svg';
+
 export const TROPHIES: ITrophy[] = [
   // GAME
   {
     name: { key: 'TROPHIES.play_games_counter', options: { counter: 2 } },
     value: 'play_two_games',
-    img: '',
+    Icon: IconTrophy,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.GAME,
     checklist: [
@@ -29,7 +53,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.play_games_counter', options: { counter: 10 } },
     value: 'play_ten_games',
-    img: '',
+    Icon: IconTrophy,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.GAME,
     checklist: [
@@ -40,7 +64,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.visit_all_biomes' },
     value: 'visit_all_biomes',
-    img: '',
+    Icon: IconTrophyBiomes,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.BIOMES,
     checklist: [
@@ -50,7 +74,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.going_underwater' },
     value: 'going_underwater',
-    img: '',
+    Icon: IconTrophyDive,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.BIOMES,
     checklist: [
@@ -60,7 +84,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.going_underwater_counter', options: { counter: 10 } },
     value: 'going_underwater_twenty_times',
-    img: '',
+    Icon: IconTrophyDive,
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.BIOMES,
     checklist: [
@@ -71,7 +95,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.place_all_objects' },
     value: 'place_all_objects',
-    img: '',
+    Icon: IconTrophyObject,
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
     type: TROPHY_TYPE.OBJECTS,
     percentage: 85,
@@ -82,7 +106,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.place_object' },
     value: 'place_1_object',
-    img: '',
+    Icon: IconTrophyObject,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.OBJECTS,
     checklist: [
@@ -92,7 +116,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.place_object_submarine' },
     value: 'place_object_submarine',
-    img: '',
+    Icon: IconTrophyObjectUnderwater,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.OBJECTS,
     checklist: [
@@ -102,7 +126,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.place_object_voice' },
     value: 'place_object_voice',
-    img: '',
+    Icon: IconTrophyObject,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.OBJECTS,
     checklist: [
@@ -112,7 +136,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.place_objects_counter', options: { counter: 10 } },
     value: 'place_10_objects',
-    img: '',
+    Icon: IconTrophyObject,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.OBJECTS,
     checklist: [
@@ -122,7 +146,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.place_objects_counter', options: { counter: 50 } },
     value: 'place_50_objects',
-    img: '',
+    Icon: IconTrophyObject,
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.OBJECTS,
     checklist: [
@@ -132,7 +156,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.mushrooms_soup' },
     value: 'mushrooms_soup',
-    img: '',
+    Icon: IconTrophyMushrooms,
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
     type: TROPHY_TYPE.OBJECTS,
     percentage: 80,
@@ -143,7 +167,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.bunch_of_flowers' },
     value: 'bunch_of_flowers',
-    img: '',
+    Icon: IconTrophyFlowers,
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
     type: TROPHY_TYPE.OBJECTS,
     percentage: 80,
@@ -155,7 +179,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 2 } },
     value: 'travelled_1000000',
-    img: '',
+    Icon: IconTrophyMap,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.DISTANCE,
     checklist: [
@@ -165,7 +189,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 25 } },
     value: 'travelled_25000000',
-    img: '',
+    Icon: IconTrophyMap,
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.DISTANCE,
     checklist: [
@@ -175,7 +199,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.travelled_distance_counter', options: { counter: 50 } },
     value: 'travelled_50000000',
-    img: '',
+    Icon: IconTrophyMap,
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
     type: TROPHY_TYPE.DISTANCE,
     checklist: [
@@ -186,7 +210,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.going_under_rain' },
     value: 'going_under_rain',
-    img: '',
+    Icon: IconTrophyRain,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.WEATHER,
     checklist: [
@@ -196,7 +220,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.go_in_sun' },
     value: 'go_in_sun',
-    img: '',
+    Icon: IconTrophySun,
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.WEATHER,
     checklist: [
@@ -206,7 +230,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.go_in_moon' },
     value: 'go_in_moon',
-    img: '',
+    Icon: IconTrophyMoon,
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.WEATHER,
     checklist: [
@@ -217,7 +241,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.repulse_fishes' },
     value: 'repulse_fishes',
-    img: '',
+    Icon: IconTrophyFishs,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.EXTRAS,
     checklist: [
@@ -227,7 +251,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.repulse_butterflies' },
     value: 'repulse_butterflies',
-    img: '',
+    Icon: IconTrophyButterflies,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.EXTRAS,
     checklist: [
@@ -237,7 +261,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.find_captain_treasure' },
     value: 'find_captain_treasure',
-    img: '',
+    Icon: IconTrophyChest,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.EXTRAS,
     checklist: [
@@ -247,7 +271,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.add_carrot_snowmnan' },
     value: 'add_carrot_snowman',
-    img: '',
+    Icon: IconTrophySnowman,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.EXTRAS,
     checklist: [
@@ -257,7 +281,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.find_scarecrow' },
     value: 'find_scarecrow',
-    img: '',
+    Icon: IconTrophyScarecrow,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.EXTRAS,
     checklist: [
@@ -267,7 +291,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.archaeology' },
     value: 'archaeology',
-    img: '',
+    Icon: IconTrophyBones,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.EXTRAS,
     checklist: [
@@ -277,7 +301,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.woodcutter' },
     value: 'woodcutter',
-    img: '',
+    Icon: IconTrophyWoodcutter,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.EXTRAS,
     checklist: [
@@ -287,7 +311,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.under_map' },
     value: 'under_map',
-    img: '',
+    Icon: IconTrophy,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.EXTRAS,
     checklist: [
@@ -298,7 +322,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.create_game_online' },
     value: 'create_game_online',
-    img: '',
+    Icon: IconTrophyOnline,
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.ONLINE,
     checklist: [
@@ -308,7 +332,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.join_game_online' },
     value: 'join_game_online',
-    img: '',
+    Icon: IconTrophyOnline,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.ONLINE,
     checklist: [
@@ -318,7 +342,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.place_object_online' },
     value: 'place_object_online',
-    img: '',
+    Icon: IconTrophyOnline,
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.ONLINE,
     checklist: [
@@ -329,7 +353,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.unlock_trophy_percentage', options: { counter: 25 } },
     value: 'unlock_25_percent_trophies',
-    img: '',
+    Icon: IconTrophy25,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.TROPHY,
     checklist: [
@@ -339,7 +363,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.unlock_trophy_percentage', options: { counter: 50 } },
     value: 'unlock_50_percent_trophies',
-    img: '',
+    Icon: IconTrophy50,
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.TROPHY,
     checklist: [
@@ -349,7 +373,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.unlock_trophy_percentage', options: { counter: 75 } },
     value: 'unlock_75_percent_trophies',
-    img: '',
+    Icon: IconTrophy75,
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.TROPHY,
     checklist: [
@@ -359,7 +383,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.unlock_trophy_percentage', options: { counter: 100 } },
     value: 'unlock_100_percent_trophies',
-    img: '',
+    Icon: IconTrophy100,
     difficulty: TROPHY_DIFFICULTY.DIAMOND,
     type: TROPHY_TYPE.TROPHY,
     checklist: [
