@@ -38,6 +38,7 @@ class NotificationContainer extends React.Component<any, INotificationContainerS
 
   componentWillUnmount() {
     this.subscription.unsubscribe();
+    clearTimeout(this.timer);
   }
 
   private add(notification: INotification) {

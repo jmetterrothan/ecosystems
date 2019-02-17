@@ -1,6 +1,6 @@
 export interface INotification {
   id: string;
-  icon?: string;
+  Icon?: any;
   label: string;
   content: string;
   duration: number;
