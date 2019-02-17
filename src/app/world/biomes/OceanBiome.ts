@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import * as TWEEN from '@tweenjs/tween.js';
 import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Terrain from '@world/Terrain';
@@ -123,6 +124,11 @@ class OceanBiome extends Biome {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.chestBottom, this.chestTop], true);
 
     if (intersections.length) {
+
+      new TWEEN.Tween(this.chestTop.rotation)
+        .to({ z: this.chestTop.rotation.z + Math.PI / 2 }, 500)
+        .start();
+
       this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.find_captain_treasure);
     }
   }
