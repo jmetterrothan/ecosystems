@@ -7,6 +7,7 @@ import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
 import MathUtils from '@utils/Math.utils';
 import CommonUtils from '@utils/Common.utils';
+import Stars from '@world/weather/Stars';
 
 import { configSvc } from '@app/shared/services/config.service';
 import { playerSvc } from '@shared/services/player.service';
@@ -63,6 +64,8 @@ class Weather {
 
   private startTime: number;
 
+  private stars: Stars;
+
   // lights
   private hemisphereLight: THREE.HemisphereLight;
   private ambientLight: THREE.AmbientLight;
@@ -72,9 +75,6 @@ class Weather {
 
   private moonBoundLight: THREE.SpotLight;
   private sunBoundLight: THREE.SpotLight;
-
-  // stars
-  private starsSystem: THREE.Points;
 
   // sun objects
   private sun: THREE.Object3D;
@@ -94,6 +94,14 @@ class Weather {
     this.startTime = window.performance.now();
 
     this.watchStartTime();
+
+    this.stars = new Stars();
+  }
+
+  init() {
+    this.initClouds();
+    this.initLights();
+    this.stars.init(this.scene);
   }
 
   /**
@@ -106,7 +114,7 @@ class Weather {
 
     if (window.isFocused) {
       this.updateClouds(delta);
-      this.updateStars();
+      this.stars.update();
     }
   }
 
@@ -287,41 +295,6 @@ class Weather {
     this.scene.add(this.moonlight);
   }
 
-  initStars() {
-    const starsCount: number = 1024;
-    const stars = new THREE.Geometry();
-
-    const material = new THREE.PointsMaterial({
-      size: 4096,
-      map: CommonUtils.createStarTexture('#fefdef'),
-      transparent: true,
-      depthTest: true,
-      opacity: 0.75,
-      alphaTest: 0.15,
-      fog: false,
-    });
-
-    for (let i = 0; i < starsCount; i++) {
-      const u = MathUtils.rng();
-      const v = MathUtils.rng();
-      const radius = Chunk.HEIGHT * 2.5;
-      const theta = 2 * Math.PI * u;
-      const phi = Math.acos(2 * v - 1);
-
-      const x = (radius * Math.sin(phi) * Math.cos(theta));
-      const y = (radius * Math.sin(phi) * Math.sin(theta));
-      const z = (radius * Math.cos(phi));
-
-      stars.vertices.push(new THREE.Vector3(x, y, z));
-    }
-
-    this.starsSystem = new THREE.Points(stars, material);
-    this.starsSystem.position.copy(playerSvc.getPosition());
-    this.starsSystem.frustumCulled = false;
-
-    this.scene.add(this.starsSystem);
-  }
-
   /**
   * Cloud world entry animation
   * @param {THREE.Object3D} cloud
@@ -497,11 +470,6 @@ class Weather {
     } else {
       this.sunBoundLight.intensity = MathUtils.mapInterval(Math.abs(y), Weather.SOLAR_SYSTEM_RADIUS / 4, Weather.SOLAR_SYSTEM_RADIUS, 1.0, 0);
     }
-  }
-
-  private updateStars() {
-    const position = playerSvc.getPosition();
-    this.starsSystem.position.copy(position);
   }
 
   private computeDayFogColor(y: number): THREE.Color {

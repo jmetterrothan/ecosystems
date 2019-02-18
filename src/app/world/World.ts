@@ -10,7 +10,7 @@ import { voiceSvc } from '@voice/services/voice.service';
 import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
-import Weather from '@world/Weather';
+import Weather from '@world/weather/Weather';
 import Player from '@app/Player';
 import MathUtils from '@utils/Math.utils';
 import SoundManager from '@app/shared/SoundManager';
@@ -92,10 +92,9 @@ class World {
     const biome = this.generator.init(this.terrain);
 
     this.weather = new Weather(this.scene, this.generator);
+    this.weather.init();
+
     this.initFog();
-    this.weather.initClouds();
-    this.weather.initLights();
-    this.weather.initStars();
 
     this.terrain.init();
     this.terrain.preload();
