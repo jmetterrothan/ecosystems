@@ -42,11 +42,11 @@ class OceanBiome extends Biome {
 
     this.spike = MathUtils.randomFloat(0.025, 0.125);
     this.depth = 1.425;
-    this.flat = MathUtils.rng() >= 0.45;
+    this.flat = MathUtils.rng() >= 0.5;
 
     this.waterDistortion = true;
-    this.waterDistortionFreq = 2.0;
-    this.waterDistortionAmp = 1720.0;
+    this.waterDistortionFreq = 1.5;
+    this.waterDistortionAmp = 2048.0;
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.ocean_visited);
     this.sound = WaterSFXMp3;
@@ -84,7 +84,7 @@ class OceanBiome extends Biome {
 
   private initFishBoids() {
     const minSize = 80000;
-    const maxSize = 150000;
+    const maxSize = 140000;
     const size = MathUtils.randomFloat(minSize, maxSize);
 
     const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
