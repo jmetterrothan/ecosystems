@@ -7,7 +7,6 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 import Boids from '@boids/Boids';
 import DiscusFish from '@boids/creatures/DiscusFish';
-import SalmonFish from '@boids/creatures/SalmonFish';
 import BubbleEmitter from '@world/biomes/particles/BubbleEmitter';
 
 import { IBiome } from '@world/models/biome.model';
@@ -83,12 +82,10 @@ class OceanBiome extends Biome {
       const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 3.75, Chunk.HEIGHT / 3) - 4096;
       const py = Chunk.SEA_LEVEL - 4096 - ySize / 2;
 
-      const fishClass = n > 3 ? DiscusFish : SalmonFish;
-
       // fishs
       const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
       for (let i = 0; i < n; i++) {
-        boids.addCreature(new fishClass());
+        boids.addCreature(new DiscusFish());
       }
 
       this.boids.push(boids);

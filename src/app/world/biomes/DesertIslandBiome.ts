@@ -7,7 +7,7 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Boids from '@boids/Boids';
-import DiscusFish from '@boids/creatures/DiscusFish';
+import TropicalFish from '@boids/creatures/TropicalFish';
 import BubbleEmitter from '@world/biomes/particles/BubbleEmitter';
 
 import { IBiome } from '@world/models/biome.model';
@@ -81,7 +81,7 @@ class DesertIslandBiome extends Biome {
       // fishs
       const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
       for (let i = 0; i < n; i++) {
-        boids.addCreature(new DiscusFish());
+        boids.addCreature(new TropicalFish());
       }
 
       this.boids.push(boids);
