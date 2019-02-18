@@ -137,6 +137,14 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.70 0.70 0.70
 Ns 6.00
+newmtl pasted__fish_color5SG
+illum 4
+Kd 0.93 0.13 0.07
+Ka 0.14 0.14 0.14
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.70 0.70 0.70
+Ns 6.00
 newmtl pasted__lilypad1SG2
 illum 4
 Kd 0.62 0.70 0.45
@@ -273,6 +281,14 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 1.00 0.77 0.05
 Ns 0.00
+newmtl pasted__phong17SG
+illum 4
+Kd 0.93 0.44 0.07
+Ka 0.29 0.04 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.70 0.70 0.70
+Ns 6.00
 newmtl pasted__phong18SG
 illum 4
 Kd 0.03 0.03 0.03
@@ -355,8 +371,8 @@ Ks 0.87 0.82 0.80
 Ns 6.00
 newmtl phong17SG
 illum 4
-Kd 0.93 0.44 0.07
-Ka 0.29 0.04 0.00
+Kd 1.00 0.47 0.08
+Ka 0.19 0.19 0.19
 Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.70 0.70 0.70

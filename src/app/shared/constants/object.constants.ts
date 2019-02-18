@@ -45,12 +45,16 @@ import carcassMtl from '@objmodels/misc/carcass.mtl';
 
 import fish1Obj from '@objmodels/fauna/fish1.obj';
 import fish1Mtl from '@objmodels/fauna/fish1.mtl';
+import fish1bObj from '@objmodels/fauna/fish1b.obj';
+import fish1bMtl from '@objmodels/fauna/fish1b.mtl';
 import fish2Obj from '@objmodels/fauna/fish2.obj';
 import fish2Mtl from '@objmodels/fauna/fish2.mtl';
 import fish3Obj from '@objmodels/fauna/fish3.obj';
 import fish3Mtl from '@objmodels/fauna/fish3.mtl';
 import fish4Obj from '@objmodels/fauna/fish4.obj';
 import fish4Mtl from '@objmodels/fauna/fish4.mtl';
+import fish5Obj from '@objmodels/fauna/fish5.obj';
+import fish5Mtl from '@objmodels/fauna/fish5.mtl';
 
 import spruceObj from '@objmodels/tree/spruce.obj';
 import spruceMtl from '@objmodels/tree/spruce.mtl';
@@ -301,8 +305,10 @@ export const OBJECTS: IObject[] = [
   { name: 'carcass', type: OBJ_TYPE.MISC, obj: carcassObj, mtl: carcassMtl },
   { name: 'fish2', type: OBJ_TYPE.MISC, obj: fish2Obj, mtl: fish2Mtl, doubleSide: true },
   { name: 'fish1', type: OBJ_TYPE.MISC, obj: fish1Obj, mtl: fish1Mtl, doubleSide: true },
+  { name: 'fish1b', type: OBJ_TYPE.MISC, obj: fish1bObj, mtl: fish1bMtl, doubleSide: true },
   { name: 'fish3', type: OBJ_TYPE.MISC, obj: fish3Obj, mtl: fish3Mtl, doubleSide: true },
   { name: 'fish4', type: OBJ_TYPE.MISC, obj: fish4Obj, mtl: fish4Mtl, doubleSide: true },
+  { name: 'fish5', type: OBJ_TYPE.MISC, obj: fish5Obj, mtl: fish5Mtl, doubleSide: true },
   { name: 'cloud1', type: OBJ_TYPE.MISC, obj: cloud1Obj, mtl: cloud1Mtl },
   { name: 'cloud2', type: OBJ_TYPE.MISC, obj: cloud2Obj, mtl: cloud2Mtl },
   { name: 'cloud3', type: OBJ_TYPE.MISC, obj: cloud3Obj, mtl: cloud3Mtl },

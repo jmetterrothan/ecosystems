@@ -9,6 +9,7 @@ import MathUtils from '@shared/utils/Math.utils';
 import Boids from '@boids/Boids';
 import Butterfly from '@boids/creatures/Butterfly';
 import TropicalFish from '@boids/creatures/TropicalFish';
+import ClownFish from '@app/boids/creatures/ClownFish';
 import BubbleEmitter from '@world/biomes/particles/BubbleEmitter';
 
 import { IBiome } from '@world/models/biome.model';
@@ -108,10 +109,12 @@ class RainForestBiome extends Biome {
       if (this.generator.computeHeightAt(px + minSize / 2, pz + minSize / 2) >= py + ySize / 2) return;
       if (this.generator.computeHeightAt(px + minSize / 2, pz + minSize / 2) >= py - ySize / 2) return;
 
+      const fishClass = MathUtils.rng() >= 0.5 ? TropicalFish : ClownFish;
+
       // fishs
       const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
       for (let i = 0; i < n; i++) {
-        boids.addCreature(new TropicalFish());
+        boids.addCreature(new fishClass());
       }
 
       this.boids.push(boids);

@@ -8,6 +8,8 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 import Boids from '@boids/Boids';
 import DiscusFish from '@boids/creatures/DiscusFish';
+import TropicalFish from '@app/boids/creatures/TropicalFish';
+import BandedButterflyFish from '@app/boids/creatures/BandedButterflyFish';
 import BubbleEmitter from '@world/biomes/particles/BubbleEmitter';
 
 import { IBiome } from '@world/models/biome.model';
@@ -81,7 +83,7 @@ class OceanBiome extends Biome {
   }
 
   private initFishBoids() {
-    const minSize = 90000;
+    const minSize = 80000;
     const maxSize = 150000;
     const size = MathUtils.randomFloat(minSize, maxSize);
 
@@ -97,10 +99,19 @@ class OceanBiome extends Biome {
       const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 3.75, Chunk.HEIGHT / 3) - 4096;
       const py = Chunk.SEA_LEVEL - 4096 - ySize / 2;
 
+      const m = this.generator.computeMoistureAt(px, pz);
+
+      let fishClass = DiscusFish;
+      if (m > 0.65) {
+        fishClass = TropicalFish;
+      } else if (m > 0.5) {
+        fishClass = BandedButterflyFish;
+      }
+
       // fishs
       const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
       for (let i = 0; i < n; i++) {
-        boids.addCreature(new DiscusFish());
+        boids.addCreature(new fishClass());
       }
 
       this.boids.push(boids);
