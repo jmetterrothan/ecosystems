@@ -29,6 +29,7 @@ class OceanBiome extends Biome {
 
   private chestBottom: THREE.Object3D;
   private chestTop: THREE.Object3D;
+  private chestOpened: boolean = false;
 
   private bubbleEmitter: BubbleEmitter;
 
@@ -69,8 +70,6 @@ class OceanBiome extends Biome {
       float: false,
       underwater: ISpecialObjectCanPlaceIn.WATER
     }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
-
-    console.log(this.chestBottom);
 
     this.chestTop = this.terrain.placeSpecialObject({
       rotation,
@@ -123,11 +122,17 @@ class OceanBiome extends Biome {
   handleClick(raycaster: THREE.Raycaster) {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.chestBottom, this.chestTop], true);
 
-    if (intersections.length) {
-
+    if (intersections.length && !this.chestOpened) {
       new TWEEN.Tween(this.chestTop.rotation)
-        .to({ z: this.chestTop.rotation.z + Math.PI / 2 }, 500)
+        .to({ y: this.chestTop.rotation.y + Math.PI / 10, }, 500)
+        .easing(TWEEN.Easing.Cubic.Out)
         .start();
+      new TWEEN.Tween(this.chestTop.position)
+        .to({ x: this.chestTop.position.x + 800, z: this.chestTop.position.z + 800 }, 500)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .start();
+
+      this.chestOpened = true;
 
       this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.find_captain_treasure);
     }
