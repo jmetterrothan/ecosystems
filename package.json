@@ -2,7 +2,7 @@
   "name": "project",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@github.com:IMAC3-IA-THREEJS/project.git",
+  "repository": "git@github.com:jmetterrothan/ecosystems.git",
   "author": "florian <zobeleflorian@gmail.com>",
   "license": "MIT",
   "devDependencies": {
