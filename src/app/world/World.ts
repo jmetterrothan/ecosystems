@@ -99,7 +99,7 @@ class World {
     this.terrain.init();
     this.terrain.preload();
 
-    this.weather.initRain();
+    this.weather.initAfter();
 
     biome.init();
 
