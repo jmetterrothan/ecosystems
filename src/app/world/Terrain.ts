@@ -481,7 +481,7 @@ class Terrain {
       const m = this.generator.computeMoistureAt(x, z);
 
       const s = new THREE.Vector3(World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE);
-      const r = new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0);
+      const r = special.rotation || new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0);
 
       chunk = this.getChunkAt(x, z);
 
@@ -497,13 +497,16 @@ class Terrain {
 
       item = {
         s,
-        p: new THREE.Vector3(x, y, z),
+        p: special.position || new THREE.Vector3(x, y, z),
         r: new THREE.Euler().setFromVector3(r),
         n: special.stackReference,
         f: special.float
       };
 
       object = chunk.getObject(item);
+
+      if (special.position) break;
+
     } while (!chunk.canPlaceObject(object));
 
     chunk.placeObject(object, { save: true });

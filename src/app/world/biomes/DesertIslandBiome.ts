@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import * as TWEEN from '@tweenjs/tween.js';
+
 import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Terrain from '@world/Terrain';
@@ -26,7 +28,9 @@ class DesertIslandBiome extends Biome {
 
   private boids: Boids[];
 
-  private chest: THREE.Object3D;
+  private chestBottom: THREE.Object3D;
+  private chestTop: THREE.Object3D;
+  private chestOpened: boolean = false;
 
   private bubbleEmitter: BubbleEmitter;
 
@@ -45,11 +49,28 @@ class DesertIslandBiome extends Biome {
   }
 
   init() {
-    this.chest = this.terrain.placeSpecialObject({
-      stackReference: 'chest',
+    const rotation = new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0);
+
+    const centerX = Terrain.SIZE_X / 2;
+    const centerZ = Terrain.SIZE_Z / 2;
+
+    const sizeX = 8192;
+    const sizeZ = 8192;
+
+    this.chestBottom = this.terrain.placeSpecialObject({
+      rotation,
+      stackReference: 'chest_part2',
       float: false,
-      underwater: ISpecialObjectCanPlaceIn.BOTH
-    });
+      underwater: ISpecialObjectCanPlaceIn.WATER
+    }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+
+    this.chestTop = this.terrain.placeSpecialObject({
+      rotation,
+      position: this.chestBottom.position.clone(),
+      stackReference: 'chest_part1',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.WATER
+    }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
 
     this.initFishBoids();
     this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
@@ -94,9 +115,20 @@ class DesertIslandBiome extends Biome {
   }
 
   handleClick(raycaster: THREE.Raycaster) {
-    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.chest], true);
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.chestBottom, this.chestTop], true);
 
-    if (intersections.length) {
+    if (intersections.length && !this.chestOpened) {
+      new TWEEN.Tween(this.chestTop.rotation)
+        .to({ y: this.chestTop.rotation.y + Math.PI / 10, }, 500)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .start();
+      new TWEEN.Tween(this.chestTop.position)
+        .to({ x: this.chestTop.position.x + 800, z: this.chestTop.position.z + 800 }, 500)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .start();
+
+      this.chestOpened = true;
+
       this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.find_captain_treasure);
     }
   }
