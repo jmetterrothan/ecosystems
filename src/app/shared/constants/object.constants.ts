@@ -49,6 +49,8 @@ import fish2Obj from '@objmodels/fauna/fish2.obj';
 import fish2Mtl from '@objmodels/fauna/fish2.mtl';
 import fish3Obj from '@objmodels/fauna/fish3.obj';
 import fish3Mtl from '@objmodels/fauna/fish3.mtl';
+import fish4Obj from '@objmodels/fauna/fish4.obj';
+import fish4Mtl from '@objmodels/fauna/fish4.mtl';
 
 import spruceObj from '@objmodels/tree/spruce.obj';
 import spruceMtl from '@objmodels/tree/spruce.mtl';
@@ -300,6 +302,7 @@ export const OBJECTS: IObject[] = [
   { name: 'fish2', type: OBJ_TYPE.MISC, obj: fish2Obj, mtl: fish2Mtl, doubleSide: true },
   { name: 'fish1', type: OBJ_TYPE.MISC, obj: fish1Obj, mtl: fish1Mtl, doubleSide: true },
   { name: 'fish3', type: OBJ_TYPE.MISC, obj: fish3Obj, mtl: fish3Mtl, doubleSide: true },
+  { name: 'fish4', type: OBJ_TYPE.MISC, obj: fish4Obj, mtl: fish4Mtl, doubleSide: true },
   { name: 'cloud1', type: OBJ_TYPE.MISC, obj: cloud1Obj, mtl: cloud1Mtl },
   { name: 'cloud2', type: OBJ_TYPE.MISC, obj: cloud2Obj, mtl: cloud2Mtl },
   { name: 'cloud3', type: OBJ_TYPE.MISC, obj: cloud3Obj, mtl: cloud3Mtl },

@@ -3,7 +3,7 @@ import Creature from '@boids/creatures/Creature';
 
 class DiscusFish extends Creature {
   constructor() {
-    super(['fish1'], {
+    super(['fish1', 'fish4'], {
       speed: 8500,
       neighbourRadius: 6000,
       alignmentWeighting: 0.0065,
