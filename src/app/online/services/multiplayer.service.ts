@@ -2,14 +2,15 @@ import * as THREE from 'three';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
 
-import World from '@app/world/World';
+import World from '@world/World';
+import Chunk from '@world/Chunk';
 
 import { progressionSvc } from '@achievements/services/progression.service';
 
-import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded } from '@online/models/socketData.model';
+import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded, ISocketDataObjectRemoved } from '@online/models/socketData.model';
 import { IPick } from '@world/models/pick.model';
 import { IOnlineStatus } from '@online/models/onlineStatus.model';
-import { IOnlineObject } from '@online/models/onlineObjects.model';
+import { IOnlineObject, ONLINE_INTERACTION } from '@online/models/onlineObjects.model';
 
 import { SOCKET_EVENTS } from '@online/constants/socketEvents.constants';
 import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
@@ -22,8 +23,8 @@ class MultiplayerService {
   private scene: THREE.Scene;
   private used: boolean = false;
 
-  private objectPlacedSource: Subject<IOnlineObject>;
-  objectPlaced$: Observable<IOnlineObject>;
+  private objectInteractionSource: Subject<IOnlineObject>;
+  objectInteraction$: Observable<IOnlineObject>;
 
   private timeSource: Subject<number>;
   time$: Observable<number>;
@@ -37,8 +38,8 @@ class MultiplayerService {
   onlineStatus$: Subject<IOnlineStatus>;
 
   constructor() {
-    this.objectPlacedSource = new Subject();
-    this.objectPlaced$ = this.objectPlacedSource.asObservable();
+    this.objectInteractionSource = new Subject();
+    this.objectInteraction$ = this.objectInteractionSource.asObservable();
 
     this.timeSource = new Subject();
     this.time$ = this.timeSource.asObservable();
@@ -89,11 +90,20 @@ class MultiplayerService {
   }
 
   /**
-   * Send last object place by current player to server
+   * Send last object placed by current player to server
    * @param {IPick} item
    */
   placeObject(item: IPick) {
     this.socket.emit(SOCKET_EVENTS.CL_SEND_ADD_OBJECT, { item, roomID: this.roomID });
+  }
+
+  /**
+   * Send last object removed by player to server
+   * @param {THREE.Object3D} object
+   */
+  removeObject(object: THREE.Object3D) {
+    console.log('multi', object);
+    this.socket.emit(SOCKET_EVENTS.CL_SEND_REMOVE_OBJECT, { object, roomID: this.roomID });
   }
 
   /**
@@ -103,6 +113,7 @@ class MultiplayerService {
     this.socket.on(SOCKET_EVENTS.SV_SEND_JOIN_ROOM, (data: ISocketDataRoomJoined) => this.onRoomJoined(data));
     this.socket.on(SOCKET_EVENTS.SV_SEND_PLAYER_POSITION, (data: ISocketDataPositionUpdated) => this.onPositionupdated(data));
     this.socket.on(SOCKET_EVENTS.SV_SEND_ADD_OBJECT, (data: ISocketDataObjectAdded) => this.onObjectAdded(data));
+    this.socket.on(SOCKET_EVENTS.SV_SEND_REMOVE_OBJECT, (data: ISocketDataObjectRemoved) => this.onObjectRemoved(data));
     this.socket.on(SOCKET_EVENTS.SV_SEND_DISCONNECTION, (data: ISocketDataDisconnection) => this.onDisconnection(data));
   }
 
@@ -112,8 +123,8 @@ class MultiplayerService {
 
       if (data.usersConnected.length === 1) progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.create_game_online);
       // place all objects already placed on this room
-      data.allObjects.forEach((item: IPick) => {
-        this.objectPlacedSource.next(<IOnlineObject>{ item, animate: false });
+      data.objectsAdded.forEach((item: IPick) => {
+        this.objectInteractionSource.next(<IOnlineObject>{ item, animate: false });
       });
     }
 
@@ -144,7 +155,12 @@ class MultiplayerService {
   }
 
   private onObjectAdded(data: ISocketDataObjectAdded) {
-    this.objectPlacedSource.next(<IOnlineObject>{ item: data.item, animate: true });
+    this.objectInteractionSource.next(<IOnlineObject>{ type: ONLINE_INTERACTION.ADD, item: data.item, animate: true });
+  }
+
+  private onObjectRemoved(data: ISocketDataObjectRemoved) {
+    const object = new THREE.ObjectLoader().parse(data.object);
+    this.objectInteractionSource.next(<IOnlineObject>{ object, type: ONLINE_INTERACTION.REMOVE, animate: false });
   }
 
   private onDisconnection(data: ISocketDataDisconnection) {

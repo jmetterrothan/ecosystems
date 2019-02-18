@@ -3,7 +3,7 @@ import { IPick } from '@world/models/pick.model';
 export interface ISocketDataRoomJoined {
   me: string;
   usersConnected: string[];
-  allObjects: IPick[];
+  objectsAdded: IPick[];
   startTime: number;
 }
 
@@ -14,6 +14,10 @@ export interface ISocketDataPositionUpdated {
 
 export interface ISocketDataObjectAdded {
   item: IPick;
+}
+
+export interface ISocketDataObjectRemoved {
+  object: THREE.Object3D;
 }
 
 export interface ISocketDataObjectsInitialized {

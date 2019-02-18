@@ -67,7 +67,7 @@ class FjordBiome extends Biome {
       if (this.generator.computeHeightAt(px + minSize / 2, pz + minSize / 2) >= py + ySize / 2) return;
       if (this.generator.computeHeightAt(px + minSize / 2, pz + minSize / 2) >= py - ySize / 2) return;
 
-      // fishs
+      // butterflies
       const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
       const variant = Butterfly.getButterflyVariant();
       for (let i = 0; i < n; i++) {

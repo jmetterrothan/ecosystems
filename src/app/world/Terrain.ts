@@ -18,7 +18,7 @@ import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.mate
 
 import { IBiome } from '@world/models/biome.model';
 import { IPick } from '@world/models/pick.model';
-import { IOnlineObject } from '@online/models/onlineObjects.model';
+import { IOnlineObject, ONLINE_INTERACTION } from '@online/models/onlineObjects.model';
 import { ISpecialObject, ISpecialObjectCanPlaceIn } from '@world/models/objectParameters.model';
 import { ILowHigh } from '@world/models/biomeWeightedObject.model';
 import { IPickAndOrganism } from '@world/models/pickAndOrganism.model';
@@ -106,7 +106,7 @@ class Terrain {
   init() {
     this.initMeshes();
     this.initPicks();
-    if (multiplayerSvc.isUsed()) this.watchObjectPlaced();
+    if (multiplayerSvc.isUsed()) this.watchObjectInteraction();
   }
 
   /**
@@ -435,9 +435,11 @@ class Terrain {
         const chunk = this.getChunkAt(intersectedObject.position.x, intersectedObject.position.z);
 
         if (chunk) {
+          console.log('inter', intersectedObject);
           chunk.removeObject(intersectedObject);
-
           progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_removed);
+
+          if (multiplayerSvc.isUsed()) multiplayerSvc.removeObject(intersectedObject);
         }
 
         break;
@@ -920,12 +922,23 @@ class Terrain {
     });
   }
 
-  private watchObjectPlaced() {
-    multiplayerSvc.objectPlaced$.subscribe(
-      ({ item, animate }: IOnlineObject) => {
-        const chunk = this.getChunkAt(item.p.x, item.p.z);
-        const object = chunk.getObject(item);
-        chunk.placeObject(object, { animate, save: true, });
+  private watchObjectInteraction() {
+    multiplayerSvc.objectInteraction$.subscribe(
+      ({ type, item, object, animate }: IOnlineObject) => {
+        const chunk = item ? this.getChunkAt(item.p.x, item.p.z) : this.getChunkAt(object.position.x, object.position.z);
+        switch (type) {
+          case ONLINE_INTERACTION.ADD:
+            chunk.placeObject(chunk.getObject(item), { animate, save: true });
+            break;
+
+          case ONLINE_INTERACTION.REMOVE:
+            chunk.removeObject(object, { online: true });
+            break;
+
+          default:
+            break;
+        }
+
       }
     );
   }
