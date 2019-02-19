@@ -60,9 +60,9 @@ class Weather {
 
     const startAngle = MathUtils.randomInt(0, 360);
 
-    this.sunAngle = THREE.Math.degToRad(0);
+    this.sunAngle = THREE.Math.degToRad(startAngle);
     this.sunRadius = Math.floor((Terrain.SIZE_X + Terrain.SIZE_Z) / 2 * 1.2);
-    this.sunRevolutionTime = 10; // 150;
+    this.sunRevolutionTime = 150;
 
     this.stars = new Stars();
     this.clouds = new Clouds(generator);
