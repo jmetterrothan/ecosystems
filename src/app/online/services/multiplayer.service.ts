@@ -122,9 +122,14 @@ class MultiplayerService {
       this.userId = data.me;
 
       if (data.usersConnected.length === 1) progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.create_game_online);
+
       // place all objects already placed on this room
       data.objectsAdded.forEach((item: IPick) => {
-        this.objectInteractionSource.next(<IOnlineObject>{ item, animate: false });
+        this.objectInteractionSource.next(<IOnlineObject>{ item, type: ONLINE_INTERACTION.ADD, animate: false });
+      });
+      data.objectsRemoved.forEach(obj => {
+        const object = new THREE.ObjectLoader().parse(obj);
+        this.objectInteractionSource.next(<IOnlineObject>{ object, type: ONLINE_INTERACTION.REMOVE, animate: false });
       });
     }
 
@@ -160,7 +165,7 @@ class MultiplayerService {
 
   private onObjectRemoved(data: ISocketDataObjectRemoved) {
     const object = new THREE.ObjectLoader().parse(data.object);
-    this.objectInteractionSource.next(<IOnlineObject>{ object, type: ONLINE_INTERACTION.REMOVE, animate: false });
+    this.objectInteractionSource.next(<IOnlineObject>{ object, type: ONLINE_INTERACTION.REMOVE, animate: true });
   }
 
   private onDisconnection(data: ISocketDataDisconnection) {

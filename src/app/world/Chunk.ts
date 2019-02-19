@@ -223,7 +223,7 @@ class Chunk {
   removeObject(object: THREE.Object3D, parameters: IRemoveObject = {}) {
     const pick = Chunk.convertObjectToPick(object);
 
-    const online = parameters && parameters.online;
+    const online = parameters.online;
 
     if (online) pick.p.copy(object.position);
 
@@ -233,11 +233,16 @@ class Chunk {
       ? this.objects.children.find(obj => obj.position.equals(object.position))
       : object;
 
-    new TWEEN.Tween(objectToDelete.scale)
-      .to(new THREE.Vector3(0.000001, 0.000001, 0.000001), 400)
-      .easing(TWEEN.Easing.Cubic.In)
-      .start()
-      .onComplete(() => this.objects.remove(objectToDelete));
+    if (parameters.animate) {
+      new TWEEN.Tween(objectToDelete.scale)
+        .to(new THREE.Vector3(0.000001, 0.000001, 0.000001), 400)
+        .easing(TWEEN.Easing.Cubic.In)
+        .start()
+        .onComplete(() => this.objects.remove(objectToDelete));
+    } else {
+      this.objects.remove(objectToDelete);
+    }
+
   }
 
   /**

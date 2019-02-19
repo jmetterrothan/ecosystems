@@ -8,6 +8,7 @@ export interface IPlaceObject {
 
 export interface IRemoveObject {
   online?: boolean;
+  animate?: boolean;
 }
 
 export interface IPickObject {

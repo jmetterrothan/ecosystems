@@ -4,6 +4,7 @@ export interface ISocketDataRoomJoined {
   me: string;
   usersConnected: string[];
   objectsAdded: IPick[];
+  objectsRemoved: THREE.Object3D[];
   startTime: number;
 }
 

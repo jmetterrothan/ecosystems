@@ -435,8 +435,7 @@ class Terrain {
         const chunk = this.getChunkAt(intersectedObject.position.x, intersectedObject.position.z);
 
         if (chunk) {
-          console.log('inter', intersectedObject);
-          chunk.removeObject(intersectedObject);
+          chunk.removeObject(intersectedObject, { animate: true });
           progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_removed);
 
           if (multiplayerSvc.isUsed()) multiplayerSvc.removeObject(intersectedObject);
@@ -932,7 +931,7 @@ class Terrain {
             break;
 
           case ONLINE_INTERACTION.REMOVE:
-            chunk.removeObject(object, { online: true });
+            chunk.removeObject(object, { animate, online: true });
             break;
 
           default:
