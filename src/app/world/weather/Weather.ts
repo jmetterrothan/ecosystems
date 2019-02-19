@@ -98,7 +98,7 @@ class Weather {
     target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.scene.add(target);
 
-    this.hemisphereLight = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.5);
+    this.hemisphereLight = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.4);
     this.hemisphereLight.position.set(0, Chunk.SEA_LEVEL, 0);
     this.hemisphereLight.castShadow = false;
     this.scene.add(this.hemisphereLight);

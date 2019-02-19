@@ -1,5 +1,5 @@
 class MathUtils {
-
+  static TWO_PI = Math.PI * 2;
   static rng = null; // current random number generator shared across the app
 
   /**
