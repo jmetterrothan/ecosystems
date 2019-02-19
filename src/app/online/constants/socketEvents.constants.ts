@@ -1,4 +1,4 @@
-import { ISocketEvents } from '@shared/models/socketEvents.model';
+import { ISocketEvents } from '@online/models/socketEvents.model';
 
 export const SOCKET_EVENTS: ISocketEvents = {
   CL_SEND_JOIN_ROOM: 'CL_SEND_JOIN_ROOM',
@@ -9,6 +9,9 @@ export const SOCKET_EVENTS: ISocketEvents = {
 
   CL_SEND_ADD_OBJECT: 'CL_SEND_ADD_OBJECT',
   SV_SEND_ADD_OBJECT: 'SV_SEND_ADD_OBJECT',
+
+  CL_SEND_REMOVE_OBJECT: 'CL_SEND_REMOVE_OBJECT',
+  SV_SEND_REMOVE_OBJECT: 'SV_SEND_REMOVE_OBJECT',
 
   SV_SEND_DISCONNECTION: 'SV_SEND_DISCONNECTION'
 };

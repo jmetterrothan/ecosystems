@@ -8,5 +8,8 @@ export interface ISocketEvents {
   CL_SEND_ADD_OBJECT: string;
   SV_SEND_ADD_OBJECT: string;
 
+  CL_SEND_REMOVE_OBJECT: string;
+  SV_SEND_REMOVE_OBJECT: string;
+
   SV_SEND_DISCONNECTION: string;
 }

@@ -11,7 +11,7 @@ import WaterMesh from '@mesh/WaterMesh';
 import Fifo from '@app/shared/Fifo';
 
 import { IPick } from '@world/models/pick.model';
-import { IPlaceObject, IPickObject, IStackReference } from '@world/models/objectParameters.model';
+import { IPlaceObject, IPickObject, IStackReference, IRemoveObject } from '@world/models/objectParameters.model';
 
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
@@ -220,15 +220,29 @@ class Chunk {
    * Remove an object to blueprint and scene
    * @param {THREE.Object3D} object
    */
-  removeObject(object: THREE.Object3D) {
-    const pick = Chunk.convertObjectToPick(object.parent);
+  removeObject(object: THREE.Object3D, parameters: IRemoveObject = {}) {
+    const pick = Chunk.convertObjectToPick(object);
+
+    const online = parameters.online;
+
+    if (online) pick.p.copy(object.position);
+
     this.objectsBlueprint = this.objectsBlueprint.filter(p => !pick.p.equals(p.p));
 
-    new TWEEN.Tween(object.scale)
-      .to(new THREE.Vector3(0.000001, 0.000001, 0.000001), 400)
-      .easing(TWEEN.Easing.Cubic.In)
-      .start()
-      .onComplete(() => this.objects.remove(object.parent));
+    const objectToDelete = online
+      ? this.objects.children.find(obj => obj.position.equals(object.position))
+      : object;
+
+    if (parameters.animate) {
+      new TWEEN.Tween(objectToDelete.scale)
+        .to(new THREE.Vector3(0.000001, 0.000001, 0.000001), 400)
+        .easing(TWEEN.Easing.Cubic.In)
+        .start()
+        .onComplete(() => this.objects.remove(objectToDelete));
+    } else {
+      this.objects.remove(objectToDelete);
+    }
+
   }
 
   /**

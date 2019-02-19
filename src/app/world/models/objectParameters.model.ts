@@ -6,6 +6,11 @@ export interface IPlaceObject {
   save?: boolean;
 }
 
+export interface IRemoveObject {
+  online?: boolean;
+  animate?: boolean;
+}
+
 export interface IPickObject {
   force?: boolean; // bypass scarcity test
   isOnWater?: boolean;

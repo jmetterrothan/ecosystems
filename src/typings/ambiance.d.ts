@@ -5,4 +5,5 @@ declare module '*.obj' { export default '' as string; }
 declare module '*.mtl' { export default '' as string; }
 declare module '*.glsl' { export default '' as string; }
 declare module '*.png' { export default '' as string; }
+declare module '*.svg' { export default '' as string; }
 declare module '*.mp3' { export default '' as string; }
