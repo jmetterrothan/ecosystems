@@ -1,5 +1,6 @@
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 import * as THREE from 'three';
+import * as TWEEN from '@tweenjs/tween.js';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
@@ -63,6 +64,24 @@ class DesertBiome extends Biome {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.skull, this.carcass], true);
 
     if (intersections.length) {
+      const object = intersections[0].object.parent;
+      if (object.userData.stackReference) {
+        // animate
+
+        new TWEEN.Tween(object.position)
+          .to({ y: object.position.y + 4000 }, 400)
+          .easing(TWEEN.Easing.Cubic.Out)
+          .repeat(1)
+          .yoyo(true)
+          .start();
+
+        new TWEEN.Tween(object.rotation)
+          .delay(150)
+          .to({ z: object.rotation.z + Math.PI * 2 }, 500)
+          .easing(TWEEN.Easing.Cubic.Out)
+          .start();
+      }
+
       this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.archaeology);
     }
   }
@@ -70,7 +89,7 @@ class DesertBiome extends Biome {
   /**
    * Compute elevation
    * @param {number} x coord component
-   * @param {number} z coord component
+   * @param {number} z coord componentw²
    * @return {number} elevation value
    */
   computeElevationAt(x: number, z: number): number {
