@@ -9,10 +9,11 @@ import { playerSvc } from '@shared/services/player.service';
 class Star {
   private points: THREE.Points;
 
-  constructor() {
-
-  }
-
+  /**
+   * Starfield init
+   * Calculate stars position on a sphere around the world
+   * @param {THREE.Scene} scene
+   */
   init(scene: THREE.Scene) {
     const starsCount: number = 1024;
     const stars = new THREE.Geometry();
@@ -48,6 +49,9 @@ class Star {
     scene.add(this.points);
   }
 
+  /**
+   * Update starfield with player movements
+   */
   update() {
     const position = playerSvc.getPosition();
     this.points.position.copy(position);

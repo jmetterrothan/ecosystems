@@ -22,13 +22,8 @@ class Weather {
 
   private static FOG_COLOR1: string = '#212C37';
   private static FOG_COLOR2: string = '#B1D8FF';
-  private static TICK_RATIO_DIV: number = 64000;
-
-  private static SOLAR_SYSTEM_RADIUS: number = Math.floor(Math.max(Terrain.SIZE_X, Terrain.SIZE_Z) * 1.2);
 
   private scene: THREE.Scene;
-
-  private startTime: number;
 
   private stars: Stars;
   private clouds: Clouds;
@@ -47,6 +42,10 @@ class Weather {
   private sun: THREE.Object3D;
   private moon: THREE.Object3D;
 
+  private sunAngle: number; // in radians
+  private sunRadius: number;
+  private sunRevolutionTime: number; // in seconds
+
   private fogColor: THREE.Color = new THREE.Color();
 
   /**
@@ -57,15 +56,19 @@ class Weather {
   constructor(scene: THREE.Scene, generator: BiomeGenerator) {
     this.scene = scene;
 
-    this.startTime = window.performance.now();
+    const startAngle = MathUtils.randomInt(0, 360);
 
-    this.watchStartTime();
+    this.sunAngle = THREE.Math.degToRad(startAngle);
+    this.sunRadius = Math.floor((Terrain.SIZE_X + Terrain.SIZE_Z) / 2 * 1.2);
+    this.sunRevolutionTime = 150;
 
     this.stars = new Stars();
     this.clouds = new Clouds(generator);
   }
 
   init() {
+    this.watchStartTime();
+
     this.initLights();
 
     this.clouds.init(this.scene);
@@ -80,7 +83,7 @@ class Weather {
   * @param {number} delta
   */
   update(delta: number) {
-    this.updateSun();
+    this.updateSun(delta);
     this.updateMoon();
     this.updateLights();
 
@@ -118,13 +121,6 @@ class Weather {
     this.sunBoundLight.target = target;
     this.scene.add(this.sunBoundLight);
 
-    /*
-    if (configSvc.debug) {
-      this.scene.add(new THREE.SpotLightHelper(this.moonBoundLight));
-      this.scene.add(new THREE.SpotLightHelper(this.sunBoundLight));
-    }
-    */
-
     const materialCallback = (mesh) => {
       mesh.castShadow = false;
       mesh.receiveShadow = false;
@@ -148,7 +144,7 @@ class Weather {
 
     if (configSvc.debug) {
       const dirHelper = new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize();
-      this.lightHelper = new THREE.ArrowHelper(dirHelper, this.sunlight.position.clone(), Weather.SOLAR_SYSTEM_RADIUS, 0xff0000, 10000);
+      this.lightHelper = new THREE.ArrowHelper(dirHelper, this.sunlight.position.clone(), this.sunRadius, 0xff0000, 10000);
       this.scene.add(this.lightHelper);
     }
   }
@@ -160,7 +156,7 @@ class Weather {
     this.sunlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.sunlight.target.updateMatrixWorld(true);
 
-    this.sunlight.position.set(Terrain.SIZE_X / 2, Weather.SOLAR_SYSTEM_RADIUS, Terrain.SIZE_Z / 2);
+    this.sunlight.position.set(Terrain.SIZE_X / 2, this.sunRadius, Terrain.SIZE_Z / 2);
 
     this.sunlight.castShadow = true;
     this.sunlight.shadow.mapSize.width = configSvc.config.SHADOW_MAP_SIZE;
@@ -179,13 +175,13 @@ class Weather {
   }
 
   private initMoonlight() {
-    const d = 500000;
+    // const d = 500000;
     this.moonlight = new THREE.DirectionalLight(0x5fc2eb, 0.125);
 
     this.moonlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.moonlight.target.updateMatrixWorld(true);
 
-    this.moonlight.position.set(Terrain.SIZE_X / 2, Weather.SOLAR_SYSTEM_RADIUS, Terrain.SIZE_Z / 2);
+    this.moonlight.position.set(Terrain.SIZE_X / 2, this.sunRadius, Terrain.SIZE_Z / 2);
 
     this.moonlight.castShadow = false;
     /*
@@ -205,29 +201,29 @@ class Weather {
     this.scene.add(this.moonlight);
   }
 
-  private updateSun() {
-    const elapsedTime: number = (window.performance.now() - this.startTime) / Weather.TICK_RATIO_DIV;
+  private updateSun(delta: number) {
+    this.sunAngle += THREE.Math.degToRad(360 / this.sunRevolutionTime) * delta;
 
-    const x: number = Terrain.SIZE_X / 2 + Weather.SOLAR_SYSTEM_RADIUS * Math.cos(elapsedTime);
-    const y: number = Weather.SOLAR_SYSTEM_RADIUS * Math.sin(elapsedTime);
+    // calculate sun position from angle
+    const x: number = Terrain.SIZE_X / 2 + this.sunRadius * Math.cos(this.sunAngle);
+    const y: number = this.sunRadius * Math.sin(this.sunAngle);
 
     this.sunlight.position.setX(x);
     this.sunlight.position.setY(y);
 
     this.sun.position.copy(this.sunlight.position);
-    // this.sunlight.shadow.camera.updateProjectionMatrix();
-
     this.sunBoundLight.position.copy(this.sunlight.position);
-
-    const bbox: THREE.Box3 = new THREE.Box3().setFromObject(this.sun);
-
-    if (bbox.containsPoint(playerSvc.getPosition())) {
-      progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.in_sun);
-    }
 
     if (configSvc.debug) {
       this.lightHelper.position.copy(this.sunlight.position);
       this.lightHelper.setDirection(new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize());
+    }
+
+    // check sun trophy
+    const sunBbox = new THREE.Box3().setFromObject(this.sun);
+
+    if (sunBbox.containsPoint(playerSvc.getPosition())) {
+      progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.in_sun);
     }
   }
 
@@ -235,38 +231,36 @@ class Weather {
     this.moonlight.position.set(Terrain.SIZE_X - this.sun.position.x, -this.sun.position.y, this.sun.position.z);
 
     this.moon.position.copy(this.moonlight.position);
-    // this.moonlight.shadow.camera.updateProjectionMatrix();
-
     this.moonBoundLight.position.copy(this.moonlight.position);
 
-    const bbox: THREE.Box3 = new THREE.Box3().setFromObject(this.moon);
+    // check moon trophy
+    const moonBbox = new THREE.Box3().setFromObject(this.moon);
 
-    if (bbox.containsPoint(playerSvc.getPosition())) {
+    if (moonBbox.containsPoint(playerSvc.getPosition())) {
       progressionSvc.increment(PROGRESSION_WEATHER_STORAGE_KEYS.in_moon);
     }
   }
 
   private updateLights() {
     const y = this.sunlight.position.y;
-
-    this.hemisphereLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, Weather.SOLAR_SYSTEM_RADIUS, 0.35, 0.75);
-    // this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.2, 0.35);
-    this.sunlight.intensity = MathUtils.mapInterval(y, 0, Weather.SOLAR_SYSTEM_RADIUS, 0.0, 0.25);
-
     const c: THREE.Color = this.computeFogColor(y);
+
+    this.hemisphereLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, this.sunRadius, 0.35, 0.75);
+    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.2, 0.35);
+    this.sunlight.intensity = MathUtils.mapInterval(y, 0, this.sunRadius, 0.0, 0.25);
 
     this.ambientLight.color = c;
     this.fogColor = c;
 
-    if (y >= -Weather.SOLAR_SYSTEM_RADIUS / 4) {
-      this.sunBoundLight.intensity = MathUtils.mapInterval(y, -Weather.SOLAR_SYSTEM_RADIUS / 4, Weather.SOLAR_SYSTEM_RADIUS, 1.0, 0);
+    if (y >= -this.sunRadius / 4) {
+      this.sunBoundLight.intensity = MathUtils.mapInterval(y, -this.sunRadius / 4, this.sunRadius, 1.0, 0);
     } else {
-      this.sunBoundLight.intensity = MathUtils.mapInterval(Math.abs(y), Weather.SOLAR_SYSTEM_RADIUS / 4, Weather.SOLAR_SYSTEM_RADIUS, 1.0, 0);
+      this.sunBoundLight.intensity = MathUtils.mapInterval(Math.abs(y), this.sunRadius / 4, this.sunRadius, 1.0, 0);
     }
   }
 
   private computeDayFogColor(y: number): THREE.Color {
-    const t = Math.floor(MathUtils.mapInterval(y, 0, Weather.SOLAR_SYSTEM_RADIUS, 0, Weather.FOR_COLOR_VARIANTS));
+    const t = Math.floor(MathUtils.mapInterval(y, 0, this.sunRadius, 0, Weather.FOR_COLOR_VARIANTS));
 
     if (!Weather.FOG_COLORS.has(t)) {
       const color = new THREE.Color(CommonUtils.lerpColor(Weather.FOG_COLOR1, Weather.FOG_COLOR2, t / Weather.FOR_COLOR_VARIANTS));
@@ -285,7 +279,11 @@ class Weather {
   }
 
   private watchStartTime() {
-    multiplayerSvc.time$.subscribe(time => this.startTime = time);
+    // multiplayerSvc.time$.subscribe(time => this.startTime = time);
+  }
+
+  getSunAngle(): number {
+    return THREE.Math.radToDeg(Math.atan2(this.sun.position.y, this.sun.position.x));
   }
 
   getClouds(): THREE.Group {
