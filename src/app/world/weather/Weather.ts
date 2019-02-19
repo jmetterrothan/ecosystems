@@ -18,10 +18,9 @@ import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progre
 
 class Weather {
   private static FOG_COLORS: Map<number, THREE.Color> = new Map<number, THREE.Color>();
-  private static FOR_COLOR_VARIANTS: number = 360;
 
-  private static FOG_COLOR1: string = '#212C37';
-  private static FOG_COLOR2: string = '#B1D8FF';
+  private static FOG_COLOR1: string = '#B1D8FF';
+  private static FOG_COLOR2: string = '#212C37';
 
   private scene: THREE.Scene;
 
@@ -243,7 +242,7 @@ class Weather {
 
   private updateLights() {
     const y = this.sunlight.position.y;
-    const c: THREE.Color = this.computeFogColor(y);
+    const c: THREE.Color = this.computeFogColor(this.sunAngle);
 
     this.hemisphereLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, this.sunRadius, 0.35, 0.75);
     this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.2, 0.35);
@@ -259,10 +258,12 @@ class Weather {
     }
   }
 
-  private computeDayFogColor(y: number): THREE.Color {
-    const t = Math.floor(MathUtils.mapInterval(y, 0, this.sunRadius, 0, Weather.FOR_COLOR_VARIANTS));
+  /*
+  private computeDayFogColor(a: number): THREE.Color {
+    const t = Math.floor(MathUtils.mapInterval(a, 0, 360, 0, Weather.FOR_COLOR_VARIANTS));
 
     if (!Weather.FOG_COLORS.has(t)) {
+      console.log(t % 360);
       const color = new THREE.Color(CommonUtils.lerpColor(Weather.FOG_COLOR1, Weather.FOG_COLOR2, t / Weather.FOR_COLOR_VARIANTS));
       Weather.FOG_COLORS.set(t, color);
 
@@ -270,12 +271,33 @@ class Weather {
     }
     return Weather.FOG_COLORS.get(t);
   }
+  */
 
-  private computeFogColor(y: number): THREE.Color {
-    if (y < 0) {
-      return this.computeDayFogColor(0);
+  private computeFogColor(rad: number): THREE.Color {
+    const angle = Math.floor(THREE.Math.radToDeg(rad % MathUtils.TWO_PI));
+
+    if (!Weather.FOG_COLORS.has(angle)) {
+      let c1 = null;
+      let c2 = null;
+
+      if (angle >= 0 && angle <= 180) {
+        c1 = Weather.FOG_COLOR2;
+        c2 = Weather.FOG_COLOR1;
+        console.log('1', angle);
+      } else {
+        c1 = Weather.FOG_COLOR1;
+        c2 = Weather.FOG_COLOR2;
+        console.log('2', angle);
+      }
+      console.log(angle);
+      if (angle === 359) { console.log(Weather.FOG_COLORS); }
+      const color = new THREE.Color(CommonUtils.lerpColor(c1, c2, angle / 360));
+      Weather.FOG_COLORS.set(angle, color);
+
+      return color;
     }
-    return this.computeDayFogColor(y);
+
+    return Weather.FOG_COLORS.get(angle);
   }
 
   private watchStartTime() {
