@@ -18,6 +18,8 @@ class DesertBiome extends Biome {
   private skull: THREE.Object3D;
   private carcass: THREE.Object3D;
 
+  private specialObjectClicked: boolean = false;
+
   constructor(terrain: Terrain) {
     super('DESERT', terrain);
 
@@ -65,21 +67,21 @@ class DesertBiome extends Biome {
 
     if (intersections.length) {
       const object = intersections[0].object.parent;
-      if (object.userData.stackReference) {
-        // animate
+      if (object.userData.stackReference && !this.specialObjectClicked) {
 
         new TWEEN.Tween(object.position)
-          .to({ y: object.position.y + 4000 }, 400)
+          .to({ y: object.position.y + 1000 }, 250)
           .easing(TWEEN.Easing.Cubic.Out)
           .repeat(1)
           .yoyo(true)
           .start();
 
         new TWEEN.Tween(object.rotation)
-          .delay(150)
-          .to({ z: object.rotation.z + Math.PI * 2 }, 500)
+          .to({ y: object.rotation.y + Math.PI / 6 }, 500)
           .easing(TWEEN.Easing.Cubic.Out)
           .start();
+
+        this.specialObjectClicked = true;
       }
 
       this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.archaeology);
