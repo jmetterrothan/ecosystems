@@ -102,7 +102,6 @@ class MultiplayerService {
    * @param {THREE.Object3D} object
    */
   removeObject(object: THREE.Object3D) {
-    console.log('multi', object);
     this.socket.emit(SOCKET_EVENTS.CL_SEND_REMOVE_OBJECT, { object, roomID: this.roomID });
   }
 
@@ -127,6 +126,7 @@ class MultiplayerService {
       data.objectsAdded.forEach((item: IPick) => {
         this.objectInteractionSource.next(<IOnlineObject>{ item, type: ONLINE_INTERACTION.ADD, animate: false });
       });
+      // remove objects
       data.objectsRemoved.forEach(obj => {
         const object = new THREE.ObjectLoader().parse(obj);
         this.objectInteractionSource.next(<IOnlineObject>{ object, type: ONLINE_INTERACTION.REMOVE, animate: false });
