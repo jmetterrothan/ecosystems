@@ -246,7 +246,7 @@ class Weather {
     const c: THREE.Color = this.computeFogColor(y);
 
     this.hemisphereLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, this.sunRadius, 0.35, 0.75);
-    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.2, 0.35);
+    // this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.2, 0.35);
     this.sunlight.intensity = MathUtils.mapInterval(y, 0, this.sunRadius, 0.0, 0.25);
 
     this.ambientLight.color = c;
