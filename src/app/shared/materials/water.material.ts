@@ -15,7 +15,7 @@ const customUniforms = THREE.UniformsUtils.merge([
     opacity: { value: 0.65 },
     reflectivity: { value: 4.0 },
     emissive: { value: new THREE.Color(0x101010) },
-    specular: { value: new THREE.Color(0x757575) },
+    specular: { value: new THREE.Color(0x505050) },
   }
 ]);
 
