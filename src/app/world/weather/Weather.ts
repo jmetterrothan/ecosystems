@@ -16,15 +16,36 @@ import { multiplayerSvc } from '@online/services/multiplayer.service';
 
 import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
 
+interface IPhase {
+  name: string;
+  value: number;
+  daylight: number;
+  boundLightIntensity: number;
+  fogColor: string;
+  skyColor: string;
+  groundColor: string;
+}
+
+interface IPhaseInfo {
+  value: number;
+  size: number;
+  t: number;
+  phase: IPhase;
+  nextPhase: IPhase;
+}
+
 class Weather {
   private static FOG_COLORS: Map<number, THREE.Color> = new Map<number, THREE.Color>();
-  private static PHASES: any = [
-    { value: 0, color: '#475d73' },
-    { value: 22, color: '#B1D8FF' },
-    { value: 157, color: '#B1D8FF' },
-    { value: 180, color: '#475d73' },
-    { value: 202, color: '#212C37' },
-    { value: 337, color: '#212C37' },
+  private static GROUND_COLORS: Map<number, THREE.Color> = new Map<number, THREE.Color>();
+  private static SKY_COLORS: Map<number, THREE.Color> = new Map<number, THREE.Color>();
+
+  private static PHASES: IPhase[] = [
+    { name: 'dawn', value: 0, daylight: 0.5, boundLightIntensity: 0.5, fogColor: '#475d73', skyColor: '#3a6aa0', groundColor: '#ec70c5' }, // dawn
+    { name: 'day', value: 22, daylight: 1.0, boundLightIntensity: 0.0, fogColor: '#B1D8FF', skyColor: '#3a6aa0', groundColor: '#ffffff' },
+    { name: 'day', value: 157, daylight: 1.0, boundLightIntensity: 0.0, fogColor: '#B1D8FF', skyColor: '#3a6aa0', groundColor: '#ffffff' },
+    { name: 'dusk', value: 180, daylight: 0.5, boundLightIntensity: 0.5, fogColor: '#475d73', skyColor: '#3a6aa0', groundColor: '#e86b4a' }, // dusk
+    { name: 'night', value: 202, daylight: 0.0, boundLightIntensity: 0.0, fogColor: '#212C37', skyColor: '#3a6aa0', groundColor: '#ffffff' },
+    { name: 'night', value: 337, daylight: 0.0, boundLightIntensity: 0.0, fogColor: '#212C37', skyColor: '#3a6aa0', groundColor: '#ffffff' },
   ];
 
   private scene: THREE.Scene;
@@ -102,12 +123,12 @@ class Weather {
     target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.scene.add(target);
 
-    this.hemisphereLight = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.4);
+    this.hemisphereLight = new THREE.HemisphereLight(0x3a6aa0, 0xffffff, 0.5);
     this.hemisphereLight.position.set(0, Chunk.SEA_LEVEL, 0);
     this.hemisphereLight.castShadow = false;
     this.scene.add(this.hemisphereLight);
 
-    this.ambientLight = new THREE.AmbientLight(0xB1D8FF, 0.35);
+    this.ambientLight = new THREE.AmbientLight(0xd0e7fe, 0.5);
     this.ambientLight.position.set(0, Chunk.HEIGHT, 15000);
     this.ambientLight.castShadow = false;
     this.scene.add(this.ambientLight);
@@ -115,12 +136,12 @@ class Weather {
     this.initSunlight();
     this.initMoonlight();
 
-    this.moonBoundLight = new THREE.SpotLight(0xc5dadd, 0.1, 0, Math.PI / 2, 1.0);
+    this.moonBoundLight = new THREE.SpotLight(0xc5dadd, 0.2, 0, Math.PI / 2, 1.0);
     this.moonBoundLight.castShadow = false;
     this.moonBoundLight.target = target;
     this.scene.add(this.moonBoundLight);
 
-    this.sunBoundLight = new THREE.SpotLight(0xfd5e53, 1.0, 0, Math.PI / 2, 1.0); // 0xfd5e53
+    this.sunBoundLight = new THREE.SpotLight(0xe49985, 0.8, 0, Math.PI / 2, 1.0); // 0xfd5e53
     this.sunBoundLight.castShadow = false;
     this.sunBoundLight.target = target;
     this.scene.add(this.sunBoundLight);
@@ -155,7 +176,9 @@ class Weather {
 
   private initSunlight() {
     const d = 500000;
-    this.sunlight = new THREE.DirectionalLight(0xffffff, 0.2);
+    this.sunlight = new THREE.DirectionalLight(0xffffff, 0.3);
+    this.sunlight.userData.minIntensity = 0.0;
+    this.sunlight.userData.maxIntensity = 0.3;
 
     this.sunlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.sunlight.target.updateMatrixWorld(true);
@@ -246,21 +269,18 @@ class Weather {
   }
 
   private updateLights() {
-    const y = this.sunlight.position.y;
-    const c: THREE.Color = this.computeFogColor(this.sunAngle);
+    const phaseInfo: IPhaseInfo = this.getPhaseInfo(this.sunAngle);
 
-    this.hemisphereLight.intensity = MathUtils.mapInterval(Math.abs(y), 0, this.sunRadius, 0.35, 0.75);
-    this.ambientLight.intensity = MathUtils.mapInterval(y, 0, Chunk.HEIGHT, 0.2, 0.35);
-    this.sunlight.intensity = MathUtils.mapInterval(y, 0, this.sunRadius, 0.0, 0.25);
+    const k: number = Math.floor(THREE.Math.radToDeg(this.sunAngle % MathUtils.TWO_PI) * 10) / 10;
+    const v: number = this.computeDayLightIntensity(phaseInfo);
 
-    this.ambientLight.color = c;
-    this.fogColor = c;
+    this.sunlight.intensity = MathUtils.mapInterval(v, 0, 1, this.sunlight.userData.minIntensity, this.sunlight.userData.maxIntensity);
 
-    if (y >= -this.sunRadius / 4) {
-      this.sunBoundLight.intensity = MathUtils.mapInterval(y, -this.sunRadius / 4, this.sunRadius, 1.0, 0);
-    } else {
-      this.sunBoundLight.intensity = MathUtils.mapInterval(Math.abs(y), this.sunRadius / 4, this.sunRadius, 1.0, 0);
-    }
+    this.sunBoundLight.intensity = MathUtils.lerp(phaseInfo.phase.boundLightIntensity, phaseInfo.nextPhase.boundLightIntensity, phaseInfo.t);
+
+    this.hemisphereLight.skyColor = this.computeSkyColor(k, phaseInfo);
+    this.hemisphereLight.groundColor = this.computeGroundColor(k, phaseInfo);
+    this.ambientLight.color = this.fogColor = this.computeFogColor(k, phaseInfo);
   }
 
   /**
@@ -268,8 +288,77 @@ class Weather {
    * @param {number} angle Angle in degrees
    * @return {THREE.Color}
    */
-  private createFogColor(angle: number): THREE.Color {
-    let c = '#000000';
+  private createColor(phaseInfo: IPhaseInfo, colorKey: string): THREE.Color {
+    let color = '#000000';
+
+    if (phaseInfo !== null) {
+      color = CommonUtils.lerpColor(phaseInfo.phase[colorKey], phaseInfo.nextPhase[colorKey], phaseInfo.t);
+    }
+
+    return new THREE.Color(color);
+  }
+
+  /**
+   * Get fog color
+   * @param {number} key
+   * @param {IPhaseInfo} phaseInfo
+   * @return {THREE.Color}
+   */
+  private computeFogColor(key: number, phaseInfo: IPhaseInfo): THREE.Color {
+    if (!Weather.FOG_COLORS.has(key)) {
+      Weather.FOG_COLORS.set(key, this.createColor(phaseInfo, 'fogColor'));
+    }
+    return Weather.FOG_COLORS.get(key);
+  }
+
+  /**
+   * Get ground color
+   * @param {number} key
+   * @param {IPhaseInfo} phaseInfo
+   * @return {THREE.Color}
+   */
+  private computeGroundColor(key: number, phaseInfo: IPhaseInfo): THREE.Color {
+    if (!Weather.GROUND_COLORS.has(key)) {
+      Weather.GROUND_COLORS.set(key, this.createColor(phaseInfo, 'groundColor'));
+    }
+    return Weather.GROUND_COLORS.get(key);
+  }
+
+  /**
+   * Get sky color
+   * @param {number} key
+   * @param {IPhaseInfo} phaseInfo
+   * @return {THREE.Color}
+   */
+  private computeSkyColor(key: number, phaseInfo: IPhaseInfo): THREE.Color {
+    if (!Weather.SKY_COLORS.has(key)) {
+      Weather.SKY_COLORS.set(key, this.createColor(phaseInfo, 'skyColor'));
+    }
+    return Weather.SKY_COLORS.get(key);
+  }
+
+  /**
+   * Calculate daylight intensity
+   * @param {IPhaseInfo} phaseInfo
+   * @return {number}
+   */
+  private computeDayLightIntensity(phaseInfo: IPhaseInfo): number {
+    let intensity = 0;
+
+    if (phaseInfo !== null) {
+      // MathUtils.lerp(phaseInfo.phase.daylight, phaseInfo.nextPhase.daylight, phaseInfo.t);
+      intensity = MathUtils.mapInterval(phaseInfo.value, 0, phaseInfo.size, phaseInfo.phase.daylight, phaseInfo.nextPhase.daylight);
+    }
+    return intensity;
+  }
+
+  /**
+   * Get current phase and next phase with an interpolation alpha value
+   * @param {number} rad Sun angle in radian
+   * @return {IPhaseInfo | null} phaseInfo, null in case of error
+   */
+  private getPhaseInfo(rad: number): IPhaseInfo | null {
+    const angle = THREE.Math.radToDeg(rad % MathUtils.TWO_PI);
 
     for (let i = 0, n = Weather.PHASES.length; i < n; i++) {
       const j = (i + 1) % n;
@@ -278,30 +367,20 @@ class Weather {
       const a2 = Weather.PHASES[j].value;
 
       const phaseSize = j !== 0 ? a2 - a1 : a2 + 360 - a1;
-      const currentSize = j !== 0 ? angle - a1 : phaseSize - (angle > a2 ? 360 - angle + a2 : a2 - angle);
+      const currentValue = j !== 0 ? angle - a1 : phaseSize - (angle > a2 ? 360 - angle + a2 : a2 - angle);
 
       if ((angle >= a1 && angle < a2) || j === 0) {
-        c = CommonUtils.lerpColor(Weather.PHASES[i].color, Weather.PHASES[j].color, currentSize / phaseSize);
-        break;
+        return {
+          value: currentValue,
+          size: phaseSize,
+          t: currentValue / phaseSize,
+          phase: Weather.PHASES[i],
+          nextPhase: Weather.PHASES[j]
+        };
       }
     }
 
-    return new THREE.Color(c);
-  }
-
-  /**
-   * Get an arc color
-   * @param {number} rad Angle in radian
-   * @return {THREE.Color}
-   */
-  private computeFogColor(rad: number): THREE.Color {
-    const angle = Math.floor(THREE.Math.radToDeg(rad % MathUtils.TWO_PI) * 10) / 10;
-
-    if (!Weather.FOG_COLORS.has(angle)) {
-      Weather.FOG_COLORS.set(angle, this.createFogColor(angle));
-    }
-
-    return Weather.FOG_COLORS.get(angle);
+    return null;
   }
 
   private watchStartTime() {
