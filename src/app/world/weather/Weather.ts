@@ -19,8 +19,10 @@ import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progre
 class Weather {
   private static FOG_COLORS: Map<number, THREE.Color> = new Map<number, THREE.Color>();
   private static PHASES: any = [
+    { value: 0, color: '#475d73' },
     { value: 22, color: '#B1D8FF' },
     { value: 157, color: '#B1D8FF' },
+    { value: 180, color: '#475d73' },
     { value: 202, color: '#212C37' },
     { value: 337, color: '#212C37' },
   ];
@@ -261,19 +263,25 @@ class Weather {
     }
   }
 
+  /**
+   * Calculate an arc color
+   * @param {number} angle Angle in degrees
+   * @return {THREE.Color}
+   */
   private createFogColor(angle: number): THREE.Color {
     let c = '#000000';
 
     for (let i = 0, n = Weather.PHASES.length; i < n; i++) {
       const j = (i + 1) % n;
 
-      const v1 = j === 0 ? Weather.PHASES[j].value : Weather.PHASES[i].value;
-      const v2 = j === 0 ? Weather.PHASES[i].value : Weather.PHASES[j].value;
-      const l = angle - v1;
+      const a1 = Weather.PHASES[i].value;
+      const a2 = Weather.PHASES[j].value;
 
-      if (angle >= v1 && angle < v2) {
-        console.log(angle, v1, v2, l, l / (v2 - v1));
-        c = CommonUtils.lerpColor(Weather.PHASES[i].color, Weather.PHASES[j].color, l / (v2 - v1));
+      const phaseSize = j !== 0 ? a2 - a1 : a2 + 360 - a1;
+      const currentSize = j !== 0 ? angle - a1 : phaseSize - (angle > a2 ? 360 - angle + a2 : a2 - angle);
+
+      if ((angle >= a1 && angle < a2) || j === 0) {
+        c = CommonUtils.lerpColor(Weather.PHASES[i].color, Weather.PHASES[j].color, currentSize / phaseSize);
         break;
       }
     }
@@ -281,8 +289,13 @@ class Weather {
     return new THREE.Color(c);
   }
 
+  /**
+   * Get an arc color
+   * @param {number} rad Angle in radian
+   * @return {THREE.Color}
+   */
   private computeFogColor(rad: number): THREE.Color {
-    const angle = Math.floor(THREE.Math.radToDeg(rad % MathUtils.TWO_PI));
+    const angle = Math.floor(THREE.Math.radToDeg(rad % MathUtils.TWO_PI) * 10) / 10;
 
     if (!Weather.FOG_COLORS.has(angle)) {
       Weather.FOG_COLORS.set(angle, this.createFogColor(angle));
