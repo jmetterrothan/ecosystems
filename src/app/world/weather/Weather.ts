@@ -40,10 +40,10 @@ class Weather {
   private static SKY_COLORS: Map<number, THREE.Color> = new Map<number, THREE.Color>();
 
   private static PHASES: IPhase[] = [
-    { name: 'dawn', value: 0, daylight: 0.5, boundLightIntensity: 0.5, fogColor: '#475d73', skyColor: '#3a6aa0', groundColor: '#ec70c5' }, // dawn
+    { name: 'dawn', value: 0, daylight: 0.5, boundLightIntensity: 0.65, fogColor: '#475d73', skyColor: '#3a6aa0', groundColor: '#ec70c5' }, // dawn
     { name: 'day', value: 22, daylight: 1.0, boundLightIntensity: 0.0, fogColor: '#B1D8FF', skyColor: '#3a6aa0', groundColor: '#ffffff' },
     { name: 'day', value: 157, daylight: 1.0, boundLightIntensity: 0.0, fogColor: '#B1D8FF', skyColor: '#3a6aa0', groundColor: '#ffffff' },
-    { name: 'dusk', value: 180, daylight: 0.5, boundLightIntensity: 0.5, fogColor: '#475d73', skyColor: '#3a6aa0', groundColor: '#e86b4a' }, // dusk
+    { name: 'dusk', value: 180, daylight: 0.5, boundLightIntensity: 0.65, fogColor: '#475d73', skyColor: '#3a6aa0', groundColor: '#e86b4a' }, // dusk
     { name: 'night', value: 202, daylight: 0.0, boundLightIntensity: 0.0, fogColor: '#212C37', skyColor: '#3a6aa0', groundColor: '#ffffff' },
     { name: 'night', value: 337, daylight: 0.0, boundLightIntensity: 0.0, fogColor: '#212C37', skyColor: '#3a6aa0', groundColor: '#ffffff' },
   ];
@@ -141,7 +141,7 @@ class Weather {
     this.moonBoundLight.target = target;
     this.scene.add(this.moonBoundLight);
 
-    this.sunBoundLight = new THREE.SpotLight(0xe49985, 0.8, 0, Math.PI / 2, 1.0); // 0xfd5e53
+    this.sunBoundLight = new THREE.SpotLight(0xe86b4a, 0.8, 0, Math.PI / 2, 1.0); // 0xfd5e53
     this.sunBoundLight.castShadow = false;
     this.sunBoundLight.target = target;
     this.scene.add(this.sunBoundLight);
@@ -176,9 +176,9 @@ class Weather {
 
   private initSunlight() {
     const d = 500000;
-    this.sunlight = new THREE.DirectionalLight(0xffffff, 0.3);
+    this.sunlight = new THREE.DirectionalLight(0xffffff, 0.275);
     this.sunlight.userData.minIntensity = 0.0;
-    this.sunlight.userData.maxIntensity = 0.3;
+    this.sunlight.userData.maxIntensity = 0.275;
 
     this.sunlight.target.position.set(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2);
     this.sunlight.target.updateMatrixWorld(true);
