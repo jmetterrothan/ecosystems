@@ -62,7 +62,7 @@ class DesertIslandBiome extends Biome {
       rotation,
       stackReference: 'chest_part2',
       float: false,
-      underwater: ISpecialObjectCanPlaceIn.WATER
+      underwater: ISpecialObjectCanPlaceIn.BOTH
     }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
 
     this.chestTop = this.terrain.placeSpecialObject({
@@ -70,7 +70,7 @@ class DesertIslandBiome extends Biome {
       position: this.chestBottom.position.clone(),
       stackReference: 'chest_part1',
       float: false,
-      underwater: ISpecialObjectCanPlaceIn.WATER
+      underwater: ISpecialObjectCanPlaceIn.BOTH
     }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
 
     this.initFishBoids();
