@@ -41,8 +41,8 @@ class Weather {
 
   private static PHASES: IPhase[] = [
     { name: 'dawn', value: 0, daylight: 0.5, boundLightIntensity: 0.65, fogColor: '#475d73', skyColor: '#3a6aa0', groundColor: '#ec70c5' }, // dawn
-    { name: 'day', value: 22, daylight: 1.0, boundLightIntensity: 0.0, fogColor: '#B1D8FF', skyColor: '#3a6aa0', groundColor: '#ffffff' },
-    { name: 'day', value: 157, daylight: 1.0, boundLightIntensity: 0.0, fogColor: '#B1D8FF', skyColor: '#3a6aa0', groundColor: '#ffffff' },
+    { name: 'day', value: 22, daylight: 1.0, boundLightIntensity: 0.0, fogColor: '#93c9ff', skyColor: '#3a6aa0', groundColor: '#ffffff' },
+    { name: 'day', value: 157, daylight: 1.0, boundLightIntensity: 0.0, fogColor: '#93c9ff', skyColor: '#3a6aa0', groundColor: '#ffffff' },
     { name: 'dusk', value: 180, daylight: 0.5, boundLightIntensity: 0.65, fogColor: '#475d73', skyColor: '#3a6aa0', groundColor: '#e86b4a' }, // dusk
     { name: 'night', value: 202, daylight: 0.0, boundLightIntensity: 0.0, fogColor: '#212C37', skyColor: '#3a6aa0', groundColor: '#ffffff' },
     { name: 'night', value: 337, daylight: 0.0, boundLightIntensity: 0.0, fogColor: '#212C37', skyColor: '#3a6aa0', groundColor: '#ffffff' },
