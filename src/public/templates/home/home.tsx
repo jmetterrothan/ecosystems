@@ -99,10 +99,12 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
 
     if (photo) {
       storage.debug = false;
-      storage.quality = GraphicsQuality.ULTRA;
+      storage.quality = GraphicsQuality.PHOTO;
     } else {
       if (debug !== undefined) { storage.debug = debug; }
       if (quality !== undefined) { storage.quality = quality; }
+      // restore normal graphic mode
+      if (storage.quality === GraphicsQuality.PHOTO) { storage.quality = GraphicsQuality.HIGH; }
     }
 
     this.state = {
