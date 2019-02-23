@@ -91,8 +91,11 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     const online = queryString.get('online', QueryStringType.BOOLEAN);
     const sound = queryString.get('sound', QueryStringType.BOOLEAN);
     const debug = queryString.get('debug', QueryStringType.BOOLEAN);
+
     let quality = queryString.get('quality', QueryStringType.INTEGER);
-    if (quality < 0 || quality > 3) { quality = 1; }
+    if (quality !== GraphicsQuality.LOW && quality !== GraphicsQuality.MEDIUM && quality !== GraphicsQuality.HIGH) {
+      quality = GraphicsQuality.MEDIUM;
+    }
 
     if (online !== undefined) { storage.online = online; }
     if (sound !== undefined) { storage.sound = sound; }
