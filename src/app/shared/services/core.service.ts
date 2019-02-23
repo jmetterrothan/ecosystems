@@ -24,6 +24,8 @@ import Underwater from '@sounds/underwater.mp3';
 import { VERSION_STORAGE } from '@app/Version';
 import { STORAGES_KEY } from '@achievements/constants/storageKey.constants';
 import { storageSvc } from '@shared/services/storage.service';
+import { configSvc } from './config.service';
+import { GraphicsQuality } from '../enums/graphicsQuality.enum';
 
 class CoreService {
 
@@ -93,13 +95,13 @@ class CoreService {
         objLoader.load(element.obj, (object) => {
 
           object.castShadow = true;
-          object.receiveShadow = false;
+          object.receiveShadow = configSvc.config.OBJECT_RECEIVE_SHADOW;
           object.frustumCulled = true;
 
           object.traverse((child) => {
             if (child instanceof THREE.Mesh) {
               child.castShadow = true;
-              child.receiveShadow = false;
+              child.receiveShadow = configSvc.config.OBJECT_RECEIVE_SHADOW;
               child.frustumCulled = true;
 
               if (!(child.material instanceof THREE.Material)) {

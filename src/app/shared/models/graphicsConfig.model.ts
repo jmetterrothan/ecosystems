@@ -11,6 +11,7 @@ export interface IConfig {
 
   SHADOW_MAP_SIZE: number;
   SHADOW_MAP_TYPE: THREE.ShadowMapType;
+  OBJECT_RECEIVE_SHADOW: boolean;
 
   SPAWN: THREE.Vector3;
 }

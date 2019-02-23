@@ -280,7 +280,7 @@ export const SUB_BIOMES: IBiomes = {
   },
   TUNDRA: {
     name: 'TUNDRA',
-    color: new THREE.Color(0xe8d587),
+    color: new THREE.Color(0xfbe794),
     organisms: [
       {
         weight: 0.6,
