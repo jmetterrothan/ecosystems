@@ -20,13 +20,17 @@ class QueryString {
       return undefined;
     }
 
+    const value = this.queryString[key];
+
     switch (type) {
       case QueryStringType.INTEGER:
-        return parseInt(this.queryString[key], 10) || 0;
+        return parseInt(value, 10) || 0;
       case QueryStringType.BOOLEAN:
-        return parseInt(this.queryString[key], 10) === 1 || false;
+        if (value === 'true') return true;
+        if (value === 'false') return false;
+        return parseInt(value, 10) === 1 || false;
       default:
-        return this.queryString[key] || '';
+        return value || '';
     }
   }
 
