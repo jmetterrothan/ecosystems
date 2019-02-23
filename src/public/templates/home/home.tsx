@@ -1,5 +1,4 @@
 import React from 'react';
-import queryString from 'query-string';
 
 import Row from '@components/row/row';
 import Col from '@components/col/col';
@@ -9,6 +8,7 @@ import ImageWithLoading from '@components/imageWithLoading/ImageWithLoading';
 import SoundManager from '@app/shared/SoundManager';
 import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@shared/utils/Common.utils';
+import QueryString, { QueryStringType } from '@shared/QueryString';
 import { H1, H2, H3, H4, H5 } from '@public/components/hx/hx';
 import Button from '@public/components/button/button';
 import Loader from '@public/components/loader/loader';
@@ -52,6 +52,16 @@ interface IHomeParametersStorage {
   sound: boolean;
 }
 
+interface IHomeQueryString {
+  autostart?: string;
+  seed?: string;
+  photo?: string;
+  online?: string;
+  sound?: string;
+  debug?: string;
+  quality?: string;
+}
+
 class Home extends React.PureComponent<IHomeProps, IHomeState> {
   form: HTMLFormElement;
   seedInput: HTMLInputElement;
@@ -69,14 +79,36 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     }, storageSvc.get<IHomeParametersStorage>(STORAGES_KEY.ui) || {});
 
     // parse query string to detect share link's vars
-    const parsed = queryString.parse(location.search);
-    const seed = parsed.seed || MathUtils.randomUint32().toString();
-    const autostart = parseInt(parsed.autostart, 10) === 1 || false;
+    const queryString = QueryString.create();
 
-    storage.online = parsed.online != null ? parseInt(parsed.online, 10) === 1 : storage.online;
-    storage.debug = parsed.debug != null ? parseInt(parsed.debug, 10) === 1 : storage.debug;
-    storage.sound = parsed.sound != null ? parseInt(parsed.sound, 10) === 1 : storage.sound;
-    storage.quality = parsed.quality != null ? parseInt(parsed.quality, 10) : storage.quality;
+    let seed = queryString.get('seed');
+    if (seed === '' || seed === undefined) {
+      seed = MathUtils.randomUint32().toString();
+    }
+
+    const autostart = queryString.get('autostart', QueryStringType.BOOLEAN);
+    const photo = queryString.get('photo', QueryStringType.BOOLEAN);
+    const online = queryString.get('online', QueryStringType.BOOLEAN);
+    const sound = queryString.get('sound', QueryStringType.BOOLEAN);
+    const debug = queryString.get('debug', QueryStringType.BOOLEAN);
+
+    let quality = queryString.get('quality', QueryStringType.INTEGER);
+    if (quality !== GraphicsQuality.LOW && quality !== GraphicsQuality.MEDIUM && quality !== GraphicsQuality.HIGH) {
+      quality = GraphicsQuality.MEDIUM;
+    }
+
+    if (online !== undefined) { storage.online = online; }
+    if (sound !== undefined) { storage.sound = sound; }
+
+    if (photo) {
+      storage.debug = false;
+      storage.quality = GraphicsQuality.PHOTO;
+    } else {
+      if (debug !== undefined) { storage.debug = debug; }
+      if (quality !== undefined) { storage.quality = quality; }
+      // restore normal graphic mode
+      if (storage.quality === GraphicsQuality.PHOTO) { storage.quality = GraphicsQuality.HIGH; }
+    }
 
     this.state = {
       autostart,

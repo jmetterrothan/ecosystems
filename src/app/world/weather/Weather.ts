@@ -8,6 +8,7 @@ import MathUtils from '@utils/Math.utils';
 import CommonUtils from '@utils/Common.utils';
 import Stars from '@world/weather/Stars';
 import Clouds from '@world/weather/Clouds';
+import QueryString, { QueryStringType } from '@app/shared/QueryString';
 
 import { configSvc } from '@app/shared/services/config.service';
 import { playerSvc } from '@shared/services/player.service';
@@ -15,6 +16,7 @@ import { progressionSvc } from '@achievements/services/progression.service';
 import { multiplayerSvc } from '@online/services/multiplayer.service';
 
 import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
+import { GraphicsQuality } from '@app/shared/enums/graphicsQuality.enum';
 
 interface IPhase {
   name: string;
@@ -41,8 +43,8 @@ class Weather {
 
   private static PHASES: IPhase[] = [
     { name: 'dawn', value: 0, daylight: 0.5, boundLightIntensity: 0.65, fogColor: '#475d73', skyColor: '#3a6aa0', groundColor: '#ec70c5' }, // dawn
-    { name: 'day', value: 22, daylight: 1.0, boundLightIntensity: 0.0, fogColor: '#B1D8FF', skyColor: '#3a6aa0', groundColor: '#ffffff' },
-    { name: 'day', value: 157, daylight: 1.0, boundLightIntensity: 0.0, fogColor: '#B1D8FF', skyColor: '#3a6aa0', groundColor: '#ffffff' },
+    { name: 'day', value: 22, daylight: 1.0, boundLightIntensity: 0.0, fogColor: '#93c9ff', skyColor: '#3a6aa0', groundColor: '#ffffff' },
+    { name: 'day', value: 157, daylight: 1.0, boundLightIntensity: 0.0, fogColor: '#93c9ff', skyColor: '#3a6aa0', groundColor: '#ffffff' },
     { name: 'dusk', value: 180, daylight: 0.5, boundLightIntensity: 0.65, fogColor: '#475d73', skyColor: '#3a6aa0', groundColor: '#e86b4a' }, // dusk
     { name: 'night', value: 202, daylight: 0.0, boundLightIntensity: 0.0, fogColor: '#212C37', skyColor: '#3a6aa0', groundColor: '#ffffff' },
     { name: 'night', value: 337, daylight: 0.0, boundLightIntensity: 0.0, fogColor: '#212C37', skyColor: '#3a6aa0', groundColor: '#ffffff' },
@@ -70,6 +72,7 @@ class Weather {
   private sunAngle: number; // in radians
   private sunRadius: number;
   private sunRevolutionTime: number; // in seconds
+  private sunCanRotate: boolean;
 
   private fogColor: THREE.Color = new THREE.Color();
 
@@ -81,11 +84,36 @@ class Weather {
   constructor(scene: THREE.Scene, generator: BiomeGenerator) {
     this.scene = scene;
 
-    const startAngle = MathUtils.randomInt(0, 360);
+    const queryString = QueryString.create();
 
-    this.sunAngle = THREE.Math.degToRad(startAngle);
     this.sunRadius = Math.floor((Terrain.SIZE_X + Terrain.SIZE_Z) / 2 * 1.2);
     this.sunRevolutionTime = 150;
+
+    let startAngle = MathUtils.randomInt(0, 360);
+
+    // Photo mode specifics
+    if (configSvc.quality === GraphicsQuality.PHOTO) {
+      // allow changing time in photo mode
+      let customAngle = queryString.get('sunAngle', QueryStringType.INTEGER);
+
+      if (customAngle !== undefined) {
+        if (customAngle < 0) { customAngle = 0; }
+        if (customAngle > 360) { customAngle = 360; }
+
+        startAngle = customAngle;
+      }
+
+      // allow changing revolution time
+      let customRevolutionTime = queryString.get('sunRevolutionTime', QueryStringType.INTEGER);
+
+      if (customRevolutionTime !== undefined) {
+        if (customRevolutionTime < 0) { customRevolutionTime = 0; }
+
+        this.sunRevolutionTime = customRevolutionTime;
+      }
+    }
+
+    this.sunAngle = THREE.Math.degToRad(startAngle);
 
     this.stars = new Stars();
     this.clouds = new Clouds(generator);
@@ -229,7 +257,9 @@ class Weather {
   }
 
   private updateSun(delta: number) {
-    this.sunAngle += THREE.Math.degToRad(360 / this.sunRevolutionTime) * delta;
+    if (this.sunRevolutionTime !== 0) {
+      this.sunAngle += THREE.Math.degToRad(360 / this.sunRevolutionTime) * delta;
+    }
 
     // calculate sun position from angle
     const x: number = Terrain.SIZE_X / 2 + this.sunRadius * Math.cos(this.sunAngle);

@@ -13,6 +13,8 @@ import { IUIManagerParameters } from '@ui/models/uiManagerParameters.model';
 
 import { IUIState } from '@ui/models/UIState';
 import { UIStates } from '@ui/enums/UIStates.enum';
+import { GraphicsQuality } from '@app/shared/enums/graphicsQuality.enum';
+import { configSvc } from '@app/shared/services/config.service';
 
 interface IUIManagerProps {
 
@@ -76,8 +78,10 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     const uiState = this.uiStates.get(this.state.currentUiStateID);
     if (this.state.currentUiStateID === UIStates.HOME) uiState.process(this);
 
+    const style = configSvc.quality === GraphicsQuality.PHOTO ? { display: 'none' } : null;
+
     return (
-      <div className='ui'>
+      <div className='ui' style={style}>
         <div className='ui__notifications p-2'>
           <NotificationContainer />
         </div>

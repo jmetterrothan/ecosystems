@@ -54,8 +54,8 @@ class CoreService {
     await SoundManager.add('splash', Small_Splash, { volume: 1.0 });
     await SoundManager.add('bubbles', Bubbles, { volume: 1.0 });
     await SoundManager.add('hehe', Hehe_Boi, { volume: 1.0 });
-    await SoundManager.add('background_music', Fairy_Meeting, { volume: 0.25, loop: true });
-    await SoundManager.add('underwater', Underwater, { volume: 0.5, loop: true });
+    await SoundManager.add('background_music', Fairy_Meeting, { volume: 0.25, loop: true, pool: 1 });
+    await SoundManager.add('underwater', Underwater, { volume: 0.5, loop: true, pool: 1 });
   }
 
   private async initModels(): Promise<any> {
