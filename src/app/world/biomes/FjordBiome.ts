@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import * as TWEEN from '@tweenjs/tween.js';
 import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Biome from '@world/Biome';
@@ -21,6 +22,8 @@ class FjordBiome extends Biome {
   private e: number;
   private boids: Boids[];
   private oldLog: THREE.Object3D;
+
+  private specialObjectClicked: boolean = false;
 
   constructor(terrain: Terrain) {
     super('FJORD', terrain);
@@ -85,7 +88,22 @@ class FjordBiome extends Biome {
   handleClick(raycaster: THREE.Raycaster) {
     const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.oldLog], true);
 
-    if (intersections.length) {
+    if (intersections.length && !this.specialObjectClicked) {
+
+      new TWEEN.Tween(this.oldLog.position)
+        .to({ y: this.oldLog.position.y + 1000 }, 250)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .repeat(1)
+        .yoyo(true)
+        .start();
+
+      new TWEEN.Tween(this.oldLog.rotation)
+        .to({ y: this.oldLog.rotation.y + Math.PI / 6 }, 500)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .start();
+
+      this.specialObjectClicked = true;
+
       this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.woodcutter);
     }
   }
