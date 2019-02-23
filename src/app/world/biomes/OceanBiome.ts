@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import * as TWEEN from '@tweenjs/tween.js';
 import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Terrain from '@world/Terrain';
@@ -7,7 +8,9 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 import Boids from '@boids/Boids';
 import DiscusFish from '@boids/creatures/DiscusFish';
-import SalmonFish from '@boids/creatures/SalmonFish';
+import TropicalFish from '@app/boids/creatures/TropicalFish';
+import BandedButterflyFish from '@app/boids/creatures/BandedButterflyFish';
+import BubbleEmitter from '@world/biomes/particles/BubbleEmitter';
 
 import { IBiome } from '@world/models/biome.model';
 import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
@@ -25,28 +28,63 @@ class OceanBiome extends Biome {
 
   private boids: Boids[];
 
-  private chest: THREE.Object3D;
+  private chestBottom: THREE.Object3D;
+  private chestTop: THREE.Object3D;
+  private chestOpened: boolean = false;
+
+  private bubbleEmitter: BubbleEmitter;
 
   constructor(terrain: Terrain) {
     super('OCEAN', terrain);
 
     this.boids = [];
+    this.bubbleEmitter = new BubbleEmitter();
 
     this.spike = MathUtils.randomFloat(0.025, 0.125);
     this.depth = 1.425;
-    this.flat = MathUtils.rng() >= 0.45;
+    this.flat = MathUtils.rng() >= 0.5;
 
     this.waterDistortion = true;
-    this.waterDistortionFreq = 2.0;
-    this.waterDistortionAmp = 1720.0;
+    this.waterDistortionFreq = 1.5;
+    this.waterDistortionAmp = 2048.0;
 
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.ocean_visited);
     this.sound = WaterSFXMp3;
   }
 
   init() {
-    const minSize = 90000;
-    const maxSize = 150000;
+    this.initFishBoids();
+    this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
+
+    // chest
+    const centerX = Terrain.SIZE_X / 2;
+    const centerZ = Terrain.SIZE_Z / 2;
+
+    const sizeX = 8192;
+    const sizeZ = 8192;
+
+    const rotation = new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0);
+
+    this.chestBottom = this.terrain.placeSpecialObject({
+      rotation,
+      stackReference: 'chest_part2',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.WATER
+    }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+
+    this.chestTop = this.terrain.placeSpecialObject({
+      rotation,
+      position: this.chestBottom.position.clone(),
+      stackReference: 'chest_part1',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.WATER
+    }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+
+  }
+
+  private initFishBoids() {
+    const minSize = 80000;
+    const maxSize = 140000;
     const size = MathUtils.randomFloat(minSize, maxSize);
 
     const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
@@ -61,7 +99,14 @@ class OceanBiome extends Biome {
       const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 3.75, Chunk.HEIGHT / 3) - 4096;
       const py = Chunk.SEA_LEVEL - 4096 - ySize / 2;
 
-      const fishClass = n > 3 ? DiscusFish : SalmonFish;
+      const m = this.generator.computeMoistureAt(px, pz);
+
+      let fishClass = DiscusFish;
+      if (m > 0.65) {
+        fishClass = TropicalFish;
+      } else if (m > 0.5) {
+        fishClass = BandedButterflyFish;
+      }
 
       // fishs
       const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
@@ -71,29 +116,32 @@ class OceanBiome extends Biome {
 
       this.boids.push(boids);
     });
-
-    // chest
-    const centerX = Terrain.SIZE_X / 2;
-    const centerZ = Terrain.SIZE_Z / 2;
-
-    const sizeX = 8192;
-    const sizeZ = 8192;
-
-    this.chest = this.terrain.placeSpecialObject({
-      stackReference: 'chest',
-      float: false,
-      underwater: ISpecialObjectCanPlaceIn.WATER
-    }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
   }
 
   update(delta: number) {
+    this.updateFishBoids(delta);
+    this.bubbleEmitter.update(delta);
+  }
+
+  private updateFishBoids(delta: number) {
     this.boids.forEach(boids => boids.update(this.generator, delta));
   }
 
   handleClick(raycaster: THREE.Raycaster) {
-    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.chest], true);
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.chestBottom, this.chestTop], true);
 
-    if (intersections.length) {
+    if (intersections.length && !this.chestOpened) {
+      new TWEEN.Tween(this.chestTop.rotation)
+        .to({ y: this.chestTop.rotation.y + Math.PI / 10, }, 500)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .start();
+      new TWEEN.Tween(this.chestTop.position)
+        .to({ x: this.chestTop.position.x + 800, z: this.chestTop.position.z + 800 }, 500)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .start();
+
+      this.chestOpened = true;
+
       this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.find_captain_treasure);
     }
   }
@@ -146,7 +194,7 @@ class OceanBiome extends Biome {
 
     e /= 0.2 + 0.25 + 0.0035 + 0.05;
 
-    return Math.round(e * 100) / 100;
+    return e;
   }
 
   computeWaterMoistureAt(x: number, z: number): number {

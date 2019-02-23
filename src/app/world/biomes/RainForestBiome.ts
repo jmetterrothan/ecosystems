@@ -8,7 +8,9 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 import Boids from '@boids/Boids';
 import Butterfly from '@boids/creatures/Butterfly';
-import DiscusFish from '@boids/creatures/DiscusFish';
+import TropicalFish from '@boids/creatures/TropicalFish';
+import ClownFish from '@app/boids/creatures/ClownFish';
+import BubbleEmitter from '@world/biomes/particles/BubbleEmitter';
 
 import { IBiome } from '@world/models/biome.model';
 
@@ -18,8 +20,6 @@ import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progress
 import RainSFXMp3 from '@sounds/RainSFX.mp3';
 
 class RainForestBiome extends Biome {
-  private boids: Boids[];
-
   private a: number;
   private b: number;
   private c: number;
@@ -28,10 +28,15 @@ class RainForestBiome extends Biome {
   private spread: number;
   private ridges: number;
 
+  private boids: Boids[];
+
+  private bubbleEmitter: BubbleEmitter;
+
   constructor(terrain: Terrain) {
     super('RAINFOREST', terrain);
 
     this.boids = [];
+    this.bubbleEmitter = new BubbleEmitter();
 
     this.waterDistortion = true;
     this.waterDistortionFreq = 2.5;
@@ -53,6 +58,7 @@ class RainForestBiome extends Biome {
   init() {
     this.initButterflyBoids();
     this.initFishBoids();
+    this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
   }
 
   initButterflyBoids() {
@@ -70,8 +76,10 @@ class RainForestBiome extends Biome {
 
       // butterflies
       const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
+      const variant = Butterfly.getButterflyVariant();
+
       for (let i = 0, n = MathUtils.randomInt(2, 4); i < n; i++) {
-        boids.addCreature(new Butterfly());
+        boids.addCreature(new Butterfly(variant));
       }
 
       this.boids.push(boids);
@@ -101,10 +109,12 @@ class RainForestBiome extends Biome {
       if (this.generator.computeHeightAt(px + minSize / 2, pz + minSize / 2) >= py + ySize / 2) return;
       if (this.generator.computeHeightAt(px + minSize / 2, pz + minSize / 2) >= py - ySize / 2) return;
 
+      const fishClass = MathUtils.rng() >= 0.5 ? TropicalFish : ClownFish;
+
       // fishs
       const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
       for (let i = 0; i < n; i++) {
-        boids.addCreature(new DiscusFish());
+        boids.addCreature(new fishClass());
       }
 
       this.boids.push(boids);
@@ -113,6 +123,7 @@ class RainForestBiome extends Biome {
 
   update(delta: number) {
     this.boids.forEach(boids => boids.update(this.generator, delta));
+    this.bubbleEmitter.update(delta);
   }
 
   /**

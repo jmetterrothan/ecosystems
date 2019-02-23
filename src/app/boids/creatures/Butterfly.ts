@@ -2,8 +2,10 @@ import MathUtils from '@utils/Math.utils';
 import Creature from '@boids/creatures/Creature';
 
 class Butterfly extends Creature {
-  constructor() {
-    super(['butterfly', 'butterfly2', 'butterfly3', 'butterfly4'], {
+  static VARIANTS: string[] = ['butterfly', 'butterfly2', 'butterfly3', 'butterfly4'];
+
+  constructor(names: string | string[]) {
+    super([].concat(names), {
       speed: 7500,
       neighbourRadius: 6000,
       alignmentWeighting: 0.005,
@@ -14,6 +16,10 @@ class Butterfly extends Creature {
       minRepulseDistance: 30000,
       scale: MathUtils.randomFloat(0.85, 1.15)
     });
+  }
+
+  static getButterflyVariant() {
+    return Butterfly.VARIANTS[MathUtils.randomInt(0, Butterfly.VARIANTS.length - 1)];
   }
 }
 

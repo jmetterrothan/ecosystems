@@ -4,6 +4,7 @@ interface ISoundManagerOptions {
   volume?: number;
   autoplay?: boolean;
   loop?: boolean;
+  pool?: number;
 }
 
 class SoundManager {

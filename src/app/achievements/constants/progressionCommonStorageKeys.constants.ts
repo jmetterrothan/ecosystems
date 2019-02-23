@@ -1,5 +1,4 @@
 import { IProgressionCommonStorageKeys } from '@achievements/models/progressionCommonStorgeKeys.model';
-import { TROPHY_TYPE } from '@achievements/enums/trophyType.enum';
 
 export const PROGRESSION_COMMON_STORAGE_KEYS: IProgressionCommonStorageKeys = {
   game_played: {
@@ -26,6 +25,16 @@ export const PROGRESSION_COMMON_STORAGE_KEYS: IProgressionCommonStorageKeys = {
   objects_placed_submarine: {
     name: 'objects_placed_submarine',
     value: 'objects_placed_submarine',
+    show: true
+  },
+  objects_placed_voice: {
+    name: 'objects_placed_voice',
+    value: 'objects_placed_voice',
+    show: false
+  },
+  objects_removed: {
+    name: 'objects_removed',
+    value: 'objects_removed',
     show: true
   }
 };

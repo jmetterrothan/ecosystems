@@ -110,6 +110,8 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
     going_underwater: 'Underwater : {{count}}',
     objects_placed: 'Objects placed : {{count}}',
     objects_placed_submarine: 'Objects placed underwater : {{count}}',
+    objects_placed_voice: 'Objects placed with voice : {{count}}',
+    objects_removed: 'Objects removed : {{count}}',
     unlock_trophies_percentage: 'Trophies unlocked : {{count}}%',
   },
   'contact-tab': {

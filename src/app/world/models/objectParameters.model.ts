@@ -6,6 +6,11 @@ export interface IPlaceObject {
   save?: boolean;
 }
 
+export interface IRemoveObject {
+  online?: boolean;
+  animate?: boolean;
+}
+
 export interface IPickObject {
   force?: boolean; // bypass scarcity test
   isOnWater?: boolean;
@@ -27,6 +32,8 @@ export interface ISpecialObject {
   underwater: ISpecialObjectCanPlaceIn;
   float: boolean;
   stackReference: string;
+  rotation?: THREE.Vector3;
+  position?: THREE.Vector3;
   e?: ILowHigh;
   m?: ILowHigh;
 }

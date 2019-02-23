@@ -58,6 +58,7 @@ class Crosshair extends React.Component<ICrosshairProps, ICrosshairState> {
     switch (state) {
       case CROSSHAIR_STATES.CAN_PLACE_OBJECT: return 'crosshair--can-place-object';
       case CROSSHAIR_STATES.CAN_INTERACT_WITH_OBJECT: return 'crosshair--can-interact';
+      case CROSSHAIR_STATES.CAN_REMOVE_OBJECT: return 'crosshair--can-remove-object';
       default: return 'crosshair--no-action';
     }
   }

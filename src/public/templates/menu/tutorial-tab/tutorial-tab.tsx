@@ -1,5 +1,6 @@
 import React from 'react';
 import Slider from 'react-slick';
+import i18next from 'i18next';
 
 import Row from '@public/components/row/row';
 import Col from '@public/components/col/col';
@@ -19,6 +20,7 @@ import './tutorial-tab.styles';
 
 type ITutorialTabsState = {
   storage: Object;
+  currentLanguage: string;
 };
 
 class TutorialTab extends React.Component<any, ITutorialTabsState> {
@@ -27,7 +29,8 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
     super(props);
 
     this.state = {
-      storage: Keys
+      storage: Keys,
+      currentLanguage: i18next.language
     };
   }
 
@@ -36,6 +39,11 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
     this.setState({ storage: Keys }, () => {
       storageSvc.set(STORAGES_KEY.keyboard, this.state.storage);
     });
+  }
+
+  changeLanguage = async () => {
+    await translationSvc.switchLanguage(this.state.currentLanguage === 'fr' ? 'en' : 'fr');
+    this.setState({ currentLanguage: translationSvc.getCurrentLanguage() });
   }
 
   render() {
@@ -82,6 +90,11 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
           <Col className='flexcol--8-t mb-2 mb-0-t'>
             <div className='tutorial-keys'>
               <TutorialAction actionName={translationSvc.translate('UI.tutorial-tab.tab1.mouse_scroll_name')} text={translationSvc.translate('UI.tutorial-tab.tab1.mouse_scroll')} className='mb-2' />
+            </div>
+          </Col>
+          <Col className='flexcol--8-t mb-2 mb-0-t'>
+            <div className='tutorial-keys'>
+              <TutorialAction actionName={translationSvc.translate('UI.tutorial-tab.tab1.mouse_right-click_name')} text={translationSvc.translate('UI.tutorial-tab.tab1.mouse_right-click')} className='mb-2' />
             </div>
           </Col>
         </Row>
@@ -150,6 +163,14 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
         <H4 className='mb-2 align-left'>{translationSvc.translate('UI.tutorial-tab.tab2.subtitle')}</H4>
         <p className='paragraph mb-2'>{translationSvc.translate('UI.tutorial-tab.tab2.text')}</p>
       </Article>
+    );
+  }
+
+  getThirdPanel() {
+    return (
+    <>
+      <button onClick={this.changeLanguage}>change</button>
+    </>
     );
   }
 }

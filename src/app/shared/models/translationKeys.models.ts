@@ -13,6 +13,8 @@ export interface ITrophiesTranslationKeys {
   place_object: string;
   place_object_submarine: string;
   place_objects_counter: string;
+  remove_object: string;
+  remove_objects_counter: string;
   travelled_distance_counter: string;
   repulse_fishes: string;
   repulse_butterflies: string;
@@ -27,6 +29,7 @@ export interface ITrophiesTranslationKeys {
   create_game_online: string;
   join_game_online: string;
   place_object_online: string;
+  place_object_voice: string;
   place_all_mushrooms: string;
   place_all_flowers: string;
   woodcutter: string;
@@ -146,6 +149,8 @@ export interface IUITranslationKeys {
     objects_placed: string;
     unlock_trophies_percentage: string;
     objects_placed_submarine: string;
+    objects_placed_voice: string;
+    objects_removed: string;
   };
   'contact-tab': {
     title: string;

@@ -19,6 +19,8 @@ class SnowBiome extends Biome {
   constructor(terrain: Terrain) {
     super('SNOW', terrain);
 
+    this.temperature = -5;
+
     this.waterDistortion = false;
 
     this.waterColor1 = new THREE.Color(0x84cbe8);

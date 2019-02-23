@@ -21,6 +21,9 @@ $crosshair-opacity : 0.95;
     transform: rotateZ(45deg) scale(2);
     transition: transform ease 0.25s;
   }
+  &.crosshair--can-remove-object {
+    border-color: $color-yellow;
+  }
   &.crosshair--no-action {
     border-color: $color-red;
   }

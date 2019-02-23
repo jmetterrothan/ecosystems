@@ -101,7 +101,8 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     description_lucas: 'Développeur gameplay - commandes vocales avec tensorflow.',
     description_jordan: 'Développeur - sons et ambiances sonores.',
     description_christina: 'UX/UI Designer.',
-    description_ugo: 'Testeur.' },
+    description_ugo: 'Testeur.'
+  },
   'progress-tab': {
     title: 'Progression',
     game_played: 'Parties jouées : {{count}}',
@@ -109,6 +110,8 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     going_underwater: 'Nombre de fois sous l\'eau : {{count}}',
     objects_placed: 'Objets placés : {{count}}',
     objects_placed_submarine: 'Objets placés sous l\'eau : {{count}}',
+    objects_placed_voice: 'Objets placés à la voix : {{count}}',
+    objects_removed: 'Objects supprimés : {{count}}',
     unlock_trophies_percentage: 'Trophées débloqués : {{count}}%',
   },
   'contact-tab': {

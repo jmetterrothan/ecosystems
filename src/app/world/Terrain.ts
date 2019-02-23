@@ -18,7 +18,7 @@ import { TERRAIN_MATERIAL, TERRAIN_SIDE_MATERIAL } from '@materials/terrain.mate
 
 import { IBiome } from '@world/models/biome.model';
 import { IPick } from '@world/models/pick.model';
-import { IOnlineObject } from '@online/models/onlineObjects.model';
+import { IOnlineObject, ONLINE_INTERACTION } from '@online/models/onlineObjects.model';
 import { ISpecialObject, ISpecialObjectCanPlaceIn } from '@world/models/objectParameters.model';
 import { ILowHigh } from '@world/models/biomeWeightedObject.model';
 import { IPickAndOrganism } from '@world/models/pickAndOrganism.model';
@@ -106,7 +106,7 @@ class Terrain {
   init() {
     this.initMeshes();
     this.initPicks();
-    if (multiplayerSvc.isUsed()) this.watchObjectPlaced();
+    if (multiplayerSvc.isUsed()) this.watchObjectInteraction();
   }
 
   /**
@@ -327,8 +327,7 @@ class Terrain {
         break;
 
       case INTERACTION_TYPE.MOUSE_RIGHT_CLICK:
-        // TODO: delete obj
-        console.log('right click');
+        this.removeObject(raycaster);
         break;
 
       case INTERACTION_TYPE.MOUSE_WHEEL_DOWN:
@@ -340,6 +339,7 @@ class Terrain {
         break;
 
       case INTERACTION_TYPE.VOICE:
+        progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_voice);
         this.placeObject(raycaster);
         break;
 
@@ -416,6 +416,37 @@ class Terrain {
     }, Chunk.ANIMATION_DELAY + 200);
   }
 
+  /**
+   * Test raycaster intersections for an object to delete
+   * @param {THREE.Raycaster}
+   */
+  removeObject(raycaster: THREE.Raycaster) {
+    const intersections = raycaster.intersectObjects(this.scene.children, true);
+
+    for (const intersection of intersections) {
+      // if object has no stackReference it should not be deletable
+      if (intersection.object.parent.userData.stackReference && intersection.object.parent !== this.previewObject) {
+        const intersectedObject = intersection.object.parent;
+        const validDistance = intersection.distance <= Chunk.INTERACTION_DISTANCE;
+
+        if (!validDistance) return;
+        if (this.specialObjectList.includes(intersectedObject)) return;
+
+        const chunk = this.getChunkAt(intersectedObject.position.x, intersectedObject.position.z);
+
+        if (chunk) {
+          chunk.removeObject(intersectedObject, { animate: true });
+          progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_removed);
+
+          if (multiplayerSvc.isUsed()) multiplayerSvc.removeObject(intersectedObject);
+        }
+
+        break;
+      }
+    }
+
+  }
+
   placeSpecialObject(
     special: ISpecialObject,
     ox: number = Terrain.SIZE_X / 2,
@@ -451,7 +482,7 @@ class Terrain {
       const m = this.generator.computeMoistureAt(x, z);
 
       const s = new THREE.Vector3(World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE, World.OBJ_INITIAL_SCALE);
-      const r = new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0);
+      const r = special.rotation || new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0);
 
       chunk = this.getChunkAt(x, z);
 
@@ -467,13 +498,16 @@ class Terrain {
 
       item = {
         s,
-        p: new THREE.Vector3(x, y, z),
+        p: special.position || new THREE.Vector3(x, y, z),
         r: new THREE.Euler().setFromVector3(r),
         n: special.stackReference,
         f: special.float
       };
 
       object = chunk.getObject(item);
+
+      if (special.position) break;
+
     } while (!chunk.canPlaceObject(object));
 
     chunk.placeObject(object, { save: true });
@@ -515,6 +549,15 @@ class Terrain {
       // player is looking obviously outside of range
       crosshairSvc.show(false);
       this.resetPreview();
+      return;
+    }
+
+    const objectsIntersections = raycaster.intersectObjects(this.scene.children, true);
+    const objectToDeleteIntersection = objectsIntersections.find(intersection => intersection.object.parent.userData.stackReference && intersection.object.parent !== this.previewObject);
+
+    if (objectToDeleteIntersection !== undefined && objectToDeleteIntersection.distance < intersection.distance) {
+      this.resetPreview();
+      crosshairSvc.switch(CROSSHAIR_STATES.CAN_REMOVE_OBJECT);
       return;
     }
 
@@ -878,12 +921,23 @@ class Terrain {
     });
   }
 
-  private watchObjectPlaced() {
-    multiplayerSvc.objectPlaced$.subscribe(
-      ({ item, animate }: IOnlineObject) => {
-        const chunk = this.getChunkAt(item.p.x, item.p.z);
-        const object = chunk.getObject(item);
-        chunk.placeObject(object, { animate, save: true, });
+  private watchObjectInteraction() {
+    multiplayerSvc.objectInteraction$.subscribe(
+      ({ type, item, object, animate }: IOnlineObject) => {
+        const chunk = item ? this.getChunkAt(item.p.x, item.p.z) : this.getChunkAt(object.position.x, object.position.z);
+        switch (type) {
+          case ONLINE_INTERACTION.ADD:
+            chunk.placeObject(chunk.getObject(item), { animate, save: true });
+            break;
+
+          case ONLINE_INTERACTION.REMOVE:
+            chunk.removeObject(object, { animate, online: true });
+            break;
+
+          default:
+            break;
+        }
+
       }
     );
   }

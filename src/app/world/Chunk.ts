@@ -11,7 +11,7 @@ import WaterMesh from '@mesh/WaterMesh';
 import Fifo from '@app/shared/Fifo';
 
 import { IPick } from '@world/models/pick.model';
-import { IPlaceObject, IPickObject, IStackReference } from '@world/models/objectParameters.model';
+import { IPlaceObject, IPickObject, IStackReference, IRemoveObject } from '@world/models/objectParameters.model';
 
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
 
@@ -217,6 +217,35 @@ class Chunk {
   }
 
   /**
+   * Remove an object to blueprint and scene
+   * @param {THREE.Object3D} object
+   */
+  removeObject(object: THREE.Object3D, parameters: IRemoveObject = {}) {
+    const pick = Chunk.convertObjectToPick(object);
+
+    const online = parameters.online;
+
+    if (online) pick.p.copy(object.position);
+
+    this.objectsBlueprint = this.objectsBlueprint.filter(p => !pick.p.equals(p.p));
+
+    const objectToDelete = online
+      ? this.objects.children.find(obj => obj.position.equals(object.position))
+      : object;
+
+    if (parameters.animate) {
+      new TWEEN.Tween(objectToDelete.scale)
+        .to(new THREE.Vector3(0.000001, 0.000001, 0.000001), 400)
+        .easing(TWEEN.Easing.Cubic.In)
+        .start()
+        .onComplete(() => this.objects.remove(objectToDelete));
+    } else {
+      this.objects.remove(objectToDelete);
+    }
+
+  }
+
+  /**
    * Populate the world with pre-computed object parameters
    * @param scene
    */
@@ -254,34 +283,47 @@ class Chunk {
   /**
    * Recovers an object from the pool and prepares the Object3D
    * @param {IPick} item
-   * @return {THREE.Object3D}
+   * @return {THREE.Object3D | null}
    */
-  getObject(item: IPick): THREE.Object3D {
+  getObject(item: IPick): THREE.Object3D | null {
     let object = null;
 
-    // if object stack doesn't exist yet we create one
-    if (!Chunk.CHUNK_OBJECT_STACK[item.n]) {
-      Chunk.CHUNK_OBJECT_STACK[item.n] = new Fifo<THREE.Object3D>();
-    }
+    if (item.n) {
+      // if object stack doesn't exist yet we create one
+      if (!Chunk.CHUNK_OBJECT_STACK[item.n]) {
+        Chunk.CHUNK_OBJECT_STACK[item.n] = new Fifo<THREE.Object3D>();
+      }
 
-    // if the stack is empty, create a new object else pop an object from the stack
-    if (Chunk.CHUNK_OBJECT_STACK[item.n].isEmpty()) {
-      object = World.LOADED_MODELS.get(item.n).clone();
-    } else {
-      object = Chunk.CHUNK_OBJECT_STACK[item.n].pop();
-    }
+      // if the stack is empty, create a new object else pop an object from the stack
+      if (Chunk.CHUNK_OBJECT_STACK[item.n].isEmpty()) {
+        object = World.LOADED_MODELS.get(item.n).clone();
+      } else {
+        object = Chunk.CHUNK_OBJECT_STACK[item.n].pop();
+      }
 
-    // restore transformations
-    object.rotation.copy(item.r);
-    object.scale.copy(item.s);
-    object.position.copy(item.p);
-    object.userData = <IStackReference>{ stackReference: item.n, float: item.f, type: object.userData.type, initialPosition: item.p.clone() };
-    object.visible = true;
+      // restore transformations
+      object.rotation.copy(item.r);
+      object.scale.copy(item.s);
+      object.position.copy(item.p);
+      object.userData = <IStackReference>{ stackReference: item.n, float: item.f, type: object.userData.type, initialPosition: new THREE.Vector3().copy(item.p) };
+      object.visible = true;
+    }
 
     return object;
   }
 
-  placeObject(object: THREE.Object3D, parameters: IPlaceObject = {}) {
+  /**
+   * Place an object
+   * @param {THREE.Object3D} object
+   * @param {IPlaceObject} parameters
+   * @return {boolean}
+   */
+  placeObject(object: THREE.Object3D, parameters: IPlaceObject = {}): boolean {
+    if (object === null) {
+      console.warn(`Failed to place object`);
+      return false;
+    }
+
     if (parameters.animate === true) {
       this.placeObjectWithAnimation(object);
     } else {
@@ -291,6 +333,8 @@ class Chunk {
     if (parameters.save === true) {
       this.saveObject(object);
     }
+
+    return true;
   }
 
   /**
@@ -331,6 +375,10 @@ class Chunk {
   * @param {THREE.Object3D} object
   */
   repurposeObject(object: THREE.Object3D) {
+    if (object === null) {
+      return;
+    }
+
     const ref = (<IStackReference>object.userData).stackReference;
 
     if (ref && Chunk.CHUNK_OBJECT_STACK[ref].size < 256) {
@@ -389,6 +437,8 @@ class Chunk {
    * @return {THREE.Box3}
    */
   getBbox(): THREE.Box3 { return this.bbox; }
+
+  getObjects(): THREE.Group { return this.objects; }
 
   private placeObjectWithAnimation(object: THREE.Object3D) {
     const scaleSaved = object.scale.clone();
