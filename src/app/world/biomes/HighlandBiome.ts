@@ -51,13 +51,17 @@ class HighlandBiome extends Biome {
   }
 
   init() {
-    if (MathUtils.rng() > 0.15) {
+    if (MathUtils.rng() > 0.1) {
       const size = MathUtils.randomInt(100000, 140000);
+      const max = 3;
 
       const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
       const points = pds.fill();
 
+      let it = 0;
       points.forEach((point: number[]) => {
+        if (it >= max) { return; }
+
         const px = size / 2 + point.shift();
         const pz = size / 2 + point.shift();
 
@@ -72,6 +76,7 @@ class HighlandBiome extends Biome {
         }
 
         this.boids.push(boids);
+        it++;
       });
     }
 

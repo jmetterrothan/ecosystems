@@ -80,11 +80,15 @@ class DesertIslandBiome extends Biome {
   initFishBoids() {
     // boids
     const size = 42500;
+    const max = 4;
 
     const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 60, MathUtils.rng);
     const points = pds.fill();
 
+    let it = 0;
     points.forEach((point: number[]) => {
+      if (it >= max) { return; }
+
       const n = MathUtils.randomInt(2, 6);
       const px = point.shift() + size / 2;
       const pz = point.shift() + size / 2;
@@ -108,6 +112,7 @@ class DesertIslandBiome extends Biome {
       }
 
       this.boids.push(boids);
+      it++;
     });
   }
 

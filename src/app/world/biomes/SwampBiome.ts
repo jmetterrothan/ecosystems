@@ -35,11 +35,15 @@ class SwampBiome extends Biome {
 
   init() {
     const size = 100000;
+    const max = 4;
 
     const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
     const points = pds.fill();
 
+    let it = 0;
     points.forEach((point: number[]) => {
+      if (it >= max) { return; }
+
       const px = size / 2 + point.shift();
       const pz = size / 2 + point.shift();
 
@@ -55,6 +59,7 @@ class SwampBiome extends Biome {
       }
 
       this.boids.push(boids);
+      it++;
     });
   }
 

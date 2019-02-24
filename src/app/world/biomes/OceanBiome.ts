@@ -89,11 +89,15 @@ class OceanBiome extends Biome {
     const minSize = 80000;
     const maxSize = 140000;
     const size = MathUtils.randomFloat(minSize, maxSize);
+    const max = 4;
 
     const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
     const points = pds.fill();
 
+    let it = 0;
     points.forEach((point: number[]) => {
+      if (it >= max) { return; }
+
       const nbMax = (size * 20 / maxSize) || 0; // maximum nb based on boids size
       const n = MathUtils.randomInt(2, nbMax);
       const px = size / 2 + point.shift();
@@ -118,6 +122,7 @@ class OceanBiome extends Biome {
       }
 
       this.boids.push(boids);
+      it++;
     });
   }
 
