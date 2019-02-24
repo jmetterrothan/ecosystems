@@ -60,7 +60,7 @@ class MultiplayerService {
     this.scene = scene;
     this.roomID = seed;
 
-    const url: string = CommonUtils.isDev()
+    const url: string = !CommonUtils.isDev()
       ? `${ENV.socketBaseUrl}:${ENV.socketPort}`
       : `${ENV.socketBaseUrl}`;
 
