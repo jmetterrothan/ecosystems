@@ -231,7 +231,9 @@ class Chunk {
       ? this.objects.children.find(obj => obj.position.equals(object.position))
       : object;
 
-    if (parameters.animate) {
+    console.log(objectToDelete, `online = ${online}`);
+
+    if (objectToDelete !== undefined && parameters.animate) {
       new TWEEN.Tween(objectToDelete.scale)
         .to(new THREE.Vector3(0.000001, 0.000001, 0.000001), 400)
         .easing(TWEEN.Easing.Cubic.In)
