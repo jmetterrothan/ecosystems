@@ -927,7 +927,7 @@ class Terrain {
         const chunk = item ? this.getChunkAt(item.p.x, item.p.z) : this.getChunkAt(object.position.x, object.position.z);
         switch (type) {
           case ONLINE_INTERACTION.ADD:
-            chunk.placeObject(chunk.getObject(item), { animate, save: true });
+            chunk.placeObject(chunk.getObject(item), { animate, save: true, online: true });
             break;
 
           case ONLINE_INTERACTION.REMOVE:
