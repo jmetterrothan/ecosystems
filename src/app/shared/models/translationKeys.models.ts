@@ -106,6 +106,7 @@ export interface IUITranslationKeys {
         reload: string;
         mute: string;
         menu: string;
+        freeze: string;
       };
       'mouse_left-click': string;
       'mouse_left-click_name': string;

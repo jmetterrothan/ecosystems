@@ -8,6 +8,7 @@ export enum MouseAction {
 }
 
 export enum KeyAction {
+  FREEZE = 'freeze',
   MOVE_DOWN = 'down',
   MOVE_UP = 'up',
   MOVE_RIGHT = 'right',
@@ -21,6 +22,7 @@ export enum KeyAction {
 }
 
 export const KeysTmp = {
+  [KeyAction.FREEZE]: 'F',
   [KeyAction.MOVE_DOWN]: 'SHIFT',
   [KeyAction.MOVE_UP]: ' ',
   [KeyAction.MOVE_RIGHT]: 'D',

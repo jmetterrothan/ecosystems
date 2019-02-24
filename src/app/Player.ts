@@ -157,6 +157,9 @@ class Player {
    */
   handleKeyboard(key: string, active: boolean) {
     switch (key.toUpperCase()) {
+      case Keys[KeyAction.FREEZE]:
+        if (active) window.isFreezed = !window.isFreezed; break;
+
       case Keys[KeyAction.MOVE_FRONT]:
         this.moveForward = active; break;
 
