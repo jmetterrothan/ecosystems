@@ -147,7 +147,7 @@ class Chunk {
       // prepare object
       const s = World.OBJ_INITIAL_SCALE * MathUtils.randomFloat(0.6, 1.0);
       mesh.geometry = new THREE.Geometry().fromBufferGeometry(<THREE.BufferGeometry>mesh.geometry);
-      mesh.frustumCulled = false;
+      mesh.frustumCulled = true;
       mesh.matrixAutoUpdate = true;
       mesh.receiveShadow = false;
       mesh.castShadow = true;
