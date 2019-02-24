@@ -93,9 +93,6 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     const debug = queryString.get('debug', QueryStringType.BOOLEAN);
 
     let quality = queryString.get('quality', QueryStringType.INTEGER);
-    if (quality !== GraphicsQuality.LOW && quality !== GraphicsQuality.MEDIUM && quality !== GraphicsQuality.HIGH) {
-      quality = GraphicsQuality.MEDIUM;
-    }
 
     if (online !== undefined) { storage.online = online; }
     if (sound !== undefined) { storage.sound = sound; }
@@ -104,8 +101,17 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
       storage.debug = false;
       storage.quality = GraphicsQuality.PHOTO;
     } else {
-      if (debug !== undefined) { storage.debug = debug; }
-      if (quality !== undefined) { storage.quality = quality; }
+      if (debug !== undefined) {
+        storage.debug = debug;
+      }
+
+      if (quality !== undefined) {
+        if (quality !== GraphicsQuality.LOW && quality !== GraphicsQuality.MEDIUM && quality !== GraphicsQuality.HIGH) {
+          quality = GraphicsQuality.MEDIUM;
+        }
+        storage.quality = quality;
+      }
+
       // restore normal graphic mode
       if (storage.quality === GraphicsQuality.PHOTO) { storage.quality = GraphicsQuality.HIGH; }
     }

@@ -14,6 +14,7 @@ export const LOW_CONFIG: IConfig = {
   ENABLE_SHADOWS: false,
   SHADOW_MAP_SIZE: 0,
   SHADOW_MAP_TYPE: THREE.BasicShadowMap,
+  OBJECT_RECEIVE_SHADOW: false,
 
   SPAWN: new THREE.Vector3(10000, 0, 10000)
 };
@@ -28,6 +29,7 @@ export const MEDIUM_CONFIG: IConfig = {
   ENABLE_SHADOWS: false,
   SHADOW_MAP_SIZE: 0,
   SHADOW_MAP_TYPE: THREE.BasicShadowMap,
+  OBJECT_RECEIVE_SHADOW: false,
 
   SPAWN: new THREE.Vector3(34000, 24000, 34000)
 };
@@ -42,6 +44,7 @@ export const HIGH_CONFIG: IConfig = {
   ENABLE_SHADOWS: true,
   SHADOW_MAP_SIZE: 8192,
   SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap,
+  OBJECT_RECEIVE_SHADOW: true,
 
   SPAWN: new THREE.Vector3(65000, 48000, 65000)
 };
@@ -56,6 +59,7 @@ export const ULTRA_CONFIG: IConfig = {
   ENABLE_SHADOWS: true,
   SHADOW_MAP_SIZE: 8192 * 2,
   SHADOW_MAP_TYPE: THREE.PCFSoftShadowMap,
+  OBJECT_RECEIVE_SHADOW: true,
 
   SPAWN: new THREE.Vector3(65000, 48000, 65000)
 };
