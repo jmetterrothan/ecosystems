@@ -44,6 +44,9 @@ class OceanBiome extends Biome {
     this.depth = 1.425;
     this.flat = MathUtils.rng() >= 0.5;
 
+    this.waterColor1 = new THREE.Color(0x07c9d0);
+    this.waterColor2 = new THREE.Color(0x205cc8);
+
     this.waterDistortion = true;
     this.waterDistortionFreq = 1.5;
     this.waterDistortionAmp = 2048.0;
