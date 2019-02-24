@@ -32,6 +32,7 @@ import CommonUtils from '@shared/utils/Common.utils';
 
 import { INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
 import { CROSSHAIR_STATES } from '@ui/enums/CrosshairState.enum';
+import { GraphicsQuality } from '@app/shared/enums/graphicsQuality.enum';
 
 class Terrain {
   static readonly NCHUNKS_X: number = 14;
@@ -309,6 +310,10 @@ class Terrain {
    * @param {MouseTypes} interactionType
    */
   handlePlayerInteraction(raycaster: THREE.Raycaster, interactionType: INTERACTION_TYPE) {
+    if (configSvc.quality === GraphicsQuality.PHOTO) {
+      return;
+    }
+
     switch (interactionType) {
       case INTERACTION_TYPE.MOUSE_MOVE:
         const now = window.performance.now();
