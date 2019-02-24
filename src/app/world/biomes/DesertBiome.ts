@@ -1,20 +1,25 @@
-import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 import * as THREE from 'three';
 import * as TWEEN from '@tweenjs/tween.js';
 
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import Chunk from '@world/Chunk';
+import Boids from '@app/boids/Boids';
+import Fly from '@app/boids/creatures/Fly';
+import MathUtils from '@app/shared/utils/Math.utils';
 
 import { IBiome } from '@world/models/biome.model';
 import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
 
 import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
+import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
 import DesertSFXMp3 from '@sounds/DesertSFX.mp3';
 
 class DesertBiome extends Biome {
+  private boids: Boids[];
+
   private skull: THREE.Object3D;
   private carcass: THREE.Object3D;
 
@@ -22,6 +27,8 @@ class DesertBiome extends Biome {
 
   constructor(terrain: Terrain) {
     super('DESERT', terrain);
+
+    this.boids = [];
 
     this.temperature = 45;
 
@@ -51,6 +58,8 @@ class DesertBiome extends Biome {
       underwater: ISpecialObjectCanPlaceIn.BOTH
     }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
 
+    this.initFlyBoids();
+
     // vulture
     // this.vulture = chunk.getObject({ ...corpseItem });
     // this.vulture.position.setY(Chunk.CLOUD_LEVEL);
@@ -58,8 +67,26 @@ class DesertBiome extends Biome {
     // chunk.placeObject(this.vulture, { save: true });
   }
 
+  private initFlyBoids() {
+    const size = MathUtils.randomInt(100000, 140000);
+
+    const px = this.carcass.position.x;
+    const pz = this.carcass.position.z;
+
+    const sy = 40960;
+    const py = Math.max(Chunk.SEA_LEVEL + sy / 2, this.generator.computeHeightAt(px, pz) + sy / 3);
+
+    // flies
+    const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, sy, size), new THREE.Vector3(px, py, pz));
+    for (let i = 0, n = MathUtils.randomInt(4, 10); i < n; i++) {
+      boids.addCreature(new Fly());
+    }
+
+    this.boids.push(boids);
+  }
+
   update(delta: number) {
-    // this.vulture.rotateOnAxis(new THREE.Vector3(0, 1, 0), THREE.Math.degToRad(0.4));
+    this.boids.forEach(boids => boids.update(this.generator, delta));
   }
 
   handleClick(raycaster: THREE.Raycaster) {

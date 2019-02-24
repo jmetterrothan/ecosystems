@@ -2,7 +2,14 @@ import * as THREE from 'three';
 
 import Chunk from '@world/Chunk';
 import BiomeGenerator from '@world/BiomeGenerator';
+
 import Creature from '@boids/Creatures/Creature';
+import TropicalFish from '@app/boids/creatures/TropicalFish';
+import BandedButterflyFish from '@app/boids/creatures/BandedButterflyFish';
+import ClownFish from '@app/boids/creatures/ClownFish';
+import Butterfly from '@boids/creatures/Butterfly';
+import DiscusFish from './creatures/DiscusFish';
+
 import MathUtils from '@shared/utils/Math.utils';
 
 import { configSvc } from '@app/shared/services/config.service';
@@ -68,11 +75,19 @@ class Boids {
       creature.update(this.creatures, generator, delta);
     });
 
+    // repulse trophies
     const someCreaturesRepulsed = this.creatures.some((creature: Creature) => creature.getModelPosition().distanceTo(playerSvc.getPosition()) < creature.getMinRepulseDistance());
     if (someCreaturesRepulsed) {
-      progressionSvc.increment(this.creatures[0].getParameters().underwater
-        ? PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_fishes
-        : PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_butterflies);
+      if (this.creatures[0] instanceof Butterfly) {
+        progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_butterflies);
+      } else if (
+        this.creatures[0] instanceof ClownFish ||
+        this.creatures[0] instanceof DiscusFish ||
+        this.creatures[0] instanceof BandedButterflyFish ||
+        this.creatures[0] instanceof TropicalFish
+      ) {
+        progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.repulse_fishes);
+      }
     }
   }
 }
