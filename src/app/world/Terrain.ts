@@ -889,7 +889,7 @@ class Terrain {
     this.water = new THREE.Mesh(new THREE.Geometry(), WATER_MATERIAL);
     this.water.frustumCulled = true;
     this.water.castShadow = false;
-    this.water.receiveShadow = true;
+    this.water.receiveShadow = false;
     this.layers.add(this.water);
 
     if (configSvc.debug) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
