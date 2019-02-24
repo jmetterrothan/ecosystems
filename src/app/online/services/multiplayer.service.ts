@@ -3,7 +3,6 @@ import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
 
 import World from '@world/World';
-import Chunk from '@world/Chunk';
 
 import { progressionSvc } from '@achievements/services/progression.service';
 
@@ -16,6 +15,7 @@ import { SOCKET_EVENTS } from '@online/constants/socketEvents.constants';
 import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
 
 import { ENV } from '@shared/env/env';
+import CommonUtils from '@app/shared/utils/Common.utils';
 
 class MultiplayerService {
 
@@ -60,7 +60,10 @@ class MultiplayerService {
     this.scene = scene;
     this.roomID = seed;
 
-    const url: string = `${ENV.socketBaseUrl}:${ENV.socketPort}`;
+    const url: string = CommonUtils.isDev()
+      ? `${ENV.socketBaseUrl}:${ENV.socketPort}`
+      : `${ENV.socketBaseUrl}`;
+
     this.socket = io.connect(url);
 
     this.socket.emit(SOCKET_EVENTS.CL_SEND_JOIN_ROOM, this.roomID);
