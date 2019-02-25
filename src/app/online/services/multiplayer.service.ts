@@ -181,7 +181,9 @@ class MultiplayerService {
   private onPositionupdated(data: ISocketDataPositionUpdated) {
     // update user mesh position
     const op = this.onlinePlayers.get(data.userID);
-    if (op) { op.update(new THREE.Vector3(data.position.x, data.position.y, data.position.z)); }
+    if (op instanceof OnlinePlayer) {
+      op.update(new THREE.Vector3(data.position.x, data.position.y, data.position.z));
+    }
   }
 
   private onObjectAdded(data: ISocketDataObjectAdded) {
@@ -196,7 +198,9 @@ class MultiplayerService {
   private onDisconnection(data: ISocketDataDisconnection) {
     // remove mesh from scene
     const op = this.onlinePlayers.get(data.userID);
-    if (op) { op.clean(this.scene); }
+    if (op instanceof OnlinePlayer) {
+      op.clean(this.scene);
+    }
     this.onlinePlayers.delete(data.userID);
 
     this.onlineStatus$.next(this.getOnlineStatus());
