@@ -15,7 +15,10 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
     snowy_hills: 'Snowy Hills',
     swamps: 'Swamps',
   },
-  online_count: 'Online {{count}}',
+  online: {
+    count: 'Online {{count}}',
+    room_joined: 'New user connected'
+  },
   trophy_unlocked: 'Trophy unlocked',
   home: {
     title: 'Ecosystems',

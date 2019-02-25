@@ -15,7 +15,10 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     snowy_hills: 'Terres enneigées',
     swamps: 'Marais',
   },
-  online_count: 'En ligne {{count}}',
+  online: {
+    count: 'En ligne {{count}}',
+    room_joined: 'Nouvel utilisateur connecté'
+  },
   trophy_unlocked: 'Trophée débloqué',
   home: {
     title: 'Ecosystems',

@@ -80,7 +80,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
 
       onlineInfo = (
         <div className='overlay__online'>
-          <span className={pastilleClassnames} />{translationSvc.translate('UI.online_count', { count: onlineStatus.online })}
+          <span className={pastilleClassnames} />{translationSvc.translate('UI.online.count', { count: onlineStatus.online })}
         </div>
       );
     }

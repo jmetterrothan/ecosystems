@@ -39,7 +39,10 @@ export interface ITrophiesTranslationKeys {
 }
 
 export interface IUITranslationKeys {
-  online_count: string;
+  online: {
+    room_joined: string;
+    count: string;
+  };
   trophy_unlocked: string;
   biomes: {
     desert: string;

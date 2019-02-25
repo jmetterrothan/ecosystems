@@ -1,10 +1,14 @@
+import uniqid from 'uniqid';
 import * as THREE from 'three';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
 
 import World from '@world/World';
+import CommonUtils from '@app/shared/utils/Common.utils';
 
 import { progressionSvc } from '@achievements/services/progression.service';
+import { notificationSvc } from '@shared/services/notification.service';
+import { translationSvc } from '@app/shared/services/translation.service';
 
 import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded, ISocketDataObjectRemoved } from '@online/models/socketData.model';
 import { IPick } from '@world/models/pick.model';
@@ -15,7 +19,8 @@ import { SOCKET_EVENTS } from '@online/constants/socketEvents.constants';
 import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
 
 import { ENV } from '@shared/env/env';
-import CommonUtils from '@app/shared/utils/Common.utils';
+
+import IconTrophyOnline from '!svg-react-loader!@images/icon_set_optimized/icon18.svg';
 
 class MultiplayerService {
 
@@ -134,6 +139,15 @@ class MultiplayerService {
         const object = new THREE.ObjectLoader().parse(obj);
         this.objectInteractionSource.next(<IOnlineObject>{ object, type: ONLINE_INTERACTION.REMOVE, animate: false });
       });
+    } else {
+      // notify other players that someone has connected to the server
+      notificationSvc.push({
+        id: uniqid(),
+        Icon: IconTrophyOnline,
+        label: translationSvc.translate('UI.online.room_joined'),
+        content: 'Ghuntheur69',
+        duration: 5000
+      });
     }
 
     // share time
@@ -154,7 +168,6 @@ class MultiplayerService {
         this.onlineStatus$.next(this.getOnlineStatus());
       }
     });
-
   }
 
   private onPositionupdated(data: ISocketDataPositionUpdated) {
