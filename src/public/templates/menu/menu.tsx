@@ -42,6 +42,8 @@ class Menu extends React.PureComponent<Props> {
   }
 
   render() {
+    const { uiManager } = this.props;
+
     return (
       <div className='ui__state menu'>
         <div className='menu__container'>
@@ -85,7 +87,7 @@ class Menu extends React.PureComponent<Props> {
               </Tab>
             </TabList>
 
-            <TabPanel><div className='p-3 pb-9 pb-3-t'><HomeTab /></div></TabPanel>
+            <TabPanel><div className='p-3 pb-9 pb-3-t'><HomeTab uiManager={uiManager} /></div></TabPanel>
             <TabPanel><div className='p-3 pb-9 pb-3-t'><TutorialTab /></div></TabPanel>
             <TabPanel><div className='p-3 pb-9 pb-3-t'><TrophiesTab /></div></TabPanel>
             <TabPanel><div className='p-3 pb-9 pb-3-t'><ProgressTab /></div></TabPanel>

@@ -22,3 +22,14 @@
     }
   }
 }
+
+.home-tab-title {
+  &__legend {
+    display: block;
+    width: 100%;
+    line-height: 1rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+    text-align: right;
+  }
+}

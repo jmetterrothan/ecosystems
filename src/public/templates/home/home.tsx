@@ -84,6 +84,8 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     let seed = queryString.get('seed');
     if (seed === '' || seed === undefined) {
       seed = MathUtils.randomUint32().toString();
+    } else {
+      seed = decodeURI(seed);
     }
 
     const autostart = queryString.get('autostart', QueryStringType.BOOLEAN);
