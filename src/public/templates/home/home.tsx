@@ -304,7 +304,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
                     <label htmlFor='onlineModeOff' className='mr-2 ui-click-sound'>{translationSvc.translate('UI.home.form.singleplayer_option')}</label>
                   </Col>
                   <Col className='flexcol--12'>
-                    <input disabled={true} className='form__element form__element--rounded' type='radio' id='onlineModeOn' name='onlineMode' onChange={this.handleOnlineChange} value='1' checked={onlineMode !== false} />
+                    <input disabled={busy} className='form__element form__element--rounded' type='radio' id='onlineModeOn' name='onlineMode' onChange={this.handleOnlineChange} value='1' checked={onlineMode !== false} />
                     <label htmlFor='onlineModeOn' className='ui-click-sound'>{translationSvc.translate('UI.home.form.multiplayer_option')}</label>
                   </Col>
                 </Row>
