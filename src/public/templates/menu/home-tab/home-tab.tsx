@@ -1,4 +1,5 @@
 import React from 'react';
+import Slider from 'react-slick';
 
 import { H1, H2, H3, H4, H5 } from '@public/components/hx/hx';
 import Article from '@public/components/article/article';
@@ -27,18 +28,33 @@ class HomeTab extends React.Component<IProps, any> {
         </header>
         <div className='tab__content'>
          {this.getOnlineShare()}
-          <Article>
-            <H4 className='mb-2'>{translationSvc.translate('UI.home-tab.article.title_project')}</H4>
-            <p className='paragraph mb-2'>{translationSvc.translate('UI.home-tab.article.p1')}</p>
-            <p className='paragraph mb-2'>{translationSvc.translate('UI.home-tab.article.p2', { count: Biomes.length })}</p>
-            <p className='paragraph mb-3'>{translationSvc.translate('UI.home-tab.article.p3', { count: achievementSvc.getTrophiesCount() })}</p>
-
-            <H4 className='mb-2'>{translationSvc.translate('UI.home-tab.article.title_tech')}</H4>
-            <p className='paragraph mb-2'>{translationSvc.translate('UI.home-tab.article.p4')}</p>
-            <p className='paragraph mb-3'>{translationSvc.translate('UI.home-tab.article.p5')}</p>
-          </Article>
+         <Slider dots={true} vertical={false} infinite={false} speed={500} slidesToShow={1} slidesToScroll={1}>
+            {this.getFirstPanel()}
+            {this.getSecondPanel()}
+          </Slider>
         </div>
       </div>
+    );
+  }
+
+  getFirstPanel() {
+    return (
+      <Article>
+        <H4 className='mb-2'>{translationSvc.translate('UI.home-tab.article.title_project')}</H4>
+        <p className='paragraph mb-2'>{translationSvc.translate('UI.home-tab.article.p1')}</p>
+        <p className='paragraph mb-2'>{translationSvc.translate('UI.home-tab.article.p2', { count: Biomes.length })}</p>
+        <p className='paragraph mb-3'>{translationSvc.translate('UI.home-tab.article.p3', { count: achievementSvc.getTrophiesCount() })}</p>
+      </Article>
+    );
+  }
+
+  getSecondPanel() {
+    return (
+      <Article>
+        <H4 className='mb-2'>{translationSvc.translate('UI.home-tab.article.title_tech')}</H4>
+        <p className='paragraph mb-2'>{translationSvc.translate('UI.home-tab.article.p4')}</p>
+        <p className='paragraph mb-3'>{translationSvc.translate('UI.home-tab.article.p5')}</p>
+      </Article>
     );
   }
 

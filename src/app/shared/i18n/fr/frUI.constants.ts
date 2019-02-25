@@ -95,7 +95,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
       p2: 'Vous pouvez recharger la page ou appuyer sur "Nouveau monde" pour générer aléatoirement un nouveau monde unique. Il y a au total {{count}} types de biomes différents à découvrir.',
       p3: 'Débloquer les {{count}} trophées en parcourant et fouillant tous les mondes.',
       p4: 'Le projet utilise three.js pour le rendu, React pour l\'interface, et tensorflow pour pouvoir interagir en parlant avec le monde. Certaines fonctionnalités sont toujours en phase de développement, notamment au niveau de l\'interface et certains éléments de gameplay.',
-      p5: 'Utiliser une version PC de Chome ou Firefox pour une expérience optimale.'
+      p5: 'Utiliser une version PC de Chome pour une expérience optimale.'
     },
     share: {
       text: 'Vous pouvez partagez la session actuelle en envoyant le lien suivant :'

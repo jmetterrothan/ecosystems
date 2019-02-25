@@ -95,7 +95,7 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
       p2: 'You can reload the page anytime you want or click the "New world" button to generate a brand new and unique world. There is a total of {{count}} different biomes to discover.',
       p3: 'Unlock all {{count}} trophies by roaming and searching the worlds.',
       p4: 'The project uses three.js for the rendering, React for the user interface, and tensorflow for voice commands recognition. Some functionalities are still in development and prone to bugs.',
-      p5: 'Use a desktop version of Chrome or Firefox for an optimal experience.'
+      p5: 'Use a desktop version of Chrome for an optimal experience.'
     },
     share: {
       text: 'You can share the current session with the following link :'
