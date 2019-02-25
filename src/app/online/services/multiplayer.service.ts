@@ -14,7 +14,7 @@ import { translationSvc } from '@app/shared/services/translation.service';
 import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded, ISocketDataObjectRemoved } from '@online/models/socketData.model';
 import { IPick } from '@world/models/pick.model';
 import { IOnlineStatus } from '@online/models/onlineStatus.model';
-import { IOnlineObject, ONLINE_INTERACTION } from '@online/models/onlineObjects.model';
+import { IOnlineObject, ONLINE_INTERACTION, IOnlineUser } from '@online/models/onlineObjects.model';
 
 import { SOCKET_EVENTS } from '@online/constants/socketEvents.constants';
 import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
@@ -36,7 +36,7 @@ class MultiplayerService {
   time$: Observable<number>;
 
   private roomID: string;
-  private userId: string;
+  private user: IOnlineUser;
 
   private alive: boolean;
 
@@ -84,6 +84,14 @@ class MultiplayerService {
   isUsed(): boolean { return this.used; }
 
   /**
+   * Get user
+   */
+  getUser(): IOnlineUser {
+    if (!this.user) throw 'User does not exist';
+    return this.user;
+  }
+
+  /**
    * Send current player position to server
    * @param {THREE.Vector3} position
    */
@@ -126,8 +134,8 @@ class MultiplayerService {
   }
 
   private onRoomJoined(data: ISocketDataRoomJoined) {
-    if (!this.userId && this.userId !== data.me) {
-      this.userId = data.me;
+    if (!this.user && this.user !== data.me) {
+      this.user = data.me;
 
       if (data.usersConnected.length === 1) progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.create_game_online);
 
@@ -148,20 +156,20 @@ class MultiplayerService {
         id: uniqid(),
         Icon: IconTrophyOnline,
         label: translationSvc.translate('UI.online.room_joined'),
-        content: 'Ghuntheur69',
+        content: this.user.name,
         duration: 5000
       });
     }
 
-    if (this.userId === data.me && data.usersConnected.length > 1) {
+    if (this.user === data.me && data.usersConnected.length > 1) {
       progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.join_game_online);
     }
 
     // init mesh for each new users
-    data.usersConnected.forEach((user: string) => {
-      if (!this.onlineUsers.has(user) && user !== this.userId) {
+    data.usersConnected.forEach((user: IOnlineUser) => {
+      if (!this.onlineUsers.has(user.id) && user.id !== this.user.id) {
         const userGroup = this.createUserGroup(user);
-        this.onlineUsers.set(user, userGroup);
+        this.onlineUsers.set(user.id, userGroup);
         this.scene.add(userGroup);
 
         this.onlineStatus$.next(this.getOnlineStatus());
@@ -201,15 +209,17 @@ class MultiplayerService {
     this.onlineStatus$.next(this.getOnlineStatus());
   }
 
-  private createUserGroup(userID: string): THREE.Group {
+  private createUserGroup(user: IOnlineUser): THREE.Group {
     const group = new THREE.Group();
 
+    console.log(user);
+
     const userMesh = World.LOADED_MODELS.get('player').clone();
-    userMesh.userData = { userID };
+    userMesh.userData = { ...user };
     group.add(userMesh);
     group.userData.mesh = userMesh;
 
-    const textSprite = new SpriteText2D('pink-horse', { align: textAlign.center, font: '400px Arial', fillStyle: '#ffffff', antialias: true });
+    const textSprite = new SpriteText2D(user.name, { align: textAlign.center, font: '400px Arial', fillStyle: '#ffffff', antialias: true });
     textSprite.userData.offsetY = 1024;
     group.add(textSprite);
     group.userData.sprite = textSprite;

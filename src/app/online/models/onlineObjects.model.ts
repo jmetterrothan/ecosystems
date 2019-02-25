@@ -7,6 +7,11 @@ export interface IOnlineObject {
   type: ONLINE_INTERACTION;
 }
 
+export interface IOnlineUser {
+  id: string;
+  name: string;
+}
+
 export enum ONLINE_INTERACTION {
   ADD,
   REMOVE
