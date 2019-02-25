@@ -2,10 +2,9 @@ import uniqid from 'uniqid';
 import * as THREE from 'three';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
-import { SpriteText2D, textAlign } from 'three-text2d';
 
-import World from '@world/World';
 import CommonUtils from '@app/shared/utils/Common.utils';
+import OnlinePlayer from '@app/OnlinePlayer';
 
 import { progressionSvc } from '@achievements/services/progression.service';
 import { notificationSvc } from '@shared/services/notification.service';
@@ -40,7 +39,7 @@ class MultiplayerService {
 
   private alive: boolean;
 
-  private onlineUsers: Map<string, THREE.Object3D>;
+  private onlinePlayers: Map<string, OnlinePlayer>;
   onlineStatus$: Subject<IOnlineStatus>;
 
   constructor() {
@@ -50,7 +49,7 @@ class MultiplayerService {
     this.timeSource = new Subject();
     this.time$ = this.timeSource.asObservable();
 
-    this.onlineUsers = new Map();
+    this.onlinePlayers = new Map();
     this.onlineStatus$ = new Subject();
 
     this.alive = true;
@@ -96,7 +95,9 @@ class MultiplayerService {
    * @param {THREE.Vector3} position
    */
   sendPosition(position: THREE.Vector3) {
-    if (this.onlineUsers.size) this.socket.emit(SOCKET_EVENTS.CL_SEND_PLAYER_POSITION, { position, roomID: this.roomID });
+    if (this.onlinePlayers.size) {
+      this.socket.emit(SOCKET_EVENTS.CL_SEND_PLAYER_POSITION, { position, roomID: this.roomID });
+    }
   }
 
   checkStatus() {
@@ -167,10 +168,10 @@ class MultiplayerService {
 
     // init mesh for each new users
     data.usersConnected.forEach((user: IOnlineUser) => {
-      if (!this.onlineUsers.has(user.id) && user.id !== this.user.id) {
-        const userGroup = this.createUserGroup(user);
-        this.onlineUsers.set(user.id, userGroup);
-        this.scene.add(userGroup);
+      if (!this.onlinePlayers.has(user.id) && user.id !== this.user.id) {
+        const op = new OnlinePlayer(user.id, user.name);
+        op.init(this.scene);
+        this.onlinePlayers.set(user.id, op);
 
         this.onlineStatus$.next(this.getOnlineStatus());
       }
@@ -179,16 +180,8 @@ class MultiplayerService {
 
   private onPositionupdated(data: ISocketDataPositionUpdated) {
     // update user mesh position
-    const group = this.onlineUsers.get(data.userID);
-
-    const userMesh = group.userData.mesh;
-    userMesh.position.copy(data.position);
-
-    // update username text position
-    const sprite = group.userData.sprite;
-    const textPosition = userMesh.position.clone();
-    textPosition.y += sprite.userData.offsetY;
-    sprite.position.copy(textPosition);
+    const op = this.onlinePlayers.get(data.userID);
+    if (op) { op.update(data.position); }
   }
 
   private onObjectAdded(data: ISocketDataObjectAdded) {
@@ -202,33 +195,15 @@ class MultiplayerService {
 
   private onDisconnection(data: ISocketDataDisconnection) {
     // remove mesh from scene
-    const user = this.onlineUsers.get(data.userID);
-    this.scene.remove(user);
-    this.onlineUsers.delete(data.userID);
+    const op = this.onlinePlayers.get(data.userID);
+    if (op) { op.clean(this.scene); }
+    this.onlinePlayers.delete(data.userID);
 
     this.onlineStatus$.next(this.getOnlineStatus());
   }
 
-  private createUserGroup(user: IOnlineUser): THREE.Group {
-    const group = new THREE.Group();
-
-    console.log(user);
-
-    const userMesh = World.LOADED_MODELS.get('player').clone();
-    userMesh.userData = { ...user };
-    group.add(userMesh);
-    group.userData.mesh = userMesh;
-
-    const textSprite = new SpriteText2D(user.name, { align: textAlign.center, font: '400px Arial', fillStyle: '#ffffff', antialias: true });
-    textSprite.userData.offsetY = 1024;
-    group.add(textSprite);
-    group.userData.sprite = textSprite;
-
-    return group;
-  }
-
   getOnlineUsersCount(): number {
-    return this.onlineUsers.size + 1;
+    return this.onlinePlayers.size + 1;
   }
 
   getOnlineStatus(): IOnlineStatus {
