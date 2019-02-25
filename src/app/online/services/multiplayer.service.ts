@@ -56,7 +56,7 @@ class MultiplayerService {
     this.onlinePlayers = new Map();
     this.onlineStatus$ = new Subject();
 
-    this.toggleChatSource = new Subject<boolean>();
+    this.toggleChatSource = new Subject<void>();
     this.toggleChat$ = this.toggleChatSource.asObservable();
 
     this.alive = true;
@@ -133,7 +133,7 @@ class MultiplayerService {
 
   toggleChat() {
     this.chatOpened = !this.chatOpened;
-    this.toggleChatSource.next(this.chatOpened);
+    this.toggleChatSource.next();
   }
 
   chatIsOpened(): boolean {

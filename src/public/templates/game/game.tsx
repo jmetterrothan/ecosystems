@@ -25,6 +25,7 @@ interface IGameState {
   soundEnabled: boolean;
   voiceEnabled: boolean;
   chatOpened: boolean;
+  messageValue: string;
 }
 
 class Game extends React.PureComponent<IGameProps, IGameState> {
@@ -33,6 +34,8 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
   private configVoiceSubscription: Subscription;
   private onlineStatusSubscription: Subscription;
   private toggleChatSubscription: Subscription;
+
+  private messageInput: HTMLInputElement;
 
   constructor(props) {
     super(props);
@@ -43,7 +46,8 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
       onlineStatus: multiplayerSvc.getOnlineStatus(),
       soundEnabled: configSvc.soundEnabled,
       voiceEnabled: configSvc.voiceEnabled,
-      chatOpened: multiplayerSvc.chatIsOpened()
+      chatOpened: multiplayerSvc.chatIsOpened(),
+      messageValue: ''
     };
   }
 
@@ -61,8 +65,12 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
       this.setState({ onlineStatus: status });
     });
     if (multiplayerSvc.isUsed()) {
+      if (multiplayerSvc.chatIsOpened()) setTimeout(() => this.messageInput.focus(), 10);
       this.toggleChatSubscription = multiplayerSvc.toggleChat$.subscribe(() => {
-        this.setState({ chatOpened: multiplayerSvc.chatIsOpened() });
+        const chatOpened = multiplayerSvc.chatIsOpened();
+        this.setState({ chatOpened }, () => {
+          if (chatOpened) setTimeout(() => this.messageInput.focus(), 10);
+        });
       });
     }
 
@@ -76,14 +84,25 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     if (multiplayerSvc.isUsed()) this.toggleChatSubscription.unsubscribe();
   }
 
+  messageChange = ev => {
+    console.log(ev.target.value);
+    this.setState({ messageValue: ev.target.value });
+  }
+
+  submitMessage = ev => {
+    ev.preventDefault();
+
+    console.log(this.state.messageValue);
+  }
+
   private renderChat() {
     return (
       <div className='chat-container'>
         <div className='messages'>
           les messages;
-            </div>
-        <form>
-          <input type='text' className='input-message' />
+        </div>
+        <form onSubmit={this.submitMessage}>
+          <input type='text' className='input-message' value={this.state.messageValue} onChange={this.messageChange} ref={el => this.messageInput = el} />
         </form>
       </div>
     );
