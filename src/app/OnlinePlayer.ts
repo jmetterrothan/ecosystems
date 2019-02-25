@@ -1,16 +1,14 @@
 import * as THREE from 'three';
 import { SpriteText2D, textAlign } from 'three-text2d';
 
-import World from '@world/World';
-
 class OnlinePlayer {
   private id: string;
   private name: string;
-  private color: string;
+  private color: THREE.Color | string;
   private model: THREE.Object3D;
   private tag: SpriteText2D;
 
-  constructor(id: string, name: string, color: string = '#00ff00') {
+  constructor(id: string, name: string, color: THREE.Color | string) {
     this.id = id;
     this.name = name;
     this.color = color;
@@ -19,15 +17,17 @@ class OnlinePlayer {
   init(scene: THREE.Scene) {
     // model
     const geometry = new THREE.IcosahedronGeometry(1000, 0);
-    const material = new THREE.MeshLambertMaterial({ color: this.color });
-    material.flatShading = true;
+    const material = new THREE.MeshLambertMaterial({
+      color: this.color,
+      flatShading: true
+    });
 
     this.model = new THREE.Mesh(geometry, material);
 
     // tag
     this.tag = new SpriteText2D(this.name.toUpperCase(), {
       align: textAlign.center,
-      font: 'bold 1000px Karla',
+      font: 'bold 1000px Arial',
       fillStyle: '#ffffff',
       antialias: true
     });
@@ -38,12 +38,14 @@ class OnlinePlayer {
   }
 
   update(position: THREE.Vector3) {
-    this.model.position.copy(position);
+    if (position instanceof THREE.Vector3) {
+      this.model.position.copy(position);
 
-    // update tag position
-    const textPosition = position.clone();
-    textPosition.y += 2048;
-    this.tag.position.copy(textPosition);
+      // update tag position
+      const textPosition = position.clone();
+      textPosition.y += 2048;
+      this.tag.position.copy(textPosition);
+    }
   }
 
   clean(scene: THREE.Scene) {

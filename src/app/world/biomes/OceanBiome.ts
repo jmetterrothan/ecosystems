@@ -103,8 +103,8 @@ class OceanBiome extends Biome {
       const px = size / 2 + point.shift();
       const pz = size / 2 + point.shift();
 
-      const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 3.75, Chunk.HEIGHT / 3) - 4096;
-      const py = Chunk.SEA_LEVEL - 4096 - ySize / 2;
+      const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 3.75, Chunk.HEIGHT / 3) - 5120;
+      const py = Chunk.SEA_LEVEL - 5120 - ySize / 2;
 
       const m = this.generator.computeMoistureAt(px, pz);
 

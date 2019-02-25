@@ -10,6 +10,7 @@ export interface IOnlineObject {
 export interface IOnlineUser {
   id: string;
   name: string;
+  color: string;
 }
 
 export enum ONLINE_INTERACTION {

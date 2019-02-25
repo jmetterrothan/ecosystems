@@ -182,9 +182,6 @@ import sunMtl from '@objmodels/misc/sun.mtl';
 import moonObj from '@objmodels/misc/moon.obj';
 import moonMtl from '@objmodels/misc/moon.mtl';
 
-import playerObj from '@objmodels/misc/player.obj';
-import playerMtl from '@objmodels/misc/player.mtl';
-
 import oldLogObj from '@objmodels/tree/old_log.obj';
 import oldLogMtl from '@objmodels/tree/old_log.mtl';
 
@@ -290,7 +287,6 @@ export const OBJECTS: IObject[] = [
   { name: 'yellow_tree', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: yellow_treeObj, mtl: yellow_treeMtl },
   { name: 'bush3', type: OBJ_TYPE.PLANT, obj: bush3Obj, mtl: bush3Mtl },
   { name: 'old_log', type: OBJ_TYPE.MISC, obj: oldLogObj, mtl: oldLogMtl },
-  { name: 'player', type: OBJ_TYPE.MISC, obj: playerObj, mtl: playerMtl },
   { name: 'scarecrow', type: OBJ_TYPE.MISC, obj: scarecrowObj, mtl: scarecrowMtl, doubleSide: true },
   { name: 'sun', type: OBJ_TYPE.MISC, obj: sunObj, mtl: sunMtl, doubleSide: true },
   { name: 'moon', type: OBJ_TYPE.MISC, obj: moonObj, mtl: moonMtl, doubleSide: true },

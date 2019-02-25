@@ -169,7 +169,7 @@ class MultiplayerService {
     // init mesh for each new users
     data.usersConnected.forEach((user: IOnlineUser) => {
       if (!this.onlinePlayers.has(user.id) && user.id !== this.user.id) {
-        const op = new OnlinePlayer(user.id, user.name);
+        const op = new OnlinePlayer(user.id, user.name, new THREE.Color(user.color));
         op.init(this.scene);
         this.onlinePlayers.set(user.id, op);
 
@@ -181,7 +181,7 @@ class MultiplayerService {
   private onPositionupdated(data: ISocketDataPositionUpdated) {
     // update user mesh position
     const op = this.onlinePlayers.get(data.userID);
-    if (op) { op.update(data.position); }
+    if (op) { op.update(new THREE.Vector3(data.position.x, data.position.y, data.position.z)); }
   }
 
   private onObjectAdded(data: ISocketDataObjectAdded) {
