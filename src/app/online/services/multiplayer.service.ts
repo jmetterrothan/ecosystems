@@ -156,7 +156,7 @@ class MultiplayerService {
         id: uniqid(),
         Icon: IconTrophyOnline,
         label: translationSvc.translate('UI.online.room_joined'),
-        content: this.user.name,
+        content: data.me.name,
         duration: 5000
       });
     }
