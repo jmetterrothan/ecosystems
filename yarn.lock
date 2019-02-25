@@ -6490,6 +6490,11 @@ terser@^3.16.1:
     source-map "~0.6.1"
     source-map-support "~0.5.9"
 
+three-text2d@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/three-text2d/-/three-text2d-0.5.0.tgz#fb395b58f9aec98766740536068ab3c42e9be3c4"
+  integrity sha512-OmqOmDHBC/6+dDtjY88NYDKiP6YbDINPKOyL/JgDIH65ZQCHy/Ey+EkZP05UZLlzEuG89TEkeQ43elX/W7kaLQ==
+
 three@^0.98.0:
   version "0.98.0"
   resolved "https://registry.yarnpkg.com/three/-/three-0.98.0.tgz#11d4e3cca4b5d099c7de0ea5afa153b5d20cda84"

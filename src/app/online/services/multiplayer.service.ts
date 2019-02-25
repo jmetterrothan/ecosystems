@@ -2,6 +2,7 @@ import uniqid from 'uniqid';
 import * as THREE from 'three';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
+import { SpriteText2D, textAlign } from 'three-text2d';
 
 import World from '@world/World';
 import CommonUtils from '@app/shared/utils/Common.utils';
@@ -159,10 +160,9 @@ class MultiplayerService {
     // init mesh for each new users
     data.usersConnected.forEach((user: string) => {
       if (!this.onlineUsers.has(user) && user !== this.userId) {
-        const userMesh = this.createUserMesh(user);
-
-        this.onlineUsers.set(user, userMesh);
-        this.scene.add(userMesh);
+        const userGroup = this.createUserGroup(user);
+        this.onlineUsers.set(user, userGroup);
+        this.scene.add(userGroup);
 
         this.onlineStatus$.next(this.getOnlineStatus());
       }
@@ -170,8 +170,17 @@ class MultiplayerService {
   }
 
   private onPositionupdated(data: ISocketDataPositionUpdated) {
-    const mesh = this.onlineUsers.get(data.userID);
-    mesh.position.copy(data.position);
+    // update user mesh position
+    const group = this.onlineUsers.get(data.userID);
+
+    const userMesh = group.userData.mesh;
+    userMesh.position.copy(data.position);
+
+    // update username text position
+    const sprite = group.userData.sprite;
+    const textPosition = userMesh.position.clone();
+    textPosition.y += sprite.userData.offsetY;
+    sprite.position.copy(textPosition);
   }
 
   private onObjectAdded(data: ISocketDataObjectAdded) {
@@ -192,12 +201,20 @@ class MultiplayerService {
     this.onlineStatus$.next(this.getOnlineStatus());
   }
 
-  private createUserMesh(userID: string): THREE.Object3D {
-    const user = World.LOADED_MODELS.get('player').clone();
-    user.userData = { userID };
+  private createUserGroup(userID: string): THREE.Group {
+    const group = new THREE.Group();
 
-    user.position.set(this.onlineUsers.size * 3000, 10000, 0);
-    return user;
+    const userMesh = World.LOADED_MODELS.get('player').clone();
+    userMesh.userData = { userID };
+    group.add(userMesh);
+    group.userData.mesh = userMesh;
+
+    const textSprite = new SpriteText2D('pink-horse', { align: textAlign.center, font: '400px Arial', fillStyle: '#ffffff', antialias: true });
+    textSprite.userData.offsetY = 1024;
+    group.add(textSprite);
+    group.userData.sprite = textSprite;
+
+    return group;
   }
 
   getOnlineUsersCount(): number {
