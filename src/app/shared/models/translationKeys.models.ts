@@ -39,7 +39,10 @@ export interface ITrophiesTranslationKeys {
 }
 
 export interface IUITranslationKeys {
-  online_count: string;
+  online: {
+    room_joined: string;
+    count: string;
+  };
   trophy_unlocked: string;
   biomes: {
     desert: string;
@@ -131,7 +134,10 @@ export interface IUITranslationKeys {
       p3: string;
       p4: string;
       p5: string;
-    }
+    };
+    share: {
+      text: string;
+    };
   };
   'credits-tab': {
     title: string;
@@ -162,7 +168,7 @@ export interface IUITranslationKeys {
       bug: string;
       improvement: string;
       other: string;
-    }
+    };
     message: string;
     send: string;
   };
