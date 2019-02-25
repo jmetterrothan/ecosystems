@@ -81,7 +81,7 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
       intro: 'You can place objects using your voice. Don\'t forget to give the application access to your microphone.',
       subtitle: 'Place an object with your voice',
       text: '...'
-    }
+    },
   },
   'home-tab': {
     title: 'Ecosystems',
@@ -93,6 +93,9 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
       p3: 'Unlock all {{count}} trophies by roaming and searching the worlds.',
       p4: 'The project uses three.js for the rendering, React for the user interface, and tensorflow for voice commands recognition. Some functionalities are still in development and prone to bugs.',
       p5: 'Use a desktop version of Chrome or Firefox for an optimal experience.'
+    },
+    share: {
+      text: 'You can share the current session with the following link :'
     }
   },
   'credits-tab': {

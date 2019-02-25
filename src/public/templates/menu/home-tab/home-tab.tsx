@@ -54,7 +54,7 @@ class HomeTab extends React.Component<IProps, any> {
       <form className='form online-share mb-3'>
         <div className='form__group'>
           <p className='paragraph color-darkblue bold mb-1'>
-            Vous pouvez partagez la session actuelle en envoyant le lien suivant :
+          {translationSvc.translate('UI.home-tab.share.text')}
           </p>
           <input type='text' className='form__element' readOnly={true} value={onlineShareLink} />
         </div>
