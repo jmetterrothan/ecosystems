@@ -225,15 +225,15 @@ class Chunk {
 
     const online = parameters.online;
 
-    if (online) pick.p.copy(object.position);
-
     this.objectsBlueprint = this.objectsBlueprint.filter(p => !pick.p.equals(p.p));
 
     const objectToDelete = online
       ? this.objects.children.find(obj => obj.position.equals(object.position))
       : object;
 
-    if (parameters.animate) {
+    console.log(objectToDelete, `online = ${online}`);
+
+    if (objectToDelete !== undefined && parameters.animate) {
       new TWEEN.Tween(objectToDelete.scale)
         .to(new THREE.Vector3(0.000001, 0.000001, 0.000001), 400)
         .easing(TWEEN.Easing.Cubic.In)
@@ -506,7 +506,7 @@ class Chunk {
 
     // convert object to pick
     const item: IPick = {
-      p: translation,
+      p: object.position,
       f: object.userData.float,
       n: object.userData.stackReference,
       r: object.rotation,
