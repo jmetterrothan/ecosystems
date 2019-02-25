@@ -63,11 +63,15 @@ class RainForestBiome extends Biome {
 
   initButterflyBoids() {
     const size = 85000;
+    const max = 2;
 
     const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
     const points = pds.fill();
 
+    let it = 0;
     points.forEach((point: number[]) => {
+      if (it >= max) { return; }
+
       const px = size / 2 + point.shift();
       const pz = size / 2 + point.shift();
 
@@ -83,17 +87,22 @@ class RainForestBiome extends Biome {
       }
 
       this.boids.push(boids);
+      it++;
     });
   }
 
   initFishBoids() {
     // boids
     const size = 50000;
+    const max = 3;
 
     const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 60, MathUtils.rng);
     const points = pds.fill();
 
+    let it = 0;
     points.forEach((point: number[]) => {
+      if (it >= max) { return; }
+
       const n = MathUtils.randomInt(2, 4);
       const px = point.shift() + size / 2;
       const pz = point.shift() + size / 2;
@@ -118,6 +127,7 @@ class RainForestBiome extends Biome {
       }
 
       this.boids.push(boids);
+      it++;
     });
   }
 

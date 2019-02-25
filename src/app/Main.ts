@@ -54,8 +54,6 @@ class Main {
     const far = 32 * 8 * 2048;
 
     this.camera = new THREE.PerspectiveCamera(50, aspect, near, far);
-
-    this.focused = true;
   }
 
   async init() {
@@ -172,10 +170,6 @@ class Main {
         if (!this.controls.enabled || !this.world.isInitialized()) { return; }
         this.world.handlePlayerInteraction(e.wheelDelta > 0 ? INTERACTION_TYPE.MOUSE_WHEEL_UP : INTERACTION_TYPE.MOUSE_WHEEL_DOWN);
       });
-
-      window.addEventListener('blur', () => { this.focused = false; });
-      window.addEventListener('focus', () => { this.focused = true; });
-
     }
   }
 

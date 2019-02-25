@@ -44,6 +44,9 @@ class OceanBiome extends Biome {
     this.depth = 1.425;
     this.flat = MathUtils.rng() >= 0.5;
 
+    this.waterColor1 = new THREE.Color(0x07c9d0);
+    this.waterColor2 = new THREE.Color(0x3e73d4);
+
     this.waterDistortion = true;
     this.waterDistortionFreq = 1.5;
     this.waterDistortionAmp = 2048.0;
@@ -86,11 +89,15 @@ class OceanBiome extends Biome {
     const minSize = 80000;
     const maxSize = 140000;
     const size = MathUtils.randomFloat(minSize, maxSize);
+    const max = 4;
 
     const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
     const points = pds.fill();
 
+    let it = 0;
     points.forEach((point: number[]) => {
+      if (it >= max) { return; }
+
       const nbMax = (size * 20 / maxSize) || 0; // maximum nb based on boids size
       const n = MathUtils.randomInt(2, nbMax);
       const px = size / 2 + point.shift();
@@ -115,6 +122,7 @@ class OceanBiome extends Biome {
       }
 
       this.boids.push(boids);
+      it++;
     });
   }
 

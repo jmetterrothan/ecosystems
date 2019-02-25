@@ -139,10 +139,15 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
               <TutorialActionKey className='mb-2' action={KeyAction.RELOAD} onKeyChange={this.handleKeyChange} canEdit={false} />
             </div>
           </Col>
-          <Col className='flexcol--16-t mb-2 mb-0-t'>
+          <Col className='flexcol--8-t mb-2 mb-0-t'>
             <div className='tutorial-keys'>
-              <TutorialActionKey className='mb-2' action={KeyAction.VOCAL} onKeyChange={this.handleKeyChange} canEdit={true} />
-              <TutorialActionKey className='' action={KeyAction.MUTE} onKeyChange={this.handleKeyChange} canEdit={true} />
+              <TutorialActionKey className='mb-2' action={KeyAction.MUTE} onKeyChange={this.handleKeyChange} canEdit={true} />
+              <TutorialActionKey className='' action={KeyAction.VOCAL} onKeyChange={this.handleKeyChange} canEdit={true} />
+            </div>
+          </Col>
+          <Col className='flexcol--8-t'>
+            <div className='tutorial-keys'>
+              <TutorialActionKey className='mb-2' action={KeyAction.FREEZE} onKeyChange={this.handleKeyChange} canEdit={true} />
             </div>
           </Col>
         </Row>

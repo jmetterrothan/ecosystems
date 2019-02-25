@@ -32,10 +32,11 @@ import CommonUtils from '@shared/utils/Common.utils';
 
 import { INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
 import { CROSSHAIR_STATES } from '@ui/enums/CrosshairState.enum';
+import { GraphicsQuality } from '@app/shared/enums/graphicsQuality.enum';
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 12;
-  static readonly NCHUNKS_Z: number = 12;
+  static readonly NCHUNKS_X: number = 14;
+  static readonly NCHUNKS_Z: number = 14;
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
@@ -309,6 +310,10 @@ class Terrain {
    * @param {MouseTypes} interactionType
    */
   handlePlayerInteraction(raycaster: THREE.Raycaster, interactionType: INTERACTION_TYPE) {
+    if (configSvc.quality === GraphicsQuality.PHOTO) {
+      return;
+    }
+
     switch (interactionType) {
       case INTERACTION_TYPE.MOUSE_MOVE:
         const now = window.performance.now();
@@ -889,7 +894,7 @@ class Terrain {
     this.water = new THREE.Mesh(new THREE.Geometry(), WATER_MATERIAL);
     this.water.frustumCulled = true;
     this.water.castShadow = false;
-    this.water.receiveShadow = true;
+    this.water.receiveShadow = false;
     this.layers.add(this.water);
 
     if (configSvc.debug) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());

@@ -64,10 +64,11 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
         left: 'Left',
         back: 'Backwards',
         front: 'Forwards',
-        vocal: 'Enable/Disable vocal commands',
+        vocal: 'Toggle vocal commands',
         reload: 'Generate a new world',
-        mute: 'Enable/Disable sound',
+        mute: 'Toggle sound',
         menu: 'Menu',
+        freeze: 'Toggle freeze time'
       },
       'mouse_left-click': 'Put an object down',
       'mouse_left-click_name': 'Left click',

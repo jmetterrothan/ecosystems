@@ -178,7 +178,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.remove_object' },
     value: 'remove_1_object',
-    img: '',
+    Icon: IconTrophy,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.OBJECTS,
     checklist: [
@@ -188,7 +188,7 @@ export const TROPHIES: ITrophy[] = [
   {
     name: { key: 'TROPHIES.remove_objects_counter', options: { counter: 10 } },
     value: 'remove_10_objects',
-    img: '',
+    Icon: IconTrophy,
     difficulty: TROPHY_DIFFICULTY.GOLD,
     type: TROPHY_TYPE.OBJECTS,
     checklist: [

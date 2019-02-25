@@ -29,6 +29,7 @@ interface WheelEvent {
 interface Window {
   player: THREE.Object3D;
   isFocused: boolean;
+  isFreezed: boolean;
 }
 
 interface Math {

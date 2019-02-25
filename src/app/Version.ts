@@ -1,1 +1,1 @@
-export const VERSION_STORAGE: string = 'v1.0.3';
+export const VERSION_STORAGE: string = 'v1.0.4';

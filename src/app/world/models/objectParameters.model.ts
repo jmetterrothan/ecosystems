@@ -4,6 +4,7 @@ import { OBJ_TYPE } from '@app/shared/enums/objectTypes.enum';
 export interface IPlaceObject {
   animate?: boolean;
   save?: boolean;
+  online?: boolean;
 }
 
 export interface IRemoveObject {

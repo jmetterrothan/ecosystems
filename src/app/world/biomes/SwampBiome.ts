@@ -35,16 +35,20 @@ class SwampBiome extends Biome {
 
   init() {
     const size = 100000;
+    const max = 4;
 
     const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
     const points = pds.fill();
 
+    let it = 0;
     points.forEach((point: number[]) => {
+      if (it >= max) { return; }
+
       const px = size / 2 + point.shift();
       const pz = size / 2 + point.shift();
 
       const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 6, Chunk.HEIGHT / 4);
-      const py = Math.max(Chunk.SEA_LEVEL + ySize / 2, this.generator.computeHeightAt(px, pz) + ySize / 3);
+      const py = Math.max(Chunk.SEA_LEVEL + ySize / 2, this.generator.computeHeightAt(px, pz) + ySize / 2 + 4096);
 
       // butterflies
       const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
@@ -55,6 +59,7 @@ class SwampBiome extends Biome {
       }
 
       this.boids.push(boids);
+      it++;
     });
   }
 

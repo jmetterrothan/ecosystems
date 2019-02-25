@@ -14,6 +14,12 @@ import butterfly3Mtl from '@objmodels/fauna/butterfly3.mtl';
 import butterfly4Obj from '@objmodels/fauna/butterfly4.obj';
 import butterfly4Mtl from '@objmodels/fauna/butterfly4.mtl';
 
+import flyObj from '@objmodels/fauna/fly.obj';
+import flyMtl from '@objmodels/fauna/fly.mtl';
+
+import beeObj from '@objmodels/fauna/bee.obj';
+import beeMtl from '@objmodels/fauna/bee.mtl';
+
 import snowmanObj from '@objmodels/misc/snowman.obj';
 import snowmanMtl from '@objmodels/misc/snowman.mtl';
 import snowmanNoCarrotObj from '@objmodels/misc/snowman_no_carrot.obj';
@@ -292,6 +298,8 @@ export const OBJECTS: IObject[] = [
   { name: 'butterfly2', type: OBJ_TYPE.INSECT, obj: butterfly2Obj, mtl: butterfly2Mtl, doubleSide: true },
   { name: 'butterfly3', type: OBJ_TYPE.INSECT, obj: butterfly3Obj, mtl: butterfly3Mtl, doubleSide: true },
   { name: 'butterfly4', type: OBJ_TYPE.INSECT, obj: butterfly4Obj, mtl: butterfly4Mtl, doubleSide: true },
+  { name: 'fly', type: OBJ_TYPE.INSECT, obj: flyObj, mtl: flyMtl, doubleSide: true },
+  { name: 'bee', type: OBJ_TYPE.INSECT, obj: beeObj, mtl: beeMtl, doubleSide: true },
   { name: 'snowman', type: OBJ_TYPE.MISC, obj: snowmanObj, mtl: snowmanMtl },
   { name: 'snowman_no_carrot', type: OBJ_TYPE.MISC, obj: snowmanNoCarrotObj, mtl: snowmanNoCarrotMtl },
   { name: 'chest', type: OBJ_TYPE.MISC, obj: chestObj, mtl: chestMtl },

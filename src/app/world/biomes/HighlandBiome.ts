@@ -7,7 +7,7 @@ import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 import Boids from '@boids/Boids';
-import Butterfly from '@boids/creatures/Butterfly';
+import Bee from '@app/boids/creatures/Bee';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@world/models/biome.model';
@@ -51,36 +51,42 @@ class HighlandBiome extends Biome {
   }
 
   init() {
-    if (MathUtils.rng() > 0.15) {
-      const size = MathUtils.randomInt(100000, 140000);
-
-      const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
-      const points = pds.fill();
-
-      points.forEach((point: number[]) => {
-        const px = size / 2 + point.shift();
-        const pz = size / 2 + point.shift();
-
-        const sy = MathUtils.randomFloat(Chunk.HEIGHT / 5, Chunk.HEIGHT / 3);
-        const py = Math.max(Chunk.SEA_LEVEL + sy / 2, this.generator.computeHeightAt(px, pz) + sy / 3);
-
-        // butterflies
-        const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, sy, size), new THREE.Vector3(px, py, pz));
-        const variant = Butterfly.getButterflyVariant();
-        for (let i = 0, n = MathUtils.randomInt(2, 5); i < n; i++) {
-          boids.addCreature(new Butterfly(variant));
-        }
-
-        this.boids.push(boids);
-      });
-    }
-
     // scarecrow
     this.scarecrow = this.terrain.placeSpecialObject({
       stackReference: 'scarecrow',
       float: false,
       underwater: ISpecialObjectCanPlaceIn.LAND,
       e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.3 }
+    });
+
+    this.initBeeBoids();
+  }
+
+  private initBeeBoids() {
+    const size = MathUtils.randomInt(100000, 140000);
+    const max = 2;
+
+    const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
+    const points = pds.fill();
+
+    let it = 0;
+    points.forEach((point: number[]) => {
+      if (it >= max) { return; }
+
+      const px = size / 2 + point.shift();
+      const pz = size / 2 + point.shift();
+
+      const sy = MathUtils.randomFloat(Chunk.HEIGHT / 5, Chunk.HEIGHT / 3);
+      const py = Math.max(Chunk.SEA_LEVEL + sy / 2, this.generator.computeHeightAt(px, pz) + sy / 3);
+
+      // bee
+      const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, sy, size), new THREE.Vector3(px, py, pz));
+      for (let i = 0, n = MathUtils.randomInt(4, 8); i < n; i++) {
+        boids.addCreature(new Bee());
+      }
+
+      this.boids.push(boids);
+      it++;
     });
   }
 

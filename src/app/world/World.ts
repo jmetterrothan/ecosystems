@@ -193,10 +193,14 @@ class World {
       )
     );
 
-    this.terrain.update(this.frustum, this.player.position, delta);
     this.player.update(this.terrain, delta);
-    this.weather.update(delta);
-    this.generator.getBiome().update(delta);
+    this.terrain.update(this.frustum, this.player.position, delta);
+
+    // freeze
+    if (window.isFreezed !== true) {
+      this.weather.update(delta);
+      this.generator.getBiome().update(delta);
+    }
 
     this.underwaterAmbient.volume(playerSvc.isUnderwater() ? 0.5 : 0);
   }
