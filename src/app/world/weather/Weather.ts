@@ -69,12 +69,15 @@ class Weather {
   private sun: THREE.Object3D;
   private moon: THREE.Object3D;
 
+  private startSunAngle: number;
   private sunAngle: number; // in radians
   private sunRadius: number;
   private sunRevolutionTime: number; // in seconds
   private sunCanRotate: boolean;
 
   private fogColor: THREE.Color = new THREE.Color();
+
+  private debugDiv: HTMLElement;
 
   /**
   * Weather constructor
@@ -114,13 +117,22 @@ class Weather {
     }
 
     this.sunAngle = THREE.Math.degToRad(startAngle);
+    this.startSunAngle = this.sunAngle;
 
     this.stars = new Stars();
     this.clouds = new Clouds(generator);
+
+    this.debugDiv = document.createElement('div');
+    this.debugDiv.textContent = THREE.Math.radToDeg(this.sunAngle).toFixed(2).toString();
+    this.debugDiv.style.position = 'absolute';
+    this.debugDiv.style.right = '10px';
+    this.debugDiv.style.top = '10px';
+    this.debugDiv.style.color = 'green';
+    document.body.appendChild(this.debugDiv);
   }
 
   init() {
-    this.watchStartTime();
+    if (multiplayerSvc.isUsed()) this.watchStartTime();
 
     this.initLights();
 
@@ -260,6 +272,8 @@ class Weather {
     if (this.sunRevolutionTime !== 0) {
       this.sunAngle += THREE.Math.degToRad(360 / this.sunRevolutionTime) * delta;
     }
+
+    this.debugDiv.textContent = THREE.Math.radToDeg(this.sunAngle).toFixed(2).toString();
 
     // calculate sun position from angle
     const x: number = Terrain.SIZE_X / 2 + this.sunRadius * Math.cos(this.sunAngle);
@@ -414,7 +428,12 @@ class Weather {
   }
 
   private watchStartTime() {
-    // multiplayerSvc.time$.subscribe(time => this.startTime = time);
+    multiplayerSvc.time$.subscribe(startTime => {
+      const now = Date.now();
+      const diff = (now - startTime) / 1000;
+      const diffAngle = THREE.Math.degToRad(360 / this.sunRevolutionTime) * diff;
+      this.sunAngle = this.startSunAngle + diffAngle;
+    });
   }
 
   getSunAngle(): number {
