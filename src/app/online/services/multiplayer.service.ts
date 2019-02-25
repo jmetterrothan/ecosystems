@@ -60,7 +60,7 @@ class MultiplayerService {
     this.scene = scene;
     this.roomID = seed;
 
-    const url: string = !CommonUtils.isDev()
+    const url: string = CommonUtils.isDev()
       ? `${ENV.socketBaseUrl}:${ENV.socketPort}`
       : `${ENV.socketBaseUrl}`;
 
@@ -134,10 +134,9 @@ class MultiplayerService {
         const object = new THREE.ObjectLoader().parse(obj);
         this.objectInteractionSource.next(<IOnlineObject>{ object, type: ONLINE_INTERACTION.REMOVE, animate: false });
       });
-    }
 
-    // share time
-    this.timeSource.next(data.startTime);
+      this.timeSource.next(data.startTime);
+    }
 
     if (this.userId === data.me && data.usersConnected.length > 1) {
       progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.join_game_online);
