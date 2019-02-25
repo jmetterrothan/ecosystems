@@ -77,8 +77,6 @@ class Weather {
 
   private fogColor: THREE.Color = new THREE.Color();
 
-  private debugDiv: HTMLElement;
-
   /**
   * Weather constructor
   * @param {THREE.Scene} scene
@@ -121,14 +119,6 @@ class Weather {
 
     this.stars = new Stars();
     this.clouds = new Clouds(generator);
-
-    this.debugDiv = document.createElement('div');
-    this.debugDiv.textContent = THREE.Math.radToDeg(this.sunAngle).toFixed(2).toString();
-    this.debugDiv.style.position = 'absolute';
-    this.debugDiv.style.right = '10px';
-    this.debugDiv.style.top = '10px';
-    this.debugDiv.style.color = 'green';
-    document.body.appendChild(this.debugDiv);
   }
 
   init() {
@@ -272,8 +262,6 @@ class Weather {
     if (this.sunRevolutionTime !== 0) {
       this.sunAngle += THREE.Math.degToRad(360 / this.sunRevolutionTime) * delta;
     }
-
-    this.debugDiv.textContent = THREE.Math.radToDeg(this.sunAngle).toFixed(2).toString();
 
     // calculate sun position from angle
     const x: number = Terrain.SIZE_X / 2 + this.sunRadius * Math.cos(this.sunAngle);
