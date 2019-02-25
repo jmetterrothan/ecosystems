@@ -1,7 +1,7 @@
 import uniqid from 'uniqid';
 import * as THREE from 'three';
 import * as io from 'socket.io-client';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
 import CommonUtils from '@app/shared/utils/Common.utils';
 import OnlinePlayer from '@app/OnlinePlayer';
@@ -34,13 +34,17 @@ class MultiplayerService {
   private timeSource: Subject<number>;
   time$: Observable<number>;
 
+  private onlinePlayers: Map<string, OnlinePlayer>;
+  onlineStatus$: Subject<IOnlineStatus>;
+
+  private toggleChatSource: Subject<void>;
+  toggleChat$: Observable<void>;
+
   private roomID: string;
   private user: IOnlineUser;
 
   private alive: boolean;
-
-  private onlinePlayers: Map<string, OnlinePlayer>;
-  onlineStatus$: Subject<IOnlineStatus>;
+  private chatOpened: boolean;
 
   constructor() {
     this.objectInteractionSource = new Subject();
@@ -52,7 +56,11 @@ class MultiplayerService {
     this.onlinePlayers = new Map();
     this.onlineStatus$ = new Subject();
 
+    this.toggleChatSource = new Subject<boolean>();
+    this.toggleChat$ = this.toggleChatSource.asObservable();
+
     this.alive = true;
+    this.chatOpened = false;
   }
 
   /**
@@ -121,6 +129,26 @@ class MultiplayerService {
    */
   removeObject(object: THREE.Object3D) {
     this.socket.emit(SOCKET_EVENTS.CL_SEND_REMOVE_OBJECT, { object, roomID: this.roomID });
+  }
+
+  toggleChat() {
+    this.chatOpened = !this.chatOpened;
+    this.toggleChatSource.next(this.chatOpened);
+  }
+
+  chatIsOpened(): boolean {
+    return this.chatOpened;
+  }
+
+  getOnlineUsersCount(): number {
+    return this.onlinePlayers.size + 1;
+  }
+
+  getOnlineStatus(): IOnlineStatus {
+    return {
+      alive: this.alive,
+      online: this.getOnlineUsersCount()
+    };
   }
 
   /**
@@ -204,17 +232,6 @@ class MultiplayerService {
     this.onlinePlayers.delete(data.userID);
 
     this.onlineStatus$.next(this.getOnlineStatus());
-  }
-
-  getOnlineUsersCount(): number {
-    return this.onlinePlayers.size + 1;
-  }
-
-  getOnlineStatus(): IOnlineStatus {
-    return {
-      alive: this.alive,
-      online: this.getOnlineUsersCount()
-    };
   }
 }
 

@@ -19,6 +19,7 @@ export enum KeyAction {
   MUTE = 'mute',
   MENU = 'menu',
   RELOAD = 'reload',
+  CHAT = 'chat'
 }
 
 export const KeysTmp = {
@@ -33,6 +34,7 @@ export const KeysTmp = {
   [KeyAction.MUTE]: 'M',
   [KeyAction.MENU]: 'ESCAPE',
   [KeyAction.RELOAD]: 'F5',
+  [KeyAction.CHAT]: 'C'
 };
 
 export const Keys = storageSvc.get(STORAGES_KEY.keyboard) || Object.assign({}, KeysTmp);

@@ -24,6 +24,7 @@ interface IGameState {
   onlineStatus: IOnlineStatus;
   soundEnabled: boolean;
   voiceEnabled: boolean;
+  chatOpened: boolean;
 }
 
 class Game extends React.PureComponent<IGameProps, IGameState> {
@@ -31,6 +32,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
   private configSoundSubscription: Subscription;
   private configVoiceSubscription: Subscription;
   private onlineStatusSubscription: Subscription;
+  private toggleChatSubscription: Subscription;
 
   constructor(props) {
     super(props);
@@ -40,7 +42,8 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
       trophiesCount: achievementSvc.getTrophiesCount(),
       onlineStatus: multiplayerSvc.getOnlineStatus(),
       soundEnabled: configSvc.soundEnabled,
-      voiceEnabled: configSvc.voiceEnabled
+      voiceEnabled: configSvc.voiceEnabled,
+      chatOpened: multiplayerSvc.chatIsOpened()
     };
   }
 
@@ -57,6 +60,12 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     this.onlineStatusSubscription = multiplayerSvc.onlineStatus$.subscribe((status) => {
       this.setState({ onlineStatus: status });
     });
+    if (multiplayerSvc.isUsed()) {
+      this.toggleChatSubscription = multiplayerSvc.toggleChat$.subscribe(() => {
+        this.setState({ chatOpened: multiplayerSvc.chatIsOpened() });
+      });
+    }
+
   }
 
   componentWillUnmount() {
@@ -64,11 +73,25 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     this.configSoundSubscription.unsubscribe();
     this.configVoiceSubscription.unsubscribe();
     this.onlineStatusSubscription.unsubscribe();
+    if (multiplayerSvc.isUsed()) this.toggleChatSubscription.unsubscribe();
+  }
+
+  private renderChat() {
+    return (
+      <div className='chat-container'>
+        <div className='messages'>
+          les messages;
+            </div>
+        <form>
+          <input type='text' className='input-message' />
+        </form>
+      </div>
+    );
   }
 
   render() {
     const { uiManager } = this.props;
-    const { soundEnabled, voiceEnabled, unlockedTrophiesCount, trophiesCount, onlineStatus } = this.state;
+    const { soundEnabled, voiceEnabled, unlockedTrophiesCount, trophiesCount, onlineStatus, chatOpened } = this.state;
 
     const trophiesProgression = unlockedTrophiesCount * 100 / trophiesCount;
 
@@ -110,10 +133,11 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
               <span className='overlay-icon__key'>M</span>
             </div>
             <div className={classNames('overlay-icon overlay-icon--voice', iconVoiceActiveClass)}>
-            <span className={classNames(iconVoiceClass, 'overlay-icon__icon')} />
+              <span className={classNames(iconVoiceClass, 'overlay-icon__icon')} />
               <span className='overlay-icon__key'>V</span>
             </div>
           </div>
+          {chatOpened && this.renderChat()}
           <div className='overlay__seed'>
             Seed : {uiManager.state.parameters.seed}
           </div>

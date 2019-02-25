@@ -167,3 +167,14 @@
     background: $color-theme;
   }
 }
+
+.chat-container {
+  position: absolute;
+  width: 30%;
+  left: 20px;
+  bottom: 200px;
+  background: rgba(black, 0.2);
+  .messages {
+    min-height: 100px;
+  }
+}
