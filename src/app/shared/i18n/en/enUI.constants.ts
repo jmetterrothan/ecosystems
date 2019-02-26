@@ -71,7 +71,8 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
         reload: 'Generate a new world',
         mute: 'Toggle sound',
         menu: 'Menu',
-        freeze: 'Toggle freeze time'
+        freeze: 'Toggle freeze time',
+        chat: 'Toggle chat'
       },
       'mouse_left-click': 'Put an object down',
       'mouse_left-click_name': 'Left click',

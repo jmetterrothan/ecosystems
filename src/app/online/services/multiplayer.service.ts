@@ -146,6 +146,7 @@ class MultiplayerService {
   }
 
   toggleChat(value?: boolean) {
+    console.log('toggle');
     this.chatOpened = value || !this.chatOpened;
     this.toggleChatSource.next();
   }

@@ -55,22 +55,12 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     PointerLock.addEventListener('pointerlockchange', () => {
       const enabled = PointerLock.enabled;
 
-      if (!enabled && multiplayerSvc.isUsed() && multiplayerSvc.chatIsOpened()) {
-        PointerLock.request();
-        multiplayerSvc.toggleChat(false);
-        return;
-      }
-
       if (enabled && this.state.currentUiStateID !== UIStates.GAME) {
         this.manageMenu(false);
       }
       if (!enabled && this.state.currentUiStateID !== UIStates.MENU) {
         this.manageMenu(true);
       }
-    });
-
-    document.body.addEventListener('keydown', e => {
-
     });
 
     document.body.addEventListener('keyup', e => {

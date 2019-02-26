@@ -71,7 +71,8 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
         reload: 'Générer un nouveau monde',
         mute: 'Activer/Désactiver le son',
         menu: 'Retour au menu',
-        freeze: 'Figer le temps'
+        freeze: 'Figer le temps',
+        chat: 'Ouvrir / Fermer le chat'
       },
       'mouse_left-click': 'Poser un objet',
       'mouse_left-click_name': 'Clic gauche',

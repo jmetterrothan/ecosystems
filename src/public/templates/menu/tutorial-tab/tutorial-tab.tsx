@@ -148,6 +148,7 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
           <Col className='flexcol--8-t'>
             <div className='tutorial-keys'>
               <TutorialActionKey className='mb-2' action={KeyAction.FREEZE} onKeyChange={this.handleKeyChange} canEdit={true} />
+              <TutorialActionKey className='' action={KeyAction.CHAT} onKeyChange={this.handleKeyChange} canEdit={true} />
             </div>
           </Col>
         </Row>
@@ -173,9 +174,9 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
 
   getThirdPanel() {
     return (
-    <>
-      <button onClick={this.changeLanguage}>change</button>
-    </>
+      <>
+        <button onClick={this.changeLanguage}>change</button>
+      </>
     );
   }
 }

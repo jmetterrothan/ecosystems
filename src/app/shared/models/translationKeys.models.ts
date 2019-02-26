@@ -110,6 +110,7 @@ export interface IUITranslationKeys {
         mute: string;
         menu: string;
         freeze: string;
+        chat: string;
       };
       'mouse_left-click': string;
       'mouse_left-click_name': string;
