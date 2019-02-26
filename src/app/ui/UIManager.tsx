@@ -15,6 +15,7 @@ import { IUIState } from '@ui/models/UIState';
 import { UIStates } from '@ui/enums/UIStates.enum';
 import { GraphicsQuality } from '@app/shared/enums/graphicsQuality.enum';
 import { configSvc } from '@app/shared/services/config.service';
+import { multiplayerSvc } from '@app/online/services/multiplayer.service';
 
 interface IUIManagerProps {
 
@@ -54,12 +55,22 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     PointerLock.addEventListener('pointerlockchange', () => {
       const enabled = PointerLock.enabled;
 
+      if (!enabled && multiplayerSvc.isUsed() && multiplayerSvc.chatIsOpened()) {
+        PointerLock.request();
+        multiplayerSvc.toggleChat(false);
+        return;
+      }
+
       if (enabled && this.state.currentUiStateID !== UIStates.GAME) {
         this.manageMenu(false);
       }
       if (!enabled && this.state.currentUiStateID !== UIStates.MENU) {
         this.manageMenu(true);
       }
+    });
+
+    document.body.addEventListener('keydown', e => {
+
     });
 
     document.body.addEventListener('keyup', e => {
@@ -71,6 +82,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
         PointerLock.request();
         return;
       }
+
     });
   }
 

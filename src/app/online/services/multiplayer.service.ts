@@ -10,7 +10,7 @@ import { progressionSvc } from '@achievements/services/progression.service';
 import { notificationSvc } from '@shared/services/notification.service';
 import { translationSvc } from '@app/shared/services/translation.service';
 
-import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded, ISocketDataObjectRemoved, ISocketDataMessage } from '@online/models/socketData.model';
+import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded, ISocketDataObjectRemoved } from '@online/models/socketData.model';
 import { IPick } from '@world/models/pick.model';
 import { IOnlineObject, ONLINE_INTERACTION, IOnlineUser, IOnlineStatus, IOnlineMessage } from '@online/models/onlineObjects.model';
 
@@ -145,8 +145,8 @@ class MultiplayerService {
     this.socket.emit(SOCKET_EVENTS.CL_SEND_MESSAGE, { message, roomID: this.roomID, user: this.user });
   }
 
-  toggleChat() {
-    this.chatOpened = !this.chatOpened;
+  toggleChat(value?: boolean) {
+    this.chatOpened = value || !this.chatOpened;
     this.toggleChatSource.next();
   }
 
@@ -177,7 +177,7 @@ class MultiplayerService {
     this.socket.on(SOCKET_EVENTS.SV_SEND_PLAYER_POSITION, (data: ISocketDataPositionUpdated) => this.onPositionupdated(data));
     this.socket.on(SOCKET_EVENTS.SV_SEND_ADD_OBJECT, (data: ISocketDataObjectAdded) => this.onObjectAdded(data));
     this.socket.on(SOCKET_EVENTS.SV_SEND_REMOVE_OBJECT, (data: ISocketDataObjectRemoved) => this.onObjectRemoved(data));
-    this.socket.on(SOCKET_EVENTS.SV_SEND_MESSAGES, (data: ISocketDataMessage[]) => this.onMessageReceived(data));
+    this.socket.on(SOCKET_EVENTS.SV_SEND_MESSAGES, (data: IOnlineMessage[]) => this.onMessageReceived(data));
     this.socket.on(SOCKET_EVENTS.SV_SEND_DISCONNECTION, (data: ISocketDataDisconnection) => this.onDisconnection(data));
   }
 
@@ -246,7 +246,7 @@ class MultiplayerService {
     this.objectInteractionSource.next(<IOnlineObject>{ object, type: ONLINE_INTERACTION.REMOVE, animate: true });
   }
 
-  private onMessageReceived(data: ISocketDataMessage[]) {
+  private onMessageReceived(data: IOnlineMessage[]) {
     this.messages = data;
     this.messagesSource.next(data);
   }
