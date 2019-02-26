@@ -58,7 +58,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
         this.manageMenu(false);
       }
       if (!enabled && this.state.currentUiStateID !== UIStates.MENU) {
-        // this.manageMenu(true);
+        this.manageMenu(true);
       }
     });
 
