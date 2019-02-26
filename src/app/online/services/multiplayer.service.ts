@@ -12,7 +12,7 @@ import { translationSvc } from '@app/shared/services/translation.service';
 
 import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded, ISocketDataObjectRemoved } from '@online/models/socketData.model';
 import { IPick } from '@world/models/pick.model';
-import { IOnlineObject, ONLINE_INTERACTION, IOnlineUser, IOnlineStatus, IOnlineMessage } from '@online/models/onlineObjects.model';
+import { IOnlineObject, ONLINE_INTERACTION, IOnlineUser, IOnlineStatus, IOnlineMessage, ONLINE_MESSAGE_TYPE } from '@online/models/onlineObjects.model';
 
 import { SOCKET_EVENTS } from '@online/constants/socketEvents.constants';
 import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
@@ -142,7 +142,7 @@ class MultiplayerService {
    * Send message to all users
    */
   sendMessage(message: string) {
-    this.socket.emit(SOCKET_EVENTS.CL_SEND_MESSAGE, { message, roomID: this.roomID, user: this.user });
+    this.socket.emit(SOCKET_EVENTS.CL_SEND_MESSAGE, { message, roomID: this.roomID, user: this.user, type: ONLINE_MESSAGE_TYPE.USER });
   }
 
   toggleChatInutFocus(value?: boolean) {
@@ -199,9 +199,6 @@ class MultiplayerService {
 
       this.timeSource.next(data.startTime);
 
-      this.messages = data.messages;
-      this.messagesSource.next(data.messages);
-
     } else {
       // notify other players that someone has connected to the server
       notificationSvc.push({
@@ -216,6 +213,8 @@ class MultiplayerService {
     if (this.user === data.me && data.usersConnected.length > 1) {
       progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.join_game_online);
     }
+
+    this.onMessageReceived(data.messages);
 
     // init mesh for each new users
     data.usersConnected.forEach((user: IOnlineUser) => {
@@ -259,6 +258,7 @@ class MultiplayerService {
     }
     this.onlinePlayers.delete(data.userID);
 
+    this.onMessageReceived(data.messages);
     this.onlineStatus$.next(this.getOnlineStatus());
   }
 }

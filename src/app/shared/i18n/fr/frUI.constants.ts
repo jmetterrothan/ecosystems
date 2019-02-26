@@ -17,7 +17,11 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
   },
   online: {
     count: 'En ligne {{count}}',
-    room_joined: 'Nouvel utilisateur connecté'
+    room_joined: 'Nouvel utilisateur connecté',
+    system_messages: {
+      connection: '{{user}} s\'est connecté',
+      disconnection: '{{user}} s\'est déconnecté'
+    }
   },
   trophy_unlocked: 'Trophée débloqué',
   home: {

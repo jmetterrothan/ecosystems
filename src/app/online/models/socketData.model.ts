@@ -29,4 +29,5 @@ export interface ISocketDataObjectsInitialized {
 
 export interface ISocketDataDisconnection {
   userID: string;
+  messages: IOnlineMessage[];
 }

@@ -42,6 +42,10 @@ export interface IUITranslationKeys {
   online: {
     room_joined: string;
     count: string;
+    system_messages: {
+      connection: string;
+      disconnection: string;
+    }
   };
   trophy_unlocked: string;
   biomes: {

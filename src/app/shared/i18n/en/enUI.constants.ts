@@ -17,7 +17,11 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
   },
   online: {
     count: 'Online {{count}}',
-    room_joined: 'New user connected'
+    room_joined: 'New user connected',
+    system_messages: {
+      connection: '{{user}} joined the room',
+      disconnection: '{{user}} leaved the room'
+    }
   },
   trophy_unlocked: 'Trophy unlocked',
   home: {

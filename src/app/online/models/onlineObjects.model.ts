@@ -19,9 +19,16 @@ export interface IOnlineUser {
 }
 
 export interface IOnlineMessage {
+  type: ONLINE_MESSAGE_TYPE;
   id: number;
   user: IOnlineUser;
   content: string;
+}
+
+export enum ONLINE_MESSAGE_TYPE {
+  USER = 'user',
+  CONNECTION = 'connection',
+  DISCONNECTION = 'disconnection'
 }
 
 export enum ONLINE_INTERACTION {
