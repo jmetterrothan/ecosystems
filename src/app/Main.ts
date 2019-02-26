@@ -67,6 +67,7 @@ class Main {
 
     window.addEventListener('focus', () => {
       window.isFocused = true;
+      this.lastTime = window.performance.now();
     });
 
     this.world = new World(this.scene, this.camera, this.controls);
