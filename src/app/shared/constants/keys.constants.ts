@@ -34,7 +34,7 @@ export const KeysTmp = {
   [KeyAction.MUTE]: 'M',
   [KeyAction.MENU]: 'ESCAPE',
   [KeyAction.RELOAD]: 'F5',
-  [KeyAction.CHAT]: 'C'
+  [KeyAction.CHAT]: '²'
 };
 
 export const Keys = storageSvc.get(STORAGES_KEY.keyboard) || Object.assign({}, KeysTmp);

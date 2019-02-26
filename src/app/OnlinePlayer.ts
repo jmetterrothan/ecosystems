@@ -25,7 +25,7 @@ class OnlinePlayer {
     this.model = new THREE.Mesh(geometry, material);
 
     // tag
-    this.tag = new SpriteText2D(this.name.toUpperCase(), {
+    this.tag = new SpriteText2D(this.name.toLowerCase(), {
       align: textAlign.center,
       font: 'bold 1000px Arial',
       fillStyle: '#ffffff',

@@ -107,27 +107,29 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
   }
 
   private renderChat() {
-    const { messages } = this.state;
+    const { chatOpened, messages } = this.state;
     return (
-      <div className='chat-container'>
-        <div className='messages'>
-          {messages.map((message: IOnlineMessage) => (
-            <p key={message.id}>
-              <span>[{message.user.name}] : </span>
-              {message.content}
-            </p>
-          ))}
+      <div className={classNames('chat', chatOpened && 'chat--active')}>
+        <div className='chat__container'>
+          <div className='chat__messages'>
+            {messages.slice(-16).map((message: IOnlineMessage) => (
+              <p key={message.id} className='message'>
+                <span className='message__username' style={{ color: message.user.color }}>{message.user.name} : </span>
+                <span className='message__text'>{message.content}</span>
+              </p>
+            ))}
+          </div>
+          {<form className='chat__form' onSubmit={this.submitMessage}>
+            <input type='text' className='input-message' value={this.state.messageValue} onChange={this.messageChange} ref={el => this.messageInput = el} />
+          </form>}
         </div>
-        <form onSubmit={this.submitMessage}>
-          <input type='text' className='input-message' value={this.state.messageValue} onChange={this.messageChange} ref={el => this.messageInput = el} />
-        </form>
       </div>
     );
   }
 
   render() {
     const { uiManager } = this.props;
-    const { soundEnabled, voiceEnabled, unlockedTrophiesCount, trophiesCount, onlineStatus, chatOpened } = this.state;
+    const { soundEnabled, voiceEnabled, unlockedTrophiesCount, trophiesCount, onlineStatus } = this.state;
 
     const trophiesProgression = unlockedTrophiesCount * 100 / trophiesCount;
 
@@ -173,10 +175,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
               <span className='overlay-icon__key'>V</span>
             </div>
           </div>
-          {chatOpened && this.renderChat()}
-          <div className='overlay__seed'>
-            Seed : {uiManager.state.parameters.seed}
-          </div>
+          {this.renderChat()}
           {onlineInfo}
         </div>
       </section>

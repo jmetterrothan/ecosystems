@@ -168,13 +168,50 @@
   }
 }
 
-.chat-container {
-  position: absolute;
-  width: 30%;
-  right: 20px;
-  bottom: 200px;
-  background: rgba(black, 0.2);
-  .messages {
-    min-height: 100px;
+.chat {
+  .chat__container {
+    background: rgba($color-darkblue, 0.5);
+  }
+
+  &__container {
+    position: absolute;
+    width: 100%;
+    max-width: 400px;
+    left: 0;
+    bottom: 0;
+    border-radius: 3px;
+  }
+
+  &__messages {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.5rem 0;
+  }
+
+  &__form {
+    visibility: hidden;
+  }
+
+  &--active {
+    .chat__form {
+      visibility: visible;
+    }
+  }
+}
+
+.message {
+  line-height: 2rem;
+  font-size: 1rem;
+  padding: 0 1rem;
+
+  &__username {
+    font-weight: 700;
+    color: $color-theme;
+  }
+
+  &__text {
+    font-weight: 400;
+    color: #dadada;
   }
 }
