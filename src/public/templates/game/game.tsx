@@ -108,19 +108,26 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
   }
 
   private renderChat() {
-    const { chatOpened, messages } = this.state;
+    const { chatOpened, messages, onlineStatus } = this.state;
+    const list = messages ? messages.slice(chatOpened ? -20 : -10) : [];
+
+    const pastilleClassnames = classNames('mr-1', 'pastille', onlineStatus.alive ? 'pastille--green' : 'pastille--red');
+
     return (
       <div className={classNames('chat', chatOpened && 'chat--active')}>
+        <p className='chat__status mb-2'>
+          <span className={pastilleClassnames} />{translationSvc.translate('UI.online.count', { count: onlineStatus.online })}
+        </p>
         <div className='chat__container'>
           <div className='chat__messages'>
-            {messages.slice(-16).map((message: IOnlineMessage) => (
+            {list.map((message: IOnlineMessage) => (
               <p key={message.id} className='message'>
-                <span className='message__username' style={{ color: message.user.color }}>{message.user.name} : </span>
+                <span className='message__username' style={{ color: message.user.color }}>{`<${message.user.name}> `}</span>
                 <span className='message__text'>{message.content}</span>
               </p>
             ))}
           </div>
-          {<form className='chat__form' onSubmit={this.submitMessage}>
+          {<form className='chat__form mt-2' onSubmit={this.submitMessage}>
             <input type='text' className='input-message' value={this.state.messageValue} onChange={this.messageChange} ref={el => this.messageInput = el} />
           </form>}
         </div>
@@ -129,23 +136,9 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
   }
 
   render() {
-    const { uiManager } = this.props;
     const { soundEnabled, voiceEnabled, unlockedTrophiesCount, trophiesCount, onlineStatus } = this.state;
 
     const trophiesProgression = unlockedTrophiesCount * 100 / trophiesCount;
-
-    // online
-    let onlineInfo = null;
-
-    if (multiplayerSvc.isUsed()) {
-      const pastilleClassnames = classNames('mr-1', 'pastille', onlineStatus.alive ? 'pastille--green' : 'pastille--red');
-
-      onlineInfo = (
-        <div className='overlay__online'>
-          <span className={pastilleClassnames} />{translationSvc.translate('UI.online.count', { count: onlineStatus.online })}
-        </div>
-      );
-    }
 
     const iconSoundClass = soundEnabled ? 'icon-volume-high' : 'icon-volume-mute2';
     const iconSoundActiveClass = soundEnabled ? 'overlay-icon--active' : '';
@@ -176,8 +169,9 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
               <span className='overlay-icon__key'>V</span>
             </div>
           </div>
-          {this.renderChat()}
-          {onlineInfo}
+          <div className='overlay__chat'>
+            {multiplayerSvc.isUsed() && this.renderChat()}
+          </div>
         </div>
       </section>
     );
