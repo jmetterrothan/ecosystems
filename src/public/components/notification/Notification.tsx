@@ -7,7 +7,7 @@ interface INotificationProps {
   label: string;
   content: string;
   duration: number;
-  Icon: any;
+  Icon?: any;
   style?: any;
 }
 

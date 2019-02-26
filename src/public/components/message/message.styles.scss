@@ -1,0 +1,28 @@
+
+.message {
+  line-height: 1.5rem;
+  font-size: 1.1rem;
+  padding: 0.25rem 1rem;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.25);
+
+  &:first-child {
+    padding-top: 1rem;
+  }
+  &:last-child {
+    padding-bottom: 1rem;
+  }
+
+  &__username {
+    font-weight: 700;
+    color: $color-theme;
+  }
+
+  &__text {
+    font-weight: 400;
+    color: #f1f1f1;
+
+    &--nouser {
+      font-style: italic;
+    }
+  }
+}

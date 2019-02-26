@@ -163,32 +163,33 @@
   &__status {
     display: flex;
     align-items: center;
-    font-size:1rem;
+    font-size:1.1rem;
     color: #fff;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.25);
   }
 
   &__messages {
-    background: rgba($color-darkblue, 0.25);
+    background: rgba(#000000, 0.3);
   }
 
   &__container {
-    width: 425px;
+    width: 450px;
     max-width: calc(100% - 4rem);
     height: 100%;
-    border-radius: 3px;
   }
 
   &__messages {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    border-radius: 3px;
   }
 
   &__form {
     display: none;
-    background: rgba($color-darkblue, 0.25);
 
     input {
+      position: relative;
       appearance: none;
       width: 100%;
       outline: none;
@@ -196,47 +197,38 @@
       box-shadow: none;
       border: none;
       font-family: $font;
-      line-height: 1.5rem;
-      font-size: 1rem;
+      line-height: 2rem;
+      font-size: 1.1rem;
       padding: 0.25rem 1rem;
       color: #f1f1f1;
       font-weight: 400;
+      background: rgba(#000000, 0.5);
+      border-radius: 3px;
+      overflow: hidden;
+    }
 
-      &:before {
-        content: '/ ';
-      }
+
+    ::-webkit-input-placeholder {
+      color: #9fafbd;
+    }
+    ::-moz-placeholder {
+      color: #9fafbd;
+    }
+    :-ms-input-placeholder {
+      color: #9fafbd;
+    }
+    :-moz-placeholder {
+      color: #9fafbd;
     }
   }
 
   &--active {
     .chat__messages {
-      min-height: 2rem * 10;
+      min-height: 2rem * 16;
+      background: rgba(#10151b, 0.3);
     }
     .chat__form {
       display: block;
     }
-  }
-}
-
-.message {
-  line-height: 1.5rem;
-  font-size: 1rem;
-  padding: 0.25rem 1rem;
-
-  &:first-child {
-    padding-top: 1rem;
-  }
-  &:last-child {
-    padding-bottom: 1rem;
-  }
-
-  &__username {
-    font-weight: 700;
-    color: $color-theme;
-  }
-
-  &__text {
-    font-weight: 400;
-    color: #f1f1f1;
   }
 }

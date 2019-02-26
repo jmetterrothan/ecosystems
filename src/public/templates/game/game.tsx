@@ -1,9 +1,11 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import classNames from 'classnames';
+import { Spring, Transition } from 'react-spring';
 
 import UIManager from '@app/ui/UIManager';
 import Crosshair from '@components/crosshair/crosshair';
+import Message from '@components/message/Message';
 
 import { achievementSvc } from '@achievements/services/achievement.service';
 import { multiplayerSvc } from '@online/services/multiplayer.service';
@@ -109,7 +111,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
 
   private renderChat() {
     const { chatOpened, messages, onlineStatus } = this.state;
-    const list = messages ? messages.slice(chatOpened ? -20 : -10) : [];
+    const list = messages ? messages.slice(chatOpened ? -16 : -8) : [];
 
     const pastilleClassnames = classNames('mr-1', 'pastille', onlineStatus.alive ? 'pastille--green' : 'pastille--red');
 
@@ -120,15 +122,10 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
         </p>
         <div className='chat__container'>
           <div className='chat__messages'>
-            {list.map((message: IOnlineMessage) => (
-              <p key={message.id} className='message'>
-                <span className='message__username' style={{ color: message.user.color }}>{`<${message.user.name}> `}</span>
-                <span className='message__text'>{message.content}</span>
-              </p>
-            ))}
+            {list.map(item => <Message key={item.id} {...item} />)}
           </div>
           {<form className='chat__form mt-2' onSubmit={this.submitMessage}>
-            <input type='text' className='input-message' value={this.state.messageValue} onChange={this.messageChange} ref={el => this.messageInput = el} />
+            <input type='text' className='input-message' value={this.state.messageValue} onChange={this.messageChange} ref={el => this.messageInput = el} placeholder='Ecrire dans le chat' />
           </form>}
         </div>
       </div>
@@ -136,7 +133,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
   }
 
   render() {
-    const { soundEnabled, voiceEnabled, unlockedTrophiesCount, trophiesCount, onlineStatus } = this.state;
+    const { soundEnabled, voiceEnabled, unlockedTrophiesCount, trophiesCount } = this.state;
 
     const trophiesProgression = unlockedTrophiesCount * 100 / trophiesCount;
 
