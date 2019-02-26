@@ -15,7 +15,6 @@ import { IUIState } from '@ui/models/UIState';
 import { UIStates } from '@ui/enums/UIStates.enum';
 import { GraphicsQuality } from '@app/shared/enums/graphicsQuality.enum';
 import { configSvc } from '@app/shared/services/config.service';
-import { multiplayerSvc } from '@app/online/services/multiplayer.service';
 
 interface IUIManagerProps {
 

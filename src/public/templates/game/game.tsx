@@ -1,11 +1,11 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import classNames from 'classnames';
-import { Spring, Transition } from 'react-spring';
 
 import UIManager from '@app/ui/UIManager';
 import Crosshair from '@components/crosshair/crosshair';
 import Message from '@components/message/Message';
+import { getKeyActionDisplayName } from '../menu/tutorial-tab/tutorial-action-key/tutorial-action-key';
 
 import { achievementSvc } from '@achievements/services/achievement.service';
 import { multiplayerSvc } from '@online/services/multiplayer.service';
@@ -13,6 +13,7 @@ import { translationSvc } from '@shared/services/translation.service';
 import { configSvc } from '@shared/services/config.service';
 
 import { IOnlineMessage, IOnlineStatus } from '@online/models/onlineObjects.model';
+import { KeyAction } from '@app/shared/constants/keys.constants';
 
 import './game.styles.scss';
 
@@ -159,11 +160,11 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
             </div>
             <div className={classNames('overlay-icon overlay-icon--sound', iconSoundActiveClass)}>
               <span className={classNames(iconSoundClass, 'overlay-icon__icon')} />
-              <span className='overlay-icon__key'>M</span>
+              <span className='overlay-icon__key'>{getKeyActionDisplayName(KeyAction.MUTE)}</span>
             </div>
             <div className={classNames('overlay-icon overlay-icon--voice', iconVoiceActiveClass)}>
               <span className={classNames(iconVoiceClass, 'overlay-icon__icon')} />
-              <span className='overlay-icon__key'>V</span>
+              <span className='overlay-icon__key'>{getKeyActionDisplayName(KeyAction.VOCAL)}</span>
             </div>
           </div>
           <div className='overlay__chat'>
