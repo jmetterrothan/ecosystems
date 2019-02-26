@@ -8,11 +8,11 @@ import Crosshair from '@components/crosshair/crosshair';
 import { achievementSvc } from '@achievements/services/achievement.service';
 import { multiplayerSvc } from '@online/services/multiplayer.service';
 import { translationSvc } from '@shared/services/translation.service';
+import { configSvc } from '@shared/services/config.service';
 
-import { IOnlineStatus } from '@online/models/onlineStatus.model';
+import { IOnlineMessage, IOnlineStatus } from '@online/models/onlineObjects.model';
 
 import './game.styles.scss';
-import { configSvc } from '@app/shared/services/config.service';
 
 interface IGameProps {
   uiManager: UIManager;
@@ -26,6 +26,7 @@ interface IGameState {
   voiceEnabled: boolean;
   chatOpened: boolean;
   messageValue: string;
+  messages: IOnlineMessage[];
 }
 
 class Game extends React.PureComponent<IGameProps, IGameState> {
@@ -34,6 +35,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
   private configVoiceSubscription: Subscription;
   private onlineStatusSubscription: Subscription;
   private toggleChatSubscription: Subscription;
+  private messagesSubscription: Subscription;
 
   private messageInput: HTMLInputElement;
 
@@ -47,11 +49,12 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
       soundEnabled: configSvc.soundEnabled,
       voiceEnabled: configSvc.voiceEnabled,
       chatOpened: multiplayerSvc.chatIsOpened(),
-      messageValue: ''
+      messageValue: '',
+      messages: multiplayerSvc.getMessages()
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.trophySubscription = achievementSvc.trophy$.subscribe((count) => {
       this.setState({ unlockedTrophiesCount: count });
     });
@@ -64,6 +67,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     this.onlineStatusSubscription = multiplayerSvc.onlineStatus$.subscribe((status) => {
       this.setState({ onlineStatus: status });
     });
+
     if (multiplayerSvc.isUsed()) {
       if (multiplayerSvc.chatIsOpened()) setTimeout(() => this.messageInput.focus(), 10);
       this.toggleChatSubscription = multiplayerSvc.toggleChat$.subscribe(() => {
@@ -72,8 +76,11 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
           if (chatOpened) setTimeout(() => this.messageInput.focus(), 10);
         });
       });
-    }
 
+      this.messagesSubscription = multiplayerSvc.messages$.subscribe((messages: IOnlineMessage[]) => {
+        this.setState({ messages });
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -81,25 +88,35 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     this.configSoundSubscription.unsubscribe();
     this.configVoiceSubscription.unsubscribe();
     this.onlineStatusSubscription.unsubscribe();
-    if (multiplayerSvc.isUsed()) this.toggleChatSubscription.unsubscribe();
+    if (multiplayerSvc.isUsed()) {
+      this.toggleChatSubscription.unsubscribe();
+      this.messagesSubscription.unsubscribe();
+    }
   }
 
   messageChange = ev => {
-    console.log(ev.target.value);
     this.setState({ messageValue: ev.target.value });
   }
 
   submitMessage = ev => {
     ev.preventDefault();
 
-    console.log(this.state.messageValue);
+    const { messageValue } = this.state;
+    if (messageValue.length) multiplayerSvc.sendMessage(messageValue);
+    this.setState({ messageValue: '' });
   }
 
   private renderChat() {
+    const { messages } = this.state;
     return (
       <div className='chat-container'>
         <div className='messages'>
-          les messages;
+          {messages.map((message: IOnlineMessage) => (
+            <p key={message.id}>
+              <span>[{message.user.name}] : </span>
+              {message.content}
+            </p>
+          ))}
         </div>
         <form onSubmit={this.submitMessage}>
           <input type='text' className='input-message' value={this.state.messageValue} onChange={this.messageChange} ref={el => this.messageInput = el} />

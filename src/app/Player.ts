@@ -85,46 +85,45 @@ class Player {
    */
   move(delta: number): THREE.Vector3 {
 
-    // disable movement when user is typing on message input
-    if (!multiplayerSvc.isUsed() || !multiplayerSvc.chatIsOpened()) {
-
-      // movement
-      if (this.moveForward) {
-        this.velocity.z = -this.speed.z;
-      } else {
-        if (this.velocity.z < 0) { this.velocity.z = 0; }
-      }
-
-      if (this.moveBackward) {
-        this.velocity.z = this.speed.z;
-      } else {
-        if (this.velocity.z > 0) { this.velocity.z = 0; }
-      }
-
-      if (this.moveRight) {
-        this.velocity.x = this.speed.x;
-      } else {
-        if (this.velocity.x > 0) { this.velocity.x = 0; }
-      }
-
-      if (this.moveLeft) {
-        this.velocity.x = -this.speed.x;
-      } else {
-        if (this.velocity.x < 0) { this.velocity.x = 0; }
-      }
-
-      if (this.moveUp) {
-        this.velocity.y = this.speed.y;
-      } else {
-        if (this.velocity.y > 0) { this.velocity.y = 0; }
-      }
-
-      if (this.moveDown) {
-        this.velocity.y = -this.speed.y;
-      } else {
-        if (this.velocity.y < 0) { this.velocity.y = 0; }
-      }
+    // movement
+    if (this.moveForward) {
+      this.velocity.z = -this.speed.z;
     } else {
+      if (this.velocity.z < 0) { this.velocity.z = 0; }
+    }
+
+    if (this.moveBackward) {
+      this.velocity.z = this.speed.z;
+    } else {
+      if (this.velocity.z > 0) { this.velocity.z = 0; }
+    }
+
+    if (this.moveRight) {
+      this.velocity.x = this.speed.x;
+    } else {
+      if (this.velocity.x > 0) { this.velocity.x = 0; }
+    }
+
+    if (this.moveLeft) {
+      this.velocity.x = -this.speed.x;
+    } else {
+      if (this.velocity.x < 0) { this.velocity.x = 0; }
+    }
+
+    if (this.moveUp) {
+      this.velocity.y = this.speed.y;
+    } else {
+      if (this.velocity.y > 0) { this.velocity.y = 0; }
+    }
+
+    if (this.moveDown) {
+      this.velocity.y = -this.speed.y;
+    } else {
+      if (this.velocity.y < 0) { this.velocity.y = 0; }
+    }
+
+    // disable movement when user is typing on message input
+    if (multiplayerSvc.isUsed() && multiplayerSvc.chatIsOpened()) {
       this.velocity.set(0, 0, 0);
     }
 
@@ -186,8 +185,8 @@ class Player {
         this.moveDown = active; break;
 
       case Keys[KeyAction.CHAT]: if (active && multiplayerSvc.isUsed()) multiplayerSvc.toggleChat(); break;
-      case Keys[KeyAction.VOCAL]: if (active) this.voice.togglePredictState(); break;
-      case Keys[KeyAction.MUTE]: if (active) configSvc.soundEnabled = !configSvc.soundEnabled; break;
+      case Keys[KeyAction.VOCAL]: if (active && !multiplayerSvc.chatIsOpened()) this.voice.togglePredictState(); break;
+      case Keys[KeyAction.MUTE]: if (active && !multiplayerSvc.chatIsOpened()) configSvc.soundEnabled = !configSvc.soundEnabled; break;
     }
   }
 

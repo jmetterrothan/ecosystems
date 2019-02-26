@@ -1,4 +1,4 @@
-import { IOnlineUser } from '@online/models/onlineObjects.model';
+import { IOnlineUser, IOnlineMessage } from '@online/models/onlineObjects.model';
 import { IPick } from '@world/models/pick.model';
 
 export interface ISocketDataRoomJoined {
@@ -7,6 +7,7 @@ export interface ISocketDataRoomJoined {
   objectsAdded: IPick[];
   objectsRemoved: THREE.Object3D[];
   startTime: number;
+  messages: IOnlineMessage[];
 }
 
 export interface ISocketDataPositionUpdated {

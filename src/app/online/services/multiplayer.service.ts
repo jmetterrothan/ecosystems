@@ -10,10 +10,9 @@ import { progressionSvc } from '@achievements/services/progression.service';
 import { notificationSvc } from '@shared/services/notification.service';
 import { translationSvc } from '@app/shared/services/translation.service';
 
-import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded, ISocketDataObjectRemoved } from '@online/models/socketData.model';
+import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded, ISocketDataObjectRemoved, ISocketDataMessage } from '@online/models/socketData.model';
 import { IPick } from '@world/models/pick.model';
-import { IOnlineStatus } from '@online/models/onlineStatus.model';
-import { IOnlineObject, ONLINE_INTERACTION, IOnlineUser } from '@online/models/onlineObjects.model';
+import { IOnlineObject, ONLINE_INTERACTION, IOnlineUser, IOnlineStatus, IOnlineMessage } from '@online/models/onlineObjects.model';
 
 import { SOCKET_EVENTS } from '@online/constants/socketEvents.constants';
 import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
@@ -40,11 +39,16 @@ class MultiplayerService {
   private toggleChatSource: Subject<void>;
   toggleChat$: Observable<void>;
 
+  private messagesSource: Subject<IOnlineMessage[]>;
+  messages$: Observable<IOnlineMessage[]>;
+
   private roomID: string;
   private user: IOnlineUser;
 
   private alive: boolean;
   private chatOpened: boolean;
+
+  private messages: IOnlineMessage[];
 
   constructor() {
     this.objectInteractionSource = new Subject();
@@ -56,8 +60,11 @@ class MultiplayerService {
     this.onlinePlayers = new Map();
     this.onlineStatus$ = new Subject();
 
-    this.toggleChatSource = new Subject<void>();
+    this.toggleChatSource = new Subject();
     this.toggleChat$ = this.toggleChatSource.asObservable();
+
+    this.messagesSource = new Subject();
+    this.messages$ = this.messagesSource.asObservable();
 
     this.alive = true;
     this.chatOpened = false;
@@ -131,6 +138,13 @@ class MultiplayerService {
     this.socket.emit(SOCKET_EVENTS.CL_SEND_REMOVE_OBJECT, { object, roomID: this.roomID });
   }
 
+  /**
+   * Send message to all users
+   */
+  sendMessage(message: string) {
+    this.socket.emit(SOCKET_EVENTS.CL_SEND_MESSAGE, { message, roomID: this.roomID, user: this.user });
+  }
+
   toggleChat() {
     this.chatOpened = !this.chatOpened;
     this.toggleChatSource.next();
@@ -138,6 +152,10 @@ class MultiplayerService {
 
   chatIsOpened(): boolean {
     return this.chatOpened;
+  }
+
+  getMessages(): IOnlineMessage[] {
+    return this.messages;
   }
 
   getOnlineUsersCount(): number {
@@ -159,6 +177,7 @@ class MultiplayerService {
     this.socket.on(SOCKET_EVENTS.SV_SEND_PLAYER_POSITION, (data: ISocketDataPositionUpdated) => this.onPositionupdated(data));
     this.socket.on(SOCKET_EVENTS.SV_SEND_ADD_OBJECT, (data: ISocketDataObjectAdded) => this.onObjectAdded(data));
     this.socket.on(SOCKET_EVENTS.SV_SEND_REMOVE_OBJECT, (data: ISocketDataObjectRemoved) => this.onObjectRemoved(data));
+    this.socket.on(SOCKET_EVENTS.SV_SEND_MESSAGES, (data: ISocketDataMessage[]) => this.onMessageReceived(data));
     this.socket.on(SOCKET_EVENTS.SV_SEND_DISCONNECTION, (data: ISocketDataDisconnection) => this.onDisconnection(data));
   }
 
@@ -179,6 +198,10 @@ class MultiplayerService {
       });
 
       this.timeSource.next(data.startTime);
+
+      this.messages = data.messages;
+      this.messagesSource.next(data.messages);
+
     } else {
       // notify other players that someone has connected to the server
       notificationSvc.push({
@@ -221,6 +244,11 @@ class MultiplayerService {
   private onObjectRemoved(data: ISocketDataObjectRemoved) {
     const object = new THREE.ObjectLoader().parse(data.object);
     this.objectInteractionSource.next(<IOnlineObject>{ object, type: ONLINE_INTERACTION.REMOVE, animate: true });
+  }
+
+  private onMessageReceived(data: ISocketDataMessage[]) {
+    this.messages = data;
+    this.messagesSource.next(data);
   }
 
   private onDisconnection(data: ISocketDataDisconnection) {
