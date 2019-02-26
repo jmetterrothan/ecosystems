@@ -20,28 +20,15 @@
     top: 0;
     left: 0;
     width: 100%;
-    max-width:225px;
+    max-width:250px;
     font-size:1rem;
     color: #fff;
   }
 
-  &__seed {
+  &__chat {
     position: absolute;
     bottom: 0;
     left: 0;
-    font-size:0.9rem;
-    color: #fff;
-  }
-
-  &__online {
-    display: flex;
-    align-items: center;
-
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    font-size:1rem;
-    color: #fff;
   }
 }
 
@@ -169,16 +156,25 @@
 }
 
 .chat {
-  .chat__container {
-    background: rgba($color-darkblue, 0.5);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &__status {
+    display: flex;
+    align-items: center;
+    font-size:1rem;
+    color: #fff;
+  }
+
+  &__messages {
+    background: rgba($color-darkblue, 0.25);
   }
 
   &__container {
-    position: absolute;
-    width: 100%;
-    max-width: 400px;
-    left: 0;
-    bottom: 0;
+    width: 425px;
+    max-width: calc(100% - 4rem);
+    height: 100%;
     border-radius: 3px;
   }
 
@@ -186,24 +182,53 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 1.5rem 0;
   }
 
   &__form {
-    visibility: hidden;
+    display: none;
+    background: rgba($color-darkblue, 0.25);
+
+    input {
+      appearance: none;
+      width: 100%;
+      outline: none;
+      background: none;
+      box-shadow: none;
+      border: none;
+      font-family: $font;
+      line-height: 1.5rem;
+      font-size: 1rem;
+      padding: 0.25rem 1rem;
+      color: #f1f1f1;
+      font-weight: 400;
+
+      &:before {
+        content: '/ ';
+      }
+    }
   }
 
   &--active {
+    .chat__messages {
+      min-height: 2rem * 10;
+    }
     .chat__form {
-      visibility: visible;
+      display: block;
     }
   }
 }
 
 .message {
-  line-height: 2rem;
+  line-height: 1.5rem;
   font-size: 1rem;
-  padding: 0 1rem;
+  padding: 0.25rem 1rem;
+
+  &:first-child {
+    padding-top: 1rem;
+  }
+  &:last-child {
+    padding-bottom: 1rem;
+  }
 
   &__username {
     font-weight: 700;
@@ -212,6 +237,6 @@
 
   &__text {
     font-weight: 400;
-    color: #dadada;
+    color: #f1f1f1;
   }
 }
