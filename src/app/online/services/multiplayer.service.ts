@@ -3,8 +3,8 @@ import * as THREE from 'three';
 import * as io from 'socket.io-client';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
-import CommonUtils from '@app/shared/utils/Common.utils';
-import OnlinePlayer from '@app/OnlinePlayer';
+import CommonUtils from '@shared/utils/Common.utils';
+import OnlinePlayer from '@online/OnlinePlayer';
 
 import { progressionSvc } from '@achievements/services/progression.service';
 import { notificationSvc } from '@shared/services/notification.service';
