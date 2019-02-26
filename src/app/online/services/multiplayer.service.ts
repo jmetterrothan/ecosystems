@@ -256,7 +256,10 @@ class MultiplayerService {
     if (op instanceof OnlinePlayer) {
       op.clean(this.scene);
     }
+
     this.onlinePlayers.delete(data.userID);
+
+    console.log('deco', data.messages);
 
     this.onMessageReceived(data.messages);
     this.onlineStatus$.next(this.getOnlineStatus());
