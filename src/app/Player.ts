@@ -164,7 +164,7 @@ class Player {
   handleKeyboard(key: string, active: boolean) {
 
     // disable key when chat input is focused
-    if (active && multiplayerSvc.isUsed() && multiplayerSvc.chatInputIsFocused()) {
+    if (active && multiplayerSvc.isUsed() && multiplayerSvc.chatInputIsFocused() && key !== Keys[KeyAction.CHAT]) {
       return;
     }
 
