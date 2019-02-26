@@ -67,14 +67,14 @@ class HomeTab extends React.Component<IProps, any> {
     const onlineShareLink = `https://www.3d-ecosystems.com/?online=1&seed=${seed}&share=1`;
 
     return (
-      <form className='form online-share mb-3'>
+      <div className='form online-share mb-3'>
         <div className='form__group'>
           <p className='paragraph color-darkblue bold mb-1'>
           {translationSvc.translate('UI.home-tab.share.text')}
           </p>
           <input type='text' className='form__element' readOnly={true} value={onlineShareLink} />
         </div>
-      </form>
+      </div>
     );
   }
 }
