@@ -123,7 +123,7 @@ class Player {
     }
 
     // disable movement when user is typing on message input
-    if (multiplayerSvc.isUsed() && multiplayerSvc.chatIsOpened()) {
+    if (multiplayerSvc.isUsed() && multiplayerSvc.chatInputIsFocused()) {
       this.velocity.set(0, 0, 0);
     }
 
@@ -184,9 +184,9 @@ class Player {
       case Keys[KeyAction.MOVE_DOWN]:
         this.moveDown = active; break;
 
-      case Keys[KeyAction.CHAT]: if (active && multiplayerSvc.isUsed()) multiplayerSvc.toggleChat(); break;
-      case Keys[KeyAction.VOCAL]: if (active && !multiplayerSvc.chatIsOpened()) this.voice.togglePredictState(); break;
-      case Keys[KeyAction.MUTE]: if (active && !multiplayerSvc.chatIsOpened()) configSvc.soundEnabled = !configSvc.soundEnabled; break;
+      case Keys[KeyAction.CHAT]: if (active && multiplayerSvc.isUsed()) multiplayerSvc.toggleChatInutFocus(); break;
+      case Keys[KeyAction.VOCAL]: if (active && !multiplayerSvc.chatInputIsFocused()) this.voice.togglePredictState(); break;
+      case Keys[KeyAction.MUTE]: if (active && !multiplayerSvc.chatInputIsFocused()) configSvc.soundEnabled = !configSvc.soundEnabled; break;
     }
   }
 

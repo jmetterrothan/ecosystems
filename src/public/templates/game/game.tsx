@@ -48,7 +48,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
       onlineStatus: multiplayerSvc.getOnlineStatus(),
       soundEnabled: configSvc.soundEnabled,
       voiceEnabled: configSvc.voiceEnabled,
-      chatOpened: multiplayerSvc.chatIsOpened(),
+      chatOpened: multiplayerSvc.chatInputIsFocused(),
       messageValue: '',
       messages: multiplayerSvc.getMessages()
     };
@@ -69,9 +69,9 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     });
 
     if (multiplayerSvc.isUsed()) {
-      if (multiplayerSvc.chatIsOpened()) this.messageInput.focus();
-      this.toggleChatSubscription = multiplayerSvc.toggleChat$.subscribe(() => {
-        const chatOpened = multiplayerSvc.chatIsOpened();
+      if (multiplayerSvc.chatInputIsFocused()) this.messageInput.focus();
+      this.toggleChatSubscription = multiplayerSvc.chatInputFocus$.subscribe(() => {
+        const chatOpened = multiplayerSvc.chatInputIsFocused();
         this.setState({ chatOpened }, () => {
           if (chatOpened) setTimeout(() => this.messageInput.focus(), 10);
           else setTimeout(() => this.messageInput.blur(), 10);

@@ -36,8 +36,8 @@ class MultiplayerService {
   private onlinePlayers: Map<string, OnlinePlayer>;
   onlineStatus$: Subject<IOnlineStatus>;
 
-  private toggleChatSource: Subject<void>;
-  toggleChat$: Observable<void>;
+  private chatInputFocusSource: Subject<void>;
+  chatInputFocus$: Observable<void>;
 
   private messagesSource: Subject<IOnlineMessage[]>;
   messages$: Observable<IOnlineMessage[]>;
@@ -46,7 +46,7 @@ class MultiplayerService {
   private user: IOnlineUser;
 
   private alive: boolean;
-  private chatOpened: boolean;
+  private inputChatFocused: boolean;
 
   private messages: IOnlineMessage[];
 
@@ -60,14 +60,14 @@ class MultiplayerService {
     this.onlinePlayers = new Map();
     this.onlineStatus$ = new Subject();
 
-    this.toggleChatSource = new Subject();
-    this.toggleChat$ = this.toggleChatSource.asObservable();
+    this.chatInputFocusSource = new Subject();
+    this.chatInputFocus$ = this.chatInputFocusSource.asObservable();
 
     this.messagesSource = new Subject();
     this.messages$ = this.messagesSource.asObservable();
 
     this.alive = true;
-    this.chatOpened = false;
+    this.inputChatFocused = false;
   }
 
   /**
@@ -145,14 +145,13 @@ class MultiplayerService {
     this.socket.emit(SOCKET_EVENTS.CL_SEND_MESSAGE, { message, roomID: this.roomID, user: this.user });
   }
 
-  toggleChat(value?: boolean) {
-    console.log('toggle');
-    this.chatOpened = value || !this.chatOpened;
-    this.toggleChatSource.next();
+  toggleChatInutFocus(value?: boolean) {
+    this.inputChatFocused = value || !this.inputChatFocused;
+    this.chatInputFocusSource.next();
   }
 
-  chatIsOpened(): boolean {
-    return this.chatOpened;
+  chatInputIsFocused(): boolean {
+    return this.inputChatFocused;
   }
 
   getMessages(): IOnlineMessage[] {
