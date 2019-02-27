@@ -259,8 +259,6 @@ class MultiplayerService {
 
     this.onlinePlayers.delete(data.userID);
 
-    console.log('deco', data.messages);
-
     this.onMessageReceived(data.messages);
     this.onlineStatus$.next(this.getOnlineStatus());
   }
