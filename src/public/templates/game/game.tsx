@@ -112,7 +112,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
 
   private renderChat() {
     const { chatOpened, messages, onlineStatus } = this.state;
-    const list = messages ? messages.slice(chatOpened ? -16 : -8) : [];
+    const list = messages ? messages.slice(chatOpened ? -16 : -8).filter((message) => message && message.user) : [];
 
     const pastilleClassnames = classNames('mr-1', 'pastille', onlineStatus.alive ? 'pastille--green' : 'pastille--red');
 
