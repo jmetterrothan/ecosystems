@@ -4,12 +4,11 @@ import classNames from 'classnames';
 
 import UIManager from '@app/ui/UIManager';
 import Crosshair from '@components/crosshair/crosshair';
-import Message from '@components/message/Message';
+import Chat from '@components/chat/Chat';
 import { getKeyActionDisplayName } from '../menu/tutorial-tab/tutorial-action-key/tutorial-action-key';
 
 import { achievementSvc } from '@achievements/services/achievement.service';
 import { multiplayerSvc } from '@online/services/multiplayer.service';
-import { translationSvc } from '@shared/services/translation.service';
 import { configSvc } from '@shared/services/config.service';
 
 import { IOnlineMessage, IOnlineStatus } from '@online/models/onlineObjects.model';
@@ -28,7 +27,6 @@ interface IGameState {
   soundEnabled: boolean;
   voiceEnabled: boolean;
   chatOpened: boolean;
-  messageValue: string;
   messages: IOnlineMessage[];
 }
 
@@ -40,8 +38,6 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
   private toggleChatSubscription: Subscription;
   private messagesSubscription: Subscription;
 
-  private messageInput: HTMLInputElement;
-
   constructor(props) {
     super(props);
 
@@ -52,7 +48,6 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
       soundEnabled: configSvc.soundEnabled,
       voiceEnabled: configSvc.voiceEnabled,
       chatOpened: multiplayerSvc.chatInputIsFocused(),
-      messageValue: '',
       messages: multiplayerSvc.getMessages()
     };
   }
@@ -72,12 +67,14 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     });
 
     if (multiplayerSvc.isUsed()) {
-      if (multiplayerSvc.chatInputIsFocused()) this.messageInput.focus();
+      // if (multiplayerSvc.chatInputIsFocused()) this.messageInput.focus();
       this.toggleChatSubscription = multiplayerSvc.chatInputFocus$.subscribe(() => {
         const chatOpened = multiplayerSvc.chatInputIsFocused();
         this.setState({ chatOpened }, () => {
+          /*
           if (chatOpened) setTimeout(() => this.messageInput.focus(), 10);
           else setTimeout(() => this.messageInput.blur(), 10);
+          */
         });
       });
 
@@ -98,43 +95,8 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     }
   }
 
-  messageChange = ev => {
-    this.setState({ messageValue: ev.target.value });
-  }
-
-  submitMessage = ev => {
-    ev.preventDefault();
-
-    const { messageValue } = this.state;
-    if (messageValue.length) multiplayerSvc.sendMessage(messageValue);
-    this.setState({ messageValue: '' });
-  }
-
-  private renderChat() {
-    const { chatOpened, messages, onlineStatus } = this.state;
-    const list = messages ? messages.slice(chatOpened ? -16 : -8).filter((message) => message && message.user) : [];
-
-    const pastilleClassnames = classNames('mr-1', 'pastille', onlineStatus.alive ? 'pastille--green' : 'pastille--red');
-
-    return (
-      <div className={classNames('chat', chatOpened && 'chat--active')}>
-        <p className='chat__status mb-2'>
-          <span className={pastilleClassnames} />{translationSvc.translate('UI.online.count', { count: onlineStatus.online })}
-        </p>
-        <div className='chat__container'>
-          <div className='chat__messages'>
-            {list.map(item => <Message key={item.id} {...item} />)}
-          </div>
-          {<form className='chat__form mt-2' onSubmit={this.submitMessage}>
-            <input type='text' className='input-message' value={this.state.messageValue} onChange={this.messageChange} ref={el => this.messageInput = el} placeholder='Ecrire dans le chat' />
-          </form>}
-        </div>
-      </div>
-    );
-  }
-
   render() {
-    const { soundEnabled, voiceEnabled, unlockedTrophiesCount, trophiesCount } = this.state;
+    const { messages, chatOpened, onlineStatus, soundEnabled, voiceEnabled, unlockedTrophiesCount, trophiesCount } = this.state;
 
     const trophiesProgression = unlockedTrophiesCount * 100 / trophiesCount;
 
@@ -143,6 +105,8 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
 
     const iconVoiceClass = voiceEnabled ? 'icon-radio-checked' : 'icon-radio-unchecked';
     const iconVoiceActiveClass = voiceEnabled ? 'overlay-icon--active' : '';
+
+    const list = messages ? messages.slice(chatOpened ? -16 : -8).filter((message) => message && message.user) : [];
 
     return (
       <section className='ui__state game'>
@@ -168,7 +132,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
             </div>
           </div>
           <div className='overlay__chat'>
-            {multiplayerSvc.isUsed() && this.renderChat()}
+            {multiplayerSvc.isUsed() && <Chat messages={list} isOpened={chatOpened} onlineStatus={onlineStatus} />}
           </div>
         </div>
       </section>
