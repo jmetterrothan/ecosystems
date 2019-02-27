@@ -133,12 +133,18 @@ export interface IUITranslationKeys {
     title: string;
     article: {
       title_project: string;
+      title_objectives: string;
+      title_help: string;
       title_tech: string;
+      title_code: string;
       p1: string;
       p2: string;
       p3: string;
       p4: string;
       p5: string;
+      p6: string;
+      p7: string;
+      p8: string;
     };
     share: {
       text: string;
