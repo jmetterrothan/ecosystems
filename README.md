@@ -2,6 +2,8 @@
 
 ![alt text](https://files.metter-rothan.fr/ecosystems/desert/preview_001.png)
 
-Ecosystems is a project developed by 3rd year IMAC students in the Artificial Intelligence course. The purpose of the project is to experience a 3d interactive world in a web browser. There is a total of 8 different biomes to discover and many trophies to unlock.
+## Our project
 
-The project uses three.js for the rendering, React/SASS for the user interface, and tensorflow for voice commands recognition. Use a desktop version of Chrome for an optimal experience.
+Ecosystems is a project aiming at generating random interactive 3d worlds. Those worlds are brought to life using algorithms seen in the 3rd year IA course at IMAC engineering school.
+
+It’s strongly recommended to use a PC version of Chrome for an optimal experience.
