@@ -8,10 +8,9 @@ import { IOnlineMessage, ONLINE_MESSAGE_TYPE } from '@app/online/models/onlineOb
 import './message.styles.scss';
 
 const UserMessage = ({ id, user, content }: IOnlineMessage) => {
-  const color = '#02A676'; // user.color;
   return (
     <p key={id} className='message message--user'>
-      <span className='message__username' style={{ color }}>{`<${user.name}> `}</span>
+      <span className='message__username' style={{ color: user.color }}>{`<${user.name}> `}</span>
       <span className={classnames('message__text')}>{content}</span>
     </p>
   );

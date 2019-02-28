@@ -16,7 +16,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     swamps: 'Marais',
   },
   online: {
-    count: 'En ligne {{count}}',
+    count: 'En ligne : {{count}}',
     room_joined: 'Nouvel utilisateur connecté',
     system_messages: {
       connection: '{{user}} s’est connecté',

@@ -16,7 +16,7 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
     swamps: 'Swamps',
   },
   online: {
-    count: 'Online {{count}}',
+    count: 'Online : {{count}}',
     room_joined: 'New user connected',
     system_messages: {
       connection: '{{user}} joined the room',
