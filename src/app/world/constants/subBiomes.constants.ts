@@ -515,8 +515,8 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.2,
         name: ['algea'],
-        scarcity: 0,
-        e: { low: null, high: Chunk.SEA_ELEVATION - 0.275 },
+        scarcity: 0.25,
+        e: { low: null, high: Chunk.SEA_ELEVATION - 1.25 },
         m: { low: 0.15, high: 0.325 },
         scale: { min: 0.75, max: 1.15 },
         float: false,
@@ -557,8 +557,8 @@ export const SUB_BIOMES: IBiomes = {
       {
         weight: 0.2,
         name: ['algea'],
-        scarcity: 0,
-        e: { low: null, high: Chunk.SEA_ELEVATION - 0.275 },
+        scarcity: 0.25,
+        e: { low: null, high: Chunk.SEA_ELEVATION - 1.25 },
         m: { low: 0.15, high: 0.325 },
         scale: { min: 0.75, max: 1.15 },
         float: false,
