@@ -71,7 +71,7 @@ export const SUB_BIOMES: IBiomes = {
       },
       {
         weight: 0.1,
-        name: ['tree_blossom'],
+        name: ['tree_blossom', 'tree_blossom2t'],
         scarcity: 0.9,
         e: { low: Chunk.SEA_ELEVATION + 0.01, high: Chunk.SEA_ELEVATION + 0.325 },
         m: null,

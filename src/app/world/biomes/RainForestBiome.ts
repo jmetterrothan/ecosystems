@@ -31,15 +31,15 @@ class RainForestBiome extends Biome {
   private ridges: number;
 
   private boids: Boids[];
-  private tubecluster: THREE.Object3D;
-  private specialObjectClicked: boolean;
+  // private specialObject: THREE.Object3D;
+  // private specialObjectClicked: boolean;
   private bubbleEmitter: BubbleEmitter;
 
   constructor(terrain: Terrain) {
     super('RAINFOREST', terrain);
 
     this.boids = [];
-    this.specialObjectClicked = false;
+    // this.specialObjectClicked = false;
     this.bubbleEmitter = new BubbleEmitter();
 
     this.waterDistortion = true;
@@ -61,12 +61,14 @@ class RainForestBiome extends Biome {
 
   init() {
     // special object
-    this.tubecluster = this.terrain.placeSpecialObject({
-      stackReference: 'tubecluster2',
+    /*
+    this.specialObject = this.terrain.placeSpecialObject({
+      stackReference: '',
       float: false,
       underwater: ISpecialObjectCanPlaceIn.LAND,
-      e: { low: Chunk.SEA_ELEVATION + 0.05, high: null }
+      e: { low: Chunk.SEA_ELEVATION + 0.65, high: null }
     });
+    */
 
     this.initButterflyBoids();
     this.initFishBoids();
@@ -149,19 +151,20 @@ class RainForestBiome extends Biome {
   }
 
   handleClick(raycaster: THREE.Raycaster) {
-    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.tubecluster], true);
+    /*
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.specialObject], true);
 
     if (intersections.length && !this.specialObjectClicked) {
 
-      new TWEEN.Tween(this.tubecluster.position)
-        .to({ y: this.tubecluster.position.y + 1000 }, 250)
+      new TWEEN.Tween(this.specialObject.position)
+        .to({ y: this.specialObject.position.y + 1000 }, 250)
         .easing(TWEEN.Easing.Cubic.Out)
         .repeat(1)
         .yoyo(true)
         .start();
 
-      new TWEEN.Tween(this.tubecluster.rotation)
-        .to({ y: this.tubecluster.rotation.y + Math.PI / 6 }, 500)
+      new TWEEN.Tween(this.specialObject.rotation)
+        .to({ y: this.specialObject.rotation.y + Math.PI / 6 }, 500)
         .easing(TWEEN.Easing.Cubic.Out)
         .start();
 
@@ -169,6 +172,7 @@ class RainForestBiome extends Biome {
 
       // this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.woodcutter);
     }
+    */
   }
 
   /**

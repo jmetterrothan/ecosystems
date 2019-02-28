@@ -34,6 +34,8 @@ import chestPart2Mtl from '@objmodels/misc/chest_part2.mtl';
 
 import tree_blossomObj from '@objmodels/tree/tree_blossom.obj';
 import tree_blossomMtl from '@objmodels/tree/tree_blossom.mtl';
+import tree_blossom2tObj from '@objmodels/tree/tree_blossom2t.obj';
+import tree_blossom2tMtl from '@objmodels/tree/tree_blossom2t.mtl';
 
 import bush2Obj from '@objmodels/tree/bush2.obj';
 import bush2Mtl from '@objmodels/tree/bush2.mtl';
@@ -321,6 +323,7 @@ export const OBJECTS: IObject[] = [
   { name: 'dead_tree', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: dead_treeObj, mtl: dead_treeMtl },
   { name: 'dead_tree2', type: OBJ_TYPE.TREE, obj: dead_tree2Obj, mtl: dead_tree2Mtl },
   { name: 'tree_blossom', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: tree_blossomObj, mtl: tree_blossomMtl },
+  { name: 'tree_blossom2t', type: [OBJ_TYPE.PLANT, OBJ_TYPE.TREE], obj: tree_blossom2tObj, mtl: tree_blossom2tMtl },
   { name: 'skull', type: OBJ_TYPE.MISC, obj: skullObj, mtl: skullMtl },
   { name: 'carcass', type: OBJ_TYPE.MISC, obj: carcassObj, mtl: carcassMtl },
   { name: 'fish2', type: OBJ_TYPE.MISC, obj: fish2Obj, mtl: fish2Mtl, doubleSide: true },
