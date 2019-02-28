@@ -1,4 +1,5 @@
 import React from 'react';
+import { Subscription } from 'rxjs';
 import classNames from 'classnames';
 
 import Message from '@components/message/Message';
@@ -22,12 +23,27 @@ type IchatState = {
 
 class Chat extends React.Component<IChatProps, IchatState> {
   private messageInput: HTMLInputElement;
+  private toggleChatSubscription: Subscription;
 
   constructor(props) {
     super(props);
     this.state = {
       messageValue: ''
     };
+  }
+
+  componentDidMount() {
+    if (multiplayerSvc.chatInputIsFocused()) this.messageInput.focus();
+
+    this.toggleChatSubscription = multiplayerSvc.chatInputFocus$.subscribe(() => {
+      const chatOpened = multiplayerSvc.chatInputIsFocused();
+      if (chatOpened) setTimeout(() => this.messageInput.focus(), 10);
+      else setTimeout(() => this.messageInput.blur(), 10);
+    });
+  }
+
+  componentWillUnmount() {
+    this.toggleChatSubscription.unsubscribe();
   }
 
   messageChange = ev => {

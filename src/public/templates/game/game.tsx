@@ -67,15 +67,9 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     });
 
     if (multiplayerSvc.isUsed()) {
-      // if (multiplayerSvc.chatInputIsFocused()) this.messageInput.focus();
       this.toggleChatSubscription = multiplayerSvc.chatInputFocus$.subscribe(() => {
         const chatOpened = multiplayerSvc.chatInputIsFocused();
-        this.setState({ chatOpened }, () => {
-          /*
-          if (chatOpened) setTimeout(() => this.messageInput.focus(), 10);
-          else setTimeout(() => this.messageInput.blur(), 10);
-          */
-        });
+        this.setState({ chatOpened });
       });
 
       this.messagesSubscription = multiplayerSvc.messages$.subscribe((messages: IOnlineMessage[]) => {
