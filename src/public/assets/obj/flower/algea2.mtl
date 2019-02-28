@@ -910,6 +910,14 @@ Tf 1.00 1.00 1.00
 Ni 1.00
 Ks 0.20 0.20 0.20
 Ns 18.00
+newmtl algea4SG
+illum 4
+Kd 0.18 0.59 0.35
+Ka 0.18 0.54 0.23
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 6.00
 newmtl pasted__blueSG
 illum 4
 Kd 0.06 0.55 0.47
