@@ -20,6 +20,7 @@ import SwampSFXMp3 from '@sounds/SwampSFX.mp3';
 class SwampBiome extends Biome {
   private boids: Boids[];
   private tubecluster: THREE.Object3D;
+  private tubecluster2: THREE.Object3D;
   private specialObjectClicked: boolean;
 
   constructor(terrain: Terrain) {
@@ -40,6 +41,13 @@ class SwampBiome extends Biome {
     // special object
     this.tubecluster = this.terrain.placeSpecialObject({
       stackReference: 'tubecluster',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.LAND,
+      e: { low: Chunk.SEA_ELEVATION + 0.05, high: null }
+    });
+
+    this.tubecluster2 = this.terrain.placeSpecialObject({
+      stackReference: 'tubecluster2',
       float: false,
       underwater: ISpecialObjectCanPlaceIn.LAND,
       e: { low: Chunk.SEA_ELEVATION + 0.05, high: null }
@@ -83,19 +91,23 @@ class SwampBiome extends Biome {
   }
 
   handleClick(raycaster: THREE.Raycaster) {
-    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.tubecluster], true);
+    this.testSpecialObjectClick(raycaster, this.tubecluster);
+    this.testSpecialObjectClick(raycaster, this.tubecluster2);
+  }
+
+  private testSpecialObjectClick(raycaster: THREE.Raycaster, object: THREE.Object3D) {
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([object], true);
 
     if (intersections.length && !this.specialObjectClicked) {
-
-      new TWEEN.Tween(this.tubecluster.position)
-        .to({ y: this.tubecluster.position.y + 1000 }, 250)
+      new TWEEN.Tween(object.position)
+        .to({ y: object.position.y + 1000 }, 250)
         .easing(TWEEN.Easing.Cubic.Out)
         .repeat(1)
         .yoyo(true)
         .start();
 
-      new TWEEN.Tween(this.tubecluster.rotation)
-        .to({ y: this.tubecluster.rotation.y + Math.PI / 6 }, 500)
+      new TWEEN.Tween(object.rotation)
+        .to({ y: object.rotation.y + Math.PI / 6 }, 500)
         .easing(TWEEN.Easing.Cubic.Out)
         .start();
 

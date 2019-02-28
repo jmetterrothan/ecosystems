@@ -88,7 +88,7 @@ class Weather {
     const queryString = QueryString.create();
 
     this.sunRadius = Math.floor((Terrain.SIZE_X + Terrain.SIZE_Z) / 2 * 1.2);
-    this.sunRevolutionTime = 150;
+    this.sunRevolutionTime = 120;
 
     let startAngle = MathUtils.randomInt(0, 360);
 
