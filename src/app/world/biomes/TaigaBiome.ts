@@ -40,14 +40,14 @@ class TaigaBiome extends Biome {
     const nx = (x - Terrain.SIZE_X / 2) / (1024 * 128);
     const nz = (z - Terrain.SIZE_Z / 2) / (1024 * 128);
 
-    let e = 0.5 * this.generator.noise2(0.75 * nx, 0.75 * nz);
+    let e = 0.235 * this.generator.noise2(0.75 * nx, 0.75 * nz);
     e += 0.2 * this.generator.noise3(1 * nx, 1 * nz);
     e += 0.075 * this.generator.ridgeNoise(1 * nx, 1 * nz);
     e += 0.00985 * this.generator.noise(32 * nx, 32 * nz);
     e += 0.006 * this.generator.noise2(64 * nx, 64 * nz);
     e += 0.075 * this.generator.noise(4 * nx, 4 * nz);
 
-    return e - 0.35;
+    return e - 0.25;
   }
 
   getParametersAt(e: number, m: number): IBiome {
@@ -56,7 +56,7 @@ class TaigaBiome extends Biome {
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.05) {
-      if (e > Chunk.SEA_ELEVATION + 0.125) {
+      if (e > Chunk.SEA_ELEVATION + 0.105) {
         return SUB_BIOMES.TAIGA_FOREST;
       }
       return SUB_BIOMES.TAIGA_PLAINS;
