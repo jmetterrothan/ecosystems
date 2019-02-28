@@ -72,11 +72,11 @@ class BubbleEmitter {
    * @param {number} x
    * @param {number} y
    * @param {number} z
+   * @param {number} radius
    * @return {THREE.Points}
    */
-  private createParticleSource(x: number, y: number, z: number): THREE.Points {
+  private createParticleSource(x: number, y: number, z: number, radius: number = 15000): THREE.Points {
     const count: number = MathUtils.randomInt(16, 32);
-    const radius = 15000;
     const geo = new THREE.Geometry();
 
     const material = new THREE.PointsMaterial({
@@ -107,8 +107,8 @@ class BubbleEmitter {
     return emitter;
   }
 
-  createEmitter(scene: THREE.Scene, position: THREE.Vector3) {
-    scene.add(this.createParticleSource(position.x - 15000, position.y, position.z - 15000));
+  createEmitter(scene: THREE.Scene, position: THREE.Vector3, radius: number) {
+    scene.add(this.createParticleSource(position.x, position.y, position.z, radius));
   }
 }
 
