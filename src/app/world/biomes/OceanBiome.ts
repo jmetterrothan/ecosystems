@@ -152,7 +152,7 @@ class OceanBiome extends Biome {
         .onComplete(() => {
           this.chestTop.updateMatrix();
           // bubbles coming out of the chest
-          this.bubbleEmitter.createEmitter(this.terrain.getScene(), this.chestTop.position, 2048);
+          this.bubbleEmitter.createEmitter(this.terrain.getScene(), this.chestTop.position, 3072, 8);
         });
 
       this.chestOpened = true;

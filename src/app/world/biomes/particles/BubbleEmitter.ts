@@ -40,7 +40,7 @@ class BubbleEmitter {
       const y = generator.computeHeightAt(x, z);
 
       if (y < Chunk.SEA_LEVEL - Chunk.HEIGHT / 4) {
-        scene.add(this.createParticleSource(x, y, z));
+        scene.add(this.createParticleSource(x, y, z, 15000, MathUtils.randomInt(16, 32)));
       }
     });
   }
@@ -73,10 +73,10 @@ class BubbleEmitter {
    * @param {number} y
    * @param {number} z
    * @param {number} radius
+   * @param {number} count
    * @return {THREE.Points}
    */
-  private createParticleSource(x: number, y: number, z: number, radius: number = 15000): THREE.Points {
-    const count: number = MathUtils.randomInt(16, 32);
+  private createParticleSource(x: number, y: number, z: number, radius: number, count: number): THREE.Points {
     const geo = new THREE.Geometry();
 
     const material = new THREE.PointsMaterial({
@@ -107,8 +107,8 @@ class BubbleEmitter {
     return emitter;
   }
 
-  createEmitter(scene: THREE.Scene, position: THREE.Vector3, radius: number) {
-    scene.add(this.createParticleSource(position.x, position.y, position.z, radius));
+  createEmitter(scene: THREE.Scene, position: THREE.Vector3, radius: number, count: number) {
+    scene.add(this.createParticleSource(position.x, position.y, position.z, radius, count));
   }
 }
 
