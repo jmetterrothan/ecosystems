@@ -32,5 +32,6 @@ export const EN_TROPHIES_TRANSLATION: ITrophiesTranslationKeys = {
   woodcutter: 'Woodcutter',
   mushrooms_soup: 'Mushrooms soup',
   bunch_of_flowers: 'Bunch of flowers',
-  under_map: 'What are you doing here ?'
+  under_map: 'What are you doing here ?',
+  weird_mushroom: 'A weird mushroom'
 };

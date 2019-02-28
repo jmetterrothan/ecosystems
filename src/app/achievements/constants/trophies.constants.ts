@@ -338,6 +338,16 @@ export const TROPHIES: ITrophy[] = [
       { name: 'under map', value: PROGRESSION_EXTRAS_STORAGE_KEYS.under_map.value }
     ]
   },
+  {
+    name: { key: 'TROPHIES.weird_mushroom' },
+    value: 'weird_mushroom',
+    Icon: IconTrophy,
+    difficulty: TROPHY_DIFFICULTY.BRONZE,
+    type: TROPHY_TYPE.EXTRAS,
+    checklist: [
+      { name: 'weird mushroom', value: PROGRESSION_EXTRAS_STORAGE_KEYS.weird_mushroom.value }
+    ]
+  },
   // ONLINE
   {
     name: { key: 'TROPHIES.create_game_online' },

@@ -36,6 +36,7 @@ export interface ITrophiesTranslationKeys {
   mushrooms_soup: string;
   bunch_of_flowers: string;
   under_map: string;
+  weird_mushroom: string;
 }
 
 export interface IUITranslationKeys {

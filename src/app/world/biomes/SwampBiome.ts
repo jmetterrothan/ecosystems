@@ -14,6 +14,7 @@ import { ISpecialObjectCanPlaceIn } from '@world/models/objectParameters.model';
 
 import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
+import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
 
 import SwampSFXMp3 from '@sounds/SwampSFX.mp3';
 
@@ -113,7 +114,7 @@ class SwampBiome extends Biome {
 
       this.specialObjectClicked = true;
 
-      // this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.woodcutter);
+      this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.weird_mushroom);
     }
   }
 

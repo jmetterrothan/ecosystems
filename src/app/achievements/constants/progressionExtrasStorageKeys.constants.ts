@@ -36,6 +36,11 @@ export const PROGRESSION_EXTRAS_STORAGE_KEYS: IProgressionExtrasStorageKeys = {
     value: 'woodcutter',
     show: false
   },
+  weird_mushroom: {
+    name: 'weird_mushroom',
+    value: 'weird_mushroom',
+    show: false
+  },
   under_map: {
     name: 'under_map',
     value: 'under_map',
