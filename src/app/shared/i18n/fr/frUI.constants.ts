@@ -14,6 +14,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     rainforest: 'Forêt humide',
     snowy_hills: 'Terres enneigées',
     swamps: 'Marais',
+    taiga: 'Taïga'
   },
   online: {
     count: 'En ligne : {{count}}',
@@ -123,6 +124,8 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
   },
   'progress-tab': {
     title: 'Progression',
+    title_stats: 'Statistiques',
+    title_biomes: 'Biomes visités',
     game_played: 'Parties jouées : {{count}}',
     distance_travelled: 'Distance parcourue : {{count}} km',
     going_underwater: 'Nombre de fois sous l’eau : {{count}}',
@@ -131,6 +134,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
     objects_placed_voice: 'Objets placés à la voix : {{count}}',
     objects_removed: 'Objects supprimés : {{count}}',
     unlock_trophies_percentage: 'Trophées débloqués : {{count}}%',
+    play_online: 'Parties jouées en ligne : {{count}}',
   },
   'contact-tab': {
     title: 'Contact',

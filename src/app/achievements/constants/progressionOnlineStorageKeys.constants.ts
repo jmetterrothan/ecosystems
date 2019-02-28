@@ -4,7 +4,7 @@ export const PROGRESSION_ONLINE_STORAGE_KEYS: IProgressionOnlineStorageKeys = {
   play_online: {
     name: 'play_online',
     value: 'play_online',
-    show: false
+    show: true
   },
   place_object_online: {
     name: 'place_object_online',

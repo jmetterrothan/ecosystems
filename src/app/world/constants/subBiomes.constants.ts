@@ -15,7 +15,7 @@ export const SUB_BIOMES: IBiomes = {
         scarcity: 0,
         e: null,
         m: { low: 0.2, high: 0.8 },
-        scale: { min: 0.9, max: 1.35 },
+        scale: { min: 1.25, max: 1.5 },
         float: false,
       },
       {
@@ -39,7 +39,7 @@ export const SUB_BIOMES: IBiomes = {
         scarcity: 0.8,
         e: null,
         m: null,
-        scale: { min: 0.75, max: 2.5 },
+        scale: { min: 0.75, max: 3 },
         float: false,
       },
       {
@@ -109,7 +109,7 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.15,
+        weight: 0.1,
         name: ['dead_tree', 'dead_tree2'],
         scarcity: 0.975,
         e: { low: Chunk.SEA_ELEVATION + 0.035, high: Chunk.SEA_ELEVATION + 0.5 },
@@ -119,8 +119,17 @@ export const SUB_BIOMES: IBiomes = {
       },
       {
         weight: 0.1,
-        name: ['tree_blossom', 'tree_blossom2t'],
+        name: ['tree_blossom'],
         scarcity: 0.9,
+        e: { low: Chunk.SEA_ELEVATION + 0.01, high: Chunk.SEA_ELEVATION + 0.325 },
+        m: null,
+        scale: { min: 0.9, max: 1.75 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: ['tree_blossom2t'],
+        scarcity: 0.985,
         e: { low: Chunk.SEA_ELEVATION + 0.01, high: Chunk.SEA_ELEVATION + 0.325 },
         m: null,
         scale: { min: 0.9, max: 1.75 },

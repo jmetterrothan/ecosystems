@@ -50,10 +50,10 @@ class FjordBiome extends Biome {
       e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 }
     });
 
-    this.initBeeBoids();
+    this.initButterflyBoids();
   }
 
-  private initBeeBoids() {
+  private initButterflyBoids() {
     const size = 32500;
     const max = 4;
 

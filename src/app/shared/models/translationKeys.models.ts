@@ -57,6 +57,7 @@ export interface IUITranslationKeys {
     rainforest: string;
     snowy_hills: string;
     swamps: string;
+    taiga: string;
   };
   menu: {
     new_world_btn: string;
@@ -161,6 +162,8 @@ export interface IUITranslationKeys {
   };
   'progress-tab': {
     title: string;
+    title_stats: string;
+    title_biomes: string;
     game_played: string;
     distance_travelled: string;
     going_underwater: string;
@@ -169,6 +172,7 @@ export interface IUITranslationKeys {
     objects_placed_submarine: string;
     objects_placed_voice: string;
     objects_removed: string;
+    play_online: string;
   };
   'contact-tab': {
     title: string;

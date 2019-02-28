@@ -9,4 +9,5 @@ export interface IProgressionBiomesStorageKeys {
   swamp_visited: IProgression;
   fjord_visited: IProgression;
   desert_island_visited: IProgression;
+  taiga_visited: IProgression;
 }

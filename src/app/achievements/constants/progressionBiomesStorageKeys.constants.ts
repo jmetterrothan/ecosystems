@@ -40,5 +40,10 @@ export const PROGRESSION_BIOME_STORAGE_KEYS: IProgressionBiomesStorageKeys = {
     name: 'desert_island_visited',
     value: 'desert_island_visited',
     show: false
-  }
+  },
+  taiga_visited: {
+    name: 'taiga_visited',
+    value: 'taiga_visited',
+    show: false
+  },
 };

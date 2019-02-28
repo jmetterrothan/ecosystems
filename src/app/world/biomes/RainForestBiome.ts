@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as TWEEN from '@tweenjs/tween.js';
+// import * as TWEEN from '@tweenjs/tween.js';
 import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Terrain from '@world/Terrain';
@@ -14,7 +14,7 @@ import ClownFish from '@app/boids/creatures/ClownFish';
 import BubbleEmitter from '@world/biomes/particles/BubbleEmitter';
 
 import { IBiome } from '@world/models/biome.model';
-import { ISpecialObjectCanPlaceIn } from '@world/models/objectParameters.model';
+// import { ISpecialObjectCanPlaceIn } from '@world/models/objectParameters.model';
 
 import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
@@ -107,7 +107,7 @@ class RainForestBiome extends Biome {
 
   initFishBoids() {
     // boids
-    const size = 50000;
+    const size = 40000;
     const max = 3;
 
     const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 60, MathUtils.rng);

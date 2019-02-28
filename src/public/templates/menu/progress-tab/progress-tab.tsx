@@ -20,6 +20,7 @@ import DesertPic from '@images/biomes/thumbs/desert/thumb_001.png';
 import SnowyHillsPic from '@images/biomes/thumbs/snowy_hills/thumb_001.png';
 import HighlandsPic from '@images/biomes/thumbs/highlands/thumb_001.png';
 import DesertIslandPic from '@images/biomes/thumbs/desert_island/thumb_001.png';
+import TaigaPic from '@images/biomes/thumbs/taiga/thumb_002.png';
 
 type IBiomeProgress = {
   name: string;
@@ -54,7 +55,16 @@ class ProgressTab extends React.Component<any, IProgressTabState> {
           <H3 className='title color-theme mb-2'>{translationSvc.translate('UI.progress-tab.title')}</H3>
         </header>
         <div className='tab__content'>
-          <Row Tag='ul' className='biome-progress mb-2'>
+          <H4 className='mb-2'>{translationSvc.translate('UI.progress-tab.title_stats')}</H4>
+          <ul className='overall-progress mb-3'>
+          {this.state.progression.map((item: IProgressionWithCount, index: number) => (
+            <li className='p-2 pt-1 pb-1' key={index}>
+              {translationSvc.translate(`UI.progress-tab.${item.name}`, { count: CommonUtils.formatNumberWithSpaces(item.count) })}
+            </li>
+          ))}
+          </ul>
+          <H4 className='mb-2'>{translationSvc.translate('UI.progress-tab.title_biomes')}</H4>
+          <Row Tag='ul' className='biome-progress'>
             <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'>
               <BiomeProgress name={translationSvc.translate('UI.biomes.desert')} image={DesertPic} unlocked={progression.desert_visited} />
             </li>
@@ -79,14 +89,10 @@ class ProgressTab extends React.Component<any, IProgressTabState> {
             <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'>
               <BiomeProgress name={translationSvc.translate('UI.biomes.swamps')} image={SwampPic} unlocked={progression.swamp_visited} />
             </li>
-          </Row>
-          <ul className='overall-progress'>
-          {this.state.progression.map((item: IProgressionWithCount, index: number) => (
-            <li className='p-2 pt-1 pb-1' key={index}>
-              {translationSvc.translate(`UI.progress-tab.${item.name}`, { count: CommonUtils.formatNumberWithSpaces(item.count) })}
+            <li className='flexcol flexcol--12 flexcol--8-t flexcol--6-d mb-1'>
+              <BiomeProgress name={translationSvc.translate('UI.biomes.taiga')} image={TaigaPic} unlocked={progression.taiga_visited} />
             </li>
-          ))}
-          </ul>
+          </Row>
         </div>
       </div>
     );
