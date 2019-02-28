@@ -42,7 +42,7 @@ class OceanBiome extends Biome {
 
     this.spike = MathUtils.randomFloat(0.025, 0.125);
     this.depth = 1.425;
-    this.flat = MathUtils.rng() >= 0.5;
+    this.flat = MathUtils.rng() >= 0.35;
 
     this.waterColor1 = new THREE.Color(0x07c9d0);
     this.waterColor2 = new THREE.Color(0x3e73d4);
