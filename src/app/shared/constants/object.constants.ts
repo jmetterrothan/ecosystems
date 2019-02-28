@@ -255,6 +255,10 @@ import mushroomarrowObj from '@objmodels/mushroom/mushroomarrow.obj';
 import mushroomarrowMtl from '@objmodels/mushroom/mushroomarrow.mtl';
 import mushroomclassicObj from '@objmodels/mushroom/mushroomclassic.obj';
 import mushroomclassicMtl from '@objmodels/mushroom/mushroomclassic.mtl';
+import tubeclusterObj from '@objmodels/mushroom/tubecluster.obj';
+import tubeclusterMtl from '@objmodels/mushroom/tubecluster.mtl';
+import tubecluster2Obj from '@objmodels/mushroom/tubecluster2.obj';
+import tubecluster2Mtl from '@objmodels/mushroom/tubecluster2.mtl';
 
 import desert_shrubObj from '@objmodels/shrub/desert_shrub.obj';
 import desert_shrubMtl from '@objmodels/shrub/desert_shrub.mtl';
@@ -268,6 +272,8 @@ export const OBJECTS: IObject[] = [
   { name: 'desert_tree', type: OBJ_TYPE.PLANT, obj: desert_treeObj, mtl: desert_treeMtl },
   { name: 'desert_shrub1', type: OBJ_TYPE.PLANT, obj: desert_shrubObj, mtl: desert_shrubMtl },
   { name: 'desert_shrub2', type: OBJ_TYPE.PLANT, obj: desert_shrub2Obj, mtl: desert_shrub2Mtl },
+  { name: 'tubecluster', type: OBJ_TYPE.MISC, obj: tubeclusterObj, mtl: tubeclusterMtl },
+  { name: 'tubecluster2', type: OBJ_TYPE.MISC, obj: tubecluster2Obj, mtl: tubecluster2Mtl },
   { name: 'mushroom_cluster', type: OBJ_TYPE.MUSHROOM, obj: mushroomclusterObj, mtl: mushroomclusterMtl },
   { name: 'fat_mushroom', type: OBJ_TYPE.MUSHROOM, obj: fatMushroomObj, mtl: fatMushroomMtl },
   { name: 'fat_mushroom2', type: OBJ_TYPE.MUSHROOM, obj: fatMushroom2Obj, mtl: fatMushroom2Mtl },

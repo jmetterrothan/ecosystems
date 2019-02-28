@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import * as TWEEN from '@tweenjs/tween.js';
 import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Terrain from '@world/Terrain';
@@ -13,6 +14,7 @@ import ClownFish from '@app/boids/creatures/ClownFish';
 import BubbleEmitter from '@world/biomes/particles/BubbleEmitter';
 
 import { IBiome } from '@world/models/biome.model';
+import { ISpecialObjectCanPlaceIn } from '@world/models/objectParameters.model';
 
 import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
@@ -29,13 +31,15 @@ class RainForestBiome extends Biome {
   private ridges: number;
 
   private boids: Boids[];
-
+  private tubecluster: THREE.Object3D;
+  private specialObjectClicked: boolean;
   private bubbleEmitter: BubbleEmitter;
 
   constructor(terrain: Terrain) {
     super('RAINFOREST', terrain);
 
     this.boids = [];
+    this.specialObjectClicked = false;
     this.bubbleEmitter = new BubbleEmitter();
 
     this.waterDistortion = true;
@@ -56,6 +60,13 @@ class RainForestBiome extends Biome {
   }
 
   init() {
+    this.tubecluster = this.terrain.placeSpecialObject({
+      stackReference: 'tubecluster2',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.LAND,
+      e: { low: Chunk.SEA_ELEVATION + 0.05, high: null }
+    });
+
     this.initButterflyBoids();
     this.initFishBoids();
     this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
@@ -134,6 +145,29 @@ class RainForestBiome extends Biome {
   update(delta: number) {
     this.boids.forEach(boids => boids.update(this.generator, delta));
     this.bubbleEmitter.update(delta);
+  }
+
+  handleClick(raycaster: THREE.Raycaster) {
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.tubecluster], true);
+
+    if (intersections.length && !this.specialObjectClicked) {
+
+      new TWEEN.Tween(this.tubecluster.position)
+        .to({ y: this.tubecluster.position.y + 1000 }, 250)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .repeat(1)
+        .yoyo(true)
+        .start();
+
+      new TWEEN.Tween(this.tubecluster.rotation)
+        .to({ y: this.tubecluster.rotation.y + Math.PI / 6 }, 500)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .start();
+
+      this.specialObjectClicked = true;
+
+      // this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.woodcutter);
+    }
   }
 
   /**
