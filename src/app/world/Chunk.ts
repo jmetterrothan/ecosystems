@@ -5,7 +5,7 @@ import poissonDiskSampling from 'poisson-disk-sampling';
 import BiomeGenerator from '@world/BiomeGenerator';
 import World from '@world/World';
 import Terrain from '@world/Terrain';
-
+import MathUtils from '@utils/Math.utils';
 import TerrainMesh from '@mesh/TerrainMesh';
 import WaterMesh from '@mesh/WaterMesh';
 import Fifo from '@app/shared/Fifo';
@@ -14,8 +14,6 @@ import { IPick } from '@world/models/pick.model';
 import { IPlaceObject, IPickObject, IStackReference, IRemoveObject } from '@world/models/objectParameters.model';
 
 import { CLOUD_MATERIAL } from '@materials/cloud.material';
-
-import MathUtils from '@utils/Math.utils';
 
 interface ISamplingParameters {
   isOnWater: boolean;

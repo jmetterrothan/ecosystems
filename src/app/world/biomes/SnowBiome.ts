@@ -6,12 +6,13 @@ import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
 
 import { IBiome } from '@world/models/biome.model';
+import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
 
 import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progressionExtrasStorageKeys.constants';
+
 import SnowWindSFXMp3 from '@sounds/SnowWindSFX.mp3';
-import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
 
 class SnowBiome extends Biome {
   private snowmanObject: THREE.Object3D;
