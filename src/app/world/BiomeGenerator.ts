@@ -7,8 +7,9 @@ import DesertBiome from '@world/biomes/DesertBiome';
 import SwampBiome from '@world/biomes/SwampBiome';
 import OceanBiome from '@world/biomes/OceanBiome';
 import HighlandBiome from '@world/biomes/HighlandBiome';
-import RainForestBiome from './biomes/RainForestBiome';
-import DesertIslandBiome from './biomes/DesertIslandBiome';
+import RainForestBiome from '@world/biomes/RainForestBiome';
+import DesertIslandBiome from '@world/biomes/DesertIslandBiome';
+import TaigaBiome from '@world/biomes/TaigaBiome';
 
 import World from '@world/World';
 import Chunk from '@world/Chunk';
@@ -41,6 +42,9 @@ class BiomeGenerator {
    */
   init(terrain: Terrain): Biome {
     switch (terrain.getWorld().getSeed().toLowerCase()) {
+      case 'taiga':
+        this.biome = new TaigaBiome(terrain);
+        break;
       case 'rainforest':
         this.biome = new RainForestBiome(terrain);
         break;

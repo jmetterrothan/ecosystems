@@ -277,7 +277,22 @@ import algea2Mtl from '@objmodels/flower/algea2.mtl';
 import algea3Obj from '@objmodels/flower/algea3.obj';
 import algea3Mtl from '@objmodels/flower/algea3.mtl';
 
+/*
+import bamboo1Obj from '@objmodels/tree/bamboo1.obj';
+import bamboo1Mtl from '@objmodels/tree/bamboo1.mtl';
+import bamboo2Obj from '@objmodels/tree/bamboo2.obj';
+import bamboo2Mtl from '@objmodels/tree/bamboo2.mtl';
+import bamboo3Obj from '@objmodels/tree/bamboo3.obj';
+import bamboo3Mtl from '@objmodels/tree/bamboo3.mtl';
+import bamboo5Obj from '@objmodels/tree/bamboo5.obj';
+import bamboo5Mtl from '@objmodels/tree/bamboo5.mtl';
+*/
+
 export const OBJECTS: IObject[] = [
+  // { name: 'bamboo1', type: OBJ_TYPE.TREE, obj: bamboo1Obj, mtl: bamboo1Mtl },
+  // { name: 'bamboo2', type: OBJ_TYPE.TREE, obj: bamboo2Obj, mtl: bamboo2Mtl },
+  // { name: 'bamboo3', type: OBJ_TYPE.TREE, obj: bamboo3Obj, mtl: bamboo3Mtl },
+  // { name: 'bamboo5', type: OBJ_TYPE.TREE, obj: bamboo5Obj, mtl: bamboo5Mtl },
   { name: 'algea', type: OBJ_TYPE.PLANT, obj: algeaObj, mtl: algeaMtl },
   { name: 'algea2', type: OBJ_TYPE.PLANT, obj: algea2Obj, mtl: algea2Mtl },
   { name: 'algea3', type: OBJ_TYPE.PLANT, obj: algea3Obj, mtl: algea3Mtl },

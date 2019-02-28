@@ -5,6 +5,54 @@ import Chunk from '@world/Chunk';
 import { IBiomes } from '@world/models/biomes.model';
 
 export const SUB_BIOMES: IBiomes = {
+  TAIGA_FOREST: {
+    name: 'TAIGA_FOREST',
+    color: new THREE.Color(0x69ad7b),
+    organisms: [
+      {
+        weight: 0.9,
+        name: ['spruce', 'spruce2', 'spruce3'],
+        scarcity: 0,
+        e: null,
+        m: { low: 0.2, high: 0.8 },
+        scale: { min: 0.9, max: 1.35 },
+        float: false,
+      },
+      {
+        weight: 0.1,
+        name: ['red_mushroom', 'mushroom_classic'], // MUSHROOM
+        scarcity: 0.85,
+        e: { low: Chunk.SEA_ELEVATION + 0.025, high: null },
+        m: null,
+        scale: { min: 0.9, max: 1.1 },
+        float: false,
+      },
+    ]
+  },
+  TAIGA_PLAINS: {
+    name: 'TAIGA_PLAINS',
+    color: new THREE.Color(0x96c47b),
+    organisms: [
+      {
+        weight: 0.5,
+        name: ['plains_rock1', 'plains_rock2', 'plains_rock3', 'plains_rock4', 'plains_rock5', 'plains_rock6'],
+        scarcity: 0.8,
+        e: null,
+        m: null,
+        scale: { min: 0.75, max: 2.5 },
+        float: false,
+      },
+      {
+        weight: 0.25,
+        name: ['blue_flower1', 'pink_flower1', 'pink_flower4', 'red_flower1', 'white_flower1', 'white_flower2'],
+        scarcity: 0.8,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: null },
+        m: null,
+        scale: { min: 1.0, max: 1.25 },
+        float: false,
+      },
+    ]
+  },
   FROZEN_GRASSLAND: {
     name: 'FROZEN_GRASSLAND',
     color: new THREE.Color(0x96c47b),
