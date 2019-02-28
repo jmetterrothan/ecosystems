@@ -148,7 +148,11 @@ class OceanBiome extends Biome {
       new TWEEN.Tween(this.chestTop.position)
         .to({ x: this.chestTop.position.x + 800, z: this.chestTop.position.z + 800 }, 500)
         .easing(TWEEN.Easing.Cubic.Out)
-        .start();
+        .start()
+        .onComplete(() => {
+          // bubbles coming out of the chest
+          this.bubbleEmitter.createEmitter(this.terrain.getScene(), this.chestTop.position);
+        });
 
       this.chestOpened = true;
 
