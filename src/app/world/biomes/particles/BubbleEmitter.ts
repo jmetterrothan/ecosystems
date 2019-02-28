@@ -106,6 +106,10 @@ class BubbleEmitter {
 
     return emitter;
   }
+
+  createEmitter(scene: THREE.Scene, position: THREE.Vector3) {
+    scene.add(this.createParticleSource(position.x - 15000, position.y, position.z - 15000));
+  }
 }
 
 export default BubbleEmitter;

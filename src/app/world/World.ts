@@ -1,11 +1,12 @@
-import { Howl } from 'howler';
 import * as THREE from 'three';
+import { Howl } from 'howler';
 import 'three/examples/js/controls/PointerLockControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 
 import { configSvc } from '@shared/services/config.service';
 import { voiceSvc } from '@voice/services/voice.service';
+import { playerSvc } from '@app/shared/services/player.service';
 
 import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
@@ -17,7 +18,6 @@ import SoundManager from '@app/shared/SoundManager';
 
 import { INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
 import { GraphicsQuality } from '@shared/enums/graphicsQuality.enum';
-import { playerSvc } from '@app/shared/services/player.service';
 
 class World {
   static readonly SEED: string | null = null;

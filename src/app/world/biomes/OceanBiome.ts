@@ -42,7 +42,7 @@ class OceanBiome extends Biome {
 
     this.spike = MathUtils.randomFloat(0.025, 0.125);
     this.depth = 1.425;
-    this.flat = MathUtils.rng() >= 0.5;
+    this.flat = MathUtils.rng() >= 0.35;
 
     this.waterColor1 = new THREE.Color(0x07c9d0);
     this.waterColor2 = new THREE.Color(0x3e73d4);
@@ -56,9 +56,12 @@ class OceanBiome extends Biome {
   }
 
   init() {
+    this.initSpecialObject();
     this.initFishBoids();
     this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
+  }
 
+  private initSpecialObject() {
     // chest
     const centerX = Terrain.SIZE_X / 2;
     const centerZ = Terrain.SIZE_Z / 2;
@@ -82,7 +85,6 @@ class OceanBiome extends Biome {
       float: false,
       underwater: ISpecialObjectCanPlaceIn.WATER
     }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
-
   }
 
   private initFishBoids() {
@@ -103,8 +105,8 @@ class OceanBiome extends Biome {
       const px = size / 2 + point.shift();
       const pz = size / 2 + point.shift();
 
-      const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 3.75, Chunk.HEIGHT / 3) - 4096;
-      const py = Chunk.SEA_LEVEL - 4096 - ySize / 2;
+      const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 3.75, Chunk.HEIGHT / 3) - 5120;
+      const py = Chunk.SEA_LEVEL - 5120 - ySize / 2;
 
       const m = this.generator.computeMoistureAt(px, pz);
 
@@ -146,7 +148,11 @@ class OceanBiome extends Biome {
       new TWEEN.Tween(this.chestTop.position)
         .to({ x: this.chestTop.position.x + 800, z: this.chestTop.position.z + 800 }, 500)
         .easing(TWEEN.Easing.Cubic.Out)
-        .start();
+        .start()
+        .onComplete(() => {
+          // bubbles coming out of the chest
+          this.bubbleEmitter.createEmitter(this.terrain.getScene(), this.chestTop.position);
+        });
 
       this.chestOpened = true;
 

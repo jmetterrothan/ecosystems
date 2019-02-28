@@ -67,6 +67,7 @@ class Main {
 
     window.addEventListener('focus', () => {
       window.isFocused = true;
+      this.lastTime = window.performance.now();
     });
 
     this.world = new World(this.scene, this.camera, this.controls);
@@ -138,6 +139,10 @@ class Main {
 
       const pointerlockchange = (e) => {
         this.controls.enabled = PointerLock.enabled;
+
+        if (this.controls.enabled && multiplayerSvc.isUsed() && multiplayerSvc.chatInputIsFocused()) {
+          multiplayerSvc.toggleChatInutFocus(false);
+        }
       };
 
       const pointerlockerror = (e) => { };

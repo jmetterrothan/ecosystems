@@ -15,7 +15,14 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
     snowy_hills: 'Snowy Hills',
     swamps: 'Swamps',
   },
-  online_count: 'Online {{count}}',
+  online: {
+    count: 'Online {{count}}',
+    room_joined: 'New user connected',
+    system_messages: {
+      connection: '{{user}} joined the room',
+      disconnection: '{{user}} leaved the room'
+    }
+  },
   trophy_unlocked: 'Trophy unlocked',
   home: {
     title: 'Ecosystems',
@@ -68,7 +75,8 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
         reload: 'Generate a new world',
         mute: 'Toggle sound',
         menu: 'Menu',
-        freeze: 'Toggle freeze time'
+        freeze: 'Toggle freeze time',
+        chat: 'Toggle chat'
       },
       'mouse_left-click': 'Put an object down',
       'mouse_left-click_name': 'Left click',
@@ -81,18 +89,27 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
       intro: 'You can place objects using your voice. Don\'t forget to give the application access to your microphone.',
       subtitle: 'Place an object with your voice',
       text: '...'
-    }
+    },
   },
   'home-tab': {
     title: 'Ecosystems',
     article: {
-      title_project: 'The project',
-      title_tech: 'The technologies used',
-      p1: 'Ecosystems is a project developed by 3rd year IMAC students in the Artificial Intelligence course. The purpose of the project is to experience a 3d interactive world in a web browser.',
-      p2: 'You can reload the page anytime you want or click the "New world" button to generate a brand new and unique world. There is a total of {{count}} different biomes to discover.',
-      p3: 'Unlock all {{count}} trophies by roaming and searching the worlds.',
-      p4: 'The project uses three.js for the rendering, React for the user interface, and tensorflow for voice commands recognition. Some functionalities are still in development and prone to bugs.',
-      p5: 'Use a desktop version of Chrome or Firefox for an optimal experience.'
+      title_project: 'Our project',
+      title_objectives: 'Unlock all trophies',
+      title_help: 'In case of problems',
+      title_tech: 'Technologies used',
+      title_code: 'Source code',
+      p1: 'Ecosystems is a project aiming at generating random interactive 3d worlds. Those worlds are brought to life using algorithms seen in the 3rd year IA course at IMAC engineering school.',
+      p2: 'You can unlock a total of 36 trophies by searching the 8 different biomes and performing specific actions. You have the possibility to follow your progress in the dedicated tabs. Each generated world is unique and identified by a seed. To discover a new generation you can simply reload the page or press the "New World" button. A multiplayer mode is available for those who want to roam the different worlds with their friends.',
+      p3: 'The tutorial tab lists all the usable keys, you can also change them if necessary. It’s strongly recommended to use a PC version of Chrome for an optimal experience.',
+      p4: 'The application was developed with Typescript.',
+      p5: '3D world :',
+      p6: 'Interface :',
+      p7: 'Multiplayer :',
+      p8: 'Voice recognition :'
+    },
+    share: {
+      text: 'You can share the current session with the following link :'
     }
   },
   'credits-tab': {

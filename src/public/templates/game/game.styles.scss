@@ -3,10 +3,6 @@
   to { transform: scale(1.1); }
 }
 
-.game {
-
-}
-
 .overlay {
   position: fixed;
   top: 0;
@@ -20,28 +16,15 @@
     top: 0;
     left: 0;
     width: 100%;
-    max-width:225px;
+    max-width:250px;
     font-size:1rem;
     color: #fff;
   }
 
-  &__seed {
+  &__chat {
     position: absolute;
     bottom: 0;
     left: 0;
-    font-size:0.9rem;
-    color: #fff;
-  }
-
-  &__online {
-    display: flex;
-    align-items: center;
-
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    font-size:1rem;
-    color: #fff;
   }
 }
 

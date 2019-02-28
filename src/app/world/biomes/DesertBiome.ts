@@ -39,6 +39,11 @@ class DesertBiome extends Biome {
   }
 
   init() {
+    this.initSpecialObject();
+    this.initFlyBoids();
+  }
+
+  private initSpecialObject() {
     // corpse
     const centerX = Terrain.SIZE_X / 2;
     const centerZ = Terrain.SIZE_Z / 2;
@@ -57,14 +62,6 @@ class DesertBiome extends Biome {
       float: false,
       underwater: ISpecialObjectCanPlaceIn.BOTH
     }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
-
-    this.initFlyBoids();
-
-    // vulture
-    // this.vulture = chunk.getObject({ ...corpseItem });
-    // this.vulture.position.setY(Chunk.CLOUD_LEVEL);
-    // this.vulture.children.forEach((obj: THREE.Mesh) => obj.translateX(-20));
-    // chunk.placeObject(this.vulture, { save: true });
   }
 
   private initFlyBoids() {

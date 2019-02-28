@@ -39,7 +39,14 @@ export interface ITrophiesTranslationKeys {
 }
 
 export interface IUITranslationKeys {
-  online_count: string;
+  online: {
+    room_joined: string;
+    count: string;
+    system_messages: {
+      connection: string;
+      disconnection: string;
+    }
+  };
   trophy_unlocked: string;
   biomes: {
     desert: string;
@@ -107,6 +114,7 @@ export interface IUITranslationKeys {
         mute: string;
         menu: string;
         freeze: string;
+        chat: string;
       };
       'mouse_left-click': string;
       'mouse_left-click_name': string;
@@ -125,13 +133,22 @@ export interface IUITranslationKeys {
     title: string;
     article: {
       title_project: string;
+      title_objectives: string;
+      title_help: string;
       title_tech: string;
+      title_code: string;
       p1: string;
       p2: string;
       p3: string;
       p4: string;
       p5: string;
-    }
+      p6: string;
+      p7: string;
+      p8: string;
+    };
+    share: {
+      text: string;
+    };
   };
   'credits-tab': {
     title: string;
@@ -162,7 +179,7 @@ export interface IUITranslationKeys {
       bug: string;
       improvement: string;
       other: string;
-    }
+    };
     message: string;
     send: string;
   };

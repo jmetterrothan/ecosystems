@@ -69,6 +69,7 @@ class Weather {
   private sun: THREE.Object3D;
   private moon: THREE.Object3D;
 
+  private startSunAngle: number;
   private sunAngle: number; // in radians
   private sunRadius: number;
   private sunRevolutionTime: number; // in seconds
@@ -114,13 +115,14 @@ class Weather {
     }
 
     this.sunAngle = THREE.Math.degToRad(startAngle);
+    this.startSunAngle = this.sunAngle;
 
     this.stars = new Stars();
     this.clouds = new Clouds(generator);
   }
 
   init() {
-    this.watchStartTime();
+    if (multiplayerSvc.isUsed()) this.watchStartTime();
 
     this.initLights();
 
@@ -414,7 +416,12 @@ class Weather {
   }
 
   private watchStartTime() {
-    // multiplayerSvc.time$.subscribe(time => this.startTime = time);
+    multiplayerSvc.time$.subscribe(startTime => {
+      const now = Date.now();
+      const diff = (now - startTime) / 1000;
+      const diffAngle = THREE.Math.degToRad(360 / this.sunRevolutionTime) * diff;
+      this.sunAngle = this.startSunAngle + diffAngle;
+    });
   }
 
   getSunAngle(): number {

@@ -11,5 +11,8 @@ export interface ISocketEvents {
   CL_SEND_REMOVE_OBJECT: string;
   SV_SEND_REMOVE_OBJECT: string;
 
+  CL_SEND_MESSAGE: string;
+  SV_SEND_MESSAGES: string;
+
   SV_SEND_DISCONNECTION: string;
 }

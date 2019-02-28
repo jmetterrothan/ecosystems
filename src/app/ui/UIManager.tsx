@@ -71,6 +71,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
         PointerLock.request();
         return;
       }
+
     });
   }
 

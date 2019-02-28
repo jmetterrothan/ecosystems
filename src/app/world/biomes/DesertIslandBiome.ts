@@ -50,6 +50,12 @@ class DesertIslandBiome extends Biome {
   }
 
   init() {
+    this.initSpecialObject();
+    this.initFishBoids();
+    this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
+  }
+
+  private initSpecialObject() {
     const rotation = new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0);
 
     const centerX = Terrain.SIZE_X / 2;
@@ -72,9 +78,6 @@ class DesertIslandBiome extends Biome {
       float: false,
       underwater: ISpecialObjectCanPlaceIn.BOTH
     }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
-
-    this.initFishBoids();
-    this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
   }
 
   initFishBoids() {
