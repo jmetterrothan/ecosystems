@@ -19,10 +19,13 @@
 
   &__text {
     font-weight: 400;
-    color: #f1f1f1;
+  }
 
-    &--nouser {
-      font-style: italic;
-    }
+  &--user &__text {
+    color: #f1f1f1;
+  }
+  &--system &__text {
+    color: #c1cbd3;
+    font-style: italic;
   }
 }
