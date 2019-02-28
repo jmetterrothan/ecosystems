@@ -185,7 +185,7 @@ class MultiplayerService {
     if (!this.user && this.user !== data.me) {
       this.user = data.me;
 
-      if (data.usersConnected.length === 1) progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.create_game_online);
+      progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.play_online);
 
       // place all objects already placed on this room
       data.objectsAdded.forEach((item: IPick) => {
@@ -208,10 +208,6 @@ class MultiplayerService {
         content: data.me.name,
         duration: 5000
       });
-    }
-
-    if (this.user === data.me && data.usersConnected.length > 1) {
-      progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.join_game_online);
     }
 
     this.onMessageReceived(data.messages);

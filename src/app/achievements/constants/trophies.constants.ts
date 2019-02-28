@@ -350,23 +350,13 @@ export const TROPHIES: ITrophy[] = [
   },
   // ONLINE
   {
-    name: { key: 'TROPHIES.create_game_online' },
-    value: 'create_game_online',
-    Icon: IconTrophyOnline,
-    difficulty: TROPHY_DIFFICULTY.GOLD,
-    type: TROPHY_TYPE.ONLINE,
-    checklist: [
-      { name: 'create game online', value: PROGRESSION_ONLINE_STORAGE_KEYS.create_game_online.value }
-    ]
-  },
-  {
-    name: { key: 'TROPHIES.join_game_online' },
-    value: 'join_game_online',
+    name: { key: 'TROPHIES.play_online' },
+    value: 'play_online',
     Icon: IconTrophyOnline,
     difficulty: TROPHY_DIFFICULTY.BRONZE,
     type: TROPHY_TYPE.ONLINE,
     checklist: [
-      { name: 'join game online', value: PROGRESSION_ONLINE_STORAGE_KEYS.join_game_online.value }
+      { name: 'play online', value: PROGRESSION_ONLINE_STORAGE_KEYS.play_online.value }
     ]
   },
   {
