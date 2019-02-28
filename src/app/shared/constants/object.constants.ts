@@ -270,9 +270,12 @@ import desert_treeMtl from '@objmodels/tree/desert_tree.mtl';
 
 import algeaObj from '@objmodels/flower/algea.obj';
 import algeaMtl from '@objmodels/flower/algea.mtl';
+import algea2Obj from '@objmodels/flower/algea2.obj';
+import algea2Mtl from '@objmodels/flower/algea2.mtl';
 
 export const OBJECTS: IObject[] = [
   { name: 'algea', type: OBJ_TYPE.PLANT, obj: algeaObj, mtl: algeaMtl },
+  { name: 'algea2', type: OBJ_TYPE.PLANT, obj: algea2Obj, mtl: algea2Mtl },
   { name: 'desert_tree', type: OBJ_TYPE.PLANT, obj: desert_treeObj, mtl: desert_treeMtl },
   { name: 'desert_shrub1', type: OBJ_TYPE.PLANT, obj: desert_shrubObj, mtl: desert_shrubMtl },
   { name: 'desert_shrub2', type: OBJ_TYPE.PLANT, obj: desert_shrub2Obj, mtl: desert_shrub2Mtl },
