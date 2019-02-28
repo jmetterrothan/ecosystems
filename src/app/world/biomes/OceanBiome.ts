@@ -56,9 +56,12 @@ class OceanBiome extends Biome {
   }
 
   init() {
+    this.initSpecialObject();
     this.initFishBoids();
     this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
+  }
 
+  private initSpecialObject() {
     // chest
     const centerX = Terrain.SIZE_X / 2;
     const centerZ = Terrain.SIZE_Z / 2;
@@ -82,7 +85,6 @@ class OceanBiome extends Biome {
       float: false,
       underwater: ISpecialObjectCanPlaceIn.WATER
     }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
-
   }
 
   private initFishBoids() {

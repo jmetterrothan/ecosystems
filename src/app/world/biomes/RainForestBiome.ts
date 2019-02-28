@@ -60,6 +60,7 @@ class RainForestBiome extends Biome {
   }
 
   init() {
+    // special object
     this.tubecluster = this.terrain.placeSpecialObject({
       stackReference: 'tubecluster2',
       float: false,

@@ -37,6 +37,7 @@ class SwampBiome extends Biome {
   }
 
   init() {
+    // special object
     this.tubecluster = this.terrain.placeSpecialObject({
       stackReference: 'tubecluster',
       float: false,
@@ -44,6 +45,10 @@ class SwampBiome extends Biome {
       e: { low: Chunk.SEA_ELEVATION + 0.05, high: null }
     });
 
+    this.initButterflyBoids();
+  }
+
+  private initButterflyBoids() {
     const size = 100000;
     const max = 4;
 
@@ -109,8 +114,6 @@ class SwampBiome extends Biome {
   computeElevationAt(x: number, z: number): number {
     const nx = (x - Terrain.SIZE_X / 2) / (1024 * 128);
     const nz = (z - Terrain.SIZE_Z / 2) / (1024 * 128);
-
-    const m = this.computeMoistureAt(x, z);
 
     let e = -0.2 * this.generator.noise2(0.35 * nx, 0.35 * nz);
     e += 0.2 * this.generator.noise3(2 * nx, 2 * nz);
