@@ -84,6 +84,7 @@ class Player {
    * @param {number} delta
    */
   move(delta: number): THREE.Vector3 {
+
     // movement
     if (this.moveForward) {
       this.velocity.z = -this.speed.z;
@@ -121,6 +122,11 @@ class Player {
       if (this.velocity.y < 0) { this.velocity.y = 0; }
     }
 
+    // disable movement when user is typing on message input
+    if (multiplayerSvc.isUsed() && multiplayerSvc.chatInputIsFocused()) {
+      this.velocity.set(0, 0, 0);
+    }
+
     this.translateX(this.velocity.x * delta);
     this.translateY(this.velocity.y * delta);
     this.translateZ(this.velocity.z * delta);
@@ -156,6 +162,12 @@ class Player {
    * @param {boolean} active
    */
   handleKeyboard(key: string, active: boolean) {
+
+    // disable key when chat input is focused
+    if (active && multiplayerSvc.isUsed() && multiplayerSvc.chatInputIsFocused() && key !== Keys[KeyAction.CHAT]) {
+      return;
+    }
+
     switch (key.toUpperCase()) {
       case Keys[KeyAction.FREEZE]:
         if (active) window.isFreezed = !window.isFreezed; break;
@@ -178,6 +190,7 @@ class Player {
       case Keys[KeyAction.MOVE_DOWN]:
         this.moveDown = active; break;
 
+      case Keys[KeyAction.CHAT]: if (active && multiplayerSvc.isUsed()) multiplayerSvc.toggleChatInutFocus(); break;
       case Keys[KeyAction.VOCAL]: if (active) this.voice.togglePredictState(); break;
       case Keys[KeyAction.MUTE]: if (active) configSvc.soundEnabled = !configSvc.soundEnabled; break;
     }

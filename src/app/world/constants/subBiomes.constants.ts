@@ -325,21 +325,6 @@ export const SUB_BIOMES: IBiomes = {
     color: new THREE.Color(0x8eada0),
     organisms: []
   },
-  CORAL_REEF: {
-    name: 'CORAL_REEF',
-    color: new THREE.Color(0xeacd73),
-    organisms: [
-      {
-        weight: 1,
-        name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
-        scarcity: 0.975,
-        e: null,
-        m: null,
-        scale: { min: 0.75, max: 2.5 },
-        float: false,
-      },
-    ]
-  },
   RAINFOREST: {
     name: 'RAINFOREST',
     color: new THREE.Color(0x3ead68),
@@ -514,12 +499,36 @@ export const SUB_BIOMES: IBiomes = {
       },
     ]
   },
+  CORAL_REEF: {
+    name: 'CORAL_REEF',
+    color: new THREE.Color(0xeacd73),
+    organisms: [
+      {
+        weight: 0.75,
+        name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
+        scarcity: 0.975,
+        e: null,
+        m: null,
+        scale: { min: 0.75, max: 2.5 },
+        float: false,
+      },
+      {
+        weight: 0.25,
+        name: ['algea'],
+        scarcity: 0.5,
+        e: { low: null, high: Chunk.SEA_ELEVATION - 0.85 },
+        m: { low: 0.275, high: 0.725 },
+        scale: { min: 0.75, max: 1.15 },
+        float: false,
+      },
+    ]
+  },
   OCEAN: {
     name: 'OCEAN',
     color: new THREE.Color(0xf1c176),
     organisms: [
       {
-        weight: 0.8,
+        weight: 0.75,
         name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
         scarcity: 0.9,
         e: null,
@@ -537,10 +546,10 @@ export const SUB_BIOMES: IBiomes = {
         float: false,
       },
       {
-        weight: 0.15,
+        weight: 0.2,
         name: ['star', 'shell'],
         scarcity: 0.975,
-        e: null,
+        e: { low: null, high: Chunk.SEA_ELEVATION - 0.85 },
         m: null,
         scale: { min: 0.75, max: 1.15 },
         float: false,

@@ -38,12 +38,15 @@ class HomeTab extends React.Component<IProps, any> {
   }
 
   getFirstPanel() {
+    const options = { biomeCount: Biomes.length, trophyCount: achievementSvc.getTrophiesCount() };
     return (
       <Article>
         <H4 className='mb-2'>{translationSvc.translate('UI.home-tab.article.title_project')}</H4>
         <p className='paragraph mb-2'>{translationSvc.translate('UI.home-tab.article.p1')}</p>
-        <p className='paragraph mb-2'>{translationSvc.translate('UI.home-tab.article.p2', { count: Biomes.length })}</p>
-        <p className='paragraph mb-3'>{translationSvc.translate('UI.home-tab.article.p3', { count: achievementSvc.getTrophiesCount() })}</p>
+        <H4 className='mb-2'>{translationSvc.translate('UI.home-tab.article.title_objectives')}</H4>
+        <p className='paragraph mb-2'>{translationSvc.translate('UI.home-tab.article.p2', options)}</p>
+        <H4 className='mb-2'>{translationSvc.translate('UI.home-tab.article.title_help')}</H4>
+        <p className='paragraph mb-3'>{translationSvc.translate('UI.home-tab.article.p3', options)}</p>
       </Article>
     );
   }
@@ -52,8 +55,16 @@ class HomeTab extends React.Component<IProps, any> {
     return (
       <Article>
         <H4 className='mb-2'>{translationSvc.translate('UI.home-tab.article.title_tech')}</H4>
-        <p className='paragraph mb-2'>{translationSvc.translate('UI.home-tab.article.p4')}</p>
-        <p className='paragraph mb-3'>{translationSvc.translate('UI.home-tab.article.p5')}</p>
+        <p className='paragraph mb-3'>{translationSvc.translate('UI.home-tab.article.p4')}</p>
+        <p className='paragraph mb-1'>{translationSvc.translate('UI.home-tab.article.p5')} Threejs / Howler</p>
+        <p className='paragraph mb-1'>{translationSvc.translate('UI.home-tab.article.p6')} Rxjs / React / i18next / SASS</p>
+        <p className='paragraph mb-1'>{translationSvc.translate('UI.home-tab.article.p7')} Node.js / socket.io</p>
+        <p className='paragraph mb-3'>{translationSvc.translate('UI.home-tab.article.p8')} tensorflow / MongoDB</p>
+
+        <H4 className='mb-2'>{translationSvc.translate('UI.home-tab.article.title_code')}</H4>
+        <p className='paragraph mb-1'><a className='link' href='https://github.com/jmetterrothan/ecosystems'>GitHub Ecosystems</a></p>
+        <p className='paragraph mb-1'><a className='link' href='https://github.com/jmetterrothan/ecosystems-server'>GitHub Ecosystems Server</a></p>
+        <p className='paragraph mb-3'><a className='link' href='https://github.com/jmetterrothan/ecosystems-voice'>GitHub Ecosystems Voice</a></p>
       </Article>
     );
   }

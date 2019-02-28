@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import * as TWEEN from '@tweenjs/tween.js';
 import poissonDiskSampling from 'poisson-disk-sampling';
 
 import Terrain from '@world/Terrain';
@@ -9,6 +10,7 @@ import Butterfly from '@boids/creatures/Butterfly';
 import MathUtils from '@shared/utils/Math.utils';
 
 import { IBiome } from '@world/models/biome.model';
+import { ISpecialObjectCanPlaceIn } from '@world/models/objectParameters.model';
 
 import { SUB_BIOMES } from '@world/constants/subBiomes.constants';
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
@@ -17,13 +19,14 @@ import SwampSFXMp3 from '@sounds/SwampSFX.mp3';
 
 class SwampBiome extends Biome {
   private boids: Boids[];
-  private flat: boolean;
+  private tubecluster: THREE.Object3D;
+  private specialObjectClicked: boolean;
 
   constructor(terrain: Terrain) {
     super('SWAMPS', terrain);
 
     this.boids = [];
-    this.flat = MathUtils.rng() >= 0.5;
+    this.specialObjectClicked = false;
 
     this.waterDistortion = true;
     this.waterDistortionFreq = 1.25;
@@ -34,6 +37,18 @@ class SwampBiome extends Biome {
   }
 
   init() {
+    // special object
+    this.tubecluster = this.terrain.placeSpecialObject({
+      stackReference: 'tubecluster',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.LAND,
+      e: { low: Chunk.SEA_ELEVATION + 0.05, high: null }
+    });
+
+    this.initButterflyBoids();
+  }
+
+  private initButterflyBoids() {
     const size = 100000;
     const max = 4;
 
@@ -67,7 +82,28 @@ class SwampBiome extends Biome {
     this.boids.forEach(boids => boids.update(this.generator, delta));
   }
 
-  handleClick(raycaster: THREE.Raycaster) { }
+  handleClick(raycaster: THREE.Raycaster) {
+    const intersections: THREE.Intersection[] = raycaster.intersectObjects([this.tubecluster], true);
+
+    if (intersections.length && !this.specialObjectClicked) {
+
+      new TWEEN.Tween(this.tubecluster.position)
+        .to({ y: this.tubecluster.position.y + 1000 }, 250)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .repeat(1)
+        .yoyo(true)
+        .start();
+
+      new TWEEN.Tween(this.tubecluster.rotation)
+        .to({ y: this.tubecluster.rotation.y + Math.PI / 6 }, 500)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .start();
+
+      this.specialObjectClicked = true;
+
+      // this.progressionSvc.increment(PROGRESSION_EXTRAS_STORAGE_KEYS.woodcutter);
+    }
+  }
 
   /**
    * Compute elevation
@@ -78,8 +114,6 @@ class SwampBiome extends Biome {
   computeElevationAt(x: number, z: number): number {
     const nx = (x - Terrain.SIZE_X / 2) / (1024 * 128);
     const nz = (z - Terrain.SIZE_Z / 2) / (1024 * 128);
-
-    const m = this.computeMoistureAt(x, z);
 
     let e = -0.2 * this.generator.noise2(0.35 * nx, 0.35 * nz);
     e += 0.2 * this.generator.noise3(2 * nx, 2 * nz);

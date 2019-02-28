@@ -42,6 +42,7 @@ class FjordBiome extends Biome {
   }
 
   init() {
+    // special object
     this.oldLog = this.terrain.placeSpecialObject({
       stackReference: 'old_log',
       float: false,
@@ -49,6 +50,10 @@ class FjordBiome extends Biome {
       e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 }
     });
 
+    this.initBeeBoids();
+  }
+
+  private initBeeBoids() {
     const size = 32500;
     const max = 4;
 

@@ -1,10 +1,10 @@
 import uniqid from 'uniqid';
 import * as THREE from 'three';
 import * as io from 'socket.io-client';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
-import CommonUtils from '@app/shared/utils/Common.utils';
-import OnlinePlayer from '@app/OnlinePlayer';
+import CommonUtils from '@shared/utils/Common.utils';
+import OnlinePlayer from '@online/OnlinePlayer';
 
 import { progressionSvc } from '@achievements/services/progression.service';
 import { notificationSvc } from '@shared/services/notification.service';
@@ -12,8 +12,7 @@ import { translationSvc } from '@app/shared/services/translation.service';
 
 import { ISocketDataRoomJoined, ISocketDataPositionUpdated, ISocketDataDisconnection, ISocketDataObjectAdded, ISocketDataObjectRemoved } from '@online/models/socketData.model';
 import { IPick } from '@world/models/pick.model';
-import { IOnlineStatus } from '@online/models/onlineStatus.model';
-import { IOnlineObject, ONLINE_INTERACTION, IOnlineUser } from '@online/models/onlineObjects.model';
+import { IOnlineObject, ONLINE_INTERACTION, IOnlineUser, IOnlineStatus, IOnlineMessage, ONLINE_MESSAGE_TYPE } from '@online/models/onlineObjects.model';
 
 import { SOCKET_EVENTS } from '@online/constants/socketEvents.constants';
 import { PROGRESSION_ONLINE_STORAGE_KEYS } from '@achievements/constants/progressionOnlineStorageKeys.constants';
@@ -34,13 +33,22 @@ class MultiplayerService {
   private timeSource: Subject<number>;
   time$: Observable<number>;
 
+  private onlinePlayers: Map<string, OnlinePlayer>;
+  onlineStatus$: Subject<IOnlineStatus>;
+
+  private chatInputFocusSource: Subject<void>;
+  chatInputFocus$: Observable<void>;
+
+  private messagesSource: Subject<IOnlineMessage[]>;
+  messages$: Observable<IOnlineMessage[]>;
+
   private roomID: string;
   private user: IOnlineUser;
 
   private alive: boolean;
+  private inputChatFocused: boolean;
 
-  private onlinePlayers: Map<string, OnlinePlayer>;
-  onlineStatus$: Subject<IOnlineStatus>;
+  private messages: IOnlineMessage[];
 
   constructor() {
     this.objectInteractionSource = new Subject();
@@ -52,7 +60,14 @@ class MultiplayerService {
     this.onlinePlayers = new Map();
     this.onlineStatus$ = new Subject();
 
+    this.chatInputFocusSource = new Subject();
+    this.chatInputFocus$ = this.chatInputFocusSource.asObservable();
+
+    this.messagesSource = new Subject();
+    this.messages$ = this.messagesSource.asObservable();
+
     this.alive = true;
+    this.inputChatFocused = false;
   }
 
   /**
@@ -124,6 +139,37 @@ class MultiplayerService {
   }
 
   /**
+   * Send message to all users
+   */
+  sendMessage(message: string) {
+    this.socket.emit(SOCKET_EVENTS.CL_SEND_MESSAGE, { message, roomID: this.roomID, user: this.user, type: ONLINE_MESSAGE_TYPE.USER });
+  }
+
+  toggleChatInutFocus(value?: boolean) {
+    this.inputChatFocused = value || !this.inputChatFocused;
+    this.chatInputFocusSource.next();
+  }
+
+  chatInputIsFocused(): boolean {
+    return this.inputChatFocused;
+  }
+
+  getMessages(): IOnlineMessage[] {
+    return this.messages;
+  }
+
+  getOnlineUsersCount(): number {
+    return this.onlinePlayers.size + 1;
+  }
+
+  getOnlineStatus(): IOnlineStatus {
+    return {
+      alive: this.alive,
+      online: this.getOnlineUsersCount()
+    };
+  }
+
+  /**
    * Listen events from server
    */
   private handleServerInteraction() {
@@ -131,6 +177,7 @@ class MultiplayerService {
     this.socket.on(SOCKET_EVENTS.SV_SEND_PLAYER_POSITION, (data: ISocketDataPositionUpdated) => this.onPositionupdated(data));
     this.socket.on(SOCKET_EVENTS.SV_SEND_ADD_OBJECT, (data: ISocketDataObjectAdded) => this.onObjectAdded(data));
     this.socket.on(SOCKET_EVENTS.SV_SEND_REMOVE_OBJECT, (data: ISocketDataObjectRemoved) => this.onObjectRemoved(data));
+    this.socket.on(SOCKET_EVENTS.SV_SEND_MESSAGES, (data: IOnlineMessage[]) => this.onMessageReceived(data));
     this.socket.on(SOCKET_EVENTS.SV_SEND_DISCONNECTION, (data: ISocketDataDisconnection) => this.onDisconnection(data));
   }
 
@@ -151,6 +198,7 @@ class MultiplayerService {
       });
 
       this.timeSource.next(data.startTime);
+
     } else {
       // notify other players that someone has connected to the server
       notificationSvc.push({
@@ -165,6 +213,8 @@ class MultiplayerService {
     if (this.user === data.me && data.usersConnected.length > 1) {
       progressionSvc.increment(PROGRESSION_ONLINE_STORAGE_KEYS.join_game_online);
     }
+
+    this.onMessageReceived(data.messages);
 
     // init mesh for each new users
     data.usersConnected.forEach((user: IOnlineUser) => {
@@ -195,26 +245,22 @@ class MultiplayerService {
     this.objectInteractionSource.next(<IOnlineObject>{ object, type: ONLINE_INTERACTION.REMOVE, animate: true });
   }
 
+  private onMessageReceived(data: IOnlineMessage[]) {
+    this.messages = data;
+    this.messagesSource.next(data);
+  }
+
   private onDisconnection(data: ISocketDataDisconnection) {
     // remove mesh from scene
     const op = this.onlinePlayers.get(data.userID);
     if (op instanceof OnlinePlayer) {
       op.clean(this.scene);
     }
+
     this.onlinePlayers.delete(data.userID);
 
+    this.onMessageReceived(data.messages);
     this.onlineStatus$.next(this.getOnlineStatus());
-  }
-
-  getOnlineUsersCount(): number {
-    return this.onlinePlayers.size + 1;
-  }
-
-  getOnlineStatus(): IOnlineStatus {
-    return {
-      alive: this.alive,
-      online: this.getOnlineUsersCount()
-    };
   }
 }
 

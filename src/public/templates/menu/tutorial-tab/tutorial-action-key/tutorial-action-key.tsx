@@ -59,14 +59,10 @@ class TutorialActionKey extends React.Component<ITutorialActionKeyProps, ITutori
     const { mode } = this.state;
 
     const name = Keys[action];
-
-    let displayName = name;
-    if (name === ' ') {
-      displayName = 'SPACE';
-    }
+    const displayName = getKeyActionDisplayName(action);
 
     const size = Math.min(Math.max(name.length, 1), 3);
-    const text = translationSvc.translate(`UI.tutorial-tab.tab1.actionkey.${action.toLowerCase()}`);
+    const text = getKeyActionTranslation(action);
 
     const viewMode = <span onClick={() => this.changeMode(TutorialActionKeyMode.EDIT)} className={classNames('tutorial-action__name', `tutorial-action__name--size${size}x`)}>{displayName}</span>;
     const editMode = <input
@@ -89,5 +85,17 @@ class TutorialActionKey extends React.Component<ITutorialActionKeyProps, ITutori
     );
   }
 }
+
+export const getKeyActionDisplayName = (k: KeyAction) : string => {
+  let name = Keys[k];
+  if (name === ' ') {
+    name = 'SPACE';
+  }
+  return name;
+};
+
+export const getKeyActionTranslation = (k: KeyAction) : string => {
+  return translationSvc.translate(`UI.tutorial-tab.tab1.actionkey.${k.toLowerCase()}`);
+};
 
 export default TutorialActionKey;

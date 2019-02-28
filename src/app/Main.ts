@@ -139,6 +139,10 @@ class Main {
 
       const pointerlockchange = (e) => {
         this.controls.enabled = PointerLock.enabled;
+
+        if (this.controls.enabled && multiplayerSvc.isUsed() && multiplayerSvc.chatInputIsFocused()) {
+          multiplayerSvc.toggleChatInutFocus(false);
+        }
       };
 
       const pointerlockerror = (e) => { };
