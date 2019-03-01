@@ -66,7 +66,7 @@ class TaigaBiome extends Biome {
       const px = point.shift() + size / 2;
       const pz = point.shift() + size / 2;
 
-      const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 3.75, Chunk.HEIGHT / 3) - 3072;
+      const ySize = MathUtils.randomFloat(Chunk.HEIGHT / 4, Chunk.HEIGHT / 3.75) - 3072;
       const py = ySize / 2;
 
       const minSize = size - 1000;
@@ -128,12 +128,12 @@ class TaigaBiome extends Biome {
 
     let e = 0.235 * this.generator.noise2(0.75 * nx, 0.75 * nz);
     e += 0.2 * this.generator.noise3(1 * nx, 1 * nz);
-    e += 0.075 * this.generator.ridgeNoise(1 * nx, 1 * nz);
-    e += 0.00985 * this.generator.noise(32 * nx, 32 * nz);
+    e += 0.085 * this.generator.ridgeNoise(1 * nx, 1 * nz);
+    e += 0.0125 * this.generator.noise(32 * nx, 32 * nz);
     e += 0.006 * this.generator.noise2(64 * nx, 64 * nz);
     e += 0.075 * this.generator.noise(4 * nx, 4 * nz);
 
-    return e - 0.25;
+    return e - 0.265;
   }
 
   getParametersAt(e: number, m: number): IBiome {
