@@ -61,3 +61,14 @@
     }
   }
 }
+
+.voice-command {
+  display: block;
+  border-radius:  3px;
+  padding: 0 0.65rem;
+  background: transparent;
+  border: 1px solid $color-darkblue;
+  color: $color-darkblue;
+  font-size: 1rem;
+  text-transform: uppercase;
+}

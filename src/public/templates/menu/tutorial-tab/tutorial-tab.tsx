@@ -166,9 +166,34 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
   getSecondPanel() {
     return (
       <Article className='page page--2 pb-2'>
-        <p className='paragraph mb-3'>{translationSvc.translate('UI.tutorial-tab.tab2.intro')}</p>
         <H4 className='mb-2 align-left'>{translationSvc.translate('UI.tutorial-tab.tab2.subtitle')}</H4>
-        <p className='paragraph mb-2'>{translationSvc.translate('UI.tutorial-tab.tab2.text')}</p>
+        <p className='paragraph mb-3'>{translationSvc.translate('UI.tutorial-tab.tab2.intro')}</p>
+
+        <H5 className='mb-1 flex align-left'>
+          {translationSvc.translate('UI.tutorial-tab.tab2.subtitle_a1')}
+          <span className='voice-command ml-2'>place</span>
+        </H5>
+        <p className='paragraph mb-3'>{translationSvc.translate('UI.tutorial-tab.tab2.text_a1')}</p>
+
+        <H5 className='mb-1 flex align-left'>
+          {translationSvc.translate('UI.tutorial-tab.tab2.subtitle_a2')}
+          <span className='voice-command ml-2'>void</span>
+        </H5>
+        <p className='paragraph mb-3'>{translationSvc.translate('UI.tutorial-tab.tab2.text_a2')}</p>
+
+        <H5 className='mb-1 flex align-left'>
+          {translationSvc.translate('UI.tutorial-tab.tab2.subtitle_a3')}
+          <span className='voice-command ml-2 mr-1'>night</span>
+          /
+          <span className='voice-command ml-1'>day</span>
+        </H5>
+        <p className='paragraph mb-3'>{translationSvc.translate('UI.tutorial-tab.tab2.text_a3')}</p>
+
+        <H5 className='mb-1 flex align-left'>
+          {translationSvc.translate('UI.tutorial-tab.tab2.subtitle_a4')}
+          <span className='voice-command ml-2'>next</span>
+        </H5>
+        <p className='paragraph mb-3'>{translationSvc.translate('UI.tutorial-tab.tab2.text_a4')}</p>
       </Article>
     );
   }

@@ -87,9 +87,16 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
       mouse_scroll_name: 'Scroll',
     },
     tab2: {
-      intro: 'Vous pouvez placer des objets en utilisant votre voix. Veillez à ce que l’application puisse accéder à votre microphone.',
-      subtitle: 'Placer un objet à la voix',
-      text: 'Pour placer un objet vous devez vous mettre à bonne distance du sol, un curseur vert devrait apparaitre au centre de l’écran si c’est le cas. Maintenez la touche dédiée enfoncée pour parler, par défaut "V" et dites distinctement "place".'
+      intro: 'Vous pouvez utiliser votre voix pour réaliser certaines actions en maintenant la touche “V” (par défaut) enfoncée. Les commandes vocales sont à prononcer en anglais. Veillez à ce que l’application puisse accéder à votre microphone.',
+      subtitle: 'Commandes vocales',
+      subtitle_a1: 'Placer un objet',
+      subtitle_a2: 'Supprimer un objet',
+      subtitle_a3: 'Changer le temps',
+      subtitle_a4: 'Changer l’objet sélectionné',
+      text_a1: 'Pour placer un objet, vous devez vous mettre à bonne distance du sol, un curseur vert devrait apparaître au centre de l’écran si c’est le cas et dites distinctement "place".',
+      text_a2: 'Pour supprimer un objet, une fois placé à bonne distance, un curseur orange devrait apparaître au centre de l’écran et dites distinctement "void".',
+      text_a3: 'Pour changer l’heure en jeu, dites distinctement "night" ou "day".',
+      text_a4: 'Pour cycler dans les objets disponibles, dites distinctement "next".'
     }
   },
   'home-tab': {
