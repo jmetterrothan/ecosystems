@@ -10,6 +10,7 @@ import HighlandBiome from '@world/biomes/HighlandBiome';
 import RainForestBiome from '@world/biomes/RainForestBiome';
 import DesertIslandBiome from '@world/biomes/DesertIslandBiome';
 import TaigaBiome from '@world/biomes/TaigaBiome';
+import TestBiome from '@world/biomes/TestBiome';
 
 import World from '@world/World';
 import Chunk from '@world/Chunk';
@@ -76,10 +77,23 @@ class BiomeGenerator {
         this.biome = new DesertIslandBiome(terrain);
         break;
       default:
-        const biomeClass = Biomes[MathUtils.randomInt(0, Biomes.length - 1)];
+        // weighted random pic of the biome (some biomes appear less frequently)
+        let biomeClass = TestBiome;
+
+        const sum = Biomes.reduce((acc, val) => acc + val.weight, 0);
+        const rand = MathUtils.rng();
+
+        let temp = 0;
+        for (let i = 0; i < Biomes.length; i++) {
+          temp += Biomes[i].weight / sum;
+          if (rand <= temp) {
+            biomeClass = Biomes[i].class;
+            break;
+          }
+        }
+
         this.biome = new biomeClass(terrain);
         break;
-
     }
     return this.biome;
   }
