@@ -58,7 +58,7 @@ class TutorialActionKey extends React.Component<ITutorialActionKeyProps, ITutori
     const { className, action, canEdit } = this.props;
     const { mode } = this.state;
 
-    const name = Keys[action];
+    const name = Keys[action] || '';
     const displayName = getKeyActionDisplayName(action);
 
     const size = Math.min(Math.max(name.length, 1), 3);
