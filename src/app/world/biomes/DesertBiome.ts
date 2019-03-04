@@ -75,7 +75,7 @@ class DesertBiome extends Biome {
 
     // flies
     const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, sy, size), new THREE.Vector3(px, py, pz));
-    for (let i = 0, n = MathUtils.randomInt(4, 10); i < n; i++) {
+    for (let i = 0, n = MathUtils.randomInt(4, 8); i < n; i++) {
       boids.addCreature(new Fly());
     }
 
