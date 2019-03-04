@@ -424,6 +424,13 @@ class Weather {
     });
   }
 
+  setDay() {
+    this.sunAngle = 0;
+  }
+  setNight() {
+    this.sunAngle = 180;
+  }
+
   getSunAngle(): number {
     return THREE.Math.radToDeg(Math.atan2(this.sun.position.y, this.sun.position.x));
   }
