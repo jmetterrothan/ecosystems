@@ -7,6 +7,9 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@utils/Math.utils';
 
 import PlayerService, { playerSvc } from '@shared/services/player.service';
+import { configSvc } from './../../shared/services/config.service';
+
+import { GraphicsQuality } from '@app/shared/enums/graphicsQuality.enum';
 
 import { IBoidCreatureParameters } from '@boids/models/boidCreatureParameters.model';
 
@@ -57,6 +60,7 @@ class Creature {
     } else {
       // only apply if creature is not repelled by the ground
       if (
+        configSvc.quality !== GraphicsQuality.PHOTO &&
         this.position.x > -this.boidsBoundingBox.x &&
         this.position.z > -this.boidsBoundingBox.x &&
         this.position.x < this.boidsBoundingBox.x &&

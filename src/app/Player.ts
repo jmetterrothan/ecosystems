@@ -168,7 +168,6 @@ class Player {
     if (active && multiplayerSvc.isUsed() && multiplayerSvc.chatInputIsFocused() && key !== Keys[KeyAction.CHAT]) {
       return;
     }
-
     switch (key.toUpperCase()) {
       case Keys[KeyAction.FREEZE]:
         if (active) window.isFreezed = !window.isFreezed; break;
