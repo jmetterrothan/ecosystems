@@ -93,10 +93,12 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
       subtitle_a2: 'Supprimer un objet',
       subtitle_a3: 'Changer le temps',
       subtitle_a4: 'Changer l’objet sélectionné',
+      subtitle_a5: 'Figer le temps',
       text_a1: 'Pour placer un objet, vous devez vous mettre à bonne distance du sol, un curseur vert devrait apparaître au centre de l’écran si c’est le cas et dites distinctement "place".',
       text_a2: 'Pour supprimer un objet, une fois placé à bonne distance, un curseur orange devrait apparaître au centre de l’écran et dites distinctement "void".',
       text_a3: 'Pour changer l’heure en jeu, dites distinctement "night" ou "day".',
-      text_a4: 'Pour cycler dans les objets disponibles, dites distinctement "next".'
+      text_a4: 'Pour cycler dans les objets disponibles, dites distinctement "next".',
+      text_a5: 'Pour figer le temps, dites distinctement "freeze".'
     }
   },
   'home-tab': {

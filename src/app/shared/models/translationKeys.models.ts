@@ -131,10 +131,12 @@ export interface IUITranslationKeys {
       subtitle_a2: string;
       subtitle_a3: string;
       subtitle_a4: string;
+      subtitle_a5: string;
       text_a1: string;
       text_a2: string;
       text_a3: string;
       text_a4: string;
+      text_a5: string;
     };
   };
   'home-tab': {

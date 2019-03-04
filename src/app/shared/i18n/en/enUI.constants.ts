@@ -93,10 +93,12 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
       subtitle_a2: 'Delete objects',
       subtitle_a3: 'Change time',
       subtitle_a4: 'Change current object',
+      subtitle_a5: 'Freeze time',
       text_a1: 'To place an object, you must be at a proper distance from the ground, a green cursor should appear at the center of the screen if it’s the case. Then say distinctly “place”.',
       text_a2: 'To delete an object, once you are at a proper distance, an orange cursor should appear at the center of the screen. Then say distinctly “void”.',
       text_a3: 'To change the in-game time, say distinctly “night” or “day”.',
       text_a4: 'To cycle through the available objects, say distinctly "next".',
+      text_a5: 'To freeze the time, say distinctly "freeze".',
     },
   },
   'home-tab': {
