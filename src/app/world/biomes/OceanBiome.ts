@@ -40,7 +40,7 @@ class OceanBiome extends Biome {
 
     this.spike = MathUtils.randomFloat(0.025, 0.125);
     this.depth = 1.425;
-    this.flat = MathUtils.rng() >= 0.35;
+    this.flat = MathUtils.rng() >= 0.25;
 
     this.waterColor1 = new THREE.Color(0x07c9d0);
     this.waterColor2 = new THREE.Color(0x3e73d4);
@@ -86,8 +86,8 @@ class OceanBiome extends Biome {
   }
 
   private initFishBoids() {
-    const minSize = 80000;
-    const maxSize = 140000;
+    const minSize = 60000;
+    const maxSize = 120000;
     const size = MathUtils.randomFloat(minSize, maxSize);
     const max = 4;
 
