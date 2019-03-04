@@ -9,8 +9,7 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 import Boids from '@boids/Boids';
 import Butterfly from '@boids/creatures/Butterfly';
-import TropicalFish from '@boids/creatures/TropicalFish';
-import ClownFish from '@app/boids/creatures/ClownFish';
+import Fish from '@boids/creatures/Fish';
 import BubbleEmitter from '@world/biomes/particles/BubbleEmitter';
 
 import { IBiome } from '@world/models/biome.model';
@@ -132,7 +131,8 @@ class RainForestBiome extends Biome {
       if (this.generator.computeHeightAt(px + minSize / 2, pz + minSize / 2) >= py + ySize / 2) return;
       if (this.generator.computeHeightAt(px + minSize / 2, pz + minSize / 2) >= py - ySize / 2) return;
 
-      const fishClass = MathUtils.rng() >= 0.5 ? TropicalFish : ClownFish;
+      const m = this.generator.computeWaterMoistureAt(px, pz);
+      const fishClass = Fish.getFishClass(m);
 
       // fishs
       const boids: Boids = new Boids(this.terrain.getScene(), new THREE.Vector3(size, ySize, size), new THREE.Vector3(px, py, pz));
@@ -215,7 +215,7 @@ class RainForestBiome extends Biome {
       if (m > 0.625) {
         return SUB_BIOMES.SWAMP_WATER;
       }
-      return SUB_BIOMES.OCEAN;
+      return SUB_BIOMES.TROPICAL_OCEAN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.2) {

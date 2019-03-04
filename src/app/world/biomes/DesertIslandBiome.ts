@@ -174,7 +174,7 @@ class DesertIslandBiome extends Biome {
 
   getParametersAt(e: number, m: number): IBiome {
     if (e < Chunk.SEA_ELEVATION - 0.115) {
-      return SUB_BIOMES.OCEAN;
+      return SUB_BIOMES.TROPICAL_OCEAN;
     }
 
     if (e > Chunk.SEA_ELEVATION + 0.145) {

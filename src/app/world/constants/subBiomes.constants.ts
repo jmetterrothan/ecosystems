@@ -575,7 +575,7 @@ export const SUB_BIOMES: IBiomes = {
         scarcity: 0.65,
         e: { low: null, high: Chunk.SEA_ELEVATION - 0.95 },
         m: null,
-        scale: { min: 0.75, max: 1.15 },
+        scale: { min: 0.75, max: 1.5 },
         float: false,
       },
     ]
@@ -609,6 +609,48 @@ export const SUB_BIOMES: IBiomes = {
         e: { low: null, high: Chunk.SEA_ELEVATION - 0.85 },
         m: null,
         scale: { min: 0.75, max: 1.15 },
+        float: false,
+      },
+    ]
+  },
+  TROPICAL_OCEAN: {
+    name: 'OCEAN',
+    color: new THREE.Color(0xf1c176),
+    organisms: [
+      {
+        weight: 0.5,
+        name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
+        scarcity: 0.9,
+        e: null,
+        m: null,
+        scale: { min: 0.5, max: 1.5 },
+        float: false,
+      },
+      {
+        weight: 0.05,
+        name: ['desert_rock1', 'desert_rock2', 'desert_rock3', 'desert_rock4', 'desert_rock5', 'desert_rock6'],
+        scarcity: 0.9925,
+        e: null,
+        m: null,
+        scale: { min: 2.5, max: 4.5 },
+        float: false,
+      },
+      {
+        weight: 0.2,
+        name: ['star', 'shell'],
+        scarcity: 0.975,
+        e: { low: null, high: Chunk.SEA_ELEVATION - 0.85 },
+        m: null,
+        scale: { min: 0.75, max: 1.15 },
+        float: false,
+      },
+      {
+        weight: 0.25,
+        name: ['algea', 'algea2', 'algea3'],
+        scarcity: 0.75,
+        e: { low: null, high: Chunk.SEA_ELEVATION - 0.95 },
+        m: null,
+        scale: { min: 0.75, max: 1.5 },
         float: false,
       },
     ]
