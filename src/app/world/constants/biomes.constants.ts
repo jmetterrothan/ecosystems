@@ -15,7 +15,7 @@ interface IWeightedBiomePic {
 
 export const Biomes: IWeightedBiomePic[] = [
   { class: RainForestBiome, weight: 12 },
-  { class: HighlandBiome, weight: 12 },
+  { class: HighlandBiome, weight: 10 },
   { class: OceanBiome, weight: 14 },
   { class: SwampBiome, weight: 12 },
   { class: DesertBiome, weight: 14 },
