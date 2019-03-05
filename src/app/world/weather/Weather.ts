@@ -431,7 +431,7 @@ class Weather {
     voiceSvc.wordDetection$.subscribe((label: number) => {
       switch (label) {
         case 4:
-          this.setNight()
+          this.setNight();
           break;
         case 5:
           this.setDay();
