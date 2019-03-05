@@ -70,14 +70,13 @@ class Voice {
 
   async getPredictionLabel(predLabel: any) {
     const label = (await predLabel.data())[0];
-    if (label === 1) {
+
+    if (label === 6) {
       return;
     }
-    if (label === 0) {
-      voiceSvc.detectPlacementWord();
-    }
-  }
 
+    voiceSvc.detectWord(label);
+  }
 }
 
 export default Voice;

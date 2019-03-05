@@ -341,9 +341,17 @@ class Terrain {
         this.changeObjectPreview(raycaster, INTERACTION_TYPE.MOUSE_WHEEL_UP);
         break;
 
-      case INTERACTION_TYPE.VOICE:
+      case INTERACTION_TYPE.VOICE_PLACE:
         progressionSvc.increment(PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_voice);
         this.placeObject(raycaster);
+        break;
+
+      case INTERACTION_TYPE.VOICE_VOID:
+        this.removeObject(raycaster);
+        break;
+
+      case INTERACTION_TYPE.VOICE_NEXT:
+        this.changeObjectPreview(raycaster, INTERACTION_TYPE.MOUSE_WHEEL_UP);
         break;
 
       default:
@@ -940,7 +948,6 @@ class Terrain {
           default:
             break;
         }
-
       }
     );
   }

@@ -14,6 +14,7 @@ import { configSvc } from '@app/shared/services/config.service';
 import { playerSvc } from '@shared/services/player.service';
 import { progressionSvc } from '@achievements/services/progression.service';
 import { multiplayerSvc } from '@online/services/multiplayer.service';
+import { voiceSvc } from '@voice/services/voice.service';
 
 import { PROGRESSION_WEATHER_STORAGE_KEYS } from '@achievements/constants/progressionWeatherStorageKeys.constants';
 import { GraphicsQuality } from '@app/shared/enums/graphicsQuality.enum';
@@ -119,6 +120,8 @@ class Weather {
 
     this.stars = new Stars();
     this.clouds = new Clouds(generator);
+
+    this.watchVoiceInteraction();
   }
 
   init() {
@@ -421,6 +424,21 @@ class Weather {
       const diff = (now - startTime) / 1000;
       const diffAngle = THREE.Math.degToRad(360 / this.sunRevolutionTime) * diff;
       this.sunAngle = this.startSunAngle + diffAngle;
+    });
+  }
+
+  private watchVoiceInteraction() {
+    voiceSvc.wordDetection$.subscribe((label: number) => {
+      switch (label) {
+        case 4:
+          this.setNight()
+          break;
+        case 5:
+          this.setDay();
+          break;
+        default:
+          break;
+      }
     });
   }
 

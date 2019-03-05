@@ -103,7 +103,7 @@ class World {
 
     biome.init();
 
-    this.watchObjectPlacedWithVoice();
+    this.watchVoiceInteraction();
     this.scene.add(this.controls.getObject());
 
     if (configSvc.debug) {
@@ -229,8 +229,22 @@ class World {
     this.player.handleKeyboard(key, active);
   }
 
-  private watchObjectPlacedWithVoice() {
-    voiceSvc.wordDetection$.subscribe(() => this.handlePlayerInteraction(INTERACTION_TYPE.VOICE));
+  private watchVoiceInteraction() {
+    voiceSvc.wordDetection$.subscribe((label: number) => {
+      switch (label) {
+        case 0:
+          this.handlePlayerInteraction(INTERACTION_TYPE.VOICE_PLACE);
+          break;
+        case 1:
+          this.handlePlayerInteraction(INTERACTION_TYPE.VOICE_VOID);
+          break;
+        case 2:
+          this.handlePlayerInteraction(INTERACTION_TYPE.VOICE_NEXT);
+          break;
+        default:
+          break;
+      }
+    });
   }
 
   isInitialized(): boolean { return this.initialized; }

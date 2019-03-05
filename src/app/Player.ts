@@ -8,6 +8,7 @@ import Terrain from '@world/Terrain';
 import Voice from '@voice/Voice';
 
 import { multiplayerSvc } from '@online/services/multiplayer.service';
+import { voiceSvc } from '@voice/services/voice.service';
 import { playerSvc } from '@shared/services/player.service';
 import { configSvc } from '@shared/services/config.service';
 
@@ -44,6 +45,8 @@ class Player {
     this.speed = new THREE.Vector3(40000, 40000, 40000);
     this.velocity = new THREE.Vector3(0, 0, 0);
 
+    this.watchVoiceInteraction();
+
     // fix bug when player is moving and pointer lock is lost
     PointerLock.addEventListener('pointerlockchange', () => {
       if (!PointerLock.enabled) {
@@ -74,6 +77,9 @@ class Player {
     await this.initVoice();
   }
 
+  /**
+   * Fetch newest model from heroku server
+   */
   private async initVoice() {
     await fetch('http://localhost:4200/getmodel');
     const voiceModel = await tf.loadModel('http://localhost:4200/voicemodel.json');
@@ -155,6 +161,14 @@ class Player {
       // collision with min ground dist
       this.positionY = yMin;
     }
+  }
+
+  private watchVoiceInteraction() {
+    voiceSvc.wordDetection$.subscribe((label: number) => {
+      if (label === 3) {
+        window.isFreezed = !window.isFreezed;
+      }
+    });
   }
 
   /**
