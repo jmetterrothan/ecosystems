@@ -103,6 +103,7 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
   },
   'home-tab': {
     title: 'Ecosystems',
+    seed: 'Seed used to generate the world',
     article: {
       title_project: 'Our project',
       title_objectives: 'Unlock all trophies',
