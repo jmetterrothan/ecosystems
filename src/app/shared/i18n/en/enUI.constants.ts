@@ -109,7 +109,7 @@ export const EN_UI_TRANSLATION: IUITranslationKeys = {
       title_help: 'In case of problems',
       title_tech: 'Technologies used',
       title_code: 'Source code',
-      p1: 'Ecosystems is a project aiming at generating random interactive 3d worlds. Those worlds are brought to life using algorithms seen in the 3rd year IA course at IMAC engineering school.',
+      p1: 'Ecosystems is a project aiming at generating random interactive 3d worlds. Those worlds are brought to life using algorithms seen in the 3rd year AI course at IMAC engineering school.',
       p2: 'You can unlock a total of 36 trophies by searching the 8 different biomes and performing specific actions. You have the possibility to follow your progress in the dedicated tabs. Each generated world is unique and identified by a seed. To discover a new generation you can simply reload the page or press the "New World" button. A multiplayer mode is available for those who want to roam the different worlds with their friends.',
       p3: 'The tutorial tab lists all the usable keys, you can also change them if necessary. It’s strongly recommended to use a PC version of Chrome for an optimal experience.',
       p4: 'The application was developed with Typescript.',
