@@ -7,6 +7,7 @@ import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 import Boids from '@app/boids/Boids';
+import Butterfly from '@app/boids/creatures/Butterfly';
 
 import { IBiome } from '@world/models/biome.model';
 import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
@@ -16,9 +17,10 @@ import { PROGRESSION_EXTRAS_STORAGE_KEYS } from '@achievements/constants/progres
 import { PROGRESSION_BIOME_STORAGE_KEYS } from '@achievements/constants/progressionBiomesStorageKeys.constants';
 
 import ForestSFXMp3 from '@sounds/ForestSFX.mp3';
-import Butterfly from '@app/boids/creatures/Butterfly';
 
 class FjordBiome extends Biome {
+  private depth: number;
+
   private e: number;
   private boids: Boids[];
   private oldLog: THREE.Object3D;
@@ -38,6 +40,8 @@ class FjordBiome extends Biome {
     this.progressionSvc.increment(PROGRESSION_BIOME_STORAGE_KEYS.fjord_visited);
 
     this.e = MathUtils.randomFloat(1.85, 2.5);
+    this.depth = MathUtils.randomFloat(0.2, 0.4);
+
     this.sound = ForestSFXMp3;
   }
 
@@ -139,14 +143,10 @@ class FjordBiome extends Biome {
 
     e /= 0.9 + 0.1 + 0.05 + 0.01 + 0.01 + 0.05;
 
-    return (e ** this.e * 1.65) - 0.2;
+    return (e ** this.e * 1.65) - this.depth;
   }
 
   getParametersAt(e: number, m: number): IBiome {
-    if (e > Chunk.CLOUD_ELEVATION + 0.02) {
-      return SUB_BIOMES.MOUNTAIN;
-    }
-
     if (e > Chunk.SEA_ELEVATION + 0.15) {
       return SUB_BIOMES.FJORD;
     }
