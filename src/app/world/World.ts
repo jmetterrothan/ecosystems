@@ -23,7 +23,7 @@ class World {
   static readonly SEED: string | null = null;
   static readonly EMPTY: boolean = false;
 
-  static readonly OBJ_INITIAL_SCALE: number = 1000;
+  static readonly OBJ_INITIAL_SCALE: number = 800;
 
   static readonly SHOW_FOG: boolean = true;
   static readonly FOG_COLOR: number = 0xb1d8ff;
