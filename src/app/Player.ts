@@ -163,14 +163,16 @@ class Player {
    * @param {boolean} active
    */
   handleKeyboard(key: string, active: boolean) {
-
     // disable key when chat input is focused
     if (active && multiplayerSvc.isUsed() && multiplayerSvc.chatInputIsFocused() && key !== Keys[KeyAction.CHAT]) {
       return;
     }
+
     switch (key.toUpperCase()) {
       case Keys[KeyAction.FREEZE]:
-        if (active) window.isFreezed = !window.isFreezed; break;
+        if (active) {
+          window.isFreezed = !window.isFreezed; break;
+        }
 
       case Keys[KeyAction.MOVE_FRONT]:
         this.moveForward = active; break;
@@ -190,9 +192,21 @@ class Player {
       case Keys[KeyAction.MOVE_DOWN]:
         this.moveDown = active; break;
 
-      case Keys[KeyAction.CHAT]: if (active && multiplayerSvc.isUsed()) multiplayerSvc.toggleChatInutFocus(); break;
-      case Keys[KeyAction.VOCAL]: this.voice.togglePredictState(active); break;
-      case Keys[KeyAction.MUTE]: if (active) configSvc.soundEnabled = !configSvc.soundEnabled; break;
+      case Keys[KeyAction.CHAT]:
+        if (active && multiplayerSvc.isUsed()) {
+          multiplayerSvc.toggleChatInutFocus();
+        }
+        break;
+
+      case Keys[KeyAction.VOCAL]:
+        this.voice.togglePredictState(active);
+        break;
+
+      case Keys[KeyAction.MUTE]:
+        if (active) {
+          configSvc.soundEnabled = !configSvc.soundEnabled;
+        }
+        break;
     }
   }
 
