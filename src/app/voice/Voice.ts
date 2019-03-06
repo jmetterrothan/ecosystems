@@ -71,6 +71,8 @@ class Voice {
   async getPredictionLabel(predLabel: any) {
     const label = (await predLabel.data())[0];
 
+    if (CommonUtils.isDev()) console.log(label);
+
     if (label === 6) {
       return;
     }
