@@ -97,11 +97,13 @@ class Player {
       if (CommonUtils.isDev()) console.log('sucessfully loaded new model');
 
       this.voice = new Voice(voiceModel);
+      await this.voice.init();
     } catch (err) {
       if (CommonUtils.isDev()) console.log(err, 'loading model from localStorage');
 
       const voiceModel = await tf.loadModel('localstorage://voice-model');
       this.voice = new Voice(voiceModel);
+      await this.voice.init();
     }
   }
 

@@ -12,31 +12,23 @@ import { SAMPLES_CONFIG } from './constants/voice.constants';
 class Voice {
   private recognizer: sc.SpeeSpeechCommandRecognizer;
   private model: Model;
-  private toggle: Boolean;
+  private toggle: boolean;
 
   constructor(model: Model) {
     this.model = model;
-    this.init();
   }
 
-  init() {
+  async init() {
     this.toggle = true;
     this.recognizer = sc.create('BROWSER_FFT');
+    await this.recognizer.ensureModelLoaded();
+
     if (CommonUtils.isDev()) console.log('Voice system is ready to be use');
+
     this.listen();
   }
 
-  async ensureModelLoaded() {
-    await this.recognizer.ensureModelLoaded();
-  }
-
-  stopListening() {
-    configSvc.voiceEnabled = false;
-    this.recognizer.stopListening();
-    if (CommonUtils.isDev()) console.log('Voice system is not listening anymore');
-  }
-
-  togglePredictState(active) {
+  togglePredictState(active: boolean) {
     if (active === this.toggle) {
       this.toggle = !this.toggle;
       configSvc.voiceEnabled = !configSvc.voiceEnabled;
@@ -44,23 +36,22 @@ class Voice {
   }
 
   listen() {
-    if (CommonUtils.isDev()) console.log('Voice system is currently listening');
-
     this.recognizer.listen(async ({ spectrogram: { frameSize, data } }) => {
-      const vals = MathUtils.normalize(
-        data.subarray(-frameSize * SAMPLES_CONFIG.NUM_FRAMES),
-        -100,
-        10
-      );
-      const input = tf.tensor(vals, [1, ...SAMPLES_CONFIG.INPUT_SHAPE]);
-      const probs = this.model.predict(input);
-      const predLabel = probs.argMax(1);
-
       if (configSvc.voiceEnabled) {
-        await this.getPredictionLabel(predLabel);
-      }
 
-      tf.dispose([input, probs, predLabel]);
+        const vals = MathUtils.normalize(
+          data.subarray(-frameSize * SAMPLES_CONFIG.NUM_FRAMES),
+            -100,
+          10
+        );
+        const input = tf.tensor(vals, [1, ...SAMPLES_CONFIG.INPUT_SHAPE]);
+        const probs = this.model.predict(input);
+        const predLabel = probs.argMax(1);
+
+        await this.getPredictionLabel(predLabel);
+
+        tf.dispose([input, probs, predLabel]);
+      }
     }, {
       overlapFactor: 0.999,
       includeSpectrogram: true,
