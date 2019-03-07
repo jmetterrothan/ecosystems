@@ -3,6 +3,7 @@ import * as tf from '@tensorflow/tfjs';
 
 import 'three/examples/js/controls/PointerLockControls';
 
+import CommonUtils from '@app/shared/utils/Common.utils';
 import PointerLock from '@app/PointerLock';
 import Terrain from '@world/Terrain';
 import Voice from '@voice/Voice';
@@ -81,11 +82,27 @@ class Player {
    * Fetch newest model from heroku server
    */
   private async initVoice() {
-    await fetch('https://ecosystems-voice.herokuapp.com/getmodel');
-    const voiceModel =
-      await tf.loadModel('https://ecosystems-voice.herokuapp.com/model.json');
+    try {
+      await fetch('https://ecosystems-voice.herokuapp.com/getmodel');
+      await fetch('https://ecosystems-voice.herokuapp.com/getmodel');
 
-    this.voice = new Voice(voiceModel);
+      const voiceModel =
+        await tf.loadModel('https://ecosystems-voice.herokuapp.com/model.json');
+
+      if (CommonUtils.isDev()) {
+        console.log('model loaded from server, saving new version in localStorage...');
+      }
+
+      await voiceModel.save('localstorage://voice-model');
+      if (CommonUtils.isDev()) console.log('sucessfully loaded new model');
+
+      this.voice = new Voice(voiceModel);
+    } catch (err) {
+      if (CommonUtils.isDev()) console.log(err, 'loading model from localStorage');
+
+      const voiceModel = await tf.loadModel('localstorage://voice-model');
+      this.voice = new Voice(voiceModel);
+    }
   }
 
   /**
