@@ -44,12 +44,14 @@ class BiomeGenerator {
   init(terrain: Terrain): Biome {
     switch (terrain.getWorld().getSeed().toLowerCase()) {
       case 'taiga':
+      case 'taiga1':
       case 'taiga2':
       case 'taiga3':
       case 'taiga4':
         this.biome = new TaigaBiome(terrain);
         break;
       case 'rainforest':
+      case 'rainforest1':
       case 'rainforest2':
       case 'rainforest3':
       case 'rainforest4':
@@ -57,9 +59,14 @@ class BiomeGenerator {
         break;
       case 'highland':
       case 'highlands':
+      case 'highlands1':
+      case 'highlands2':
+      case 'highlands3':
+      case 'highlands4':
         this.biome = new HighlandBiome(terrain);
         break;
       case 'ocean':
+      case 'ocean1':
       case 'ocean2':
       case 'ocean3':
       case 'ocean4':
@@ -67,12 +74,14 @@ class BiomeGenerator {
         break;
       case 'swamp':
       case 'swamps':
+      case 'swamps1':
       case 'swamps2':
       case 'swamps3':
       case 'swamps4':
         this.biome = new SwampBiome(terrain);
         break;
       case 'desert':
+      case 'desert1':
       case 'desert2':
       case 'desert3':
       case 'desert4':
@@ -81,6 +90,7 @@ class BiomeGenerator {
       case 'snowy_hills':
       case 'snowy hills':
       case 'snow':
+      case 'snow1':
       case 'snow2':
       case 'snow3':
       case 'snow4':
@@ -88,14 +98,18 @@ class BiomeGenerator {
         break;
       case 'fjord':
       case 'fjords':
+      case 'fjords1':
       case 'fjords2':
       case 'fjords3':
+      case 'fjords4':
         this.biome = new FjordBiome(terrain);
         break;
       case 'desert island':
       case 'desert_island':
+      case 'desert_island1':
       case 'desert_island2':
       case 'desert_island3':
+      case 'desert_island4':
         this.biome = new DesertIslandBiome(terrain);
         break;
       default:

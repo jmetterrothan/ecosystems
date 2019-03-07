@@ -141,6 +141,7 @@ export interface IUITranslationKeys {
   };
   'home-tab': {
     title: string;
+    seed: string;
     article: {
       title_project: string;
       title_objectives: string;

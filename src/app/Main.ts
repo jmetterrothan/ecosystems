@@ -150,12 +150,13 @@ class Main {
       PointerLock.addEventListener('pointerlockchange', pointerlockchange, false);
       PointerLock.addEventListener('pointerlockerror', pointerlockerror, false);
 
-      document.body.addEventListener('click', e => {
+      document.body.addEventListener('mouseup', e => {
+        const button = e.which;
         if (!uiSvc.isState(UIStates.GAME)) return;
-        if (!this.controls.enabled || !this.world.isInitialized() || !(e.which === 1 || e.which === 3)) { return; }
+        if (!this.controls.enabled || !this.world.isInitialized() || !(button === 1 || button === 3)) { return; }
 
         // mouse position always in the center of the screen
-        this.world.handlePlayerInteraction(e.which === 1 ? INTERACTION_TYPE.MOUSE_LEFT_CLICK : INTERACTION_TYPE.MOUSE_RIGHT_CLICK);
+        this.world.handlePlayerInteraction(button === 1 ? INTERACTION_TYPE.MOUSE_LEFT_CLICK : INTERACTION_TYPE.MOUSE_RIGHT_CLICK);
       });
 
       document.body.addEventListener('keydown', e => {

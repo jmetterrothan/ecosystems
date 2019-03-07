@@ -27,8 +27,9 @@ class HomeTab extends React.Component<IProps, any> {
           </H1>
         </header>
         <div className='tab__content'>
-         {this.getOnlineShare()}
-         <Slider dots={true} vertical={false} infinite={false} speed={500} slidesToShow={1} slidesToScroll={1}>
+          {this.getSeedShare()}
+          {this.getOnlineShare()}
+          <Slider dots={true} vertical={false} infinite={false} speed={500} slidesToShow={1} slidesToScroll={1}>
             {this.getFirstPanel()}
             {this.getSecondPanel()}
           </Slider>
@@ -66,6 +67,24 @@ class HomeTab extends React.Component<IProps, any> {
         <p className='paragraph mb-1'><a className='link' href='https://github.com/jmetterrothan/ecosystems-server'>GitHub Ecosystems Server</a></p>
         <p className='paragraph mb-3'><a className='link' href='https://github.com/jmetterrothan/ecosystems-voice'>GitHub Ecosystems Voice</a></p>
       </Article>
+    );
+  }
+
+  getSeedShare() {
+    if (multiplayerSvc.isUsed()) { return null; }
+
+    const { uiManager } = this.props;
+    const seed = uiManager.state.parameters.seed;
+
+    return (
+      <div className='form online-share mb-3'>
+        <div className='form__group'>
+          <p className='paragraph color-darkblue bold mb-1'>
+          {translationSvc.translate('UI.home-tab.seed')}
+          </p>
+          <input type='text' className='form__element' readOnly={true} value={seed} />
+        </div>
+      </div>
     );
   }
 
