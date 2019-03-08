@@ -64,7 +64,7 @@ class Voice {
 
     if (CommonUtils.isDev()) console.log(label);
 
-    if (label === 6 || label === 5 || label == 4) {
+    if (label === 6 || label === 5 || label === 4) {
       return;
     }
 
