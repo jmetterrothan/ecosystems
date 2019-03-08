@@ -5,7 +5,7 @@ export const test: ISample = {
   label: ''
 };
 
-const NUM_FRAMES = 5;
+const NUM_FRAMES = 3;
 
 export const SAMPLES_CONFIG = {
   NUM_FRAMES,
