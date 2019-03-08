@@ -18,8 +18,14 @@ module.exports = merge(baseConfig, {
       verbose: true
     }),
     new CompressionPlugin({
-      threshold: 8192,
-      minRatio: 0.8
+      test: /\.js$/i,
+      minRatio: 1,
+      filename: '[path].jsgz[query]'
+    }),
+    new CompressionPlugin({
+      test: /\.mp3$/i,
+      minRatio: 1,
+      filename: '[path].mp3gz[query]'
     })
   ]
 });
