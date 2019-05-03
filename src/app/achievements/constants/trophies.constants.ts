@@ -123,6 +123,7 @@ export const TROPHIES: ITrophy[] = [
       { name: 'place 1 submarine object', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_submarine.value }
     ]
   },
+  /*
   {
     name: { key: 'TROPHIES.place_object_voice' },
     value: 'place_object_voice',
@@ -133,6 +134,7 @@ export const TROPHIES: ITrophy[] = [
       { name: 'place 1 object with voice', value: PROGRESSION_COMMON_STORAGE_KEYS.objects_placed_voice.value }
     ]
   },
+  */
   {
     name: { key: 'TROPHIES.place_objects_counter', options: { counter: 10 } },
     value: 'place_10_objects',

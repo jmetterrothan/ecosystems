@@ -112,7 +112,7 @@ export const FR_UI_TRANSLATION: IUITranslationKeys = {
       title_code: 'Code source',
       p1: 'Ecosystems est un projet visant à générer aléatoirement des mondes 3D interactifs. Ces mondes constituent un canevas ayant servis à intégrer divers algorithmes vus dans le cadre du cours d’Intelligence Artificielle de 3ème à l’IMAC.',
       p2: 'Vous pouvez débloquer au total {{trophyCount}} trophées en fouillant les {{biomeCount}} différents biomes et en réalisant des actions spécifiques. Vous avez la possibilité de suivre votre progression dans les onglets dédiés. Chaque monde généré est unique et identifié par une seed. Pour découvrir une nouvelle génération vous pouvez simplement recharger la page ou appuyer sur le bouton “Nouveau monde”. Un mode multijoueur est aussi disponible pour découvrir les mondes à plusieurs.',
-      p3: 'L’onglet tutoriel liste les touches et commandes vocales utilisables, vous pouvez également les changer en cas de besoin. Il est fortement conseillé d’utiliser une version PC de Chrome pour une expérience optimale.',
+      p3: 'L’onglet tutoriel liste les touches utilisables, vous pouvez également les changer en cas de besoin. Il est fortement conseillé d’utiliser une version PC de Chrome pour une expérience optimale.',
       p4: 'L’application a été développée avec Typescript.',
       p5: 'Monde 3D :',
       p6: 'Interface :',

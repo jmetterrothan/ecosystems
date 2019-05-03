@@ -60,7 +60,7 @@ class HomeTab extends React.Component<IProps, any> {
         <p className='paragraph mb-1'>{translationSvc.translate('UI.home-tab.article.p5')} Threejs / Howler</p>
         <p className='paragraph mb-1'>{translationSvc.translate('UI.home-tab.article.p6')} Rxjs / React / i18next / SASS</p>
         <p className='paragraph mb-1'>{translationSvc.translate('UI.home-tab.article.p7')} Node.js / socket.io</p>
-        <p className='paragraph mb-3'>{translationSvc.translate('UI.home-tab.article.p8')} tensorflow / MongoDB</p>
+        {/* <p className='paragraph mb-3'>{translationSvc.translate('UI.home-tab.article.p8')} tensorflow / MongoDB</p> */}
 
         <H4 className='mb-2'>{translationSvc.translate('UI.home-tab.article.title_code')}</H4>
         <p className='paragraph mb-1'><a className='link' href='https://github.com/jmetterrothan/ecosystems'>GitHub Ecosystems</a></p>

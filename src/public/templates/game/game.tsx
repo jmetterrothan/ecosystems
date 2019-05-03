@@ -120,10 +120,12 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
               <span className={classNames(iconSoundClass, 'overlay-icon__icon')} />
               <span className='overlay-icon__key'>{getKeyActionDisplayName(KeyAction.MUTE)}</span>
             </div>
+            {/*
             <div className={classNames('overlay-icon overlay-icon--voice', iconVoiceActiveClass)}>
               <span className={classNames(iconVoiceClass, 'overlay-icon__icon')} />
               <span className='overlay-icon__key'>{getKeyActionDisplayName(KeyAction.VOCAL)}</span>
             </div>
+            */}
           </div>
           <div className='overlay__chat'>
             {multiplayerSvc.isUsed() && <Chat messages={list} isOpened={chatOpened} onlineStatus={onlineStatus} />}

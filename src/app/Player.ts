@@ -46,7 +46,7 @@ class Player {
     this.speed = new THREE.Vector3(40000, 40000, 40000);
     this.velocity = new THREE.Vector3(0, 0, 0);
 
-    this.watchVoiceInteraction();
+    // this.watchVoiceInteraction();
 
     // fix bug when player is moving and pointer lock is lost
     PointerLock.addEventListener('pointerlockchange', () => {
@@ -75,7 +75,7 @@ class Player {
 
     playerSvc.setPosition(spawn);
 
-    await this.initVoice();
+    // await this.initVoice();
   }
 
   /**
@@ -183,6 +183,7 @@ class Player {
     }
   }
 
+  /*
   private watchVoiceInteraction() {
     voiceSvc.wordDetection$.subscribe((label: number) => {
       if (label === 3) {
@@ -190,6 +191,7 @@ class Player {
       }
     });
   }
+  */
 
   /**
    * Handle keyboard input
@@ -232,9 +234,11 @@ class Player {
         }
         break;
 
+      /*
       case Keys[KeyAction.VOCAL]:
         this.voice.togglePredictState(active);
         break;
+      */
 
       case Keys[KeyAction.MUTE]:
         if (active) {

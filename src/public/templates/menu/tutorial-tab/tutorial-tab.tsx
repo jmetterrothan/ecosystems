@@ -56,7 +56,7 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
         <div className='tab__content'>
           <Slider dots={true} vertical={false} infinite={false} speed={500} slidesToShow={1} slidesToScroll={1}>
             {this.getFirstPanel()}
-            {this.getSecondPanel()}
+            {/*this.getSecondPanel()*/}
           </Slider>
         </div>
       </div>
@@ -143,13 +143,13 @@ class TutorialTab extends React.Component<any, ITutorialTabsState> {
           <Col className='flexcol--8-t mb-2 mb-0-t'>
             <div className='tutorial-keys'>
               <TutorialActionKey className='mb-2' action={KeyAction.MUTE} onKeyChange={this.handleKeyChange} canEdit={true} />
-              <TutorialActionKey className='' action={KeyAction.VOCAL} onKeyChange={this.handleKeyChange} canEdit={true} />
+              <TutorialActionKey className='' action={KeyAction.CHAT} onKeyChange={this.handleKeyChange} canEdit={true} />
+              {/*<TutorialActionKey className='' action={KeyAction.VOCAL} onKeyChange={this.handleKeyChange} canEdit={true} />*/}
             </div>
           </Col>
           <Col className='flexcol--8-t'>
             <div className='tutorial-keys'>
               <TutorialActionKey className='mb-2' action={KeyAction.FREEZE} onKeyChange={this.handleKeyChange} canEdit={true} />
-              <TutorialActionKey className='' action={KeyAction.CHAT} onKeyChange={this.handleKeyChange} canEdit={true} />
             </div>
           </Col>
         </Row>
