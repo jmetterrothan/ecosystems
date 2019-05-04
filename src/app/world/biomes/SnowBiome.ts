@@ -4,6 +4,7 @@ import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Chunk from '@world/Chunk';
+import World from '@world/World';
 
 import { IBiome } from '@world/models/biome.model';
 import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
@@ -32,12 +33,14 @@ class SnowBiome extends Biome {
   }
 
   init() {
-    // snowman
-    this.snowmanObject = this.terrain.placeSpecialObject({
-      stackReference: 'snowman_no_carrot',
-      float: false,
-      underwater: ISpecialObjectCanPlaceIn.LAND
-    });
+    if (World.POPULATE) {
+      // snowman
+      this.snowmanObject = this.terrain.placeSpecialObject({
+        stackReference: 'snowman_no_carrot',
+        float: false,
+        underwater: ISpecialObjectCanPlaceIn.LAND
+      });
+    }
   }
 
   update(delta: number) { }

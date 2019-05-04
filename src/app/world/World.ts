@@ -20,8 +20,17 @@ import { INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
 import { GraphicsQuality } from '@shared/enums/graphicsQuality.enum';
 
 class World {
+  static readonly SHOW_SUN: boolean = true;
+  static readonly SHOW_MOON: boolean = true;
+
+  static readonly GENERATE_STARS: boolean = true;
+  static readonly GENERATE_CLOUDS: boolean = true;
+  static readonly GENERATE_WATER: boolean = true;
+  static readonly GENERATE_TERRAIN_SIDES: boolean = true;
+
+  static readonly POPULATE: boolean = true;
+
   static readonly SEED: string | null = null;
-  static readonly EMPTY: boolean = false;
 
   static readonly OBJ_INITIAL_SCALE: number = 850;
 
@@ -103,7 +112,7 @@ class World {
 
     biome.init();
 
-    this.watchVoiceInteraction();
+    // this.watchVoiceInteraction();
     this.scene.add(this.controls.getObject());
 
     if (configSvc.debug) {
@@ -229,6 +238,7 @@ class World {
     this.player.handleKeyboard(key, active);
   }
 
+  /*
   private watchVoiceInteraction() {
     voiceSvc.wordDetection$.subscribe((label: number) => {
       switch (label) {
@@ -246,6 +256,7 @@ class World {
       }
     });
   }
+  */
 
   isInitialized(): boolean { return this.initialized; }
 

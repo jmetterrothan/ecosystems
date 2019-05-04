@@ -35,6 +35,7 @@ import { GraphicsQuality } from '@app/shared/enums/graphicsQuality.enum';
 class Terrain {
   static readonly NCHUNKS_X: number = 14;
   static readonly NCHUNKS_Z: number = 14;
+
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;
 
@@ -160,15 +161,17 @@ class Terrain {
       true
     );
 
-    (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt1);
-    (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt2);
-    (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt3);
-    (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt4);
-    (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt5);
+    if (World.GENERATE_TERRAIN_SIDES) {
+      (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt1);
+      (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt2);
+      (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt3);
+      (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt4);
+      (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt5);
+    }
 
     // water
     const biome: Biome = this.generator.getBiome();
-    if (biome.hasWater()) {
+    if (World.GENERATE_WATER && biome.hasWater()) {
       (<THREE.Geometry>this.water.geometry).mergeMesh(bw1);
       (<THREE.Geometry>this.water.geometry).mergeMesh(bw2);
       (<THREE.Geometry>this.water.geometry).mergeMesh(bw3);

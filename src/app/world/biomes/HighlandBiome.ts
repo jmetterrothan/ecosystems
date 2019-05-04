@@ -9,6 +9,7 @@ import Chunk from '@world/Chunk';
 import Boids from '@boids/Boids';
 import Bee from '@app/boids/creatures/Bee';
 import MathUtils from '@shared/utils/Math.utils';
+import World from '@world/World';
 
 import { IBiome } from '@world/models/biome.model';
 import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
@@ -51,15 +52,17 @@ class HighlandBiome extends Biome {
   }
 
   init() {
-    // scarecrow
-    this.scarecrow = this.terrain.placeSpecialObject({
-      stackReference: 'scarecrow',
-      float: false,
-      underwater: ISpecialObjectCanPlaceIn.LAND,
-      e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.3 }
-    });
+    if (World.POPULATE) {
+      // scarecrow
+      this.scarecrow = this.terrain.placeSpecialObject({
+        stackReference: 'scarecrow',
+        float: false,
+        underwater: ISpecialObjectCanPlaceIn.LAND,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.3 }
+      });
 
-    this.initBeeBoids();
+      this.initBeeBoids();
+    }
   }
 
   private initBeeBoids() {

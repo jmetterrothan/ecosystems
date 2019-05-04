@@ -11,6 +11,7 @@ import Boids from '@boids/Boids';
 import Butterfly from '@boids/creatures/Butterfly';
 import Fish from '@boids/creatures/Fish';
 import BubbleEmitter from '@world/biomes/particles/BubbleEmitter';
+import World from '@world/World';
 
 import { IBiome } from '@world/models/biome.model';
 // import { ISpecialObjectCanPlaceIn } from '@world/models/objectParameters.model';
@@ -59,19 +60,21 @@ class RainForestBiome extends Biome {
   }
 
   init() {
-    // special object
-    /*
-    this.specialObject = this.terrain.placeSpecialObject({
-      stackReference: '',
-      float: false,
-      underwater: ISpecialObjectCanPlaceIn.LAND,
-      e: { low: Chunk.SEA_ELEVATION + 0.65, high: null }
-    });
-    */
+    if (World.POPULATE) {
+      // special object
+      /*
+      this.specialObject = this.terrain.placeSpecialObject({
+        stackReference: '',
+        float: false,
+        underwater: ISpecialObjectCanPlaceIn.LAND,
+        e: { low: Chunk.SEA_ELEVATION + 0.65, high: null }
+      });
+      */
 
-    this.initButterflyBoids();
-    this.initFishBoids();
-    this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
+      this.initButterflyBoids();
+      this.initFishBoids();
+      this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
+    }
   }
 
   initButterflyBoids() {

@@ -7,6 +7,7 @@ import Chunk from '@world/Chunk';
 import Boids from '@app/boids/Boids';
 import Fly from '@app/boids/creatures/Fly';
 import MathUtils from '@app/shared/utils/Math.utils';
+import World from '@world/World';
 
 import { IBiome } from '@world/models/biome.model';
 import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
@@ -39,8 +40,10 @@ class DesertBiome extends Biome {
   }
 
   init() {
-    this.initSpecialObject();
-    this.initFlyBoids();
+    if (World.POPULATE) {
+      this.initSpecialObject();
+      this.initFlyBoids();
+    }
   }
 
   private initSpecialObject() {

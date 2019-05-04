@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import * as TWEEN from '@tweenjs/tween.js';
 import poissonDiskSampling from 'poisson-disk-sampling';
 
+import World from '@world/World';
 import Terrain from '@world/Terrain';
 import Biome from '@world/Biome';
 import Chunk from '@world/Chunk';
@@ -54,9 +55,11 @@ class OceanBiome extends Biome {
   }
 
   init() {
-    this.initSpecialObject();
-    this.initFishBoids();
-    this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
+    if (World.POPULATE) {
+      this.initSpecialObject();
+      this.initFishBoids();
+      this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
+    }
   }
 
   private initSpecialObject() {

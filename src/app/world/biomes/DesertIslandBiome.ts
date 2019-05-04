@@ -12,6 +12,7 @@ import Boids from '@boids/Boids';
 import TropicalFish from '@boids/creatures/TropicalFish';
 import ClownFish from '@app/boids/creatures/ClownFish';
 import BubbleEmitter from '@world/biomes/particles/BubbleEmitter';
+import World from '@world/World';
 
 import { IBiome } from '@world/models/biome.model';
 import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
@@ -50,9 +51,11 @@ class DesertIslandBiome extends Biome {
   }
 
   init() {
-    this.initSpecialObject();
-    this.initFishBoids();
-    this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
+    if (World.POPULATE) {
+      this.initSpecialObject();
+      this.initFishBoids();
+      this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
+    }
   }
 
   private initSpecialObject() {

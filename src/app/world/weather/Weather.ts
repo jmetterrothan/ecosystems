@@ -121,7 +121,7 @@ class Weather {
     this.stars = new Stars();
     this.clouds = new Clouds(generator);
 
-    this.watchVoiceInteraction();
+    // this.watchVoiceInteraction();
   }
 
   init() {
@@ -198,7 +198,8 @@ class Weather {
     this.moon.position.copy(this.sunlight.position);
     // this.moon.visible = configSvc.debug;
 
-    this.scene.add(this.sun, this.moon);
+    if (World.SHOW_SUN) this.scene.add(this.sun);
+    if (World.SHOW_MOON) this.scene.add(this.moon);
 
     if (configSvc.debug) {
       const dirHelper = new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize();
@@ -427,6 +428,7 @@ class Weather {
     });
   }
 
+  /*
   private watchVoiceInteraction() {
     voiceSvc.wordDetection$.subscribe((label: number) => {
       switch (label) {
@@ -441,6 +443,7 @@ class Weather {
       }
     });
   }
+  */
 
   setDay() {
     this.sunAngle = 0;

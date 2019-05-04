@@ -103,18 +103,7 @@ class Chunk {
     this.objectsBlueprint = [];
   }
 
-  /**
-   * Chunk initialization
-   * @param {Terrain} terrain
-   */
-  init(terrain: Terrain) {
-    // merge generated chunk with region geometry
-    const terrainMesh = this.terrainBlueprint.generate();
-
-    (<THREE.Geometry>terrain.terrain.geometry).mergeMesh(terrainMesh);
-    (<THREE.Geometry>terrain.terrain.geometry).elementsNeedUpdate = true;
-
-    // generate water
+  private initWater(terrain: Terrain) {
     if (terrain.getBiome().hasWater() && this.terrainBlueprint.needGenerateWater()) {
       const p1 = this.generator.computeHeightAt(this.col * Chunk.WIDTH, this.row * Chunk.DEPTH);
       const p2 = this.generator.computeHeightAt(this.col * Chunk.WIDTH + Chunk.WIDTH, this.row * Chunk.DEPTH);
@@ -130,8 +119,9 @@ class Chunk {
         (<THREE.Geometry>terrain.water.geometry).elementsNeedUpdate = true;
       }
     }
+  }
 
-    // generate clouds
+  private initClouds(terrain: Terrain) {
     if (this.terrainBlueprint.needGenerateCloud()) {
       const cloudTypes = ['cloud1', 'cloud2', 'cloud3', 'cloud4'];
 
@@ -168,13 +158,31 @@ class Chunk {
       }
     }
 
-    if (!World.EMPTY) {
+    if (World.POPULATE) {
       this.loadPopulation({ isOnWater: false });
       this.loadPopulation({ isOnWater: true });
     }
 
     this.merged = true;
     this.dirty = true;
+  }
+
+  /**
+   * Chunk initialization
+   * @param {Terrain} terrain
+   */
+  init(terrain: Terrain) {
+    // merge generated chunk with region geometry
+    const terrainMesh = this.terrainBlueprint.generate();
+
+    (<THREE.Geometry>terrain.terrain.geometry).mergeMesh(terrainMesh);
+    (<THREE.Geometry>terrain.terrain.geometry).elementsNeedUpdate = true;
+
+    // generate water
+    if (World.GENERATE_WATER) this.initWater(terrain);
+
+    // generate clouds
+    if (World.GENERATE_CLOUDS) this.initClouds(terrain);
   }
 
   /**

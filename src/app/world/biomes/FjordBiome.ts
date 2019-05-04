@@ -8,6 +8,7 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@shared/utils/Math.utils';
 import Boids from '@app/boids/Boids';
 import Butterfly from '@app/boids/creatures/Butterfly';
+import World from '@world/World';
 
 import { IBiome } from '@world/models/biome.model';
 import { ISpecialObjectCanPlaceIn } from '../models/objectParameters.model';
@@ -46,15 +47,17 @@ class FjordBiome extends Biome {
   }
 
   init() {
-    // special object
-    this.oldLog = this.terrain.placeSpecialObject({
-      stackReference: 'old_log',
-      float: false,
-      underwater: ISpecialObjectCanPlaceIn.LAND,
-      e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 }
-    });
+    if (World.POPULATE) {
+      // special object
+      this.oldLog = this.terrain.placeSpecialObject({
+        stackReference: 'old_log',
+        float: false,
+        underwater: ISpecialObjectCanPlaceIn.LAND,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 }
+      });
 
-    this.initButterflyBoids();
+      this.initButterflyBoids();
+    }
   }
 
   private initButterflyBoids() {

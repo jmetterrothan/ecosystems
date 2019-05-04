@@ -8,6 +8,7 @@ import Chunk from '@world/Chunk';
 import Boids from '@boids/Boids';
 import Butterfly from '@boids/creatures/Butterfly';
 import MathUtils from '@shared/utils/Math.utils';
+import World from '@world/World';
 
 import { IBiome } from '@world/models/biome.model';
 import { ISpecialObjectCanPlaceIn } from '@world/models/objectParameters.model';
@@ -39,22 +40,24 @@ class SwampBiome extends Biome {
   }
 
   init() {
-    // special object
-    this.tubecluster = this.terrain.placeSpecialObject({
-      stackReference: 'tubecluster',
-      float: false,
-      underwater: ISpecialObjectCanPlaceIn.LAND,
-      e: { low: Chunk.SEA_ELEVATION + 0.05, high: null }
-    });
+    if (World.POPULATE) {
+      // special object
+      this.tubecluster = this.terrain.placeSpecialObject({
+        stackReference: 'tubecluster',
+        float: false,
+        underwater: ISpecialObjectCanPlaceIn.LAND,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: null }
+      });
 
-    this.tubecluster2 = this.terrain.placeSpecialObject({
-      stackReference: 'tubecluster2',
-      float: false,
-      underwater: ISpecialObjectCanPlaceIn.LAND,
-      e: { low: Chunk.SEA_ELEVATION + 0.05, high: null }
-    });
+      this.tubecluster2 = this.terrain.placeSpecialObject({
+        stackReference: 'tubecluster2',
+        float: false,
+        underwater: ISpecialObjectCanPlaceIn.LAND,
+        e: { low: Chunk.SEA_ELEVATION + 0.05, high: null }
+      });
 
-    this.initButterflyBoids();
+      this.initButterflyBoids();
+    }
   }
 
   private initButterflyBoids() {
