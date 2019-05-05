@@ -93,26 +93,23 @@ class Weather {
 
     let startAngle = MathUtils.randomInt(0, 360);
 
-    // Photo mode specifics
-    if (configSvc.quality === GraphicsQuality.PHOTO) {
-      // allow changing time in photo mode
-      let customAngle = queryString.get('sunAngle', QueryStringType.INTEGER);
+    // allow changing time in photo mode
+    let customAngle = queryString.get('sunAngle', QueryStringType.INTEGER);
 
-      if (customAngle !== undefined) {
-        if (customAngle < 0) { customAngle = 0; }
-        if (customAngle > 360) { customAngle = 360; }
+    if (customAngle !== undefined) {
+      if (customAngle < 0) { customAngle = 0; }
+      if (customAngle > 360) { customAngle = 360; }
 
-        startAngle = customAngle;
-      }
+      startAngle = customAngle;
+    }
 
-      // allow changing revolution time
-      let customRevolutionTime = queryString.get('sunRevolutionTime', QueryStringType.INTEGER);
+    // allow changing revolution time
+    let customRevolutionTime = queryString.get('sunRevolutionTime', QueryStringType.INTEGER);
 
-      if (customRevolutionTime !== undefined) {
-        if (customRevolutionTime < 0) { customRevolutionTime = 0; }
+    if (customRevolutionTime !== undefined) {
+      if (customRevolutionTime < 0) { customRevolutionTime = 0; }
 
-        this.sunRevolutionTime = customRevolutionTime;
-      }
+      this.sunRevolutionTime = customRevolutionTime;
     }
 
     this.sunAngle = THREE.Math.degToRad(startAngle);
@@ -201,7 +198,7 @@ class Weather {
     if (World.SHOW_SUN) this.scene.add(this.sun);
     if (World.SHOW_MOON) this.scene.add(this.moon);
 
-    if (configSvc.debug) {
+    if (configSvc.debug && World.SHOW_SUN) {
       const dirHelper = new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize();
       this.lightHelper = new THREE.ArrowHelper(dirHelper, this.sunlight.position.clone(), this.sunRadius, 0xff0000, 10000);
       this.scene.add(this.lightHelper);
@@ -277,7 +274,7 @@ class Weather {
     this.sun.position.copy(this.sunlight.position);
     this.sunBoundLight.position.copy(this.sunlight.position);
 
-    if (configSvc.debug) {
+    if (configSvc.debug && World.SHOW_SUN) {
       this.lightHelper.position.copy(this.sunlight.position);
       this.lightHelper.setDirection(new THREE.Vector3().subVectors(this.sunlight.target.position.clone(), this.sunlight.position.clone()).normalize());
     }

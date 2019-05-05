@@ -52,17 +52,15 @@ class HighlandBiome extends Biome {
   }
 
   init() {
-    if (World.POPULATE) {
-      // scarecrow
-      this.scarecrow = this.terrain.placeSpecialObject({
-        stackReference: 'scarecrow',
-        float: false,
-        underwater: ISpecialObjectCanPlaceIn.LAND,
-        e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.3 }
-      });
+    // scarecrow
+    this.scarecrow = this.terrain.placeSpecialObject({
+      stackReference: 'scarecrow',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.LAND,
+      e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.3 }
+    });
 
-      this.initBeeBoids();
-    }
+    this.initBeeBoids();
   }
 
   private initBeeBoids() {

@@ -86,8 +86,8 @@ class Creature {
     this.updateModel(delta);
   }
 
-  addToScene(scene: THREE.Scene) {
-    scene.add(this.model);
+  addToScene(g: THREE.Scene|THREE.Group) {
+    g.add(this.model);
   }
 
   setPosition(v: THREE.Vector3) {

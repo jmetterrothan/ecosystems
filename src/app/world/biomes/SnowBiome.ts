@@ -33,14 +33,12 @@ class SnowBiome extends Biome {
   }
 
   init() {
-    if (World.POPULATE) {
-      // snowman
-      this.snowmanObject = this.terrain.placeSpecialObject({
-        stackReference: 'snowman_no_carrot',
-        float: false,
-        underwater: ISpecialObjectCanPlaceIn.LAND
-      });
-    }
+    // snowman
+    this.snowmanObject = this.terrain.placeSpecialObject({
+      stackReference: 'snowman_no_carrot',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.LAND
+    });
   }
 
   update(delta: number) { }

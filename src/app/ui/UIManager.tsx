@@ -26,7 +26,7 @@ interface IUIManagerState {
 }
 
 class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
-  static readonly ENABLED: boolean = false;
+  static readonly SHOW: boolean = false;
 
   private uiStates: Map<UIStates, IUIState>;
 
@@ -82,7 +82,7 @@ class UIManager extends React.PureComponent<IUIManagerProps, IUIManagerState> {
     const style = configSvc.quality === GraphicsQuality.PHOTO ? { display: 'none' } : null;
 
     return (
-      <div className='ui' style={style}>
+     <div className='ui' style={style}>
         <div className='ui__notifications p-2'>
           <NotificationContainer />
         </div>

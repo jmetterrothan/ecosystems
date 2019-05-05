@@ -31,6 +31,8 @@ interface IGameState {
 }
 
 class Game extends React.PureComponent<IGameProps, IGameState> {
+  private static readonly SHOW: boolean = false;
+
   private trophySubscription: Subscription;
   private configSoundSubscription: Subscription;
   private configVoiceSubscription: Subscription;
@@ -103,7 +105,7 @@ class Game extends React.PureComponent<IGameProps, IGameState> {
     const list = messages ? messages.slice(chatOpened ? -16 : -8).filter((message) => message && message.user) : [];
 
     return (
-      <section className='ui__state game'>
+      Game.SHOW && <section className='ui__state game'>
         <div className='game__overlay overlay'>
           <Crosshair />
           <div className='overlay__trophies'>

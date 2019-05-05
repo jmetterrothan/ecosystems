@@ -60,21 +60,19 @@ class RainForestBiome extends Biome {
   }
 
   init() {
-    if (World.POPULATE) {
-      // special object
-      /*
-      this.specialObject = this.terrain.placeSpecialObject({
-        stackReference: '',
-        float: false,
-        underwater: ISpecialObjectCanPlaceIn.LAND,
-        e: { low: Chunk.SEA_ELEVATION + 0.65, high: null }
-      });
-      */
+    // special object
+    /*
+    this.specialObject = this.terrain.placeSpecialObject({
+      stackReference: '',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.LAND,
+      e: { low: Chunk.SEA_ELEVATION + 0.65, high: null }
+    });
+    */
 
-      this.initButterflyBoids();
-      this.initFishBoids();
-      this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
-    }
+    this.initButterflyBoids();
+    this.initFishBoids();
+    this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
   }
 
   initButterflyBoids() {

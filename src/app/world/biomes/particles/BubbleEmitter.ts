@@ -4,6 +4,7 @@ import poissonDiskSampling from 'poisson-disk-sampling';
 import BiomeGenerator from '@world/BiomeGenerator';
 import Terrain from '@world/Terrain';
 import Chunk from '@world/Chunk';
+import World from '@world/World';
 
 import MathUtils from '@shared/utils/Math.utils';
 import CommonUtils from '@app/shared/utils/Common.utils';
@@ -101,6 +102,7 @@ class BubbleEmitter {
     // retain origin information to optimize updates (prevent recalculating origin y position)
     emitter.userData.origin = new THREE.Vector3(x, y, z);
     emitter.frustumCulled = false;
+    emitter.visible = World.SHOW_EFFECTS;
 
     this.emitters.push(emitter);
 

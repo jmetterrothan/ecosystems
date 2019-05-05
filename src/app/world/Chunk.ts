@@ -86,6 +86,8 @@ class Chunk {
     this.scene = scene;
 
     this.objects = new THREE.Group();
+    this.objects.visible = World.SHOW_POPULATION;
+
     scene.add(this.objects);
 
     this.terrainBlueprint = new TerrainMesh(this.generator, this.row, this.col);
@@ -139,7 +141,7 @@ class Chunk {
       mesh.matrixAutoUpdate = true;
       mesh.receiveShadow = false;
       mesh.castShadow = true;
-      mesh.visible = true;
+      mesh.visible = World.SHOW_CLOUDS;
       mesh.position.set(x, y, z);
       mesh.scale.set(s, s, s);
       mesh.updateMatrixWorld(true);
@@ -158,10 +160,8 @@ class Chunk {
       }
     }
 
-    if (World.POPULATE) {
-      this.loadPopulation({ isOnWater: false });
-      this.loadPopulation({ isOnWater: true });
-    }
+    this.loadPopulation({ isOnWater: false });
+    this.loadPopulation({ isOnWater: true });
 
     this.merged = true;
     this.dirty = true;
@@ -179,10 +179,10 @@ class Chunk {
     (<THREE.Geometry>terrain.terrain.geometry).elementsNeedUpdate = true;
 
     // generate water
-    if (World.GENERATE_WATER) this.initWater(terrain);
+    this.initWater(terrain);
 
     // generate clouds
-    if (World.GENERATE_CLOUDS) this.initClouds(terrain);
+    this.initClouds(terrain);
   }
 
   /**
@@ -400,7 +400,7 @@ class Chunk {
    */
   setVisible(bool: boolean) {
     if (this.visible !== bool) {
-      this.objects.visible = bool;
+      this.objects.visible = bool && World.SHOW_POPULATION;
     }
     this.visible = bool;
 

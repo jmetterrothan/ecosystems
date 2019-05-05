@@ -47,17 +47,15 @@ class FjordBiome extends Biome {
   }
 
   init() {
-    if (World.POPULATE) {
-      // special object
-      this.oldLog = this.terrain.placeSpecialObject({
-        stackReference: 'old_log',
-        float: false,
-        underwater: ISpecialObjectCanPlaceIn.LAND,
-        e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 }
-      });
+    // special object
+    this.oldLog = this.terrain.placeSpecialObject({
+      stackReference: 'old_log',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.LAND,
+      e: { low: Chunk.SEA_ELEVATION + 0.05, high: Chunk.SEA_ELEVATION + 0.2 }
+    });
 
-      this.initButterflyBoids();
-    }
+    this.initButterflyBoids();
   }
 
   private initButterflyBoids() {

@@ -6,6 +6,7 @@ import Chunk from '@world/Chunk';
 import MathUtils from '@utils/Math.utils';
 import BiomeGenerator from '@world/BiomeGenerator';
 import CommonUtils from '@utils/Common.utils';
+import World from '@world/World';
 
 import { configSvc } from '@app/shared/services/config.service';
 import { playerSvc } from '@shared/services/player.service';
@@ -63,7 +64,7 @@ class Clouds {
     this.wind = new THREE.Vector3(0, 0, MathUtils.randomInt(600, 1200) * Math.sign(Math.random() - 0.5));
 
     // wind direction helper
-    if (configSvc.debug) {
+    if (configSvc.debug && World.SHOW_CLOUDS) {
       const arrowHelper = new THREE.ArrowHelper(this.wind, new THREE.Vector3(Terrain.SIZE_X / 2, Chunk.CLOUD_LEVEL, Terrain.SIZE_Z / 2), 10000, 0xff0000);
       scene.add(arrowHelper);
     }
@@ -119,7 +120,7 @@ class Clouds {
 
     for (const cloud of this.group.children) {
       // move cloud
-      if (!cloud.userData.animating) {
+      if (!cloud.userData.animating && !window.isFreezed) {
         cloud.position.add(this.wind.clone().multiplyScalar(delta));
       }
 

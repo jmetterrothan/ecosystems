@@ -20,21 +20,30 @@ import { INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
 import { GraphicsQuality } from '@shared/enums/graphicsQuality.enum';
 
 class World {
-  static readonly SHOW_SUN: boolean = true;
-  static readonly SHOW_MOON: boolean = true;
+  static readonly SHOW_TERRAIN_SIDES: boolean = false;
 
-  static readonly GENERATE_STARS: boolean = true;
-  static readonly GENERATE_CLOUDS: boolean = true;
-  static readonly GENERATE_WATER: boolean = true;
-  static readonly GENERATE_TERRAIN_SIDES: boolean = true;
+  static readonly SHOW_WATER: boolean = false;
 
-  static readonly POPULATE: boolean = true;
+  static readonly SHOW_STARS: boolean = false;
+  static readonly SHOW_CLOUDS: boolean = false;
+
+  static readonly SHOW_SUN: boolean = false;
+  static readonly SHOW_MOON: boolean = false;
+
+  static readonly SHOW_FOG: boolean = false;
+  static readonly SHOW_EFFECTS: boolean = false;
+
+  // terrain wireframe OFF
+
+  static readonly SHOW_POPULATION: boolean = false;
+  static readonly SHOW_BOIDS: boolean = false;
+
+  static readonly RESTORE_PP: boolean = true;
 
   static readonly SEED: string | null = null;
 
   static readonly OBJ_INITIAL_SCALE: number = 850;
 
-  static readonly SHOW_FOG: boolean = true;
   static readonly FOG_COLOR: number = 0xb1d8ff;
 
   static readonly AMBIANT_SOUND_VOLUME: number = 0.35;
@@ -116,7 +125,7 @@ class World {
     this.scene.add(this.controls.getObject());
 
     if (configSvc.debug) {
-      this.showAxesHelper();
+      // this.showAxesHelper();
 
       console.info(`SEED : ${this.seed}`);
       console.info(`QUALITY : ${GraphicsQuality[configSvc.quality]}`);

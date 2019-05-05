@@ -25,7 +25,7 @@ interface Props {
 }
 
 class Menu extends React.PureComponent<Props> {
-
+  static readonly SHOW: boolean =  false;
   static SELECTED_INDEX: number = 0;
 
   handleClick = () => {
@@ -45,7 +45,7 @@ class Menu extends React.PureComponent<Props> {
     const { uiManager } = this.props;
 
     return (
-      <div className='ui__state menu'>
+      Menu.SHOW && <div className='ui__state menu'>
         <div className='menu__container'>
           <Tabs defaultIndex={Menu.SELECTED_INDEX} onSelect={tabIndex => Menu.SELECTED_INDEX = tabIndex}>
             <TabList>

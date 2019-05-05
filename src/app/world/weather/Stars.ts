@@ -29,25 +29,24 @@ class Star {
       fog: false,
     });
 
-    if (World.GENERATE_STARS) {
-      for (let i = 0; i < starsCount; i++) {
-        const u = MathUtils.rng();
-        const v = MathUtils.rng();
-        const radius = Chunk.HEIGHT * 2.5;
-        const theta = 2 * Math.PI * u;
-        const phi = Math.acos(2 * v - 1);
+    for (let i = 0; i < starsCount; i++) {
+      const u = MathUtils.rng();
+      const v = MathUtils.rng();
+      const radius = Chunk.HEIGHT * 2.5;
+      const theta = 2 * Math.PI * u;
+      const phi = Math.acos(2 * v - 1);
 
-        const x = (radius * Math.sin(phi) * Math.cos(theta));
-        const y = (radius * Math.sin(phi) * Math.sin(theta));
-        const z = (radius * Math.cos(phi));
+      const x = (radius * Math.sin(phi) * Math.cos(theta));
+      const y = (radius * Math.sin(phi) * Math.sin(theta));
+      const z = (radius * Math.cos(phi));
 
-        stars.vertices.push(new THREE.Vector3(x, y, z));
-      }
+      stars.vertices.push(new THREE.Vector3(x, y, z));
     }
 
     this.points = new THREE.Points(stars, material);
     this.points.position.copy(playerSvc.getPosition());
     this.points.frustumCulled = false;
+    this.points.visible = World.SHOW_STARS;
 
     scene.add(this.points);
   }

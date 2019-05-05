@@ -11,6 +11,7 @@ import Butterfly from '@boids/creatures/Butterfly';
 import DiscusFish from './creatures/DiscusFish';
 
 import MathUtils from '@shared/utils/Math.utils';
+import World from '@app/world/World';
 
 import { configSvc } from '@app/shared/services/config.service';
 import { progressionSvc } from '@achievements/services/progression.service';
@@ -26,6 +27,8 @@ class Boids {
   private boudingBox: THREE.Vector3;
   private origin: THREE.Vector3;
 
+  private group: THREE.Group;
+
   private scene: THREE.Scene;
 
   /**
@@ -39,7 +42,11 @@ class Boids {
     this.boudingBox = boudingBox;
     this.origin = origin;
 
-    if (configSvc.debug) {
+    this.group = new THREE.Group();
+    this.group.visible = World.SHOW_BOIDS;
+    this.scene.add(this.group);
+
+    if (configSvc.debug && World.SHOW_BOIDS) {
       const mesh = new THREE.Box3().setFromCenterAndSize(
         new THREE.Vector3(this.origin.x, this.origin.y, this.origin.z),
         new THREE.Vector3(this.boudingBox.x, this.boudingBox.y, this.boudingBox.z)
@@ -65,7 +72,7 @@ class Boids {
     creature.setPosition(position);
     creature.setBoidsBoundingBox(this.boudingBox);
     creature.setOriginPoint(this.origin);
-    creature.addToScene(this.scene);
+    creature.addToScene(this.group);
 
     this.creatures.push(creature);
   }

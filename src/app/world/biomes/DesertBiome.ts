@@ -40,10 +40,8 @@ class DesertBiome extends Biome {
   }
 
   init() {
-    if (World.POPULATE) {
-      this.initSpecialObject();
-      this.initFlyBoids();
-    }
+    this.initSpecialObject();
+    this.initFlyBoids();
   }
 
   private initSpecialObject() {

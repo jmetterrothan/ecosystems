@@ -40,24 +40,22 @@ class SwampBiome extends Biome {
   }
 
   init() {
-    if (World.POPULATE) {
-      // special object
-      this.tubecluster = this.terrain.placeSpecialObject({
-        stackReference: 'tubecluster',
-        float: false,
-        underwater: ISpecialObjectCanPlaceIn.LAND,
-        e: { low: Chunk.SEA_ELEVATION + 0.05, high: null }
-      });
+    // special object
+    this.tubecluster = this.terrain.placeSpecialObject({
+      stackReference: 'tubecluster',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.LAND,
+      e: { low: Chunk.SEA_ELEVATION + 0.05, high: null }
+    });
 
-      this.tubecluster2 = this.terrain.placeSpecialObject({
-        stackReference: 'tubecluster2',
-        float: false,
-        underwater: ISpecialObjectCanPlaceIn.LAND,
-        e: { low: Chunk.SEA_ELEVATION + 0.05, high: null }
-      });
+    this.tubecluster2 = this.terrain.placeSpecialObject({
+      stackReference: 'tubecluster2',
+      float: false,
+      underwater: ISpecialObjectCanPlaceIn.LAND,
+      e: { low: Chunk.SEA_ELEVATION + 0.05, high: null }
+    });
 
-      this.initButterflyBoids();
-    }
+    this.initButterflyBoids();
   }
 
   private initButterflyBoids() {

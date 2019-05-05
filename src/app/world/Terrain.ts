@@ -106,7 +106,14 @@ class Terrain {
   init() {
     this.initMeshes();
     this.initPicks();
-    if (multiplayerSvc.isUsed()) this.watchObjectInteraction();
+
+    if (multiplayerSvc.isUsed()) {
+      this.watchObjectInteraction();
+    }
+
+    if (configSvc.debug) {
+      this.scene.add(Terrain.createRegionBoundingBoxHelper() as THREE.Object3D);
+    }
   }
 
   /**
@@ -161,17 +168,15 @@ class Terrain {
       true
     );
 
-    if (World.GENERATE_TERRAIN_SIDES) {
-      (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt1);
-      (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt2);
-      (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt3);
-      (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt4);
-      (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt5);
-    }
+    (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt1);
+    (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt2);
+    (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt3);
+    (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt4);
+    (<THREE.Geometry>this.terrainSide.geometry).mergeMesh(bt5);
 
     // water
     const biome: Biome = this.generator.getBiome();
-    if (World.GENERATE_WATER && biome.hasWater()) {
+    if (biome.hasWater()) {
       (<THREE.Geometry>this.water.geometry).mergeMesh(bw1);
       (<THREE.Geometry>this.water.geometry).mergeMesh(bw2);
       (<THREE.Geometry>this.water.geometry).mergeMesh(bw3);
@@ -198,6 +203,9 @@ class Terrain {
       (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion_freq.value = biome.getWaterDistortionFreq();
       (<THREE.ShaderMaterial>this.water.material).uniforms.water_distortion_amp.value = biome.getWaterDistortionAmp();
     }
+
+    this.water.visible = World.SHOW_WATER;
+    this.terrainSide.visible = World.SHOW_TERRAIN_SIDES;
   }
 
   /**
@@ -906,7 +914,7 @@ class Terrain {
     this.water.receiveShadow = false;
     this.layers.add(this.water);
 
-    if (configSvc.debug) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
+    if (configSvc.debug && World.SHOW_WATER) this.layers.add(<THREE.Object3D>Terrain.createRegionWaterBoundingBoxHelper());
 
     this.scene.add(this.layers);
   }
@@ -1000,7 +1008,7 @@ class Terrain {
    */
   static createRegionBoundingBox(): THREE.Box3 {
     return new THREE.Box3().setFromCenterAndSize(
-      new THREE.Vector3(Terrain.SIZE_X / 2, Terrain.SIZE_Y / 2, Terrain.SIZE_Z / 2),
+      new THREE.Vector3(Terrain.SIZE_X / 2, 0, Terrain.SIZE_Z / 2),
       new THREE.Vector3(Terrain.SIZE_X, Terrain.SIZE_Y, Terrain.SIZE_Z)
     );
   }

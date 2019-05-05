@@ -55,11 +55,9 @@ class OceanBiome extends Biome {
   }
 
   init() {
-    if (World.POPULATE) {
-      this.initSpecialObject();
-      this.initFishBoids();
-      this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
-    }
+    this.initSpecialObject();
+    this.initFishBoids();
+    this.bubbleEmitter.init(this.terrain.getScene(), this.generator);
   }
 
   private initSpecialObject() {
