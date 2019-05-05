@@ -108,10 +108,11 @@ class TerrainMesh extends Mesh {
     return this.low <= Chunk.SEA_LEVEL + 1500;
   }
 
-  needGenerateCloud(): boolean {
-    const t = (this.moistureAverage > 0.65) ? 0.85 : 0.975;
+  needGenerateCloud(v: THREE.Vector3 | undefined): boolean {
+    const m = v ? this.generator.computeMoistureAt(v.x, v.z) : this.moistureAverage;
+    const t = (m > 0.65) ? 0.85 : 0.975;
 
-    return this.moistureAverage > 0.25 && MathUtils.rng() > t;
+    return m > 0.25 && MathUtils.rng() > t;
   }
 }
 
