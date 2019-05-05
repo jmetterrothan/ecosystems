@@ -61,7 +61,7 @@ class Clouds {
     this.group.receiveShadow = true;
     scene.add(this.group);
 
-    this.wind = new THREE.Vector3(0, 0, MathUtils.randomInt(600, 1200) * Math.sign(Math.random() - 0.5));
+    this.wind = new THREE.Vector3(0, 0, MathUtils.randomInt(600, 1200) * Math.sign(MathUtils.randomFloat(0, 1) - 0.5));
 
     // wind direction helper
     if (configSvc.debug && World.SHOW_CLOUDS) {
