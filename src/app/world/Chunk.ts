@@ -21,8 +21,8 @@ interface ISamplingParameters {
 
 class Chunk {
   static readonly SHOW_HELPER: boolean = false;
-  static readonly NROWS: number = 8;
-  static readonly NCOLS: number = 8;
+  static readonly NROWS: number = 16;
+  static readonly NCOLS: number = 16;
 
   static readonly CELL_SIZE_X: number = 2048;
   static readonly CELL_SIZE_Z: number = 2048;
@@ -124,7 +124,9 @@ class Chunk {
   }
 
   private initClouds(terrain: Terrain) {
-    if (this.terrainBlueprint.needGenerateCloud()) {
+    const v = new THREE.Vector3((this.bbox.max.x + this.bbox.min.x) / 2, (this.bbox.max.y + this.bbox.min.y) / 2, (this.bbox.max.z + this.bbox.min.z) / 2);
+
+    if (this.terrainBlueprint.needGenerateCloud(v)) {
       const cloudTypes = ['cloud1', 'cloud2', 'cloud3', 'cloud4'];
 
       const name = cloudTypes[MathUtils.randomInt(0, cloudTypes.length - 1)];
