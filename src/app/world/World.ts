@@ -20,23 +20,23 @@ import { INTERACTION_TYPE } from '@app/shared/enums/interaction.enum';
 import { GraphicsQuality } from '@shared/enums/graphicsQuality.enum';
 
 class World {
-  static readonly SHOW_TERRAIN_SIDES: boolean = false;
+  static readonly SHOW_TERRAIN_SIDES: boolean = true;
 
-  static readonly SHOW_WATER: boolean = false;
+  static readonly SHOW_WATER: boolean = true;
 
-  static readonly SHOW_STARS: boolean = false;
-  static readonly SHOW_CLOUDS: boolean = false;
-
-  static readonly SHOW_SUN: boolean = false;
-  static readonly SHOW_MOON: boolean = false;
-
-  static readonly SHOW_FOG: boolean = false;
-  static readonly SHOW_EFFECTS: boolean = false;
+  static readonly SHOW_STARS: boolean = true;
+  static readonly SHOW_CLOUDS: boolean = true;
+  static readonly SHOW_SUN: boolean = true;
+  static readonly SHOW_MOON: boolean = true;
+  static readonly SHOW_FOG: boolean = true;
+  static readonly SHOW_EFFECTS: boolean = true;
 
   // terrain wireframe OFF
 
-  static readonly SHOW_POPULATION: boolean = false;
-  static readonly SHOW_BOIDS: boolean = false;
+  static readonly SHOW_POPULATION: boolean = true;
+  static readonly SHOW_BOIDS: boolean = true;
+
+  // stuff
 
   static readonly RESTORE_PP: boolean = true;
 
@@ -163,13 +163,18 @@ class World {
     // ambient
     const ambientSoundPath = this.generator.getBiome().getSound();
 
-    this.audioLoader.load(ambientSoundPath, (buffer) => {
-      this.zSound.setBuffer(buffer);
-      this.zSound.setRefDistance(10000);
-      this.zSound.setLoop(true);
-      this.zSound.setVolume(configSvc.soundEnabled ? World.AMBIANT_SOUND_VOLUME : 0);
-      this.zSound.play();
-    }, () => { }, () => { });
+    this.audioLoader.load(
+      ambientSoundPath,
+      buffer => {
+        this.zSound.setBuffer(buffer);
+        this.zSound.setRefDistance(10000);
+        this.zSound.setLoop(true);
+        this.zSound.setVolume(configSvc.soundEnabled ? World.AMBIANT_SOUND_VOLUME : 0);
+        this.zSound.play();
+      },
+      () => {},
+      () => {}
+    );
     configSvc.soundEnabled$.subscribe(enabled => this.zSound.setVolume(enabled ? World.AMBIANT_SOUND_VOLUME : 0));
 
     // create an object for the sound to play from
@@ -204,12 +209,7 @@ class World {
     this.handlePlayerInteraction(INTERACTION_TYPE.MOUSE_MOVE);
     this.camera.updateMatrixWorld(true);
 
-    this.frustum.setFromMatrix(
-      new THREE.Matrix4().multiplyMatrices(
-        this.camera.projectionMatrix,
-        this.camera.matrixWorldInverse
-      )
-    );
+    this.frustum.setFromMatrix(new THREE.Matrix4().multiplyMatrices(this.camera.projectionMatrix, this.camera.matrixWorldInverse));
 
     this.player.update(this.terrain, delta);
     this.terrain.update(this.frustum, this.player.position, delta);
@@ -229,10 +229,7 @@ class World {
    */
   handlePlayerInteraction(interactionType: INTERACTION_TYPE) {
     const pos = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
-    const mouse = new THREE.Vector2(
-      (pos.x / window.innerWidth) * 2 - 1,
-      (pos.y / window.innerHeight) * -2 + 1
-    );
+    const mouse = new THREE.Vector2((pos.x / window.innerWidth) * 2 - 1, (pos.y / window.innerHeight) * -2 + 1);
 
     this.raycaster.setFromCamera(mouse, this.camera);
     this.terrain.handlePlayerInteraction(this.raycaster, interactionType);
@@ -267,17 +264,29 @@ class World {
   }
   */
 
-  isInitialized(): boolean { return this.initialized; }
+  isInitialized(): boolean {
+    return this.initialized;
+  }
 
-  getWeather(): Weather { return this.weather; }
+  getWeather(): Weather {
+    return this.weather;
+  }
 
-  getTerrain(): Terrain { return this.terrain; }
+  getTerrain(): Terrain {
+    return this.terrain;
+  }
 
-  getBiomeGenerator(): BiomeGenerator { return this.generator; }
+  getBiomeGenerator(): BiomeGenerator {
+    return this.generator;
+  }
 
-  getScene(): THREE.Scene { return this.scene; }
+  getScene(): THREE.Scene {
+    return this.scene;
+  }
 
-  getSeed(): string { return this.seed; }
+  getSeed(): string {
+    return this.seed;
+  }
 
   static pointInWorld(point: THREE.Vector3): boolean {
     const margin: number = 1000;

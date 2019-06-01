@@ -10,7 +10,7 @@ const PARAMETERS_CL = {
   reflectivity: 0.2,
   flatShading: true,
   wireframe: false,
-  vertexColors: THREE.FaceColors,
+  vertexColors: THREE.FaceColors
 };
 
 const PARAMETERS_WIREFRAME = {
@@ -21,7 +21,8 @@ const PARAMETERS_WIREFRAME = {
   reflectivity: 0.2,
   flatShading: true,
   wireframe: true,
-  color: new THREE.Color(0, 0, 0)
+  color: new THREE.Color(0, 0, 0),
+  side: THREE.FrontSide
 };
 
 const PARAMETERS = SHOW_WIREFRAME ? PARAMETERS_WIREFRAME : PARAMETERS_CL;
@@ -35,5 +36,5 @@ export const TERRAIN_SIDE_MATERIAL: THREE.MeshPhongMaterial = new THREE.MeshPhon
 
 export const TERRAIN_MATERIAL_WIREFRAME: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
   ...PARAMETERS,
-  wireframe: true,
+  wireframe: true
 });

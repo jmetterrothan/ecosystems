@@ -33,8 +33,8 @@ import { CROSSHAIR_STATES } from '@ui/enums/CrosshairState.enum';
 import { GraphicsQuality } from '@app/shared/enums/graphicsQuality.enum';
 
 class Terrain {
-  static readonly NCHUNKS_X: number = 14;
-  static readonly NCHUNKS_Z: number = 14;
+  static readonly NCHUNKS_X: number = 4;
+  static readonly NCHUNKS_Z: number = 4;
 
   static readonly NCOLS: number = Terrain.NCHUNKS_X * Chunk.NCOLS;
   static readonly NROWS: number = Terrain.NCHUNKS_Z * Chunk.NROWS;

@@ -7,6 +7,7 @@ import CommonUtils from '@app/shared/utils/Common.utils';
 import PointerLock from '@app/PointerLock';
 import Terrain from '@world/Terrain';
 import Voice from '@voice/Voice';
+import World from '@world/World';
 
 import { multiplayerSvc } from '@online/services/multiplayer.service';
 import { voiceSvc } from '@voice/services/voice.service';
@@ -71,10 +72,43 @@ class Player {
 
     this.controls.getObject().rotateY(-Math.PI / 4);
     this.controls.getObject().children[0].rotateX(angle);
-    this.position = spawn;
 
+    this.position = spawn;
     playerSvc.setPosition(spawn);
 
+    const savePP = () => {
+      console.info(`Saved player data`);
+      localStorage.setItem('pp', JSON.stringify({
+        position: this.position,
+        rotation: this.rotation,
+      }));
+    };
+
+    const restorePP = () => {
+      const temp: any = JSON.parse(localStorage.getItem('pp'));
+      console.info(`Restored player data`);
+
+      const position = new THREE.Vector3(temp.position.x, temp.position.y, temp.position.z);
+      this.position = position;
+
+      const rotation = new THREE.Euler(temp.rotation._x, temp.rotation._y, temp.rotation._z, temp.rotation._order);
+      this.rotation = rotation;
+
+      playerSvc.setPosition(position);
+    };
+
+    if (World.RESTORE_PP) {
+      restorePP();
+      setTimeout(() => window.isFreezed = true, 500);
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowUp') {
+        restorePP();
+      } else if (e.key === 'ArrowDown') {
+        savePP();
+      }
+    });
     // await this.initVoice();
   }
 
@@ -250,6 +284,14 @@ class Player {
 
   get position(): THREE.Vector3 {
     return this.controls.getObject().position;
+  }
+
+  get rotation(): THREE.Euler {
+    return this.controls.getObject().rotation;
+  }
+
+  set rotation(r: THREE.Euler) {
+    this.controls.getObject().setRotationFromEuler(r);
   }
 
   set position(v: THREE.Vector3) {

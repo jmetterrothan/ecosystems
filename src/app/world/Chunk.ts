@@ -21,8 +21,8 @@ interface ISamplingParameters {
 
 class Chunk {
   static readonly SHOW_HELPER: boolean = false;
-  static readonly NROWS: number = 16;
-  static readonly NCOLS: number = 16;
+  static readonly NROWS: number = 12;
+  static readonly NCOLS: number = 12;
 
   static readonly CELL_SIZE_X: number = 2048;
   static readonly CELL_SIZE_Z: number = 2048;
@@ -130,7 +130,7 @@ class Chunk {
       const cloudTypes = ['cloud1', 'cloud2', 'cloud3', 'cloud4'];
 
       const name = cloudTypes[MathUtils.randomInt(0, cloudTypes.length - 1)];
-      const mesh: THREE.Mesh = (<THREE.Mesh>World.LOADED_MODELS.get(name).clone().children[0]);
+      const mesh: THREE.Mesh = <THREE.Mesh>World.LOADED_MODELS.get(name).clone().children[0];
 
       const x = this.col * Chunk.WIDTH + Chunk.WIDTH / 2;
       const y = Chunk.CLOUD_LEVEL;
@@ -158,7 +158,11 @@ class Chunk {
       const p4 = this.generator.computeHeightAt(bbox.max.x, bbox.max.z);
 
       if (p1 < Chunk.CLOUD_LEVEL && p2 < Chunk.CLOUD_LEVEL && p3 < Chunk.CLOUD_LEVEL && p4 < Chunk.CLOUD_LEVEL) {
-        terrain.getWorld().getWeather().getClouds().add(mesh);
+        terrain
+          .getWorld()
+          .getWeather()
+          .getClouds()
+          .add(mesh);
       }
     }
 
@@ -235,9 +239,7 @@ class Chunk {
 
     this.objectsBlueprint = this.objectsBlueprint.filter(p => !pick.p.equals(p.p));
 
-    const objectToDelete = online
-      ? this.objects.children.find(obj => obj.position.equals(object.position))
-      : object;
+    const objectToDelete = online ? this.objects.children.find(obj => obj.position.equals(object.position)) : object;
 
     if (objectToDelete !== undefined && parameters.animate) {
       new TWEEN.Tween(objectToDelete.scale)
@@ -248,7 +250,6 @@ class Chunk {
     } else {
       this.objects.remove(objectToDelete);
     }
-
   }
 
   /**
@@ -349,7 +350,9 @@ class Chunk {
    * @return {boolean}
    */
   canPlaceObject(object: THREE.Object3D): boolean {
-    if (!(object instanceof THREE.Object3D)) { return false; }
+    if (!(object instanceof THREE.Object3D)) {
+      return false;
+    }
 
     const bbox = new THREE.Box3().setFromObject(object);
 
@@ -377,9 +380,9 @@ class Chunk {
   }
 
   /**
-  * Reuses objects if the pool is not full or simply deletes it
-  * @param {THREE.Object3D} object
-  */
+   * Reuses objects if the pool is not full or simply deletes it
+   * @param {THREE.Object3D} object
+   */
   repurposeObject(object: THREE.Object3D) {
     if (object === null) {
       return;
@@ -425,26 +428,36 @@ class Chunk {
    * Chunk objects are visible in frustum if true
    * @return {boolean}
    */
-  isVisible(): boolean { return this.visible; }
+  isVisible(): boolean {
+    return this.visible;
+  }
 
   /**
    * Chunk population need to be regenerated if true
    * @return {boolean}
    */
-  isDirty(): boolean { return this.dirty; }
+  isDirty(): boolean {
+    return this.dirty;
+  }
 
   /**
    * Chunk has been merged to the terrain if true
    * @return {boolean}
    */
-  isMerged(): boolean { return this.merged; }
+  isMerged(): boolean {
+    return this.merged;
+  }
 
   /**
    * @return {THREE.Box3}
    */
-  getBbox(): THREE.Box3 { return this.bbox; }
+  getBbox(): THREE.Box3 {
+    return this.bbox;
+  }
 
-  getObjects(): THREE.Group { return this.objects; }
+  getObjects(): THREE.Group {
+    return this.objects;
+  }
 
   private placeObjectWithAnimation(object: THREE.Object3D) {
     const scaleSaved = object.scale.clone();
@@ -466,17 +479,7 @@ class Chunk {
    * @return {THREE.Box3}
    */
   static createBoundingBox(row: number, col: number): THREE.Box3 {
-    return new THREE.Box3().setFromCenterAndSize(
-      new THREE.Vector3(
-        col * Chunk.WIDTH + Chunk.WIDTH / 2,
-        Chunk.SEA_LEVEL,
-        row * Chunk.DEPTH + Chunk.DEPTH / 2
-      ),
-      new THREE.Vector3(
-        Chunk.WIDTH,
-        Chunk.HEIGHT,
-        Chunk.DEPTH
-      ));
+    return new THREE.Box3().setFromCenterAndSize(new THREE.Vector3(col * Chunk.WIDTH + Chunk.WIDTH / 2, Chunk.SEA_LEVEL - Chunk.HEIGHT / 4, row * Chunk.DEPTH + Chunk.DEPTH / 2), new THREE.Vector3(Chunk.WIDTH, Chunk.HEIGHT / 2, Chunk.DEPTH));
   }
 
   /**

@@ -70,36 +70,50 @@ class OceanBiome extends Biome {
 
     const rotation = new THREE.Vector3(0, MathUtils.randomFloat(0, Math.PI * 2), 0);
 
-    this.chestBottom = this.terrain.placeSpecialObject({
-      rotation,
-      stackReference: 'chest_part2',
-      float: false,
-      underwater: ISpecialObjectCanPlaceIn.WATER
-    }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+    this.chestBottom = this.terrain.placeSpecialObject(
+      {
+        rotation,
+        stackReference: 'chest_part2',
+        float: false,
+        underwater: ISpecialObjectCanPlaceIn.WATER
+      },
+      centerX - sizeX / 2,
+      centerZ - sizeZ / 2,
+      sizeX,
+      sizeZ
+    );
 
-    this.chestTop = this.terrain.placeSpecialObject({
-      rotation,
-      position: this.chestBottom.position.clone(),
-      stackReference: 'chest_part1',
-      float: false,
-      underwater: ISpecialObjectCanPlaceIn.WATER
-    }, centerX - sizeX / 2, centerZ - sizeZ / 2, sizeX, sizeZ);
+    this.chestTop = this.terrain.placeSpecialObject(
+      {
+        rotation,
+        position: this.chestBottom.position.clone(),
+        stackReference: 'chest_part1',
+        float: false,
+        underwater: ISpecialObjectCanPlaceIn.WATER
+      },
+      centerX - sizeX / 2,
+      centerZ - sizeZ / 2,
+      sizeX,
+      sizeZ
+    );
   }
 
   private initFishBoids() {
     const minSize = 60000;
     const maxSize = 120000;
     const size = MathUtils.randomFloat(minSize, maxSize);
-    const max = 4;
+    const max = 8;
 
     const pds = new poissonDiskSampling([Terrain.SIZE_X - size, Terrain.SIZE_Z - size], size, size, 30, MathUtils.rng);
     const points = pds.fill();
 
     let it = 0;
     points.forEach((point: number[]) => {
-      if (it >= max) { return; }
+      if (it >= max) {
+        return;
+      }
 
-      const nbMax = (size * 20 / maxSize) || 0; // maximum nb based on boids size
+      const nbMax = (size * 20) / maxSize || 0; // maximum nb based on boids size
       const n = MathUtils.randomInt(2, nbMax);
       const px = size / 2 + point.shift();
       const pz = size / 2 + point.shift();
@@ -136,7 +150,7 @@ class OceanBiome extends Biome {
 
     if (intersections.length && !this.chestOpened) {
       new TWEEN.Tween(this.chestTop.rotation)
-        .to({ y: this.chestTop.rotation.y + Math.PI / 10, }, 500)
+        .to({ y: this.chestTop.rotation.y + Math.PI / 10 }, 500)
         .easing(TWEEN.Easing.Cubic.Out)
         .start();
       new TWEEN.Tween(this.chestTop.position)
@@ -184,7 +198,7 @@ class OceanBiome extends Biome {
       e += 0.025 * this.generator.ridgeNoise2(8 * nx, 8 * nz);
       e += 0.25 * this.generator.noise(4 * nx, 4 * nz) * this.generator.noise3(nx, nz);
 
-      e /= (0.25 + 0.0035 + 0.015 + 0.025 + 0.25) - this.spike;
+      e /= 0.25 + 0.0035 + 0.015 + 0.025 + 0.25 - this.spike;
 
       e **= 2.25;
     }

@@ -51,7 +51,7 @@ class RainForestBiome extends Biome {
     this.c = MathUtils.randomFloat(0.85, 1.5); // best around 0.85;
 
     this.amplified = MathUtils.rng() >= 0.25; // magnify everything
-    this.spread = MathUtils.randomFloat(1.75, 2.00); // expand over the map (higher values means more space available for water)
+    this.spread = MathUtils.randomFloat(1.75, 2.0); // expand over the map (higher values means more space available for water)
 
     this.ridges = MathUtils.randomFloat(0.225, 0.35); // makes ridges more prevalent
 
@@ -84,7 +84,9 @@ class RainForestBiome extends Biome {
 
     let it = 0;
     points.forEach((point: number[]) => {
-      if (it >= max) { return; }
+      if (it >= max) {
+        return;
+      }
 
       const px = size / 2 + point.shift();
       const pz = size / 2 + point.shift();
@@ -115,7 +117,9 @@ class RainForestBiome extends Biome {
 
     let it = 0;
     points.forEach((point: number[]) => {
-      if (it >= max) { return; }
+      if (it >= max) {
+        return;
+      }
 
       const n = MathUtils.randomInt(2, 4);
       const px = point.shift() + size / 2;
@@ -188,15 +192,16 @@ class RainForestBiome extends Biome {
 
     // const m = this.computeMoistureAt(x, z);
 
-    let e = (0.50 * this.generator.noise(1 * nx, 1 * nz)
-      + 1.00 * this.generator.noise(2 * nx, 2 * nz)
-      + this.ridges * this.generator.ridgeNoise(3 * nx, 3 * nz)
-      + 0.13 * this.generator.noise(8 * nx, 8 * nz)
-      + 0.06 * this.generator.noise(16 * nx, 16 * nz)
-      + 0.035 * this.generator.noise2(128 * nx, 128 * nz)
-      + 0.025 * this.generator.noise(512 * nx, 512 * nz));
+    let e =
+      0.5 * this.generator.noise(1 * nx, 1 * nz) +
+      1.0 * this.generator.noise(2 * nx, 2 * nz) +
+      this.ridges * this.generator.ridgeNoise(3 * nx, 3 * nz) +
+      0.13 * this.generator.noise(8 * nx, 8 * nz) +
+      0.06 * this.generator.noise(16 * nx, 16 * nz) +
+      0.035 * this.generator.noise2(128 * nx, 128 * nz) +
+      0.025 * this.generator.noise(512 * nx, 512 * nz);
 
-    e /= (1.00 + 0.50 + this.ridges + 0.13 + 0.06 + 0.035 + 0.025);
+    e /= 1.0 + 0.5 + this.ridges + 0.13 + 0.06 + 0.035 + 0.025;
 
     const d = this.spread * BiomeGenerator.getEuclideanDistance(nx, nz);
     const ne = BiomeGenerator.islandAddMethod(this.a, this.b, this.c, d, e);
